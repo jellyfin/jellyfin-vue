@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { playbackManagerStore } from '@/store';
+import { playbackManager } from '@/store/playbackManager';
 import { canPlay, canResume } from '@/utils/items';
 import { ticksToMs } from '@/utils/time';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
@@ -69,8 +69,6 @@ const props = withDefaults(
     mediaSourceIndex: undefined
   }
 );
-
-const playbackManager = playbackManagerStore();
 
 const loading = ref(false);
 

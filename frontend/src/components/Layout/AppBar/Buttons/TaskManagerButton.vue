@@ -47,8 +47,7 @@
 </template>
 
 <script setup lang="ts">
-import { taskManagerStore } from '@/store';
-import { TaskType } from '@/store/taskManager';
+import { taskManager, TaskType } from '@/store/taskManager';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -61,7 +60,6 @@ interface TaskInfo {
 defineProps<{ fab?: boolean }>();
 
 const menu = ref(false);
-const taskManager = taskManagerStore();
 const completedTaskList = ref<TaskInfo[]>([]);
 const { t } = useI18n();
 

@@ -37,19 +37,18 @@
 </template>
 
 <script setup lang="ts">
-import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { useRoute } from 'vue-router/auto';
-import { useI18n } from 'vue-i18n';
-import { computed, inject, Ref } from 'vue';
-import IMdiHome from 'virtual:icons/mdi/home';
-import { userLibrariesStore } from '@/store';
+import { userLibraries } from '@/store/userLibraries';
 import { getLibraryIcon } from '@/utils/items';
+import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
+import IMdiHome from 'virtual:icons/mdi/home';
+import { computed, inject, Ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router/auto';
 
 const props = defineProps<{
   order?: number;
 }>();
 const route = useRoute();
-const userLibraries = userLibrariesStore();
 const { t } = useI18n();
 
 const drawer = inject<Ref<boolean>>('NavigationDrawer');

@@ -319,6 +319,4 @@ class UserLibrariesStore {
   }
 }
 
-const userLibraries = new UserLibrariesStore();
-
-export default userLibraries;
+export const userLibraries = new UserLibrariesStore();

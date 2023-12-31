@@ -109,10 +109,8 @@
 </template>
 
 <script setup lang="ts">
+import { playbackManager } from '@/store/playbackManager';
 import { getItemDetailsLink } from '@/utils/items';
-import { playbackManagerStore } from '@/store';
-
-const playbackManager = playbackManagerStore();
 </script>
 
 <style lang="scss" scoped>

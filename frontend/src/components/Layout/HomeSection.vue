@@ -6,13 +6,11 @@
 </template>
 
 <script setup lang="ts">
+import { HomeSection, userLibraries } from '@/store/userLibraries';
 import { computed } from 'vue';
-import { userLibrariesStore } from '@/store';
-import type { HomeSection } from '@/store/userLibraries';
 
 const props = defineProps<{ section: HomeSection }>();
 
-const userLibraries = userLibrariesStore();
 const items = computed(() => {
   return userLibraries.getHomeSectionContent(props.section);
 });

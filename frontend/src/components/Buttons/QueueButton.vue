@@ -72,8 +72,7 @@
 </template>
 
 <script setup lang="ts">
-import { playbackManagerStore } from '@/store';
-import { InitMode } from '@/store/playbackManager';
+import { InitMode, playbackManager } from '@/store/playbackManager';
 import { getTotalEndsAtTime } from '@/utils/time';
 import IMdiPlaylistMusic from 'virtual:icons/mdi/playlist-music';
 import IMdiShuffle from 'virtual:icons/mdi/shuffle';
@@ -88,7 +87,6 @@ const props = withDefaults(
   { closeOnClick: false, size: 40 }
 );
 
-const playbackManager = playbackManagerStore();
 const { t } = useI18n();
 
 const menuModel = ref(false);

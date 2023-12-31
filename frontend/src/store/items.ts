@@ -1,7 +1,7 @@
-import { reactive, watch } from 'vue';
+import { useRemote } from '@/composables';
 import { BaseItemDto, ItemFields } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
-import { useRemote } from '@/composables';
+import { reactive, watch } from 'vue';
 
 /**
  * == INTERFACES AND TYPES ==
@@ -275,6 +275,4 @@ class ItemsStore {
   }
 }
 
-const items = new ItemsStore();
-
-export default items;
+export const items = new ItemsStore();

@@ -11,9 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { playbackManagerStore } from '@/store';
+import { playbackManager } from '@/store/playbackManager';
 
 defineProps<{ size?: string }>();
-
-const playbackManager = playbackManagerStore();
 </script>

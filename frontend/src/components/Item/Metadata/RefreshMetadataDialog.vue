@@ -54,15 +54,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useRemote, useSnackbar } from '@/composables';
+import { TaskType, taskManager } from '@/store/taskManager';
 import {
   BaseItemDto,
   MetadataRefreshMode
 } from '@jellyfin/sdk/lib/generated-client';
 import { getItemRefreshApi } from '@jellyfin/sdk/lib/utils/api/item-refresh-api';
-import { useRemote, useSnackbar } from '@/composables';
-import taskManager, { TaskType } from '@/store/taskManager';
+import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 interface RefreshMethod {
   title: string;

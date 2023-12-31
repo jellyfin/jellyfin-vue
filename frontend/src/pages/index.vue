@@ -20,8 +20,8 @@
 </template>
 
 <script setup lang="ts">
-import { userLibrariesStore } from '@/store';
 import type { HomeSection } from '@/store/userLibraries';
+import { userLibraries } from '@/store/userLibraries';
 import { CardShapes, getShapeFromCollectionType } from '@/utils/items';
 import { computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -32,8 +32,6 @@ const route = useRoute();
 
 route.meta.title = t('home');
 route.meta.transparentLayout = true;
-
-const userLibraries = userLibrariesStore();
 
 /**
  * Items are fetched at logon when switching between the 'fullpage' and 'default' layout. With the help of the

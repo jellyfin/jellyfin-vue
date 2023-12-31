@@ -30,18 +30,16 @@
 import { useSnackbar } from '@/composables';
 import {
   mediaElementRef,
-  mediaWebAudio,
-  playbackManagerStore,
-  playerElementStore
+  mediaWebAudio
 } from '@/store';
+import { playbackManager } from '@/store/playbackManager';
+import { playerElement } from '@/store/playerElement';
 import { getImageInfo } from '@/utils/images';
 import Hls, { ErrorData } from 'hls.js';
 import { isNil } from 'lodash-es';
 import { computed, nextTick, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-const playbackManager = playbackManagerStore();
-const playerElement = playerElementStore();
 const { t } = useI18n();
 
 const hls = Hls.isSupported()

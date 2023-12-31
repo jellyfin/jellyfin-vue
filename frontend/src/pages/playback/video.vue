@@ -125,23 +125,23 @@ meta:
 </route>
 
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref, computed, watch } from 'vue';
-import IMdiClose from 'virtual:icons/mdi/close';
-import IMdiChevronDown from 'virtual:icons/mdi/chevron-down';
+import {
+  mediaControls,
+  mediaElementRef
+} from '@/store';
+import { playbackManager } from '@/store/playbackManager';
+import { playerElement } from '@/store/playerElement';
+import { getEndsAtTime } from '@/utils/time';
 import { BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
 import {
   useFullscreen,
-  useTimeoutFn,
   useMagicKeys,
+  useTimeoutFn,
   whenever
 } from '@vueuse/core';
-import {
-  playbackManagerStore,
-  playerElementStore,
-  mediaElementRef,
-  mediaControls
-} from '@/store';
-import { getEndsAtTime } from '@/utils/time';
+import IMdiChevronDown from 'virtual:icons/mdi/chevron-down';
+import IMdiClose from 'virtual:icons/mdi/close';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 /**
  * - iOS's Safari fullscreen API is only available for the video element
@@ -150,8 +150,6 @@ const fullscreen = useFullscreen().isSupported.value
   ? useFullscreen(undefined, { autoExit: true })
   : useFullscreen(mediaElementRef, { autoExit: true });
 const keys = useMagicKeys();
-const playbackManager = playbackManagerStore();
-const playerElement = playerElementStore();
 const osd = ref(true);
 const subtitleSelectionButtonOpened = ref(false);
 const playbackSettingsButtonOpened = ref(false);

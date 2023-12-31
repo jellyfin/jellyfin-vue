@@ -1,4 +1,4 @@
-import { useVuetify } from '.';
+import { useVuetify } from './use-vuetify';
 
 const display = useVuetify().display;
 

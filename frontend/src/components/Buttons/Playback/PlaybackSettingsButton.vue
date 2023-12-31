@@ -87,13 +87,11 @@
 </template>
 
 <script setup lang="ts">
+import { playbackManager } from '@/store/playbackManager';
+import { playerElement } from '@/store/playerElement';
 import { computed } from 'vue';
-import { playbackManagerStore, playerElementStore } from '@/store';
 
 const menuModel = defineModel<boolean>();
-
-const playbackManager = playbackManagerStore();
-const playerElement = playerElementStore();
 
 const stretched = computed({
   get() {

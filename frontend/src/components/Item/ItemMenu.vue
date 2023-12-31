@@ -55,7 +55,8 @@
 
 <script lang="ts">
 import { useConfirmDialog, useRemote, useSnackbar } from '@/composables';
-import { playbackManagerStore, taskManagerStore } from '@/store';
+import { playbackManager } from '@/store/playbackManager';
+import { taskManager } from '@/store/taskManager';
 import {
   canIdentify,
   canInstantMix,
@@ -149,8 +150,6 @@ const metadataDialog = ref(false);
 const refreshDialog = ref(false);
 const identifyItemDialog = ref(false);
 const mediaInfoDialog = ref(false);
-const playbackManager = playbackManagerStore();
-const taskManager = taskManagerStore();
 const errorMessage = t('anErrorHappened');
 const isItemRefreshing = computed(
   () => taskManager.getTask(menuProps.item.Id ?? '') !== undefined

@@ -117,7 +117,7 @@
 
 <script setup lang="ts">
 import { useRemote } from '@/composables';
-import { playbackManagerStore } from '@/store';
+import { playbackManager } from '@/store/playbackManager';
 import { getItemDetailsLink } from '@/utils/items';
 import { formatTicks } from '@/utils/time';
 import {
@@ -131,7 +131,6 @@ import { computed, ref, watch } from 'vue';
 
 const props = defineProps<{ item: BaseItemDto }>();
 
-const playbackManager = playbackManagerStore();
 const remote = useRemote();
 const tracks = ref<BaseItemDto[] | null | undefined>();
 
