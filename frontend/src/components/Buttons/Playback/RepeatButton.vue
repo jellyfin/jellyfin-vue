@@ -11,15 +11,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import IMdiRepeatOnce from 'virtual:icons/mdi/repeat-once';
+import { RepeatMode, playbackManager } from '@/store/playbackManager';
 import IMdiRepeat from 'virtual:icons/mdi/repeat';
-import { playbackManagerStore } from '@/store';
-import { RepeatMode } from '@/store/playbackManager';
+import IMdiRepeatOnce from 'virtual:icons/mdi/repeat-once';
+import { computed } from 'vue';
 
 defineProps<{ size?: string }>();
-
-const playbackManager = playbackManagerStore();
 
 const repeatIcon = computed(() =>
   playbackManager.repeatMode === RepeatMode.RepeatOne

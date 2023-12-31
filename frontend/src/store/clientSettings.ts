@@ -1,4 +1,6 @@
-import { computed, watch, nextTick } from 'vue';
+import { useRemote, useSnackbar, useVuetify, usei18n } from '@/composables';
+import { mergeExcludingUnknown } from '@/utils/data-manipulation';
+import { fetchDefaultedCustomPrefs, syncCustomPrefs } from '@/utils/store-sync';
 import {
   RemovableRef,
   useNavigatorLanguage,
@@ -6,9 +8,7 @@ import {
   useStorage,
   watchPausable
 } from '@vueuse/core';
-import { fetchDefaultedCustomPrefs, syncCustomPrefs } from '@/utils/store-sync';
-import { usei18n, useSnackbar, useRemote, useVuetify } from '@/composables';
-import { mergeExcludingUnknown } from '@/utils/data-manipulation';
+import { computed, nextTick, watch } from 'vue';
 
 /**
  * == INTERFACES AND TYPES ==
@@ -186,6 +186,4 @@ class ClientSettingsStore {
   }
 }
 
-const clientSettings = new ClientSettingsStore();
-
-export default clientSettings;
+export const clientSettings = new ClientSettingsStore();

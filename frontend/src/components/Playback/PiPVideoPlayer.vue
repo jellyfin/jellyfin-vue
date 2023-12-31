@@ -76,12 +76,10 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onBeforeUnmount } from 'vue';
+import { playbackManager } from '@/store/playbackManager';
+import { playerElement } from '@/store/playerElement';
 import { useMagicKeys, whenever } from '@vueuse/core';
-import { playbackManagerStore, playerElementStore } from '@/store';
-
-const playerElement = playerElementStore();
-const playbackManager = playbackManagerStore();
+import { onBeforeUnmount, onMounted } from 'vue';
 
 const keys = useMagicKeys();
 

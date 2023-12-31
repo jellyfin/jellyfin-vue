@@ -67,7 +67,7 @@
 
 <script setup lang="ts">
 import { useRemote } from '@/composables';
-import { userLibrariesStore } from '@/store';
+import { userLibraries } from '@/store/userLibraries';
 import { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { isEmpty } from 'lodash-es';
 import IconEye from 'virtual:icons/mdi/eye';
@@ -86,7 +86,6 @@ const remote = useRemote();
 const { t } = useI18n();
 
 const router = useRouter();
-const userLibraries = userLibrariesStore();
 
 const valid = ref(false);
 const login = ref({ username: '', password: '', rememberMe: true });

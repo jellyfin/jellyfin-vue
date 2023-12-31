@@ -1,9 +1,9 @@
+import { useRemote } from '@/composables';
+import { items } from '@/store/items';
+import { mergeExcludingUnknown } from '@/utils/data-manipulation';
 import { RemovableRef, useStorage } from '@vueuse/core';
 import { v4 } from 'uuid';
 import { watch } from 'vue';
-import { itemsStore } from '@/store';
-import { mergeExcludingUnknown } from '@/utils/data-manipulation';
-import { useRemote } from '@/composables';
 
 /**
  * == INTERFACES AND TYPES ==
@@ -148,7 +148,7 @@ class TaskManagerStore {
          * Usually when a running task is started somewhere else and the client is accssed later
          */
         if (taskPayload === undefined) {
-          const item = itemsStore().getItemById(data.ItemId);
+          const item = items.getItemById(data.ItemId);
 
           if (item?.Id && item.Name) {
             this.startTask({
@@ -211,6 +211,4 @@ class TaskManagerStore {
   }
 }
 
-const taskManager = new TaskManagerStore();
-
-export default taskManager;
+export const taskManager = new TaskManagerStore();

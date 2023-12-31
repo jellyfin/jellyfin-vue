@@ -1,56 +1,35 @@
-import clientSettings from './clientSettings';
-import items from './items';
-import taskManager from './taskManager';
-import userLibraries from './userLibraries';
-import playbackManager from './playbackManager';
-import playerElement from './playerElement';
+import { useMediaControls, useMediaQuery, useNow, useScroll } from '@vueuse/core';
+import { shallowRef } from 'vue';
+/**
+ * This file contains global variables (specially VueUse refs) that are used multiple times across the client.
+ * VueUse composables will set new event handlers, so it's more
+ * efficient to reuse those, both in components and TS files.
+ */
 
 /**
- * Get global instance of clientSettings store
+ * Reactive Date.now() instance
  */
-export function clientSettingsStore(): typeof clientSettings {
-  return clientSettings;
-}
-
+export const now = useNow();
 /**
- * Get global instance of items store
+ * Reactive window scroll
  */
-export function itemsStore(): typeof items {
-  return items;
-}
-
+export const windowScroll = useScroll(window);
 /**
- * Get global instance of taskManager store
+ * Ref to the local media player
  */
-export function taskManagerStore(): typeof taskManager {
-  return taskManager;
-}
-
+export const mediaElementRef = shallowRef<HTMLMediaElement>();
 /**
- * Get global instance of userLibraries store
+ * Reactive media controls of the local media player
  */
-export function userLibrariesStore(): typeof userLibraries {
-  return userLibraries;
-}
-
+export const mediaControls = useMediaControls(mediaElementRef);
 /**
- * Get global instance of playbackManager store
+ * WebAudio instance of the local media player
  */
-export function playbackManagerStore(): typeof playbackManager {
-  return playbackManager;
-}
-
+export const mediaWebAudio = {
+  context: new AudioContext(),
+  sourceNode: undefined as undefined | MediaElementAudioSourceNode
+};
 /**
- * Get global instance of playerElement store
+ * Reactively tracks if the user wants animations (false) or not (true).
  */
-export function playerElementStore(): typeof playerElement {
-  return playerElement;
-}
-
-/**
- * Please, leave this export as the only wildcard export
- *
- * Properties and types relevant to each store should be imported from the store
- * directly to avoid polluting the global store namespace.
- */
-export * from './globals';
+export const prefersNoMotion = useMediaQuery('(prefers-reduced-motion)');

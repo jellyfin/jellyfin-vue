@@ -42,14 +42,13 @@
 </template>
 
 <script setup lang="ts">
-import Sortable from 'sortablejs';
+import { playbackManager } from '@/store/playbackManager';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
+import Sortable from 'sortablejs';
 import { onBeforeUnmount, shallowRef, watch } from 'vue';
-import { playbackManagerStore } from '@/store';
 
 let sortable: Sortable | undefined;
 const container = shallowRef<HTMLSpanElement>();
-const playbackManager = playbackManagerStore();
 
 /**
  * Destroys the sortable instance

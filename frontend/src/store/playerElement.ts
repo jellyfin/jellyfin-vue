@@ -4,16 +4,16 @@
  * In the other part, playbackManager is suited to handle the playback state in
  * an agnostic way, regardless of where the media is being played (remotely or locally)
  */
-import { isNil } from 'lodash-es';
-import { nextTick, reactive, watch } from 'vue';
+import { useRemote, useRouter } from '@/composables';
+import { mediaElementRef } from '@/store';
 import JASSUB from 'jassub';
+import jassubDefaultFont from 'jassub/dist/default.woff2?url';
 import jassubWorker from 'jassub/dist/jassub-worker.js?url';
 import jassubWasmUrl from 'jassub/dist/jassub-worker.wasm?url';
-import jassubDefaultFont from 'jassub/dist/default.woff2?url';
-import { mediaElementRef, playbackManagerStore } from '@/store';
-import { useRemote, useRouter } from '@/composables';
+import { isNil } from 'lodash-es';
+import { nextTick, reactive, watch } from 'vue';
+import { playbackManager } from './playbackManager';
 
-const playbackManager = playbackManagerStore();
 let jassub: JASSUB | undefined;
 const fullscreenVideoRoute = '/playback/video';
 const fullscreenMusicRoute = '/playback/music';
@@ -244,6 +244,4 @@ class PlayerElementStore {
   }
 }
 
-const playerElement = new PlayerElementStore();
-
-export default playerElement;
+export const playerElement = new PlayerElementStore();

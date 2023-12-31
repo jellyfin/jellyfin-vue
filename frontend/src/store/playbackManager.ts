@@ -32,8 +32,8 @@ import { getImageInfo } from '@/utils/images';
 import { getItemRuntime } from '@/utils/items';
 import playbackProfile from '@/utils/playback-profiles';
 import { msToTicks } from '@/utils/time';
-import { itemsStore } from '.';
-import { mediaControls, now as reactiveDate } from './globals';
+import { mediaControls, now as reactiveDate } from '.';
+import { items } from './items';
 
 /**
  * == INTERFACES AND TYPES ==
@@ -200,8 +200,6 @@ class PlaybackManagerStore {
    */
   public get queue(): BaseItemDto[] {
     if (this._state.queue.length > 0) {
-      const items = itemsStore();
-
       return items.getItemsById(this._state.queue);
     }
 
@@ -212,8 +210,6 @@ class PlaybackManagerStore {
    */
   public get currentItem(): BaseItemDto | undefined {
     if (!isNil(this._state.currentItemIndex)) {
-      const items = itemsStore();
-
       return items.getItemById(this._state.queue[this._state.currentItemIndex]);
     }
   }
@@ -224,8 +220,6 @@ class PlaybackManagerStore {
    * Get a reactive BaseItemDto object of the next item in queue
    */
   public get nextItem(): BaseItemDto | undefined {
-    const items = itemsStore();
-
     if (
       !isNil(this._state.currentItemIndex) &&
       this._state.currentItemIndex + 1 < this._state.queue.length
@@ -242,8 +236,6 @@ class PlaybackManagerStore {
    */
   public get currentlyPlayingType(): BaseItemKind | undefined {
     if (!isNil(this._state.currentItemIndex)) {
-      const items = itemsStore();
-
       return items.getItemById(this._state.queue[this._state.currentItemIndex])
         ?.Type;
     }
@@ -253,8 +245,6 @@ class PlaybackManagerStore {
    */
   public get currentlyPlayingMediaType(): string | null | undefined {
     if (!isNil(this._state.currentItemIndex)) {
-      const items = itemsStore();
-
       return items.getItemById(this._state.queue[this._state.currentItemIndex])
         ?.MediaType;
     }
@@ -1346,6 +1336,4 @@ class PlaybackManagerStore {
   }
 }
 
-const playbackManager = new PlaybackManagerStore();
-
-export default playbackManager;
+export const playbackManager = new PlaybackManagerStore();

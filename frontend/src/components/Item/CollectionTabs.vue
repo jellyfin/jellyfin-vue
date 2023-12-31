@@ -37,16 +37,14 @@
 </template>
 
 <script setup lang="ts">
+import { items } from '@/store/items';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { groupBy } from 'lodash-es';
 import { computed, ref, watch } from 'vue';
-import { itemsStore } from '@/store';
 
 const props = defineProps<{
   item: BaseItemDto;
 }>();
-
-const items = itemsStore();
 
 const currentTab = ref(0);
 const loading = ref(false);

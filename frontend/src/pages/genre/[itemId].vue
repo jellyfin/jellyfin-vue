@@ -63,7 +63,7 @@
 
 <script setup lang="ts">
 import { useRemote, useResponsiveClasses } from '@/composables';
-import { itemsStore } from '@/store';
+import { items } from '@/store/items';
 import {
   BaseItemDto,
   BaseItemKind,
@@ -75,7 +75,6 @@ import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api'
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router/auto';
 
-const items = itemsStore();
 const route = useRoute<'/genre/[itemId]'>();
 const remote = useRemote();
 

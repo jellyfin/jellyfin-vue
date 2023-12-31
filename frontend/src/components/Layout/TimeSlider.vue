@@ -20,11 +20,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import { playbackManagerStore } from '@/store';
+import { playbackManager } from '@/store/playbackManager';
 import { formatTime } from '@/utils/time';
+import { computed, ref } from 'vue';
 
-const playbackManager = playbackManagerStore();
 const currentInput = ref(0);
 const clicked = ref(false);
 const runtime = computed(() => playbackManager.currentItemRuntime / 1000);

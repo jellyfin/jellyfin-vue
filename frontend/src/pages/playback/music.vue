@@ -98,7 +98,7 @@ meta:
 </route>
 
 <script setup lang="ts">
-import { playbackManagerStore } from '@/store';
+import { playbackManager } from '@/store/playbackManager';
 import { getBlurhash } from '@/utils/images';
 import { ImageType } from '@jellyfin/sdk/lib/generated-client';
 import { isNil } from 'lodash-es';
@@ -115,8 +115,6 @@ import { useRoute } from 'vue-router/auto';
 
 const modules = [A11y, Keyboard, Virtual, EffectCoverflow];
 const route = useRoute();
-
-const playbackManager = playbackManagerStore();
 
 const coverflowEffect = {
   depth: 500,

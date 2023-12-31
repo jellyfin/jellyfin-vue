@@ -3,7 +3,7 @@
  */
 import { useLoading, useSnackbar, usei18n } from '@/composables';
 import { excludedProgressEndpoints } from '@/composables/use-loading';
-import { itemsStore } from '@/store';
+import { items } from '@/store/items';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import axios, {
   AxiosError,
@@ -48,7 +48,6 @@ class JellyfinInterceptors {
    * be reactive and updated using the WebSocket connection
    */
   public reactiveItemsInterceptor(response: AxiosResponse): AxiosResponse {
-    const items = itemsStore();
     const data = response.data;
 
     if (data) {

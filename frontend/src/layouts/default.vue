@@ -15,20 +15,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, provide, onBeforeMount, onUnmounted } from 'vue';
+import { playbackManager } from '@/store/playbackManager';
+import { playerElement } from '@/store/playerElement';
+import { userLibraries } from '@/store/userLibraries';
+import { onBeforeMount, onUnmounted, provide, ref, watch } from 'vue';
 import { useDisplay } from 'vuetify';
-import {
-  playbackManagerStore,
-  playerElementStore,
-  userLibrariesStore
-} from '@/store';
 
 const display = useDisplay();
-const userLibraries = userLibrariesStore();
 const navDrawer = ref(!display.mobile.value);
-
-const playbackManager = playbackManagerStore();
-const playerElement = playerElementStore();
 
 /**
  * We block the navigation to the layout at login to improve UX, so content doesn't pop up or jumps while rendering the page.

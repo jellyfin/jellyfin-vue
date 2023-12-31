@@ -11,16 +11,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { PlaybackStatus, playbackManager } from '@/store/playbackManager';
+import IMdiExclamation from 'virtual:icons/mdi/exclamation';
 import IMdiPauseCircleOutline from 'virtual:icons/mdi/pause-circle-outline';
 import IMdiPlayCircleOutline from 'virtual:icons/mdi/play-circle-outline';
-import IMdiExclamation from 'virtual:icons/mdi/exclamation';
-import { playbackManagerStore } from '@/store';
-import { PlaybackStatus } from '@/store/playbackManager';
+import { computed } from 'vue';
 
 defineProps<{ size?: string }>();
-
-const playbackManager = playbackManagerStore();
 
 const playPauseIcon = computed(() => {
   if (playbackManager.isPaused) {
