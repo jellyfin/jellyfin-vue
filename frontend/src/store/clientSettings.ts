@@ -18,7 +18,7 @@ import { computed, nextTick, watch } from 'vue';
  * Casted typings for the CustomPrefs property of DisplayPreferencesDto
  */
 
-interface ClientSettingsState {
+export interface ClientSettingsState {
   darkMode: 'auto' | boolean;
   locale: string;
 }

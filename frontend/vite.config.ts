@@ -69,8 +69,12 @@ export default defineConfig(({ mode }): UserConfig => {
       modulePreload: false,
       reportCompressedSize: false,
       rollupOptions: {
+        input: {
+          splashscreen: 'src/splashscreen.ts',
+          main: 'src/main.ts',
+          index: 'index.html'
+        },
         output: {
-          inlineDynamicImports: true,
           validate: true,
           plugins: [
             mode === 'analyze'
