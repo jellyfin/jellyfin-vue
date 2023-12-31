@@ -70,6 +70,8 @@ export default defineConfig(({ mode }): UserConfig => {
       reportCompressedSize: false,
       rollupOptions: {
         output: {
+          inlineDynamicImports: true,
+          validate: true,
           plugins: [
             mode === 'analyze'
               ?
@@ -81,14 +83,20 @@ export default defineConfig(({ mode }): UserConfig => {
               })
               : undefined
           ],
-          manualChunks(id) {
-            if (
-              id.includes('virtual:locales') ||
-              id.includes('@intlify/unplugin-vue-i18n/messages')
-            ) {
-              return 'localization';
-            }
-          }
+          /**
+           * TODO: Revisit after the following issues are fixed:
+           * - https://github.com/vitejs/vite/issues/5142
+           * - https://github.com/evanw/esbuild/issues/399
+           * - https://github.com/rollup/rollup/issues/3888
+           */
+          // manualChunks(id) {
+          //   if (
+          //     id.includes('virtual:locales') ||
+          //     id.includes('@intlify/unplugin-vue-i18n/messages')
+          //   ) {
+          //     return 'localization';
+          //   }
+          // }
         }
       }
     },
