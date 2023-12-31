@@ -4,14 +4,16 @@
 import { excludedProgressEndpoints, useLoading } from '@/composables/use-loading';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { i18n } from '@/plugins/i18n';
-import { items } from '@/store/items';
-import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
+/*
+ * Import { items } from '@/store/items';
+ * import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
+ */
 import axios, {
   AxiosError,
   AxiosResponse,
   InternalAxiosRequestConfig
 } from 'axios';
-import remote from '../auth';
+import auth from '../auth';
 
 class JellyfinInterceptors {
   public startLoadInterceptor(
@@ -48,30 +50,34 @@ class JellyfinInterceptors {
    * Intercepts each request that has BaseItemDto, adding the objects to the item store, so they can
    * be reactive and updated using the WebSocket connection
    */
-  public reactiveItemsInterceptor(response: AxiosResponse): AxiosResponse {
-    const data = response.data;
+  /*
+   * Public reactiveItemsInterceptor(response: AxiosResponse): AxiosResponse {
+   *   const data = response.data;
+   */
 
-    if (data) {
-      if (data.Items && Array.isArray(data.Items)) {
-        /*
-         * TODO: Implement a proper check for reponses that are BaseItemDto.
-         * This currently will try to cache the values for all response types.
-         * The likelyhood of an id cache collision is low but this is caching a lot
-         * in memory currently.
-         */
-        response.data.Items = (data.Items as BaseItemDto[]).map((i) =>
-          items.add(i)
-        );
-      } else if (
-        remote.currentUserId &&
-        response.config.url?.includes(`/Users/${remote.currentUserId}/Items/`)
-      ) {
-        response.data = items.add(data);
-      }
-    }
+  //   If (data) {
+  //     If (data.Items && Array.isArray(data.Items)) {
+  //       /*
+  //        * TODO: Implement a proper check for reponses that are BaseItemDto.
+  //        * This currently will try to cache the values for all response types.
+  //        * The likelyhood of an id cache collision is low but this is caching a lot
+  //        * In memory currently.
+  //        */
+  //       Response.data.Items = (data.Items as BaseItemDto[]).map((i) =>
+  //         Items.add(i)
+  //       );
+  //     } else if (
+  //       auth.currentUserId &&
+  //       Response.config.url?.includes(`/Users/${auth.currentUserId}/Items/`)
+  //     ) {
+  //       Response.data = items.add(data);
+  //     }
+  //   }
 
-    return response;
-  }
+  /*
+   *   Return response;
+   * }
+   */
 
   /**
    * Intercepts 401 (Unathorized) error code and logs out the user inmmediately,
@@ -80,10 +86,10 @@ class JellyfinInterceptors {
   public async logoutInterceptor(error: AxiosError): Promise<void> {
     if (
       error.response?.status === 401 &&
-      remote.currentUser &&
+      auth.currentUser &&
       !error.config?.url?.includes('/Sessions/Logout')
     ) {
-      await remote.logoutCurrentUser(true);
+      await auth.logoutCurrentUser(true);
       useSnackbar(i18n.t('kickedOut'), 'error');
     }
 
@@ -97,7 +103,7 @@ class JellyfinInterceptors {
     error: AxiosError
   ): Promise<void> {
     if (error.code === 'ERR_NETWORK') {
-      await remote.logoutCurrentUser(true);
+      await auth.logoutCurrentUser(true);
       useSnackbar(i18n.t('serverNotFound'), 'error');
     }
 
@@ -117,7 +123,7 @@ class RemotePluginAxios {
 
   public constructor() {
     this.setLoadInterceptor();
-    this.setReactiveItemsInterceptor();
+    // This.setReactiveItemsInterceptor();
     this.setLogoutInterceptor();
     this.setServerUnreachableInterceptor();
   }
@@ -142,11 +148,13 @@ class RemotePluginAxios {
     this._stopLoadInterceptor = -1;
   }
 
-  public setReactiveItemsInterceptor(): void {
-    this._reactiveInterceptor = this.instance.interceptors.response.use(
-      this._interceptors.reactiveItemsInterceptor
-    );
-  }
+  /*
+   * Public setReactiveItemsInterceptor(): void {
+   *   this._reactiveInterceptor = this.instance.interceptors.response.use(
+   *     this._interceptors.reactiveItemsInterceptor
+   *   );
+   * }
+   */
 
   public removeReactiveItemsInterceptor(): void {
     this.instance.interceptors.response.eject(this._reactiveInterceptor);
