@@ -31,11 +31,11 @@ import { useSnackbar } from '@/composables/use-snackbar';
 import { i18n } from '@/plugins/i18n';
 import { remote } from '@/plugins/remote';
 import { router } from '@/plugins/router';
-import { playbackGuard } from '@/plugins/router/middlewares/playback';
 import { getImageInfo } from '@/utils/images';
 import { getItemRuntime } from '@/utils/items';
 import playbackProfile from '@/utils/playback-profiles';
 import { msToTicks } from '@/utils/time';
+import { RouteLocationNormalized, RouteLocationRaw } from 'vue-router/auto';
 import { mediaControls, now as reactiveDate } from '.';
 import { items } from './items';
 
@@ -1336,9 +1336,17 @@ class PlaybackManagerStore {
     );
 
     /**
-     * Redirects the user out of a playback page if no playback is in progress
+     * Validates that no playback is happening when accesing a route
      */
-    router.beforeEach(playbackGuard);
+    router.beforeEach((
+      to: RouteLocationNormalized
+    ): boolean | RouteLocationRaw => {
+      if (to.path.includes('playback') && isNil(playbackManager.currentItem)) {
+        return { path: '/', replace: true };
+      }
+
+      return true;
+    });
   }
 }
 
