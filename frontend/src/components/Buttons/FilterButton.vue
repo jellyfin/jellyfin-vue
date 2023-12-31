@@ -168,11 +168,12 @@
 </template>
 
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n';
-import { computed, ref, watch } from 'vue';
+import { useSnackbar } from '@/composables/use-snackbar';
+import { remote } from '@/plugins/remote';
 import { BaseItemDto, ItemFilter } from '@jellyfin/sdk/lib/generated-client';
 import { getFilterApi } from '@jellyfin/sdk/lib/utils/api/filter-api';
-import { useRemote, useSnackbar } from '@/composables';
+import { computed, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 export type FeatureFilters =
   | 'HasSubtitles'
@@ -201,7 +202,6 @@ const emit = defineEmits<{
   change: [filters: Filters];
 }>();
 
-const remote = useRemote();
 const { t } = useI18n();
 
 const selectedFeatureFilters = ref<FeatureFilters[]>([]);

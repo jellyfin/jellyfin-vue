@@ -1,4 +1,8 @@
-import { useRouter, useSnackbar, usei18n } from '@/composables';
+import { useSnackbar } from '@/composables/use-snackbar';
+import { i18n } from '@/plugins/i18n';
+import { router } from '@/plugins/router';
+import { adminGuard } from '@/plugins/router/middlewares/admin-pages';
+import { loginGuard } from '@/plugins/router/middlewares/login';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
 import {
   API_VERSION,
@@ -11,6 +15,7 @@ import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
 import { useStorage } from '@vueuse/core';
 import { AxiosError } from 'axios';
 import { isNil, merge } from 'lodash-es';
+import { watch } from 'vue';
 import SDK, { useOneTimeAPI } from '../sdk/sdk-utils';
 import type { AuthState, ServerInfo } from './types';
 
@@ -118,8 +123,7 @@ class RemotePluginAuth {
     serverUrl: string,
     isDefault = false
   ): Promise<void> {
-    const { t } = usei18n();
-    const router = useRouter();
+    const { t } = i18n;
 
     serverUrl = serverUrl.replace(/\/$/, '').trim();
 
@@ -205,7 +209,7 @@ class RemotePluginAuth {
       }
     } catch (error: unknown) {
       if (isAxiosError(error)) {
-        const { t } = usei18n();
+        const { t } = i18n;
         let errorMessage = t('unexpectedError');
 
         if (!error.response) {
@@ -320,6 +324,44 @@ class RemotePluginAuth {
 
   public constructor() {
     window.setTimeout(async () => await this.refreshCurrentUserInfo());
+    router.beforeEach(loginGuard);
+    router.beforeEach(adminGuard);
+
+    /**
+     * Re-run the middleware pipeline when the user logs out
+     */
+    watch(
+      [
+        (): typeof this.currentUser => this.currentUser,
+        (): typeof this.servers => this.servers
+      ],
+      async () => {
+        if (!this.currentUser && this.servers.length <= 0) {
+          /**
+           * We run the redirect to /server/add as it's the first page in the login flow
+           *
+           * In case the whole localStorage is gone at runtime, if we're at the login
+           * page, redirecting to /server/login wouldn't work, as we're in that same page.
+           * /server/add doesn't depend on the state of localStorage, so it's always safe to
+           * redirect there and leave the middleware take care of the final destination
+           * (when servers are already available, for example)
+           */
+          await router.replace('/server/add');
+        } else if (
+          !this.currentUser &&
+          this.servers.length > 0 &&
+            this.currentServer
+        ) {
+          await router.replace('/server/login');
+        } else if (
+          !this.currentUser &&
+          this.servers.length > 0 &&
+            !this.currentServer
+        ) {
+          await router.replace('/server/select');
+        }
+      }
+    );
   }
 }
 

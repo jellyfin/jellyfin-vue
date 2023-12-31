@@ -21,7 +21,8 @@
 </template>
 
 <script setup lang="ts">
-import { useRemote, useSnackbar } from '@/composables';
+import { useSnackbar } from '@/composables/use-snackbar';
+import { remote } from '@/plugins/remote';
 import { SomeItemSelectedRule } from '@/utils/validation';
 import {
   LocalizationOption,
@@ -36,7 +37,6 @@ const emit = defineEmits<{
   'step-complete': [];
 }>();
 
-const remote = useRemote();
 const { locale, t } = useI18n();
 
 const uiCulture = ref('en-US');

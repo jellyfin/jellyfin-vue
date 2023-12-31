@@ -181,21 +181,20 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router/auto';
+import { remote } from '@/plugins/remote';
+import { sanitizeHtml } from '@/utils/html';
+import { getBlurhash } from '@/utils/images';
+import { getItemDetailsLink } from '@/utils/items';
 import {
   BaseItemDto,
   BaseItemPerson,
   ImageType
 } from '@jellyfin/sdk/lib/generated-client';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
-import { getBlurhash } from '@/utils/images';
-import { getItemDetailsLink } from '@/utils/items';
-import { sanitizeHtml } from '@/utils/html';
-import { useRemote } from '@/composables';
+import { computed, onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router/auto';
 
 const route = useRoute<'/series/[itemId]'>();
-const remote = useRemote();
 
 const item = ref<BaseItemDto>({});
 

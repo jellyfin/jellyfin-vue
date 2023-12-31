@@ -124,7 +124,7 @@
 
 <script setup lang="ts">
 import { version as clientVersion } from '@/../package.json';
-import { useRemote } from '@/composables';
+import { remote } from '@/plugins/remote';
 import { SystemInfo } from '@jellyfin/sdk/lib/generated-client';
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
 import { isEmpty } from 'lodash-es';
@@ -153,7 +153,6 @@ import { RouteLocationRaw, useRoute } from 'vue-router/auto';
 
 const { t } = useI18n();
 const route = useRoute();
-const remote = useRemote();
 
 interface MenuOptions {
   icon: Component;

@@ -8,12 +8,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { remote } from '@/plugins/remote';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import IMdiHeart from 'virtual:icons/mdi/heart';
 import IMdiHeartOutline from 'virtual:icons/mdi/heart-outline';
-import { useRemote } from '@/composables';
+import { computed, ref } from 'vue';
 
 const props = withDefaults(
   defineProps<{ item: BaseItemDto; size?: string }>(),
@@ -21,7 +21,6 @@ const props = withDefaults(
     size: 'small'
   }
 );
-const remote = useRemote();
 const loading = ref(false);
 
 const isFavorite = computed({

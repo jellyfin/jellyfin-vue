@@ -45,7 +45,8 @@
 </template>
 
 <script setup lang="ts">
-import { useRemote, useSnackbar } from '@/composables';
+import { useSnackbar } from '@/composables/use-snackbar';
+import { remote } from '@/plugins/remote';
 import { StartupUserDto } from '@jellyfin/sdk/lib/generated-client';
 import { getStartupApi } from '@jellyfin/sdk/lib/utils/api/startup-api';
 import IconEye from 'virtual:icons/mdi/eye';
@@ -59,7 +60,6 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
-const remote = useRemote();
 
 const valid = ref(false);
 const admin = ref<StartupUserDto>({

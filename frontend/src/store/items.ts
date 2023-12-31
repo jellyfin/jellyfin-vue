@@ -1,4 +1,4 @@
-import { useRemote } from '@/composables';
+import { remote } from '@/plugins/remote';
 import { BaseItemDto, ItemFields } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { reactive, watch } from 'vue';
@@ -148,8 +148,6 @@ class ItemsStore {
   public fetchAndAddCollection = async (
     parentId: string | undefined
   ): Promise<BaseItemDto[] | undefined> => {
-    const remote = useRemote();
-
     if (parentId && !this.getItemById(parentId)) {
       const parentItem = (
         await remote.sdk.newUserApi(getItemsApi).getItems({
@@ -192,8 +190,6 @@ class ItemsStore {
    * @param itemIds - Ids of the items to update
    */
   public updateStoreItems = async (itemIds: string[]): Promise<void> => {
-    const remote = useRemote();
-
     if (itemIds.length > 0) {
       await remote.sdk.newUserApi(getItemsApi).getItems({
         userId: remote.auth.currentUserId,
@@ -208,8 +204,6 @@ class ItemsStore {
   };
 
   public constructor() {
-    const remote = useRemote();
-
     watch(
       () => remote.socket.message,
       async () => {

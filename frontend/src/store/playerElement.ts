@@ -4,7 +4,8 @@
  * In the other part, playbackManager is suited to handle the playback state in
  * an agnostic way, regardless of where the media is being played (remotely or locally)
  */
-import { useRemote, useRouter } from '@/composables';
+import { remote } from '@/plugins/remote';
+import { router } from '@/plugins/router';
 import { mediaElementRef } from '@/store';
 import JASSUB from 'jassub';
 import jassubDefaultFont from 'jassub/dist/default.woff2?url';
@@ -71,15 +72,13 @@ class PlayerElementStore {
   }
 
   public get isFullscreenVideoPlayer(): boolean {
-    return useRouter().currentRoute.value.fullPath === fullscreenVideoRoute;
+    return router.currentRoute.value.fullPath === fullscreenVideoRoute;
   }
 
   /**
    * == ACTIONS ==
    */
   public toggleFullscreenVideoPlayer = async (): Promise<void> => {
-    const router = useRouter();
-
     if (this.isFullscreenVideoPlayer) {
       router.back();
     } else {
@@ -148,7 +147,6 @@ class PlayerElementStore {
    * If embedded, a new transcode is automatically fetched from the playbackManager watchers.
    */
   public applyCurrentSubtitle = async (): Promise<void> => {
-    const remote = useRemote();
     const serverAddress = remote.sdk.api?.basePath;
     /**
      * Finding (if it exists) the VTT or SSA track associated to the newly picked subtitle
@@ -205,8 +203,6 @@ class PlayerElementStore {
   };
 
   public constructor() {
-    const remote = useRemote();
-
     /**
      * * Move user to the fullscreen page when starting video playback by default
      * * Move user out of the fullscreen pages when playback is over
@@ -214,7 +210,6 @@ class PlayerElementStore {
     watch(
       () => playbackManager.currentItem,
       async (newValue, oldValue) => {
-        const router = useRouter();
         const currentFullPath = router.currentRoute.value.fullPath;
 
         if (

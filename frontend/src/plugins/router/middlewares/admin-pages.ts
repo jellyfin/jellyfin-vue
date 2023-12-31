@@ -1,18 +1,17 @@
-import { useRemote, useSnackbar, usei18n } from '@/composables';
+import { useSnackbar } from '@/composables/use-snackbar';
+import { i18n } from '@/plugins/i18n';
+import { remote } from '@/plugins/remote';
 import { RouteLocationNormalized, RouteLocationRaw } from 'vue-router/auto';
 
 /**
  * Redirect the user to index page when attempting to access
  * an admin page in settings.
  */
-export default function adminGuard(
+export function adminGuard(
   to: RouteLocationNormalized
 ): boolean | RouteLocationRaw {
-  const remote = useRemote();
-  const { t } = usei18n();
-
   if (to.meta.admin && !remote.auth.currentUser?.Policy?.IsAdministrator) {
-    useSnackbar(t('unauthorized'), 'error');
+    useSnackbar(i18n.t('unauthorized'), 'error');
 
     return { path: '/', replace: true };
   }

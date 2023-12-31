@@ -54,7 +54,9 @@
 </template>
 
 <script lang="ts">
-import { useConfirmDialog, useRemote, useSnackbar } from '@/composables';
+import { useConfirmDialog } from '@/composables/use-confirm-dialog';
+import { useSnackbar } from '@/composables/use-snackbar';
+import { remote } from '@/plugins/remote';
 import { playbackManager } from '@/store/playbackManager';
 import { taskManager } from '@/store/taskManager';
 import {
@@ -122,7 +124,6 @@ const menuProps = withDefaults(
 );
 const { t } = useI18n();
 const instanceId = v4();
-const remote = useRemote();
 const router = useRouter();
 const route = useRoute();
 
@@ -444,7 +445,6 @@ function getPlaybackOptions(): MenuOption[] {
  */
 function getCopyOptions(): MenuOption[] {
   const copyActions: MenuOption[] = [];
-  const remote = useRemote();
 
   if (remote.auth.currentUser?.Policy?.EnableContentDownloading) {
     copyActions.push(copyDownloadURLAction);

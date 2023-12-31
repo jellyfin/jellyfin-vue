@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { useResponsiveClasses } from '@/composables';
+import { useResponsiveClasses } from '@/composables/use-responsive-classes';
 import { computed } from 'vue';
 import { useDisplay } from 'vuetify';
 

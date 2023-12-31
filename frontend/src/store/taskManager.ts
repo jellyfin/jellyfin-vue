@@ -1,4 +1,4 @@
-import { useRemote } from '@/composables';
+import { remote } from '@/plugins/remote';
 import { items } from '@/store/items';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
 import { RemovableRef, useStorage } from '@vueuse/core';
@@ -126,8 +126,6 @@ class TaskManagerStore {
   };
 
   public constructor() {
-    const remote = useRemote();
-
     /**
      * Handle refresh progress update for library items
      */

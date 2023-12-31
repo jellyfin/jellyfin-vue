@@ -297,7 +297,7 @@
 </template>
 
 <script setup lang="ts">
-import { useRemote } from '@/composables';
+import { remote } from '@/plugins/remote';
 import { getItemizedSelect } from '@/utils/forms';
 import { sanitizeHtml } from '@/utils/html';
 import { getBlurhash } from '@/utils/images';
@@ -312,7 +312,6 @@ import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router/auto';
 
 const route = useRoute<'/genre/[itemId]'>();
-const remote = useRemote();
 
 const { itemId } = route.params;
 

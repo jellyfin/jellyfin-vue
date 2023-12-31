@@ -60,14 +60,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import { useRoute } from 'vue-router/auto';
-import { SwiperSlide } from 'swiper/vue';
-import { BaseItemDto, ImageType } from '@jellyfin/sdk/lib/generated-client';
-import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
+import { useResponsiveClasses } from '@/composables/use-responsive-classes';
+import { remote } from '@/plugins/remote';
 import { getBlurhash } from '@/utils/images';
 import { getItemDetailsLink } from '@/utils/items';
-import { useRemote, useResponsiveClasses } from '@/composables';
+import { BaseItemDto, ImageType } from '@jellyfin/sdk/lib/generated-client';
+import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
+import { SwiperSlide } from 'swiper/vue';
+import { ref, watch } from 'vue';
+import { useRoute } from 'vue-router/auto';
 
 const props = withDefaults(
   defineProps<{
@@ -79,7 +80,6 @@ const props = withDefaults(
 
 const relatedItems = ref<{ [k: number]: BaseItemDto }>({});
 const route = useRoute();
-const remote = useRemote();
 
 /**
  * Get the related item passed from the parent component

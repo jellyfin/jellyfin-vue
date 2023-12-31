@@ -18,9 +18,9 @@
 </template>
 
 <script setup lang="ts">
+import { remote } from '@/plugins/remote';
 import { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { computed } from 'vue';
-import { useRemote } from '@/composables';
 
 const props = withDefaults(
   defineProps<{
@@ -31,8 +31,6 @@ const props = withDefaults(
   }>(),
   { size: 64, quality: 90, rounded: false }
 );
-
-const remote = useRemote();
 
 const url = computed(() => {
   return props.user?.Id && props.user?.PrimaryImageTag && remote.sdk.api?.basePath

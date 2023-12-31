@@ -89,7 +89,9 @@
 </template>
 
 <script setup lang="ts">
-import { useConfirmDialog, useRemote, useSnackbar } from '@/composables';
+import { useConfirmDialog } from '@/composables/use-confirm-dialog';
+import { useSnackbar } from '@/composables/use-snackbar';
+import { remote } from '@/plugins/remote';
 import {
   BaseItemDto,
   RemoteSearchResult
@@ -120,7 +122,6 @@ function close (): void {
 }
 
 const { t } = useI18n();
-const remote = useRemote();
 
 const availableProviders = (
   await remote.sdk.newUserApi(getItemLookupApi).getExternalIdInfos({
@@ -230,7 +231,6 @@ async function getItemRemoteSearch(
     ProviderIds: { [key: string]: string };
   }
 
-  const remote = useRemote();
   const searcher = remote.sdk.newUserApi(getItemLookupApi);
   const itemId = item.Id;
 

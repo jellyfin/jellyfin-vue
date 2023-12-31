@@ -1,6 +1,8 @@
 /**
  * Item and playback helpers
  */
+import { remote } from '@/plugins/remote';
+import { router } from '@/plugins/router';
 import {
   BaseItemDto,
   BaseItemKind,
@@ -8,30 +10,28 @@ import {
   ItemFields,
   MediaStream
 } from '@jellyfin/sdk/lib/generated-client';
-import { useRouter } from 'vue-router/auto';
-import { isNil } from 'lodash-es';
-import type { RouteNamedMap } from 'vue-router/auto/routes';
-import IMdiMovie from 'virtual:icons/mdi/movie';
-import IMdiMusic from 'virtual:icons/mdi/music';
-import IMdiImage from 'virtual:icons/mdi/image';
-import IMdiYoutubeTV from 'virtual:icons/mdi/youtube-tv';
-import IMdiTelevisionClassic from 'virtual:icons/mdi/television-classic';
-import IMdiImageMultiple from 'virtual:icons/mdi/image-multiple';
-import IMdiMusicBox from 'virtual:icons/mdi/music-box';
-import IMdiBookOpenPageVariant from 'virtual:icons/mdi/book-open-page-variant';
-import IMdiYoutube from 'virtual:icons/mdi/youtube';
-import IMdiPlaylistPlay from 'virtual:icons/mdi/playlist-play';
-import IMdiFolder from 'virtual:icons/mdi/folder';
-import IMdiAccount from 'virtual:icons/mdi/account';
-import IMdiMusicNote from 'virtual:icons/mdi/music-note';
-import IMdiBookMusic from 'virtual:icons/mdi/book-music';
-import IMdiFolderMultiple from 'virtual:icons/mdi/folder-multiple';
-import IMdiFilmstrip from 'virtual:icons/mdi/filmstrip';
-import IMdiAlbum from 'virtual:icons/mdi/album';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
+import { isNil } from 'lodash-es';
+import IMdiAccount from 'virtual:icons/mdi/account';
+import IMdiAlbum from 'virtual:icons/mdi/album';
+import IMdiBookMusic from 'virtual:icons/mdi/book-music';
+import IMdiBookOpenPageVariant from 'virtual:icons/mdi/book-open-page-variant';
+import IMdiFilmstrip from 'virtual:icons/mdi/filmstrip';
+import IMdiFolder from 'virtual:icons/mdi/folder';
+import IMdiFolderMultiple from 'virtual:icons/mdi/folder-multiple';
+import IMdiImage from 'virtual:icons/mdi/image';
+import IMdiImageMultiple from 'virtual:icons/mdi/image-multiple';
+import IMdiMovie from 'virtual:icons/mdi/movie';
+import IMdiMusic from 'virtual:icons/mdi/music';
+import IMdiMusicBox from 'virtual:icons/mdi/music-box';
+import IMdiMusicNote from 'virtual:icons/mdi/music-note';
+import IMdiPlaylistPlay from 'virtual:icons/mdi/playlist-play';
+import IMdiTelevisionClassic from 'virtual:icons/mdi/television-classic';
+import IMdiYoutube from 'virtual:icons/mdi/youtube';
+import IMdiYoutubeTV from 'virtual:icons/mdi/youtube-tv';
+import type { RouteNamedMap } from 'vue-router/auto/routes';
 import { ticksToMs } from './time';
-import { useRemote } from '@/composables';
 
 /**
  * A list of valid collections that should be treated as folders.
@@ -291,7 +291,6 @@ export function canInstantMix(item: BaseItemDto): boolean {
  * Check if an item's metadata can be refreshed.
  */
 export function canRefreshMetadata(item: BaseItemDto): boolean {
-  const remote = useRemote();
   const invalidRefreshType = ['Timer', 'SeriesTimer', 'Program', 'TvChannel'];
 
   if (item.CollectionType === 'livetv') {
@@ -321,7 +320,6 @@ export function getItemDetailsLink(
   item: BaseItemDto | BaseItemPerson,
   overrideType?: BaseItemKind
 ): string {
-  const router = useRouter();
   const itemId = String(item.Id);
   let routeName: keyof RouteNamedMap;
 
@@ -479,8 +477,6 @@ export function getItemIdFromSourceIndex(
  * @returns - A download object.
  */
 export function getItemDownloadUrl(itemId: string): string | undefined {
-  const remote = useRemote();
-
   const serverAddress = remote.sdk.api?.basePath;
   const userToken = remote.sdk.api?.accessToken;
 
@@ -499,7 +495,6 @@ export function getItemDownloadUrl(itemId: string): string | undefined {
 export async function getItemSeasonDownloadMap(
   seasonId: string
 ): Promise<Map<string, string>> {
-  const remote = useRemote();
   const result = new Map<string, string>();
 
   const episodes =
@@ -532,7 +527,6 @@ export async function getItemSeasonDownloadMap(
 export async function getItemSeriesDownloadMap(
   seriesId: string
 ): Promise<Map<string, string>> {
-  const remote = useRemote();
   let result = new Map<string, string>();
 
   const seasons =

@@ -1,6 +1,6 @@
+import { i18n } from '@/plugins/i18n';
 import * as datefnslocales from 'virtual:locales/date-fns';
 import { computed, ComputedRef } from 'vue';
-import { usei18n } from './use-i18n';
 
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
 
@@ -17,7 +17,6 @@ export function useDateFns<T extends (...a: any[]) => any>(
   ...params: Parameters<T>
 ): ComputedRef<ReturnType<T>> {
   return computed<ReturnType<T>>(() => {
-    const i18n = usei18n();
     /**
      * We need to remove the hyphen of our locale codes, as using named exports with them is not valid JS syntax
      */

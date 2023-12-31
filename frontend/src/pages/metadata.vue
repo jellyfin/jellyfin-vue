@@ -23,10 +23,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
+import { remote } from '@/plugins/remote';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
-import { useRemote } from '@/composables';
+import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
+import { ref } from 'vue';
 
 type ITreeNode = {
   id: string;
@@ -34,7 +34,6 @@ type ITreeNode = {
   children?: ITreeNode[];
 };
 
-const remote = useRemote();
 
 const initialItems = (
   (await remote.sdk.newUserApi(getLibraryApi).getMediaFolders()).data.Items ??

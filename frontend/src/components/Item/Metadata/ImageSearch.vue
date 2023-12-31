@@ -113,7 +113,7 @@
 </template>
 
 <script setup lang="ts">
-import { useRemote } from '@/composables';
+import { remote } from '@/plugins/remote';
 import { getLocaleName } from '@/utils/i18n';
 import { getContainerAspectRatioForImageType } from '@/utils/images';
 import {
@@ -137,7 +137,6 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
-const remote = useRemote();
 
 const providers = ref<ImageProviderInfo[]>([]);
 const type = ref<ImageType>(ImageType.Primary);

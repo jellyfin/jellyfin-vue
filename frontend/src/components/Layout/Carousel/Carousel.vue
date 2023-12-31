@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { useResponsiveClasses } from '@/composables';
+import { useResponsiveClasses } from '@/composables/use-responsive-classes';
 import type SwiperType from 'swiper';
 import 'swiper/css';
 import 'swiper/css/a11y';

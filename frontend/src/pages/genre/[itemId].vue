@@ -62,7 +62,8 @@
 </template>
 
 <script setup lang="ts">
-import { useRemote, useResponsiveClasses } from '@/composables';
+import { useResponsiveClasses } from '@/composables/use-responsive-classes';
+import { remote } from '@/plugins/remote';
 import { items } from '@/store/items';
 import {
   BaseItemDto,
@@ -76,7 +77,6 @@ import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router/auto';
 
 const route = useRoute<'/genre/[itemId]'>();
-const remote = useRemote();
 
 const loading = ref(false);
 const genre = ref<BaseItemDto>({});
