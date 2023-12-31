@@ -90,6 +90,7 @@
         transition: opacity 0.75s linear;
       }
     </style>
+    <script type="module" src="src/splashscreen.ts"></script>
     <script type="module" src="src/main.ts"></script>
     <title>Jellyfin Vue</title>
   </head>
@@ -98,21 +99,5 @@
       <div class="splashLogo"></div>
     </div>
     <div id="app"></div>
-    <!-- Load splashcreen color scheme based on stored settings or user-agent preferences. -->
-    <script>
-      const store = localStorage.getItem('clientSettings') || '{}';
-      const storedMode = JSON.parse(store).darkMode;
-      const matchedDarkColorScheme = window.matchMedia(
-        'prefers-color-scheme: dark'
-      ).matches;
-      const useDarkMode =
-        typeof storedMode === 'boolean' ? storedMode : matchedDarkColorScheme;
-      const classToApply = useDarkMode ? 'dark' : 'light';
-      const element = document.querySelector('.splashBackground');
-
-      if (element) {
-        element.classList.add(classToApply);
-      }
-    </script>
   </body>
 </html>
