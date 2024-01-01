@@ -25,7 +25,7 @@ export function useDateFns<T extends (...a: any[]) => any>(
     ''
   ) as keyof typeof datefnslocales;
 
-  if (typeof params.at(-1) === 'object') {
+  if (typeof params.at(-1) === 'object' && !(params.at(-1) instanceof Date)) {
     params.at(-1).locale = datefnslocales[importCode];
   } else {
     params.push({ locale: datefnslocales[importCode] });
