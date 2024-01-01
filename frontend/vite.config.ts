@@ -14,7 +14,7 @@ import {
 import Components from 'unplugin-vue-components/vite';
 import VueRouter from 'unplugin-vue-router/vite';
 import { defineConfig, UserConfig } from 'vite';
-import { localeFilesFolder, srcRoot } from './scripts/paths';
+import { entrypoints, localeFilesFolder, srcRoot } from './scripts/paths';
 import virtualModules from './scripts/virtual-modules';
 
 export default defineConfig(({ mode }): UserConfig => {
@@ -70,9 +70,9 @@ export default defineConfig(({ mode }): UserConfig => {
       reportCompressedSize: false,
       rollupOptions: {
         input: {
-          splashscreen: 'src/splashscreen.ts',
-          main: 'src/main.ts',
-          index: 'index.html'
+          splashscreen: entrypoints.splashscreen,
+          main: entrypoints.main,
+          index: entrypoints.index
         },
         output: {
           validate: true,
