@@ -13,7 +13,7 @@ import {
   intervalToDuration
 } from 'date-fns';
 import { sumBy } from 'lodash-es';
-import { ComputedRef, computed, isRef } from 'vue';
+import { ComputedRef, computed, toValue } from 'vue';
 
 /**
  * Formats Time
@@ -77,7 +77,7 @@ export function formatTime(seconds: number): string {
  */
 function getEndsAtDate(ticks: MaybeRef<number>): ComputedRef<Date> {
   return computed(() => {
-    const ms = ticksToMs(isRef(ticks) ? ticks.value : ticks);
+    const ms = ticksToMs(toValue(ticks));
 
     return addMilliseconds(now.value, ms);
   });
@@ -110,9 +110,7 @@ export function getEndsAtTime(ticks: MaybeRef<number>): ComputedRef<string> {
  */
 export function getRuntimeTime(ticks: MaybeRef<number>): ComputedRef<string> {
   return computed(() => {
-    ticks = isRef(ticks) ? ticks.value : ticks;
-
-    const ms = ticksToMs(ticks);
+    const ms = ticksToMs(toValue(ticks));
 
     return useDateFns(
       formatDuration,
@@ -133,9 +131,7 @@ export function getRuntimeTime(ticks: MaybeRef<number>): ComputedRef<string> {
 export function getTotalEndsAtTime(
   items: MaybeRef<BaseItemDto[]>
 ): ComputedRef<string> {
-  return computed(() => {
-    const ticks = sumBy(isRef(items) ? items.value : items, 'RunTimeTicks');
+  const aggregatedTicks = computed(() => sumBy(toValue(items), 'RunTimeTicks'));
 
-    return getEndsAtTime(ticks).value;
-  });
+  return getEndsAtTime(aggregatedTicks);
 }
