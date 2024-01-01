@@ -94,7 +94,7 @@
   "deviceName": "ڈیوائس کا نام",
   "devices": "ڈیوائسز",
   "devicesSettingsDescription": "اپنے سرور سے منسلک آلات کو دیکھیں اور ان کو منظم کریں",
-  "dimensions": "{چوڑائی}✕{لمبائی}",
+  "dimensions": "{height}✕{width}",
   "directing": "ہدایت",
   "director": "ڈائریکٹر",
   "disabled": "غیر فعال",
