@@ -39,7 +39,7 @@
                   class="pa-0 fixed-width">
                   {{
                     $t('lastActivityDate', {
-                      value: useDateFns(formatDistanceToNow, new Date(user.LastActivityDate)).value
+                      value: useDateFns(formatDistanceToNow, new Date(user.LastActivityDate))
                     })
                   }}
                 </VCardSubtitle>

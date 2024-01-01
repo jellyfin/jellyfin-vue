@@ -48,7 +48,7 @@
                       formatRelative,
                       parseJSON(device[value] ?? 'unknown'),
                       new Date()
-                    ).value
+                    )
                 }}
               </td>
               <td>

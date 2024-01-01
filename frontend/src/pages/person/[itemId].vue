@@ -194,13 +194,13 @@ const activeTab = ref(4);
 
 const birthDate = computed(() =>
   item.value.PremiereDate
-    ? useDateFns(format, new Date(item.value.PremiereDate), 'PPP').value
+    ? useDateFns(format, new Date(item.value.PremiereDate), 'PPP')
     : undefined
 );
 
 const deathDate = computed(() =>
   item.value.EndDate
-    ? useDateFns(format, new Date(item.value.EndDate), 'PPP').value
+    ? useDateFns(format, new Date(item.value.EndDate), 'PPP')
     : undefined
 );
 

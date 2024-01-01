@@ -47,7 +47,7 @@
                       formatRelative,
                       parseJSON(apiKey[value] ?? 'unknown'),
                       new Date()
-                    ).value
+                    )
                 }}
               </td>
               <td>
