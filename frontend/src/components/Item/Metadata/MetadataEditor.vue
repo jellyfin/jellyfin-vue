@@ -276,20 +276,12 @@ const tagsModel = computed({
   }
 });
 
-/**
- * TODO: These calls to useDateFns can cause memory leaks because a computed effect is instantiated
- * inside another computed effect.
- *
- * Refactor this so the v-model is effectively in use with computed getters/setters and metadata.value is always defined.
- */
-
 const premiereDate = computed(() => {
   if (!metadata.value?.PremiereDate) {
     return '';
   }
 
-  return useDateFns(format, new Date(metadata.value.PremiereDate), 'yyyy-MM-dd')
-    .value;
+  return useDateFns(format, new Date(metadata.value.PremiereDate), 'yyyy-MM-dd');
 });
 
 const dateCreated = computed(() => {
@@ -297,8 +289,7 @@ const dateCreated = computed(() => {
     return '';
   }
 
-  return useDateFns(format, new Date(metadata.value.DateCreated), 'yyyy-MM-dd')
-    .value;
+  return useDateFns(format, new Date(metadata.value.DateCreated), 'yyyy-MM-dd');
 });
 
 const tagLine = computed({

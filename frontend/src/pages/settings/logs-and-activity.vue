@@ -182,17 +182,17 @@ function getIconFromActivityType(
 /**
  * Format activitydates
  */
-function getFormattedActivityDate(date: string | undefined): string {
+function getFormattedActivityDate(date: string | undefined): string | undefined {
   return date
-    ? useDateFns(formatRelative, parseJSON(date), new Date()).value
-    : '';
+    ? useDateFns(formatRelative, parseJSON(date), new Date())
+    : undefined;
 }
 
 /**
  * Format log dates
  */
-function getFormattedLogDate(date: string | undefined): string {
-  return date ? useDateFns(format, parseJSON(date), 'Ppp').value : '';
+function getFormattedLogDate(date: string | undefined): string | undefined {
+  return date ? useDateFns(format, parseJSON(date), 'Ppp') : undefined;
 }
 
 /**

@@ -91,11 +91,13 @@ function getEndsAtDate(ticks: MaybeRef<number>): ComputedRef<Date> {
  * @returns The resulting string
  */
 export function getEndsAtTime(ticks: MaybeRef<number>): ComputedRef<string> {
+  const endDate = getEndsAtDate(ticks);
+
   return computed(() => {
-    const form = useDateFns(format, getEndsAtDate(ticks).value, 'p');
+    const form = useDateFns(format, endDate.value, 'p');
 
     return i18n.t('endsAt', {
-      time: form.value
+      time: form
     });
   });
 }
@@ -119,7 +121,7 @@ export function getRuntimeTime(ticks: MaybeRef<number>): ComputedRef<string> {
         format: ['hours', 'minutes']
       }
     );
-  }).value;
+  });
 }
 
 /**
