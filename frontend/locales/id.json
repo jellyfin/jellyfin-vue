@@ -143,7 +143,7 @@
   "language": "Bahasa",
   "languageLocale": "Bahasa dan lokal",
   "lastActive": "Terakhir aktif",
-  "lastActivityDate": "Terakhir terlihat {value} yang lalu",
+  "lastActivityDate": "Terakhir terlihat {value}",
   "latestLibrary": "{libraryName} terbaru",
   "libraries": "Pustaka",
   "librariesSettingsDescription": "Kelola koleksi dan metadata",

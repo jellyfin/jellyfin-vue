@@ -143,7 +143,7 @@
   "language": "Język",
   "languageLocale": "Język i lokalizacja",
   "lastActive": "Ostatnio aktywny",
-  "lastActivityDate": "Ostatnio widziano {value} temu",
+  "lastActivityDate": "Ostatnio widziano {value}",
   "latestLibrary": "Najnowsze {libraryName}",
   "libraries": "Biblioteki",
   "librariesSettingsDescription": "Zarządzaj bibliotekami i ich metadanymi",

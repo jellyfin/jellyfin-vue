@@ -98,7 +98,7 @@
   "series": "Séries",
   "server": "Servidor",
   "serverVersion": "Versão de Servidor",
-  "serverVersionTooLow": "Versão de Servidor tem de ser 10.7.0 ou superior",
+  "serverVersionTooLow": "Versão de Servidor tem de ser {version} ou superior",
   "shows": "Programas",
   "signIn": "Entrar",
   "songs": "Músicas",
