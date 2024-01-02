@@ -235,6 +235,17 @@ module.exports = {
         'jsonc/auto': 'error'
       }
     },
+    /**
+     * See the following:
+     * - https://en.wikipedia.org/wiki/History_of_sentence_spacing#French_and_English_spacing
+     * - https://docs.weblate.org/en/weblate-4.14.1/user/checks.html#check-punctuation-spacing
+     */
+    {
+      files: ['locales/fr.json'],
+      rules: {
+        'no-irregular-whitespace': 'off'
+      }
+    },
     {
       files: ['*.ts', '*.tsx'],
       parser: 'typescript-eslint-parser-for-extra-files',
