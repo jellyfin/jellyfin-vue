@@ -24,7 +24,7 @@
 import { useSnackbar } from '@/composables/use-snackbar';
 import { remote } from '@/plugins/remote';
 import { SomeItemSelectedRule } from '@/utils/validation';
-import {
+import type {
   LocalizationOption,
   StartupConfigurationDto
 } from '@jellyfin/sdk/lib/generated-client';

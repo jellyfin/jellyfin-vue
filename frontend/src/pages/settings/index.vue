@@ -125,7 +125,7 @@
 <script setup lang="ts">
 import { version as clientVersion } from '@/../package.json';
 import { remote } from '@/plugins/remote';
-import { SystemInfo } from '@jellyfin/sdk/lib/generated-client';
+import type { SystemInfo } from '@jellyfin/sdk/lib/generated-client';
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
 import { isEmpty } from 'lodash-es';
 import { commit_hash } from 'virtual:commit';
@@ -147,9 +147,9 @@ import IMdiServer from 'virtual:icons/mdi/server';
 import IMdiSubtitles from 'virtual:icons/mdi/subtitles';
 import IMdiTelevisionClassic from 'virtual:icons/mdi/television-classic';
 import IMdiTextBox from 'virtual:icons/mdi/text-box';
-import { Component, computed } from 'vue';
+import { type Component, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { RouteLocationRaw, useRoute } from 'vue-router/auto';
+import { type RouteLocationRaw, useRoute } from 'vue-router/auto';
 
 const { t } = useI18n();
 const route = useRoute();

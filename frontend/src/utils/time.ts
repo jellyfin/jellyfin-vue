@@ -4,8 +4,8 @@
 import { useDateFns } from '@/composables/use-datefns';
 import { i18n } from '@/plugins/i18n';
 import { now } from '@/store';
-import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { MaybeRef } from '@vueuse/core';
+import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
+import type { MaybeRef } from '@vueuse/core';
 import {
   addMilliseconds,
   format,
@@ -13,7 +13,7 @@ import {
   intervalToDuration
 } from 'date-fns';
 import { sumBy } from 'lodash-es';
-import { ComputedRef, computed, toValue } from 'vue';
+import { type ComputedRef, computed, toValue } from 'vue';
 
 /**
  * Formats Time

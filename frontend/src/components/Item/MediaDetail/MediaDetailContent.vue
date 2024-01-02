@@ -14,7 +14,7 @@
  * The used keys are directly taken from Jellyfin Web and they are difficult to understand.
  */
 import { computed } from 'vue';
-import {
+import type {
   MediaStream,
   TransportStreamTimestamp
 } from '@jellyfin/sdk/lib/generated-client';

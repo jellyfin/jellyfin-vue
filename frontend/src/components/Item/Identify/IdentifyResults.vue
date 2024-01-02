@@ -48,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import {
+import type {
   BaseItemKind,
   RemoteSearchResult
 } from '@jellyfin/sdk/lib/generated-client';

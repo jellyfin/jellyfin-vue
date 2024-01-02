@@ -11,7 +11,7 @@
 import { useSnackbar } from '@/composables/use-snackbar';
 import { remote } from '@/plugins/remote';
 import { canMarkWatched } from '@/utils/items';
-import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
+import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getPlaystateApi } from '@jellyfin/sdk/lib/utils/api/playstate-api';
 import IMdiCheck from 'virtual:icons/mdi/check';
 import { ref } from 'vue';

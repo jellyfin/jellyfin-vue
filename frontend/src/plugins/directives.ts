@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import type Vue from 'vue';
 
 /**
  * Toggles the CSS 'visibility' property of an element.

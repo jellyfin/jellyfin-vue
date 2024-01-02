@@ -47,7 +47,7 @@
 <script setup lang="ts">
 import { useSnackbar } from '@/composables/use-snackbar';
 import { remote } from '@/plugins/remote';
-import { StartupUserDto } from '@jellyfin/sdk/lib/generated-client';
+import type { StartupUserDto } from '@jellyfin/sdk/lib/generated-client';
 import { getStartupApi } from '@jellyfin/sdk/lib/utils/api/startup-api';
 import IconEye from 'virtual:icons/mdi/eye';
 import IconEyeOff from 'virtual:icons/mdi/eye-off';

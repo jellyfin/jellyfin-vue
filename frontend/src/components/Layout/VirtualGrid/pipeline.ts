@@ -1,5 +1,5 @@
-import { MaybeElementRef, unrefElement } from '@vueuse/core';
-import { computed, ComputedRef } from 'vue';
+import { type MaybeElementRef, unrefElement } from '@vueuse/core';
+import { computed, type ComputedRef } from 'vue';
 
 /**
  * == TYPES AND INTERFACES ==

@@ -64,7 +64,7 @@ import { useResponsiveClasses } from '@/composables/use-responsive-classes';
 import { remote } from '@/plugins/remote';
 import { getBlurhash } from '@/utils/images';
 import { getItemDetailsLink } from '@/utils/items';
-import { BaseItemDto, ImageType } from '@jellyfin/sdk/lib/generated-client';
+import { type BaseItemDto, ImageType } from '@jellyfin/sdk/lib/generated-client';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { SwiperSlide } from 'swiper/vue';
 import { ref, watch } from 'vue';

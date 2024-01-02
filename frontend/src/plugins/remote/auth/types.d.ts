@@ -1,4 +1,4 @@
-import { PublicSystemInfo, UserDto } from '@jellyfin/sdk/lib/generated-client';
+import type { PublicSystemInfo, UserDto } from '@jellyfin/sdk/lib/generated-client';
 
 export interface ServerInfo extends Omit<PublicSystemInfo, 'LocalAddress'> {
   PublicAddress: string;

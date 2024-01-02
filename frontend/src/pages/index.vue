@@ -20,8 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import type { HomeSection } from '@/store/userLibraries';
-import { userLibraries } from '@/store/userLibraries';
+import { userLibraries, type HomeSection } from '@/store/userLibraries';
 import { CardShapes, getShapeFromCollectionType } from '@/utils/items';
 import { computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';

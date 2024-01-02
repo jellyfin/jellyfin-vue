@@ -76,7 +76,7 @@ import type { Filters } from '@/components/Buttons/FilterButton.vue';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { remote } from '@/plugins/remote';
 import {
-  BaseItemDto,
+  type BaseItemDto,
   BaseItemKind,
   ItemFields
 } from '@jellyfin/sdk/lib/generated-client';

@@ -66,8 +66,8 @@ import { useResponsiveClasses } from '@/composables/use-responsive-classes';
 import { remote } from '@/plugins/remote';
 import { items } from '@/store/items';
 import {
-  BaseItemDto,
-  BaseItemKind,
+  type BaseItemDto,
+  type BaseItemKind,
   ItemFields,
   SortOrder
 } from '@jellyfin/sdk/lib/generated-client';

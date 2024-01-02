@@ -11,10 +11,10 @@ import {
   isWebOS
 } from '@/utils/browser-detection';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
-import { Api, Jellyfin } from '@jellyfin/sdk';
-import { RemovableRef, useStorage } from '@vueuse/core';
+import { type Api, Jellyfin } from '@jellyfin/sdk';
+import { type RemovableRef, useStorage } from '@vueuse/core';
 import { v4 } from 'uuid';
-import { DeviceState } from './types';
+import type { DeviceState } from './types';
 
 const state: RemovableRef<DeviceState> = useStorage(
   'deviceProfile',

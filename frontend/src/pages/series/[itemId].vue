@@ -186,8 +186,8 @@ import { sanitizeHtml } from '@/utils/html';
 import { getBlurhash } from '@/utils/images';
 import { getItemDetailsLink } from '@/utils/items';
 import {
-  BaseItemDto,
-  BaseItemPerson,
+  type BaseItemDto,
+  type BaseItemPerson,
   ImageType
 } from '@jellyfin/sdk/lib/generated-client';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';

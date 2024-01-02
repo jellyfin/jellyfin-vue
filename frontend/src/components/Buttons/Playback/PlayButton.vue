@@ -43,7 +43,7 @@
 import { playbackManager } from '@/store/playbackManager';
 import { canPlay, canResume } from '@/utils/items';
 import { ticksToMs } from '@/utils/time';
-import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
+import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { ref } from 'vue';
 
 const props = withDefaults(

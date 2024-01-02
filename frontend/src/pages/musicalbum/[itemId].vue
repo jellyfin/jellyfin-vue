@@ -106,7 +106,7 @@
 import { remote } from '@/plugins/remote';
 import { getBlurhash } from '@/utils/images';
 import { getItemDetailsLink } from '@/utils/items';
-import { BaseItemDto, ImageType } from '@jellyfin/sdk/lib/generated-client';
+import { type BaseItemDto, ImageType } from '@jellyfin/sdk/lib/generated-client';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router/auto';

@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { UserDto } from '@jellyfin/sdk/lib/generated-client';
+import type { UserDto } from '@jellyfin/sdk/lib/generated-client';
 
 defineProps<{ user: UserDto }>();
 

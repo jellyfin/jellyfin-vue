@@ -4,7 +4,7 @@
 
 import {
   DlnaProfileType,
-  ResponseProfile
+  type ResponseProfile
 } from '@jellyfin/sdk/lib/generated-client';
 
 /**

@@ -1,6 +1,6 @@
 import * as vuetifyLocales from 'virtual:locales/vuetify';
 import { defaultRtl } from 'virtual:locales/vuetify/rtl';
-import { createVuetify, ThemeDefinition } from 'vuetify';
+import { createVuetify, type ThemeDefinition } from 'vuetify';
 import { md3 } from 'vuetify/blueprints';
 import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
 import 'vuetify/styles';

@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-import { HomeSection, userLibraries } from '@/store/userLibraries';
+import { type HomeSection, userLibraries } from '@/store/userLibraries';
 import { computed } from 'vue';
 
 const props = defineProps<{ section: HomeSection }>();

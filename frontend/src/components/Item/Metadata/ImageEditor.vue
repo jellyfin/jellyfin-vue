@@ -104,8 +104,8 @@ import {
   getImageInfo
 } from '@/utils/images';
 import {
-  BaseItemDto,
-  ImageInfo,
+  type BaseItemDto,
+  type ImageInfo,
   ImageType
 } from '@jellyfin/sdk/lib/generated-client';
 import { getImageApi } from '@jellyfin/sdk/lib/utils/api/image-api';

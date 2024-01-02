@@ -66,7 +66,7 @@
 
 <script setup lang="ts">
 import { useResponsiveClasses } from '@/composables/use-responsive-classes';
-import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
+import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 
 withDefaults(
   defineProps<{

@@ -68,7 +68,7 @@
 <script setup lang="ts">
 import { remote } from '@/plugins/remote';
 import { userLibraries } from '@/store/userLibraries';
-import { UserDto } from '@jellyfin/sdk/lib/generated-client';
+import type { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { isEmpty } from 'lodash-es';
 import IconEye from 'virtual:icons/mdi/eye';
 import IconEyeOff from 'virtual:icons/mdi/eye-off';

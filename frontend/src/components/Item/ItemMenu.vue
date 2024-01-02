@@ -69,7 +69,7 @@ import {
   getItemSeasonDownloadMap,
   getItemSeriesDownloadMap
 } from '@/utils/items';
-import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
+import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { useClipboard, useEventListener } from '@vueuse/core';
 import { v4 } from 'uuid';

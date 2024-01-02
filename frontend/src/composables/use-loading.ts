@@ -1,4 +1,4 @@
-import { computed, ComputedRef, ref } from 'vue';
+import { computed, type ComputedRef, ref } from 'vue';
 
 const requests = ref(0);
 const isLoading = computed(() => requests.value > 0);

@@ -3,10 +3,10 @@
  */
 
 import {
-  CodecProfile,
+  type CodecProfile,
   CodecType,
   ProfileConditionType,
-  ProfileCondition,
+  type ProfileCondition,
   ProfileConditionValue
 } from '@jellyfin/sdk/lib/generated-client';
 import {

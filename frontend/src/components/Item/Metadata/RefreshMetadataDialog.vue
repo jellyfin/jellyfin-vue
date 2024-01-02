@@ -57,7 +57,7 @@
 import { useSnackbar } from '@/composables/use-snackbar';
 import { remote } from '@/plugins/remote';
 import { TaskType, taskManager } from '@/store/taskManager';
-import {
+import type {
   BaseItemDto,
   MetadataRefreshMode
 } from '@jellyfin/sdk/lib/generated-client';

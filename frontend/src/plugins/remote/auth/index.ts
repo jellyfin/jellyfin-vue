@@ -7,14 +7,14 @@ import {
   VersionOutdatedIssue,
   VersionUnsupportedIssue
 } from '@jellyfin/sdk';
-import { UserDto } from '@jellyfin/sdk/lib/generated-client';
+import type { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
 import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
 import { useStorage } from '@vueuse/core';
-import { AxiosError } from 'axios';
+import type { AxiosError } from 'axios';
 import { isNil, merge } from 'lodash-es';
 import { watch } from 'vue';
-import { RouteLocationNormalized, RouteLocationPathRaw, RouteLocationRaw } from 'vue-router/auto';
+import type { RouteLocationNormalized, RouteLocationPathRaw, RouteLocationRaw } from 'vue-router/auto';
 import SDK, { useOneTimeAPI } from '../sdk/sdk-utils';
 import type { AuthState, ServerInfo } from './types';
 

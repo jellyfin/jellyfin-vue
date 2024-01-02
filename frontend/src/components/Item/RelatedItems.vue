@@ -51,7 +51,7 @@
 import { useSnackbar } from '@/composables/use-snackbar';
 import { remote } from '@/plugins/remote';
 import { getItemDetailsLink } from '@/utils/items';
-import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
+import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';

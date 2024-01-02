@@ -5,7 +5,7 @@ import { vuetify } from '@/plugins/vuetify';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
 import { fetchDefaultedCustomPrefs, syncCustomPrefs } from '@/utils/store-sync';
 import {
-  RemovableRef,
+  type RemovableRef,
   useNavigatorLanguage,
   usePreferredDark,
   useStorage,

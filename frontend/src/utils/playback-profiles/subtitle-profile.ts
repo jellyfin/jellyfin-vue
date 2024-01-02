@@ -4,7 +4,7 @@
 
 import {
   SubtitleDeliveryMethod,
-  SubtitleProfile
+  type SubtitleProfile
 } from '@jellyfin/sdk/lib/generated-client';
 
 /**

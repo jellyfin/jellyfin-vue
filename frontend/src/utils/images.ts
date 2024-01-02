@@ -5,9 +5,9 @@
 import { remote } from '@/plugins/remote';
 import { CardShapes, getShapeFromItemType, isPerson } from '@/utils/items';
 import {
-  BaseItemDto,
+  type BaseItemDto,
   BaseItemKind,
-  BaseItemPerson,
+  type BaseItemPerson,
   ImageType
 } from '@jellyfin/sdk/lib/generated-client';
 

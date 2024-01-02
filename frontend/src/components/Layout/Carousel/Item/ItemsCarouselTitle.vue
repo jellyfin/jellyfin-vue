@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { BaseItemDto, BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
+import { type BaseItemDto, BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
 import { getLogo } from '@/utils/images';
 import { getItemDetailsLink } from '@/utils/items';
 

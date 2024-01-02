@@ -1,5 +1,5 @@
 import { remote } from '@/plugins/remote';
-import { BaseItemDto, ItemFields } from '@jellyfin/sdk/lib/generated-client';
+import { type BaseItemDto, ItemFields } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { reactive, watch } from 'vue';
 

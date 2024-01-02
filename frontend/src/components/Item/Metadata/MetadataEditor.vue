@@ -217,8 +217,8 @@ import { useDateFns } from '@/composables/use-datefns';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { remote } from '@/plugins/remote';
 import {
-  BaseItemDto,
-  BaseItemPerson,
+  type BaseItemDto,
+  type BaseItemPerson,
   ImageType
 } from '@jellyfin/sdk/lib/generated-client';
 import { getGenresApi } from '@jellyfin/sdk/lib/utils/api/genres-api';

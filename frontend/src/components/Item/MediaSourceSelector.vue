@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { MediaSourceInfo } from '@jellyfin/sdk/lib/generated-client';
+import type { MediaSourceInfo } from '@jellyfin/sdk/lib/generated-client';
 import { getItemizedSelect } from '@/utils/forms';
 
 const selectProps = defineProps<{

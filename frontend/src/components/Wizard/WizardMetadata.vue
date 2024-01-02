@@ -39,7 +39,7 @@
 import { useSnackbar } from '@/composables/use-snackbar';
 import { remote } from '@/plugins/remote';
 import { SomeItemSelectedRule } from '@/utils/validation';
-import {
+import type {
   CountryInfo,
   CultureDto,
   StartupConfigurationDto

@@ -8,7 +8,7 @@
  */
 import { getJSONConfig } from '@/utils/external-config';
 import { isNil } from 'lodash-es';
-import { App } from 'vue';
+import type { App } from 'vue';
 import RemotePluginAuthInstance from './auth';
 import RemotePluginSDKInstance from './sdk';
 import RemotePluginSocketInstance from './socket';

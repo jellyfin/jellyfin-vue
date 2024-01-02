@@ -303,9 +303,9 @@ import { sanitizeHtml } from '@/utils/html';
 import { getBlurhash } from '@/utils/images';
 import { getItemDetailsLink, getMediaStreams } from '@/utils/items';
 import {
-  BaseItemPerson,
+  type BaseItemPerson,
   ImageType,
-  MediaSourceInfo
+  type MediaSourceInfo
 } from '@jellyfin/sdk/lib/generated-client';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { computed, ref } from 'vue';

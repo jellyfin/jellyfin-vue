@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 import { remote } from '@/plugins/remote';
-import { UserDto } from '@jellyfin/sdk/lib/generated-client';
+import type { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { computed } from 'vue';
 
 const props = withDefaults(

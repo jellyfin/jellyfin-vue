@@ -89,7 +89,7 @@ import {
   getShapeFromItemType
 } from '@/utils/items';
 import {
-  BaseItemDto,
+  type BaseItemDto,
   BaseItemKind,
   ImageType
 } from '@jellyfin/sdk/lib/generated-client';

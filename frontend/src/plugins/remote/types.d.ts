@@ -1,6 +1,6 @@
-import RemotePluginAuthInstance from './auth';
-import RemotePluginSDKInstance from './sdk';
-import RemotePluginSocketInstance from './socket';
+import type RemotePluginAuthInstance from './auth';
+import type RemotePluginSDKInstance from './sdk';
+import type RemotePluginSocketInstance from './socket';
 
 export interface RemotePlugin {
   sdk: typeof RemotePluginSDKInstance;
