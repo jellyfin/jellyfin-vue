@@ -16,6 +16,7 @@ import { ref, shallowRef, watch } from 'vue';
 import BlurhashWorker from './BlurhashWorker?worker&inline';
 
 const worker = new BlurhashWorker();
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 const pixelWorker = wrap<typeof import('./BlurhashWorker')['default']>(worker);
 
 /**
