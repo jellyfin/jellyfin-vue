@@ -15,7 +15,7 @@
 <script setup lang="ts">
 import { useResponsiveClasses } from '@/composables/use-responsive-classes';
 import { CardShapes, getShapeFromItemType } from '@/utils/items';
-import { BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
+import type { BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
 import { computed } from 'vue';
 
 const props = withDefaults(defineProps<{ viewType?: BaseItemKind }>(), {

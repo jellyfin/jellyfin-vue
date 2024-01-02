@@ -4,14 +4,14 @@ import { computed } from 'vue';
 import {
   createRouter,
   createWebHashHistory,
-  createWebHistory
+  createWebHistory,
+  /**
+   * TODO: Remove this when vue-router typings are fixed
+   */
+  type RouterTyped
 } from 'vue-router/auto';
 import { metaGuard } from './middlewares/meta';
 import { validateGuard } from './middlewares/validate';
-/**
- * TODO: Remove this when vue-router typings are fixed
- */
-import type { RouterTyped } from 'vue-router/auto';
 
 export const router = createRouter({
   history:

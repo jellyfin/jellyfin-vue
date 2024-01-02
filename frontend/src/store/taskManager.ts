@@ -1,7 +1,7 @@
 import { remote } from '@/plugins/remote';
 import { items } from '@/store/items';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
-import { RemovableRef, useStorage } from '@vueuse/core';
+import { type RemovableRef, useStorage } from '@vueuse/core';
 import { v4 } from 'uuid';
 import { watch } from 'vue';
 

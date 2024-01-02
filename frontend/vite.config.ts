@@ -13,7 +13,7 @@ import {
 } from 'unplugin-vue-components/resolvers';
 import Components from 'unplugin-vue-components/vite';
 import VueRouter from 'unplugin-vue-router/vite';
-import { defineConfig, UserConfig } from 'vite';
+import { defineConfig, type UserConfig } from 'vite';
 import { entrypoints, localeFilesFolder, srcRoot } from './scripts/paths';
 import virtualModules from './scripts/virtual-modules';
 

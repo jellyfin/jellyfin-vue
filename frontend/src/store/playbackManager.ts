@@ -5,14 +5,14 @@
  * If you want to handle the state of the local player element, use playerElement store instead.
  */
 import {
-  BaseItemDto,
+  type BaseItemDto,
   BaseItemKind,
   ItemFields,
   ItemFilter,
-  MediaSourceInfo,
-  MediaStream,
+  type MediaSourceInfo,
+  type MediaStream,
   MediaStreamType,
-  PlaybackInfoResponse,
+  type PlaybackInfoResponse,
   SubtitleDeliveryMethod
 } from '@jellyfin/sdk/lib/generated-client';
 import { getInstantMixApi } from '@jellyfin/sdk/lib/utils/api/instant-mix-api';
@@ -35,7 +35,7 @@ import { getImageInfo } from '@/utils/images';
 import { getItemRuntime } from '@/utils/items';
 import playbackProfile from '@/utils/playback-profiles';
 import { msToTicks } from '@/utils/time';
-import { RouteLocationNormalized, RouteLocationRaw } from 'vue-router/auto';
+import type { RouteLocationNormalized, RouteLocationRaw } from 'vue-router/auto';
 import { mediaControls, now as reactiveDate } from '.';
 import { items } from './items';
 

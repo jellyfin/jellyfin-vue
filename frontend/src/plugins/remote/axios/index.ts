@@ -9,9 +9,9 @@ import { i18n } from '@/plugins/i18n';
  * import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
  */
 import axios, {
-  AxiosError,
-  AxiosResponse,
-  InternalAxiosRequestConfig
+  type AxiosError,
+  type AxiosResponse,
+  type InternalAxiosRequestConfig
 } from 'axios';
 import auth from '../auth';
 

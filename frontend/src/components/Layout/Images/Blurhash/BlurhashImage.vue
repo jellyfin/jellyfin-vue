@@ -59,8 +59,8 @@ import { vuetify } from '@/plugins/vuetify';
 import { getBlurhash, getImageInfo } from '@/utils/images';
 import { getItemIcon } from '@/utils/items';
 import {
-  BaseItemDto,
-  BaseItemPerson,
+  type BaseItemDto,
+  type BaseItemPerson,
   ImageType
 } from '@jellyfin/sdk/lib/generated-client';
 import { refDebounced } from '@vueuse/core';

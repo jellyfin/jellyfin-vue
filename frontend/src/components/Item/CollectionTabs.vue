@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
 import { items } from '@/store/items';
-import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
+import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { groupBy } from 'lodash-es';
 import { computed, ref, watch } from 'vue';
 

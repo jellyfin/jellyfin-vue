@@ -99,7 +99,7 @@ meta:
 import { useDateFns } from '@/composables/use-datefns';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { remote } from '@/plugins/remote';
-import { DeviceInfo } from '@jellyfin/sdk/lib/generated-client';
+import type { DeviceInfo } from '@jellyfin/sdk/lib/generated-client';
 import { getDevicesApi } from '@jellyfin/sdk/lib/utils/api/devices-api';
 import { formatRelative, parseJSON } from 'date-fns';
 import { computed, ref } from 'vue';

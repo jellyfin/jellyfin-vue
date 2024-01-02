@@ -142,7 +142,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { isNil } from 'lodash-es';
-import {
+import type {
   BaseItemDto,
   MediaSourceInfo,
   MediaStream

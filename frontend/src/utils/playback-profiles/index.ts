@@ -25,7 +25,7 @@
  * "superior" codec in this situation)
  */
 
-import { DeviceProfile } from '@jellyfin/sdk/lib/generated-client';
+import type { DeviceProfile } from '@jellyfin/sdk/lib/generated-client';
 import { getCodecProfiles } from './helpers/codec-profiles';
 import { getDirectPlayProfiles } from './directplay-profile';
 import { getTranscodingProfiles } from './transcoding-profile';

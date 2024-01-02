@@ -5,7 +5,7 @@
 import {
   DlnaProfileType,
   EncodingContext,
-  TranscodingProfile
+  type TranscodingProfile
 } from '@jellyfin/sdk/lib/generated-client';
 import { getSupportedAudioCodecs } from './helpers/audio-formats';
 import { getSupportedMP4AudioCodecs } from './helpers/mp4-audio-formats';

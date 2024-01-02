@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 import { remote } from '@/plugins/remote';
-import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
+import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import IMdiHeart from 'virtual:icons/mdi/heart';
 import IMdiHeartOutline from 'virtual:icons/mdi/heart-outline';

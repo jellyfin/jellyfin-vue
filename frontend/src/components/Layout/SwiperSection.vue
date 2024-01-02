@@ -63,7 +63,7 @@
 
 <script setup lang="ts">
 import { CardShapes, getShapeFromItemType } from '@/utils/items';
-import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
+import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import 'swiper/css';
 import 'swiper/css/a11y';
 import 'swiper/css/free-mode';

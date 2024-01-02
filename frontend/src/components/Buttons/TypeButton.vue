@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
+import type { BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 

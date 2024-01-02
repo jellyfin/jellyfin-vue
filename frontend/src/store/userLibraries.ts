@@ -3,9 +3,9 @@ import { useSnackbar } from '@/composables/use-snackbar';
 import { i18n } from '@/plugins/i18n';
 import { remote } from '@/plugins/remote';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
-import { CardShapes } from '@/utils/items';
+import type { CardShapes } from '@/utils/items';
 import {
-  BaseItemDto,
+  type BaseItemDto,
   ImageType,
   ItemFields
 } from '@jellyfin/sdk/lib/generated-client';
@@ -13,7 +13,7 @@ import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { getUserViewsApi } from '@jellyfin/sdk/lib/utils/api/user-views-api';
-import { RemovableRef, useStorage } from '@vueuse/core';
+import { type RemovableRef, useStorage } from '@vueuse/core';
 import { computed, watch } from 'vue';
 
 /**

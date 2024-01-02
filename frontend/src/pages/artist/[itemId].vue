@@ -149,7 +149,7 @@ import { sanitizeHtml } from '@/utils/html';
 import { getBlurhash } from '@/utils/images';
 import { msToTicks } from '@/utils/time';
 import {
-  BaseItemDto,
+  type BaseItemDto,
   BaseItemKind,
   ImageType,
   ItemFields,

@@ -43,7 +43,7 @@
 
 <script setup lang="ts">
 import { playbackManager } from '@/store/playbackManager';
-import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
+import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import Sortable from 'sortablejs';
 import { onBeforeUnmount, shallowRef, watch } from 'vue';
 

@@ -311,7 +311,7 @@ meta:
 import { useConfirmDialog } from '@/composables/use-confirm-dialog';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { remote } from '@/plugins/remote';
-import {
+import type {
   BaseItemDtoQueryResult,
   UnratedItem,
   UserDto

@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import { prefersNoMotion } from '@/store';
-import { RouteMeta, useRoute } from 'vue-router/auto';
+import { type RouteMeta, useRoute } from 'vue-router/auto';
 
 defineProps<{
   transitionKey: string;

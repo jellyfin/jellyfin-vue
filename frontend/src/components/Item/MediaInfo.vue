@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
+import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getEndsAtTime, getRuntimeTime } from '@/utils/time';
 
 withDefaults(

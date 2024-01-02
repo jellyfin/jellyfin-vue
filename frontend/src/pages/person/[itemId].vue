@@ -171,7 +171,7 @@ import { remote } from '@/plugins/remote';
 import { sanitizeHtml } from '@/utils/html';
 import { getBlurhash } from '@/utils/images';
 import {
-  BaseItemDto,
+  type BaseItemDto,
   BaseItemKind,
   ImageType,
   ItemFields,

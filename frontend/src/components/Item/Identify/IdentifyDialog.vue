@@ -92,7 +92,7 @@
 import { useConfirmDialog } from '@/composables/use-confirm-dialog';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { remote } from '@/plugins/remote';
-import {
+import type {
   BaseItemDto,
   RemoteSearchResult
 } from '@jellyfin/sdk/lib/generated-client';

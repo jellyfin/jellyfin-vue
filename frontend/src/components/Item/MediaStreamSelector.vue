@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import { upperFirst } from 'lodash-es';
-import { MediaStream } from '@jellyfin/sdk/lib/generated-client';
+import type { MediaStream } from '@jellyfin/sdk/lib/generated-client';
 import { useI18n } from 'vue-i18n';
 import IMdiSurroundSound20 from 'virtual:icons/mdi/surround-sound-2-0';
 import IMdiSurroundSound31 from 'virtual:icons/mdi/surround-sound-3-1';

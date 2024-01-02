@@ -117,10 +117,10 @@ import { remote } from '@/plugins/remote';
 import { getLocaleName } from '@/utils/i18n';
 import { getContainerAspectRatioForImageType } from '@/utils/images';
 import {
-  BaseItemDto,
-  ImageProviderInfo,
+  type BaseItemDto,
+  type ImageProviderInfo,
   ImageType,
-  RemoteImageInfo
+  type RemoteImageInfo
 } from '@jellyfin/sdk/lib/generated-client';
 import { getRemoteImageApi } from '@jellyfin/sdk/lib/utils/api/remote-image-api';
 import { computed, ref, watch } from 'vue';

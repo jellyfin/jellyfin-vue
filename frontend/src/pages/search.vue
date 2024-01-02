@@ -80,7 +80,7 @@
 <script setup lang="ts">
 import { useResponsiveClasses } from '@/composables/use-responsive-classes';
 import { remote } from '@/plugins/remote';
-import { BaseItemDto, BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
+import { type BaseItemDto, BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getPersonsApi } from '@jellyfin/sdk/lib/utils/api/persons-api';
 import { useDebounceFn } from '@vueuse/core';

@@ -1,4 +1,4 @@
-import enUS from '@/../locales/en-US.json';
+import type enUS from '@/../locales/en-US.json';
 import type { RemotePlugin } from '@/plugins/remote/types';
 
 /**

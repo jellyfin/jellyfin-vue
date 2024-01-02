@@ -3,7 +3,7 @@
  * It also sets the header and base URL for our axios instance
  */
 import { watchEffect } from 'vue';
-import { Api } from '@jellyfin/sdk';
+import type { Api } from '@jellyfin/sdk';
 import { isNil } from 'lodash-es';
 import RemotePluginAxiosInstance from '../axios';
 import RemotePluginAuthInstance from '../auth';

@@ -4,11 +4,11 @@
 import { remote } from '@/plugins/remote';
 import { router } from '@/plugins/router';
 import {
-  BaseItemDto,
+  type BaseItemDto,
   BaseItemKind,
-  BaseItemPerson,
+  type BaseItemPerson,
   ItemFields,
-  MediaStream
+  type MediaStream
 } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';

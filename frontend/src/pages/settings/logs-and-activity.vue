@@ -95,8 +95,8 @@ meta:
 import { useDateFns } from '@/composables/use-datefns';
 import { remote } from '@/plugins/remote';
 import {
-  ActivityLogEntry,
-  LogFile,
+  type ActivityLogEntry,
+  type LogFile,
   LogLevel
 } from '@jellyfin/sdk/lib/generated-client';
 import { getActivityLogApi } from '@jellyfin/sdk/lib/utils/api/activity-log-api';

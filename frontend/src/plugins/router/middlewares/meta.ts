@@ -1,6 +1,6 @@
 import { defaultsDeep } from 'lodash-es';
 import { reactive } from 'vue';
-import {
+import type {
   RouteLocationNormalized,
   RouteLocationRaw,
   RouteMeta

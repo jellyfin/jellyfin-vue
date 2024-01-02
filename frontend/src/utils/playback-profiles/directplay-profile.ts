@@ -3,7 +3,7 @@
  */
 
 import {
-  DirectPlayProfile,
+  type DirectPlayProfile,
   DlnaProfileType
 } from '@jellyfin/sdk/lib/generated-client';
 import { getSupportedMP4VideoCodecs } from './helpers/mp4-video-formats';

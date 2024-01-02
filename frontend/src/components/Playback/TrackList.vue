@@ -121,7 +121,7 @@ import { playbackManager } from '@/store/playbackManager';
 import { getItemDetailsLink } from '@/utils/items';
 import { formatTicks } from '@/utils/time';
 import {
-  BaseItemDto,
+  type BaseItemDto,
   ItemFields,
   SortOrder
 } from '@jellyfin/sdk/lib/generated-client';

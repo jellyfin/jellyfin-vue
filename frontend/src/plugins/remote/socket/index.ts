@@ -4,7 +4,7 @@ import { isNil } from 'lodash-es';
 import { computed, watch } from 'vue';
 import auth from '../auth';
 import sdk from '../sdk';
-import { WebSocketMessage } from './types';
+import type { WebSocketMessage } from './types';
 
 /**
  * Formats the message to be sent to the socket

@@ -39,9 +39,9 @@
 <script setup lang="ts">
 import { userLibraries } from '@/store/userLibraries';
 import { getLibraryIcon } from '@/utils/items';
-import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
+import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import IMdiHome from 'virtual:icons/mdi/home';
-import { computed, inject, Ref } from 'vue';
+import { computed, inject, type Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router/auto';
 

@@ -48,14 +48,14 @@
  */
 import { vuetify } from '@/plugins/vuetify';
 import {
-  Fn,
+  type Fn,
   refDebounced,
   useEventListener,
   useResizeObserver
 } from '@vueuse/core';
 import { isNil } from 'lodash-es';
 import {
-  StyleValue,
+  type StyleValue,
   computed,
   onBeforeUnmount,
   ref,

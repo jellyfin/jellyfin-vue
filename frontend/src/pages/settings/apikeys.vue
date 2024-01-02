@@ -107,7 +107,7 @@ meta:
 import { useDateFns } from '@/composables/use-datefns';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { remote } from '@/plugins/remote';
-import { AuthenticationInfo } from '@jellyfin/sdk/lib/generated-client';
+import type { AuthenticationInfo } from '@jellyfin/sdk/lib/generated-client';
 import { getApiKeyApi } from '@jellyfin/sdk/lib/utils/api/api-key-api';
 import { formatRelative, parseJSON } from 'date-fns';
 import { computed, ref } from 'vue';
