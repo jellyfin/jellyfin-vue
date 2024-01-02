@@ -16,7 +16,7 @@
   "editor.defaultFormatter": "dbaeumer.vscode-eslint",
   "i18n-ally.keystyle": "flat",
   "i18n-ally.sortKeys": true,
-  "i18n-ally.sourceLanguage": "en-US",
+  "i18n-ally.sourceLanguage": "en",
   "i18n-ally.localesPaths": [
     "frontend/locales"
   ],

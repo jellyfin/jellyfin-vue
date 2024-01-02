@@ -1,4 +1,4 @@
-import type enUS from '@/../locales/en-US.json';
+import type en from '@/../locales/en.json';
 import type { RemotePlugin } from '@/plugins/remote/types';
 
 /**
@@ -30,7 +30,7 @@ declare module 'vue' {
 }
 
 declare module 'vue-i18n' {
-  type messages = typeof enUS;
+  type messages = typeof en;
 
   export interface DefineLocaleMessage extends messages {}
 }
