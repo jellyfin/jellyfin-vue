@@ -296,12 +296,12 @@ module.exports = {
     },
     'vue-i18n': {
       /**
-       * We just want to do linting for en-US, weblate already handles removing unused and duplicated keys
-       * in other locales based on en-US translations!
+       * We just want to do linting for en, weblate already handles removing unused and duplicated keys
+       * in other locales based on en translations!
        *
        * This also allows us to speed up linting
        */
-      localeDir: 'locales/en-US.json',
+      localeDir: 'locales/en.json',
       messageSyntaxVersion: '^9.0.0'
     }
   }

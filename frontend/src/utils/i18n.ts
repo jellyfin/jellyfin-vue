@@ -3,7 +3,7 @@
  */
 export function getLocaleName(
   fromCode: string,
-  toCode = 'en-US'
+  toCode = 'en'
 ): string | undefined {
   const r = new Intl.DisplayNames([toCode], { type: 'language' }).of(fromCode);
 
