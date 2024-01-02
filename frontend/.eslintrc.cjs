@@ -5,7 +5,9 @@ const commonTSAndVueConfig = {
   extends: ['plugin:@typescript-eslint/recommended-requiring-type-checking'],
   rules: {
     // TODO: Investigate why this rule reports false positives
-    '@typescript-eslint/no-misused-promises': 'off'
+    '@typescript-eslint/no-misused-promises': 'off',
+    'no-secrets/no-secrets': 'error',
+    '@typescript-eslint/consistent-type-exports': 'error'
   }
 };
 
@@ -131,7 +133,6 @@ module.exports = {
     'unicode-bom': ['error', 'never'],
     'no-restricted-globals': ['error', ...restrictedGlobals],
     'no-empty': ['error', { allowEmptyCatch: true }],
-    'no-secrets/no-secrets': 'error',
     'import/newline-after-import': 'error',
     // It's better to use TypeScript for this, since it leverages the real bundler environment
     'import/no-unresolved': 'off',
@@ -145,20 +146,7 @@ module.exports = {
       }
     ],
     'import/no-nodejs-modules': 'error',
-    'no-restricted-imports': 'off',
-    '@typescript-eslint/no-restricted-imports': [
-      'error',
-      {
-        patterns: [
-          {
-            group: ['*/main*'],
-            message:
-              'Do not use the Vue instance directly. Use composables (from @/composables) instead.',
-            allowTypeImports: true
-          }
-        ]
-      }
-    ],
+    'import/no-duplicates': ['error', {'prefer-inline': true}],
     'jsdoc/require-hyphen-before-param-description': 'error',
     'jsdoc/require-description': 'error',
     'jsdoc/no-types': 'error',
@@ -180,6 +168,11 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'error',
     '@typescript-eslint/prefer-ts-expect-error': 'error',
     '@typescript-eslint/explicit-member-accessibility': 'error',
+    '@typescript-eslint/no-import-type-side-effects': 'error',
+    '@typescript-eslint/consistent-type-imports': ['error', {
+      'prefer': 'type-imports',
+      'fixStyle': 'inline-type-imports'
+    }],
     'prefer-arrow-callback': 'error',
     'you-dont-need-lodash-underscore/is-nil': 'off',
     // Force some component order stuff, formatting and such, for consistency
@@ -229,7 +222,8 @@ module.exports = {
     {
       files: ['*.md'],
       rules: {
-        '@stylistic/no-trailing-spaces': ['off']
+        '@stylistic/no-trailing-spaces': ['off'],
+        'no-secrets/no-secrets': 'error'
       }
     },
     {
