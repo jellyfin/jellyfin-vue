@@ -1,5 +1,5 @@
 import { remote } from '@/plugins/remote';
-import { type BaseItemDto, ItemFields } from '@jellyfin/sdk/lib/generated-client';
+import { ItemFields, type BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { reactive, watch } from 'vue';
 
@@ -24,26 +24,32 @@ class ItemsStore {
   };
 
   private _state = reactive<ItemsState>(structuredClone(this._defaultState));
+  public rawAdd = <T extends BaseItemDto | BaseItemDto[]>(item: T): T => {
+    if (Array.isArray(item)) {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+      for (const i of item as BaseItemDto[]) {
+        if (i.Id) {
+          this._state.byId[i.Id] = i;
+        }
+      }
+
+      const ids = item.map((i) => i.Id ?? '');
+
+      return this.getItemsById(ids) as T;
+    } else if (item.Id) {
+      this._state.byId[item.Id] = item;
+
+      return this._state.byId[item.Id] as T;
+    }
+  };
   /**
    * == GETTERS AND SETTERS ==
    */
   public getItemById = (id: string | undefined): BaseItemDto | undefined =>
     id ? this._state.byId[id] : undefined;
 
-  public getItemsById = (ids: string[]): BaseItemDto[] => {
-    const res: BaseItemDto[] = [];
-
-    for (const index of ids) {
-      const item = this._state.byId[index];
-
-      if (!item) {
-        throw new Error(`Item ${index} doesn't exist in the store`);
-      }
-
-      res.push(item);
-    }
-
-    return res;
+  public getItemsById = (ids: string[]): Array<BaseItemDto | undefined> => {
+    return ids.map((id) => this._state.byId[id]);
   };
 
   public getChildrenOfParent = (
