@@ -135,7 +135,7 @@
     </template>
     <template #right>
       <RelatedItems
-        :item="item"
+        :related-items="relatedItems"
         vertical>
         {{ $t('moreLikeArtist', { artist: item.Name }) }}
       </RelatedItems>
@@ -144,32 +144,64 @@
 </template>
 
 <script setup lang="ts">
+import { useBaseItem } from '@/composables/apis';
 import { remote } from '@/plugins/remote';
 import { sanitizeHtml } from '@/utils/html';
 import { getBlurhash } from '@/utils/images';
 import { msToTicks } from '@/utils/time';
 import {
-  type BaseItemDto,
   BaseItemKind,
   ImageType,
-  ItemFields,
-  SortOrder
+  SortOrder,
+  type BaseItemDto
 } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
+import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router/auto';
 
 const SINGLE_MAX_LENGTH_MS = 600_000;
 const EP_MAX_LENGTH_MS = 1_800_000;
 
 const route = useRoute<'/artist/[itemId]'>();
+const sortBy = ['PremiereDate', 'ProductionYear', 'SortName'];
 
-const item = ref<BaseItemDto>({});
-const discography = ref<BaseItemDto[]>([]);
-const appearances = ref<BaseItemDto[]>([]);
-const musicVideos = ref<BaseItemDto[]>([]);
 const activeTab = ref(0);
+
+const { data: item } = await useBaseItem(getUserLibraryApi, 'getItem')(() => ({
+  itemId: route.params.itemId,
+  userId: remote.auth.currentUserId ?? ''
+}));
+const { data: relatedItems } = await useBaseItem(getLibraryApi, 'getSimilarItems')(() => ({
+  itemId: route.params.itemId,
+  userId: remote.auth.currentUserId
+}));
+const { data: discography } = await useBaseItem(getItemsApi, 'getItems')(() => ({
+  albumArtistIds: [route.params.itemId],
+  sortBy,
+  sortOrder: [SortOrder.Descending],
+  recursive: true,
+  includeItemTypes: [BaseItemKind.MusicAlbum],
+  userId: remote.auth.currentUserId
+}));
+const { data: appearances } = await useBaseItem(getItemsApi, 'getItems')(() => ({
+  contributingArtistIds: [route.params.itemId],
+  excludeItemIds: [route.params.itemId],
+  sortBy,
+  sortOrder: [SortOrder.Descending],
+  recursive: true,
+  includeItemTypes: [BaseItemKind.MusicAlbum],
+  userId: remote.auth.currentUserId
+}));
+const { data: musicVideos } = await useBaseItem(getItemsApi, 'getItems')(() => ({
+  artistIds: [route.params.itemId],
+  sortBy,
+  sortOrder: [SortOrder.Descending],
+  recursive: true,
+  includeItemTypes: [BaseItemKind.MusicVideo],
+  userId: remote.auth.currentUserId
+}));
 
 const singles = computed<BaseItemDto[]>(() =>
   discography.value.filter(
@@ -197,76 +229,28 @@ const albums = computed(() =>
   )
 );
 
-onMounted(async () => {
-  const { itemId } = route.params;
+route.meta.title = item.value.Name;
+route.meta.backdrop.blurhash = getBlurhash(item.value, ImageType.Backdrop);
 
-  item.value = (
-    await remote.sdk.newUserApi(getUserLibraryApi).getItem({
-      userId: remote.auth.currentUserId ?? '',
-      itemId
-    })
-  ).data;
-
-  route.meta.title = item.value.Name;
-  route.meta.backdrop.blurhash = getBlurhash(item.value, ImageType.Backdrop);
-
-  discography.value =
-    (
-      await remote.sdk.newUserApi(getItemsApi).getItems({
-        albumArtistIds: [itemId],
-        sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
-        sortOrder: [SortOrder.Descending],
-        recursive: true,
-        includeItemTypes: [BaseItemKind.MusicAlbum],
-        fields: Object.values(ItemFields),
-        userId: remote.auth.currentUserId
-      })
-    ).data.Items ?? [];
-
-  appearances.value =
-    (
-      await remote.sdk.newUserApi(getItemsApi).getItems({
-        contributingArtistIds: [itemId],
-        excludeItemIds: [itemId],
-        sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
-        sortOrder: [SortOrder.Descending],
-        recursive: true,
-        includeItemTypes: [BaseItemKind.MusicAlbum],
-        fields: Object.values(ItemFields),
-        userId: remote.auth.currentUserId
-      })
-    ).data.Items ?? [];
-
-  musicVideos.value =
-    (
-      await remote.sdk.newUserApi(getItemsApi).getItems({
-        artistIds: [itemId],
-        sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
-        sortOrder: [SortOrder.Descending],
-        recursive: true,
-        includeItemTypes: [BaseItemKind.MusicVideo],
-        fields: Object.values(ItemFields),
-        userId: remote.auth.currentUserId
-      })
-    ).data.Items ?? [];
-
-  if (discography.value.length > 0) {
-    activeTab.value = 0;
-  } else if (albums.value.length > 0) {
-    activeTab.value = 1;
-  } else if (eps.value.length > 0) {
-    activeTab.value = 2;
-  } else if (singles.value.length > 0) {
-    activeTab.value = 3;
-  } else if (appearances.value.length > 0) {
-    activeTab.value = 4;
-  } else if (musicVideos.value.length > 0) {
-    activeTab.value = 5;
-  } else {
-    // Overview
-    activeTab.value = 6;
-  }
-});
+/**
+ * Set the most appropiate starting tag
+ */
+if (discography.value.length > 0) {
+  activeTab.value = 0;
+} else if (albums.value.length > 0) {
+  activeTab.value = 1;
+} else if (eps.value.length > 0) {
+  activeTab.value = 2;
+} else if (singles.value.length > 0) {
+  activeTab.value = 3;
+} else if (appearances.value.length > 0) {
+  activeTab.value = 4;
+} else if (musicVideos.value.length > 0) {
+  activeTab.value = 5;
+} else {
+  // Overview
+  activeTab.value = 6;
+}
 </script>
 
 <style lang="scss" scoped>

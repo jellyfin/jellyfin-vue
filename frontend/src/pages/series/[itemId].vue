@@ -174,7 +174,7 @@
         <PeopleList :items="actors" />
       </div>
       <RelatedItems
-        :item="item"
+        :related-items="relatedItems"
         vertical />
     </template>
   </ItemCols>
@@ -190,6 +190,7 @@ import {
 ImageType,
 type BaseItemPerson
 } from '@jellyfin/sdk/lib/generated-client';
+import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { computed } from 'vue';
 import { useRoute } from 'vue-router/auto';
@@ -199,6 +200,10 @@ const route = useRoute<'/series/[itemId]'>();
 const { data: item } = await useBaseItem(getUserLibraryApi, 'getItem')(() => ({
   itemId: route.params.itemId,
   userId: remote.auth.currentUserId ?? ''
+}));
+const { data: relatedItems } = await useBaseItem(getLibraryApi, 'getSimilarItems')(() => ({
+  itemId: route.params.itemId,
+  userId: remote.auth.currentUserId
 }));
 
 const crew = computed<BaseItemPerson[]>(() =>

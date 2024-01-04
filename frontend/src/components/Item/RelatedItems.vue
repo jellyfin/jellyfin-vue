@@ -2,23 +2,20 @@
   <div v-if="!vertical">
     <SwiperSection
       :title="t('youMayAlsoLike')"
-      :items="relatedItems"
-      :loading="loading" />
+      :items="relatedItems" />
   </div>
   <div v-else-if="vertical">
     <h2
-      v-if="!loading && relatedItems.length > 0"
+      v-if="relatedItems.length > 0"
       class="text-h6 text-sm-h5">
       <slot>
         {{ t('youMayAlsoLike') }}
       </slot>
     </h2>
-    <!-- TODO: Wait for Vuetify 3 implementation (https://github.com/vuetifyjs/vuetify/issues/13504) -->
-    <!-- <v-skeleton-loader v-else-if="loading" type="heading" /> -->
     <VList
       bg-color="transparent"
       lines="two">
-      <div v-if="!loading && relatedItems.length > 0">
+      <div v-if="relatedItems.length > 0">
         <VListItem
           v-for="relatedItem in relatedItems"
           :key="relatedItem.Id"
@@ -34,76 +31,26 @@
           </template>
         </VListItem>
       </div>
-      <div
-        v-for="index in skeletonLength"
-        v-else-if="loading"
-        :key="index"
-        class="d-flex align-center mt-5 mb-5">
-        <!-- TODO: Wait for Vuetify 3 implementation (https://github.com/vuetifyjs/vuetify/issues/13504) -->
-        <!-- <v-skeleton-loader type="avatar" class="ml-3 mr-3" />
-        <v-skeleton-loader type="sentences" width="10em" class="pr-5" /> -->
-      </div>
     </VList>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useSnackbar } from '@/composables/use-snackbar';
-import { remote } from '@/plugins/remote';
 import { getItemDetailsLink } from '@/utils/items';
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
-import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
-    item: BaseItemDto;
+    relatedItems: BaseItemDto[];
     vertical?: boolean;
-    skeletonLength?: number;
   }>(),
   {
-    vertical: false,
-    skeletonLength: 5
+    vertical: false
   }
 );
+
 const { t } = useI18n();
-
-const relatedItems = ref<BaseItemDto[]>([]);
-const loading = ref(true);
-
-watch(
-  () => props.item,
-  async () => {
-    if (!props.item.Id) {
-      return;
-    }
-
-    loading.value = true;
-
-    try {
-      const response = await remote.sdk
-        .newUserApi(getLibraryApi)
-        .getSimilarItems({
-          itemId: props.item.Id,
-          userId: remote.auth.currentUserId,
-          limit: props.vertical ? 5 : 12,
-          excludeArtistIds: props.item.AlbumArtists?.flatMap(
-            (albumArtist: BaseItemDto) =>
-              albumArtist.Id ? [albumArtist.Id] : []
-          )
-        });
-
-      relatedItems.value = response.data.Items ?? [];
-    } catch (error) {
-      console.error(error);
-      useSnackbar(t('unableGetRelated'), 'error');
-    } finally {
-      loading.value = false;
-    }
-  },
-  { immediate: true }
-);
 </script>
 
 <style lang="scss" scoped>

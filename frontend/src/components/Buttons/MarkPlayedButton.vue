@@ -3,53 +3,43 @@
     v-if="canMarkWatched(item)"
     :color="isPlayed ? 'primary' : undefined"
     :icon="IMdiCheck"
+    :loading="loading"
     size="small"
-    @click.stop.prevent="togglePlayed" />
+    @click.stop.prevent="isPlayed = !isPlayed" />
 </template>
 
 <script setup lang="ts">
-import { useSnackbar } from '@/composables/use-snackbar';
+import { useApi } from '@/composables/apis';
 import { remote } from '@/plugins/remote';
 import { canMarkWatched } from '@/utils/items';
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getPlaystateApi } from '@jellyfin/sdk/lib/utils/api/playstate-api';
 import IMdiCheck from 'virtual:icons/mdi/check';
-import { ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { computed, ref } from 'vue';
 
 const props = defineProps<{
   item: BaseItemDto;
 }>();
 
-const isPlayed = ref(props.item.UserData?.Played || false);
-
-const { t } = useI18n();
+const methodToExecute = ref<'markPlayedItem' | 'markUnplayedItem' | undefined>();
 
 /**
- * Toggles the played state of the given item
+ * We use the composables to handle when there's no connection to the server
+ *
+ * The websocket will automatically update the item in the store, so no need
+ * to do manual modification here
  */
-async function togglePlayed(): Promise<void> {
-  try {
-    if (!props.item.Id) {
-      throw new Error('Item has no Id');
-    }
+const { loading } = await useApi(getPlaystateApi, methodToExecute, true)(() => ({
+  userId: remote.auth.currentUserId ?? '',
+  itemId: props.item.Id ?? ''
+}));
 
-    if (isPlayed.value) {
-      isPlayed.value = false;
-      await remote.sdk.newUserApi(getPlaystateApi).markUnplayedItem({
-        userId: remote.auth.currentUserId ?? '',
-        itemId: props.item.Id
-      });
-    } else {
-      isPlayed.value = true;
-      await remote.sdk.newUserApi(getPlaystateApi).markPlayedItem({
-        userId: remote.auth.currentUserId ?? '',
-        itemId: props.item.Id
-      });
-    }
-  } catch {
-    useSnackbar(t('unableToTogglePlayed'), 'error');
-    isPlayed.value = !isPlayed.value;
+const isPlayed = computed({
+  get() {
+    return props.item.UserData?.Played;
+  },
+  set(newValue) {
+    methodToExecute.value = newValue ? 'markPlayedItem' : 'markUnplayedItem';
   }
-}
+});
 </script>
