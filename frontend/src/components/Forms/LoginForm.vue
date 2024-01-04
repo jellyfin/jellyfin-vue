@@ -67,7 +67,7 @@
 
 <script setup lang="ts">
 import { remote } from '@/plugins/remote';
-import { userLibraries } from '@/store/userLibraries';
+import { fetchIndexPage } from '@/utils/items';
 import type { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { isEmpty } from 'lodash-es';
 import IconEye from 'virtual:icons/mdi/eye';
@@ -114,7 +114,11 @@ async function userLogin(): Promise<void> {
       login.value.rememberMe
     );
 
-    await userLibraries.refresh();
+    /**
+     * We fetch all the default layout data here to keep the "login" button
+     * loading spinner active until we redirect the user.
+     */
+    await fetchIndexPage();
 
     await router.replace('/');
   } finally {

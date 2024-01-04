@@ -1,17 +1,20 @@
 /**
  * Item and playback helpers
  */
+import { useBaseItem } from '@/composables/apis';
 import { remote } from '@/plugins/remote';
 import { router } from '@/plugins/router';
 import {
-  type BaseItemDto,
   BaseItemKind,
-  type BaseItemPerson,
   ItemFields,
+  type BaseItemDto,
+  type BaseItemPerson,
   type MediaStream
 } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
+import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
+import { getUserViewsApi } from '@jellyfin/sdk/lib/utils/api/user-views-api';
 import { isNil } from 'lodash-es';
 import IMdiAccount from 'virtual:icons/mdi/account';
 import IMdiAlbum from 'virtual:icons/mdi/album';
@@ -30,6 +33,7 @@ import IMdiPlaylistPlay from 'virtual:icons/mdi/playlist-play';
 import IMdiTelevisionClassic from 'virtual:icons/mdi/television-classic';
 import IMdiYoutube from 'virtual:icons/mdi/youtube';
 import IMdiYoutubeTV from 'virtual:icons/mdi/youtube-tv';
+import type { ComputedRef } from 'vue';
 import type { RouteNamedMap } from 'vue-router/auto/routes';
 import { ticksToMs } from './time';
 
@@ -562,4 +566,67 @@ export function formatFileSize(size: number): string {
  */
 export function formatBitRate(bitrate: number): string {
   return `${(bitrate / 1000).toFixed(2)} kbps`;
+}
+
+
+/**
+ * Gets all the items that need to be resolved to populate the interface
+ */
+interface IndexPageQueries {
+  views: ComputedRef<BaseItemDto[]>;
+  resumeVideo: ComputedRef<BaseItemDto[]>;
+  carousel: ComputedRef<BaseItemDto[]>;
+  nextUp: ComputedRef<BaseItemDto[]>;
+  latestPerLibrary: Map<BaseItemDto['Id'], ComputedRef<BaseItemDto[]>>;
+}
+
+/**
+ * Fetches all the items that are needed to populate the default layout
+ * (like libraries, which are necessary for the drawer).
+ *
+ * This is here so this function can be invoked from the login page as well,
+ * so when it resolves all the content is already loaded without further delay.
+ */
+export async function fetchIndexPage(): Promise<IndexPageQueries> {
+  const userId = remote.auth.currentUserId ?? '';
+  const latestPerLibrary = new Map<BaseItemDto['Id'], ComputedRef<BaseItemDto[]>>();
+
+  const { data: views } = await useBaseItem(getUserViewsApi, 'getUserViews')(() => ({
+    userId
+  }));
+
+  const latestFromLibrary = async (): Promise<void> => {
+    for (const view of views.value) {
+      const { data } = await useBaseItem(getUserLibraryApi, 'getLatestMedia')(() => ({
+        userId,
+        parentId: view.Id
+      }));
+
+      latestPerLibrary.set(view.Id, data);
+    }
+  };
+
+  const promises = [
+    useBaseItem(getItemsApi, 'getResumeItems')(() => ({
+      userId,
+      mediaTypes: ['Video']
+    })),
+    useBaseItem(getUserLibraryApi, 'getLatestMedia')(() => ({
+      userId
+    })),
+    useBaseItem(getTvShowsApi, 'getNextUp')(() => ({
+      userId
+    })),
+    latestFromLibrary()
+  ];
+
+  const results = (await Promise.all(promises)).filter((r): r is Exclude<typeof r, void> => r !== undefined);
+
+  return {
+    views,
+    resumeVideo: results[0].data,
+    carousel: results[1].data,
+    nextUp: results[2].data,
+    latestPerLibrary
+  };
 }
