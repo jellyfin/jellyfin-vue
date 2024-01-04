@@ -5,15 +5,15 @@
  * If you want to handle the state of the local player element, use playerElement store instead.
  */
 import {
-  type BaseItemDto,
   BaseItemKind,
   ItemFields,
   ItemFilter,
+  MediaStreamType,
+  SubtitleDeliveryMethod,
+  type BaseItemDto,
   type MediaSourceInfo,
   type MediaStream,
-  MediaStreamType,
-  type PlaybackInfoResponse,
-  SubtitleDeliveryMethod
+  type PlaybackInfoResponse
 } from '@jellyfin/sdk/lib/generated-client';
 import { getInstantMixApi } from '@jellyfin/sdk/lib/utils/api/instant-mix-api';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
@@ -31,13 +31,13 @@ import { useSnackbar } from '@/composables/use-snackbar';
 import { i18n } from '@/plugins/i18n';
 import { remote } from '@/plugins/remote';
 import { router } from '@/plugins/router';
+import { apiStore } from '@/store/api';
 import { getImageInfo } from '@/utils/images';
 import { getItemRuntime } from '@/utils/items';
 import playbackProfile from '@/utils/playback-profiles';
 import { msToTicks } from '@/utils/time';
 import type { RouteLocationNormalized, RouteLocationRaw } from 'vue-router/auto';
 import { mediaControls, now as reactiveDate } from '.';
-import { items } from './items';
 
 /**
  * == INTERFACES AND TYPES ==
@@ -203,7 +203,7 @@ class PlaybackManagerStore {
    */
   public get queue(): BaseItemDto[] {
     if (this._state.queue.length > 0) {
-      return items.getItemsById(this._state.queue);
+      return apiStore.getItemsById(this._state.queue).filter((i): i is BaseItemDto => !!i);
     }
 
     return [];
@@ -213,7 +213,7 @@ class PlaybackManagerStore {
    */
   public get currentItem(): BaseItemDto | undefined {
     if (!isNil(this._state.currentItemIndex)) {
-      return items.getItemById(this._state.queue[this._state.currentItemIndex]);
+      return apiStore.getItemById(this._state.queue[this._state.currentItemIndex]);
     }
   }
   public get currentSourceUrl(): string | undefined {
@@ -227,11 +227,11 @@ class PlaybackManagerStore {
       !isNil(this._state.currentItemIndex) &&
       this._state.currentItemIndex + 1 < this._state.queue.length
     ) {
-      return items.getItemById(
+      return apiStore.getItemById(
         this._state.queue[this._state.currentItemIndex + 1]
       );
     } else if (this._state.repeatMode === RepeatMode.RepeatAll) {
-      return items.getItemById(this._state.queue[0]);
+      return apiStore.getItemById(this._state.queue[0]);
     }
   }
   /**
@@ -239,7 +239,7 @@ class PlaybackManagerStore {
    */
   public get currentlyPlayingType(): BaseItemKind | undefined {
     if (!isNil(this._state.currentItemIndex)) {
-      return items.getItemById(this._state.queue[this._state.currentItemIndex])
+      return apiStore.getItemById(this._state.queue[this._state.currentItemIndex])
         ?.Type;
     }
   }
@@ -248,7 +248,7 @@ class PlaybackManagerStore {
    */
   public get currentlyPlayingMediaType(): string | null | undefined {
     if (!isNil(this._state.currentItemIndex)) {
-      return items.getItemById(this._state.queue[this._state.currentItemIndex])
+      return apiStore.getItemById(this._state.queue[this._state.currentItemIndex])
         ?.MediaType;
     }
   }

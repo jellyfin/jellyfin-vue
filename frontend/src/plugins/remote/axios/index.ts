@@ -4,10 +4,6 @@
 import { excludedProgressEndpoints, useLoading } from '@/composables/use-loading';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { i18n } from '@/plugins/i18n';
-/*
- * Import { items } from '@/store/items';
- * import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
- */
 import axios, {
   type AxiosError,
   type AxiosResponse,
@@ -46,38 +42,6 @@ class JellyfinInterceptors {
 
     return response;
   }
-  /**
-   * Intercepts each request that has BaseItemDto, adding the objects to the item store, so they can
-   * be reactive and updated using the WebSocket connection
-   */
-  /*
-   * Public reactiveItemsInterceptor(response: AxiosResponse): AxiosResponse {
-   *   const data = response.data;
-   */
-
-  //   If (data) {
-  //     If (data.Items && Array.isArray(data.Items)) {
-  //       /*
-  //        * TODO: Implement a proper check for reponses that are BaseItemDto.
-  //        * This currently will try to cache the values for all response types.
-  //        * The likelyhood of an id cache collision is low but this is caching a lot
-  //        * In memory currently.
-  //        */
-  //       Response.data.Items = (data.Items as BaseItemDto[]).map((i) =>
-  //         Items.add(i)
-  //       );
-  //     } else if (
-  //       auth.currentUserId &&
-  //       Response.config.url?.includes(`/Users/${auth.currentUserId}/Items/`)
-  //     ) {
-  //       Response.data = items.add(data);
-  //     }
-  //   }
-
-  /*
-   *   Return response;
-   * }
-   */
 
   /**
    * Intercepts 401 (Unathorized) error code and logs out the user inmmediately,
@@ -147,14 +111,6 @@ class RemotePluginAxios {
     this._startLoadInterceptor = -1;
     this._stopLoadInterceptor = -1;
   }
-
-  /*
-   * Public setReactiveItemsInterceptor(): void {
-   *   this._reactiveInterceptor = this.instance.interceptors.response.use(
-   *     this._interceptors.reactiveItemsInterceptor
-   *   );
-   * }
-   */
 
   public removeReactiveItemsInterceptor(): void {
     this.instance.interceptors.response.eject(this._reactiveInterceptor);
