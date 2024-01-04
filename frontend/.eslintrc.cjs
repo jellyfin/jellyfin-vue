@@ -7,7 +7,8 @@ const commonTSAndVueConfig = {
     // TODO: Investigate why this rule reports false positives
     '@typescript-eslint/no-misused-promises': 'off',
     'no-secrets/no-secrets': 'error',
-    '@typescript-eslint/consistent-type-exports': 'error'
+    '@typescript-eslint/consistent-type-exports': 'error',
+    '@typescript-eslint/no-redundant-type-constituents': 'off'
   }
 };
 
