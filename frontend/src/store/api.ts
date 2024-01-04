@@ -5,6 +5,7 @@
 import { remote } from '@/plugins/remote';
 import { ImageType, ItemFields, type BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
+import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { reactive, watch } from 'vue';
 
 /**
@@ -37,7 +38,7 @@ class ApiStore {
    */
   private _defaultState: ApiState = {
     items: new Map<BaseItemDto['Id'], BaseItemDto>(),
-    requests: new Map<string, Map<string, string[] | RawBaseItemResponse>>()
+    requests: new Map<string, Map<string, unknown | RawBaseItemResponse>>()
   };
   private _state = reactive<ApiState>(structuredClone(this._defaultState));
 
@@ -101,13 +102,31 @@ class ApiStore {
     return this.getRequest(funcName, params) as T;
   };
 
+  public itemDelete = async (itemId: string): Promise<void> => {
+    try {
+      await remote.sdk.newUserApi(getLibraryApi).deleteItem({
+        itemId
+      });
+
+      this._state.items.delete(itemId);
+
+      for (const request of this._state.requests.values()) {
+        for (const [args, result] of request.entries()) {
+          if (result instanceof RawBaseItemResponse && result.ids.includes(itemId) || args.includes(itemId)) {
+            request.delete(args);
+          }
+        }
+      }
+    } catch {}
+  };
+
   /**
    * Updates the items in the store. Just a request is enough, as the Axios
    * interceptors already handle updating the item in the store
    *
    * @param itemIds - Ids of the items to update
    */
-  public updateStoreItems = async (itemIds: BaseItemDto['Id'][]): Promise<void> => {
+  private _update = async (itemIds: BaseItemDto['Id'][]): Promise<void> => {
     if (itemIds.length > 0) {
       const { data } = await remote.sdk.newUserApi(getItemsApi).getItems({
         userId: remote.auth.currentUserId,
@@ -151,7 +170,7 @@ class ApiStore {
             (item: unknown): item is string => typeof item === 'string'
           ).filter((itemId) => this._state.items.has(itemId));
 
-          await this.updateStoreItems(itemsToUpdate);
+          await this._update(itemsToUpdate);
         } else if (
           MessageType === 'UserDataChanged' &&
           'UserDataList' in Data &&
@@ -175,7 +194,7 @@ class ApiStore {
             return updatedData.ItemId;
           });
 
-          await this.updateStoreItems(itemsToUpdate);
+          await this._update(itemsToUpdate);
         }
       }
     );

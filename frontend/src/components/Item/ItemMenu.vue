@@ -57,6 +57,7 @@
 import { useConfirmDialog } from '@/composables/use-confirm-dialog';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { remote } from '@/plugins/remote';
+import { apiStore } from '@/store/api';
 import { playbackManager } from '@/store/playbackManager';
 import { taskManager } from '@/store/taskManager';
 import {
@@ -70,7 +71,6 @@ import {
   getItemSeriesDownloadMap
 } from '@/utils/items';
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { useClipboard, useEventListener } from '@vueuse/core';
 import { v4 } from 'uuid';
 import IMdiArrowExpandDown from 'virtual:icons/mdi/arrow-expand-down';
@@ -289,9 +289,7 @@ const deleteItemAction = {
         }
 
         try {
-          await remote.sdk.newUserApi(getLibraryApi).deleteItem({
-            itemId: itemId.value
-          });
+          await apiStore.itemDelete(itemId.value);
 
           if (itemId.value === menuProps.item.Id && route.fullPath.includes(itemId.value)) {
             await router.replace('/');
