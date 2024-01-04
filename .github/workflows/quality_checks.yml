@@ -24,7 +24,7 @@ jobs:
           show-progress: false
 
       - name: Scan
-        uses: actions/dependency-review-action@v3.1.4
+        uses: actions/dependency-review-action@v3.1.5
         with:
           ## Workaround from https://github.com/actions/dependency-review-action/issues/456
           ## TODO: Remove when necessary
