@@ -62,66 +62,45 @@
 </template>
 
 <script setup lang="ts">
+import { useBaseItem } from '@/composables/apis';
 import { useResponsiveClasses } from '@/composables/use-responsive-classes';
 import { remote } from '@/plugins/remote';
-import { items } from '@/store/items';
 import {
-  type BaseItemDto,
-  type BaseItemKind,
-  ItemFields,
-  SortOrder
+  SortOrder,
+  type BaseItemKind
 } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
-import { onMounted, ref } from 'vue';
+import { computed } from 'vue';
 import { useRoute } from 'vue-router/auto';
 
 const route = useRoute<'/genre/[itemId]'>();
 
-const loading = ref(false);
-const genre = ref<BaseItemDto>({});
-const genres = ref<BaseItemDto[]>([]);
+const { itemId } = route.params;
 
-onMounted(async () => {
-  const { itemId } = route.params;
+const includeItemTypes = computed<BaseItemKind[]>(() => {
   const typesQuery = route.query.type as BaseItemKind ?? [];
 
-  const includeItemTypes: BaseItemKind[] = typeof typesQuery === 'string'
+  return typeof typesQuery === 'string'
     ? [typesQuery]
     : typesQuery;
-
-  loading.value = true;
-
-  try {
-    genre.value = (
-      await remote.sdk.newUserApi(getUserLibraryApi).getItem({
-        userId: remote.auth.currentUserId ?? '',
-        itemId
-      })
-    ).data;
-
-    route.meta.title = genre.value.Name;
-
-    genres.value =
-      (
-        await remote.sdk.newUserApi(getItemsApi).getItems({
-          genreIds: [itemId],
-          includeItemTypes: includeItemTypes,
-          recursive: true,
-          sortBy: ['SortName'],
-          sortOrder: [SortOrder.Ascending],
-          fields: Object.values(ItemFields),
-          userId: remote.auth.currentUserId ?? ''
-        })
-      ).data.Items ?? [];
-
-    genres.value = items.addCollection(genre.value, genres.value);
-  } catch (error) {
-    console.error(error);
-  } finally {
-    loading.value = false;
-  }
 });
+
+const { data: genre } = await useBaseItem(getUserLibraryApi, 'getItem')(() => ({
+  userId: remote.auth.currentUserId ?? '',
+  itemId
+}));
+
+const { loading, data: genres } = await useBaseItem(getItemsApi, 'getItems')(() => ({
+  genreIds: [itemId],
+  includeItemTypes: includeItemTypes.value,
+  recursive: true,
+  sortBy: ['SortName'],
+  sortOrder: [SortOrder.Ascending],
+  userId: remote.auth.currentUserId
+}));
+
+route.meta.title = genre.value.Name;
 </script>
 
 <style lang="scss" scoped>

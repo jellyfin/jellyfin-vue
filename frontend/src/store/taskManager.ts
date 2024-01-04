@@ -1,7 +1,7 @@
 import { remote } from '@/plugins/remote';
-import { items } from '@/store/items';
+import { apiStore } from '@/store/api';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
-import { type RemovableRef, useStorage } from '@vueuse/core';
+import { useStorage, type RemovableRef } from '@vueuse/core';
 import { v4 } from 'uuid';
 import { watch } from 'vue';
 
@@ -146,7 +146,7 @@ class TaskManagerStore {
          * Usually when a running task is started somewhere else and the client is accssed later
          */
         if (taskPayload === undefined) {
-          const item = items.getItemById(data.ItemId);
+          const item = apiStore.getItemById(data.ItemId);
 
           if (item?.Id && item.Name) {
             this.startTask({
