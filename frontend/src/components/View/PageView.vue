@@ -1,9 +1,9 @@
 <template>
   <RouterView v-slot="{ Component, route }">
     <TransitionView :transition-key="String(route.path)">
-      <SuspenseView suspensible>
+      <Suspense suspensible>
         <component :is="Component" />
-      </SuspenseView>
+      </Suspense>
     </TransitionView>
   </RouterView>
 </template>
