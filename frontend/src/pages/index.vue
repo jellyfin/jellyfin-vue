@@ -1,8 +1,8 @@
 <template>
   <div>
     <ItemsCarousel
-      v-if="userLibraries.carouselItems.length > 0"
-      :items="userLibraries.carouselItems"
+      v-if="carousel.length > 0"
+      :items="carousel"
       page-backdrop
       class="top-carousel">
       <template #referenceText>
@@ -13,18 +13,38 @@
       <VRow
         v-for="(homeSection, index) in homeSections"
         :key="`homeSection-${index}`">
-        <HomeSection :section="homeSection" />
+        <SwiperSection
+          :title="homeSection.title"
+          :items="getHomeSectionContent(homeSection)"
+          :shape="homeSection.shape" />
       </VRow>
     </VContainer>
   </div>
 </template>
 
+<script lang="ts">
+const excludeViewTypes = new Set([
+  'playlists',
+  'livetv',
+  'boxsets',
+  'channels'
+]);
+</script>
+
 <script setup lang="ts">
-import { userLibraries, type HomeSection } from '@/store/userLibraries';
-import { CardShapes, getShapeFromCollectionType } from '@/utils/items';
-import { computed, onMounted } from 'vue';
+import { CardShapes, fetchIndexPage, getShapeFromCollectionType } from '@/utils/items';
+import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
+import { isNil } from 'lodash-es';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router/auto';
+
+interface HomeSection {
+  title: string;
+  libraryId: string;
+  shape: CardShapes;
+  type: 'libraries' | 'resumevideo' | 'nextup' | 'latestmedia';
+}
 
 const { t } = useI18n();
 const route = useRoute();
@@ -32,112 +52,82 @@ const route = useRoute();
 route.meta.title = t('home');
 route.meta.transparentLayout = true;
 
-/**
- * Items are fetched at logon when switching between the 'fullpage' and 'default' layout. With the help of the
- * Suspense component at RouterView, we block navigation until the promise at the root level of the 'default' layout resolves.
- * This means that at login we have 2 promises: The one from here and the one from the default layout. Both are fired at the same time,
- * but only the result from one is enough. The 'isReady' checks wether the data is populated or not. If it's not populated,
- * we know the Promise of the default layout is still pending, so we can skip this one.
- *
- * We use onMounted so data gets updated on the fly as soon as possible without blocking navigation.
- * The disadvantage of this is that the content might change in front of the user,
- * but that's better UX than content jumping or blocking navigation.
- */
-onMounted(async () => {
-  if (userLibraries.isReady) {
-    await userLibraries.refresh();
-  }
+const { carousel, nextUp, views, resumeVideo, latestPerLibrary } = await fetchIndexPage();
+
+const latestMediaSections = computed(() => {
+  return views.value.map((userView) => {
+    if (
+      userView.CollectionType &&
+      !excludeViewTypes.has(userView.CollectionType)
+    ) {
+      return {
+        title: t('latestLibrary', { libraryName: userView.Name }),
+        libraryId: userView.Id ?? '',
+        shape: getShapeFromCollectionType(userView.CollectionType),
+        type: 'latestmedia'
+      };
+    }
+  }).filter((i): i is HomeSection => !isNil(i));
 });
 
 const homeSections = computed<HomeSection[]>(() => {
-  const homeSectionKeys = [
-    'librarytiles',
-    'resume',
-    'resumeaudio',
-    'upnext',
-    'latestmedia'
+  return [
+    /**
+     * Library tiles
+     */
+    {
+      title: t('libraries'),
+      libraryId: '',
+      shape: CardShapes.Thumb,
+      type: 'libraries'
+    },
+    /**
+     * Resume video
+     */
+    {
+      title: t('continueWatching'),
+      libraryId: '',
+      shape: CardShapes.Thumb,
+      type: 'resumevideo'
+    },
+    /**
+     * Next up
+     */
+    {
+      title: t('nextUp'),
+      libraryId: '',
+      shape: CardShapes.Thumb,
+      type: 'nextup'
+    },
+    /**
+     * Latest media
+     */
+    ...latestMediaSections.value
   ];
+});
 
-  const homeSections: HomeSection[] = [];
-
-  for (const homeSection of homeSectionKeys) {
-    switch (homeSection) {
-      case 'librarytiles': {
-        homeSections.push({
-          title: t('libraries'),
-          libraryId: '',
-          shape: CardShapes.Thumb,
-          type: 'libraries'
-        });
-        break;
-      }
-      case 'latestmedia': {
-        {
-          const latestMediaSections = [];
-
-          const excludeViewTypes = new Set([
-            'playlists',
-            'livetv',
-            'boxsets',
-            'channels'
-          ]);
-
-          for (const userView of userLibraries.libraries) {
-            if (
-              userView.CollectionType &&
-              excludeViewTypes.has(userView.CollectionType)
-            ) {
-              continue;
-            }
-
-            latestMediaSections.push({
-              title: t('latestLibrary', { libraryName: userView.Name }),
-              libraryId: userView.Id ?? '',
-              shape: getShapeFromCollectionType(userView.CollectionType),
-              type: 'latestmedia'
-            });
-          }
-
-          homeSections.push(...latestMediaSections);
-        }
-
-        break;
-      }
-      case 'resume': {
-        homeSections.push({
-          title: t('continueWatching'),
-          libraryId: '',
-          shape: CardShapes.Thumb,
-          type: 'resume'
-        });
-        break;
-      }
-      case 'resumeaudio': {
-        homeSections.push({
-          title: t('continueListening'),
-          libraryId: '',
-          shape: CardShapes.Square,
-          type: 'resumeaudio'
-        });
-        break;
-      }
-      case 'upnext': {
-        homeSections.push({
-          title: t('nextUp'),
-          libraryId: '',
-          shape: CardShapes.Thumb,
-          type: 'upnext'
-        });
-        break;
-      }
-      default: {
-        break;
-      }
+/**
+ * Gets the items for every home section
+ */
+function getHomeSectionContent(section: HomeSection): BaseItemDto[] {
+  switch (section.type) {
+    case 'libraries': {
+      return views.value;
+    }
+    case 'resumevideo': {
+      return resumeVideo.value;
+    }
+    case 'nextup': {
+      return nextUp.value;
+    }
+    case 'latestmedia': {
+      return latestPerLibrary.get(section.libraryId)?.value ?? [];
+    }
+    default: {
+      return [];
     }
   }
-
-  return homeSections;
-});
+};
 </script>
 
 <style lang="scss" scoped>
