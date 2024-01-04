@@ -275,7 +275,7 @@
           <CollectionTabs :items="childItems" />
         </VCol>
         <VCol cols="12">
-          <RelatedItems :item="item" />
+          <RelatedItems :related-items="relatedItems" />
         </VCol>
       </VRow>
     </template>
@@ -304,21 +304,25 @@ import { sanitizeHtml } from '@/utils/html';
 import { getBlurhash } from '@/utils/images';
 import { getItemDetailsLink, getMediaStreams } from '@/utils/items';
 import {
-  ImageType,
-  type BaseItemPerson,
-  type MediaSourceInfo
+ImageType,
+type BaseItemPerson,
+type MediaSourceInfo
 } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
+import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { computed, ref, watch } from 'vue';
 import { useRoute } from 'vue-router/auto';
 
 const route = useRoute<'/genre/[itemId]'>();
-const { itemId } = route.params;
 
 const { data: item } = await useBaseItem(getUserLibraryApi, 'getItem')(() => ({
-  itemId,
+  itemId: route.params.itemId,
   userId: remote.auth.currentUserId ?? ''
+}));
+const { data: relatedItems } = await useBaseItem(getLibraryApi, 'getSimilarItems')(() => ({
+  itemId: route.params.itemId,
+  userId: remote.auth.currentUserId
 }));
 const { data: currentSeries } = await useBaseItem(getUserLibraryApi, 'getItem')(
   () => ({
@@ -326,7 +330,6 @@ const { data: currentSeries } = await useBaseItem(getUserLibraryApi, 'getItem')(
     itemId: item.value.SeriesId ?? ''
   })
 );
-
 const { data: childItems } = await useBaseItem(getItemsApi, 'getItems')(
   () => ({
     userId: remote.auth.currentUserId,

@@ -96,36 +96,33 @@
     </template>
     <template #right>
       <RelatedItems
-        :item="item"
+        :related-items="relatedItems"
         vertical />
     </template>
   </ItemCols>
 </template>
 
 <script setup lang="ts">
+import { useBaseItem } from '@/composables/apis';
 import { remote } from '@/plugins/remote';
 import { getBlurhash } from '@/utils/images';
 import { getItemDetailsLink } from '@/utils/items';
-import { type BaseItemDto, ImageType } from '@jellyfin/sdk/lib/generated-client';
+import { ImageType } from '@jellyfin/sdk/lib/generated-client';
+import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
-import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router/auto';
 
 const route = useRoute<'/musicalbum/[itemId]'>();
 
-const item = ref<BaseItemDto>({});
+const { data: item } = await useBaseItem(getUserLibraryApi, 'getItem')(() => ({
+  itemId: route.params.itemId,
+  userId: remote.auth.currentUserId ?? ''
+}));
+const { data: relatedItems } = await useBaseItem(getLibraryApi, 'getSimilarItems')(() => ({
+  itemId: route.params.itemId,
+  userId: remote.auth.currentUserId
+}));
 
-onMounted(async () => {
-  const { itemId } = route.params;
-
-  item.value = (
-    await remote.sdk.newUserApi(getUserLibraryApi).getItem({
-      userId: remote.auth.currentUserId ?? '',
-      itemId
-    })
-  ).data;
-
-  route.meta.title = item.value.Name;
-  route.meta.backdrop.blurhash = getBlurhash(item.value, ImageType.Backdrop);
-});
+route.meta.title = item.value.Name;
+route.meta.backdrop.blurhash = getBlurhash(item.value, ImageType.Backdrop);
 </script>
