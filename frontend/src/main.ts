@@ -11,6 +11,7 @@ import { createPlugin as createRemote } from '@/plugins/remote';
 import { router } from '@/plugins/router';
 import { vuetify } from '@/plugins/vuetify';
 import { createApp } from 'vue';
+import { routes } from 'vue-router/auto/routes';
 
 /**
  * - GLOBAL STYLES -
@@ -22,9 +23,17 @@ import '@fontsource/roboto';
  * - VUE PLUGINS, STORE AND DIRECTIVE -
  * The order of statements IS IMPORTANT
  */
+const remote = createRemote();
 /* eslint-disable-next-line @typescript-eslint/no-unsafe-argument */
 const app = createApp(Root);
-const remote = createRemote();
+
+/**
+ * We add routes at this point instead of in the router plugin to avoid circular references
+ * in components. At this stage, we're sure plugins are initiated.
+ */
+for (const route of routes) {
+  router.addRoute(route);
+}
 
 app.use(remote);
 app.use(i18n);

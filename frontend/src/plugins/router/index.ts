@@ -4,12 +4,9 @@ import { computed } from 'vue';
 import {
   createRouter,
   createWebHashHistory,
-  createWebHistory,
-  /**
-   * TODO: Remove this when vue-router typings are fixed
-   */
-  type RouterTyped
-} from 'vue-router/auto';
+  createWebHistory
+} from 'vue-router';
+import type { RouterTyped } from 'vue-router/auto';
 import { metaGuard } from './middlewares/meta';
 import { validateGuard } from './middlewares/validate';
 
@@ -18,6 +15,7 @@ export const router = createRouter({
     (await getJSONConfig()).routerMode === 'history'
       ? createWebHistory()
       : createWebHashHistory(),
+  routes: [],
   scrollBehavior(_to, _from, savedPosition) {
     return savedPosition ?? { top: 0 };
   }
