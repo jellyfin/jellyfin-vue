@@ -3,6 +3,7 @@ import { apiStore } from '@/store/api';
 import type { Api } from '@jellyfin/sdk';
 import type { BaseItemDto, BaseItemDtoQueryResult } from '@jellyfin/sdk/lib/generated-client';
 import type { AxiosResponse } from 'axios';
+import { isNil } from 'lodash-es';
 import { computed, getCurrentScope, isRef, ref, toValue, unref, watch, type ComputedRef, type MaybeRef, type Ref } from 'vue';
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-return */
@@ -32,18 +33,8 @@ interface ReturnPayload<T extends Record<K, (...args: any[]) => any>, K extends 
 }
 
 /**
- * Ensures the function is used in the given
- * @param func - The function to check.
- * @returns True if the function is of type Function, false otherwise.
- */
-function ensureCorrectUsage(func: any): void {
-  if (typeof func !== 'function') {
-    throw new TypeError('The given key is not a function for the given API');
-  }
-}
-
-/**
- * Perfoms the given request
+ * Perfoms the given request and updates the store accordingly
+ *
  * @param api - Relevant API
  * @param methodName - Method to execute
  * @param ofBaseItem - Whether the request is BaseItemDto based or not
@@ -51,45 +42,48 @@ function ensureCorrectUsage(func: any): void {
  * @param args - Func args
  */
 async function resolveAndAdd<T extends Record<K, (...args: any[]) => any>, K extends keyof T>(
-  api: (api: Api) => T,
-  methodName: K,
+  api: ((api: Api) => T) | undefined,
+  methodName: K | undefined,
   ofBaseItem: boolean,
   loading: Ref<boolean>,
+  skipCache: boolean,
   ...args: ParametersAsGetters<T[K]>): Promise<void> {
-  /**
-   * We add all BaseItemDto's fields for consistency in what we can expect from the store.
-   * toValue normalizes the getters.
-   */
-  const extendedParams = [
-    {
-      ...toValue(args[0]),
-      fields: apiStore.apiEnums.fields,
-      enabledImageTypes: apiStore.apiEnums.images,
-      enableImages: true,
-      enableTotalRecordCount: false
-    },
-    ...args.slice(1).map((a) => toValue(a))
-  ] as Parameters<T[K]>;
+  if (!isNil(api) && !isNil(methodName)) {
+    /**
+     * We add all BaseItemDto's fields for consistency in what we can expect from the store.
+     * toValue normalizes the getters.
+     */
+    const extendedParams = [
+      {
+        ...toValue(args[0]),
+        fields: apiStore.apiEnums.fields,
+        enabledImageTypes: apiStore.apiEnums.images,
+        enableImages: true,
+        enableTotalRecordCount: false
+      },
+      ...args.slice(1).map((a) => toValue(a))
+    ] as Parameters<T[K]>;
 
-  try {
-    loading.value = true;
+    try {
+      loading.value = true;
 
-    const stringifiedArgs = JSON.stringify(args.map((a) => toValue(a)));
-    const funcName = `${api.name}.${String(methodName)}`;
-    const response = await remote.sdk.newUserApi(api)[methodName](...extendedParams) as Awaited<ReturnType<T[K]>>;
+      const stringifiedArgs = JSON.stringify(args.map((a) => toValue(a)));
+      const funcName = `${api.name}.${String(methodName)}`;
+      const response = await remote.sdk.newUserApi(api)[methodName](...extendedParams) as Awaited<ReturnType<T[K]>>;
 
-    if (response.data) {
-      const requestData = response.data as Awaited<ReturnType<T[K]>['data']>;
-      const result = 'Items' in requestData && Array.isArray(requestData.Items) ? requestData.Items : requestData;
+      if (response.data) {
+        const requestData = response.data as Awaited<ReturnType<T[K]>['data']>;
+        const result = 'Items' in requestData && Array.isArray(requestData.Items) ? requestData.Items : requestData;
 
-      if (ofBaseItem) {
-        apiStore.baseItemAdd(result as BaseItemDto | BaseItemDto[]);
+        if (ofBaseItem && !skipCache) {
+          apiStore.baseItemAdd(result as BaseItemDto | BaseItemDto[]);
+        }
+
+        !skipCache && apiStore.requestAdd(funcName, stringifiedArgs, ofBaseItem, result);
       }
-
-      apiStore.requestAdd(funcName, stringifiedArgs, ofBaseItem, result);
+    } catch {} finally {
+      loading.value = false;
     }
-  } catch {} finally {
-    loading.value = false;
   }
 }
 
@@ -98,10 +92,10 @@ async function resolveAndAdd<T extends Record<K, (...args: any[]) => any>, K ext
  */
 function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K extends keyof T>(
   ofBaseItem: boolean,
-  api: MaybeRef<(api: Api) => T>,
-  methodName: MaybeRef<K>
+  api: MaybeRef<((api: Api) => T) | undefined>,
+  methodName: MaybeRef<K | undefined>,
+  skipCache: MaybeRef<boolean> = false
 ): (this: any, ...args: ParametersAsGetters<T[K]>) => Promise<ReturnPayload<T, K, typeof ofBaseItem>> {
-  ensureCorrectUsage(remote.sdk.newUserApi(unref(api))[unref(methodName)]);
 
   const loading = ref(true);
   const argsRef = ref<Parameters<T[K]>>();
@@ -110,7 +104,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
   });
 
   const data = computed<ReturnData<T, K, typeof ofBaseItem>>(() =>
-    apiStore.getRequest(`${unref(api).name}.${String(unref(methodName))}`, stringArgs.value) as ReturnData<T, K, typeof ofBaseItem>
+    apiStore.getRequest(`${String(unref(api)?.name)}.${String(unref(methodName))}`, stringArgs.value) as ReturnData<T, K, typeof ofBaseItem>
   );
 
   return async function (this: any, ...args: ParametersAsGetters<T[K]>) {
@@ -122,7 +116,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
 
     const run = async (args: ParametersAsGetters<T[K]>): Promise<void> => {
       try {
-        await resolveAndAdd(unref(api), unref(methodName), ofBaseItem, loading, ...args);
+        await resolveAndAdd(unref(api), unref(methodName), ofBaseItem, loading, unref(skipCache), ...args);
       } catch {}
     };
     const isCached = Boolean(data.value);
@@ -134,6 +128,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
       });
       isRef(api) && watch(api, async () => await run(args));
       isRef(methodName) && watch(methodName, async () => await run(args));
+      isRef(skipCache) && watch(skipCache, async () => await run(args));
 
       /**
        * If there's available data before component mount, we return the cached data rightaway (see below how
@@ -174,7 +169,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
  * ```
  *
  * Caveats:
- * - If not used inside a component's <script setup> area (or in any Vue's effectScope), changing parameters will not be reactive.
+ * - If not used inside a component's script setup area (or in any Vue's effectScope), changing parameters will not be reactive.
  * This is done in order to avoid memory leaks.
  * - It only works with requests that return BaseItemDto or BaseItemDtoQueryResult responses. If you need to use another type, you **must**
  * use the `useApi` composable.
@@ -187,8 +182,8 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
  * @returns loading - A boolean ref that indicates if the request is in progress.
  */
 export function useBaseItem<T extends Record<K, (...args: any[]) => any>, K extends keyof T>(
-  api: MaybeRef<(api: Api) => T>,
-  methodName: MaybeRef<K>
+  api: MaybeRef<((api: Api) => T) | undefined>,
+  methodName: MaybeRef<K | undefined>
 ): (this: any, ...args: ParametersAsGetters<T[K]>) => Promise<ReturnPayload<T, K, true>> {
   return _sharedInternalLogic<T, K>(true, api, methodName);
 }
@@ -215,7 +210,7 @@ export function useBaseItem<T extends Record<K, (...args: any[]) => any>, K exte
  * ```
  *
  * Caveats:
- * - If not used inside a component's <script setup> area (or in any Vue's effectScope), changing parameters will not be reactive.
+ * - If not used inside a component's script setup area (or in any Vue's effectScope), changing parameters will not be reactive.
  * This is done in order to avoid memory leaks.
  * - It only works with requests that doesn't return BaseItemDto or BaseItemDtoQueryResult responses. If the return result
  * of your request is any of those types, you **must** use the `useBaseItem` composable.
@@ -224,14 +219,18 @@ export function useBaseItem<T extends Record<K, (...args: any[]) => any>, K exte
  *
  * @param api - The API's endpoint to use.
  * @param methodname- - The operation to execute.
+ * @param skipCache - USE WITH CAUTION, SINCE IT'S BETTER TO CACHE EVERYTHING BY DEFAULT. Defaults to false.
+ * Whether to skip the cache or not. Useful for requests whose return value are known to be useless to cache,
+ * like marking an item as played or favorite.
  * @returns data  - The request data.
  * @returns loading - A boolean ref that indicates if the request is in progress.
  */
 export function useApi<T extends Record<K, (...args: any[]) => any>, K extends keyof T>(
-  api: MaybeRef<(api: Api) => T>,
-  methodName: MaybeRef<K>
+  api: MaybeRef<((api: Api) => T) | undefined>,
+  methodName: MaybeRef<K | undefined>,
+  skipCache: MaybeRef<boolean> = false
 ): (this: any, ...args: ParametersAsGetters<T[K]>) => Promise<ReturnPayload<T, K, false>> {
-  return _sharedInternalLogic<T, K>(false, api, methodName);
+  return _sharedInternalLogic<T, K>(false, api, methodName, skipCache);
 }
 
 /* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-return */
