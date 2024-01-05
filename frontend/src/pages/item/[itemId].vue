@@ -298,15 +298,14 @@
 
 <script setup lang="ts">
 import { useBaseItem } from '@/composables/apis';
-import { remote } from '@/plugins/remote';
 import { getItemizedSelect } from '@/utils/forms';
 import { sanitizeHtml } from '@/utils/html';
 import { getBlurhash } from '@/utils/images';
 import { getItemDetailsLink, getMediaStreams } from '@/utils/items';
 import {
-ImageType,
-type BaseItemPerson,
-type MediaSourceInfo
+  ImageType,
+  type BaseItemPerson,
+  type MediaSourceInfo
 } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
@@ -317,22 +316,18 @@ import { useRoute } from 'vue-router/auto';
 const route = useRoute<'/genre/[itemId]'>();
 
 const { data: item } = await useBaseItem(getUserLibraryApi, 'getItem')(() => ({
-  itemId: route.params.itemId,
-  userId: remote.auth.currentUserId ?? ''
+  itemId: route.params.itemId
 }));
 const { data: relatedItems } = await useBaseItem(getLibraryApi, 'getSimilarItems')(() => ({
-  itemId: route.params.itemId,
-  userId: remote.auth.currentUserId
+  itemId: route.params.itemId
 }));
 const { data: currentSeries } = await useBaseItem(getUserLibraryApi, 'getItem')(
   () => ({
-    userId: remote.auth.currentUserId ?? '',
     itemId: item.value.SeriesId ?? ''
   })
 );
 const { data: childItems } = await useBaseItem(getItemsApi, 'getItems')(
   () => ({
-    userId: remote.auth.currentUserId,
     parentId: item.value.Id
   })
 );

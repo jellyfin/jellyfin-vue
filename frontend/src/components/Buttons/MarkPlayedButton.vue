@@ -10,7 +10,6 @@
 
 <script setup lang="ts">
 import { useApi } from '@/composables/apis';
-import { remote } from '@/plugins/remote';
 import { canMarkWatched } from '@/utils/items';
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getPlaystateApi } from '@jellyfin/sdk/lib/utils/api/playstate-api';
@@ -30,7 +29,6 @@ const methodToExecute = ref<'markPlayedItem' | 'markUnplayedItem' | undefined>()
  * to do manual modification here
  */
 const { loading } = await useApi(getPlaystateApi, methodToExecute, true)(() => ({
-  userId: remote.auth.currentUserId ?? '',
   itemId: props.item.Id ?? ''
 }));
 

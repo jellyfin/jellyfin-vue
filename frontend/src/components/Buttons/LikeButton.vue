@@ -9,7 +9,6 @@
 
 <script setup lang="ts">
 import { useApi } from '@/composables/apis';
-import { remote } from '@/plugins/remote';
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import IMdiHeart from 'virtual:icons/mdi/heart';
@@ -30,7 +29,6 @@ const props = withDefaults(
  */
 const methodToExecute = ref<'markFavoriteItem' | 'unmarkFavoriteItem' | undefined>();
 const { loading } = await useApi(getUserLibraryApi, methodToExecute, true)(() => ({
-  userId: remote.auth.currentUserId ?? '',
   itemId: props.item.Id ?? ''
 }));
 

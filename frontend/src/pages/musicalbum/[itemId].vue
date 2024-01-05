@@ -104,7 +104,6 @@
 
 <script setup lang="ts">
 import { useBaseItem } from '@/composables/apis';
-import { remote } from '@/plugins/remote';
 import { getBlurhash } from '@/utils/images';
 import { getItemDetailsLink } from '@/utils/items';
 import { ImageType } from '@jellyfin/sdk/lib/generated-client';
@@ -115,12 +114,10 @@ import { useRoute } from 'vue-router/auto';
 const route = useRoute<'/musicalbum/[itemId]'>();
 
 const { data: item } = await useBaseItem(getUserLibraryApi, 'getItem')(() => ({
-  itemId: route.params.itemId,
-  userId: remote.auth.currentUserId ?? ''
+  itemId: route.params.itemId
 }));
 const { data: relatedItems } = await useBaseItem(getLibraryApi, 'getSimilarItems')(() => ({
-  itemId: route.params.itemId,
-  userId: remote.auth.currentUserId
+  itemId: route.params.itemId
 }));
 
 route.meta.title = item.value.Name;

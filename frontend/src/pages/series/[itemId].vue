@@ -182,7 +182,6 @@
 
 <script setup lang="ts">
 import { useBaseItem } from '@/composables/apis';
-import { remote } from '@/plugins/remote';
 import { sanitizeHtml } from '@/utils/html';
 import { getBlurhash } from '@/utils/images';
 import { getItemDetailsLink } from '@/utils/items';
@@ -198,12 +197,10 @@ import { useRoute } from 'vue-router/auto';
 const route = useRoute<'/series/[itemId]'>();
 
 const { data: item } = await useBaseItem(getUserLibraryApi, 'getItem')(() => ({
-  itemId: route.params.itemId,
-  userId: remote.auth.currentUserId ?? ''
+  itemId: route.params.itemId
 }));
 const { data: relatedItems } = await useBaseItem(getLibraryApi, 'getSimilarItems')(() => ({
-  itemId: route.params.itemId,
-  userId: remote.auth.currentUserId
+  itemId: route.params.itemId
 }));
 
 const crew = computed<BaseItemPerson[]>(() =>

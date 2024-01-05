@@ -168,13 +168,12 @@
 <script setup lang="ts">
 import { useBaseItem } from '@/composables/apis';
 import { useDateFns } from '@/composables/use-datefns';
-import { remote } from '@/plugins/remote';
 import { sanitizeHtml } from '@/utils/html';
 import { getBlurhash } from '@/utils/images';
 import {
-BaseItemKind,
-ImageType,
-SortOrder
+  BaseItemKind,
+  ImageType,
+  SortOrder
 } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
@@ -189,44 +188,38 @@ const activeTab = ref(4);
 const sortBy = ['PremiereDate', 'ProductionYear', 'SortName'];
 
 const { data: item } = await useBaseItem(getUserLibraryApi, 'getItem')(() => ({
-  userId: remote.auth.currentUserId ?? '',
   itemId: route.params.itemId
 }));
 const { data: relatedItems } = await useBaseItem(getLibraryApi, 'getSimilarItems')(() => ({
-  itemId: route.params.itemId,
-  userId: remote.auth.currentUserId
+  itemId: route.params.itemId
 }));
 const { data: movies } = await useBaseItem(getItemsApi, 'getItems')(() => ({
   personIds: [route.params.itemId],
   sortBy,
   sortOrder: [SortOrder.Descending],
   recursive: true,
-  includeItemTypes: [BaseItemKind.Movie],
-  userId: remote.auth.currentUserId
+  includeItemTypes: [BaseItemKind.Movie]
 }));
 const { data: series } = await useBaseItem(getItemsApi, 'getItems')(() => ({
   personIds: [route.params.itemId],
   sortBy,
   sortOrder: [SortOrder.Descending],
   recursive: true,
-  includeItemTypes: [BaseItemKind.Series],
-  userId: remote.auth.currentUserId
+  includeItemTypes: [BaseItemKind.Series]
 }));
 const { data: books } = await useBaseItem(getItemsApi, 'getItems')(() => ({
   personIds: [route.params.itemId],
   sortBy,
   sortOrder: [SortOrder.Descending],
   recursive: true,
-  includeItemTypes: [BaseItemKind.Book],
-  userId: remote.auth.currentUserId
+  includeItemTypes: [BaseItemKind.Book]
 }));
 const { data: photos } = await useBaseItem(getItemsApi, 'getItems')(() => ({
   personIds: [route.params.itemId],
   sortBy,
   sortOrder: [SortOrder.Descending],
   recursive: true,
-  includeItemTypes: [BaseItemKind.Photo],
-  userId: remote.auth.currentUserId
+  includeItemTypes: [BaseItemKind.Photo]
 }));
 
 const birthDate = computed(() =>

@@ -145,7 +145,6 @@
 
 <script setup lang="ts">
 import { useBaseItem } from '@/composables/apis';
-import { remote } from '@/plugins/remote';
 import { sanitizeHtml } from '@/utils/html';
 import { getBlurhash } from '@/utils/images';
 import { msToTicks } from '@/utils/time';
@@ -170,20 +169,17 @@ const sortBy = ['PremiereDate', 'ProductionYear', 'SortName'];
 const activeTab = ref(0);
 
 const { data: item } = await useBaseItem(getUserLibraryApi, 'getItem')(() => ({
-  itemId: route.params.itemId,
-  userId: remote.auth.currentUserId ?? ''
+  itemId: route.params.itemId
 }));
 const { data: relatedItems } = await useBaseItem(getLibraryApi, 'getSimilarItems')(() => ({
-  itemId: route.params.itemId,
-  userId: remote.auth.currentUserId
+  itemId: route.params.itemId
 }));
 const { data: discography } = await useBaseItem(getItemsApi, 'getItems')(() => ({
   albumArtistIds: [route.params.itemId],
   sortBy,
   sortOrder: [SortOrder.Descending],
   recursive: true,
-  includeItemTypes: [BaseItemKind.MusicAlbum],
-  userId: remote.auth.currentUserId
+  includeItemTypes: [BaseItemKind.MusicAlbum]
 }));
 const { data: appearances } = await useBaseItem(getItemsApi, 'getItems')(() => ({
   contributingArtistIds: [route.params.itemId],
@@ -191,17 +187,16 @@ const { data: appearances } = await useBaseItem(getItemsApi, 'getItems')(() => (
   sortBy,
   sortOrder: [SortOrder.Descending],
   recursive: true,
-  includeItemTypes: [BaseItemKind.MusicAlbum],
-  userId: remote.auth.currentUserId
+  includeItemTypes: [BaseItemKind.MusicAlbum]
 }));
 const { data: musicVideos } = await useBaseItem(getItemsApi, 'getItems')(() => ({
   artistIds: [route.params.itemId],
   sortBy,
   sortOrder: [SortOrder.Descending],
   recursive: true,
-  includeItemTypes: [BaseItemKind.MusicVideo],
-  userId: remote.auth.currentUserId
+  includeItemTypes: [BaseItemKind.MusicVideo]
 }));
+
 
 const singles = computed<BaseItemDto[]>(() =>
   discography.value.filter(
