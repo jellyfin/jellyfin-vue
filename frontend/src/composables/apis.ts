@@ -3,7 +3,7 @@ import { apiStore } from '@/store/api';
 import type { Api } from '@jellyfin/sdk';
 import type { BaseItemDto, BaseItemDtoQueryResult } from '@jellyfin/sdk/lib/generated-client';
 import type { AxiosResponse } from 'axios';
-import { isNil } from 'lodash-es';
+import { isEqual, isNil } from 'lodash-es';
 import { computed, getCurrentScope, isRef, ref, toValue, unref, watch, type ComputedRef, type MaybeRef, type Ref } from 'vue';
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any */
@@ -121,7 +121,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
   skipCache: MaybeRef<boolean> = false
 ): (this: any, ...args: ComposableParams<T,K,U>) => Promise<ReturnPayload<T, K, typeof ofBaseItem>> {
 
-  const loading = ref(true);
+  const loading = ref(false);
   const argsRef = ref<Parameters<T[K]>>();
   const stringArgs = computed(() => {
     return JSON.stringify(argsRef.value);
@@ -146,26 +146,30 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
     const isCached = Boolean(data.value);
 
     if (getCurrentScope() !== undefined) {
-      watch(args, async () => {
-        setArgs();
-        await run(args);
+      watch(args, async (_newVal, oldVal) => {
+        /**
+         * Does a deep comparison to avoid useless double requests
+         */
+        if (!args.map((a) => toValue(a)).every((a, index) => isEqual(a, toValue(oldVal?.[index])))) {
+          setArgs();
+          await run(args);
+        }
       });
       isRef(api) && watch(api, async () => await run(args));
       isRef(methodName) && watch(methodName, async () => await run(args));
       isRef(skipCache) && watch(skipCache, async () => await run(args));
-
-      /**
-       * If there's available data before component mount, we return the cached data rightaway (see below how
-       * we skip the promise) to get the component mounted as soon as possible.
-       * However, we queue a request to the server to update the data after the component is
-       * mounted
-       */
-      isCached && window.setTimeout(async () => {
-        await run(args);
-      });
     }
 
     !isCached && await run(args);
+    /**
+     * If there's available data before component mount, we return the cached data rightaway (see below how
+     * we skip the promise) to get the component mounted as soon as possible.
+     * However, we queue a request to the server to update the data after the component is
+     * mounted. setTimeout executes it when the event loop is clear, avoiding overwhelming the engine.
+     */
+    isCached && window.setTimeout(async () => {
+      await run(args);
+    });
 
     return { loading, data };
   };

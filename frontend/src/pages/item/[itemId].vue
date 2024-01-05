@@ -319,7 +319,8 @@ const { data: item } = await useBaseItem(getUserLibraryApi, 'getItem')(() => ({
   itemId: route.params.itemId
 }));
 const { data: relatedItems } = await useBaseItem(getLibraryApi, 'getSimilarItems')(() => ({
-  itemId: route.params.itemId
+  itemId: route.params.itemId,
+  limit: 12
 }));
 const { data: currentSeries } = await useBaseItem(getUserLibraryApi, 'getItem')(
   () => ({

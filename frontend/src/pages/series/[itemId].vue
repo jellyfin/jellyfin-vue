@@ -200,7 +200,8 @@ const { data: item } = await useBaseItem(getUserLibraryApi, 'getItem')(() => ({
   itemId: route.params.itemId
 }));
 const { data: relatedItems } = await useBaseItem(getLibraryApi, 'getSimilarItems')(() => ({
-  itemId: route.params.itemId
+  itemId: route.params.itemId,
+  limit: 5
 }));
 
 const crew = computed<BaseItemPerson[]>(() =>
