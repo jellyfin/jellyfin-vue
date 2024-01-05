@@ -67,6 +67,12 @@ export enum CardShapes {
 }
 
 /**
+ * This sortOrder is commonly used across many requests. Define it here so it can be
+ * used in multiple places without repeating the same code.
+ */
+export const defaultSortOrder = ['PremiereDate', 'ProductionYear', 'SortName'];
+
+/**
  * Determines if the item is a person
  *
  * @param item - The item to be checked.

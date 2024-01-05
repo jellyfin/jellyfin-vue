@@ -147,6 +147,7 @@
 import { useBaseItem } from '@/composables/apis';
 import { sanitizeHtml } from '@/utils/html';
 import { getBlurhash } from '@/utils/images';
+import { defaultSortOrder as sortBy } from '@/utils/items';
 import { msToTicks } from '@/utils/time';
 import {
   BaseItemKind,
@@ -164,7 +165,6 @@ const SINGLE_MAX_LENGTH_MS = 600_000;
 const EP_MAX_LENGTH_MS = 1_800_000;
 
 const route = useRoute<'/artist/[itemId]'>();
-const sortBy = ['PremiereDate', 'ProductionYear', 'SortName'];
 
 const activeTab = ref(0);
 
