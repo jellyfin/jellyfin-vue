@@ -125,6 +125,7 @@ meta:
 </route>
 
 <script setup lang="ts">
+import { playbackGuard } from '@/plugins/router/middlewares/playback';
 import {
   mediaControls,
   mediaElementRef
@@ -142,6 +143,10 @@ import {
 import IMdiChevronDown from 'virtual:icons/mdi/chevron-down';
 import IMdiClose from 'virtual:icons/mdi/close';
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+
+defineOptions({
+  beforeRouteEnter: playbackGuard
+});
 
 /**
  * - iOS's Safari fullscreen API is only available for the video element

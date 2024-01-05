@@ -1,12 +1,15 @@
 import { getJSONConfig } from '@/utils/external-config';
 import { useTitle } from '@vueuse/core';
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import {
   createRouter,
   createWebHashHistory,
   createWebHistory
 } from 'vue-router';
 import type { RouterTyped } from 'vue-router/auto';
+import { remote } from '../remote';
+import { adminGuard } from './middlewares/admin-pages';
+import { loginGuard } from './middlewares/login';
 import { metaGuard } from './middlewares/meta';
 import { validateGuard } from './middlewares/validate';
 
@@ -22,14 +25,14 @@ export const router = createRouter({
 }) as RouterTyped;
 
 /**
- * Middlewares
- *  - The order IS IMPORTANT (meta handling should always go first)
+ * Middleware pipeline: The order IS IMPORTANT (meta handling should always go first)
  *
- * Login/auth middlewares are located in:
- * - remote.auth plugin
- * - playbackManager
+ * Route-specific guards should be defined in the route itself, not here.
+ * See the playback pages for an example of this.
  */
 router.beforeEach(metaGuard);
+router.beforeEach(loginGuard);
+router.beforeEach(adminGuard);
 router.beforeEach(validateGuard);
 
 /**
@@ -73,3 +76,39 @@ const pageTitle = computed(() => {
 });
 
 useTitle(pageTitle);
+
+/**
+ * Re-run the middleware pipeline when the user logs out or state is cleared
+ */
+watch(
+  [
+    (): typeof remote.auth.currentUser => remote.auth.currentUser,
+    (): typeof remote.auth.servers => remote.auth.servers
+  ],
+  async () => {
+    if (!remote.auth.currentUser && remote.auth.servers.length <= 0) {
+      /**
+       * We run the redirect to /server/add as it's the first page in the login flow
+       *
+       * In case the whole localStorage is gone at runtime, if we're at the login
+       * page, redirecting to /server/login wouldn't work, as we're in that same page.
+       * /server/add doesn't depend on the state of localStorage, so it's always safe to
+       * redirect there and leave the middleware take care of the final destination
+       * (when servers are already available, for example)
+       */
+      await router.replace('/server/add');
+    } else if (
+      !remote.auth.currentUser &&
+      remote.auth.servers.length > 0 &&
+      remote.auth.currentServer
+    ) {
+      await (remote.auth.currentServer.StartupWizardCompleted ? router.replace('/server/login') : router.replace('/wizard'));
+    } else if (
+      !remote.auth.currentUser &&
+      remote.auth.servers.length > 0 &&
+      !remote.auth.currentServer
+    ) {
+      await router.replace('/server/select');
+    }
+  }
+);
