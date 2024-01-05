@@ -28,7 +28,7 @@
     "comlink": "4.4.1",
     "date-fns": "3.0.6",
     "destr": "2.0.2",
-    "dompurify": "3.0.6",
+    "dompurify": "3.0.7",
     "hls.js": "1.4.14",
     "jassub": "1.7.15",
     "lodash-es": "4.17.21",
@@ -36,7 +36,7 @@
     "sortablejs": "1.15.1",
     "swiper": "11.0.5",
     "uuid": "9.0.1",
-    "vue": "3.4.4",
+    "vue": "3.4.5",
     "vue-i18n": "9.8.0",
     "vue-router": "4.2.5",
     "vuetify": "3.4.9"
