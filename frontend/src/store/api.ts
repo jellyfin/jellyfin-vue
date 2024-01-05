@@ -40,7 +40,11 @@ class ApiStore {
     items: new Map<BaseItemDto['Id'], BaseItemDto>(),
     requests: new Map<string, Map<string, unknown | RawBaseItemResponse>>()
   };
-  private _state = reactive<ApiState>(structuredClone(this._defaultState));
+  /**
+   * Maps can be cleared (see this._clear), so no need to perform an structuredClone
+   * of the defaultState here
+   */
+  private _state = reactive<ApiState>(this._defaultState);
 
   public apiEnums = Object.freeze({
     fields: Object.freeze(Object.values(ItemFields)),
@@ -143,7 +147,8 @@ class ApiStore {
   };
 
   private _clear = (): void => {
-    Object.assign(this._state, this._defaultState);
+    this._state.items.clear();
+    this._state.requests.clear();
   };
 
   public constructor() {
