@@ -588,17 +588,13 @@ interface IndexPageQueries {
  * so when it resolves all the content is already loaded without further delay.
  */
 export async function fetchIndexPage(): Promise<IndexPageQueries> {
-  const userId = remote.auth.currentUserId ?? '';
   const latestPerLibrary = new Map<BaseItemDto['Id'], ComputedRef<BaseItemDto[]>>();
 
-  const { data: views } = await useBaseItem(getUserViewsApi, 'getUserViews')(() => ({
-    userId
-  }));
+  const { data: views } = await useBaseItem(getUserViewsApi, 'getUserViews')(() => ({}));
 
   const latestFromLibrary = async (): Promise<void> => {
     for (const view of views.value) {
       const { data } = await useBaseItem(getUserLibraryApi, 'getLatestMedia')(() => ({
-        userId,
         parentId: view.Id
       }));
 
@@ -608,15 +604,10 @@ export async function fetchIndexPage(): Promise<IndexPageQueries> {
 
   const promises = [
     useBaseItem(getItemsApi, 'getResumeItems')(() => ({
-      userId,
       mediaTypes: ['Video']
     })),
-    useBaseItem(getUserLibraryApi, 'getLatestMedia')(() => ({
-      userId
-    })),
-    useBaseItem(getTvShowsApi, 'getNextUp')(() => ({
-      userId
-    })),
+    useBaseItem(getUserLibraryApi, 'getLatestMedia')(() => ({})),
+    useBaseItem(getTvShowsApi, 'getNextUp')(() => ({})),
     latestFromLibrary()
   ];
 

@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import type { DrawerItem } from '@/components/Navigation/NavigationDrawer.vue';
+import type { DrawerItem } from '@/components/Layout/Navigation/NavigationDrawer.vue';
 import { playbackManager } from '@/store/playbackManager';
 import { playerElement } from '@/store/playerElement';
 import { fetchIndexPage, getLibraryIcon } from '@/utils/items';
@@ -35,7 +35,7 @@ const drawerItems = computed<DrawerItem[]>(() => {
     return {
       icon: getLibraryIcon(view.CollectionType),
       title: view.Name ?? '',
-      to: `/library/${view.Id}`
+      to: `/library/${String(view.Id)}`
     };
   });
 });

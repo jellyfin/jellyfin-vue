@@ -64,7 +64,6 @@
 <script setup lang="ts">
 import { useBaseItem } from '@/composables/apis';
 import { useResponsiveClasses } from '@/composables/use-responsive-classes';
-import { remote } from '@/plugins/remote';
 import {
   SortOrder,
   type BaseItemKind
@@ -87,7 +86,6 @@ const includeItemTypes = computed<BaseItemKind[]>(() => {
 });
 
 const { data: genre } = await useBaseItem(getUserLibraryApi, 'getItem')(() => ({
-  userId: remote.auth.currentUserId ?? '',
   itemId
 }));
 
@@ -96,8 +94,7 @@ const { loading, data: genres } = await useBaseItem(getItemsApi, 'getItems')(() 
   includeItemTypes: includeItemTypes.value,
   recursive: true,
   sortBy: ['SortName'],
-  sortOrder: [SortOrder.Ascending],
-  userId: remote.auth.currentUserId
+  sortOrder: [SortOrder.Ascending]
 }));
 
 route.meta.title = genre.value.Name;

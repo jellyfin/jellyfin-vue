@@ -6,9 +6,30 @@ import type { AxiosResponse } from 'axios';
 import { isNil } from 'lodash-es';
 import { computed, getCurrentScope, isRef, ref, toValue, unref, watch, type ComputedRef, type MaybeRef, type Ref } from 'vue';
 
-/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-return */
-type ParametersAsGetters<T extends (...args: any) => any> = T extends (...args: infer P) => any ? { [K in keyof P]: () => P[K] } : never;
+/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any */
+/**
+ * BetterOmit still provides IntelliSense fedback, unlike the built-in Omit type.
+ * See https://github.com/microsoft/TypeScript/issues/56135
+ */
+type BetterOmit<T, K extends keyof any> = T extends Record<any, any>
+  ? {
+      [P in keyof T as P extends K ? never : P]: T[P]
+    }
+  : T;
+/**
+ * Make all the properties of a type mutable.
+ */
+type Mutable<T> = {
+  -readonly [K in keyof T]: T[K];
+};
+type OmittedKeys = 'fields' | 'userId' | 'enableImages' | 'enableTotalRecordCount' | 'enabledImageTypes';
+type ParametersAsGetters<T extends (...args: any[]) => any> = T extends (...args: infer P) => any
+  ? { [K in keyof P]: () => BetterOmit<Mutable<P[K]>, OmittedKeys> }
+  : never;
 type ExtractResponseDataType<T> = Awaited<T> extends AxiosResponse<infer U, any> ? U : undefined;
+type Validate<T, U> = T extends U ? U : never;
+type ComposableParams<T extends Record<K, (...args: any[]) => any>, K extends keyof T, U extends ParametersAsGetters<T[K]>> =
+  Validate<ParametersAsGetters<T[K]>, U>;
 /**
  * If response.data is BaseItemDto or BaseItemDto[], returns it. Otherwise, returns undefined.
  */
@@ -41,13 +62,13 @@ interface ReturnPayload<T extends Record<K, (...args: any[]) => any>, K extends 
  * @param loading - Ref to hold the loading state
  * @param args - Func args
  */
-async function resolveAndAdd<T extends Record<K, (...args: any[]) => any>, K extends keyof T>(
+async function resolveAndAdd<T extends Record<K, (...args: any[]) => any>, K extends keyof T, U extends ParametersAsGetters<T[K]>>(
   api: ((api: Api) => T) | undefined,
   methodName: K | undefined,
   ofBaseItem: boolean,
   loading: Ref<boolean>,
   skipCache: boolean,
-  ...args: ParametersAsGetters<T[K]>): Promise<void> {
+  ...args: ComposableParams<T,K,U>): Promise<void> {
   if (!isNil(api) && !isNil(methodName)) {
     /**
      * We add all BaseItemDto's fields for consistency in what we can expect from the store.
@@ -56,6 +77,7 @@ async function resolveAndAdd<T extends Record<K, (...args: any[]) => any>, K ext
     const extendedParams = [
       {
         ...toValue(args[0]),
+        ...(remote.auth.currentUserId && { userId: remote.auth.currentUserId }),
         fields: apiStore.apiEnums.fields,
         enabledImageTypes: apiStore.apiEnums.images,
         enableImages: true,
@@ -79,7 +101,9 @@ async function resolveAndAdd<T extends Record<K, (...args: any[]) => any>, K ext
           apiStore.baseItemAdd(result as BaseItemDto | BaseItemDto[]);
         }
 
-        !skipCache && apiStore.requestAdd(funcName, stringifiedArgs, ofBaseItem, result);
+        if (!skipCache) {
+          apiStore.requestAdd(funcName, stringifiedArgs, ofBaseItem, result);
+        }
       }
     } catch {} finally {
       loading.value = false;
@@ -90,12 +114,12 @@ async function resolveAndAdd<T extends Record<K, (...args: any[]) => any>, K ext
 /**
  * This is the internal logic of the composables
  */
-function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K extends keyof T>(
+function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K extends keyof T, U extends ParametersAsGetters<T[K]>>(
   ofBaseItem: boolean,
   api: MaybeRef<((api: Api) => T) | undefined>,
   methodName: MaybeRef<K | undefined>,
   skipCache: MaybeRef<boolean> = false
-): (this: any, ...args: ParametersAsGetters<T[K]>) => Promise<ReturnPayload<T, K, typeof ofBaseItem>> {
+): (this: any, ...args: ComposableParams<T,K,U>) => Promise<ReturnPayload<T, K, typeof ofBaseItem>> {
 
   const loading = ref(true);
   const argsRef = ref<Parameters<T[K]>>();
@@ -107,14 +131,14 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
     apiStore.getRequest(`${String(unref(api)?.name)}.${String(unref(methodName))}`, stringArgs.value) as ReturnData<T, K, typeof ofBaseItem>
   );
 
-  return async function (this: any, ...args: ParametersAsGetters<T[K]>) {
+  return async function (this: any, ...args: ComposableParams<T,K,U>) {
     const setArgs = (): void => {
       argsRef.value = args.map((a) => toValue(a)) as Parameters<T[K]>;
     };
 
     setArgs();
 
-    const run = async (args: ParametersAsGetters<T[K]>): Promise<void> => {
+    const run = async (args: ComposableParams<T,K,U>): Promise<void> => {
       try {
         await resolveAndAdd(unref(api), unref(methodName), ofBaseItem, loading, unref(skipCache), ...args);
       } catch {}
@@ -181,11 +205,11 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
  * @returns data  - The BaseItemDto or BaseItemDto[] that was requested.
  * @returns loading - A boolean ref that indicates if the request is in progress.
  */
-export function useBaseItem<T extends Record<K, (...args: any[]) => any>, K extends keyof T>(
+export function useBaseItem<T extends Record<K, (...args: any[]) => any>, K extends keyof T, U extends ParametersAsGetters<T[K]>>(
   api: MaybeRef<((api: Api) => T) | undefined>,
   methodName: MaybeRef<K | undefined>
-): (this: any, ...args: ParametersAsGetters<T[K]>) => Promise<ReturnPayload<T, K, true>> {
-  return _sharedInternalLogic<T, K>(true, api, methodName);
+): (this: any, ...args: ComposableParams<T,K,U>) => Promise<ReturnPayload<T, K, true>> {
+  return _sharedInternalLogic<T, K, U>(true, api, methodName);
 }
 
 /**
@@ -225,12 +249,12 @@ export function useBaseItem<T extends Record<K, (...args: any[]) => any>, K exte
  * @returns data  - The request data.
  * @returns loading - A boolean ref that indicates if the request is in progress.
  */
-export function useApi<T extends Record<K, (...args: any[]) => any>, K extends keyof T>(
+export function useApi<T extends Record<K, (...args: any[]) => any>, K extends keyof T, U extends ParametersAsGetters<T[K]>>(
   api: MaybeRef<((api: Api) => T) | undefined>,
   methodName: MaybeRef<K | undefined>,
   skipCache: MaybeRef<boolean> = false
-): (this: any, ...args: ParametersAsGetters<T[K]>) => Promise<ReturnPayload<T, K, false>> {
-  return _sharedInternalLogic<T, K>(false, api, methodName, skipCache);
+): (this: any, ...args: ComposableParams<T,K,U>) => Promise<ReturnPayload<T, K, false>> {
+  return _sharedInternalLogic<T, K, U>(false, api, methodName, skipCache);
 }
 
-/* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-return */
+/* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any */

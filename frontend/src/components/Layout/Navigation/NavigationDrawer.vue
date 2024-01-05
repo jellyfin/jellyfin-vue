@@ -44,7 +44,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router/auto';
 import type { RouteNamedMap } from 'vue-router/auto/routes';
 
-interface DrawerItem {
+export interface DrawerItem {
   icon: ReturnType<typeof getLibraryIcon>;
   title: string;
   to: keyof RouteNamedMap;
