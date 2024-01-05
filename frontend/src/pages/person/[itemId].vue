@@ -170,6 +170,7 @@ import { useBaseItem } from '@/composables/apis';
 import { useDateFns } from '@/composables/use-datefns';
 import { sanitizeHtml } from '@/utils/html';
 import { getBlurhash } from '@/utils/images';
+import { defaultSortOrder as sortBy } from '@/utils/items';
 import {
   BaseItemKind,
   ImageType,
@@ -185,7 +186,6 @@ import { useRoute } from 'vue-router/auto';
 const route = useRoute<'/person/[itemId]'>();
 
 const activeTab = ref(4);
-const sortBy = ['PremiereDate', 'ProductionYear', 'SortName'];
 
 const { data: item } = await useBaseItem(getUserLibraryApi, 'getItem')(() => ({
   itemId: route.params.itemId
