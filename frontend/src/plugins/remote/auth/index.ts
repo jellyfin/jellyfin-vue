@@ -1,6 +1,5 @@
 import { useSnackbar } from '@/composables/use-snackbar';
 import { i18n } from '@/plugins/i18n';
-import { router } from '@/plugins/router';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
 import {
   API_VERSION,
@@ -13,8 +12,6 @@ import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
 import { useStorage } from '@vueuse/core';
 import type { AxiosError } from 'axios';
 import { isNil, merge } from 'lodash-es';
-import { watch } from 'vue';
-import type { RouteLocationNormalized, RouteLocationPathRaw, RouteLocationRaw } from 'vue-router/auto';
 import SDK, { useOneTimeAPI } from '../sdk/sdk-utils';
 import type { AuthState, ServerInfo } from './types';
 
@@ -160,11 +157,7 @@ class RemotePluginAuth {
           isDefault: isDefault
         };
 
-        if (serv.StartupWizardCompleted) {
-          this._state.value.currentServerIndex = this._addOrRefreshServer(serv);
-        } else {
-          await router.push({ path: '/wizard' });
-        }
+        this._state.value.currentServerIndex = this._addOrRefreshServer(serv);
       } catch (error) {
         useSnackbar(t('anErrorHappened'), 'error');
         console.error(error);
@@ -323,86 +316,6 @@ class RemotePluginAuth {
 
   public constructor() {
     window.setTimeout(async () => await this.refreshCurrentUserInfo());
-
-    const serverAddUrl = '/server/add';
-    const serverSelectUrl = '/server/select';
-    const serverLoginUrl = '/server/login';
-    const routes = new Set([serverAddUrl, serverSelectUrl, serverLoginUrl]);
-
-    /**
-     * Redirects to login page if there's no user logged in.
-     */
-    router.beforeEach((
-      to: RouteLocationNormalized
-    ): boolean | RouteLocationRaw => {
-      let destinationRoute: RouteLocationPathRaw | undefined;
-
-      if (this.servers.length <= 0) {
-        destinationRoute = { path: serverAddUrl, replace: true };
-      } else if (!routes.has(to.path)) {
-        if (isNil(this.currentServer)) {
-          destinationRoute = { path: serverSelectUrl, replace: true };
-        } else if (isNil(this.currentUser)) {
-          destinationRoute = { path: serverLoginUrl, replace: true };
-        }
-      }
-
-      return destinationRoute && to.path !== destinationRoute.path
-        ? destinationRoute
-        : true;
-    });
-
-    /**
-     * Redirect the user to index page when attempting to access
-     * an admin page in settings.
-     */
-    router.beforeEach((
-      to: RouteLocationNormalized
-    ): boolean | RouteLocationRaw => {
-      if (to.meta.admin && !this.currentUser?.Policy?.IsAdministrator) {
-        useSnackbar(i18n.t('unauthorized'), 'error');
-
-        return { path: '/', replace: true };
-      }
-
-      return true;
-    });
-
-    /**
-     * Re-run the middleware pipeline when the user logs out
-     */
-    watch(
-      [
-        (): typeof this.currentUser => this.currentUser,
-        (): typeof this.servers => this.servers
-      ],
-      async () => {
-        if (!this.currentUser && this.servers.length <= 0) {
-          /**
-           * We run the redirect to /server/add as it's the first page in the login flow
-           *
-           * In case the whole localStorage is gone at runtime, if we're at the login
-           * page, redirecting to /server/login wouldn't work, as we're in that same page.
-           * /server/add doesn't depend on the state of localStorage, so it's always safe to
-           * redirect there and leave the middleware take care of the final destination
-           * (when servers are already available, for example)
-           */
-          await router.replace('/server/add');
-        } else if (
-          !this.currentUser &&
-          this.servers.length > 0 &&
-            this.currentServer
-        ) {
-          await router.replace('/server/login');
-        } else if (
-          !this.currentUser &&
-          this.servers.length > 0 &&
-            !this.currentServer
-        ) {
-          await router.replace('/server/select');
-        }
-      }
-    );
   }
 }
 
