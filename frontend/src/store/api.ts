@@ -11,13 +11,21 @@ import { reactive, watch } from 'vue';
 /**
  * Class that we can use to transform to BaseItem when necessary
  */
-class RawBaseItemResponse {
-  public wasArray: boolean;
-  public ids: BaseItemDto['Id'][];
+class CachedResponse {
+  public wasArray: boolean | undefined;
+  public ids: BaseItemDto['Id'][] = [];
+  public rawResult: unknown | undefined;
+  public ofBaseItem: boolean;
 
-  public constructor(payload: BaseItemDto | BaseItemDto[]) {
-    this.wasArray = Array.isArray(payload);
-    this.ids = this.wasArray ? (payload as BaseItemDto[]).map((i) => i.Id) : [(payload as BaseItemDto).Id];
+  public constructor(ofBaseItem: boolean, payload: boolean extends typeof ofBaseItem ? BaseItemDto | BaseItemDto[] : unknown) {
+    this.ofBaseItem = ofBaseItem;
+
+    if (this.ofBaseItem) {
+      this.wasArray = Array.isArray(payload);
+      this.ids = this.wasArray ? (payload as BaseItemDto[]).map((i) => i.Id) : [(payload as BaseItemDto).Id];
+    } else {
+      this.rawResult = payload;
+    }
   }
 }
 
@@ -26,7 +34,7 @@ class RawBaseItemResponse {
  */
 interface ApiState {
   items: Map<BaseItemDto['Id'], BaseItemDto>;
-  requests: Map<string, Map<string, unknown | RawBaseItemResponse>>;
+  requests: Map<string, Map<string, CachedResponse>>;
 }
 
 /**
@@ -38,7 +46,7 @@ class ApiStore {
    */
   private _defaultState: ApiState = {
     items: new Map<BaseItemDto['Id'], BaseItemDto>(),
-    requests: new Map<string, Map<string, unknown | RawBaseItemResponse>>()
+    requests: new Map<string, Map<string, CachedResponse>>()
   };
   /**
    * Maps can be cleared (see this._clear), so no need to perform an structuredClone
@@ -60,16 +68,19 @@ class ApiStore {
   public getItemsById = (ids: BaseItemDto['Id'][]): Array<BaseItemDto | undefined> =>
     ids.map((id) => this._state.items.get(id));
 
-  public getRequest = (funcName: string, params: string): unknown => {
-    const result = this._state.requests.get(funcName)?.get(params);
+  public getCachedRequest = (funcName: string, params: string): CachedResponse | undefined =>
+    this._state.requests.get(funcName)?.get(params);
 
-    if (result instanceof RawBaseItemResponse) {
-      const array = result.ids.map((r) => this.getItemById(r));
+  public getRequest = (cache?: CachedResponse): BaseItemDto | BaseItemDto[] | unknown => {
+    if (cache) {
+      if (cache.ofBaseItem) {
+        const array = cache.ids.map((r) => this.getItemById(r));
 
-      return result.wasArray ? array : array[0];
+        return cache.wasArray ? array : array[0] ;
+      }
+
+      return cache.rawResult;
     }
-
-    return result;
   };
 
   /**
@@ -77,6 +88,7 @@ class ApiStore {
    */
   public baseItemAdd = <T extends BaseItemDto | BaseItemDto[]>(item: T): T => {
     if (Array.isArray(item)) {
+      // False positive
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
       for (const i of (item as BaseItemDto[])) {
         this._state.items.set(i.Id, i);
@@ -95,7 +107,7 @@ class ApiStore {
     params: string,
     ofBaseItem: boolean,
     result: U): typeof ofBaseItem extends true ? U : T => {
-    const toSave = ofBaseItem ? new RawBaseItemResponse(result) : result;
+    const toSave = new CachedResponse(ofBaseItem, result);
 
     if (this._state.requests.has(funcName)) {
       this._state.requests.get(funcName)?.set(params, toSave);
@@ -103,7 +115,7 @@ class ApiStore {
       this._state.requests.set(funcName, new Map([[params, toSave]]));
     }
 
-    return this.getRequest(funcName, params) as T;
+    return this.getRequest(this.getCachedRequest(funcName, params) as CachedResponse) as T;
   };
 
   public itemDelete = async (itemId: string): Promise<void> => {
@@ -116,7 +128,7 @@ class ApiStore {
 
       for (const request of this._state.requests.values()) {
         for (const [args, result] of request.entries()) {
-          if (result instanceof RawBaseItemResponse && result.ids.includes(itemId) || args.includes(itemId)) {
+          if (result.ids.includes(itemId) || args.includes(itemId)) {
             request.delete(args);
           }
         }
