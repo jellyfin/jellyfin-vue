@@ -40,7 +40,7 @@ const socketUrl = computed(() => {
   }
 });
 
-const { data, send } = useWebSocket(socketUrl, {
+const { data, send, status } = useWebSocket(socketUrl, {
   heartbeat: false,
   autoReconnect: { retries: () => true },
   immediate: true,
@@ -48,6 +48,10 @@ const { data, send } = useWebSocket(socketUrl, {
 });
 
 class RemotePluginSocket {
+  public get isConnected(): boolean {
+    return status.value === 'OPEN';
+  }
+
   public get message(): WebSocketMessage | null {
     return destr(data.value);
   }

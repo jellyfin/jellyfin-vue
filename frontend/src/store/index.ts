@@ -1,4 +1,4 @@
-import { useMediaControls, useMediaQuery, useNow, useScroll } from '@vueuse/core';
+import { useMediaControls, useMediaQuery, useNetwork, useNow, useScroll } from '@vueuse/core';
 import { shallowRef } from 'vue';
 /**
  * This file contains global variables (specially VueUse refs) that are used multiple times across the client.
@@ -33,3 +33,7 @@ export const mediaWebAudio = {
  * Reactively tracks if the user wants animations (false) or not (true).
  */
 export const prefersNoMotion = useMediaQuery('(prefers-reduced-motion)');
+/**
+ * Reactively tracks if the user is connected to the internet
+ */
+export const network = useNetwork();

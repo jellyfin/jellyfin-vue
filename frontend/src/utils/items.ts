@@ -33,7 +33,7 @@ import IMdiPlaylistPlay from 'virtual:icons/mdi/playlist-play';
 import IMdiTelevisionClassic from 'virtual:icons/mdi/television-classic';
 import IMdiYoutube from 'virtual:icons/mdi/youtube';
 import IMdiYoutubeTV from 'virtual:icons/mdi/youtube-tv';
-import type { ComputedRef } from 'vue';
+import { effectScope, watch, type ComputedRef } from 'vue';
 import type { RouteNamedMap } from 'vue-router/auto/routes';
 import { ticksToMs } from './time';
 
@@ -574,6 +574,24 @@ export function formatBitRate(bitrate: number): string {
   return `${(bitrate / 1000).toFixed(2)} kbps`;
 }
 
+/**
+ * Resolves when the websocket is ready and connected
+ */
+export async function ensureWebSocket(): Promise<void> {
+  const scope = effectScope();
+
+  await new Promise<void>((resolve) => {
+    scope.run(() => {
+      watch(() => remote.socket.isConnected, () => {
+        if (remote.socket.isConnected) {
+          resolve();
+        }
+      }, { immediate: true, flush: 'sync' });
+    });
+  });
+  scope.stop();
+}
+
 
 /**
  * Gets all the items that need to be resolved to populate the interface
@@ -595,6 +613,12 @@ interface IndexPageQueries {
  */
 export async function fetchIndexPage(): Promise<IndexPageQueries> {
   const latestPerLibrary = new Map<BaseItemDto['Id'], ComputedRef<BaseItemDto[]>>();
+
+  /**
+   * Since this method can be called when loading the client, we need to make sure
+   * the socket is ready so useBaseItem are resolved successfully.
+   */
+  await ensureWebSocket();
 
   const { data: views } = await useBaseItem(getUserViewsApi, 'getUserViews')(() => ({}));
 

@@ -1,10 +1,13 @@
+import { useSnackbar } from '@/composables/use-snackbar';
+import { i18n } from '@/plugins/i18n';
 import { remote } from '@/plugins/remote';
+import { network } from '@/store';
 import { apiStore } from '@/store/api';
 import type { Api } from '@jellyfin/sdk';
 import type { BaseItemDto, BaseItemDtoQueryResult } from '@jellyfin/sdk/lib/generated-client';
 import type { AxiosResponse } from 'axios';
-import { isEqual, isNil } from 'lodash-es';
-import { computed, getCurrentScope, isRef, ref, toValue, unref, watch, type ComputedRef, type MaybeRef, type Ref } from 'vue';
+import { isEqual } from 'lodash-es';
+import { computed, effectScope, getCurrentScope, isRef, ref, toValue, unref, watch, type ComputedRef, type MaybeRef, type Ref } from 'vue';
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any */
 /**
@@ -53,6 +56,12 @@ interface ReturnPayload<T extends Record<K, (...args: any[]) => any>, K extends 
   data: ComputedRef<ReturnData<T, K, J>>;
 }
 
+interface OfflineParams<T extends Record<K, (...args: any[]) => any>, K extends keyof T> {
+  api: ((api: Api) => T);
+  methodName: K;
+  args: Parameters<T[K]>;
+}
+
 /**
  * Perfoms the given request and updates the store accordingly
  *
@@ -62,52 +71,50 @@ interface ReturnPayload<T extends Record<K, (...args: any[]) => any>, K extends 
  * @param loading - Ref to hold the loading state
  * @param args - Func args
  */
-async function resolveAndAdd<T extends Record<K, (...args: any[]) => any>, K extends keyof T, U extends ParametersAsGetters<T[K]>>(
-  api: ((api: Api) => T) | undefined,
-  methodName: K | undefined,
+async function resolveAndAdd<T extends Record<K, (...args: any[]) => any>, K extends keyof T>(
+  api: ((api: Api) => T),
+  methodName: K,
   ofBaseItem: boolean,
   loading: Ref<boolean>,
+  stringifiedArgs: string,
   skipCache: boolean,
-  ...args: ComposableParams<T,K,U>): Promise<void> {
-  if (!isNil(api) && !isNil(methodName)) {
-    /**
-     * We add all BaseItemDto's fields for consistency in what we can expect from the store.
-     * toValue normalizes the getters.
-     */
-    const extendedParams = [
-      {
-        ...toValue(args[0]),
-        ...(remote.auth.currentUserId && { userId: remote.auth.currentUserId }),
-        fields: apiStore.apiEnums.fields,
-        enabledImageTypes: apiStore.apiEnums.images,
-        enableImages: true,
-        enableTotalRecordCount: false
-      },
-      ...args.slice(1).map((a) => toValue(a))
-    ] as Parameters<T[K]>;
+  ...args: Parameters<T[K]>): Promise<void> {
+  /**
+   * We add all BaseItemDto's fields for consistency in what we can expect from the store.
+   * toValue normalizes the getters.
+   */
+  const extendedParams = [
+    {
+      ...args[0],
+      ...(remote.auth.currentUserId && { userId: remote.auth.currentUserId }),
+      fields: apiStore.apiEnums.fields,
+      enabledImageTypes: apiStore.apiEnums.images,
+      enableImages: true,
+      enableTotalRecordCount: false
+    },
+    ...args.slice(1)
+  ] as Parameters<T[K]>;
 
-    try {
-      loading.value = true;
+  try {
+    loading.value = true;
 
-      const stringifiedArgs = JSON.stringify(args.map((a) => toValue(a)));
-      const funcName = `${api.name}.${String(methodName)}`;
-      const response = await remote.sdk.newUserApi(api)[methodName](...extendedParams) as Awaited<ReturnType<T[K]>>;
+    const funcName = `${api.name}.${String(methodName)}`;
+    const response = await remote.sdk.newUserApi(api)[methodName](...extendedParams) as Awaited<ReturnType<T[K]>>;
 
-      if (response.data) {
-        const requestData = response.data as Awaited<ReturnType<T[K]>['data']>;
-        const result = 'Items' in requestData && Array.isArray(requestData.Items) ? requestData.Items : requestData;
+    if (response.data) {
+      const requestData = response.data as Awaited<ReturnType<T[K]>['data']>;
+      const result = 'Items' in requestData && Array.isArray(requestData.Items) ? requestData.Items : requestData;
 
-        if (ofBaseItem && !skipCache) {
-          apiStore.baseItemAdd(result as BaseItemDto | BaseItemDto[]);
-        }
-
-        if (!skipCache) {
-          apiStore.requestAdd(funcName, stringifiedArgs, ofBaseItem, result);
-        }
+      if (ofBaseItem && !skipCache) {
+        apiStore.baseItemAdd(result as BaseItemDto | BaseItemDto[]);
       }
-    } catch {} finally {
-      loading.value = false;
+
+      if (!skipCache) {
+        apiStore.requestAdd(funcName, stringifiedArgs, ofBaseItem, result);
+      }
     }
+  } catch {} finally {
+    loading.value = false;
   }
 }
 
@@ -119,31 +126,65 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
   api: MaybeRef<((api: Api) => T) | undefined>,
   methodName: MaybeRef<K | undefined>,
   skipCache: MaybeRef<boolean> = false
-): (this: any, ...args: ComposableParams<T,K,U>) => Promise<ReturnPayload<T, K, typeof ofBaseItem>> {
+): (this: any, ...args: ComposableParams<T,K,U>) => Promise<ReturnPayload<T, K, typeof ofBaseItem>> | ReturnPayload<T, K, typeof ofBaseItem> {
+  const offlineParams: OfflineParams<T,K>[] = [];
+  const isFuncDefined = (): boolean => unref(api) !== undefined && unref(methodName) !== undefined;
 
   const loading = ref(false);
   const argsRef = ref<Parameters<T[K]>>();
+
   const stringArgs = computed(() => {
     return JSON.stringify(argsRef.value);
   });
-
+  const cachedData = computed(() => apiStore.getCachedRequest(`${String(unref(api)?.name)}.${String(unref(methodName))}`, stringArgs.value));
+  const isCached = computed(() => Boolean(cachedData.value));
   const data = computed<ReturnData<T, K, typeof ofBaseItem>>(() =>
-    apiStore.getRequest(`${String(unref(api)?.name)}.${String(unref(methodName))}`, stringArgs.value) as ReturnData<T, K, typeof ofBaseItem>
+    apiStore.getRequest(cachedData.value) as ReturnData<T, K, typeof ofBaseItem>
   );
 
-  return async function (this: any, ...args: ComposableParams<T,K,U>) {
+  /**
+   * Function invoked per every data change.
+   * @param onlyPending - Whether to run only pending requests or not
+   */
+  const run = async (onlyPending = false): Promise<void> => {
+    const unrefApi = unref(api);
+    const unrefMethod = unref(methodName);
+
+    if (unrefApi && unrefMethod) {
+      /**
+       * Rerun previous parameters when the user is back online
+       */
+      if (offlineParams.length > 0) {
+        await Promise.all(offlineParams.map((p) => {
+          void resolveAndAdd(p.api, p.methodName, ofBaseItem, loading, stringArgs.value, unref(skipCache), ...p.args);
+        }));
+
+      }
+
+      if (argsRef.value && !onlyPending) {
+        try {
+          if (network.isOnline.value && remote.socket.isConnected) {
+            await resolveAndAdd(unrefApi, unrefMethod, ofBaseItem, loading, stringArgs.value, unref(skipCache), ...argsRef.value);
+          } else {
+            useSnackbar(i18n.t('offlineCantDoThisWillRetryWhenOnline'), 'error');
+
+            offlineParams.push({
+              api: unrefApi,
+              methodName: unrefMethod,
+              args: argsRef.value
+            });
+          }
+        } catch {}
+      }
+    }
+  };
+
+  return function (this: any, ...args: ComposableParams<T,K,U>) {
     const setArgs = (): void => {
       argsRef.value = args.map((a) => toValue(a)) as Parameters<T[K]>;
     };
 
     setArgs();
-
-    const run = async (args: ComposableParams<T,K,U>): Promise<void> => {
-      try {
-        await resolveAndAdd(unref(api), unref(methodName), ofBaseItem, loading, unref(skipCache), ...args);
-      } catch {}
-    };
-    const isCached = Boolean(data.value);
 
     if (getCurrentScope() !== undefined) {
       watch(args, async (_newVal, oldVal) => {
@@ -152,24 +193,47 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
          */
         if (!args.map((a) => toValue(a)).every((a, index) => isEqual(a, toValue(oldVal?.[index])))) {
           setArgs();
-          await run(args);
+          await run();
         }
       });
-      isRef(api) && watch(api, async () => await run(args));
-      isRef(methodName) && watch(methodName, async () => await run(args));
-      isRef(skipCache) && watch(skipCache, async () => await run(args));
+      watch(() => remote.socket.isConnected, async () => await run(true));
+      watch(network.isOnline, async () => await run(true));
+      isRef(api) && watch(api, async () => await run());
+      isRef(methodName) && watch(methodName, async () => await run());
+      isRef(skipCache) && watch(skipCache, async () => await run());
     }
 
-    !isCached && await run(args);
     /**
      * If there's available data before component mount, we return the cached data rightaway (see below how
      * we skip the promise) to get the component mounted as soon as possible.
      * However, we queue a request to the server to update the data after the component is
      * mounted. setTimeout executes it when the event loop is clear, avoiding overwhelming the engine.
      */
-    isCached && window.setTimeout(async () => {
-      await run(args);
+    isCached.value && window.setTimeout(async () => {
+      await run();
     });
+
+    if (!isCached.value && isFuncDefined()) {
+      const scope = effectScope();
+
+      /**
+       * Wait for the cache to be populated before resolving the promise
+       * If the promise never resolves (and the component never gets mounted),
+       * the problem is that there is an issue in your logic, not in this composable.
+       */
+      // eslint-disable-next-line no-async-promise-executor
+      return new Promise(async (resolve) => {
+        await run();
+        scope.run(() => {
+          watch(isCached, () => {
+            if (isCached.value && !skipCache) {
+              scope.stop();
+              resolve({ loading, data });
+            }
+          }, { immediate: true, flush: 'sync' });
+        });
+      });
+    }
 
     return { loading, data };
   };
@@ -183,6 +247,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
  * - If there's already cached data in the store for the given parameters, a request to the
  * server it's still performed to refresh, but the Promise will be resolved
  * immediately and the ComputedRef will return the cached data first.
+ * - If the request is made when the connection to the server was lost, the request and their params are queued and executed when the connection is back.
  *
  * This composable also returns a promise, so it prevents rendering the component with Suspense until the initial request is done
  * (ensuring this way the data is always available before mount).
@@ -201,6 +266,14 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
  * This is done in order to avoid memory leaks.
  * - It only works with requests that return BaseItemDto or BaseItemDtoQueryResult responses. If you need to use another type, you **must**
  * use the `useApi` composable.
+ * - **BE CAREFUL**: Since the type of the ComputedRef's of data is always the request's response,
+ * if no succesful response data is available at any point, the promise will never resolve to ensure at runtime the expected data is available.
+ * This means that the component might never mount if you use it to fetch the initial page data.
+ * This forces you to have the correct logic and successful responses in normal conditions.
+ * If the user has lost the internet connection, for example, it won't be redirected to the new page's component,
+ * since it will never mount, and that's what we want! (so the user can only navigate data he has already acquired).
+ * This will not happen if either ``api`` or ``methodName`` are set undefined, so
+ * you can use that composable invokation after mount (like in LikeButton component).
  *
  * Don't worry, TypeScript will tell you that `data` is always undefined when you can't use the composable with an specific API method.
  *
@@ -212,7 +285,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
 export function useBaseItem<T extends Record<K, (...args: any[]) => any>, K extends keyof T, U extends ParametersAsGetters<T[K]>>(
   api: MaybeRef<((api: Api) => T) | undefined>,
   methodName: MaybeRef<K | undefined>
-): (this: any, ...args: ComposableParams<T,K,U>) => Promise<ReturnPayload<T, K, true>> {
+): (this: any, ...args: ComposableParams<T,K,U>) => Promise<ReturnPayload<T, K, true>> | ReturnPayload<T, K, true> {
   return _sharedInternalLogic<T, K, U>(true, api, methodName);
 }
 
@@ -224,6 +297,7 @@ export function useBaseItem<T extends Record<K, (...args: any[]) => any>, K exte
  * - If there's already cached data in the store for the given parameters, a request to the
  * server it's still performed to refresh, but the Promise will be resolved
  * immediately and the ComputedRef will return the cached data first.
+ * - If the request is made when the connection to the server was lost, the request and their params are queued and executed when the connection is back.
  *
  * This composable also returns a promise, so it prevents rendering the component with Suspense until the initial request is done
  * (ensuring this way the data is always available before mount).
@@ -242,6 +316,15 @@ export function useBaseItem<T extends Record<K, (...args: any[]) => any>, K exte
  * This is done in order to avoid memory leaks.
  * - It only works with requests that doesn't return BaseItemDto or BaseItemDtoQueryResult responses. If the return result
  * of your request is any of those types, you **must** use the `useBaseItem` composable.
+ * - **BE CAREFUL**: Since the type of the ComputedRef's of data is always the request's response,
+ * if no succesful response data is available at any point (**and skipCache = false**),
+ * the promise will never resolve to ensure at runtime the expected data is available.
+ * This means that the component might never mount if you use it to fetch the initial page data.
+ * This forces you to have the correct logic and successful responses in normal conditions.
+ * If the user has lost the internet connection, for example, it won't be redirected to the new page's component,
+ * since it will never mount, and that's what we want! (so the user can only navigate data he has already acquired).
+ * This will not happen if either ``api`` or ``methodName`` are set undefined, so
+ * you can use that composable invokation after mount (like in LikeButton component).
  *
  * Don't worry, TypeScript will tell you that `data` is always undefined when you can't use the composable with an specific API method.
  *
@@ -257,7 +340,7 @@ export function useApi<T extends Record<K, (...args: any[]) => any>, K extends k
   api: MaybeRef<((api: Api) => T) | undefined>,
   methodName: MaybeRef<K | undefined>,
   skipCache: MaybeRef<boolean> = false
-): (this: any, ...args: ComposableParams<T,K,U>) => Promise<ReturnPayload<T, K, false>> {
+): (this: any, ...args: ComposableParams<T,K,U>) => Promise<ReturnPayload<T, K, false>> | ReturnPayload<T, K, false> {
   return _sharedInternalLogic<T, K, U>(false, api, methodName, skipCache);
 }
 
