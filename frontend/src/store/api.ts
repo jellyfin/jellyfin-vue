@@ -88,13 +88,11 @@ class ApiStore {
    */
   public baseItemAdd = <T extends BaseItemDto | BaseItemDto[]>(item: T): T => {
     if (Array.isArray(item)) {
-      // False positive
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-      for (const i of (item as BaseItemDto[])) {
+      return item.map((i) => {
         this._state.items.set(i.Id, i);
-      }
 
-      return this.getItemsById(item.map((i) => i.Id)) as T;
+        return this.getItemById(i.Id);
+      }) as T;
     } else {
       this._state.items.set(item.Id, item);
 
@@ -147,7 +145,10 @@ class ApiStore {
       const { data } = await remote.sdk.newUserApi(getItemsApi).getItems({
         userId: remote.auth.currentUserId,
         ids: itemIds as string[],
-        fields: this.apiEnums.fields as ItemFields[]
+        fields: this.apiEnums.fields as ItemFields[],
+        enableImageTypes: this.apiEnums.images as ImageType[],
+        enableImages: true,
+        enableTotalRecordCount: false
       });
 
       if (Array.isArray(data.Items)) {
