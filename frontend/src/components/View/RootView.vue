@@ -1,6 +1,6 @@
 <template>
   <TransitionView :transition-key="route.meta.layout">
-    <Suspense>
+    <Suspense suspensible>
       <component :is="getLayoutComponent(route.meta.layout)" />
     </Suspense>
   </TransitionView>
