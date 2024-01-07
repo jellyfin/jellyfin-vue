@@ -28,7 +28,7 @@ const methodToExecute = ref<'markPlayedItem' | 'markUnplayedItem' | undefined>()
  * The websocket will automatically update the item in the store, so no need
  * to do manual modification here
  */
-const { loading } = await useApi(getPlaystateApi, methodToExecute, true)(() => ({
+const { loading } = await useApi(getPlaystateApi, methodToExecute, { skipCache: true, globalLoading: false })(() => ({
   itemId: props.item.Id ?? ''
 }));
 
