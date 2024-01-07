@@ -8,7 +8,7 @@ import type { Api } from '@jellyfin/sdk';
 import type { BaseItemDto, BaseItemDtoQueryResult } from '@jellyfin/sdk/lib/generated-client';
 import type { AxiosResponse } from 'axios';
 import { isEqual } from 'lodash-es';
-import { computed, effectScope, getCurrentScope, isRef, ref, toValue, unref, watch, type ComputedRef, type MaybeRef, type Ref } from 'vue';
+import { computed, effectScope, getCurrentScope, isRef, ref, toValue, unref, watch, type ComputedRef, type Ref } from 'vue';
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any */
 /**
@@ -58,6 +58,8 @@ type ExtractResponseType<T> =
 
 type ReturnData<T extends Record<K, (...args: any[]) => any>, K extends keyof T, J extends boolean> =
   J extends true ? ExtractBaseItemDtoResponse<ReturnType<T[K]>> : ExtractResponseType<ReturnType<T[K]>>;
+
+type MaybeReadonlyRef<T> = T | Ref<T> | ComputedRef<T>;
 
 interface ReturnPayload<T extends Record<K, (...args: any[]) => any>, K extends keyof T, J extends boolean> {
   loading: Ref<boolean>,
@@ -120,7 +122,7 @@ function stopLoading(loading: Ref<boolean>, global: boolean): void {
  * @param args - Func args
  */
 async function resolveAndAdd<T extends Record<K, (...args: any[]) => any>, K extends keyof T>(
-  api: ((api: Api) => T),
+  api: (api: Api) => T,
   methodName: K,
   ofBaseItem: boolean,
   loading: Ref<boolean>,
@@ -171,8 +173,8 @@ async function resolveAndAdd<T extends Record<K, (...args: any[]) => any>, K ext
  */
 function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K extends keyof T, U extends ParametersAsGetters<T[K]>>(
   ofBaseItem: boolean,
-  api: MaybeRef<((api: Api) => T) | undefined>,
-  methodName: MaybeRef<K | undefined>,
+  api: MaybeReadonlyRef<((api: Api) => T) | undefined>,
+  methodName: MaybeReadonlyRef<K | undefined>,
   ops: DefaultComposableOps
 ): (this: any, ...args: ComposableParams<T,K,U>) => Promise<ReturnPayload<T, K, typeof ofBaseItem>> | ReturnPayload<T, K, typeof ofBaseItem> {
   const offlineParams: OfflineParams<T,K>[] = [];
@@ -331,8 +333,8 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
  * @returns loading - A boolean ref that indicates if the request is in progress.
  */
 export function useBaseItem<T extends Record<K, (...args: any[]) => any>, K extends keyof T, U extends ParametersAsGetters<T[K]>>(
-  api: MaybeRef<((api: Api) => T) | undefined>,
-  methodName: MaybeRef<K | undefined>,
+  api: MaybeReadonlyRef<((api: Api) => T) | undefined>,
+  methodName: MaybeReadonlyRef<K | undefined>,
   ops?: BetterOmit<ComposableOps, 'skipCache'>
 ): (this: any, ...args: ComposableParams<T,K,U>) => Promise<ReturnPayload<T, K, true>> | ReturnPayload<T, K, true> {
   return _sharedInternalLogic<T, K, U>(true, api, methodName, ops ? { ...ops, ...defaultOps } : defaultOps);
@@ -388,11 +390,25 @@ export function useBaseItem<T extends Record<K, (...args: any[]) => any>, K exte
  * @returns loading - A boolean ref that indicates if the request is in progress.
  */
 export function useApi<T extends Record<K, (...args: any[]) => any>, K extends keyof T, U extends ParametersAsGetters<T[K]>>(
-  api: MaybeRef<((api: Api) => T) | undefined>,
-  methodName: MaybeRef<K | undefined>,
+  api: MaybeReadonlyRef<((api: Api) => T) | undefined>,
+  methodName: MaybeReadonlyRef<K | undefined>,
   ops?: ComposableOps
 ): (this: any, ...args: ComposableParams<T,K,U>) => Promise<ReturnPayload<T, K, false>> | ReturnPayload<T, K, false> {
   return _sharedInternalLogic<T, K, U>(false, api, methodName, ops ? { ...ops, ...defaultOps } : defaultOps);
+}
+
+/**
+ * This is an special function to get an object with the appropiate parameters to use in the `useApi` or `useBaseItem` composables.
+ * See example of usage in pages/library/[itemId].vue.
+ */
+export function methodsAsObject<T extends Record<K, (...args: any[]) => any>, K extends keyof T>(
+  api: (api: Api) => T,
+  methodName: K
+): { api: (api: Api) => T, methodName: K } {
+  return {
+    api,
+    methodName
+  };
 }
 
 /* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any */
