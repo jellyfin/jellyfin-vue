@@ -1,18 +1,7 @@
-import { computed, type ComputedRef, ref } from 'vue';
+import { computed, ref, type ComputedRef } from 'vue';
 
 const requests = ref(0);
 const isLoading = computed(() => requests.value > 0);
-
-/**
- * Certain request endpoints are not relevant to be tracked for progress.
- * Include them here
- */
-export const excludedProgressEndpoints: readonly string[] = [
-  '/Sessions/Playing',
-  '/PlaybackInfo?',
-  'clientSettings?',
-  '/Videos/'
-];
 
 /**
  * Composable for triggering the linear progress that appears at the top of the page

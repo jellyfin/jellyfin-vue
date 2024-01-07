@@ -1,3 +1,4 @@
+import { useLoading } from '@/composables/use-loading';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { i18n } from '@/plugins/i18n';
 import { remote } from '@/plugins/remote';
@@ -62,6 +63,46 @@ interface OfflineParams<T extends Record<K, (...args: any[]) => any>, K extends 
   args: Parameters<T[K]>;
 }
 
+interface DefaultComposableOps {
+  globalLoading: boolean;
+  skipCache: boolean;
+}
+interface ComposableOps {
+  globalLoading?: boolean;
+  skipCache?: boolean;
+}
+
+const defaultOps: DefaultComposableOps = Object.freeze({
+  globalLoading: true,
+  skipCache: false
+});
+
+/**
+ * Sets the state to loading and starts the global loading indicator
+ * @param loading - Ref to hold the loading state
+ * @param global - Whether to start the global loading indicator or not
+ */
+function startLoading(loading: Ref<boolean>, global: boolean): void {
+  loading.value = true;
+
+  if (global) {
+    useLoading().start();
+  }
+}
+
+/**
+ * Sets the state to finish and ends the global loading indicator
+ * @param loading - Ref to hold the loading state
+ * @param global - Whether to start the global loading indicator or not
+ */
+function stopLoading(loading: Ref<boolean>, global: boolean): void {
+  loading.value = false;
+
+  if (global) {
+    useLoading().finish();
+  }
+}
+
 /**
  * Perfoms the given request and updates the store accordingly
  *
@@ -77,7 +118,7 @@ async function resolveAndAdd<T extends Record<K, (...args: any[]) => any>, K ext
   ofBaseItem: boolean,
   loading: Ref<boolean>,
   stringifiedArgs: string,
-  skipCache: boolean,
+  ops: DefaultComposableOps,
   ...args: Parameters<T[K]>): Promise<void> {
   /**
    * We add all BaseItemDto's fields for consistency in what we can expect from the store.
@@ -96,7 +137,7 @@ async function resolveAndAdd<T extends Record<K, (...args: any[]) => any>, K ext
   ] as Parameters<T[K]>;
 
   try {
-    loading.value = true;
+    startLoading(loading, ops.globalLoading);
 
     const funcName = `${api.name}.${String(methodName)}`;
     const response = await remote.sdk.newUserApi(api)[methodName](...extendedParams) as Awaited<ReturnType<T[K]>>;
@@ -105,16 +146,16 @@ async function resolveAndAdd<T extends Record<K, (...args: any[]) => any>, K ext
       const requestData = response.data as Awaited<ReturnType<T[K]>['data']>;
       const result = 'Items' in requestData && Array.isArray(requestData.Items) ? requestData.Items : requestData;
 
-      if (ofBaseItem && !skipCache) {
+      if (ofBaseItem && !ops.skipCache) {
         apiStore.baseItemAdd(result as BaseItemDto | BaseItemDto[]);
       }
 
-      if (!skipCache) {
+      if (!ops.skipCache) {
         apiStore.requestAdd(funcName, stringifiedArgs, ofBaseItem, result);
       }
     }
   } catch {} finally {
-    loading.value = false;
+    stopLoading(loading, ops.globalLoading);
   }
 }
 
@@ -125,7 +166,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
   ofBaseItem: boolean,
   api: MaybeRef<((api: Api) => T) | undefined>,
   methodName: MaybeRef<K | undefined>,
-  skipCache: MaybeRef<boolean> = false
+  ops: DefaultComposableOps
 ): (this: any, ...args: ComposableParams<T,K,U>) => Promise<ReturnPayload<T, K, typeof ofBaseItem>> | ReturnPayload<T, K, typeof ofBaseItem> {
   const offlineParams: OfflineParams<T,K>[] = [];
   const isFuncDefined = (): boolean => unref(api) !== undefined && unref(methodName) !== undefined;
@@ -156,7 +197,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
        */
       if (offlineParams.length > 0) {
         await Promise.all(offlineParams.map((p) => {
-          void resolveAndAdd(p.api, p.methodName, ofBaseItem, loading, stringArgs.value, unref(skipCache), ...p.args);
+          void resolveAndAdd(p.api, p.methodName, ofBaseItem, loading, stringArgs.value, ops, ...p.args);
         }));
 
       }
@@ -164,7 +205,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
       if (argsRef.value && !onlyPending) {
         try {
           if (network.isOnline.value && remote.socket.isConnected) {
-            await resolveAndAdd(unrefApi, unrefMethod, ofBaseItem, loading, stringArgs.value, unref(skipCache), ...argsRef.value);
+            await resolveAndAdd(unrefApi, unrefMethod, ofBaseItem, loading, stringArgs.value, ops, ...argsRef.value);
           } else {
             useSnackbar(i18n.t('offlineCantDoThisWillRetryWhenOnline'), 'error');
 
@@ -200,7 +241,6 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
       watch(network.isOnline, async () => await run(true));
       isRef(api) && watch(api, async () => await run());
       isRef(methodName) && watch(methodName, async () => await run());
-      isRef(skipCache) && watch(skipCache, async () => await run());
     }
 
     /**
@@ -226,7 +266,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
         await run();
         scope.run(() => {
           watch(isCached, () => {
-            if (isCached.value && !skipCache) {
+            if (isCached.value && !ops.skipCache) {
               scope.stop();
               resolve({ loading, data });
             }
@@ -279,14 +319,16 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
  *
  * @param api - The API's endpoint to use.
  * @param methodname- - The operation to execute.
+ * @param ops.globalLoading - Show the global loading indicator or not for this request. Defaults to true.
  * @returns data  - The BaseItemDto or BaseItemDto[] that was requested.
  * @returns loading - A boolean ref that indicates if the request is in progress.
  */
 export function useBaseItem<T extends Record<K, (...args: any[]) => any>, K extends keyof T, U extends ParametersAsGetters<T[K]>>(
   api: MaybeRef<((api: Api) => T) | undefined>,
-  methodName: MaybeRef<K | undefined>
+  methodName: MaybeRef<K | undefined>,
+  ops?: BetterOmit<ComposableOps, 'skipCache'>
 ): (this: any, ...args: ComposableParams<T,K,U>) => Promise<ReturnPayload<T, K, true>> | ReturnPayload<T, K, true> {
-  return _sharedInternalLogic<T, K, U>(true, api, methodName);
+  return _sharedInternalLogic<T, K, U>(true, api, methodName, ops ? { ...ops, ...defaultOps } : defaultOps);
 }
 
 /**
@@ -330,18 +372,20 @@ export function useBaseItem<T extends Record<K, (...args: any[]) => any>, K exte
  *
  * @param api - The API's endpoint to use.
  * @param methodname- - The operation to execute.
- * @param skipCache - USE WITH CAUTION, SINCE IT'S BETTER TO CACHE EVERYTHING BY DEFAULT. Defaults to false.
+ * @param ops - Composable options
+ * @param ops.skipCache - USE WITH CAUTION, SINCE IT'S BETTER TO CACHE EVERYTHING BY DEFAULT.
  * Whether to skip the cache or not. Useful for requests whose return value are known to be useless to cache,
- * like marking an item as played or favorite.
+ * like marking an item as played or favorite. Defaults to false.
+ * @param ops.globalLoading - Show the global loading indicator or not for this request. Defaults to true.
  * @returns data  - The request data.
  * @returns loading - A boolean ref that indicates if the request is in progress.
  */
 export function useApi<T extends Record<K, (...args: any[]) => any>, K extends keyof T, U extends ParametersAsGetters<T[K]>>(
   api: MaybeRef<((api: Api) => T) | undefined>,
   methodName: MaybeRef<K | undefined>,
-  skipCache: MaybeRef<boolean> = false
+  ops?: ComposableOps
 ): (this: any, ...args: ComposableParams<T,K,U>) => Promise<ReturnPayload<T, K, false>> | ReturnPayload<T, K, false> {
-  return _sharedInternalLogic<T, K, U>(false, api, methodName, skipCache);
+  return _sharedInternalLogic<T, K, U>(false, api, methodName, ops ? { ...ops, ...defaultOps } : defaultOps);
 }
 
 /* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any */
