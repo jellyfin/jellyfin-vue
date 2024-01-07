@@ -26,7 +26,7 @@ type BetterOmit<T, K extends keyof any> = T extends Record<any, any>
 type Mutable<T> = {
   -readonly [K in keyof T]: T[K];
 };
-type OmittedKeys = 'fields' | 'userId' | 'enableImages' | 'enableTotalRecordCount' | 'enabledImageTypes';
+type OmittedKeys = 'fields' | 'userId' | 'enableImages' | 'enableTotalRecordCount' | 'enableImageTypes';
 type ParametersAsGetters<T extends (...args: any[]) => any> = T extends (...args: infer P) => any
   ? { [K in keyof P]: () => BetterOmit<Mutable<P[K]>, OmittedKeys> }
   : never;
@@ -138,7 +138,7 @@ async function resolveAndAdd<T extends Record<K, (...args: any[]) => any>, K ext
       ...args[0],
       ...(remote.auth.currentUserId && { userId: remote.auth.currentUserId }),
       fields: apiStore.apiEnums.fields,
-      enabledImageTypes: apiStore.apiEnums.images,
+      enableImageTypes: apiStore.apiEnums.images,
       enableImages: true,
       enableTotalRecordCount: false
     },
