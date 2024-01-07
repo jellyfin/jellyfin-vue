@@ -9,55 +9,12 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <style>
-      @keyframes gradient {
-        0% {
-          background-position: 0% 50%;
-        }
-        50% {
-          background-position: 100% 50%;
-        }
-        100% {
-          background-position: 0% 50%;
-        }
-      }
-
-      /**
-        * Light color scheme for splashscreen
-        *
-      */
-
       .light {
-        background: linear-gradient(
-          280deg,
-          #4f5b62,
-          #62727b,
-          #718792,
-          #819ca9,
-          #8eacbb
-        );
+        background: #f2f2f2;
       }
-
-      /**
-        * Dark color scheme for splashscreen
-        *
-      */
 
       .dark {
-        background: linear-gradient(
-          280deg,
-          #111827,
-          #1c2741,
-          #332d41,
-          #4a2532,
-          #381e73,
-          #244415
-        );
-      }
-
-      @media (prefers-reduced-motion) {
-        .animation {
-          animation: gradient 30s linear infinite;
-        }
+        background: #111827;
       }
 
       .splashBackground {
@@ -72,7 +29,6 @@
         width: 100%;
         height: 100%;
         background-size: 400% 400%;
-        animation: gradient 2s linear infinite;
         z-index: 99999999;
       }
 
