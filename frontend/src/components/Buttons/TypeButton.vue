@@ -5,43 +5,35 @@
     {{
       $vuetify.display.smAndDown || items.length === 0
         ? undefined
-        : model.length === 0
+        : innerModel.length === 0
           ? items[0].title
-          : items.find((i) => i.value == model[0])?.title
+          : items.find((i) => i.value == innerModel[0])?.title
     }}
     <VIcon :end="!$vuetify.display.smAndDown">
       <IMdiMenuDown v-if="!$vuetify.display.smAndDown" />
       <IMdiEye v-else />
     </VIcon>
-    <VMenu :disabled="disabled">
+    <VMenu>
       <VList
-        v-model:selected="model"
         :items="items"
-        @update:selected="emit('change', model[0])" />
+        @update:selected="model = innerModel[0]" />
     </VMenu>
   </VBtn>
 </template>
 
 <script setup lang="ts">
-import type { BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
+import type { BaseItemDto, BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-const props = withDefaults(
-  defineProps<{
-    /** CollectionType */
-    type: string | undefined;
-    disabled?: boolean;
-  }>(),
-  { disabled: false }
-);
-const emit = defineEmits<{
-  change: [types: BaseItemKind | undefined];
+const props = defineProps<{
+  type: BaseItemDto['CollectionType'];
 }>();
 
-const { t } = useI18n();
+const innerModel = ref<BaseItemKind[]>([]);
+const model = defineModel<BaseItemKind | undefined>({ required: true });
 
-const model = ref<BaseItemKind[]>([]);
+const { t } = useI18n();
 
 const items = computed<{ title: string; value: BaseItemKind }[]>(() => {
   switch (props.type) {

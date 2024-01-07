@@ -10,11 +10,9 @@
       <VSpacer />
       <VFadeTransition>
         <PlayButton
-          v-if="!loading"
           :item="genre" />
       </VFadeTransition>
       <VBtn
-        v-if="!loading"
         class="play-button mr-2"
         min-width="8em"
         variant="outlined"
@@ -23,22 +21,10 @@
       </VBtn>
     </VAppBar>
     <VContainer class="after-second-toolbar">
-      <VRow v-if="loading">
-        <VCol
-          cols="12"
-          :class="useResponsiveClasses('card-grid-container')">
-          <SkeletonCard
-            v-for="n in 24"
-            :key="n"
-            text />
-        </VCol>
-      </VRow>
       <ItemGrid
         v-if="genres.length > 0"
-        :items="genres"
-        :loading="loading" />
+        :items="genres" />
       <VRow
-        v-else-if="!loading"
         justify="center">
         <VCol
           cols="12"
@@ -89,7 +75,7 @@ const { data: genre } = await useBaseItem(getUserLibraryApi, 'getItem')(() => ({
   itemId
 }));
 
-const { loading, data: genres } = await useBaseItem(getItemsApi, 'getItems')(() => ({
+const { data: genres } = await useBaseItem(getItemsApi, 'getItems')(() => ({
   genreIds: [itemId],
   includeItemTypes: includeItemTypes.value,
   recursive: true,

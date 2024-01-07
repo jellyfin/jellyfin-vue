@@ -132,7 +132,6 @@ declare module 'vue' {
     SettingsPage: typeof import('./../../src/components/Layout/SettingsPage.vue')['default']
     ShuffleButton: typeof import('./../../src/components/Buttons/Playback/ShuffleButton.vue')['default']
     SkeletonCard: typeof import('./../../src/components/Skeletons/SkeletonCard.vue')['default']
-    SkeletonHomeSection: typeof import('./../../src/components/Skeletons/SkeletonHomeSection.vue')['default']
     SkeletonItemGrid: typeof import('./../../src/components/Skeletons/SkeletonItemGrid.vue')['default']
     Snackbar: typeof import('./../../src/components/System/Snackbar.vue')['default']
     SortButton: typeof import('./../../src/components/Buttons/SortButton.vue')['default']

@@ -4,19 +4,12 @@
       density="compact"
       flat>
       <span class="text-h6 hidden-sm-and-down">
-        {{ library?.Name }}
+        {{ library.Name }}
       </span>
       <VChip
-        :size="!loading ? 'small' : undefined"
+        size="small"
         class="ma-2 hidden-sm-and-down">
-        <template v-if="!loading">
-          {{ items?.length ?? 0 }}
-        </template>
-        <VProgressCircular
-          v-else
-          width="2"
-          indeterminate
-          size="16" />
+        {{ items?.length ?? 0 }}
       </VChip>
       <VDivider
         inset
@@ -24,9 +17,8 @@
         class="mx-2 hidden-sm-and-down" />
       <TypeButton
         v-if="hasViewTypes"
-        :type="library?.CollectionType ?? undefined"
-        :disabled="loading"
-        @change="onChangeType" />
+        v-model="viewType"
+        :type="library.CollectionType" />
       <VDivider
         v-if="isSortable && hasViewTypes"
         inset
@@ -34,31 +26,23 @@
         class="mx-2" />
       <SortButton
         v-if="isSortable"
-        :disabled="loading"
         :ascending="sortAscending"
         @change="onChangeSort" />
       <FilterButton
         v-if="library && viewType && isSortable"
         :item="library"
-        :disabled="loading"
         @change="onChangeFilter" />
       <VSpacer />
       <PlayButton
         v-if="library"
         :item="library"
-        shuffle
-        :disabled="playButtonDisabled" />
+        shuffle />
       <PlayButton
         v-if="library"
-        :item="library"
-        :disabled="playButtonDisabled" />
+        :item="library" />
     </VAppBar>
     <VContainer>
-      <SkeletonItemGrid
-        v-if="loading"
-        :view-type="viewType" />
       <ItemGrid
-        v-else
         :items="items">
         <h1
           v-if="!hasFilters"
@@ -73,12 +57,9 @@
 
 <script setup lang="ts">
 import type { Filters } from '@/components/Buttons/FilterButton.vue';
-import { useSnackbar } from '@/composables/use-snackbar';
-import { remote } from '@/plugins/remote';
+import { methodsAsObject, useBaseItem } from '@/composables/apis';
 import {
-  type BaseItemDto,
-  BaseItemKind,
-  ItemFields
+BaseItemKind, SortOrder
 } from '@jellyfin/sdk/lib/generated-client';
 import { getArtistsApi } from '@jellyfin/sdk/lib/utils/api/artists-api';
 import { getGenresApi } from '@jellyfin/sdk/lib/utils/api/genres-api';
@@ -86,8 +67,7 @@ import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getMusicGenresApi } from '@jellyfin/sdk/lib/utils/api/music-genres-api';
 import { getPersonsApi } from '@jellyfin/sdk/lib/utils/api/persons-api';
 import { getStudiosApi } from '@jellyfin/sdk/lib/utils/api/studios-api';
-import { isNil } from 'lodash-es';
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router/auto';
 
@@ -102,11 +82,7 @@ const COLLECTION_TYPES_MAPPINGS: { [key: string]: BaseItemKind } = {
   boxsets: BaseItemKind.BoxSet
 };
 
-const library = ref<BaseItemDto>();
-const loadingLibrary = ref(false);
-const items = ref<BaseItemDto[]>([]);
-const loadingItems = ref(false);
-const viewType = ref<BaseItemKind>();
+const innerItemKind = ref<BaseItemKind>();
 const sortBy = ref<string>();
 const sortAscending = ref(true);
 const filters = ref<Filters>({
@@ -117,13 +93,6 @@ const filters = ref<Filters>({
   types: [],
   years: []
 });
-
-/**
- * Updates viewType value when it is changed
- */
-function onChangeType(type?: BaseItemKind): void {
-  viewType.value = type;
-}
 
 /**
  * Updates sort value when it is changed
@@ -140,10 +109,23 @@ function onChangeFilter(changedFilters: Filters): void {
   filters.value = changedFilters;
 }
 
-const loading = computed(() => loadingLibrary.value || loadingItems.value);
-const playButtonDisabled = computed(
-  () => loading.value || items.value.length === 0
-);
+const { data: libraryQuery } = await useBaseItem(getItemsApi, 'getItems')(() => ({
+  ids: [route.params.itemId]
+}));
+const library = computed(() => libraryQuery.value?.[0]);
+const viewType = computed({
+  get() {
+    if (innerItemKind.value) {
+      return innerItemKind.value;
+    } else {
+      return library.value?.CollectionType ? COLLECTION_TYPES_MAPPINGS[library.value.CollectionType] : undefined;
+    }
+  },
+  set(newVal) {
+    innerItemKind.value = newVal;
+  }
+});
+
 const hasFilters = computed(() =>
   Object.values(filters.value).some(({ length }) => length > 0)
 );
@@ -179,165 +161,57 @@ const recursive = computed(() =>
     : true
 );
 
-/**
- * Fetch the library information when it's changed
- */
-async function fetchLibrary(itemId: string): Promise<void> {
-  loadingLibrary.value = true;
-
-  try {
-    library.value =
-      (
-        await remote.sdk.newUserApi(getItemsApi).getItems({
-          userId: remote.auth.currentUserId,
-          ids: [itemId]
-        })
-      ).data?.Items?.[0] ?? undefined;
-  } catch (error) {
-    console.error(error);
-    useSnackbar(t('failedToRefreshItems'), 'error');
-  } finally {
-    loadingLibrary.value = false;
-  }
-
-  /**
-   * Reset all filters and display views since they may not be applicable to the new library
-   */
-  viewType.value = undefined;
-  sortBy.value = undefined;
-  sortAscending.value = true;
-  filters.value = {
-    status: [],
-    features: [],
-    genres: [],
-    ratings: [],
-    types: [],
-    years: []
-  };
-}
-
-/**
- * Refresh the items displayed based on filter changes
- */
-async function refreshItems(): Promise<void> {
-  loadingItems.value = true;
-
-  const parentId = library.value?.Id;
-  const userId = remote.auth.currentUserId;
-
-  if (isNil(parentId) || !viewType.value) {
-    return;
-  }
-
-  try {
-    let itemsResponse;
-
-    switch (viewType.value) {
-      case 'MusicArtist': {
-        itemsResponse = (
-          await remote.sdk.newUserApi(getArtistsApi).getAlbumArtists({
-            userId,
-            parentId
-          })
-        ).data;
-        break;
-      }
-      case 'Person': {
-        itemsResponse = (
-          await remote.sdk.newUserApi(getPersonsApi).getPersons({
-            userId,
-            personTypes: ['Actor']
-            // TODO: this doesn't actually filter by library id because that's not an option
-          })
-        ).data;
-        break;
-      }
-      case 'Genre': {
-        itemsResponse = (
-          await remote.sdk.newUserApi(getGenresApi).getGenres({
-            userId,
-            parentId
-          })
-        ).data;
-        break;
-      }
-      case 'MusicGenre': {
-        itemsResponse = (
-          await remote.sdk.newUserApi(getMusicGenresApi).getMusicGenres({
-            userId,
-            parentId
-          })
-        ).data;
-        break;
-      }
-      case 'Studio': {
-        itemsResponse = (
-          await remote.sdk.newUserApi(getStudiosApi).getStudios({
-            userId,
-            parentId
-          })
-        ).data;
-        break;
-      }
-      default: {
-        itemsResponse = (
-          await remote.sdk.newUserApi(getItemsApi).getItems({
-            userId,
-            parentId,
-            includeItemTypes: viewType.value ? [viewType.value] : undefined,
-            sortOrder: [sortAscending.value ? 'Ascending' : 'Descending'],
-            sortBy: [sortBy.value ?? 'SortName'],
-            recursive: recursive.value,
-            filters: filters.value.status,
-            genres: filters.value.genres,
-            years: filters.value.years,
-            officialRatings: filters.value.ratings,
-            hasSubtitles:
-              filters.value.features.includes('HasSubtitles') || undefined,
-            hasTrailer:
-              filters.value.features.includes('HasTrailer') || undefined,
-            hasSpecialFeature:
-              filters.value.features.includes('HasSpecialFeature') || undefined,
-            hasThemeSong:
-              filters.value.features.includes('HasThemeSong') || undefined,
-            hasThemeVideo:
-              filters.value.features.includes('HasThemeVideo') || undefined,
-            isHd: filters.value.types.includes('isHD') || undefined,
-            is4K: filters.value.types.includes('is4K') || undefined,
-            is3D: filters.value.types.includes('is3D') || undefined,
-            fields: Object.values(ItemFields)
-          })
-        ).data;
-        break;
-      }
+const parentId = computed(() => library.value?.Id);
+const methods = computed(() => {
+  switch (viewType.value) {
+    case 'MusicArtist': {
+      return methodsAsObject(getArtistsApi, 'getArtists');
     }
-
-    items.value = itemsResponse.Items ?? [];
-  } catch (error) {
-    items.value = [];
-    console.error(error);
-    useSnackbar(t('failedToRefreshItems'), 'error');
-  } finally {
-    loadingItems.value = false;
+    case 'Person': {
+      return methodsAsObject(getPersonsApi, 'getPersons');
+    }
+    case 'Genre': {
+      return methodsAsObject(getGenresApi, 'getGenres');
+    }
+    case 'MusicGenre': {
+      return methodsAsObject(getMusicGenresApi, 'getMusicGenres');
+    }
+    case 'Studio': {
+      return methodsAsObject(getStudiosApi, 'getStudios');
+    }
+    default: {
+      return methodsAsObject(getItemsApi, 'getItems' );
+    }
   }
-}
-
-onMounted(() => fetchLibrary((route.params.itemId)));
-
-watch(library, (lib) => {
-  route.meta.title = lib?.Name;
 });
+const api = computed(() => methods.value.api);
+const method = computed(() => methods.value.methodName);
 
-watch(
-  () => library.value?.CollectionType,
-  (type) => {
-    viewType.value = type ? COLLECTION_TYPES_MAPPINGS[type] : undefined;
-  }
-);
+/**
+ * TODO: Improve the type situation of this statement
+ */
+const { data: items } = await useBaseItem(api, method)(() => ({
+  parentId: parentId.value,
+  personTypes: viewType.value === 'Person' ? ['Actor'] : undefined,
+  includeItemTypes: viewType.value ? [viewType.value] : undefined,
+  sortOrder: [sortAscending.value ? SortOrder.Ascending : SortOrder.Descending],
+  sortBy: [sortBy.value ?? 'SortName'],
+  recursive: recursive.value,
+  filters: filters.value.status,
+  genres: filters.value.genres,
+  years: filters.value.years,
+  officialRatings: filters.value.ratings,
+  hasSubtitles: filters.value.features.includes('HasSubtitles') || undefined,
+  hasTrailer: filters.value.features.includes('HasTrailer') || undefined,
+  hasSpecialFeature: filters.value.features.includes('HasSpecialFeature') || undefined,
+  hasThemeSong: filters.value.features.includes('HasThemeSong') || undefined,
+  hasThemeVideo: filters.value.features.includes('HasThemeVideo') || undefined,
+  isHd: filters.value.types.includes('isHD') || undefined,
+  is4K: filters.value.types.includes('is4K') || undefined,
+  is3D: filters.value.types.includes('is3D') || undefined
+}));
 
-watch([library, sortBy, sortAscending, viewType, filters], refreshItems, {
-  immediate: true
-});
+route.meta.title = library.value.Name;
 </script>
 
 <style lang="scss" scoped>

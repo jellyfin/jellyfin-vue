@@ -2,9 +2,6 @@
   <div
     :class="`swiper-section-${uuid}`"
     style="width: 100%">
-    <SkeletonHomeSection
-      v-if="loading"
-      :card-shape="shape" />
     <VCol
       v-show="items && items.length > 0"
       class="swiper-section">
@@ -76,12 +73,11 @@ import { useDisplay, useTheme } from 'vuetify';
 
 const props = withDefaults(
   defineProps<{
-    loading?: boolean;
     title: string;
     items: BaseItemDto[];
     shape?: CardShapes;
   }>(),
-  { loading: false, shape: undefined }
+  { shape: undefined }
 );
 const display = useDisplay();
 const theme = useTheme();

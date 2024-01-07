@@ -1,17 +1,7 @@
 <template>
   <div :class="large ? useResponsiveClasses('large-grid') : undefined">
-    <VRow v-if="loading">
-      <VCol
-        cols="12"
-        :class="useResponsiveClasses('card-grid-container')">
-        <SkeletonCard
-          v-for="n in 24"
-          :key="n"
-          text />
-      </VCol>
-    </VRow>
     <VirtualGrid
-      v-else-if="!loading && items.length > 0 && !noVirtual"
+      v-if="items.length > 0 && !noVirtual"
       :items="items"
       :buffer-multiplier="2"
       :class="useResponsiveClasses('card-grid-container')">
@@ -26,7 +16,7 @@
       </template>
     </VirtualGrid>
     <div
-      v-else-if="!loading && items.length > 0 && noVirtual"
+      v-else-if="items.length > 0 && noVirtual"
       :class="useResponsiveClasses('card-grid-container')">
       <template
         v-for="item of items"
@@ -40,7 +30,7 @@
       </template>
     </div>
     <VRow
-      v-else-if="!loading && items.length === 0"
+      v-else-if="items.length === 0"
       justify="center">
       <VCol
         cols="12"
@@ -71,7 +61,6 @@ import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 withDefaults(
   defineProps<{
     items: BaseItemDto[];
-    loading?: boolean;
     large?: boolean;
     noVirtual?: boolean;
   }>(),
