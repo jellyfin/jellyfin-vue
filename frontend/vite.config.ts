@@ -64,6 +64,10 @@ export default defineConfig(({ mode }): UserConfig => {
        * See main.ts for an explanation of this target
        */
       target: 'es2022',
+      /**
+       * Disable chunk size warnings
+       */
+      chunkSizeWarningLimit: Number.NaN,
       cssCodeSplit: false,
       cssMinify: 'lightningcss',
       modulePreload: false,
