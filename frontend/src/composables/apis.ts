@@ -8,9 +8,9 @@ import type { Api } from '@jellyfin/sdk';
 import type { BaseItemDto, BaseItemDtoQueryResult } from '@jellyfin/sdk/lib/generated-client';
 import type { AxiosResponse } from 'axios';
 import { isEqual } from 'lodash-es';
-import { computed, effectScope, getCurrentScope, isRef, ref, toValue, unref, watch, type ComputedRef, type Ref } from 'vue';
+import { computed, effectScope, getCurrentScope, isRef, shallowRef, toValue, unref, watch, type ComputedRef, type Ref } from 'vue';
 
-/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-return */
 /**
  * BetterOmit still provides IntelliSense fedback, unlike the built-in Omit type.
  * See https://github.com/microsoft/TypeScript/issues/56135
@@ -74,16 +74,32 @@ interface OfflineParams<T extends Record<K, (...args: any[]) => any>, K extends 
 
 interface DefaultComposableOps {
   globalLoading: boolean;
-  skipCache: boolean;
+  skipCache: {
+    baseItem: boolean;
+    request: boolean;
+  };
 }
 interface ComposableOps {
   globalLoading?: boolean;
-  skipCache?: boolean;
+  skipCache?: {
+    baseItem?: boolean;
+    request?: boolean;
+  };
+}
+
+interface BaseItemComposableOps {
+  globalLoading?: boolean;
+  skipCache?: {
+    request?: boolean;
+  };
 }
 
 const defaultOps: DefaultComposableOps = Object.freeze({
   globalLoading: true,
-  skipCache: false
+  skipCache: {
+    baseItem: false,
+    request: false
+  }
 });
 
 /**
@@ -128,7 +144,7 @@ async function resolveAndAdd<T extends Record<K, (...args: any[]) => any>, K ext
   loading: Ref<boolean>,
   stringifiedArgs: string,
   ops: DefaultComposableOps,
-  ...args: Parameters<T[K]>): Promise<void> {
+  ...args: Parameters<T[K]>): Promise<ExtractItems<Awaited<ReturnType<T[K]>['data']>> | void> {
   /**
    * We add all BaseItemDto's fields for consistency in what we can expect from the store.
    * toValue normalizes the getters.
@@ -153,13 +169,15 @@ async function resolveAndAdd<T extends Record<K, (...args: any[]) => any>, K ext
 
     if (response.data) {
       const requestData = response.data as Awaited<ReturnType<T[K]>['data']>;
-      const result = 'Items' in requestData && Array.isArray(requestData.Items) ? requestData.Items : requestData;
+      const result: ExtractItems<typeof requestData> = 'Items' in requestData && Array.isArray(requestData.Items) ? requestData.Items : requestData;
 
-      if (ofBaseItem && !ops.skipCache) {
+      if (ofBaseItem && !ops.skipCache.baseItem) {
         apiStore.baseItemAdd(result as BaseItemDto | BaseItemDto[]);
       }
 
-      if (!ops.skipCache) {
+      if (ops.skipCache.request) {
+        return result;
+      } else {
         apiStore.requestAdd(funcName, stringifiedArgs, ofBaseItem, result);
       }
     }
@@ -180,19 +198,31 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
   const offlineParams: OfflineParams<T,K>[] = [];
   const isFuncDefined = (): boolean => unref(api) !== undefined && unref(methodName) !== undefined;
 
-  const loading = ref(false);
-  const argsRef = ref<Parameters<T[K]>>();
-  const previousData = ref<typeof cachedData.value>();
+  const loading = shallowRef(false);
+  const argsRef = shallowRef<Parameters<T[K]>>();
+  const result = shallowRef<ReturnData<T, K, typeof ofBaseItem>>();
+  const previousCachedData = shallowRef<typeof cachedData.value>();
 
   const stringArgs = computed(() => {
     return JSON.stringify(argsRef.value);
   });
   const cachedData = computed(() => apiStore.getCachedRequest(`${String(unref(api)?.name)}.${String(unref(methodName))}`, stringArgs.value));
   const isCached = computed(() => Boolean(cachedData.value));
-  const data = computed<ReturnData<T, K, typeof ofBaseItem>>(() =>
-    previousData.value ? apiStore.getRequest(previousData.value) as ReturnData<T, K, typeof ofBaseItem> :
-    apiStore.getRequest(cachedData.value) as ReturnData<T, K, typeof ofBaseItem>
-  );
+  const data = computed<ReturnData<T, K, typeof ofBaseItem>>(() => {
+    if (previousCachedData.value) {
+      return apiStore.getRequest(previousCachedData.value) as ReturnData<T, K, typeof ofBaseItem>;
+    } else if (ops.skipCache.request && result.value) {
+      if (ofBaseItem) {
+        return Array.isArray(result.value) ?
+          apiStore.getItemsById((result.value as BaseItemDto[]).map((r) => r.Id)) as ReturnData<T, K, typeof ofBaseItem> :
+          apiStore.getItemById((result.value as BaseItemDto).Id) as ReturnData<T, K, typeof ofBaseItem>;
+      } else {
+        return result.value;
+      }
+    } else {
+      return apiStore.getRequest(cachedData.value) as ReturnData<T, K, typeof ofBaseItem>;
+    }
+  });
 
   /**
    * Function invoked per every data change.
@@ -202,32 +232,36 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
     const unrefApi = unref(api);
     const unrefMethod = unref(methodName);
 
-    if (unrefApi && unrefMethod) {
-      /**
-       * Rerun previous parameters when the user is back online
-       */
-      if (offlineParams.length > 0) {
-        await Promise.all(offlineParams.map((p) => {
-          void resolveAndAdd(p.api, p.methodName, ofBaseItem, loading, stringArgs.value, ops, ...p.args);
-        }));
-        offlineParams.length = 0;
-      }
+    if (!unrefApi || !unrefMethod) {
+      return;
+    }
 
-      if (argsRef.value && !onlyPending) {
-        try {
-          if (network.isOnline.value && remote.socket.isConnected) {
-            await resolveAndAdd(unrefApi, unrefMethod, ofBaseItem, loading, stringArgs.value, ops, ...argsRef.value);
-          } else {
-            useSnackbar(i18n.t('offlineCantDoThisWillRetryWhenOnline'), 'error');
+    /**
+     * Rerun previous parameters when the user is back online
+     */
+    if (offlineParams.length > 0) {
+      await Promise.all(offlineParams.map((p) => {
+        void resolveAndAdd(p.api, p.methodName, ofBaseItem, loading, stringArgs.value, ops, ...p.args);
+      }));
+      offlineParams.length = 0;
+    }
 
-            offlineParams.push({
-              api: unrefApi,
-              methodName: unrefMethod,
-              args: argsRef.value
-            });
-          }
-        } catch {}
-      }
+    if (argsRef.value && !onlyPending) {
+      try {
+        if (network.isOnline.value && remote.socket.isConnected) {
+          const resolved = await resolveAndAdd(unrefApi, unrefMethod, ofBaseItem, loading, stringArgs.value, ops, ...argsRef.value);
+
+          result.value = resolved as ReturnData<T, K, typeof ofBaseItem>;
+        } else {
+          useSnackbar(i18n.t('offlineCantDoThisWillRetryWhenOnline'), 'error');
+
+          offlineParams.push({
+            api: unrefApi,
+            methodName: unrefMethod,
+            args: argsRef.value
+          });
+        }
+      } catch {}
     }
   };
 
@@ -244,10 +278,10 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
          * Does a deep comparison to avoid useless double requests
          */
         if (!normalizedArgs.every((a, index) => isEqual(a, toValue(oldVal?.[index])))) {
-          previousData.value = cachedData.value;
+          previousCachedData.value = cachedData.value;
           argsRef.value = normalizedArgs;
           await run();
-          previousData.value = undefined;
+          previousCachedData.value = undefined;
         }
       });
       watch(() => remote.socket.isConnected, async () => await run(true));
@@ -279,7 +313,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
         await run();
         scope.run(() => {
           watch(isCached, () => {
-            if (isCached.value && !ops.skipCache) {
+            if (isCached.value && !ops.skipCache.request) {
               scope.stop();
               resolve({ loading, data });
             }
@@ -333,13 +367,16 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
  * @param api - The API's endpoint to use.
  * @param methodname- - The operation to execute.
  * @param ops.globalLoading - Show the global loading indicator or not for this request. Defaults to true.
+ * @param ops.skipCache.request - USE WITH CAUTION, SINCE IT'S BETTER TO CACHE EVERYTHING BY DEFAULT.
+ * Whether to skip the cache or not. Useful for requests whose return value are known to be useless to cache,
+ * like marking an item as played or favorite. Defaults to false.
  * @returns data  - The BaseItemDto or BaseItemDto[] that was requested.
  * @returns loading - A boolean ref that indicates if the request is in progress.
  */
 export function useBaseItem<T extends Record<K, (...args: any[]) => any>, K extends keyof T, U extends ParametersAsGetters<T[K]>>(
   api: MaybeReadonlyRef<((api: Api) => T) | undefined>,
   methodName: MaybeReadonlyRef<K | undefined>,
-  ops?: BetterOmit<ComposableOps, 'skipCache'>
+  ops?: BaseItemComposableOps
 ): (this: any, ...args: ComposableParams<T,K,U>) => Promise<ReturnPayload<T, K, true>> | ReturnPayload<T, K, true> {
   return _sharedInternalLogic<T, K, U>(true, api, methodName, ops ? { ...ops, ...defaultOps } : defaultOps);
 }
@@ -386,9 +423,11 @@ export function useBaseItem<T extends Record<K, (...args: any[]) => any>, K exte
  * @param api - The API's endpoint to use.
  * @param methodname- - The operation to execute.
  * @param ops - Composable options
- * @param ops.skipCache - USE WITH CAUTION, SINCE IT'S BETTER TO CACHE EVERYTHING BY DEFAULT.
+ * @param ops.skipCache.request - USE WITH CAUTION, SINCE IT'S BETTER TO CACHE EVERYTHING BY DEFAULT.
  * Whether to skip the cache or not. Useful for requests whose return value are known to be useless to cache,
  * like marking an item as played or favorite. Defaults to false.
+ * @param ops.skipCache.baseItem - USE WITH CAUTION, SINCE IT'S BETTER TO CACHE EVERYTHING BY DEFAULT.
+ * Same as above, but also for baseItems. Defaults to false.
  * @param ops.globalLoading - Show the global loading indicator or not for this request. Defaults to true.
  * @returns data  - The request data.
  * @returns loading - A boolean ref that indicates if the request is in progress.
@@ -415,4 +454,4 @@ export function methodsAsObject<T extends Record<K, (...args: any[]) => any>, K 
   };
 }
 
-/* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any */
+/* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-return */

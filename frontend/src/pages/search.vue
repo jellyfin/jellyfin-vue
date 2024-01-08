@@ -78,27 +78,64 @@
 </template>
 
 <script setup lang="ts">
+import { useBaseItem } from '@/composables/apis';
 import { useResponsiveClasses } from '@/composables/use-responsive-classes';
-import { remote } from '@/plugins/remote';
-import { type BaseItemDto, BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
+import { apiStore } from '@/store/api';
+import { BaseItemKind, type BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getPersonsApi } from '@jellyfin/sdk/lib/utils/api/persons-api';
-import { useDebounceFn } from '@vueuse/core';
-import { computed, reactive, ref, watch } from 'vue';
+import { refDebounced } from '@vueuse/core';
+import { computed, shallowRef } from 'vue';
 import { useRoute } from 'vue-router/auto';
 
 const route = useRoute();
 
-const searchTab = ref(0);
-const memo = reactive(
-  new Map<string, { items: BaseItemDto[]; people: BaseItemDto[] }>([
-    ['', { items: [], people: [] }]
-  ])
-);
+const searchTab = shallowRef(0);
 
 const searchQuery = computed(() => route.query?.q?.toString() ?? '');
-const items = computed(() => memo.get(searchQuery.value)?.items ?? []);
-const people = computed(() => memo.get(searchQuery.value)?.people ?? []);
+const searchDebounced = refDebounced(searchQuery, 400);
+const itemSearchMethod = computed(() => searchDebounced.value ? 'getItemsByUserId' : undefined);
+const peopleSearchMethod = computed(() => searchDebounced.value ? 'getPersons' : undefined);
+const { loading: itemLoading, data: itemSearch } = await useBaseItem(getItemsApi, itemSearchMethod, {
+  skipCache: { request: true }
+})(() => ({
+  searchTerm: searchDebounced.value,
+  includeItemTypes: [
+    BaseItemKind.Movie,
+    BaseItemKind.Series,
+    BaseItemKind.Audio,
+    BaseItemKind.MusicAlbum,
+    BaseItemKind.Book,
+    BaseItemKind.MusicArtist,
+    BaseItemKind.Person
+  ],
+  recursive: true
+}));
+
+const { loading: peopleLoading, data: peopleSearch } = await useBaseItem(getPersonsApi, peopleSearchMethod, {
+  skipCache: { request: true }
+})(() => ({
+  searchTerm: searchDebounced.value
+}));
+
+const serverSearchIds = computed(() => {
+  if (!peopleLoading.value && !itemLoading.value) {
+    return [...(itemSearch.value ?? []), ...(peopleSearch.value ?? [])].map((i) => i.Id as string);
+  }
+
+  return [];
+});
+const items = computed(() => {
+  if (searchDebounced.value) {
+    const items = apiStore.findItems(searchDebounced.value);
+    const itemsIds = new Set(items.map((i) => i.Id as string));
+    const serverItems = serverSearchIds.value.filter((i) => !itemsIds.has(i));
+
+    return [...items, ...(apiStore.getItemsById(serverItems) as BaseItemDto[])];
+  }
+
+  return [];
+});
 const movies = computed(() =>
   items.value.filter((item) => item.Type === BaseItemKind.Movie)
 );
@@ -117,41 +154,7 @@ const books = computed(() =>
 const artists = computed(() =>
   items.value.filter((item) => item.Type === BaseItemKind.MusicArtist)
 );
-
-const performDebouncedSearch = useDebounceFn(async (searchTerm: string) => {
-  if (!memo.has(searchTerm)) {
-    const itemSearch =
-      (
-        await remote.sdk.newUserApi(getItemsApi).getItemsByUserId({
-          userId: remote.auth.currentUserId ?? '',
-          searchTerm,
-          includeItemTypes: [
-            BaseItemKind.Movie,
-            BaseItemKind.Series,
-            BaseItemKind.Audio,
-            BaseItemKind.MusicAlbum,
-            BaseItemKind.Book,
-            BaseItemKind.MusicArtist,
-            BaseItemKind.Person
-          ],
-          recursive: true
-        })
-      ).data.Items ?? [];
-    const peopleSearch =
-      (
-        await remote.sdk.newUserApi(getPersonsApi).getPersons({
-          userId: remote.auth.currentUserId,
-          searchTerm
-        })
-      ).data.Items ?? [];
-
-    memo.set(searchTerm, { items: itemSearch, people: peopleSearch });
-  }
-}, 400);
-
-watch(searchQuery, async (q) => await performDebouncedSearch(q), {
-  immediate: true
-});
+const people = computed(() => items.value.filter((item) => item.Type === BaseItemKind.Person));
 </script>
 
 <style lang="scss" scoped>

@@ -83,6 +83,12 @@ class ApiStore {
     }
   };
 
+  public findItems = (searchTerm: string): BaseItemDto[] => [...this._state.items.values()].filter((item: BaseItemDto) => {
+    const search = searchTerm.toLowerCase();
+
+    return item.Name?.includes(search) || item.SortName?.includes(search) || item.Overview?.includes(search) || item.Taglines?.includes(search);
+  });
+
   /**
    * == ACTIONS ==
    */
