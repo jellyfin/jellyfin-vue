@@ -182,6 +182,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
 
   const loading = ref(false);
   const argsRef = ref<Parameters<T[K]>>();
+  const previousData = ref<typeof cachedData.value>();
 
   const stringArgs = computed(() => {
     return JSON.stringify(argsRef.value);
@@ -189,6 +190,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
   const cachedData = computed(() => apiStore.getCachedRequest(`${String(unref(api)?.name)}.${String(unref(methodName))}`, stringArgs.value));
   const isCached = computed(() => Boolean(cachedData.value));
   const data = computed<ReturnData<T, K, typeof ofBaseItem>>(() =>
+    previousData.value ? apiStore.getRequest(previousData.value) as ReturnData<T, K, typeof ofBaseItem> :
     apiStore.getRequest(cachedData.value) as ReturnData<T, K, typeof ofBaseItem>
   );
 
@@ -208,7 +210,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
         await Promise.all(offlineParams.map((p) => {
           void resolveAndAdd(p.api, p.methodName, ofBaseItem, loading, stringArgs.value, ops, ...p.args);
         }));
-
+        offlineParams.length = 0;
       }
 
       if (argsRef.value && !onlyPending) {
@@ -230,20 +232,22 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
   };
 
   return function (this: any, ...args: ComposableParams<T,K,U>) {
-    const setArgs = (): void => {
-      argsRef.value = args.map((a) => toValue(a)) as Parameters<T[K]>;
-    };
+    const normalizeArgs = (): Parameters<T[K]> => args.map((a) => toValue(a)) as Parameters<T[K]>;
 
-    setArgs();
+    argsRef.value = normalizeArgs();
 
     if (getCurrentScope() !== undefined) {
       watch(args, async (_newVal, oldVal) => {
+        const normalizedArgs = normalizeArgs();
+
         /**
          * Does a deep comparison to avoid useless double requests
          */
-        if (!args.map((a) => toValue(a)).every((a, index) => isEqual(a, toValue(oldVal?.[index])))) {
-          setArgs();
+        if (!normalizedArgs.every((a, index) => isEqual(a, toValue(oldVal?.[index])))) {
+          previousData.value = cachedData.value;
+          argsRef.value = normalizedArgs;
           await run();
+          previousData.value = undefined;
         }
       });
       watch(() => remote.socket.isConnected, async () => await run(true));
