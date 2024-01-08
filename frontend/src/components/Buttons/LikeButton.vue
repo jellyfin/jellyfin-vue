@@ -28,7 +28,7 @@ const props = withDefaults(
  * to do manual modification here
  */
 const methodToExecute = ref<'markFavoriteItem' | 'unmarkFavoriteItem' | undefined>();
-const { loading } = await useApi(getUserLibraryApi, methodToExecute, { skipCache: true, globalLoading: false })(() => ({
+const { loading } = await useApi(getUserLibraryApi, methodToExecute, { skipCache: { request: true }, globalLoading: false })(() => ({
   itemId: props.item.Id ?? ''
 }));
 

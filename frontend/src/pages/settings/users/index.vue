@@ -58,18 +58,15 @@ meta:
 </route>
 
 <script setup lang="ts">
+import { useApi } from '@/composables/apis';
 import { useDateFns } from '@/composables/use-datefns';
-import { remote } from '@/plugins/remote';
 import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
 import { formatDistanceToNow } from 'date-fns';
-import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-const users = ref(
-  (await remote.sdk.newUserApi(getUserApi).getUsers()).data ?? []
-);
+const { data: users } = await useApi(getUserApi, 'getUsers')(() => ({}));
 </script>
 
 <style scoped>

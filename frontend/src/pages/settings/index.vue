@@ -9,7 +9,7 @@
         class="py-4">
         <div
           v-if="
-            !isEmpty(systemInfo) &&
+            systemInfo &&
               $remote.auth.currentUser?.Policy?.IsAdministrator
           ">
           <VImg
@@ -124,10 +124,9 @@
 
 <script setup lang="ts">
 import { version as clientVersion } from '@/../package.json';
+import { useApi } from '@/composables/apis';
 import { remote } from '@/plugins/remote';
-import type { SystemInfo } from '@jellyfin/sdk/lib/generated-client';
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
-import { isEmpty } from 'lodash-es';
 import { commit_hash } from 'virtual:commit';
 import IMdiAccount from 'virtual:icons/mdi/account';
 import IMdiAccountMultiple from 'virtual:icons/mdi/account-multiple';
@@ -147,9 +146,9 @@ import IMdiServer from 'virtual:icons/mdi/server';
 import IMdiSubtitles from 'virtual:icons/mdi/subtitles';
 import IMdiTelevisionClassic from 'virtual:icons/mdi/television-classic';
 import IMdiTextBox from 'virtual:icons/mdi/text-box';
-import { type Component, computed } from 'vue';
+import { computed, type Component } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { type RouteLocationRaw, useRoute } from 'vue-router/auto';
+import { useRoute, type RouteLocationRaw } from 'vue-router/auto';
 
 const { t } = useI18n();
 const route = useRoute();
@@ -163,11 +162,8 @@ interface MenuOptions {
 
 route.meta.title = t('settings');
 
-let systemInfo: SystemInfo = {};
-
-if (remote.auth.currentUser?.Policy?.IsAdministrator) {
-  systemInfo = (await remote.sdk.newUserApi(getSystemApi).getSystemInfo()).data;
-}
+const method = computed(() => remote.auth.currentUser?.Policy?.IsAdministrator ? 'getSystemInfo' : undefined);
+const { data: systemInfo } = await useApi(getSystemApi, method)(() => ({}));
 
 const userItems = computed<MenuOptions[]>(() => {
   return [
