@@ -54,7 +54,7 @@
             <VBtn
               class="bg-primary-darken-2"
               variant="flat"
-              @click="playbackManager.setNextTrack">
+              @click="playbackManager.setNextItem">
               {{ $t('startNow') }}
             </VBtn>
             <VBtn @click="isHiddenByUser = true">

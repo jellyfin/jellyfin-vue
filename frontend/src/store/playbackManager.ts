@@ -6,7 +6,6 @@
  */
 import {
   BaseItemKind,
-  ItemFields,
   ItemFilter,
   MediaStreamType,
   SubtitleDeliveryMethod,
@@ -27,16 +26,15 @@ import { reactive, watch, watchEffect } from 'vue';
 /**
  * It's important to import these from globals.ts directly to avoid cycles and ReferenceError
  */
+import { useBaseItem } from '@/composables/apis';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { i18n } from '@/plugins/i18n';
 import { remote } from '@/plugins/remote';
-import { router } from '@/plugins/router';
 import { apiStore } from '@/store/api';
 import { getImageInfo } from '@/utils/images';
 import { getItemRuntime } from '@/utils/items';
 import playbackProfile from '@/utils/playback-profiles';
 import { msToTicks } from '@/utils/time';
-import type { RouteLocationNormalized, RouteLocationRaw } from 'vue-router/auto';
 import { mediaControls, now as reactiveDate } from '.';
 
 /**
@@ -218,6 +216,19 @@ class PlaybackManagerStore {
   }
   public get currentSourceUrl(): string | undefined {
     return this._state.currentSourceUrl;
+  }
+
+  public get previousItem(): BaseItemDto | undefined {
+    if (
+      !isNil(this._state.currentItemIndex) &&
+      this._state.currentItemIndex - 1 <= 0
+    ) {
+      return apiStore.getItemById(
+        this._state.queue[this._state.currentItemIndex - 1]
+      );
+    } else if (this._state.repeatMode === RepeatMode.RepeatAll) {
+      return apiStore.getItemById(this._state.queue.at(-1));
+    }
   }
   /**
    * Get a reactive BaseItemDto object of the next item in queue
@@ -607,10 +618,7 @@ class PlaybackManagerStore {
       }
 
       this._state.status = PlaybackStatus.Buffering;
-      this._state.queue = await this.translateItemsForPlayback(
-        item,
-        startShuffled
-      );
+      this._state.queue = await this.translateItemsForPlayback(item);
 
       if (mediaSourceIndex !== undefined) {
         this._state.currentMediaSourceIndex = mediaSourceIndex;
@@ -629,6 +637,11 @@ class PlaybackManagerStore {
       }
 
       this._state.currentItemIndex = startFromIndex;
+
+      if (startShuffled) {
+        this.toggleShuffle(false);
+      }
+
       this.currentTime = startFromTime;
 
       if (!startShuffled && initiator) {
@@ -642,6 +655,7 @@ class PlaybackManagerStore {
       }
 
       this._state.playbackInitiator = initiator;
+
       this._state.status = PlaybackStatus.Playing;
     } catch {
       this._state.status = PlaybackStatus.Error;
@@ -689,29 +703,23 @@ class PlaybackManagerStore {
     }
   };
 
-  public setNextTrack = (): void => {
-    if (
-      !isNil(this._state.currentItemIndex) &&
-      this._state.currentItemIndex + 1 < this._state.queue.length
-    ) {
+  public setNextItem = (): void => {
+    if (!isNil(this._state.currentItemIndex) && this.nextItem) {
       this._state.currentItemIndex += 1;
-      this.currentTime = 0;
     } else if (this._state.repeatMode === RepeatMode.RepeatAll) {
       this._state.currentItemIndex = 0;
-      this.currentTime = 0;
     } else {
       this.stop();
     }
+
+    this.currentTime = 0;
   };
 
-  public setPreviousTrack = (): void => {
-    if (
-      !isNil(this._state.currentItemIndex) &&
-      this._state.currentItemIndex > 0 &&
-        !isNil(this.currentTime) &&
-        this.currentTime < 2
-    ) {
+  public setPreviousItem = (): void => {
+    if (!isNil(this._state.currentItemIndex) && this.previousItem) {
       this._state.currentItemIndex -= 1;
+    } else if (this._state.repeatMode === RepeatMode.RepeatAll) {
+      this._state.currentItemIndex = this._state.queue.length - 1;
     }
 
     this.currentTime = 0;
@@ -770,7 +778,7 @@ class PlaybackManagerStore {
       (this.currentTime || 0) > 15 ? (this.currentTime || 0) - 15 : 0;
   };
 
-  public toggleShuffle = (): void => {
+  public toggleShuffle = (preserveCurrentItem = true): void => {
     if (this._state.queue && !isNil(this._state.currentItemIndex)) {
       if (this._state.isShuffling) {
         const item = this._state.queue[this._state.currentItemIndex];
@@ -784,11 +792,13 @@ class PlaybackManagerStore {
 
         this._state.originalQueue = this._state.queue;
 
-        const item = this._state.queue[this._state.currentItemIndex];
-        const itemIndex = queue.indexOf(item);
+        if (preserveCurrentItem) {
+          const item = this._state.queue[this._state.currentItemIndex];
+          const itemIndex = queue.indexOf(item);
 
-        queue.splice(itemIndex, 1);
-        queue.unshift(item);
+          queue.splice(itemIndex, 1);
+          queue.unshift(item);
+        }
 
         this._state.queue = queue;
         this._state.currentItemIndex = 0;
@@ -832,18 +842,15 @@ class PlaybackManagerStore {
   };
 
   public instantMixFromItem = async (itemId: string): Promise<void> => {
-    const items = (
-      await remote.sdk.newUserApi(getInstantMixApi).getInstantMixFromItem({
-        id: itemId,
-        userId: remote.auth.currentUserId
-      })
-    ).data.Items;
+    const { data: items } = await useBaseItem(getInstantMixApi, 'getInstantMixFromItem', { skipCache: { request: true }})(() => ({
+      id: itemId
+    }));
 
-    if (!items) {
+    if (!items.value) {
       throw new Error('No items found');
     }
 
-    for (const item of items) {
+    for (const item of items.value) {
       await this.addToQueue(item);
     }
   };
@@ -874,11 +881,9 @@ class PlaybackManagerStore {
    * Builds an array of item ids based on a collection item (i.e album, tv show, etc...)
    *
    * @param item
-   * @param shuffle
    */
   public translateItemsForPlayback = async (
-    item: BaseItemDto,
-    shuffle = false
+    item: BaseItemDto
   ): Promise<string[]> => {
     if (!item.Id) {
       return [];
@@ -888,7 +893,6 @@ class PlaybackManagerStore {
       item.Type === BaseItemKind.Playlist || item.Type === BaseItemKind.BoxSet
         ? undefined
         : ['SortName'];
-    const sortBy = shuffle ? ['Random'] : sortOrder;
     const ids =
       item.Type === BaseItemKind.Program && item.ChannelId
         ? [item.ChannelId]
@@ -896,7 +900,7 @@ class PlaybackManagerStore {
     const artistIds =
       item.Type === BaseItemKind.MusicArtist ? [item.Id] : undefined;
     const parentId = item.IsFolder ? item.Id : undefined;
-    let request;
+    let request: BaseItemDto[] = [];
 
     if (
       item.Type === BaseItemKind.Program ||
@@ -905,16 +909,16 @@ class PlaybackManagerStore {
       item.Type === BaseItemKind.MusicGenre ||
       item.IsFolder
     ) {
-      request = await remote.sdk.newUserApi(getItemsApi).getItems({
+      const { data: response } = await useBaseItem(getItemsApi, 'getItems')(() => ({
         ids,
         artistIds,
         filters: [ItemFilter.IsNotFolder],
         parentId,
         recursive: true,
-        sortBy,
-        userId: remote.auth.currentUserId,
-        fields: Object.values(ItemFields)
-      });
+        sortBy: sortOrder
+      }));
+
+      request = response.value;
     } else if (
       item.Type === BaseItemKind.Episode &&
       remote.auth.currentUser?.Configuration?.EnableNextEpisodeAutoPlay &&
@@ -923,25 +927,16 @@ class PlaybackManagerStore {
       /**
        * If autoplay is enabled and we have a seriesId, get the rest of the episodes
        */
-      request = await remote.sdk.newUserApi(getTvShowsApi).getEpisodes({
-        seriesId: item.SeriesId,
+      const { data: response } = await useBaseItem(getTvShowsApi, 'getEpisodes')(() => ({
+        seriesId: item.SeriesId as string,
         isMissing: false,
-        startItemId: item.Id,
-        userId: remote.auth.currentUserId,
-        fields: Object.values(ItemFields)
-      });
+        startItemId: item.Id
+      }));
+
+      request = response.value;
     }
 
-    /**
-     * When no extra processing was needed, we add the item itself
-     */
-    const responseItems = request ? request.data.Items : [item];
-
-    return (
-      responseItems
-        ?.filter((i): i is { Id: string } => i.Id !== undefined)
-        .map((i) => i.Id) ?? []
-    );
+    return request.map((i) => i.Id as string);
   };
 
   public getItemPlaybackUrl = (
@@ -1144,27 +1139,13 @@ class PlaybackManagerStore {
           const actionHandlers: {
             [key in MediaSessionAction]?: MediaSessionActionHandler;
           } = {
-            play: (): void => {
-              this.unpause();
-            },
-            pause: (): void => {
-              this.pause();
-            },
-            previoustrack: (): void => {
-              this.setPreviousTrack();
-            },
-            nexttrack: (): void => {
-              this.setNextTrack();
-            },
-            stop: (): void => {
-              this.stop();
-            },
-            seekbackward: (): void => {
-              this.skipBackward();
-            },
-            seekforward: (): void => {
-              this.skipForward();
-            },
+            play: this.unpause,
+            pause: this.pause,
+            previoustrack: this.setPreviousItem,
+            nexttrack: this.setNextItem,
+            stop: this.stop,
+            seekbackward: this.skipBackward,
+            seekforward: this.skipForward,
             seekto: (action): void => {
               this.currentTime = action.seekTime ?? 0;
             }
@@ -1195,14 +1176,16 @@ class PlaybackManagerStore {
         window.navigator.mediaSession &&
         this.currentTime <= this.currentItemRuntime
       ) {
+        const duration = this.currentItemRuntime / 1000;
+
         window.navigator.mediaSession.setPositionState(
           remove
             ? undefined
             : {
-                duration: this.currentItemRuntime / 1000,
+                duration,
                 // TODO: Change this when playback rate changes are implemented
                 playbackRate: 1,
-                position: this.currentTime
+                position: this.currentTime <= duration ? this.currentTime : 0
               }
         );
       }
@@ -1221,7 +1204,7 @@ class PlaybackManagerStore {
         (): typeof this.isShuffling => this.isShuffling
       ],
       async (newValue, oldValue) => {
-        if (newValue[1] === oldValue[1]) {
+        if (newValue[1] === oldValue[1] || isNil(this.currentMediaSource)) {
           await this._setCurrentMediaSource();
         }
       }
@@ -1319,7 +1302,7 @@ class PlaybackManagerStore {
 
     watch(mediaControls.ended, () => {
       if (mediaControls.ended.value && !this.isRemotePlayer) {
-        playbackManager.setNextTrack();
+        playbackManager.setNextItem();
       }
     });
 
@@ -1334,19 +1317,6 @@ class PlaybackManagerStore {
         }
       }
     );
-
-    /**
-     * Validates that no playback is happening when accesing a route
-     */
-    router.beforeEach((
-      to: RouteLocationNormalized
-    ): boolean | RouteLocationRaw => {
-      if (to.path.includes('playback') && isNil(playbackManager.currentItem)) {
-        return { path: '/', replace: true };
-      }
-
-      return true;
-    });
   }
 }
 

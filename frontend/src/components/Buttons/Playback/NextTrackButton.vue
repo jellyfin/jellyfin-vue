@@ -3,7 +3,7 @@
     icon
     :size="props.size"
     :disabled="!playbackManager.nextItem"
-    @click="playbackManager.setNextTrack">
+    @click="playbackManager.setNextItem">
     <VIcon :size="size">
       <IMdiSkipNext />
     </VIcon>

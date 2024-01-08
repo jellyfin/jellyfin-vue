@@ -96,7 +96,7 @@ import { useApi } from '@/composables/apis';
 import { useDateFns } from '@/composables/use-datefns';
 import { remote } from '@/plugins/remote';
 import {
-LogLevel
+  LogLevel
 } from '@jellyfin/sdk/lib/generated-client';
 import { getActivityLogApi } from '@jellyfin/sdk/lib/utils/api/activity-log-api';
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
