@@ -24,7 +24,7 @@ import '@fontsource/roboto';
  * The order of statements IS IMPORTANT
  */
 const remote = createRemote();
-/* eslint-disable-next-line @typescript-eslint/no-unsafe-argument */
+
 const app = createApp(Root);
 
 /**

@@ -1,5 +1,5 @@
 <template>
-  <PageView />
+  <slot />
 </template>
 
 <script setup lang="ts">
