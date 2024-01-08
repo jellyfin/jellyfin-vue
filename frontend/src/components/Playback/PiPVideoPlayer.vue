@@ -43,7 +43,7 @@
                 class="pointer-events-all"
                 icon
                 size="large"
-                @click="playbackManager.setPreviousTrack">
+                @click="playbackManager.setPreviousItem">
                 <VIcon size="32">
                   <IMdiSkipPrevious />
                 </VIcon>
@@ -62,7 +62,7 @@
                 class="pointer-events-all"
                 icon
                 size="large"
-                @click="playbackManager.setNextTrack">
+                @click="playbackManager.setNextItem">
                 <VIcon size="32">
                   <IMdiSkipNext />
                 </VIcon>

@@ -9,7 +9,12 @@
       <VChip
         size="small"
         class="ma-2 hidden-sm-and-down">
-        {{ items?.length ?? 0 }}
+        <template v-if="loading">
+          {{ t('lazyLoading', { value: lazyLoadLimit }) }}
+        </template>
+        <template v-else>
+          {{ items?.length ?? 0 }}
+        </template>
       </VChip>
       <VDivider
         inset
@@ -58,8 +63,9 @@
 <script setup lang="ts">
 import type { Filters } from '@/components/Buttons/FilterButton.vue';
 import { methodsAsObject, useBaseItem } from '@/composables/apis';
+import { apiStore } from '@/store/api';
 import {
-BaseItemKind, SortOrder
+  BaseItemKind, SortOrder, type BaseItemDto
 } from '@jellyfin/sdk/lib/generated-client';
 import { getArtistsApi } from '@jellyfin/sdk/lib/utils/api/artists-api';
 import { getGenresApi } from '@jellyfin/sdk/lib/utils/api/genres-api';
@@ -67,13 +73,14 @@ import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getMusicGenresApi } from '@jellyfin/sdk/lib/utils/api/music-genres-api';
 import { getPersonsApi } from '@jellyfin/sdk/lib/utils/api/persons-api';
 import { getStudiosApi } from '@jellyfin/sdk/lib/utils/api/studios-api';
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref, shallowRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router/auto';
 
 const { t } = useI18n();
 const route = useRoute<'/library/[itemId]'>();
 
+const lazyLoadLimit = 50;
 const COLLECTION_TYPES_MAPPINGS: { [key: string]: BaseItemKind } = {
   tvshows: BaseItemKind.Series,
   movies: BaseItemKind.Movie,
@@ -82,9 +89,11 @@ const COLLECTION_TYPES_MAPPINGS: { [key: string]: BaseItemKind } = {
   boxsets: BaseItemKind.BoxSet
 };
 
-const innerItemKind = ref<BaseItemKind>();
-const sortBy = ref<string>();
-const sortAscending = ref(true);
+const innerItemKind = shallowRef<BaseItemKind>();
+const sortBy = shallowRef<string>();
+const sortAscending = shallowRef(true);
+const queryLimit = shallowRef<number | undefined>(lazyLoadLimit);
+const lazyLoadIds = shallowRef<string[]>([]);
 const filters = ref<Filters>({
   status: [],
   features: [],
@@ -190,7 +199,7 @@ const method = computed(() => methods.value.methodName);
 /**
  * TODO: Improve the type situation of this statement
  */
-const { data: items } = await useBaseItem(api, method)(() => ({
+const { loading, data: queryItems } = await useBaseItem(api, method)(() => ({
   parentId: parentId.value,
   personTypes: viewType.value === 'Person' ? ['Actor'] : undefined,
   includeItemTypes: viewType.value ? [viewType.value] : undefined,
@@ -208,10 +217,24 @@ const { data: items } = await useBaseItem(api, method)(() => ({
   hasThemeVideo: filters.value.features.includes('HasThemeVideo') || undefined,
   isHd: filters.value.types.includes('isHD') || undefined,
   is4K: filters.value.types.includes('is4K') || undefined,
-  is3D: filters.value.types.includes('is3D') || undefined
+  is3D: filters.value.types.includes('is3D') || undefined,
+  startIndex: queryLimit.value ? undefined : lazyLoadLimit,
+  limit: queryLimit.value
 }));
 
+const items = computed(() => {
+  return queryLimit.value ? queryItems.value : [...(apiStore.getItemsById(lazyLoadIds.value) as BaseItemDto[]), ...queryItems.value];
+});
+
 route.meta.title = library.value.Name;
+
+/**
+ * We fetch the 1st 100 items and, after mount, we fetch the rest.
+ */
+onMounted(() => {
+  lazyLoadIds.value = queryItems.value.map((i) => i.Id as string);
+  queryLimit.value = undefined;
+});
 </script>
 
 <style lang="scss" scoped>

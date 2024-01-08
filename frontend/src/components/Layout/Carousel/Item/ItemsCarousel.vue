@@ -61,13 +61,11 @@
 
 <script setup lang="ts">
 import { useResponsiveClasses } from '@/composables/use-responsive-classes';
-import { remote } from '@/plugins/remote';
+import { apiStore } from '@/store/api';
 import { getBlurhash } from '@/utils/images';
 import { getItemDetailsLink } from '@/utils/items';
-import { type BaseItemDto, ImageType } from '@jellyfin/sdk/lib/generated-client';
-import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
+import { BaseItemKind, ImageType, type BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { SwiperSlide } from 'swiper/vue';
-import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router/auto';
 
 const props = withDefaults(
@@ -78,20 +76,34 @@ const props = withDefaults(
   { pageBackdrop: false }
 );
 
-const relatedItems = ref<{ [k: number]: BaseItemDto }>({});
 const route = useRoute();
 
 /**
  * Get the related item passed from the parent component
  */
 function getRelatedItem(item: BaseItemDto): BaseItemDto {
-  const rItem = relatedItems.value[props.items.indexOf(item)];
+  let relatedItem: BaseItemDto | undefined;
 
-  if (!rItem) {
-    return item;
+  if (item.Type === BaseItemKind.Episode && item.SeriesId) {
+    relatedItem = apiStore.getItemById(item.SeriesId);
+  } else if (item.Type === BaseItemKind.MusicAlbum && item.AlbumArtists?.[0]?.Id) {
+    for (const artist of item.AlbumArtists) {
+      const rArtist = apiStore.getItemById(artist.Id);
+
+      if (rArtist) {
+        relatedItem = rArtist;
+        break;
+      }
+    }
+  } else if (item.ParentLogoItemId) {
+    relatedItem = apiStore.getItemById(item.ParentLogoItemId);
   }
 
-  return rItem;
+  if (relatedItem?.ImageTags?.Backdrop) {
+    return relatedItem;
+  }
+
+  return item;
 }
 
 /**
@@ -111,41 +123,6 @@ function updateBackdrop(index: number): void {
 function onSlideChange(index: number): void {
   updateBackdrop(index);
 }
-
-watch(
-  props,
-  async () => {
-    /*
-     * TODO: Server should include a ParentImageBlurhashes property, so we don't need to do a call
-     * for the parent items. Revisit this once proper changes are done.
-     */
-    for (const [key, index] of props.items.entries()) {
-      let id: string;
-
-      if (index.Type === 'Episode' && index?.SeriesId) {
-        id = index.SeriesId;
-      } else if (index.Type === 'MusicAlbum' && index?.AlbumArtists?.[0]?.Id) {
-        id = index.AlbumArtists[0]?.Id;
-      } else if (index?.ParentLogoItemId) {
-        id = index.ParentLogoItemId;
-      } else {
-        continue;
-      }
-
-      const itemData = (
-        await remote.sdk.newUserApi(getUserLibraryApi).getItem({
-          userId: remote.auth.currentUserId ?? '',
-          itemId: id
-        })
-      ).data;
-
-      relatedItems.value[key] = itemData;
-    }
-
-    updateBackdrop(0);
-  },
-  { immediate: true }
-);
 </script>
 
 <style lang="scss" scoped>
