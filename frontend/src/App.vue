@@ -1,18 +1,46 @@
 <template>
   <Backdrop />
-  <Suspense @resolve="apploaded = true">
-    <VApp>
-      <RootView />
-      <Snackbar />
-      <ConfirmDialog />
-    </VApp>
-  </Suspense>
+  <VApp>
+    <RouterView v-slot="{ Component, route }">
+      <TransitionView>
+        <Suspense @resolve="apploaded = true">
+          <div
+            :key="route.meta.layout"
+            style="transform-origin: center"
+            class="h-100">
+            <component
+              :is="getLayoutComponent(route.meta.layout)"
+              :key="route.meta.layout">
+              <TransitionView>
+                <Suspense suspensible>
+                  <div
+                    :key="route.path"
+                    style="transform-origin: center"
+                    class="h-100">
+                    <component
+                      :is="Component"
+                      :key="route.path" />
+                  </div>
+                </Suspense>
+              </TransitionView>
+            </component>
+          </div>
+        </Suspense>
+      </TransitionView>
+    </RouterView>
+    <Snackbar />
+    <ConfirmDialog />
+  </VApp>
   <PlayerElement />
 </template>
 
 <script setup lang="ts">
+import DefaultLayout from '@/layouts/default.vue';
+import FullPageLayout from '@/layouts/fullpage.vue';
+import ServerLayout from '@/layouts/server.vue';
 import { whenever } from '@vueuse/core';
-import { ref } from 'vue';
+import { ref, type Component as VueComponent } from 'vue';
+import type { RouteMeta } from 'vue-router/auto';
 
 const apploaded = ref(false);
 
@@ -52,4 +80,22 @@ const stop = whenever(apploaded, () => {
     });
   });
 });
+
+/**
+ * Return the appropiate layout component according to the route's meta.layout property
+ */
+function getLayoutComponent(layout: RouteMeta['layout']): VueComponent {
+  switch (layout) {
+    case 'fullpage': {
+      return FullPageLayout as VueComponent;
+    }
+    case 'server': {
+      return ServerLayout as VueComponent;
+    }
+    default: {
+      return DefaultLayout;
+    }
+  }
+
+}
 </script>

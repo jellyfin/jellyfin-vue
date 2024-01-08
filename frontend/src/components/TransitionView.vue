@@ -3,25 +3,14 @@
     v-if="!prefersNoMotion"
     :name="getTransitionName(route.meta)"
     mode="out-in">
-    <!-- This div is required because <transition> requires a single children node -->
-    <div
-      :key="transitionKey"
-      v-bind="$attrs"
-      style="transform-origin: center"
-      class="h-100">
-      <slot />
-    </div>
+    <slot />
   </Transition>
   <slot v-else />
 </template>
 
 <script setup lang="ts">
 import { prefersNoMotion } from '@/store';
-import { type RouteMeta, useRoute } from 'vue-router/auto';
-
-defineProps<{
-  transitionKey: string;
-}>();
+import { useRoute, type RouteMeta } from 'vue-router/auto';
 
 const route = useRoute();
 
