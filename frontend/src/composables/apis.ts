@@ -7,7 +7,7 @@ import { apiStore } from '@/store/api';
 import type { Api } from '@jellyfin/sdk';
 import type { BaseItemDto, BaseItemDtoQueryResult } from '@jellyfin/sdk/lib/generated-client';
 import type { AxiosResponse } from 'axios';
-import { isEqual } from 'lodash-es';
+import { isEqual, isNil } from 'lodash-es';
 import { computed, effectScope, getCurrentScope, isRef, shallowRef, toValue, unref, watch, type ComputedRef, type Ref } from 'vue';
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-return */
@@ -62,7 +62,7 @@ type ReturnData<T extends Record<K, (...args: any[]) => any>, K extends keyof T,
 type MaybeReadonlyRef<T> = T | Ref<T> | ComputedRef<T>;
 
 interface ReturnPayload<T extends Record<K, (...args: any[]) => any>, K extends keyof T, J extends boolean> {
-  loading: Ref<boolean>,
+  loading: Ref<boolean | undefined>,
   data: ComputedRef<ReturnData<T, K, J>>;
 }
 
@@ -107,7 +107,7 @@ const defaultOps: DefaultComposableOps = Object.freeze({
  * @param loading - Ref to hold the loading state
  * @param global - Whether to start the global loading indicator or not
  */
-function startLoading(loading: Ref<boolean>, global: boolean): void {
+function startLoading(loading: Ref<boolean | undefined>, global: boolean): void {
   loading.value = true;
 
   if (global) {
@@ -120,7 +120,7 @@ function startLoading(loading: Ref<boolean>, global: boolean): void {
  * @param loading - Ref to hold the loading state
  * @param global - Whether to start the global loading indicator or not
  */
-function stopLoading(loading: Ref<boolean>, global: boolean): void {
+function stopLoading(loading: Ref<boolean | undefined>, global: boolean): void {
   loading.value = false;
 
   if (global) {
@@ -141,7 +141,7 @@ async function resolveAndAdd<T extends Record<K, (...args: any[]) => any>, K ext
   api: (api: Api) => T,
   methodName: K,
   ofBaseItem: boolean,
-  loading: Ref<boolean>,
+  loading: Ref<boolean | undefined>,
   stringifiedArgs: string,
   ops: DefaultComposableOps,
   ...args: Parameters<T[K]>): Promise<ExtractItems<Awaited<ReturnType<T[K]>['data']>> | void> {
@@ -181,7 +181,9 @@ async function resolveAndAdd<T extends Record<K, (...args: any[]) => any>, K ext
         apiStore.requestAdd(funcName, stringifiedArgs, ofBaseItem, result);
       }
     }
-  } catch {} finally {
+  } catch {
+    loading.value = undefined;
+  } finally {
     stopLoading(loading, ops.globalLoading);
   }
 }
@@ -198,20 +200,22 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
   const offlineParams: OfflineParams<T,K>[] = [];
   const isFuncDefined = (): boolean => unref(api) !== undefined && unref(methodName) !== undefined;
 
-  const loading = shallowRef(false);
+  const loading = shallowRef<boolean | undefined>(false);
   const argsRef = shallowRef<Parameters<T[K]>>();
   const result = shallowRef<ReturnData<T, K, typeof ofBaseItem>>();
-  const previousCachedData = shallowRef<typeof cachedData.value>();
 
   const stringArgs = computed(() => {
     return JSON.stringify(argsRef.value);
   });
-  const cachedData = computed(() => apiStore.getCachedRequest(`${String(unref(api)?.name)}.${String(unref(methodName))}`, stringArgs.value));
+  /**
+   * TODO: Check why previous returns unknown by default without the type annotation
+   */
+  const cachedData = computed<ReturnType<typeof apiStore.getCachedRequest> | undefined>((previous) =>
+    loading.value || isNil(loading.value) ? previous : apiStore.getCachedRequest(`${String(unref(api)?.name)}.${String(unref(methodName))}`, stringArgs.value)
+  );
   const isCached = computed(() => Boolean(cachedData.value));
   const data = computed<ReturnData<T, K, typeof ofBaseItem>>(() => {
-    if (previousCachedData.value) {
-      return apiStore.getRequest(previousCachedData.value) as ReturnData<T, K, typeof ofBaseItem>;
-    } else if (ops.skipCache.request && result.value) {
+    if (ops.skipCache.request && result.value) {
       if (ofBaseItem) {
         return Array.isArray(result.value) ?
           apiStore.getItemsById((result.value as BaseItemDto[]).map((r) => r.Id)) as ReturnData<T, K, typeof ofBaseItem> :
@@ -265,6 +269,8 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
 
   return function (this: any, ...args: ComposableParams<T,K,U>) {
     const normalizeArgs = (): Parameters<T[K]> => args.map((a) => toValue(a)) as Parameters<T[K]>;
+    const runNormally = async (): Promise<void> => await run();
+    const runWithRetry = async (): Promise<void> => await run(true);
 
     argsRef.value = normalizeArgs();
 
@@ -276,16 +282,14 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
          * Does a deep comparison to avoid useless double requests
          */
         if (!normalizedArgs.every((a, index) => isEqual(a, toValue(oldVal?.[index])))) {
-          previousCachedData.value = cachedData.value;
           argsRef.value = normalizedArgs;
-          await run();
-          previousCachedData.value = undefined;
+          await runNormally();
         }
       });
-      watch(() => remote.socket.isConnected, async () => await run(true));
-      watch(network.isOnline, async () => await run(true));
-      isRef(api) && watch(api, async () => await run());
-      isRef(methodName) && watch(methodName, async () => await run());
+      watch(() => remote.socket.isConnected, runWithRetry);
+      watch(network.isOnline, runWithRetry);
+      isRef(api) && watch(api, runNormally);
+      isRef(methodName) && watch(methodName, runNormally);
     }
 
     /**
@@ -369,7 +373,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
  * Whether to skip the cache or not. Useful for requests whose return value are known to be useless to cache,
  * like marking an item as played or favorite. Defaults to false.
  * @returns data  - The BaseItemDto or BaseItemDto[] that was requested.
- * @returns loading - A boolean ref that indicates if the request is in progress.
+ * @returns loading - A boolean ref that indicates if the request is in progress. Undefined if there was an error
  */
 export function useBaseItem<T extends Record<K, (...args: any[]) => any>, K extends keyof T, U extends ParametersAsGetters<T[K]>>(
   api: MaybeReadonlyRef<((api: Api) => T) | undefined>,
@@ -428,7 +432,7 @@ export function useBaseItem<T extends Record<K, (...args: any[]) => any>, K exte
  * Same as above, but also for baseItems. Defaults to false.
  * @param ops.globalLoading - Show the global loading indicator or not for this request. Defaults to true.
  * @returns data  - The request data.
- * @returns loading - A boolean ref that indicates if the request is in progress.
+ * @returns loading - A boolean ref that indicates if the request is in progress. Undefined if there was an error
  */
 export function useApi<T extends Record<K, (...args: any[]) => any>, K extends keyof T, U extends ParametersAsGetters<T[K]>>(
   api: MaybeReadonlyRef<((api: Api) => T) | undefined>,
