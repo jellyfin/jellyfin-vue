@@ -1,6 +1,7 @@
 * {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  cursor: var(--j-client-cursor);
 }
 
 html {
@@ -27,15 +28,11 @@ html.no-forced-scrollbar {
   bottom: 0;
 }
 
-.hide-pointer {
-  cursor: none;
-}
-
 .pointer {
   cursor: pointer;
 }
 
-.cursor-none {
+.no-cursor {
   cursor: none;
 }
 
