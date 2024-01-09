@@ -28,7 +28,7 @@ watch(
     if (newVal === undefined) {
       await pixelWorker.clearCache();
     }
-  }
+  }, { flush: 'post' }
 );
 </script>
 
