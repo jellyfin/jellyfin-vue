@@ -217,7 +217,7 @@ class ApiStore {
         if (!remote.auth.currentUser) {
           this._clear();
         }
-      }
+      }, { flush: 'post' }
     );
   }
 }

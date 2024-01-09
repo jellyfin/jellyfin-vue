@@ -89,9 +89,9 @@ import {
   getShapeFromItemType
 } from '@/utils/items';
 import {
-  type BaseItemDto,
   BaseItemKind,
-  ImageType
+  ImageType,
+  type BaseItemDto
 } from '@jellyfin/sdk/lib/generated-client';
 import { useMediaQuery } from '@vueuse/core';
 import { isNil } from 'lodash-es';

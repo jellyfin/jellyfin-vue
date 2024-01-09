@@ -100,14 +100,6 @@ interface PlaybackManagerState {
 }
 
 /**
- * == UTILITY VARIABLES ==
- */
-/**
- * Amount of time to wait between playback reports
- */
-const progressReportInterval = 3500;
-
-/**
  * == CLASS CONSTRUCTOR ==
  */
 class PlaybackManagerStore {
@@ -144,9 +136,13 @@ class PlaybackManagerStore {
     structuredClone(this._defaultState)
   );
   /**
-   * Non-reactive state
+   * Non-reactive state and utility variables
    */
   private _isProgressUpdating = false;
+  /**
+   * Amount of time to wait between playback reports
+   */
+  private _progressReportInterval = 3500;
   private _mediaSourceRequestId: string | undefined = undefined;
   /**
    * == GETTERS AND SETTERS ==
@@ -487,9 +483,9 @@ class PlaybackManagerStore {
     return (
       !this._isProgressUpdating &&
       reactiveDate.value.valueOf() - this._state.lastProgressUpdate >=
-      progressReportInterval &&
-      this.status !== PlaybackStatus.Stopped &&
-        this.status !== PlaybackStatus.Error
+      this._progressReportInterval &&
+        this.status !== PlaybackStatus.Stopped &&
+          this.status !== PlaybackStatus.Error
     );
   }
 
@@ -857,19 +853,19 @@ class PlaybackManagerStore {
 
   public getItemPlaybackInfo = async (
     item = this.currentItem,
-    mediaSourceIndex = this._state.currentMediaSourceIndex,
+    mediaSourceIndex = this._state.currentMediaSourceIndex ?? 0,
     audioStreamIndex = this.currentAudioStreamIndex,
     subtitleStreamIndex = this.currentSubtitleStreamIndex
   ): Promise<PlaybackInfoResponse | undefined> => {
-    if (item) {
+    if (item?.Id && item.MediaSources) {
       return (
         await remote.sdk.newUserApi(getMediaInfoApi).getPostedPlaybackInfo({
-          itemId: item?.Id ?? '',
+          itemId: item.Id,
           userId: remote.auth.currentUserId,
           autoOpenLiveStream: true,
           playbackInfoDto: { DeviceProfile: playbackProfile },
           mediaSourceId:
-            item.MediaSources?.[mediaSourceIndex ?? 0].Id ?? item?.Id,
+            item.MediaSources?.[mediaSourceIndex]?.Id ?? item.Id,
           audioStreamIndex,
           subtitleStreamIndex
         })
@@ -934,6 +930,11 @@ class PlaybackManagerStore {
       }));
 
       request = response.value;
+    }
+
+    /** If no extra processing was needed, we add the item itself */
+    if (request.length === 0) {
+      request.push(item);
     }
 
     return request.map((i) => i.Id as string);
@@ -1216,13 +1217,16 @@ class PlaybackManagerStore {
       () => this.currentItem?.Id,
       async (newValue, oldValue) => {
         if (oldValue) {
-          await this._reportPlaybackStopped(oldValue);
+          /**
+           * We pass the currentTime to ensure the playback stop is reported with the correct time and not 0
+           */
+          await this._reportPlaybackStopped(oldValue, undefined, this.currentTime);
         }
 
         if (newValue) {
           await this._reportPlaybackStart(newValue);
         }
-      }
+      }, { flush: 'sync' }
     );
 
     watch(
@@ -1246,7 +1250,7 @@ class PlaybackManagerStore {
            */
           await this._setCurrentMediaSource();
         }
-      }
+      }, { flush: 'sync' }
     );
 
     watch(() => this.currentAudioStreamIndex, async (oldVal, newVal) => {
@@ -1257,7 +1261,7 @@ class PlaybackManagerStore {
          */
         await this._setCurrentMediaSource();
       }
-    });
+    }, { flush: 'sync' });
 
     watchEffect(async () => {
       if (
@@ -1266,7 +1270,7 @@ class PlaybackManagerStore {
       ) {
         await this._reportPlaybackProgress();
       }
-    });
+    }, { flush: 'sync' });
 
     /**
      * Report playback stop when closing the tab
@@ -1283,14 +1287,14 @@ class PlaybackManagerStore {
 
     watch(mediaControls.playing, () => {
       if (
-        playbackManager.status !== PlaybackStatus.Buffering &&
-        !this.isRemotePlayer
+        this.status !== PlaybackStatus.Buffering &&
+          !this.isRemotePlayer
       ) {
         this._state.status = mediaControls.playing.value
           ? PlaybackStatus.Playing
           : PlaybackStatus.Paused;
       }
-    });
+    }, { flush: 'sync' });
 
     watch(mediaControls.waiting, () => {
       if (!this.isRemotePlayer) {
@@ -1298,13 +1302,13 @@ class PlaybackManagerStore {
           ? PlaybackStatus.Buffering
           : PlaybackStatus.Playing;
       }
-    });
+    }, { flush: 'sync' });
 
     watch(mediaControls.ended, () => {
       if (mediaControls.ended.value && !this.isRemotePlayer) {
-        playbackManager.setNextItem();
+        this.setNextItem();
       }
-    });
+    }, { flush: 'sync' });
 
     /**
      * Dispose on logout
@@ -1313,9 +1317,9 @@ class PlaybackManagerStore {
       () => remote.auth.currentUser,
       () => {
         if (isNil(remote.auth.currentUser)) {
-          playbackManager.stop();
+          this.stop();
         }
-      }
+      }, { flush: 'post' }
     );
   }
 }

@@ -5,11 +5,11 @@ import { vuetify } from '@/plugins/vuetify';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
 import { fetchDefaultedCustomPrefs, syncCustomPrefs } from '@/utils/store-sync';
 import {
-  type RemovableRef,
   useNavigatorLanguage,
   usePreferredDark,
   useStorage,
-  watchPausable
+  watchPausable,
+  type RemovableRef
 } from '@vueuse/core';
 import { computed, nextTick, watch } from 'vue';
 
@@ -175,7 +175,7 @@ class ClientSettingsStore {
         if (!remote.auth.currentUser) {
           this._clear();
         }
-      }
+      }, { flush: 'post' }
     );
   }
 }
