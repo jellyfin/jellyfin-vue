@@ -104,6 +104,15 @@ interface PlaybackManagerState {
  */
 class PlaybackManagerStore {
   /**
+   * == NON REACTIVE STATE AND UTILITY VARIABLES ==
+   */
+  private _isProgressUpdating = false;
+  /**
+   * Amount of time to wait between playback reports
+   */
+  private readonly _progressReportInterval = 3500;
+  private _mediaSourceRequestId: string | undefined = undefined;
+  /**
    * == STATE ==
    */
   /**
@@ -135,15 +144,6 @@ class PlaybackManagerStore {
   private _state = reactive<PlaybackManagerState>(
     structuredClone(this._defaultState)
   );
-  /**
-   * Non-reactive state and utility variables
-   */
-  private _isProgressUpdating = false;
-  /**
-   * Amount of time to wait between playback reports
-   */
-  private _progressReportInterval = 3500;
-  private _mediaSourceRequestId: string | undefined = undefined;
   /**
    * == GETTERS AND SETTERS ==
    */
