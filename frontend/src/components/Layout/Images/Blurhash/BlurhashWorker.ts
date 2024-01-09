@@ -1,9 +1,8 @@
 import { decode } from 'blurhash';
 import { expose } from 'comlink';
 
-const cache = new Map<string, Uint8ClampedArray>();
-
 class BlurhashWorker {
+  private readonly _cache = new Map<string, Uint8ClampedArray>();
   /**
    * Decodes blurhash outside the main thread, in a web worker
    *
@@ -21,11 +20,11 @@ class BlurhashWorker {
   ): Uint8ClampedArray => {
     try {
       const params = [hash, width, height, punch].toString();
-      let canvas = cache.get(params);
+      let canvas = this._cache.get(params);
 
       if (!canvas) {
         canvas = decode(hash, width, height, punch);
-        cache.set(params, canvas);
+        this._cache.set(params, canvas);
       }
 
       return canvas;
@@ -38,7 +37,7 @@ class BlurhashWorker {
    * Clear the blurhashes cache
    */
   public clearCache = (): void => {
-    cache.clear();
+    this._cache.clear();
   };
 }
 

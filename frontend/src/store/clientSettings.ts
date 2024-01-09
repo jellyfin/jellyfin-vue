@@ -24,25 +24,24 @@ export interface ClientSettingsState {
 }
 
 /**
- * == UTILITY VARIABLES ==
- */
-const navigatorLanguage = useNavigatorLanguage();
-const BROWSER_LANGUAGE = computed<string>(() => {
-  const rawString = navigatorLanguage.language.value ?? '';
-  /**
-   * Removes the culture info from the language string, so 'es-ES' is recognised as 'es'
-   */
-  const cleanString = rawString.split('-');
-
-  return cleanString[0];
-});
-const browserPrefersDark = usePreferredDark();
-const storeKey = 'clientSettings';
-
-/**
  * == CLASS CONSTRUCTOR ==
  */
 class ClientSettingsStore {
+  /**
+   * == NON REACTIVE STATE AND UTILITY VARIABLES ==
+   */
+  private readonly _storeKey = 'clientSettings';
+  private readonly _browserPrefersDark = usePreferredDark();
+  private readonly _navigatorLanguage = useNavigatorLanguage();
+  private readonly _BROWSER_LANGUAGE = computed<string>(() => {
+    const rawString = this._navigatorLanguage.language.value ?? '';
+    /**
+     * Removes the culture info from the language string, so 'es-ES' is recognised as 'es'
+     */
+    const cleanString = rawString.split('-');
+
+    return cleanString[0];
+  });
   /**
    * == STATE SECTION ==
    */
@@ -52,7 +51,7 @@ class ClientSettingsStore {
   };
 
   private _state: RemovableRef<ClientSettingsState> = useStorage(
-    storeKey,
+    this._storeKey,
     structuredClone(this._defaultState),
     localStorage,
     {
@@ -60,6 +59,10 @@ class ClientSettingsStore {
         mergeExcludingUnknown(storageValue, defaults)
     }
   );
+
+  /**
+   * == NON REACTIVE STATE AND UTILITY VARIABLES ==
+   */
 
   /**
    * == GETTERS AND SETTERS ==
@@ -85,7 +88,7 @@ class ClientSettingsStore {
   private _updateLocale = (): void => {
     i18n.locale.value =
       this.locale === 'auto'
-        ? BROWSER_LANGUAGE.value || String(i18n.fallbackLocale.value)
+        ? this._BROWSER_LANGUAGE.value || String(i18n.fallbackLocale.value)
         : this.locale;
     vuetify.locale.current.value = i18n.locale.value;
   };
@@ -95,7 +98,7 @@ class ClientSettingsStore {
       window.requestAnimationFrame(() => {
         const dark = 'dark';
         const light = 'light';
-        const browserColor = browserPrefersDark.value ? dark : light;
+        const browserColor = this._browserPrefersDark.value ? dark : light;
         const userColor =
           this.darkMode !== 'auto' && this.darkMode ? dark : light;
 
@@ -119,7 +122,7 @@ class ClientSettingsStore {
      */
     const syncDataWatcher = watchPausable(this._state, async () => {
       if (remote.auth.currentUser) {
-        await syncCustomPrefs(storeKey, this._state.value);
+        await syncCustomPrefs(this._storeKey, this._state.value);
       }
     });
 
@@ -132,7 +135,7 @@ class ClientSettingsStore {
         if (remote.auth.currentUser) {
           try {
             const data = await fetchDefaultedCustomPrefs(
-              storeKey,
+              this._storeKey,
               this._state.value
             );
 
@@ -155,7 +158,7 @@ class ClientSettingsStore {
      */
 
     watch(
-      [BROWSER_LANGUAGE, (): typeof this.locale => this.locale],
+      [this._BROWSER_LANGUAGE, (): typeof this.locale => this.locale],
       this._updateLocale,
       { immediate: true }
     );
@@ -164,7 +167,7 @@ class ClientSettingsStore {
      * Vuetify theme change
      */
     watch(
-      [browserPrefersDark, (): typeof this.darkMode => this.darkMode],
+      [this._browserPrefersDark, (): typeof this.darkMode => this.darkMode],
       this._updateTheme,
       { immediate: true }
     );

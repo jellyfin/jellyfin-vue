@@ -1,6 +1,7 @@
 import { useSnackbar } from '@/composables/use-snackbar';
 import { i18n } from '@/plugins/i18n';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
+import { isAxiosError } from '@/utils/validation';
 import {
   API_VERSION,
   VersionOutdatedIssue,
@@ -10,17 +11,9 @@ import type { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
 import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
 import { useStorage } from '@vueuse/core';
-import type { AxiosError } from 'axios';
 import { isNil, merge } from 'lodash-es';
 import SDK, { useOneTimeAPI } from '../sdk/sdk-utils';
 import type { AuthState, ServerInfo } from './types';
-
-/**
- * TypeScript type guard for AxiosError
- */
-function isAxiosError(object: unknown): object is AxiosError {
-  return !!(object && typeof object === 'object' && 'isAxiosError' in object);
-}
 
 class RemotePluginAuth {
   /**
@@ -86,7 +79,7 @@ class RemotePluginAuth {
   };
 
   /**
-   * Methods
+   * == METHODS ==
    */
   /**
    * Adds or refresh the information of a server

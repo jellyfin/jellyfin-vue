@@ -41,14 +41,13 @@ export interface TaskManagerState {
 }
 
 /**
- * == UTILITY VARIABLES ==
- */
-const storeKey = 'taskManager';
-
-/**
  * == CLASS CONSTRUCTOR ==
  */
 class TaskManagerStore {
+  /**
+   * == UTILITY VARIABLES ==
+   */
+  private readonly _storeKey = 'taskManager';
   /**
    * == STATE SECTION ==
    */
@@ -58,7 +57,7 @@ class TaskManagerStore {
   };
 
   private _state: RemovableRef<TaskManagerState> = useStorage(
-    storeKey,
+    this._storeKey,
     structuredClone(this._defaultState),
     sessionStorage,
     {
@@ -80,7 +79,7 @@ class TaskManagerStore {
   public startTask = (task: RunningTask): void => {
     if (task.progress && (task.progress < 0 || task.progress > 100)) {
       throw new TypeError(
-        "[taskManager]: Progress can't be below 0 or above 100"
+        `[${this._storeKey}]: Progress can't be below 0 or above 100`
       );
     }
 
