@@ -30,30 +30,18 @@ class CachedResponse {
 }
 
 /**
- * == INTERFACES AND TYPES ==
- */
-interface ApiState {
-  items: Map<BaseItemDto['Id'], BaseItemDto>;
-  requests: Map<string, Map<string, CachedResponse>>;
-}
-
-/**
  * == CLASS CONSTRUCTOR ==
  */
 class ApiStore {
   /**
    * == STATE SECTION ==
    */
-  private _defaultState: ApiState = {
-    items: new Map<BaseItemDto['Id'], BaseItemDto>(),
-    requests: new Map<string, Map<string, CachedResponse>>()
-  };
   /**
    * Maps can be cleared (see this._clear), so no need to perform an structuredClone
    * of the defaultState here
    */
-  private _state = reactive<ApiState>(this._defaultState);
-
+  private _items = reactive(new Map<BaseItemDto['Id'], BaseItemDto>());
+  private _requests = reactive(new Map<string, Map<string, CachedResponse>>());
   public apiEnums = Object.freeze({
     fields: Object.freeze(Object.values(ItemFields)),
     images: Object.freeze(Object.values(ImageType))
@@ -63,13 +51,13 @@ class ApiStore {
    * == GETTERS AND SETTERS ==
    */
   public getItemById = (id: BaseItemDto['Id']): BaseItemDto | undefined =>
-    this._state.items.get(id);
+    this._items.get(id);
 
   public getItemsById = (ids: BaseItemDto['Id'][]): Array<BaseItemDto | undefined> =>
-    ids.map((id) => this._state.items.get(id));
+    ids.map((id) => this._items.get(id));
 
   public getCachedRequest = (funcName: string, params: string): CachedResponse | undefined =>
-    this._state.requests.get(funcName)?.get(params);
+    this._requests.get(funcName)?.get(params);
 
   public getRequest = (cache?: CachedResponse): BaseItemDto | BaseItemDto[] | unknown => {
     if (cache) {
@@ -83,7 +71,7 @@ class ApiStore {
     }
   };
 
-  public findItems = (searchTerm: string): BaseItemDto[] => [...this._state.items.values()].filter((item: BaseItemDto) => {
+  public findItems = (searchTerm: string): BaseItemDto[] => [...this._items.values()].filter((item: BaseItemDto) => {
     const search = searchTerm.toLowerCase();
 
     return item.Name?.includes(search) || item.SortName?.includes(search) || item.Overview?.includes(search) || item.Taglines?.includes(search);
@@ -95,14 +83,14 @@ class ApiStore {
   public baseItemAdd = <T extends BaseItemDto | BaseItemDto[]>(item: T): T => {
     if (Array.isArray(item)) {
       return item.map((i) => {
-        this._state.items.set(i.Id, i);
+        this._items.set(i.Id, i);
 
         return this.getItemById(i.Id);
       }) as T;
     } else {
-      this._state.items.set(item.Id, item);
+      this._items.set(item.Id, item);
 
-      return this._state.items.get(item.Id) as T;
+      return this._items.get(item.Id) as T;
     }
   };
 
@@ -113,10 +101,10 @@ class ApiStore {
     result: U): typeof ofBaseItem extends true ? U : T => {
     const toSave = new CachedResponse(ofBaseItem, result);
 
-    if (this._state.requests.has(funcName)) {
-      this._state.requests.get(funcName)?.set(params, toSave);
+    if (this._requests.has(funcName)) {
+      this._requests.get(funcName)?.set(params, toSave);
     } else {
-      this._state.requests.set(funcName, new Map([[params, toSave]]));
+      this._requests.set(funcName, new Map([[params, toSave]]));
     }
 
     return this.getRequest(this.getCachedRequest(funcName, params) as CachedResponse) as T;
@@ -128,9 +116,9 @@ class ApiStore {
         itemId
       });
 
-      this._state.items.delete(itemId);
+      this._items.delete(itemId);
 
-      for (const request of this._state.requests.values()) {
+      for (const request of this._requests.values()) {
         for (const [args, result] of request.entries()) {
           if (result.ids.includes(itemId) || args.includes(itemId)) {
             request.delete(args);
@@ -166,8 +154,8 @@ class ApiStore {
   };
 
   private _clear = (): void => {
-    this._state.items.clear();
-    this._state.requests.clear();
+    this._items.clear();
+    this._requests.clear();
   };
 
   public constructor() {
@@ -192,7 +180,7 @@ class ApiStore {
           // Update items when metadata changes
           const itemsToUpdate = Data.ItemsUpdated.filter(
             (item: unknown): item is string => typeof item === 'string'
-          ).filter((itemId) => this._state.items.has(itemId));
+          ).filter((itemId) => this._items.has(itemId));
 
           await this._update(itemsToUpdate);
         } else if (
@@ -209,7 +197,7 @@ class ApiStore {
                   'ItemId' in updatedData &&
                   typeof updatedData.ItemId === 'string'
               ) {
-                return this._state.items.has(updatedData.ItemId);
+                return this._items.has(updatedData.ItemId);
               }
 
               return false;
