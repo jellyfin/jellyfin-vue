@@ -34,9 +34,6 @@
       "mode": "auto"
     }
   ],
-  "emmet.includeLanguages": {
-    "vue": "html"
-  },
   "vue.autoInsert.dotValue": true,
   "vue.server.fullCompletionList": true,
   "sonarlint.output.showAnalyzerLogs": true,

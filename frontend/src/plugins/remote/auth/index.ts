@@ -216,6 +216,7 @@ class RemotePluginAuth {
         }
 
         useSnackbar(errorMessage, 'error');
+        throw error;
       }
     }
   }
