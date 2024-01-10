@@ -210,9 +210,15 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
   /**
    * TODO: Check why previous returns unknown by default without the type annotation
    */
-  const cachedData = computed<ReturnType<typeof apiStore.getCachedRequest> | undefined>((previous) =>
-    loading.value || isNil(loading.value) ? previous : apiStore.getCachedRequest(`${String(unref(api)?.name)}.${String(unref(methodName))}`, stringArgs.value)
-  );
+  const cachedData = computed<ReturnType<typeof apiStore.getCachedRequest> | undefined>((previous) => {
+    const currentCachedRequest = apiStore.getCachedRequest(`${String(unref(api)?.name)}.${String(unref(methodName))}`, stringArgs.value);
+
+    if ((loading.value || isNil(loading.value)) && !currentCachedRequest) {
+      return previous;
+    }
+
+    return currentCachedRequest;
+  });
   const isCached = computed(() => Boolean(cachedData.value));
   const data = computed<ReturnData<T, K, typeof ofBaseItem>>(() => {
     if (ops.skipCache.request && result.value) {

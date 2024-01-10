@@ -9,8 +9,8 @@
       <VChip
         size="small"
         class="ma-2 hidden-sm-and-down">
-        <template v-if="loading">
-          {{ t('lazyLoading', { value: lazyLoadLimit }) }}
+        <template v-if="!fullQueryIsCached">
+          {{ t('lazyLoading', { value: items.length }) }}
         </template>
         <template v-else>
           {{ items?.length ?? 0 }}
@@ -73,7 +73,7 @@ import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getMusicGenresApi } from '@jellyfin/sdk/lib/utils/api/music-genres-api';
 import { getPersonsApi } from '@jellyfin/sdk/lib/utils/api/persons-api';
 import { getStudiosApi } from '@jellyfin/sdk/lib/utils/api/studios-api';
-import { computed, onMounted, ref, shallowRef } from 'vue';
+import { computed, onBeforeMount, ref, shallowRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router/auto';
 
@@ -93,7 +93,7 @@ const innerItemKind = shallowRef<BaseItemKind>();
 const sortBy = shallowRef<string>();
 const sortAscending = shallowRef(true);
 const queryLimit = shallowRef<number | undefined>(lazyLoadLimit);
-const lazyLoadIds = shallowRef<string[]>([]);
+const lazyLoadIds = shallowRef<BaseItemDto['Id'][]>([]);
 const filters = ref<Filters>({
   status: [],
   features: [],
@@ -222,17 +222,20 @@ const { loading, data: queryItems } = await useBaseItem(api, method)(() => ({
   limit: queryLimit.value
 }));
 
-const items = computed(() => {
-  return queryLimit.value ? queryItems.value : [...(apiStore.getItemsById(lazyLoadIds.value) as BaseItemDto[]), ...queryItems.value];
-});
+/**
+ * The queryItems for the 2nd request will return the items from (lazyloadLimit, n],
+ * so checking if just the first matches is a good solution
+ */
+const fullQueryIsCached = computed(() => loading.value ? !queryLimit.value && queryItems.value[0].Id !== lazyLoadIds.value[0] : true);
+const items = computed(() => fullQueryIsCached.value ? [...(apiStore.getItemsById(lazyLoadIds.value) as BaseItemDto[]), ...queryItems.value] : queryItems.value);
 
 route.meta.title = library.value.Name;
 
 /**
  * We fetch the 1st 100 items and, after mount, we fetch the rest.
  */
-onMounted(() => {
-  lazyLoadIds.value = queryItems.value.map((i) => i.Id as string);
+onBeforeMount(() => {
+  lazyLoadIds.value = queryItems.value.map((i) => i.Id);
   queryLimit.value = undefined;
 });
 </script>
