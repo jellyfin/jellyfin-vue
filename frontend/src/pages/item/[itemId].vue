@@ -371,5 +371,5 @@ watch(() => item.value.MediaSources, () => {
   if (item.value.MediaSources && item.value.MediaSources.length > 0) {
     currentSource.value = item.value.MediaSources[0];
   }
-});
+}, { immediate: true });
 </script>
