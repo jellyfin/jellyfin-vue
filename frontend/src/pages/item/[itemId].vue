@@ -310,7 +310,7 @@ import {
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router/auto';
 
 const route = useRoute<'/genre/[itemId]'>();
@@ -333,7 +333,7 @@ const { data: childItems } = await useBaseItem(getItemsApi, 'getItems')(
   })
 );
 
-const currentSource = ref<MediaSourceInfo>({});
+const selectedSource = ref<MediaSourceInfo>();
 const currentVideoTrack = ref<number>();
 const currentAudioTrack = ref<number>();
 const currentSubtitleTrack = ref<number>();
@@ -364,12 +364,15 @@ const currentSourceIndex = computed(() =>
   selectSources.value.findIndex((el) => el.value.Id === currentSource.value.Id)
 );
 
+const currentSource = computed({
+  get() {
+    return selectedSource.value ?? item.value?.MediaSources?.[0] ?? {};
+  },
+  set(newValue) {
+    selectedSource.value = newValue;
+  }
+});
+
 route.meta.title = item.value.Name;
 route.meta.backdrop.blurhash = getBlurhash(item.value, ImageType.Backdrop);
-
-watch(() => item.value.MediaSources, () => {
-  if (item.value.MediaSources && item.value.MediaSources.length > 0) {
-    currentSource.value = item.value.MediaSources[0];
-  }
-}, { immediate: true });
 </script>
