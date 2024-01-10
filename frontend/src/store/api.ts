@@ -193,9 +193,9 @@ class ApiStore {
             (updatedData: unknown): updatedData is { ItemId: string } => {
               if (
                 typeof updatedData === 'object' &&
-                  updatedData &&
-                  'ItemId' in updatedData &&
-                  typeof updatedData.ItemId === 'string'
+                updatedData &&
+                'ItemId' in updatedData &&
+                typeof updatedData.ItemId === 'string'
               ) {
                 return this._items.has(updatedData.ItemId);
               }

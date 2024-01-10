@@ -264,10 +264,7 @@ module.exports = {
       parserOptions: {
         parser: 'typescript-eslint-parser-for-extra-files',
         project: 'tsconfig.json',
-        sourceType: 'module',
-        vueFeatures: {
-          customMacros: ['defineModel']
-        }
+        sourceType: 'module'
       },
       ...commonTSAndVueConfig
     },
