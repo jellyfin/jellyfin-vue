@@ -11,7 +11,6 @@
     <VMenu
       v-model="menuModel"
       :close-on-content-click="false"
-      :persistent="!closeOnClick"
       :transition="'slide-y-transition'"
       :width="listWidth"
       location="top">
@@ -81,10 +80,9 @@ import { useI18n } from 'vue-i18n';
 
 const props = withDefaults(
   defineProps<{
-    closeOnClick?: boolean;
     size?: number;
   }>(),
-  { closeOnClick: false, size: 40 }
+  { size: 40 }
 );
 
 const { t } = useI18n();
