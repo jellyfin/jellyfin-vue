@@ -196,49 +196,46 @@ class PlaybackManagerStore {
    * Get reactive BaseItemDto's objects of the queue
    */
   public get queue(): BaseItemDto[] {
-    if (this._state.queue.length > 0) {
-      return apiStore.getItemsById(this._state.queue).filter((i): i is BaseItemDto => !!i);
-    }
-
-    return [];
+    return apiStore.getItemsById(this._state.queue) as BaseItemDto[] ?? [];
   }
   /**
    * Get a reactive BaseItemDto object of the currently playing item
    */
   public get currentItem(): BaseItemDto | undefined {
-    if (!isNil(this._state.currentItemIndex)) {
-      return apiStore.getItemById(this._state.queue[this._state.currentItemIndex]);
-    }
+    return this.queue[this._state.currentItemIndex ?? 0];
   }
+
   public get currentSourceUrl(): string | undefined {
     return this._state.currentSourceUrl;
   }
 
+  private get _previousItemIndex(): number | undefined {
+    if (this._state.repeatMode === RepeatMode.RepeatAll && this._state.currentItemIndex === 0) {
+      return this._state.queue.length - 1;
+    } else if (!isNil(this._state.currentItemIndex)) {
+      return this._state.currentItemIndex - 1;
+    }
+  }
+
   public get previousItem(): BaseItemDto | undefined {
-    if (
-      !isNil(this._state.currentItemIndex) &&
-      this._state.currentItemIndex - 1 <= 0
-    ) {
-      return apiStore.getItemById(
-        this._state.queue[this._state.currentItemIndex - 1]
-      );
-    } else if (this._state.repeatMode === RepeatMode.RepeatAll) {
-      return apiStore.getItemById(this._state.queue.at(-1));
+    if (!isNil(this._previousItemIndex)) {
+      return this.queue[this._previousItemIndex];
+    }
+  }
+
+  private get _nextItemIndex(): number | undefined {
+    if (this._state.repeatMode === RepeatMode.RepeatAll && this._state.currentItemIndex === this._state.queue.length - 1) {
+      return 0;
+    } else if (!isNil(this._state.currentItemIndex)) {
+      return this._state.currentItemIndex + 1;
     }
   }
   /**
    * Get a reactive BaseItemDto object of the next item in queue
    */
   public get nextItem(): BaseItemDto | undefined {
-    if (
-      !isNil(this._state.currentItemIndex) &&
-      this._state.currentItemIndex + 1 < this._state.queue.length
-    ) {
-      return apiStore.getItemById(
-        this._state.queue[this._state.currentItemIndex + 1]
-      );
-    } else if (this._state.repeatMode === RepeatMode.RepeatAll) {
-      return apiStore.getItemById(this._state.queue[0]);
+    if (!isNil(this._nextItemIndex)) {
+      return this.queue[this._nextItemIndex];
     }
   }
   /**
@@ -700,10 +697,8 @@ class PlaybackManagerStore {
   };
 
   public setNextItem = (): void => {
-    if (!isNil(this._state.currentItemIndex) && this.nextItem) {
-      this._state.currentItemIndex += 1;
-    } else if (this._state.repeatMode === RepeatMode.RepeatAll) {
-      this._state.currentItemIndex = 0;
+    if (this.nextItem) {
+      this._state.currentItemIndex = this._nextItemIndex;
     } else {
       this.stop();
     }
@@ -711,11 +706,15 @@ class PlaybackManagerStore {
     this.currentTime = 0;
   };
 
-  public setPreviousItem = (): void => {
-    if (!isNil(this._state.currentItemIndex) && this.previousItem) {
-      this._state.currentItemIndex -= 1;
-    } else if (this._state.repeatMode === RepeatMode.RepeatAll) {
-      this._state.currentItemIndex = this._state.queue.length - 1;
+  /**
+   * Restarts the current item by default. It will go to the previous item only if the
+   * current time is below 5 seconds.
+   *
+   * @param force - If true, it will change to the previous item (if it exists) regardless
+   */
+  public setPreviousItem = (force = false): void => {
+    if (!isNil(this.previousItem) && (force || this.currentTime < 5)) {
+      this._state.currentItemIndex = this._previousItemIndex;
     }
 
     this.currentTime = 0;
@@ -1142,7 +1141,7 @@ class PlaybackManagerStore {
           } = {
             play: this.unpause,
             pause: this.pause,
-            previoustrack: this.setPreviousItem,
+            previoustrack: () => this.setPreviousItem(),
             nexttrack: this.setNextItem,
             stop: this.stop,
             seekbackward: this.skipBackward,

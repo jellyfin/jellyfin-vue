@@ -43,7 +43,7 @@
                 class="pointer-events-all"
                 icon
                 size="large"
-                @click="playbackManager.setPreviousItem">
+                @click="() => playbackManager.setPreviousItem()">
                 <VIcon size="32">
                   <IMdiSkipPrevious />
                 </VIcon>
