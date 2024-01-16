@@ -9,7 +9,7 @@
         ref="mediaElementRef"
         :poster="String(posterUrl)"
         autoplay
-        crossorigin="anonymous"
+        crossorigin
         playsinline
         :loop="playbackManager.isRepeatingOnce"
         :class="{ stretched: playerElement.isStretched }"
