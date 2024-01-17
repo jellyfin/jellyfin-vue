@@ -8,7 +8,7 @@ import { isNil } from '@/utils/validation';
 import type { Api } from '@jellyfin/sdk';
 import type { BaseItemDto, BaseItemDtoQueryResult } from '@jellyfin/sdk/lib/generated-client';
 import type { AxiosResponse } from 'axios';
-import { isEqual } from 'lodash-es';
+import { deepEqual } from 'fast-equals';
 import { computed, effectScope, getCurrentScope, isRef, shallowRef, toValue, unref, watch, type ComputedRef, type Ref } from 'vue';
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-return */
@@ -288,7 +288,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
         /**
          * Does a deep comparison to avoid useless double requests
          */
-        if (!normalizedArgs.every((a, index) => isEqual(a, toValue(oldVal?.[index])))) {
+        if (!normalizedArgs.every((a, index) => deepEqual(a, toValue(oldVal?.[index])))) {
           argsRef.value = normalizedArgs;
           await runNormally();
         }
