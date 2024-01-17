@@ -4,7 +4,7 @@ import { i18n } from '@/plugins/i18n';
 import { remote } from '@/plugins/remote';
 import { network } from '@/store';
 import { apiStore } from '@/store/api';
-import { isNil } from '@/utils/validation';
+import { isArray, isNil } from '@/utils/validation';
 import type { Api } from '@jellyfin/sdk';
 import type { BaseItemDto, BaseItemDtoQueryResult } from '@jellyfin/sdk/lib/generated-client';
 import type { AxiosResponse } from 'axios';
@@ -170,7 +170,7 @@ async function resolveAndAdd<T extends Record<K, (...args: any[]) => any>, K ext
 
     if (response.data) {
       const requestData = response.data as Awaited<ReturnType<T[K]>['data']>;
-      const result: ExtractItems<typeof requestData> = 'Items' in requestData && Array.isArray(requestData.Items) ? requestData.Items : requestData;
+      const result: ExtractItems<typeof requestData> = 'Items' in requestData && isArray(requestData.Items) ? requestData.Items : requestData;
 
       if (ofBaseItem && !ops.skipCache.baseItem) {
         apiStore.baseItemAdd(result as BaseItemDto | BaseItemDto[]);
@@ -224,7 +224,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
   const data = computed<ReturnData<T, K, typeof ofBaseItem>>(() => {
     if (ops.skipCache.request && result.value) {
       if (ofBaseItem) {
-        return Array.isArray(result.value) ?
+        return isArray(result.value) ?
           apiStore.getItemsById((result.value as BaseItemDto[]).map((r) => r.Id)) as ReturnData<T, K, typeof ofBaseItem> :
           apiStore.getItemById((result.value as BaseItemDto).Id) as ReturnData<T, K, typeof ofBaseItem>;
       } else {

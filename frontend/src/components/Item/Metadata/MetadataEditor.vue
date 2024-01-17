@@ -216,10 +216,11 @@
 import { useDateFns } from '@/composables/use-datefns';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { remote } from '@/plugins/remote';
+import { isArray } from '@/utils/validation';
 import {
-  type BaseItemDto,
-  type BaseItemPerson,
-  ImageType
+ImageType,
+type BaseItemDto,
+type BaseItemPerson
 } from '@jellyfin/sdk/lib/generated-client';
 import { getGenresApi } from '@jellyfin/sdk/lib/utils/api/genres-api';
 import { getItemUpdateApi } from '@jellyfin/sdk/lib/utils/api/item-update-api';
@@ -260,7 +261,7 @@ const genresModel = computed({
     return metadata.value?.Genres === null ? undefined : metadata.value?.Genres;
   },
   set(newVal) {
-    if (Array.isArray(newVal) && metadata.value) {
+    if (isArray(newVal) && metadata.value) {
       metadata.value.Genres = newVal;
     }
   }
@@ -270,7 +271,7 @@ const tagsModel = computed({
     return metadata.value?.Tags === null ? undefined : metadata.value?.Tags;
   },
   set(newVal) {
-    if (Array.isArray(newVal) && metadata.value) {
+    if (isArray(newVal) && metadata.value) {
       metadata.value.Tags = newVal;
     }
   }

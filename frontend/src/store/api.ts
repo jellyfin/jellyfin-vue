@@ -3,6 +3,7 @@
  * useBaseItem and useRequest composable
  */
 import { remote } from '@/plugins/remote';
+import { isArray } from '@/utils/validation';
 import { ImageType, ItemFields, type BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
@@ -21,7 +22,7 @@ class CachedResponse {
     this.ofBaseItem = ofBaseItem;
 
     if (this.ofBaseItem) {
-      this.wasArray = Array.isArray(payload);
+      this.wasArray = isArray(payload);
       this.ids = this.wasArray ? (payload as BaseItemDto[]).map((i) => i.Id) : [(payload as BaseItemDto).Id];
     } else {
       this.rawResult = payload;
@@ -81,7 +82,7 @@ class ApiStore {
    * == ACTIONS ==
    */
   public baseItemAdd = <T extends BaseItemDto | BaseItemDto[]>(item: T): T => {
-    if (Array.isArray(item)) {
+    if (isArray(item)) {
       return item.map((i) => {
         this._items.set(i.Id, i);
 
@@ -145,7 +146,7 @@ class ApiStore {
         enableTotalRecordCount: false
       });
 
-      if (Array.isArray(data.Items)) {
+      if (isArray(data.Items)) {
         for (const item of data.Items) {
           this.baseItemAdd(item);
         }
@@ -175,7 +176,7 @@ class ApiStore {
         if (
           MessageType === 'LibraryChanged' &&
           'ItemsUpdated' in Data &&
-          Array.isArray(Data.ItemsUpdated)
+          isArray(Data.ItemsUpdated)
         ) {
           // Update items when metadata changes
           const itemsToUpdate = Data.ItemsUpdated.filter(
@@ -186,7 +187,7 @@ class ApiStore {
         } else if (
           MessageType === 'UserDataChanged' &&
           'UserDataList' in Data &&
-          Array.isArray(Data.UserDataList)
+          isArray(Data.UserDataList)
         ) {
           // Update items when their userdata is changed (like, mark as watched, etc)
           const itemsToUpdate = Data.UserDataList.filter(

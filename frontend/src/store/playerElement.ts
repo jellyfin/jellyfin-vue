@@ -7,7 +7,7 @@
 import { remote } from '@/plugins/remote';
 import { router } from '@/plugins/router';
 import { mediaElementRef } from '@/store';
-import { isNil } from '@/utils/validation';
+import { isArray, isNil } from '@/utils/validation';
 import JASSUB from 'jassub';
 import jassubDefaultFont from 'jassub/dist/default.woff2?url';
 import jassubWorker from 'jassub/dist/jassub-worker.js?url';
@@ -104,7 +104,7 @@ class PlayerElementStore {
         onDemandRender: false
       });
     } else if (jassub) {
-      if (Array.isArray(attachedFonts)) {
+      if (isArray(attachedFonts)) {
         for (const font of attachedFonts) {
           jassub.addFont(font);
         }

@@ -1,6 +1,7 @@
 import { remote } from '@/plugins/remote';
 import { apiStore } from '@/store/api';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
+import { isArray } from '@/utils/validation';
 import { useStorage, type RemovableRef } from '@vueuse/core';
 import { v4 } from 'uuid';
 import { watch } from 'vue';
@@ -169,7 +170,7 @@ class TaskManagerStore {
       if (
         type === 'LibraryChanged' &&
           'ItemsUpdated' in data &&
-          Array.isArray(data.ItemsUpdated)
+          isArray(data.ItemsUpdated)
       ) {
         for (const id of data.ItemsUpdated) {
           if (typeof id === 'string') {
