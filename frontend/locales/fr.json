@@ -365,7 +365,6 @@
   "transcodingAndStreaming": "Transcodage et Streaming",
   "transcodingSettingsDescription": "Configure la façon dont ce serveur gère le transcodage et la diffusion vers les clients",
   "type": "Type",
-  "unableToTogglePlayed": "Impossible de mettre à jour le statut de visualisation",
   "unauthorized": "Vous n'êtes pas autorisé à accéder à cette page",
   "unblockTag": "Débloquer l'étiquette",
   "undefined": "Indéfini",
