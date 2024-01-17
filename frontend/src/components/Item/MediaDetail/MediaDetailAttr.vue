@@ -11,10 +11,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { isBool } from '@/utils/validation';
 import IMdiCheck from 'virtual:icons/mdi/check';
 import IMdiClose from 'virtual:icons/mdi/close';
 import IMdiHelp from 'virtual:icons/mdi/help';
+import { computed } from 'vue';
 
 const props = defineProps<{
   name: string;
@@ -22,7 +23,7 @@ const props = defineProps<{
 }>();
 
 const icon = computed(() => {
-  if (typeof props.value === 'boolean') {
+  if (isBool(props.value)) {
     return props.value ? IMdiCheck : IMdiClose;
   }
 

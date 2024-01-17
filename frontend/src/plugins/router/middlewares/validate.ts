@@ -1,5 +1,6 @@
 import { useSnackbar } from '@/composables/use-snackbar';
 import { i18n } from '@/plugins/i18n';
+import { isStr } from '@/utils/validation';
 import type { RouteLocationNormalized, RouteLocationRaw } from 'vue-router/auto';
 
 /**
@@ -9,7 +10,7 @@ import type { RouteLocationNormalized, RouteLocationRaw } from 'vue-router/auto'
 export function validateGuard(
   to: RouteLocationNormalized
 ): boolean | RouteLocationRaw {
-  if (('itemId' in to.params) && typeof to.params.itemId === 'string') {
+  if (('itemId' in to.params) && isStr(to.params.itemId)) {
     const check = /[\dA-Fa-f]{32}/.test(to.params.itemId);
 
     if (!check) {

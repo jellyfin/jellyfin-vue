@@ -3,7 +3,7 @@
  * useBaseItem and useRequest composable
  */
 import { remote } from '@/plugins/remote';
-import { isArray } from '@/utils/validation';
+import { isArray, isObj, isStr } from '@/utils/validation';
 import { ImageType, ItemFields, type BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
@@ -169,7 +169,7 @@ class ApiStore {
 
         const { MessageType, Data } = remote.socket.message;
 
-        if (!Data || typeof Data !== 'object') {
+        if (!Data || !isObj(Data)) {
           return;
         }
 
@@ -180,7 +180,7 @@ class ApiStore {
         ) {
           // Update items when metadata changes
           const itemsToUpdate = Data.ItemsUpdated.filter(
-            (item: unknown): item is string => typeof item === 'string'
+            (item: unknown): item is string => isStr(item)
           ).filter((itemId) => this._items.has(itemId));
 
           await this._update(itemsToUpdate);
@@ -193,10 +193,10 @@ class ApiStore {
           const itemsToUpdate = Data.UserDataList.filter(
             (updatedData: unknown): updatedData is { ItemId: string } => {
               if (
-                typeof updatedData === 'object' &&
+                isObj(updatedData) &&
                 updatedData &&
                 'ItemId' in updatedData &&
-                typeof updatedData.ItemId === 'string'
+                isStr(updatedData.ItemId)
               ) {
                 return this._items.has(updatedData.ItemId);
               }

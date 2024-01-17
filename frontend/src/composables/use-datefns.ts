@@ -1,4 +1,5 @@
 import { i18n } from '@/plugins/i18n';
+import { isObj } from '@/utils/validation';
 import * as datefnslocales from 'virtual:locales/date-fns';
 
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
@@ -25,7 +26,7 @@ export function useDateFns<T extends (...a: any[]) => any>(
     ''
   ) as keyof typeof datefnslocales;
 
-  if (typeof params.at(-1) === 'object' && !(params.at(-1) instanceof Date)) {
+  if (isObj(params.at(-1)) && !(params.at(-1) instanceof Date)) {
     params.at(-1).locale = datefnslocales[importCode];
   } else {
     params.push({ locale: datefnslocales[importCode] });

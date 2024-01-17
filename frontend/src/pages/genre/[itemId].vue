@@ -50,6 +50,7 @@
 <script setup lang="ts">
 import { useBaseItem } from '@/composables/apis';
 import { useResponsiveClasses } from '@/composables/use-responsive-classes';
+import { isStr } from '@/utils/validation';
 import {
   SortOrder,
   type BaseItemKind
@@ -66,7 +67,7 @@ const { itemId } = route.params;
 const includeItemTypes = computed<BaseItemKind[]>(() => {
   const typesQuery = route.query.type as BaseItemKind ?? [];
 
-  return typeof typesQuery === 'string'
+  return isStr(typesQuery)
     ? [typesQuery]
     : typesQuery;
 });

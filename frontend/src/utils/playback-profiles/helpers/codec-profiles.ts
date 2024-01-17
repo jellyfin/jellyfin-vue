@@ -3,13 +3,6 @@
  */
 
 import {
-  type CodecProfile,
-  CodecType,
-  ProfileConditionType,
-  type ProfileCondition,
-  ProfileConditionValue
-} from '@jellyfin/sdk/lib/generated-client';
-import {
   isApple,
   isChromiumBased,
   isEdge,
@@ -21,6 +14,14 @@ import {
   isXbox,
   safariVersion
 } from '@/utils/browser-detection';
+import { isFunc, isObj } from '@/utils/validation';
+import {
+  CodecType,
+  ProfileConditionType,
+  ProfileConditionValue,
+  type CodecProfile,
+  type ProfileCondition
+} from '@jellyfin/sdk/lib/generated-client';
 
 /**
  * Gets the max video bitrate
@@ -33,13 +34,13 @@ function getGlobalMaxVideoBitrate(): number | undefined {
   if (
     isTizen() &&
     'webapis' in window &&
-    typeof window.webapis === 'object' &&
+    isObj(window.webapis) &&
     window.webapis &&
     'productinfo' in window.webapis &&
-    typeof window.webapis.productinfo === 'object' &&
+    isObj(window.webapis.productinfo) &&
     window.webapis.productinfo &&
     'isUdPanelSupported' in window.webapis.productinfo &&
-    typeof window.webapis.productinfo.isUdPanelSupported === 'function'
+    isFunc(window.webapis.productinfo.isUdPanelSupported)
   ) {
     isTizenFhd = !window.webapis.productinfo.isUdPanelSupported();
   }

@@ -70,6 +70,7 @@ import {
   getItemSeasonDownloadMap,
   getItemSeriesDownloadMap
 } from '@/utils/items';
+import { isStr } from '@/utils/validation';
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { useClipboard, useEventListener } from '@vueuse/core';
 import { v4 } from 'uuid';
@@ -361,7 +362,7 @@ const copyDownloadURLAction = {
       };
 
       if (text) {
-        await (typeof streamUrls === 'string'
+        await (isStr(streamUrls)
           ? copyAction(text)
           : useConfirmDialog(async () => await copyAction(text), {
             title: t('copyPrompt'),
