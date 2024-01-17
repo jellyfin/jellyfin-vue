@@ -88,13 +88,13 @@ import {
   getItemDetailsLink,
   getShapeFromItemType
 } from '@/utils/items';
+import { isNil } from '@/utils/validation';
 import {
   BaseItemKind,
   ImageType,
   type BaseItemDto
 } from '@jellyfin/sdk/lib/generated-client';
 import { useMediaQuery } from '@vueuse/core';
-import { isNil } from 'lodash-es';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 

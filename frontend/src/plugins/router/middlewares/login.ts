@@ -1,5 +1,5 @@
 import { remote } from '@/plugins/remote';
-import { isNil } from 'lodash-es';
+import { isNil } from '@/utils/validation';
 import type {
   RouteLocationNormalized,
   RouteLocationPathRaw,

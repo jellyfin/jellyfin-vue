@@ -4,10 +4,11 @@ import { i18n } from '@/plugins/i18n';
 import { remote } from '@/plugins/remote';
 import { network } from '@/store';
 import { apiStore } from '@/store/api';
+import { isNil } from '@/utils/validation';
 import type { Api } from '@jellyfin/sdk';
 import type { BaseItemDto, BaseItemDtoQueryResult } from '@jellyfin/sdk/lib/generated-client';
 import type { AxiosResponse } from 'axios';
-import { isEqual, isNil } from 'lodash-es';
+import { isEqual } from 'lodash-es';
 import { computed, effectScope, getCurrentScope, isRef, shallowRef, toValue, unref, watch, type ComputedRef, type Ref } from 'vue';
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-return */

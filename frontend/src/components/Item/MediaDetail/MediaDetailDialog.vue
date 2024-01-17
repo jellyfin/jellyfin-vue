@@ -140,17 +140,16 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import { isNil } from 'lodash-es';
+import { getLocaleName } from '@/utils/i18n';
+import { formatBitRate, formatFileSize } from '@/utils/items';
+import { isNil, isNumber } from '@/utils/validation';
 import type {
   BaseItemDto,
   MediaSourceInfo,
   MediaStream
 } from '@jellyfin/sdk/lib/generated-client';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { formatBitRate, formatFileSize } from '@/utils/items';
-import { isNumber } from '@/utils/validation';
-import { getLocaleName } from '@/utils/i18n';
 
 const props = defineProps<{ item: BaseItemDto; mediaSourceIndex?: number }>();
 

@@ -2,11 +2,11 @@
  * This plugin instantiates the Jellyfin SDK.
  * It also sets the header and base URL for our axios instance
  */
-import { watchEffect } from 'vue';
+import { isNil } from '@/utils/validation';
 import type { Api } from '@jellyfin/sdk';
-import { isNil } from 'lodash-es';
-import RemotePluginAxiosInstance from '../axios';
+import { watchEffect } from 'vue';
 import RemotePluginAuthInstance from '../auth';
+import RemotePluginAxiosInstance from '../axios';
 import SDK, { useOneTimeAPI } from './sdk-utils';
 
 class RemotePluginSDK {

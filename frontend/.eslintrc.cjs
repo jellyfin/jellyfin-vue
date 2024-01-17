@@ -36,7 +36,7 @@ module.exports = {
     'plugin:sonarjs/recommended',
     'plugin:css/recommended',
     'plugin:unicorn/recommended',
-    'plugin:you-dont-need-lodash-underscore/compatible',
+    'plugin:you-dont-need-lodash-underscore/all',
     'plugin:@intlify/vue-i18n/recommended',
     'plugin:vue-scoped-css/vue3-recommended',
     'plugin:@stylistic/disable-legacy'
@@ -175,7 +175,6 @@ module.exports = {
       'fixStyle': 'inline-type-imports'
     }],
     'prefer-arrow-callback': 'error',
-    'you-dont-need-lodash-underscore/is-nil': 'off',
     // Force some component order stuff, formatting and such, for consistency
     'curly': ['error', 'all'],
     'unicorn/filename-case': 'off',
