@@ -1,5 +1,5 @@
 <template>
-  <VHover v-slot="{ isHovering, props: hoverProps }">
+  <JHover v-slot="{ isHovering, hoverProps }">
     <div
       class="ma-2 d-flex flex-column pointer"
       v-bind="hoverProps"
@@ -19,7 +19,7 @@
         {{ user.Name }}
       </a>
     </div>
-  </VHover>
+  </JHover>
 </template>
 
 <script setup lang="ts">

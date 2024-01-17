@@ -47,7 +47,7 @@
         <template
           v-for="track in tracksOnDisc"
           :key="track.Id">
-          <VHover v-slot="{ isHovering, props: hoverProps }">
+          <JHover v-slot="{ isHovering, hoverProps }">
             <tr
               :class="{ 'text-primary': isPlaying(track) }"
               v-bind="hoverProps"
@@ -108,7 +108,7 @@
                 {{ formatTicks(track.RunTimeTicks || 0) }}
               </td>
             </tr>
-          </VHover>
+          </JHover>
         </template>
       </template>
     </tbody>

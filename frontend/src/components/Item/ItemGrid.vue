@@ -2,18 +2,17 @@
   <div :class="large ? useResponsiveClasses('large-grid') : undefined">
     <VirtualGrid
       v-if="items.length > 0 && !noVirtual"
+      v-slot="{ item, style }"
       :items="items"
       :buffer-multiplier="1.5"
       :class="useResponsiveClasses('card-grid-container')">
-      <template #default="{ item, style }">
-        <Card
-          :style="style"
-          :item="item"
-          margin
-          text
-          overlay
-          link />
-      </template>
+      <Card
+        :style="style"
+        :item="item"
+        margin
+        text
+        overlay
+        link />
     </VirtualGrid>
     <div
       v-else-if="items.length > 0 && noVirtual"
