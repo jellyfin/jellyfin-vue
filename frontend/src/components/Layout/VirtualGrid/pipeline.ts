@@ -1,4 +1,4 @@
-import { type MaybeElementRef, unrefElement } from '@vueuse/core';
+import { unrefElement, type MaybeElementRef } from '@vueuse/core';
 import { computed, type ComputedRef } from 'vue';
 
 /**

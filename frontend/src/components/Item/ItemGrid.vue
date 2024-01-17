@@ -3,7 +3,7 @@
     <VirtualGrid
       v-if="items.length > 0 && !noVirtual"
       :items="items"
-      :buffer-multiplier="2"
+      :buffer-multiplier="1.5"
       :class="useResponsiveClasses('card-grid-container')">
       <template #default="{ item, style }">
         <Card

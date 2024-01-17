@@ -57,7 +57,6 @@ import {
 import {
   computed,
   onBeforeUnmount,
-  ref,
   shallowRef,
   watch,
   type StyleValue
@@ -102,7 +101,7 @@ const probeRef = shallowRef<HTMLElement>();
 /**
  * == STATE REFS ==
  */
-const itemRect = ref<DOMRectReadOnly>();
+const itemRect = shallowRef<DOMRectReadOnly>();
 const scrollEvents = shallowRef(0);
 const eventCleanups: Fn[] = [];
 
