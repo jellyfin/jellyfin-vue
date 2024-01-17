@@ -50,8 +50,8 @@
 <script setup lang="ts">
 import { CardShapes, getShapeFromItemType } from '@/utils/items';
 import type {
-BaseItemKind,
-RemoteSearchResult
+  BaseItemKind,
+  RemoteSearchResult
 } from '@jellyfin/sdk/lib/generated-client';
 import { computed } from 'vue';
 

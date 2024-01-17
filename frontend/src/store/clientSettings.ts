@@ -45,12 +45,12 @@ class ClientSettingsStore {
   /**
    * == STATE SECTION ==
    */
-  private _defaultState: ClientSettingsState = {
+  private readonly _defaultState: ClientSettingsState = {
     darkMode: 'auto',
     locale: 'auto'
   };
 
-  private _state: RemovableRef<ClientSettingsState> = useStorage(
+  private readonly _state: RemovableRef<ClientSettingsState> = useStorage(
     this._storeKey,
     structuredClone(this._defaultState),
     localStorage,
@@ -85,7 +85,7 @@ class ClientSettingsStore {
     return this._state.value.darkMode;
   }
 
-  private _updateLocale = (): void => {
+  private readonly _updateLocale = (): void => {
     i18n.locale.value =
       this.locale === 'auto'
         ? this._BROWSER_LANGUAGE.value || String(i18n.fallbackLocale.value)
@@ -93,7 +93,7 @@ class ClientSettingsStore {
     vuetify.locale.current.value = i18n.locale.value;
   };
 
-  private _updateTheme = (): void => {
+  private readonly _updateTheme = (): void => {
     window.setTimeout(() => {
       window.requestAnimationFrame(() => {
         const dark = 'dark';
@@ -108,7 +108,7 @@ class ClientSettingsStore {
     });
   };
 
-  private _clear = (): void => {
+  private readonly _clear = (): void => {
     Object.assign(this._state.value, this._defaultState);
   };
 

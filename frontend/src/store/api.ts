@@ -41,9 +41,9 @@ class ApiStore {
    * Maps can be cleared (see this._clear), so no need to perform an structuredClone
    * of the defaultState here
    */
-  private _items = reactive(new Map<BaseItemDto['Id'], BaseItemDto>());
-  private _requests = reactive(new Map<string, Map<string, CachedResponse>>());
-  public apiEnums = Object.freeze({
+  private readonly _items = reactive(new Map<BaseItemDto['Id'], BaseItemDto>());
+  private readonly _requests = reactive(new Map<string, Map<string, CachedResponse>>());
+  public readonly apiEnums = Object.freeze({
     fields: Object.freeze(Object.values(ItemFields)),
     images: Object.freeze(Object.values(ImageType))
   });
@@ -51,16 +51,16 @@ class ApiStore {
   /**
    * == GETTERS AND SETTERS ==
    */
-  public getItemById = (id: BaseItemDto['Id']): BaseItemDto | undefined =>
+  public readonly getItemById = (id: BaseItemDto['Id']): BaseItemDto | undefined =>
     this._items.get(id);
 
-  public getItemsById = (ids: BaseItemDto['Id'][]): Array<BaseItemDto | undefined> =>
+  public readonly getItemsById = (ids: BaseItemDto['Id'][]): Array<BaseItemDto | undefined> =>
     ids.map((id) => this._items.get(id));
 
-  public getCachedRequest = (funcName: string, params: string): CachedResponse | undefined =>
+  public readonly getCachedRequest = (funcName: string, params: string): CachedResponse | undefined =>
     this._requests.get(funcName)?.get(params);
 
-  public getRequest = (cache?: CachedResponse): BaseItemDto | BaseItemDto[] | unknown => {
+  public readonly getRequest = (cache?: CachedResponse): BaseItemDto | BaseItemDto[] | unknown => {
     if (cache) {
       if (cache.ofBaseItem) {
         const array = cache.ids.map((r) => this.getItemById(r));
@@ -72,7 +72,7 @@ class ApiStore {
     }
   };
 
-  public findItems = (searchTerm: string): BaseItemDto[] => [...this._items.values()].filter((item: BaseItemDto) => {
+  public readonly findItems = (searchTerm: string): BaseItemDto[] => [...this._items.values()].filter((item: BaseItemDto) => {
     const search = searchTerm.toLowerCase();
 
     return item.Name?.includes(search) || item.SortName?.includes(search) || item.Overview?.includes(search) || item.Taglines?.includes(search);
@@ -81,7 +81,7 @@ class ApiStore {
   /**
    * == ACTIONS ==
    */
-  public baseItemAdd = <T extends BaseItemDto | BaseItemDto[]>(item: T): T => {
+  public readonly baseItemAdd = <T extends BaseItemDto | BaseItemDto[]>(item: T): T => {
     if (isArray(item)) {
       return item.map((i) => {
         this._items.set(i.Id, i);
@@ -95,7 +95,7 @@ class ApiStore {
     }
   };
 
-  public requestAdd = <T, U extends BaseItemDto | BaseItemDto[]>(
+  public readonly requestAdd = <T, U extends BaseItemDto | BaseItemDto[]>(
     funcName: string,
     params: string,
     ofBaseItem: boolean,
@@ -111,7 +111,7 @@ class ApiStore {
     return this.getRequest(this.getCachedRequest(funcName, params) as CachedResponse) as T;
   };
 
-  public itemDelete = async (itemId: string): Promise<void> => {
+  public readonly itemDelete = async (itemId: string): Promise<void> => {
     try {
       await remote.sdk.newUserApi(getLibraryApi).deleteItem({
         itemId
@@ -135,7 +135,7 @@ class ApiStore {
    *
    * @param itemIds - Ids of the items to update
    */
-  private _update = async (itemIds: BaseItemDto['Id'][]): Promise<void> => {
+  private readonly _update = async (itemIds: BaseItemDto['Id'][]): Promise<void> => {
     if (itemIds.length > 0) {
       const { data } = await remote.sdk.newUserApi(getItemsApi).getItems({
         userId: remote.auth.currentUserId,
@@ -154,7 +154,7 @@ class ApiStore {
     }
   };
 
-  private _clear = (): void => {
+  private readonly _clear = (): void => {
     this._items.clear();
     this._requests.clear();
   };

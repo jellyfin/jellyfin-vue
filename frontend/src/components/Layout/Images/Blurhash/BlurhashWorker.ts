@@ -12,7 +12,7 @@ class BlurhashWorker {
    * @param punch - Contrast of the decoded pixels
    * @returns - Returns the decoded pixels in the proxied response by Comlink
    */
-  public getPixels = (
+  public readonly getPixels = (
     hash: string,
     width: number,
     height: number,
@@ -36,7 +36,7 @@ class BlurhashWorker {
   /**
    * Clear the blurhashes cache
    */
-  public clearCache = (): void => {
+  public readonly clearCache = (): void => {
     this._cache.clear();
   };
 }

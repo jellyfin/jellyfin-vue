@@ -137,13 +137,11 @@ async function deleteAllDevices(): Promise<void> {
 
   try {
     for (const device of devices.value) {
-      if (!device.Id || remote.sdk.deviceInfo.id === device.Id) {
-        continue;
+      if (device.Id || remote.sdk.deviceInfo.id === device.Id) {
+        await remote.sdk
+          .newUserApi(getDevicesApi)
+          .deleteDevice({ id: device.Id });
       }
-
-      await remote.sdk
-        .newUserApi(getDevicesApi)
-        .deleteDevice({ id: device.Id });
     }
 
     useSnackbar(t('deleteAllDevicesSuccess'), 'success');

@@ -35,13 +35,13 @@ class PlayerElementStore {
   /**
    * == STATE SECTION ==
    */
-  private _defaultState: PlayerElementState = {
+  private readonly _defaultState: PlayerElementState = {
     isFullscreenMounted: false,
     isPiPMounted: false,
     isStretched: true
   };
 
-  private _state = reactive<PlayerElementState>(
+  private readonly _state = reactive<PlayerElementState>(
     structuredClone(this._defaultState)
   );
   /**
@@ -78,7 +78,7 @@ class PlayerElementStore {
   /**
    * == ACTIONS ==
    */
-  public toggleFullscreenVideoPlayer = async (): Promise<void> => {
+  public readonly toggleFullscreenVideoPlayer = async (): Promise<void> => {
     if (this.isFullscreenVideoPlayer) {
       router.back();
     } else {
@@ -86,7 +86,7 @@ class PlayerElementStore {
     }
   };
 
-  private _setSsaTrack = (trackSrc: string, attachedFonts?: string[]): void => {
+  private readonly _setSsaTrack = (trackSrc: string, attachedFonts?: string[]): void => {
     if (
       !jassub &&
       mediaElementRef.value &&
@@ -114,7 +114,7 @@ class PlayerElementStore {
     }
   };
 
-  public freeSsaTrack = (): void => {
+  public readonly freeSsaTrack = (): void => {
     if (jassub) {
       try {
         jassub.destroy();
@@ -124,7 +124,7 @@ class PlayerElementStore {
     }
   };
 
-  private _isSupportedFont = (mimeType: string | undefined | null): boolean => {
+  private readonly _isSupportedFont = (mimeType: string | undefined | null): boolean => {
     return (
       !isNil(mimeType) &&
       mimeType.startsWith('font/') &&
@@ -146,7 +146,7 @@ class PlayerElementStore {
    *
    * If embedded, a new transcode is automatically fetched from the playbackManager watchers.
    */
-  public applyCurrentSubtitle = async (): Promise<void> => {
+  public readonly applyCurrentSubtitle = async (): Promise<void> => {
     const serverAddress = remote.sdk.api?.basePath;
     /**
      * Finding (if it exists) the VTT or SSA track associated to the newly picked subtitle
@@ -198,7 +198,7 @@ class PlayerElementStore {
     }
   };
 
-  private _clear = (): void => {
+  private readonly _clear = (): void => {
     Object.assign(this._state, this._defaultState);
   };
 

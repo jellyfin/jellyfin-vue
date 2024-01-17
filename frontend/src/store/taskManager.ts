@@ -52,12 +52,12 @@ class TaskManagerStore {
   /**
    * == STATE SECTION ==
    */
-  private _defaultState: TaskManagerState = {
+  private readonly _defaultState: TaskManagerState = {
     tasks: [],
     finishedTasksTimeout: 5000
   };
 
-  private _state: RemovableRef<TaskManagerState> = useStorage(
+  private readonly _state: RemovableRef<TaskManagerState> = useStorage(
     this._storeKey,
     structuredClone(this._defaultState),
     sessionStorage,
@@ -72,12 +72,12 @@ class TaskManagerStore {
   public get tasks(): typeof this._state.value.tasks {
     return this._state.value.tasks;
   }
-  public getTask = (id: string): RunningTask | undefined =>
+  public readonly getTask = (id: string): RunningTask | undefined =>
     this._state.value.tasks.find((payload) => payload.id === id);
   /**
    * == ACTIONS ==
    */
-  public startTask = (task: RunningTask): void => {
+  public readonly startTask = (task: RunningTask): void => {
     if (task.progress && (task.progress < 0 || task.progress > 100)) {
       throw new TypeError(
         `[${this._storeKey}]: Progress can't be below 0 or above 100`
@@ -89,7 +89,7 @@ class TaskManagerStore {
     }
   };
 
-  public finishTask = (id: string): void => {
+  public readonly finishTask = (id: string): void => {
     const clearTask = (): void => {
       const taskIndex = this._state.value.tasks.findIndex(
         (task) => task.id === id
@@ -110,7 +110,7 @@ class TaskManagerStore {
     }
   };
 
-  public startConfigSync = (): string => {
+  public readonly startConfigSync = (): string => {
     const payload = {
       type: TaskType.ConfigSync,
       id: v4()
@@ -121,7 +121,7 @@ class TaskManagerStore {
     return payload.id;
   };
 
-  private _clear = (): void => {
+  private readonly _clear = (): void => {
     Object.assign(this._state.value, this._defaultState);
   };
 

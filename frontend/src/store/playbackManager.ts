@@ -119,7 +119,7 @@ class PlaybackManagerStore {
   /**
    * Reactive state
    */
-  private _defaultState: PlaybackManagerState = {
+  private readonly _defaultState: PlaybackManagerState = {
     status: PlaybackStatus.Stopped,
     currentSourceUrl: undefined,
     currentItemIndex: undefined,
@@ -142,7 +142,7 @@ class PlaybackManagerStore {
     playbackInitMode: InitMode.Unknown
   };
 
-  private _state = reactive<PlaybackManagerState>(
+  private readonly _state = reactive<PlaybackManagerState>(
     structuredClone(this._defaultState)
   );
   /**
@@ -493,7 +493,7 @@ class PlaybackManagerStore {
   /**
    * Report current item playback progress to server
    */
-  private _reportPlaybackProgress = async (): Promise<void> => {
+  private readonly _reportPlaybackProgress = async (): Promise<void> => {
     this._isProgressUpdating = true;
 
     try {
@@ -517,7 +517,7 @@ class PlaybackManagerStore {
   /**
    * Report playback stopped to the server. Used by the "Now playing" statistics in other clients.
    */
-  private _reportPlaybackStopped = async (
+  private readonly _reportPlaybackStopped = async (
     itemId: string,
     sessionId = this._state.playSessionId,
     currentTime = this.currentTime,
@@ -545,7 +545,7 @@ class PlaybackManagerStore {
   /**
    * Report playback start to the server. Used by the "Now playing" statistics in other clients.
    */
-  private _reportPlaybackStart = async (itemId: string): Promise<void> => {
+  private readonly _reportPlaybackStart = async (itemId: string): Promise<void> => {
     this._isProgressUpdating = true;
 
     try {
@@ -566,26 +566,26 @@ class PlaybackManagerStore {
     }
   };
 
-  public addToQueue = async (item: BaseItemDto): Promise<void> => {
+  public readonly addToQueue = async (item: BaseItemDto): Promise<void> => {
     const translatedItem = await this.translateItemsForPlayback(item);
 
     this._state.queue.push(...translatedItem);
   };
 
-  public removeFromQueue = (itemId: string): void => {
+  public readonly removeFromQueue = (itemId: string): void => {
     if (this._state.queue.includes(itemId)) {
       this._state.queue.splice(this._state.queue.indexOf(itemId), 1);
     }
   };
 
-  public clearQueue = (): void => {
+  public readonly clearQueue = (): void => {
     this._state.queue = [];
   };
 
   /**
    * Plays an item and initializes playbackManager's state
    */
-  public play = async ({
+  public readonly play = async ({
     item,
     audioTrackIndex,
     subtitleTrackIndex,
@@ -661,7 +661,7 @@ class PlaybackManagerStore {
    *
    * @param item
    */
-  public playNext = async (item: BaseItemDto): Promise<void> => {
+  public readonly playNext = async (item: BaseItemDto): Promise<void> => {
     const translatedItem = await this.translateItemsForPlayback(item);
 
     if (this._state.currentItemIndex !== undefined) {
@@ -677,19 +677,19 @@ class PlaybackManagerStore {
     }
   };
 
-  public pause = (): void => {
+  public readonly pause = (): void => {
     if (this._state.status === PlaybackStatus.Playing) {
       this._state.status = PlaybackStatus.Paused;
     }
   };
 
-  public unpause = (): void => {
+  public readonly unpause = (): void => {
     if (this._state.status === PlaybackStatus.Paused) {
       this._state.status = PlaybackStatus.Playing;
     }
   };
 
-  public playPause = (): void => {
+  public readonly playPause = (): void => {
     if (this._state.status === PlaybackStatus.Playing) {
       this.pause();
     } else if (this._state.status === PlaybackStatus.Paused) {
@@ -697,7 +697,7 @@ class PlaybackManagerStore {
     }
   };
 
-  public setNextItem = (): void => {
+  public readonly setNextItem = (): void => {
     if (this.nextItem) {
       this._state.currentItemIndex = this._nextItemIndex;
     } else {
@@ -713,7 +713,7 @@ class PlaybackManagerStore {
    *
    * @param force - If true, it will change to the previous item (if it exists) regardless
    */
-  public setPreviousItem = (force = false): void => {
+  public readonly setPreviousItem = (force = false): void => {
     if (!isNil(this.previousItem) && (force || this.currentTime < 5)) {
       this._state.currentItemIndex = this._previousItemIndex;
     }
@@ -721,7 +721,7 @@ class PlaybackManagerStore {
     this.currentTime = 0;
   };
 
-  public setNewQueue = (queue: string[]): void => {
+  public readonly setNewQueue = (queue: string[]): void => {
     const item =
       this._state.currentItemIndex === undefined
         ? undefined
@@ -735,7 +735,7 @@ class PlaybackManagerStore {
     }
   };
 
-  public changeItemPosition = (
+  public readonly changeItemPosition = (
     itemId: string | undefined,
     newIndex: number
   ): void => {
@@ -747,7 +747,7 @@ class PlaybackManagerStore {
     }
   };
 
-  public stop = (): void => {
+  public readonly stop = (): void => {
     const sessionId = String(this._state.playSessionId ?? '');
     const time = Number(this.currentTime);
     const itemId = String(this.currentItem?.Id ?? '');
@@ -765,16 +765,16 @@ class PlaybackManagerStore {
     });
   };
 
-  public skipForward = (): void => {
+  public readonly skipForward = (): void => {
     this.currentTime = (this.currentTime || 0) + 15;
   };
 
-  public skipBackward = (): void => {
+  public readonly skipBackward = (): void => {
     this.currentTime =
       (this.currentTime || 0) > 15 ? (this.currentTime || 0) - 15 : 0;
   };
 
-  public toggleShuffle = (preserveCurrentItem = true): void => {
+  public readonly toggleShuffle = (preserveCurrentItem = true): void => {
     if (this._state.queue && !isNil(this._state.currentItemIndex)) {
       if (this._state.isShuffling) {
         const item = this._state.queue[this._state.currentItemIndex];
@@ -808,7 +808,7 @@ class PlaybackManagerStore {
    *
    * If there's only one item in queue, we only switch between RepeatOne and RepeatNone
    */
-  public toggleRepeatMode = (): void => {
+  public readonly toggleRepeatMode = (): void => {
     if (this._state.repeatMode === RepeatMode.RepeatNone) {
       this._state.repeatMode =
         this._state.queue.length > 1
@@ -829,7 +829,7 @@ class PlaybackManagerStore {
    *
    * If the volume is zero and isMuted is true, the volume returns to 100 when it is reactivated
    */
-  public toggleMute = (): void => {
+  public readonly toggleMute = (): void => {
     if (this.currentVolume === 0 && this.isMuted) {
       this.currentVolume = 100;
     }
@@ -837,7 +837,7 @@ class PlaybackManagerStore {
     this.isMuted = !this.isMuted;
   };
 
-  public instantMixFromItem = async (itemId: string): Promise<void> => {
+  public readonly instantMixFromItem = async (itemId: string): Promise<void> => {
     const { data: items } = await useBaseItem(getInstantMixApi, 'getInstantMixFromItem', { skipCache: { request: true }})(() => ({
       id: itemId
     }));
@@ -851,7 +851,7 @@ class PlaybackManagerStore {
     }
   };
 
-  public getItemPlaybackInfo = async (
+  public readonly getItemPlaybackInfo = async (
     item = this.currentItem,
     mediaSourceIndex = this._state.currentMediaSourceIndex ?? 0,
     audioStreamIndex = this.currentAudioStreamIndex,
@@ -878,7 +878,7 @@ class PlaybackManagerStore {
    *
    * @param item
    */
-  public translateItemsForPlayback = async (
+  public readonly translateItemsForPlayback = async (
     item: BaseItemDto
   ): Promise<string[]> => {
     if (!item.Id) {
@@ -940,7 +940,7 @@ class PlaybackManagerStore {
     return request.map((i) => i.Id as string);
   };
 
-  public getItemPlaybackUrl = (
+  public readonly getItemPlaybackUrl = (
     mediaSource = this.currentMediaSource,
     mediaType = this.currentlyPlayingMediaType
   ): string | undefined => {
@@ -974,7 +974,7 @@ class PlaybackManagerStore {
     }
   };
 
-  private _setCurrentMediaSource = async (): Promise<void> => {
+  private readonly _setCurrentMediaSource = async (): Promise<void> => {
     /**
      * Generate an identifier that can be compared with the class' one.
      * If they don't match, we assume the playing item has been changed while this function
