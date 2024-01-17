@@ -61,7 +61,7 @@
           </VCheckbox>
           <VDivider />
           <IdentifyResults
-            v-if="Array.isArray(searchResults) && searchResults.length > 0"
+            v-if="isArray(searchResults) && searchResults.length > 0"
             :items="searchResults"
             :item-type="item.Type"
             @select="applySelectedSearch" />
@@ -92,9 +92,10 @@
 import { useConfirmDialog } from '@/composables/use-confirm-dialog';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { remote } from '@/plugins/remote';
+import { isArray } from '@/utils/validation';
 import type {
-  BaseItemDto,
-  RemoteSearchResult
+BaseItemDto,
+RemoteSearchResult
 } from '@jellyfin/sdk/lib/generated-client';
 import { getItemLookupApi } from '@jellyfin/sdk/lib/utils/api/item-lookup-api';
 import { computed, ref, toRaw } from 'vue';
@@ -370,7 +371,7 @@ async function performSearch(): Promise<void> {
   try {
     const results = await getItemRemoteSearch(props.item, fieldsInputs.value);
 
-    searchResults.value = Array.isArray(results) ? results : [];
+    searchResults.value = isArray(results) ? results : [];
   } catch (error) {
     console.error(error);
 

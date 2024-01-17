@@ -22,29 +22,43 @@ export function isBool(value: unknown): value is boolean {
 }
 
 /**
- * TypeScript type guard for AxiosError
+ * Check if the value is undefined
  */
-export function isAxiosError(object: unknown): object is AxiosError {
-  return !!(object && typeof object === 'object' && 'isAxiosError' in object);
-}
-
-/**
- * Guard for undefined values
- */
-export function isUndefined(value: unknown): value is undefined {
+export function isUndef(value: unknown): value is undefined {
   return value === undefined;
 }
 
 /**
- * Guard for null values
+ * Check if the value is null
  */
 export function isNull(value: unknown): value is null {
   return value === null;
 }
 
 /**
- * Guard for null or undefined values
+ * Check if the value is null or undefined
  */
 export function isNil(value: unknown): value is null | undefined {
-  return isNull(value) || isUndefined(value);
+  return isNull(value) || isUndef(value);
+}
+
+/**
+ * Check if the value is an object.
+ */
+export function isObj(value: unknown): value is object {
+  return typeof value === 'object' && !isNull(value);
+}
+
+/**
+ * TypeScript type guard for AxiosError
+ */
+export function isAxiosError(object: unknown): object is AxiosError {
+  return isObj(object) && 'isAxiosError' in object;
+}
+
+/**
+ * Check if the value is an array
+ */
+export function isArray(object: unknown): object is unknown[] {
+  return Array.isArray(object);
 }

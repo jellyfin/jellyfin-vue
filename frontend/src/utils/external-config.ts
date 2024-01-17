@@ -1,4 +1,4 @@
-import { isNil } from '@/utils/validation';
+import { isArray, isNil } from '@/utils/validation';
 
 interface ExternalJSONConfig {
   defaultServerURLs: string[];
@@ -19,7 +19,7 @@ function validateJsonConfig(
 
   if (
     !('defaultServerURLs' in config) ||
-    !Array.isArray(config.defaultServerURLs)
+    !isArray(config.defaultServerURLs)
   ) {
     throw new Error('Expected defaultServerURLS array');
   }
