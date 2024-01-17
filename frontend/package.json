@@ -29,6 +29,7 @@
     "date-fns": "3.2.0",
     "destr": "2.0.2",
     "dompurify": "3.0.8",
+    "fast-equals": "5.0.1",
     "hls.js": "1.5.1",
     "jassub": "1.7.15",
     "lodash-es": "4.17.21",
