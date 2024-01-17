@@ -123,7 +123,7 @@ jobs:
           docker rm jf
 
       - name: Upload artifact (Docker image) ⬆️📦
-        uses: actions/upload-artifact@v4.0.0
+        uses: actions/upload-artifact@v4.1.0
         if: ${{ matrix.platform == 'linux/amd64' }}
         with:
           compression-level: 0
@@ -132,7 +132,7 @@ jobs:
             docker_image.tar
 
       - name: Upload artifact (Client) ⬆️💻
-        uses: actions/upload-artifact@v4.0.0
+        uses: actions/upload-artifact@v4.1.0
         if: ${{ matrix.platform == 'linux/amd64' }}
         with:
           compression-level: 0
@@ -179,7 +179,7 @@ jobs:
         run: npm run build
 
       - name: Upload artifact (Linux) ⬆️🐧
-        uses: actions/upload-artifact@v4.0.0
+        uses: actions/upload-artifact@v4.1.0
         if: matrix.platform == 'ubuntu-latest'
         with:
           compression-level: 0
@@ -189,7 +189,7 @@ jobs:
             packaging/tauri/target/release/bundle/appimage_deb
 
       - name: Upload artifact (MacOS) ⬆️🍎
-        uses: actions/upload-artifact@v4.0.0
+        uses: actions/upload-artifact@v4.1.0
         if: matrix.platform == 'macos-latest'
         with:
           compression-level: 0
@@ -199,7 +199,7 @@ jobs:
             packaging/tauri/target/release/bundle/dmg/*.dmg
 
       - name: Upload artifact (Windows) ⬆️🪟
-        uses: actions/upload-artifact@v4.0.0
+        uses: actions/upload-artifact@v4.1.0
         if: matrix.platform == 'windows-latest'
         with:
           compression-level: 0
@@ -227,7 +227,7 @@ jobs:
           echo $PR_SHA > PR_sha
 
       - name: Upload PR number as artifact
-        uses: actions/upload-artifact@v4.0.0
+        uses: actions/upload-artifact@v4.1.0
         with:
           compression-level: 0
           name: PR_context
