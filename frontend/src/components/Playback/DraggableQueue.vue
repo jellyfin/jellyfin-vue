@@ -3,7 +3,7 @@
     <template
       v-for="(item, index) of playbackManager.queue"
       :key="item.Id">
-      <VHover v-slot="{ isHovering, props: hoverProps }">
+      <JHover v-slot="{ isHovering, hoverProps }">
         <VListItem
           v-bind="hoverProps"
           :title="item.Name ?? ''"
@@ -36,7 +36,7 @@
               queue />
           </template>
         </VListItem>
-      </VHover>
+      </JHover>
     </template>
   </span>
 </template>

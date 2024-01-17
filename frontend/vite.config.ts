@@ -42,7 +42,11 @@ export default defineConfig(({ mode }): UserConfig => {
           VueUseComponentsResolver(),
           Vuetify3Resolver(),
           VueUseDirectiveResolver()
-        ]
+        ],
+        types: [{
+          from: 'vue-router/auto',
+          names: ['RouterLink', 'RouterView']
+        }]
       }),
       /**
        * This plugin allows to use all icons from Iconify as vue components
