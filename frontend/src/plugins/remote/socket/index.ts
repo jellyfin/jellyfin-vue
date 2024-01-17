@@ -61,7 +61,7 @@ class RemotePluginSocket {
    * @param name - Name of the message type to be sent
    * @param data - Payload to send
    */
-  public sendToSocket = (
+  public readonly sendToSocket = (
     ...arguments_: Parameters<typeof this._formatSocketMessage>
   ): void => {
     this._webSocket.send(this._formatSocketMessage(...arguments_));
