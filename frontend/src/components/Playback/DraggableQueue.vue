@@ -43,6 +43,7 @@
 
 <script setup lang="ts">
 import { playbackManager } from '@/store/playbackManager';
+import { isNumber } from '@/utils/validation';
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import Sortable from 'sortablejs';
 import { onBeforeUnmount, shallowRef, watch } from 'vue';
@@ -85,10 +86,10 @@ watch(container, () => {
       onUpdate(e): void {
         const oldIndex = e.oldIndex;
 
-        if (typeof oldIndex === 'number') {
+        if (isNumber(oldIndex)) {
           const item = playbackManager.queue[oldIndex];
 
-          if (item?.Id && typeof e.newIndex === 'number') {
+          if (item?.Id && isNumber(e.newIndex)) {
             playbackManager.changeItemPosition(item.Id, e.newIndex);
           }
         }

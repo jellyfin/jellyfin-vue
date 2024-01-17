@@ -218,9 +218,9 @@ import { useSnackbar } from '@/composables/use-snackbar';
 import { remote } from '@/plugins/remote';
 import { isArray } from '@/utils/validation';
 import {
-ImageType,
-type BaseItemDto,
-type BaseItemPerson
+  ImageType,
+  type BaseItemDto,
+  type BaseItemPerson
 } from '@jellyfin/sdk/lib/generated-client';
 import { getGenresApi } from '@jellyfin/sdk/lib/utils/api/genres-api';
 import { getItemUpdateApi } from '@jellyfin/sdk/lib/utils/api/item-update-api';

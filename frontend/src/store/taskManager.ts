@@ -1,7 +1,7 @@
 import { remote } from '@/plugins/remote';
 import { apiStore } from '@/store/api';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
-import { isArray } from '@/utils/validation';
+import { isArray, isObj, isStr } from '@/utils/validation';
 import { useStorage, type RemovableRef } from '@vueuse/core';
 import { v4 } from 'uuid';
 import { watch } from 'vue';
@@ -133,7 +133,7 @@ class TaskManagerStore {
       if (
         type === 'RefreshProgress' &&
           'ItemId' in data &&
-          typeof data.ItemId === 'string' &&
+          isStr(data.ItemId) &&
           'Progress' in data
       ) {
         // TODO: Verify all the different tasks that this message may belong to - here we assume libraries.
@@ -173,7 +173,7 @@ class TaskManagerStore {
           isArray(data.ItemsUpdated)
       ) {
         for (const id of data.ItemsUpdated) {
-          if (typeof id === 'string') {
+          if (isStr(id)) {
             this.finishTask(id);
           }
         }
@@ -189,7 +189,7 @@ class TaskManagerStore {
 
         const { MessageType, Data } = remote.socket.message;
 
-        if (!Data || typeof Data !== 'object') {
+        if (!Data || !isObj(Data)) {
           return;
         }
 

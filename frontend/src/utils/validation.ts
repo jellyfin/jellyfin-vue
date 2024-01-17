@@ -22,6 +22,20 @@ export function isBool(value: unknown): value is boolean {
 }
 
 /**
+ * Check if the value is a string.
+ */
+export function isStr(value: unknown): value is string {
+  return typeof value === 'string';
+}
+
+/**
+ * Check if the given value is a funcion
+ */
+export function isFunc<T extends (...args: unknown[]) => unknown>(value: unknown): value is T {
+  return typeof value === 'function';
+}
+
+/**
  * Check if the value is undefined
  */
 export function isUndef(value: unknown): value is undefined {

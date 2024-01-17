@@ -2,6 +2,7 @@ import { useSnackbar } from '@/composables/use-snackbar';
 import { i18n } from '@/plugins/i18n';
 import { remote } from '@/plugins/remote';
 import { taskManager } from '@/store/taskManager';
+import { isStr, isUndef } from '@/utils/validation';
 import type { DisplayPreferencesDto } from '@jellyfin/sdk/lib/generated-client';
 import { getDisplayPreferencesApi } from '@jellyfin/sdk/lib/utils/api/display-preferences-api';
 import { destr } from 'destr';
@@ -16,7 +17,7 @@ function serializeCustomPref(value: unknown): string | undefined {
     return undefined;
   }
 
-  return typeof value === 'string' ? value : JSON.stringify(value);
+  return isStr(value) ? value : JSON.stringify(value);
 }
 
 /**
@@ -79,7 +80,7 @@ export async function updateDisplayPreferences(
     newDisplayPreferences.CustomPrefs = Object.fromEntries(
       Object.entries(mergedCustomPrefs)
         .map(([key, value]) => [key, serializeCustomPref(value)])
-        .filter(([, value]) => value !== undefined)
+        .filter(([, value]) => !isUndef(value))
     );
   }
 
@@ -142,7 +143,7 @@ export async function updateCustomPrefs<T extends object>(
   displayPreferences.CustomPrefs = Object.fromEntries(
     Object.entries(displayPreferences.CustomPrefs)
       .map(([key, value]) => [key, serializeCustomPref(value)])
-      .filter(([, value]) => value !== undefined)
+      .filter(([, value]) => !isUndef(value))
   );
 
   const response = await remote.sdk

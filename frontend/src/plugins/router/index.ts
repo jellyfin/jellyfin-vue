@@ -1,4 +1,5 @@
 import { getJSONConfig } from '@/utils/external-config';
+import { isStr } from '@/utils/validation';
 import { useTitle } from '@vueuse/core';
 import { computed, watch } from 'vue';
 import {
@@ -62,7 +63,7 @@ router.back = (): ReturnType<typeof router.back> => {
   window.setTimeout(
     async () =>
       await router.replace(
-        typeof router.options.history.state.back === 'string'
+        isStr(router.options.history.state.back)
           ? router.options.history.state.back
           : '/'
       )

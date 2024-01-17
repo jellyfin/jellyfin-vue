@@ -92,10 +92,10 @@
 import { useConfirmDialog } from '@/composables/use-confirm-dialog';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { remote } from '@/plugins/remote';
-import { isArray } from '@/utils/validation';
+import { isArray, isStr } from '@/utils/validation';
 import type {
-BaseItemDto,
-RemoteSearchResult
+  BaseItemDto,
+  RemoteSearchResult
 } from '@jellyfin/sdk/lib/generated-client';
 import { getItemLookupApi } from '@jellyfin/sdk/lib/utils/api/item-lookup-api';
 import { computed, ref, toRaw } from 'vue';
@@ -257,7 +257,7 @@ async function getItemRemoteSearch(
    */
   for (const field of fields) {
     const value =
-      typeof field.value === 'string' ? field.value.trim() : field.value;
+      isStr(field.value) ? field.value.trim() : field.value;
 
     if (field.key === 'search-name' && value) {
       searchQuery.Name = value;
