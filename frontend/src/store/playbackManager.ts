@@ -4,6 +4,7 @@
  * It must be used in an agnostic way to cover both local and remote playback.
  * If you want to handle the state of the local player element, use playerElement store instead.
  */
+import { isNil } from '@/utils/validation';
 import {
   BaseItemKind,
   ItemFilter,
@@ -20,7 +21,7 @@ import { getMediaInfoApi } from '@jellyfin/sdk/lib/utils/api/media-info-api';
 import { getPlaystateApi } from '@jellyfin/sdk/lib/utils/api/playstate-api';
 import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
 import { useEventListener } from '@vueuse/core';
-import { isNil, shuffle } from 'lodash-es';
+import { shuffle } from 'lodash-es';
 import { v4 } from 'uuid';
 import { reactive, watch, watchEffect } from 'vue';
 /**

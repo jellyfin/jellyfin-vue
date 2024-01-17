@@ -4,6 +4,7 @@
 import { useBaseItem } from '@/composables/apis';
 import { remote } from '@/plugins/remote';
 import { router } from '@/plugins/router';
+import { isNil } from '@/utils/validation';
 import {
   BaseItemKind,
   ItemFields,
@@ -15,7 +16,6 @@ import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { getUserViewsApi } from '@jellyfin/sdk/lib/utils/api/user-views-api';
-import { isNil } from 'lodash-es';
 import IMdiAccount from 'virtual:icons/mdi/account';
 import IMdiAlbum from 'virtual:icons/mdi/album';
 import IMdiBookMusic from 'virtual:icons/mdi/book-music';

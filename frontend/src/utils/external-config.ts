@@ -1,4 +1,4 @@
-import { isNil } from 'lodash-es';
+import { isNil } from '@/utils/validation';
 
 interface ExternalJSONConfig {
   defaultServerURLs: string[];

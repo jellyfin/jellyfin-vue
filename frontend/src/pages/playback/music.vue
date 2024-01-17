@@ -101,8 +101,8 @@ meta:
 import { playbackGuard } from '@/plugins/router/middlewares/playback';
 import { playbackManager } from '@/store/playbackManager';
 import { getBlurhash } from '@/utils/images';
+import { isNil } from '@/utils/validation';
 import { ImageType } from '@jellyfin/sdk/lib/generated-client';
-import { isNil } from 'lodash-es';
 import type SwiperType from 'swiper';
 import 'swiper/css';
 import 'swiper/css/a11y';

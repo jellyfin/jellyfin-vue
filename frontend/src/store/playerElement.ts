@@ -7,11 +7,11 @@
 import { remote } from '@/plugins/remote';
 import { router } from '@/plugins/router';
 import { mediaElementRef } from '@/store';
+import { isNil } from '@/utils/validation';
 import JASSUB from 'jassub';
 import jassubDefaultFont from 'jassub/dist/default.woff2?url';
 import jassubWorker from 'jassub/dist/jassub-worker.js?url';
 import jassubWasmUrl from 'jassub/dist/jassub-worker.wasm?url';
-import { isNil } from 'lodash-es';
 import { nextTick, reactive, watch } from 'vue';
 import { playbackManager } from './playbackManager';
 

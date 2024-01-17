@@ -47,20 +47,20 @@
  * - Improved documentation and comments
  */
 import { vuetify } from '@/plugins/vuetify';
+import { isNil } from '@/utils/validation';
 import {
-  type Fn,
   refDebounced,
   useEventListener,
-  useResizeObserver
+  useResizeObserver,
+  type Fn
 } from '@vueuse/core';
-import { isNil } from 'lodash-es';
 import {
-  type StyleValue,
   computed,
   onBeforeUnmount,
   ref,
   shallowRef,
-  watch
+  watch,
+  type StyleValue
 } from 'vue';
 import {
   fromScrollParent,
