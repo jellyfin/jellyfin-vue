@@ -7,7 +7,7 @@ declare module 'virtual:locales/date-fns' {
 declare module 'virtual:locales/vuetify' {
   import type * as locales from 'vuetify/locale';
 
-  const typeWithoutRtl: Omit<typeof locales, 'defaultRtl'>;
+  const typeWithoutRtl: BetterOmit<typeof locales, 'defaultRtl'>;
 
   export = typeWithoutRtl;
 }
