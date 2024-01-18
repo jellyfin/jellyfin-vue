@@ -10,8 +10,8 @@
 </template>
 
 <script setup lang="ts">
-import { playbackManager } from '@/store/playbackManager';
 import IMdiSkipPrevious from 'virtual:icons/mdi/skip-previous';
+import { playbackManager } from '@/store/playbackManager';
 
 defineProps<{ size?: string }>();
 </script>

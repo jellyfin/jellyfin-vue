@@ -92,9 +92,6 @@ meta:
 </route>
 
 <script setup lang="ts">
-import { useApi } from '@/composables/apis';
-import { useDateFns } from '@/composables/use-datefns';
-import { remote } from '@/plugins/remote';
 import {
   LogLevel
 } from '@jellyfin/sdk/lib/generated-client';
@@ -110,6 +107,9 @@ import IMdiStop from 'virtual:icons/mdi/stop';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router/auto';
 import { useTheme } from 'vuetify';
+import { remote } from '@/plugins/remote';
+import { useDateFns } from '@/composables/use-datefns';
+import { useApi } from '@/composables/apis';
 
 const { t } = useI18n();
 const route = useRoute();

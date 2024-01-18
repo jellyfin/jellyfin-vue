@@ -54,23 +54,6 @@
 </template>
 
 <script lang="ts">
-import { useConfirmDialog } from '@/composables/use-confirm-dialog';
-import { useSnackbar } from '@/composables/use-snackbar';
-import { remote } from '@/plugins/remote';
-import { apiStore } from '@/store/api';
-import { playbackManager } from '@/store/playbackManager';
-import { taskManager } from '@/store/taskManager';
-import {
-  canIdentify,
-  canInstantMix,
-  canRefreshMetadata,
-  canResume,
-  getItemDownloadUrl,
-  getItemIdFromSourceIndex,
-  getItemSeasonDownloadMap,
-  getItemSeriesDownloadMap
-} from '@/utils/items';
-import { isStr } from '@/utils/validation';
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { useClipboard, useEventListener } from '@vueuse/core';
 import { v4 } from 'uuid';
@@ -91,6 +74,23 @@ import IMdiShuffle from 'virtual:icons/mdi/shuffle';
 import { computed, getCurrentInstance, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router/auto';
+import { isStr } from '@/utils/validation';
+import {
+  canIdentify,
+  canInstantMix,
+  canRefreshMetadata,
+  canResume,
+  getItemDownloadUrl,
+  getItemIdFromSourceIndex,
+  getItemSeasonDownloadMap,
+  getItemSeriesDownloadMap
+} from '@/utils/items';
+import { taskManager } from '@/store/taskManager';
+import { playbackManager } from '@/store/playbackManager';
+import { apiStore } from '@/store/api';
+import { remote } from '@/plugins/remote';
+import { useSnackbar } from '@/composables/use-snackbar';
+import { useConfirmDialog } from '@/composables/use-confirm-dialog';
 
 type MenuOption = {
   title: string;

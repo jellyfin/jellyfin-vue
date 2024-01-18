@@ -123,9 +123,6 @@
 </template>
 
 <script setup lang="ts">
-import { version as clientVersion } from '@/../package.json';
-import { useApi } from '@/composables/apis';
-import { remote } from '@/plugins/remote';
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
 import { commit_hash } from 'virtual:commit';
 import IMdiAccount from 'virtual:icons/mdi/account';
@@ -149,6 +146,9 @@ import IMdiTextBox from 'virtual:icons/mdi/text-box';
 import { computed, type Component } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, type RouteLocationRaw } from 'vue-router/auto';
+import { remote } from '@/plugins/remote';
+import { useApi } from '@/composables/apis';
+import { version as clientVersion } from '@/../package.json';
 
 const { t } = useI18n();
 const route = useRoute();

@@ -1,3 +1,8 @@
+import type { Api } from '@jellyfin/sdk';
+import type { BaseItemDto, BaseItemDtoQueryResult } from '@jellyfin/sdk/lib/generated-client';
+import type { AxiosResponse } from 'axios';
+import { deepEqual } from 'fast-equals';
+import { computed, effectScope, getCurrentScope, isRef, shallowRef, toValue, unref, watch, type ComputedRef, type Ref } from 'vue';
 import { useLoading } from '@/composables/use-loading';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { i18n } from '@/plugins/i18n';
@@ -5,11 +10,6 @@ import { remote } from '@/plugins/remote';
 import { network } from '@/store';
 import { apiStore } from '@/store/api';
 import { isArray, isNil } from '@/utils/validation';
-import type { Api } from '@jellyfin/sdk';
-import type { BaseItemDto, BaseItemDtoQueryResult } from '@jellyfin/sdk/lib/generated-client';
-import type { AxiosResponse } from 'axios';
-import { deepEqual } from 'fast-equals';
-import { computed, effectScope, getCurrentScope, isRef, shallowRef, toValue, unref, watch, type ComputedRef, type Ref } from 'vue';
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-return */
 /**

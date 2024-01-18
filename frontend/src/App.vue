@@ -35,12 +35,12 @@
 </template>
 
 <script setup lang="ts">
-import DefaultLayout from '@/layouts/default.vue';
-import FullPageLayout from '@/layouts/fullpage.vue';
-import ServerLayout from '@/layouts/server.vue';
 import { whenever } from '@vueuse/core';
 import { ref, type Component as VueComponent } from 'vue';
 import type { RouteMeta } from 'vue-router/auto';
+import DefaultLayout from '@/layouts/default.vue';
+import FullPageLayout from '@/layouts/fullpage.vue';
+import ServerLayout from '@/layouts/server.vue';
 
 const apploaded = ref(false);
 

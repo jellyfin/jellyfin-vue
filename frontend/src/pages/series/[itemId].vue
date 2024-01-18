@@ -181,10 +181,6 @@
 </template>
 
 <script setup lang="ts">
-import { useBaseItem } from '@/composables/apis';
-import { sanitizeHtml } from '@/utils/html';
-import { getBlurhash } from '@/utils/images';
-import { getItemDetailsLink } from '@/utils/items';
 import {
   ImageType,
   type BaseItemPerson
@@ -193,6 +189,10 @@ import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { computed } from 'vue';
 import { useRoute } from 'vue-router/auto';
+import { getItemDetailsLink } from '@/utils/items';
+import { getBlurhash } from '@/utils/images';
+import { sanitizeHtml } from '@/utils/html';
+import { useBaseItem } from '@/composables/apis';
 
 const route = useRoute<'/series/[itemId]'>();
 

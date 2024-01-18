@@ -1,4 +1,8 @@
-import { version } from '@/../package.json';
+import { type Api, Jellyfin } from '@jellyfin/sdk';
+import { type RemovableRef, useStorage } from '@vueuse/core';
+import { v4 } from 'uuid';
+import type { DeviceState } from './types';
+import { mergeExcludingUnknown } from '@/utils/data-manipulation';
 import {
   isAndroid,
   isApple,
@@ -10,11 +14,7 @@ import {
   isTizen,
   isWebOS
 } from '@/utils/browser-detection';
-import { mergeExcludingUnknown } from '@/utils/data-manipulation';
-import { type Api, Jellyfin } from '@jellyfin/sdk';
-import { type RemovableRef, useStorage } from '@vueuse/core';
-import { v4 } from 'uuid';
-import type { DeviceState } from './types';
+import { version } from '@/../package.json';
 
 const state: RemovableRef<DeviceState> = useStorage(
   'deviceProfile',

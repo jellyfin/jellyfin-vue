@@ -116,10 +116,6 @@
 </template>
 
 <script setup lang="ts">
-import { useBaseItem } from '@/composables/apis';
-import { playbackManager } from '@/store/playbackManager';
-import { getItemDetailsLink } from '@/utils/items';
-import { formatTicks } from '@/utils/time';
 import {
   SortOrder,
   type BaseItemDto
@@ -127,6 +123,10 @@ import {
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { groupBy } from 'lodash-es';
 import { computed } from 'vue';
+import { useBaseItem } from '@/composables/apis';
+import { playbackManager } from '@/store/playbackManager';
+import { getItemDetailsLink } from '@/utils/items';
+import { formatTicks } from '@/utils/time';
 
 const props = defineProps<{
   item: BaseItemDto

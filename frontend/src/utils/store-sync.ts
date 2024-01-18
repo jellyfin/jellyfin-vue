@@ -1,11 +1,11 @@
+import type { DisplayPreferencesDto } from '@jellyfin/sdk/lib/generated-client';
+import { getDisplayPreferencesApi } from '@jellyfin/sdk/lib/utils/api/display-preferences-api';
+import { destr } from 'destr';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { i18n } from '@/plugins/i18n';
 import { remote } from '@/plugins/remote';
 import { taskManager } from '@/store/taskManager';
 import { isStr, isUndef } from '@/utils/validation';
-import type { DisplayPreferencesDto } from '@jellyfin/sdk/lib/generated-client';
-import { getDisplayPreferencesApi } from '@jellyfin/sdk/lib/utils/api/display-preferences-api';
-import { destr } from 'destr';
 
 const CLIENT = 'vue';
 

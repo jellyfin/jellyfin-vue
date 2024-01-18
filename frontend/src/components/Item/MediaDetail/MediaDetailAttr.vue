@@ -11,11 +11,11 @@
 </template>
 
 <script setup lang="ts">
-import { isBool } from '@/utils/validation';
 import IMdiCheck from 'virtual:icons/mdi/check';
 import IMdiClose from 'virtual:icons/mdi/close';
 import IMdiHelp from 'virtual:icons/mdi/help';
 import { computed } from 'vue';
+import { isBool } from '@/utils/validation';
 
 const props = defineProps<{
   name: string;

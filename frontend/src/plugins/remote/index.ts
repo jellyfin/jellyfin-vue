@@ -6,12 +6,12 @@
  * - Jellyfin SDK ($remote.sdk)
  * - WebSocket ($remote.socket)
  */
-import { getJSONConfig } from '@/utils/external-config';
-import { isNil } from '@/utils/validation';
 import type { App } from 'vue';
 import RemotePluginAuthInstance from './auth';
 import RemotePluginSDKInstance from './sdk';
 import RemotePluginSocketInstance from './socket';
+import { isNil } from '@/utils/validation';
+import { getJSONConfig } from '@/utils/external-config';
 
 class RemotePlugin {
   public readonly auth = RemotePluginAuthInstance;

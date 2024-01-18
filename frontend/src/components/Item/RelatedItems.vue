@@ -36,9 +36,9 @@
 </template>
 
 <script setup lang="ts">
-import { getItemDetailsLink } from '@/utils/items';
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { useI18n } from 'vue-i18n';
+import { getItemDetailsLink } from '@/utils/items';
 
 withDefaults(
   defineProps<{

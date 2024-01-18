@@ -1,7 +1,7 @@
+import type { RouteLocationNormalized, RouteLocationRaw } from 'vue-router/auto';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { i18n } from '@/plugins/i18n';
 import { isStr } from '@/utils/validation';
-import type { RouteLocationNormalized, RouteLocationRaw } from 'vue-router/auto';
 
 /**
  * Validates that the route has a correct itemId parameter by checking that the parameter is a valid

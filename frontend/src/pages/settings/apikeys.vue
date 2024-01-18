@@ -104,14 +104,14 @@ meta:
 </route>
 
 <script setup lang="ts">
-import { useDateFns } from '@/composables/use-datefns';
-import { useSnackbar } from '@/composables/use-snackbar';
-import { remote } from '@/plugins/remote';
 import type { AuthenticationInfo } from '@jellyfin/sdk/lib/generated-client';
 import { getApiKeyApi } from '@jellyfin/sdk/lib/utils/api/api-key-api';
 import { formatRelative, parseJSON } from 'date-fns';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { remote } from '@/plugins/remote';
+import { useSnackbar } from '@/composables/use-snackbar';
+import { useDateFns } from '@/composables/use-datefns';
 
 const { t } = useI18n();
 

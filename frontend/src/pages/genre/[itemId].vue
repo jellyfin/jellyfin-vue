@@ -48,9 +48,6 @@
 </template>
 
 <script setup lang="ts">
-import { useBaseItem } from '@/composables/apis';
-import { useResponsiveClasses } from '@/composables/use-responsive-classes';
-import { isStr } from '@/utils/validation';
 import {
   SortOrder,
   type BaseItemKind
@@ -59,6 +56,9 @@ import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { computed } from 'vue';
 import { useRoute } from 'vue-router/auto';
+import { isStr } from '@/utils/validation';
+import { useResponsiveClasses } from '@/composables/use-responsive-classes';
+import { useBaseItem } from '@/composables/apis';
 
 const route = useRoute<'/genre/[itemId]'>();
 

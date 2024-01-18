@@ -1,7 +1,7 @@
+import type { RouteLocationNormalized, RouteLocationRaw } from 'vue-router/auto';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { i18n } from '@/plugins/i18n';
 import { remote } from '@/plugins/remote';
-import type { RouteLocationNormalized, RouteLocationRaw } from 'vue-router/auto';
 
 /**
  * Redirect the user to index page when attempting to access

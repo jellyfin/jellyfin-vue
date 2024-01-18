@@ -89,10 +89,6 @@
 </template>
 
 <script setup lang="ts">
-import { useConfirmDialog } from '@/composables/use-confirm-dialog';
-import { useSnackbar } from '@/composables/use-snackbar';
-import { remote } from '@/plugins/remote';
-import { isArray, isStr } from '@/utils/validation';
 import type {
   BaseItemDto,
   RemoteSearchResult
@@ -100,6 +96,10 @@ import type {
 import { getItemLookupApi } from '@jellyfin/sdk/lib/utils/api/item-lookup-api';
 import { computed, ref, toRaw } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useConfirmDialog } from '@/composables/use-confirm-dialog';
+import { useSnackbar } from '@/composables/use-snackbar';
+import { remote } from '@/plugins/remote';
+import { isArray, isStr } from '@/utils/validation';
 
 interface IdentifyField {
   key: string;

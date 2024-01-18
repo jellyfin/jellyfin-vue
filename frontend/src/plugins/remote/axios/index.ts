@@ -1,12 +1,12 @@
 /**
  * Instantiates the Axios instance used for the SDK and requests
  */
-import { useSnackbar } from '@/composables/use-snackbar';
-import { i18n } from '@/plugins/i18n';
 import axios, {
   type AxiosError
 } from 'axios';
 import auth from '../auth';
+import { useSnackbar } from '@/composables/use-snackbar';
+import { i18n } from '@/plugins/i18n';
 
 class RemotePluginAxios {
   public readonly instance = axios.create();

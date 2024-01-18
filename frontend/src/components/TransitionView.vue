@@ -9,8 +9,8 @@
 </template>
 
 <script setup lang="ts">
-import { prefersNoMotion } from '@/store';
 import { useRoute, type RouteMeta } from 'vue-router/auto';
+import { prefersNoMotion } from '@/store';
 
 const route = useRoute();
 

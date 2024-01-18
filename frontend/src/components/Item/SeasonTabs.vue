@@ -55,12 +55,12 @@
 </template>
 
 <script setup lang="ts">
-import { remote } from '@/plugins/remote';
-import { getItemDetailsLink } from '@/utils/items';
 import { type BaseItemDto, ItemFields } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
 import { ref, watch } from 'vue';
+import { getItemDetailsLink } from '@/utils/items';
+import { remote } from '@/plugins/remote';
 
 interface TvShowItem {
   /**

@@ -20,12 +20,12 @@
 </template>
 
 <script setup lang="ts">
-import { playbackManager } from '@/store/playbackManager';
 import IMdiVolumeHigh from 'virtual:icons/mdi/volume-high';
 import IMdiVolumeLow from 'virtual:icons/mdi/volume-low';
 import IMdiVolumeMedium from 'virtual:icons/mdi/volume-medium';
 import IMdiVolumeMute from 'virtual:icons/mdi/volume-mute';
 import { computed } from 'vue';
+import { playbackManager } from '@/store/playbackManager';
 
 const sliderValue = computed({
   get() {

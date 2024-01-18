@@ -2,7 +2,7 @@
   "editor.formatOnSave": true, 
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "always",
-    "source.organizeImports": "always"
+    "source.organizeImports": "never"
   },
   "[javascript]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"

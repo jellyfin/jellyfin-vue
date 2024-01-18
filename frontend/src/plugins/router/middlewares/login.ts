@@ -1,10 +1,10 @@
-import { remote } from '@/plugins/remote';
-import { isNil } from '@/utils/validation';
 import type {
   RouteLocationNormalized,
   RouteLocationPathRaw,
   RouteLocationRaw
 } from 'vue-router/auto';
+import { remote } from '@/plugins/remote';
+import { isNil } from '@/utils/validation';
 
 const serverAddUrl = '/server/add';
 const serverSelectUrl = '/server/select';

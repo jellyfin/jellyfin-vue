@@ -2,14 +2,14 @@
  * Helper for image manipulation and image-related utility functions
  *
  */
-import { remote } from '@/plugins/remote';
-import { CardShapes, getShapeFromItemType, isPerson } from '@/utils/items';
 import {
   type BaseItemDto,
   BaseItemKind,
   type BaseItemPerson,
   ImageType
 } from '@jellyfin/sdk/lib/generated-client';
+import { remote } from '@/plugins/remote';
+import { CardShapes, getShapeFromItemType, isPerson } from '@/utils/items';
 
 export interface ImageUrlInfo {
   url?: string;

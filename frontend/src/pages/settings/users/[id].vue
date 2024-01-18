@@ -308,9 +308,6 @@ meta:
 </route>
 
 <script setup lang="ts">
-import { useConfirmDialog } from '@/composables/use-confirm-dialog';
-import { useSnackbar } from '@/composables/use-snackbar';
-import { remote } from '@/plugins/remote';
 import type {
   BaseItemDtoQueryResult,
   UnratedItem,
@@ -322,6 +319,9 @@ import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router/auto';
+import { remote } from '@/plugins/remote';
+import { useSnackbar } from '@/composables/use-snackbar';
+import { useConfirmDialog } from '@/composables/use-confirm-dialog';
 
 interface CurrentUser {
   Name: string;

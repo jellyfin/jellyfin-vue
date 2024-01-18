@@ -168,12 +168,12 @@
 </template>
 
 <script setup lang="ts">
-import { useSnackbar } from '@/composables/use-snackbar';
-import { remote } from '@/plugins/remote';
 import { type BaseItemDto, ItemFilter } from '@jellyfin/sdk/lib/generated-client';
 import { getFilterApi } from '@jellyfin/sdk/lib/utils/api/filter-api';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { remote } from '@/plugins/remote';
+import { useSnackbar } from '@/composables/use-snackbar';
 
 export type FeatureFilters =
   | 'HasSubtitles'

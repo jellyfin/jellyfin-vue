@@ -32,12 +32,12 @@ const excludeViewTypes = new Set([
 </script>
 
 <script setup lang="ts">
-import { CardShapes, fetchIndexPage, getShapeFromCollectionType } from '@/utils/items';
-import { isNil } from '@/utils/validation';
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router/auto';
+import { isNil } from '@/utils/validation';
+import { CardShapes, fetchIndexPage, getShapeFromCollectionType } from '@/utils/items';
 
 interface HomeSection {
   title: string;

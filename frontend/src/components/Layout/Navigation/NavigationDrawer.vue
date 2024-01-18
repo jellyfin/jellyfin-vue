@@ -37,12 +37,12 @@
 </template>
 
 <script setup lang="ts">
-import type { getLibraryIcon } from '@/utils/items';
 import IMdiHome from 'virtual:icons/mdi/home';
 import { computed, inject, type Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router/auto';
 import type { RouteNamedMap } from 'vue-router/auto/routes';
+import type { getLibraryIcon } from '@/utils/items';
 
 export interface DrawerItem {
   icon: ReturnType<typeof getLibraryIcon>;

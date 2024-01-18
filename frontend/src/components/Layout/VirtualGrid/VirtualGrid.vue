@@ -46,8 +46,6 @@
  * - Type support for the data that must be passed to the virtualized component's instances
  * - Improved documentation and comments
  */
-import { vuetify } from '@/plugins/vuetify';
-import { isNil } from '@/utils/validation';
 import {
   refDebounced,
   useEventListener,
@@ -68,6 +66,8 @@ import {
   getResizeMeasurement,
   getVisibleItems
 } from './pipeline';
+import { isNil } from '@/utils/validation';
+import { vuetify } from '@/plugins/vuetify';
 
 /**
  * SHARED STATE ACROSS ALL THE COMPONENT INSTANCES

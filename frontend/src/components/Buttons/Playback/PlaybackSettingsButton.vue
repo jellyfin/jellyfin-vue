@@ -87,9 +87,9 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
 import { playbackManager } from '@/store/playbackManager';
 import { playerElement } from '@/store/playerElement';
-import { computed } from 'vue';
 
 const menuModel = defineModel<boolean>();
 

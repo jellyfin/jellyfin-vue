@@ -213,10 +213,6 @@
 </template>
 
 <script setup lang="ts">
-import { useDateFns } from '@/composables/use-datefns';
-import { useSnackbar } from '@/composables/use-snackbar';
-import { remote } from '@/plugins/remote';
-import { isArray } from '@/utils/validation';
 import {
   ImageType,
   type BaseItemDto,
@@ -231,6 +227,10 @@ import { format, formatISO } from 'date-fns';
 import { pick, set } from 'lodash-es';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { isArray } from '@/utils/validation';
+import { remote } from '@/plugins/remote';
+import { useSnackbar } from '@/composables/use-snackbar';
+import { useDateFns } from '@/composables/use-datefns';
 
 type ContentOption = {
   value: string;

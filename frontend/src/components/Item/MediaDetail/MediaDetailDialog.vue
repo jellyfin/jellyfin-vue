@@ -140,9 +140,6 @@
 </template>
 
 <script setup lang="ts">
-import { getLocaleName } from '@/utils/i18n';
-import { formatBitRate, formatFileSize } from '@/utils/items';
-import { isArray, isNil, isNumber } from '@/utils/validation';
 import type {
   BaseItemDto,
   MediaSourceInfo,
@@ -150,6 +147,9 @@ import type {
 } from '@jellyfin/sdk/lib/generated-client';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { getLocaleName } from '@/utils/i18n';
+import { formatBitRate, formatFileSize } from '@/utils/items';
+import { isArray, isNil, isNumber } from '@/utils/validation';
 
 const props = defineProps<{ item: BaseItemDto; mediaSourceIndex?: number }>();
 

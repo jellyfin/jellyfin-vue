@@ -2,12 +2,12 @@
  * This store holds and cache reactive references to all the API layers, provided by the
  * useBaseItem and useRequest composable
  */
-import { remote } from '@/plugins/remote';
-import { isArray, isObj, isStr } from '@/utils/validation';
 import { ImageType, ItemFields, type BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { reactive, watch } from 'vue';
+import { isArray, isObj, isStr } from '@/utils/validation';
+import { remote } from '@/plugins/remote';
 
 /**
  * Class that we can use to transform to BaseItem when necessary

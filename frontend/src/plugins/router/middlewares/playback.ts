@@ -1,6 +1,6 @@
+import type { RouteLocationRaw } from 'vue-router';
 import { playbackManager } from '@/store/playbackManager';
 import { isNil } from '@/utils/validation';
-import type { RouteLocationRaw } from 'vue-router';
 
 /**
  * Validates that no playback is happening when accesing a route

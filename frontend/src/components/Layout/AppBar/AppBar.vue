@@ -59,10 +59,10 @@
 </template>
 
 <script setup lang="ts">
-import { network, windowScroll } from '@/store';
-import { clientSettings } from '@/store/clientSettings';
 import { computed, inject, type Ref } from 'vue';
 import { useRoute } from 'vue-router/auto';
+import { network, windowScroll } from '@/store';
+import { clientSettings } from '@/store/clientSettings';
 
 const route = useRoute();
 const { y } = windowScroll;

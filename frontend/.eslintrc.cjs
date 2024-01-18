@@ -30,7 +30,7 @@ module.exports = {
     'plugin:optimize-regex/recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:promise/recommended',
-    'plugin:import/recommended',
+    'plugin:import/errors',
     'plugin:import/typescript',
     'plugin:vue/vue3-recommended',
     'plugin:sonarjs/recommended',
@@ -146,8 +146,10 @@ module.exports = {
         bundledDependencies: false
       }
     ],
+    'import/order': 'error',
+    'import/no-cycle': 'error',
     'import/no-nodejs-modules': 'error',
-    'import/no-duplicates': ['error', {'prefer-inline': true}],
+    'import/no-duplicates': ['error', { 'prefer-inline' : true }],
     'jsdoc/require-hyphen-before-param-description': 'error',
     'jsdoc/require-description': 'error',
     'jsdoc/no-types': 'error',

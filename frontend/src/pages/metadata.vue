@@ -23,10 +23,10 @@
 </template>
 
 <script setup lang="ts">
-import { remote } from '@/plugins/remote';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { ref } from 'vue';
+import { remote } from '@/plugins/remote';
 
 type ITreeNode = {
   id: string;

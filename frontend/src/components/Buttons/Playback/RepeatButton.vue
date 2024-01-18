@@ -11,10 +11,10 @@
 </template>
 
 <script setup lang="ts">
-import { RepeatMode, playbackManager } from '@/store/playbackManager';
 import IMdiRepeat from 'virtual:icons/mdi/repeat';
 import IMdiRepeatOnce from 'virtual:icons/mdi/repeat-once';
 import { computed } from 'vue';
+import { RepeatMode, playbackManager } from '@/store/playbackManager';
 
 defineProps<{ size?: string }>();
 

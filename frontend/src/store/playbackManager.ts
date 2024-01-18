@@ -4,7 +4,6 @@
  * It must be used in an agnostic way to cover both local and remote playback.
  * If you want to handle the state of the local player element, use playerElement store instead.
  */
-import { isNil } from '@/utils/validation';
 import {
   BaseItemKind,
   ItemFilter,
@@ -24,9 +23,7 @@ import { useEventListener } from '@vueuse/core';
 import { shuffle } from 'lodash-es';
 import { v4 } from 'uuid';
 import { reactive, watch, watchEffect } from 'vue';
-/**
- * It's important to import these from globals.ts directly to avoid cycles and ReferenceError
- */
+import { isNil } from '@/utils/validation';
 import { useBaseItem } from '@/composables/apis';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { i18n } from '@/plugins/i18n';
@@ -36,7 +33,7 @@ import { getImageInfo } from '@/utils/images';
 import { getItemRuntime } from '@/utils/items';
 import playbackProfile from '@/utils/playback-profiles';
 import { msToTicks } from '@/utils/time';
-import { mediaControls, now as reactiveDate } from '.';
+import { mediaControls, now as reactiveDate } from '@/store';
 
 /**
  * == INTERFACES AND TYPES ==

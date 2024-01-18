@@ -60,13 +60,13 @@
 </template>
 
 <script setup lang="ts">
+import { BaseItemKind, ImageType, type BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
+import { SwiperSlide } from 'swiper/vue';
+import { useRoute } from 'vue-router/auto';
 import { useResponsiveClasses } from '@/composables/use-responsive-classes';
 import { apiStore } from '@/store/api';
 import { getBlurhash } from '@/utils/images';
 import { getItemDetailsLink } from '@/utils/items';
-import { BaseItemKind, ImageType, type BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { SwiperSlide } from 'swiper/vue';
-import { useRoute } from 'vue-router/auto';
 
 const props = withDefaults(
   defineProps<{

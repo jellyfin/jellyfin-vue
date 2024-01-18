@@ -1,5 +1,3 @@
-import { getJSONConfig } from '@/utils/external-config';
-import { isStr } from '@/utils/validation';
 import { useTitle } from '@vueuse/core';
 import { computed, watch } from 'vue';
 import {
@@ -13,6 +11,8 @@ import { adminGuard } from './middlewares/admin-pages';
 import { loginGuard } from './middlewares/login';
 import { metaGuard } from './middlewares/meta';
 import { validateGuard } from './middlewares/validate';
+import { isStr } from '@/utils/validation';
+import { getJSONConfig } from '@/utils/external-config';
 
 export const router = createRouter({
   history:

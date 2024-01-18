@@ -93,7 +93,6 @@ meta:
 </route>
 
 <script setup lang="ts">
-import { remote } from '@/plugins/remote';
 import type { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { getBrandingApi } from '@jellyfin/sdk/lib/utils/api/branding-api';
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
@@ -102,6 +101,7 @@ import { isEmpty } from 'lodash-es';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router/auto';
+import { remote } from '@/plugins/remote';
 
 const { t } = useI18n();
 const route = useRoute();

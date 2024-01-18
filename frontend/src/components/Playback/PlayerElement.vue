@@ -27,6 +27,10 @@
 </template>
 
 <script setup lang="ts">
+import Hls, { ErrorTypes, Events, type ErrorData } from 'hls.js';
+import HlsWorkerUrl from 'hls.js/dist/hls.worker.js?url';
+import { computed, nextTick, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useSnackbar } from '@/composables/use-snackbar';
 import {
   mediaElementRef,
@@ -36,10 +40,6 @@ import { playbackManager } from '@/store/playbackManager';
 import { playerElement } from '@/store/playerElement';
 import { getImageInfo } from '@/utils/images';
 import { isNil } from '@/utils/validation';
-import Hls, { ErrorTypes, Events, type ErrorData } from 'hls.js';
-import HlsWorkerUrl from 'hls.js/dist/hls.worker.js?url';
-import { computed, nextTick, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 

@@ -40,11 +40,11 @@
 </template>
 
 <script setup lang="ts">
+import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
+import { ref } from 'vue';
 import { playbackManager } from '@/store/playbackManager';
 import { canPlay, canResume } from '@/utils/items';
 import { ticksToMs } from '@/utils/time';
-import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { ref } from 'vue';
 
 const props = withDefaults(
   defineProps<{

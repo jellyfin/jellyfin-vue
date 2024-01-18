@@ -1,10 +1,10 @@
-import { isNil } from '@/utils/validation';
 import { useWebSocket } from '@vueuse/core';
 import { destr } from 'destr';
 import { computed, watch } from 'vue';
 import auth from '../auth';
 import sdk from '../sdk';
 import type { WebSocketMessage } from './types';
+import { isNil } from '@/utils/validation';
 
 class RemotePluginSocket {
   private _internalMessage: WebSocketMessage | undefined = undefined;

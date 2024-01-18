@@ -74,10 +74,10 @@
 </template>
 
 <script setup lang="ts">
-import { playbackManager } from '@/store/playbackManager';
-import { playerElement } from '@/store/playerElement';
 import { useMagicKeys, whenever } from '@vueuse/core';
 import { onBeforeUnmount, onMounted } from 'vue';
+import { playbackManager } from '@/store/playbackManager';
+import { playerElement } from '@/store/playerElement';
 
 const keys = useMagicKeys();
 

@@ -54,9 +54,6 @@
 </template>
 
 <script setup lang="ts">
-import { useSnackbar } from '@/composables/use-snackbar';
-import { remote } from '@/plugins/remote';
-import { TaskType, taskManager } from '@/store/taskManager';
 import type {
   BaseItemDto,
   MetadataRefreshMode
@@ -64,6 +61,9 @@ import type {
 import { getItemRefreshApi } from '@jellyfin/sdk/lib/utils/api/item-refresh-api';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { TaskType, taskManager } from '@/store/taskManager';
+import { remote } from '@/plugins/remote';
+import { useSnackbar } from '@/composables/use-snackbar';
 
 interface RefreshMethod {
   title: string;

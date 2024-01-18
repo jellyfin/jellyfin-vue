@@ -98,11 +98,6 @@
 </template>
 
 <script setup lang="ts">
-import { remote } from '@/plugins/remote';
-import {
-  getContainerAspectRatioForImageType,
-  getImageInfo
-} from '@/utils/images';
 import {
   type BaseItemDto,
   type ImageInfo,
@@ -111,6 +106,11 @@ import {
 import { getImageApi } from '@jellyfin/sdk/lib/utils/api/image-api';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+import {
+  getContainerAspectRatioForImageType,
+  getImageInfo
+} from '@/utils/images';
+import { remote } from '@/plugins/remote';
 
 const props = defineProps<{ metadata: BaseItemDto }>();
 

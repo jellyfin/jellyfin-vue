@@ -41,10 +41,10 @@
 </template>
 
 <script setup lang="ts">
-import { remote } from '@/plugins/remote';
-import type { ServerInfo } from '@/plugins/remote/auth/types';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router/auto';
+import { remote } from '@/plugins/remote';
+import type { ServerInfo } from '@/plugins/remote/auth/types';
 
 const props = defineProps<{ serverInfo: ServerInfo }>();
 

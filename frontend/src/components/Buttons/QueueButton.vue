@@ -71,12 +71,12 @@
 </template>
 
 <script setup lang="ts">
-import { InitMode, playbackManager } from '@/store/playbackManager';
-import { getTotalEndsAtTime } from '@/utils/time';
 import IMdiPlaylistMusic from 'virtual:icons/mdi/playlist-music';
 import IMdiShuffle from 'virtual:icons/mdi/shuffle';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { getTotalEndsAtTime } from '@/utils/time';
+import { InitMode, playbackManager } from '@/store/playbackManager';
 
 const props = withDefaults(
   defineProps<{

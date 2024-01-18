@@ -48,12 +48,12 @@
 </template>
 
 <script setup lang="ts">
-import { CardShapes, getShapeFromItemType } from '@/utils/items';
 import type {
   BaseItemKind,
   RemoteSearchResult
 } from '@jellyfin/sdk/lib/generated-client';
 import { computed } from 'vue';
+import { CardShapes, getShapeFromItemType } from '@/utils/items';
 
 const props = defineProps<{
   items: RemoteSearchResult[];

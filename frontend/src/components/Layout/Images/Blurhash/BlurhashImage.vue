@@ -55,9 +55,6 @@
 </template>
 
 <script lang="ts">
-import { vuetify } from '@/plugins/vuetify';
-import { getBlurhash, getImageInfo } from '@/utils/images';
-import { getItemIcon } from '@/utils/items';
 import {
   type BaseItemDto,
   type BaseItemPerson,
@@ -65,6 +62,9 @@ import {
 } from '@jellyfin/sdk/lib/generated-client';
 import { refDebounced } from '@vueuse/core';
 import { computed, ref, shallowRef } from 'vue';
+import { vuetify } from '@/plugins/vuetify';
+import { getBlurhash, getImageInfo } from '@/utils/images';
+import { getItemIcon } from '@/utils/items';
 
 /**
  * SHARED STATE ACROSS ALL THE COMPONENT INSTANCES

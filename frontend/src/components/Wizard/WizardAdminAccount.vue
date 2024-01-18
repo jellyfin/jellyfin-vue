@@ -45,14 +45,14 @@
 </template>
 
 <script setup lang="ts">
-import { useSnackbar } from '@/composables/use-snackbar';
-import { remote } from '@/plugins/remote';
 import type { StartupUserDto } from '@jellyfin/sdk/lib/generated-client';
 import { getStartupApi } from '@jellyfin/sdk/lib/utils/api/startup-api';
 import IconEye from 'virtual:icons/mdi/eye';
 import IconEyeOff from 'virtual:icons/mdi/eye-off';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { remote } from '@/plugins/remote';
+import { useSnackbar } from '@/composables/use-snackbar';
 
 const emit = defineEmits<{
   'previous-step': [];

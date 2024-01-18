@@ -48,13 +48,13 @@
 </template>
 
 <script setup lang="ts">
-import { remote } from '@/plugins/remote';
 import IMdiCog from 'virtual:icons/mdi/cog';
 import IMdiLogout from 'virtual:icons/mdi/logout';
 import IMdiPencil from 'virtual:icons/mdi/pencil';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router/auto';
+import { remote } from '@/plugins/remote';
 
 interface MenuItem {
   title: string;

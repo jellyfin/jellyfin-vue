@@ -42,11 +42,11 @@
 </template>
 
 <script setup lang="ts">
-import { playbackManager } from '@/store/playbackManager';
-import { isNumber } from '@/utils/validation';
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import Sortable from 'sortablejs';
 import { onBeforeUnmount, shallowRef, watch } from 'vue';
+import { isNumber } from '@/utils/validation';
+import { playbackManager } from '@/store/playbackManager';
 
 let sortable: Sortable | undefined;
 const container = shallowRef<HTMLSpanElement>();

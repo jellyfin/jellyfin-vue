@@ -144,11 +144,6 @@
 </template>
 
 <script setup lang="ts">
-import { useBaseItem } from '@/composables/apis';
-import { sanitizeHtml } from '@/utils/html';
-import { getBlurhash } from '@/utils/images';
-import { defaultSortOrder as sortBy } from '@/utils/items';
-import { msToTicks } from '@/utils/time';
 import {
   BaseItemKind,
   ImageType,
@@ -160,6 +155,11 @@ import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router/auto';
+import { msToTicks } from '@/utils/time';
+import { defaultSortOrder as sortBy } from '@/utils/items';
+import { getBlurhash } from '@/utils/images';
+import { sanitizeHtml } from '@/utils/html';
+import { useBaseItem } from '@/composables/apis';
 
 const SINGLE_MAX_LENGTH_MS = 600_000;
 const EP_MAX_LENGTH_MS = 1_800_000;

@@ -4,16 +4,16 @@
  * In the other part, playbackManager is suited to handle the playback state in
  * an agnostic way, regardless of where the media is being played (remotely or locally)
  */
-import { remote } from '@/plugins/remote';
-import { router } from '@/plugins/router';
-import { mediaElementRef } from '@/store';
-import { isArray, isNil } from '@/utils/validation';
 import JASSUB from 'jassub';
 import jassubDefaultFont from 'jassub/dist/default.woff2?url';
 import jassubWorker from 'jassub/dist/jassub-worker.js?url';
 import jassubWasmUrl from 'jassub/dist/jassub-worker.wasm?url';
 import { nextTick, reactive, watch } from 'vue';
 import { playbackManager } from './playbackManager';
+import { isArray, isNil } from '@/utils/validation';
+import { mediaElementRef } from '@/store';
+import { router } from '@/plugins/router';
+import { remote } from '@/plugins/remote';
 
 let jassub: JASSUB | undefined;
 const fullscreenVideoRoute = '/playback/video';

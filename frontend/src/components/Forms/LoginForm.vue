@@ -66,8 +66,6 @@
 </template>
 
 <script setup lang="ts">
-import { remote } from '@/plugins/remote';
-import { fetchIndexPage } from '@/utils/items';
 import type { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { isEmpty } from 'lodash-es';
 import IconEye from 'virtual:icons/mdi/eye';
@@ -75,6 +73,8 @@ import IconEyeOff from 'virtual:icons/mdi/eye-off';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router/auto';
+import { fetchIndexPage } from '@/utils/items';
+import { remote } from '@/plugins/remote';
 
 const props = defineProps<{ user: UserDto }>();
 

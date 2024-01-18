@@ -297,11 +297,6 @@
 </template>
 
 <script setup lang="ts">
-import { useBaseItem } from '@/composables/apis';
-import { getItemizedSelect } from '@/utils/forms';
-import { sanitizeHtml } from '@/utils/html';
-import { getBlurhash } from '@/utils/images';
-import { getItemDetailsLink, getMediaStreams } from '@/utils/items';
 import {
   ImageType,
   type BaseItemPerson,
@@ -312,6 +307,11 @@ import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router/auto';
+import { getItemDetailsLink, getMediaStreams } from '@/utils/items';
+import { getBlurhash } from '@/utils/images';
+import { sanitizeHtml } from '@/utils/html';
+import { getItemizedSelect } from '@/utils/forms';
+import { useBaseItem } from '@/composables/apis';
 
 const route = useRoute<'/genre/[itemId]'>();
 

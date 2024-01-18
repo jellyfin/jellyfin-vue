@@ -20,9 +20,9 @@
 </template>
 
 <script setup lang="ts">
+import { computed, ref } from 'vue';
 import { playbackManager } from '@/store/playbackManager';
 import { formatTime } from '@/utils/time';
-import { computed, ref } from 'vue';
 
 const currentInput = ref(0);
 const clicked = ref(false);

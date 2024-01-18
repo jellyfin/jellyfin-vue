@@ -98,10 +98,6 @@ meta:
 </route>
 
 <script setup lang="ts">
-import { playbackGuard } from '@/plugins/router/middlewares/playback';
-import { playbackManager } from '@/store/playbackManager';
-import { getBlurhash } from '@/utils/images';
-import { isNil } from '@/utils/validation';
 import { ImageType } from '@jellyfin/sdk/lib/generated-client';
 import type SwiperType from 'swiper';
 import 'swiper/css';
@@ -113,6 +109,10 @@ import { A11y, EffectCoverflow, Keyboard, Virtual } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { computed, ref, shallowRef, watchEffect } from 'vue';
 import { useRoute } from 'vue-router/auto';
+import { playbackGuard } from '@/plugins/router/middlewares/playback';
+import { playbackManager } from '@/store/playbackManager';
+import { isNil } from '@/utils/validation';
+import { getBlurhash } from '@/utils/images';
 
 defineOptions({
   beforeRouteEnter: playbackGuard

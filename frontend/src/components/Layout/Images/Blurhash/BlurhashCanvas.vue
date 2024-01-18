@@ -10,10 +10,10 @@
 </template>
 
 <script lang="ts">
-import { remote } from '@/plugins/remote';
 import { wrap } from 'comlink';
 import { ref, shallowRef, watch } from 'vue';
 import BlurhashWorker from './BlurhashWorker?worker&inline';
+import { remote } from '@/plugins/remote';
 
 const worker = new BlurhashWorker();
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports

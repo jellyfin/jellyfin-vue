@@ -47,9 +47,9 @@
 </template>
 
 <script setup lang="ts">
-import { taskManager, TaskType } from '@/store/taskManager';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { taskManager, TaskType } from '@/store/taskManager';
 
 interface TaskInfo {
   progress: undefined | number;

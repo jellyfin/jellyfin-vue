@@ -43,10 +43,10 @@
 </template>
 
 <script setup lang="ts">
-import { remote } from '@/plugins/remote';
 import { ref, unref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router/auto';
+import { remote } from '@/plugins/remote';
 
 const router = useRouter();
 const i18n = useI18n();

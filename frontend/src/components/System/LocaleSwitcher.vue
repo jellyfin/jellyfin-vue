@@ -28,9 +28,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
 import { clientSettings } from '@/store/clientSettings';
 import { getLocaleNativeName } from '@/utils/i18n';
-import { useI18n } from 'vue-i18n';
 
 defineProps<{
   bottom?: boolean;

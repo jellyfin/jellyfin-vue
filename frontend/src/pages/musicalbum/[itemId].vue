@@ -103,13 +103,13 @@
 </template>
 
 <script setup lang="ts">
-import { useBaseItem } from '@/composables/apis';
-import { getBlurhash } from '@/utils/images';
-import { getItemDetailsLink } from '@/utils/items';
 import { ImageType } from '@jellyfin/sdk/lib/generated-client';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { useRoute } from 'vue-router/auto';
+import { getItemDetailsLink } from '@/utils/items';
+import { getBlurhash } from '@/utils/images';
+import { useBaseItem } from '@/composables/apis';
 
 const route = useRoute<'/musicalbum/[itemId]'>();
 

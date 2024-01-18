@@ -4,14 +4,14 @@
  * https://caniuse.com/mdn-javascript_operators_await_top_level
  */
 
+import { createApp } from 'vue';
+import { routes } from 'vue-router/auto/routes';
 import Root from '@/App.vue';
 import { hideDirective } from '@/plugins/directives';
 import { vuePlugin as i18n } from '@/plugins/i18n';
 import { createPlugin as createRemote } from '@/plugins/remote';
 import { router } from '@/plugins/router';
 import { vuetify } from '@/plugins/vuetify';
-import { createApp } from 'vue';
-import { routes } from 'vue-router/auto/routes';
 
 /**
  * - GLOBAL STYLES -

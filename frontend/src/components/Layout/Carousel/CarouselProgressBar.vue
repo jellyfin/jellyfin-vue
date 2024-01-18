@@ -13,9 +13,9 @@
 </template>
 
 <script setup lang="ts">
-import { useResponsiveClasses } from '@/composables/use-responsive-classes';
 import { computed } from 'vue';
 import { useDisplay } from 'vuetify';
+import { useResponsiveClasses } from '@/composables/use-responsive-classes';
 
 const props = withDefaults(
   defineProps<{
