@@ -11,22 +11,7 @@ import { network } from '@/store';
 import { apiStore } from '@/store/api';
 import { isArray, isNil } from '@/utils/validation';
 
-/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-return */
-/**
- * BetterOmit still provides IntelliSense fedback, unlike the built-in Omit type.
- * See https://github.com/microsoft/TypeScript/issues/56135
- */
-type BetterOmit<T, K extends keyof any> = T extends Record<any, any>
-  ? {
-      [P in keyof T as P extends K ? never : P]: T[P]
-    }
-  : T;
-/**
- * Make all the properties of a type mutable.
- */
-type Mutable<T> = {
-  -readonly [K in keyof T]: T[K];
-};
+/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access */
 type OmittedKeys = 'fields' | 'userId' | 'enableImages' | 'enableTotalRecordCount' | 'enableImageTypes';
 type ParametersAsGetters<T extends (...args: any[]) => any> = T extends (...args: infer P) => any
   ? { [K in keyof P]: () => BetterOmit<Mutable<P[K]>, OmittedKeys> }
@@ -73,29 +58,19 @@ interface OfflineParams<T extends Record<K, (...args: any[]) => any>, K extends 
   args: Parameters<T[K]>;
 }
 
-interface DefaultComposableOps {
-  globalLoading: boolean;
-  skipCache: {
-    baseItem: boolean;
-    request: boolean;
-  };
+interface SkipCacheOps {
+  baseItem?: boolean;
+  request?: boolean;
 }
+
 interface ComposableOps {
   globalLoading?: boolean;
-  skipCache?: {
-    baseItem?: boolean;
-    request?: boolean;
-  };
+  skipCache?: SkipCacheOps;
 }
 
-interface BaseItemComposableOps {
-  globalLoading?: boolean;
-  skipCache?: {
-    request?: boolean;
-  };
-}
+type BaseItemComposableOps = ComposableOps & BetterOmit<SkipCacheOps, 'baseItem'> ;
 
-const defaultOps: DefaultComposableOps = Object.freeze({
+const defaultOps: BaseItemComposableOps = Object.freeze({
   globalLoading: true,
   skipCache: {
     baseItem: false,
@@ -108,11 +83,13 @@ const defaultOps: DefaultComposableOps = Object.freeze({
  * @param loading - Ref to hold the loading state
  * @param global - Whether to start the global loading indicator or not
  */
-function startLoading(loading: Ref<boolean | undefined>, global: boolean): void {
-  loading.value = true;
+function startLoading(loading: Ref<boolean | undefined> | undefined, global: boolean): void {
+  if (!isNil(loading)) {
+    loading.value = true;
 
-  if (global) {
-    useLoading().start();
+    if (global) {
+      useLoading().start();
+    }
   }
 }
 
@@ -121,11 +98,13 @@ function startLoading(loading: Ref<boolean | undefined>, global: boolean): void 
  * @param loading - Ref to hold the loading state
  * @param global - Whether to start the global loading indicator or not
  */
-function stopLoading(loading: Ref<boolean | undefined>, global: boolean): void {
-  loading.value = false;
+function stopLoading(loading: Ref<boolean | undefined> | undefined, global: boolean): void {
+  if (!isNil(loading)) {
+    loading.value = false;
 
-  if (global) {
-    useLoading().finish();
+    if (global) {
+      useLoading().finish();
+    }
   }
 }
 
@@ -142,9 +121,9 @@ async function resolveAndAdd<T extends Record<K, (...args: any[]) => any>, K ext
   api: (api: Api) => T,
   methodName: K,
   ofBaseItem: boolean,
-  loading: Ref<boolean | undefined>,
+  loading: Ref<boolean | undefined> | undefined,
   stringifiedArgs: string,
-  ops: DefaultComposableOps,
+  ops: Required<ComposableOps>,
   ...args: Parameters<T[K]>): Promise<ExtractItems<Awaited<ReturnType<T[K]>['data']>> | void> {
   /**
    * We add all BaseItemDto's fields for consistency in what we can expect from the store.
@@ -183,7 +162,9 @@ async function resolveAndAdd<T extends Record<K, (...args: any[]) => any>, K ext
       }
     }
   } catch {
-    loading.value = undefined;
+    if (!isNil(loading)) {
+      loading.value = undefined;
+    }
   } finally {
     stopLoading(loading, ops.globalLoading);
   }
@@ -196,7 +177,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
   ofBaseItem: boolean,
   api: MaybeReadonlyRef<((api: Api) => T) | undefined>,
   methodName: MaybeReadonlyRef<K | undefined>,
-  ops: DefaultComposableOps
+  ops: Required<ComposableOps>
 ): (this: any, ...args: ComposableParams<T,K,U>) => Promise<ReturnPayload<T, K, typeof ofBaseItem>> | ReturnPayload<T, K, typeof ofBaseItem> {
   const offlineParams: OfflineParams<T,K>[] = [];
   const isFuncDefined = (): boolean => unref(api) !== undefined && unref(methodName) !== undefined;
@@ -239,7 +220,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
    * Function invoked per every data change.
    * @param onlyPending - Whether to run only pending requests or not
    */
-  const run = async (onlyPending = false): Promise<void> => {
+  const run = async ({ onlyPending = false, isRefresh = false }): Promise<void> => {
     const unrefApi = unref(api);
     const unrefMethod = unref(methodName);
 
@@ -258,7 +239,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
     if (argsRef.value && !onlyPending) {
       try {
         if (network.isOnline.value && remote.socket.isConnected) {
-          const resolved = await resolveAndAdd(unrefApi, unrefMethod, ofBaseItem, loading, stringArgs.value, ops, ...argsRef.value);
+          const resolved = await resolveAndAdd(unrefApi, unrefMethod, ofBaseItem, isRefresh ? undefined : loading, stringArgs.value, ops, ...argsRef.value);
 
           result.value = resolved as ReturnData<T, K, typeof ofBaseItem>;
         } else {
@@ -276,8 +257,8 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
 
   return function (this: any, ...args: ComposableParams<T,K,U>) {
     const normalizeArgs = (): Parameters<T[K]> => args.map((a) => toValue(a)) as Parameters<T[K]>;
-    const runNormally = async (): Promise<void> => await run();
-    const runWithRetry = async (): Promise<void> => await run(true);
+    const runNormally = async (): Promise<void> => await run({});
+    const runWithRetry = async (): Promise<void> => await run({ onlyPending: true });
 
     argsRef.value = normalizeArgs();
 
@@ -305,9 +286,11 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
      * However, we queue a request to the server to update the data after the component is
      * mounted. setTimeout executes it when the event loop is clear, avoiding overwhelming the engine.
      */
-    isCached.value && window.setTimeout(async () => {
-      await run();
-    });
+    if (isCached.value) {
+      window.setTimeout(async () => {
+        await run({ isRefresh: true });
+      });
+    }
 
     if (!isCached.value && isFuncDefined()) {
       const scope = effectScope();
@@ -319,7 +302,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
        */
       // eslint-disable-next-line no-async-promise-executor
       return new Promise(async (resolve) => {
-        await run();
+        await runNormally();
         scope.run(() => {
           watch(isCached, () => {
             if (isCached.value && !ops.skipCache.request) {
@@ -376,6 +359,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
  * @param api - The API's endpoint to use.
  * @param methodname- - The operation to execute.
  * @param ops.globalLoading - Show the global loading indicator or not for this request. Defaults to true.
+ * This parameter is ignored if the request is already cached and it's being refreshed (no loading indicator is shown in that case).
  * @param ops.skipCache.request - USE WITH CAUTION, SINCE IT'S BETTER TO CACHE EVERYTHING BY DEFAULT.
  * Whether to skip the cache or not. Useful for requests whose return value are known to be useless to cache,
  * like marking an item as played or favorite. Defaults to false.
@@ -387,7 +371,7 @@ export function useBaseItem<T extends Record<K, (...args: any[]) => any>, K exte
   methodName: MaybeReadonlyRef<K | undefined>,
   ops?: BaseItemComposableOps
 ): (this: any, ...args: ComposableParams<T,K,U>) => Promise<ReturnPayload<T, K, true>> | ReturnPayload<T, K, true> {
-  return _sharedInternalLogic<T, K, U>(true, api, methodName, ops ? { ...ops, ...defaultOps } : defaultOps);
+  return _sharedInternalLogic<T, K, U>(true, api, methodName, (ops ? { ...ops, ...defaultOps } : defaultOps) as Required<ComposableOps>);
 }
 
 /**
@@ -438,6 +422,7 @@ export function useBaseItem<T extends Record<K, (...args: any[]) => any>, K exte
  * @param ops.skipCache.baseItem - USE WITH CAUTION, SINCE IT'S BETTER TO CACHE EVERYTHING BY DEFAULT.
  * Same as above, but also for baseItems. Defaults to false.
  * @param ops.globalLoading - Show the global loading indicator or not for this request. Defaults to true.
+ * This parameter is ignored if the request is already cached and it's being refreshed (no loading indicator is shown in that case).
  * @returns data  - The request data.
  * @returns loading - A boolean ref that indicates if the request is in progress. Undefined if there was an error
  */
@@ -446,7 +431,7 @@ export function useApi<T extends Record<K, (...args: any[]) => any>, K extends k
   methodName: MaybeReadonlyRef<K | undefined>,
   ops?: ComposableOps
 ): (this: any, ...args: ComposableParams<T,K,U>) => Promise<ReturnPayload<T, K, false>> | ReturnPayload<T, K, false> {
-  return _sharedInternalLogic<T, K, U>(false, api, methodName, ops ? { ...ops, ...defaultOps } : defaultOps);
+  return _sharedInternalLogic<T, K, U>(false, api, methodName, (ops ? { ...ops, ...defaultOps } : defaultOps) as Required<ComposableOps>);
 }
 
 /**
@@ -463,4 +448,4 @@ export function methodsAsObject<T extends Record<K, (...args: any[]) => any>, K 
   };
 }
 
-/* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-return */
+/* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access */
