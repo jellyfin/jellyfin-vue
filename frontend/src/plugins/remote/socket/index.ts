@@ -7,7 +7,9 @@ import type { WebSocketMessage } from './types';
 import { isNil } from '@/utils/validation';
 
 class RemotePluginSocket {
-  private _internalMessage: WebSocketMessage | undefined = undefined;
+  /**
+   * == STATE ==
+   */
   private readonly _socketUrl = computed(() => {
     if (
       auth.currentUserToken &&
@@ -26,8 +28,29 @@ class RemotePluginSocket {
     }
   });
   private readonly _keepAliveMessage = 'KeepAlive';
+  private readonly _forceKeepAliveMessage = 'ForceKeepAlive';
   /**
    * Formats the message to be sent to the socket
+   */
+  private readonly _webSocket = useWebSocket(this._socketUrl, {
+    heartbeat: false,
+    autoReconnect: { retries: () => true },
+    immediate: true,
+    autoClose: false
+  });
+  private readonly _parsedmsg = computed<WebSocketMessage | undefined>(() => destr(this._webSocket.data.value));
+  public readonly message = computed<WebSocketMessage | undefined>((previous) => {
+    if (this._parsedmsg.value?.MessageType === this._keepAliveMessage ||
+      this._parsedmsg.value?.MessageType === this._forceKeepAliveMessage) {
+      return previous;
+    }
+
+    return this._parsedmsg.value;
+  });
+  public readonly isConnected = computed(() => this._webSocket.status.value === 'OPEN');
+
+  /**
+   * == METHODS ==
    */
   private readonly _formatSocketMessage = (
     name: string,
@@ -41,20 +64,6 @@ class RemotePluginSocket {
 
     return JSON.stringify(message);
   };
-  private readonly _webSocket = useWebSocket(this._socketUrl, {
-    heartbeat: false,
-    autoReconnect: { retries: () => true },
-    immediate: true,
-    autoClose: false
-  });
-
-  public get isConnected(): boolean {
-    return this._webSocket.status.value === 'OPEN';
-  }
-
-  public get message(): WebSocketMessage | undefined {
-    return this._internalMessage;
-  }
 
   /**
    * Send message to socket
@@ -72,13 +81,9 @@ class RemotePluginSocket {
      * Sending updates through this watcher to avoid sending KeepAlive messages to consumers of
      * of this plugin
      */
-    watch(this._webSocket.data, () => {
-      const message = destr<WebSocketMessage | undefined>(this._webSocket.data.value);
-
-      if (message?.MessageType === 'ForceKeepAlive') {
+    watch(this._parsedmsg, () => {
+      if (this._parsedmsg.value?.MessageType === this._forceKeepAliveMessage) {
         this.sendToSocket(this._keepAliveMessage);
-      } else if (message?.MessageType !== this._keepAliveMessage) {
-        this._internalMessage = message;
       }
     }, { flush: 'sync' }
     );
