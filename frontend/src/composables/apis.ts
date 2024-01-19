@@ -11,7 +11,7 @@ import { network } from '@/store';
 import { apiStore } from '@/store/api';
 import { isArray, isNil } from '@/utils/validation';
 
-/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-return */
 type OmittedKeys = 'fields' | 'userId' | 'enableImages' | 'enableTotalRecordCount' | 'enableImageTypes';
 type ParametersAsGetters<T extends (...args: any[]) => any> = T extends (...args: infer P) => any
   ? { [K in keyof P]: () => BetterOmit<Mutable<P[K]>, OmittedKeys> }
@@ -274,7 +274,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
           await runNormally();
         }
       });
-      watch(() => remote.socket.isConnected, runWithRetry);
+      watch(remote.socket.isConnected, runWithRetry);
       watch(network.isOnline, runWithRetry);
       isRef(api) && watch(api, runNormally);
       isRef(methodName) && watch(methodName, runNormally);
@@ -448,4 +448,4 @@ export function methodsAsObject<T extends Record<K, (...args: any[]) => any>, K 
   };
 }
 
-/* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access */
+/* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-return */

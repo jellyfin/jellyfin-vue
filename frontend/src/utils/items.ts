@@ -582,8 +582,8 @@ export async function ensureWebSocket(): Promise<void> {
 
   await new Promise<void>((resolve) => {
     scope.run(() => {
-      watch(() => remote.socket.isConnected, () => {
-        if (remote.socket.isConnected) {
+      watch(remote.socket.isConnected, () => {
+        if (remote.socket.isConnected.value) {
           resolve();
         }
       }, { immediate: true, flush: 'sync' });

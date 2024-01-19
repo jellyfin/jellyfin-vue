@@ -161,13 +161,13 @@ class ApiStore {
 
   public constructor() {
     watch(
-      () => remote.socket.message,
+      remote.socket.message,
       async () => {
-        if (!remote.socket.message) {
+        if (!remote.socket.message.value) {
           return;
         }
 
-        const { MessageType, Data } = remote.socket.message;
+        const { MessageType, Data } = remote.socket.message.value;
 
         if (!Data || !isObj(Data)) {
           return;
