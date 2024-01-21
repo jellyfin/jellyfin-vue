@@ -2,7 +2,8 @@
   <VBtn
     icon
     :size="size"
-    @click="() => playbackManager.setPreviousItem()">
+    @click="() => playbackManager.setPreviousItem()"
+    @dblclick="() => playbackManager.setPreviousItem(true)">
     <VIcon :size="size">
       <IMdiSkipPrevious />
     </VIcon>
