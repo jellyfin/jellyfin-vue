@@ -26,8 +26,7 @@
         :key="visibleItems[i].index"
         :item="visibleItems[i].value"
         :index="visibleItems[i].index"
-        :style="visibleItems[i].style"
-        data-virtualized-grid />
+        :style="visibleItems[i].style" />
     </template>
   </Component>
 </template>
@@ -198,13 +197,15 @@ function destroyEventListeners(): void {
   }
 }
 
+const scrollParents = fromScrollParent(rootRef);
+
 watch(
-  fromScrollParent(rootRef),
-  (newValue) => {
+  scrollParents,
+  () => {
     destroyEventListeners();
 
-    if (!isNil(newValue)) {
-      for (const parent of newValue) {
+    if (!isNil(scrollParents.value)) {
+      for (const parent of scrollParents.value) {
         const cleanup = useEventListener(parent, 'scroll', (): void => {
           scrollEvents.value++;
         }, {
