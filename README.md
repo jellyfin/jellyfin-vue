@@ -83,7 +83,7 @@ from the current `master` branch, which are bleeding edge by default*
 
 Hosted by Cloudflare Pages.
 
-⚠️ **This only works for Jellyfin servers that [are behind a reverse proxy and has HTTPS correctly set up](https://jellyfin.org/docs/general/networking/#running-jellyfin-behind-a-reverse-proxy)**. If your server runs over HTTP, you must use another deployment type.
+⚠️ **This only works for Jellyfin servers that [are behind a reverse proxy and have HTTPS set up correctly](https://jellyfin.org/docs/general/networking/#running-jellyfin-behind-a-reverse-proxy)**. If your server runs over HTTP, you must use another deployment type.
 
 ## Docker Container 📦
 
