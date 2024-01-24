@@ -87,7 +87,7 @@ Our hosted instance points to a version built from the current `master` branch. 
 You can run the Docker container with the following command, replacing 8080 with the port of your choice:
 
 ```bash
-docker run -d -p 8080:80 ghcr.io/jellyfin/jellyfin-vue
+docker run -d -p 8080:80 ghcr.io/jellyfin/jellyfin-vue:unstable
 ```
 
 You can check [GitHub Packages (GHCR)](https://github.com/jellyfin/jellyfin-vue/pkgs/container/jellyfin-vue) (recommended) or [DockerHub](https://hub.docker.com/r/jellyfin/jellyfin-vue) for all the tagged images.
