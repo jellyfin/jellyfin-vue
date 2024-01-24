@@ -76,9 +76,12 @@ This is an alternative client for Jellyfin based on Vue.js. It might not be feat
 
 # Usage instructions for end users 👨‍👩‍👧‍👦
 
+*The following instructions will get you up and running quickly with builds
+from the current `master` branch, which are bleeding edge by default*
+
 ## [Hosted instance 🌍](https://jf-vue.pages.dev/)
 
-Our hosted instance points to a version built from the current `master` branch. Hosted by Cloudflare Pages.
+Hosted by Cloudflare Pages.
 
 ⚠️ **This only works for Jellyfin servers that [are behind a reverse proxy and has HTTPS correctly set up](https://jellyfin.org/docs/general/networking/#running-jellyfin-behind-a-reverse-proxy)**. If your server runs over HTTP, you must use another deployment type.
 
