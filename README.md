@@ -76,8 +76,9 @@ This is an alternative client for Jellyfin based on Vue.js. It might not be feat
 
 # Usage instructions for end users 👨‍👩‍👧‍👦
 
-*The following instructions will get you up and running quickly with builds
-from the current `master` branch, which are bleeding edge by default*
+*The following instructions will get you up and running quickly with
+bleeding-edge builds from the current `master` branch.
+There are no stable releases yet.*
 
 ## [Hosted instance 🌍](https://jf-vue.pages.dev/)
 
