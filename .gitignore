@@ -82,6 +82,7 @@ frontend/dist
 
 # IDE / Editor
 .idea
+.history
 
 # Service worker
 sw.js

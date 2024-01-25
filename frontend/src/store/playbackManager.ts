@@ -1270,6 +1270,18 @@ class PlaybackManagerStore {
     }, { flush: 'sync' });
 
     /**
+     * Report progress playback when current time changes
+     */
+    watch(
+      () => this.currentTime,
+      async () => {
+        if (this._pendingProgressReport) {
+          await this._reportPlaybackProgress();
+        }
+      }
+    );
+
+    /**
      * Report playback stop when closing the tab
      */
     useEventListener('beforeunload', async () => {
