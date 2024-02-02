@@ -149,7 +149,7 @@
   "libraryAccess": "Dostop do knjižnic",
   "libraryAccessNote": "Izberi knjižnice ki bodo dostopne temu uporabniku. Administratorji bodo lahko urejali vse mape z upraviteljem metapodatkov.",
   "libraryEmpty": "Knjižnica je prazna",
-  "libraryEmptyFilters": "Ni ujemanj. Odstranite nekatere filtre za prikaz večjega števila vsebin.",
+  "libraryEmptyFilters": "Ni ujemanj. Odstranite nekatere filtre za prikaz večjega števila vsebin",
   "liked": "Všečkano",
   "liveTv": "TV v živo in snemalnik",
   "liveTvSettingsDescription": "Upravljaj TV sprejemnike, ponudnike TV sporedov in nastavitve snemanja",
