@@ -24,7 +24,7 @@ jobs:
           show-progress: false
 
       - name: Scan
-        uses: actions/dependency-review-action@v4.0.0
+        uses: actions/dependency-review-action@v4.1.0
         with:
           ## Workaround from https://github.com/actions/dependency-review-action/issues/456
           ## TODO: Remove when necessary
@@ -45,7 +45,7 @@ jobs:
           show-progress: false
 
       - name: Setup node environment ⚙️
-        uses: actions/setup-node@v4.0.1
+        uses: actions/setup-node@v4.0.2
         with:
           node-version: 20
           check-latest: true
@@ -70,7 +70,7 @@ jobs:
           show-progress: false
 
       - name: Setup node environment ⚙️
-        uses: actions/setup-node@v4.0.1
+        uses: actions/setup-node@v4.0.2
         with:
           node-version: 20
           check-latest: true
@@ -123,7 +123,7 @@ jobs:
           docker rm jf
 
       - name: Upload artifact (Docker image) ⬆️📦
-        uses: actions/upload-artifact@v4.2.0
+        uses: actions/upload-artifact@v4.3.1
         if: ${{ matrix.platform == 'linux/amd64' }}
         with:
           compression-level: 0
@@ -132,7 +132,7 @@ jobs:
             docker_image.tar
 
       - name: Upload artifact (Client) ⬆️💻
-        uses: actions/upload-artifact@v4.2.0
+        uses: actions/upload-artifact@v4.3.1
         if: ${{ matrix.platform == 'linux/amd64' }}
         with:
           compression-level: 0
@@ -161,7 +161,7 @@ jobs:
           show-progress: false
 
       - name: Setup node environment ⚙️
-        uses: actions/setup-node@v4.0.1
+        uses: actions/setup-node@v4.0.2
         with:
           node-version: 20
           check-latest: true
@@ -179,7 +179,7 @@ jobs:
         run: npm run build
 
       - name: Upload artifact (Linux) ⬆️🐧
-        uses: actions/upload-artifact@v4.2.0
+        uses: actions/upload-artifact@v4.3.1
         if: matrix.platform == 'ubuntu-latest'
         with:
           compression-level: 0
@@ -189,7 +189,7 @@ jobs:
             packaging/tauri/target/release/bundle/appimage_deb
 
       - name: Upload artifact (MacOS) ⬆️🍎
-        uses: actions/upload-artifact@v4.2.0
+        uses: actions/upload-artifact@v4.3.1
         if: matrix.platform == 'macos-latest'
         with:
           compression-level: 0
@@ -199,7 +199,7 @@ jobs:
             packaging/tauri/target/release/bundle/dmg/*.dmg
 
       - name: Upload artifact (Windows) ⬆️🪟
-        uses: actions/upload-artifact@v4.2.0
+        uses: actions/upload-artifact@v4.3.1
         if: matrix.platform == 'windows-latest'
         with:
           compression-level: 0
@@ -227,7 +227,7 @@ jobs:
           echo $PR_SHA > PR_sha
 
       - name: Upload PR number as artifact
-        uses: actions/upload-artifact@v4.2.0
+        uses: actions/upload-artifact@v4.3.1
         with:
           compression-level: 0
           name: PR_context
@@ -247,4 +247,4 @@ jobs:
           show-progress: false
 
       - name: Check if all commits comply with the specification
-        uses: webiny/action-conventional-commits@v1.2.0
+        uses: webiny/action-conventional-commits@v1.3.0
