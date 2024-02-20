@@ -2,8 +2,8 @@
   <slot
     :is-hovering="isHovering"
     :hover-props="{
-      onmouseover: () => isHovering = true,
-      onmouseout: () => isHovering = false
+      onmouseenter: () => isHovering = true,
+      onmouseleave: () => isHovering = false
     }" />
 </template>
 
