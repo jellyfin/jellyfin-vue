@@ -4,7 +4,6 @@
       v-if="items.length > 0 && !noVirtual"
       v-slot="{ item, style }"
       :items="items"
-      :buffer-multiplier="1.5"
       :class="useResponsiveClasses('card-grid-container')">
       <Card
         :style="style"
