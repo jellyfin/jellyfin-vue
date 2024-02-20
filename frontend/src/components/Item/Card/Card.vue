@@ -4,58 +4,63 @@
       :is="link ? 'router-link' : 'div'"
       :to="link ? getItemDetailsLink(item) : null"
       :class="{ 'card-box': link }">
-      <div
-        :class="shape || cardType"
-        class="elevation-2">
+      <JHover v-slot="{ isHovering, hoverProps }">
         <div
-          class="absolute-cover card-content d-flex justify-center align-center">
-          <BlurhashImage
-            :item="item"
-            :type="getImageType"
-            :alt="item.Name || ''"
-            class="card-image" />
-        </div>
-        <div
-          class="absolute-cover card-overlay d-flex justify-center align-center"
-          :class="{ 'card-overlay-hover': overlay && isFinePointer }">
-          <div class="card-upper-content d-flex justify-center align-center">
-            <VProgressCircular
-              v-if="refreshProgress !== undefined"
-              :model-value="refreshProgress"
-              :indeterminate="refreshProgress === 0"
-              size="24" />
-            <WatchedIndicator v-if="item.UserData && item.UserData.Played" />
-            <VChip
-              v-if="item.UserData && item.UserData.UnplayedItemCount"
-              color="primary"
-              variant="elevated"
-              size="small">
-              {{ item.UserData.UnplayedItemCount }}
-            </VChip>
+          :class="shape || cardType"
+          class="elevation-2"
+          v-bind="hoverProps">
+          <div
+            class="absolute-cover card-content d-flex justify-center align-center">
+            <BlurhashImage
+              :item="item"
+              :type="getImageType"
+              :alt="item.Name || ''"
+              class="card-image" />
           </div>
-          <div class="card-overlay-hover-hidden">
-            <PlayButton
-              fab
-              :item="item" />
-            <div class="card-lower-content d-flex justify-center align-center">
-              <MarkPlayedButton :item="item" />
-              <LikeButton
-                v-if="canPlay(item)"
-                :item="item" />
-              <ItemMenu :item="item" />
+          <div
+            class="absolute-cover card-overlay d-flex justify-center align-center"
+            :class="{ 'card-overlay-hover': overlay && isFinePointer }">
+            <div class="card-upper-content d-flex justify-center align-center">
+              <VProgressCircular
+                v-if="refreshProgress !== undefined"
+                :model-value="refreshProgress"
+                :indeterminate="refreshProgress === 0"
+                size="24" />
+              <WatchedIndicator v-if="item.UserData && item.UserData.Played" />
+              <VChip
+                v-if="item.UserData && item.UserData.UnplayedItemCount"
+                color="primary"
+                variant="elevated"
+                size="small">
+                {{ item.UserData.UnplayedItemCount }}
+              </VChip>
             </div>
+            <div
+              v-if="isHovering && overlay && isFinePointer"
+              class="card-overlay-hover-hidden">
+              <PlayButton
+                fab
+                :item="item" />
+              <div class="card-lower-content d-flex justify-center align-center">
+                <MarkPlayedButton :item="item" />
+                <LikeButton
+                  v-if="canPlay(item)"
+                  :item="item" />
+                <ItemMenu :item="item" />
+              </div>
+            </div>
+            <VProgressLinear
+              v-if="
+                item.UserData &&
+                  item.UserData.PlayedPercentage &&
+                  item.UserData.PlayedPercentage > 0
+              "
+              v-model="progress"
+              absolute
+              location="bottom" />
           </div>
-          <VProgressLinear
-            v-if="
-              item.UserData &&
-                item.UserData.PlayedPercentage &&
-                item.UserData.PlayedPercentage > 0
-            "
-            v-model="progress"
-            absolute
-            location="bottom" />
         </div>
-      </div>
+      </JHover>
     </Component>
     <div
       v-if="text"
