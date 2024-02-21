@@ -6,35 +6,23 @@
   "build": {
     "distDir": "../../frontend/dist",
     "devPath": "http://127.0.0.1:3000",
-    "beforeDevCommand": "cd ../../frontend && npm start",
-    "beforeBuildCommand": "cd ../../frontend && npm run build"
+    "beforeDevCommand": "npm start -w @jellyfin-vue/frontend",
+    "beforeBuildCommand": "npm run build -w @jellyfin-vue/frontend"
   },
   "tauri": {
     "bundle": {
       "active": true,
-      "targets": "all",
+      "targets": ["appimage", "msi", "app"],
       "identifier": "org.jellyfin.vue.tauri",
+      "appimage": {
+        "bundleMediaFramework": true
+      },
       "resources": [],
       "externalBin": [],
       "copyright": "",
       "category": "Entertainment",
       "shortDescription": "",
-      "longDescription": "",
-      "deb": {
-        "depends": []
-      },
-      "macOS": {
-        "frameworks": [],
-        "minimumSystemVersion": "",
-        "exceptionDomain": "",
-        "signingIdentity": null,
-        "entitlements": null
-      },
-      "windows": {
-        "certificateThumbprint": null,
-        "digestAlgorithm": "sha256",
-        "timestampUrl": ""
-      }
+      "longDescription": ""
     },
     "updater": {
       "active": false
