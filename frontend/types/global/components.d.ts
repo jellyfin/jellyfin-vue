@@ -27,6 +27,7 @@ declare module 'vue' {
     DateInput: typeof import('./../../src/components/Item/Metadata/DateInput.vue')['default']
     DraggableQueue: typeof import('./../../src/components/Playback/DraggableQueue.vue')['default']
     FilterButton: typeof import('./../../src/components/Buttons/FilterButton.vue')['default']
+    GenericCard: typeof import('./../../src/components/Item/Card/GenericCard.vue')['default']
     GenericDialog: typeof import('./../../src/components/Dialogs/GenericDialog.vue')['default']
     IDashiconsAlbum: typeof import('~icons/dashicons/album')['default']
     IdentifyDialog: typeof import('./../../src/components/Item/Identify/IdentifyDialog.vue')['default']
