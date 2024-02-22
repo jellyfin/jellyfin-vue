@@ -63,7 +63,9 @@
               :disabled="!userItem.link">
               <template #prepend>
                 <VAvatar>
-                  <VIcon :icon="userItem.icon" />
+                  <VIcon>
+                    <component :is="userItem.icon" />
+                  </VIcon>
                 </VAvatar>
               </template>
               <VListItemTitle>
@@ -96,7 +98,9 @@
                 :disabled="!adminItem.link">
                 <template #prepend>
                   <VAvatar>
-                    <VIcon :icon="adminItem.icon" />
+                    <VIcon>
+                      <component :is="adminItem.icon" />
+                    </VIcon>
                   </VAvatar>
                 </template>
                 <VListItemTitle>
