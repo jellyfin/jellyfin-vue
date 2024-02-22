@@ -1,10 +1,10 @@
 <template>
-  <slot
-    :is-hovering="isHovering"
-    :hover-props="{
-      onmouseenter: () => isHovering = true,
-      onmouseleave: () => isHovering = false
-    }" />
+  <JSlot
+    @mouseenter="isHovering = true"
+    @mouseleave="isHovering = false">
+    <slot
+      :is-hovering="isHovering" />
+  </JSlot>
 </template>
 
 <script setup lang="ts">

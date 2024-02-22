@@ -7,13 +7,11 @@
     scroll-strategy="none"
     content-class="minimized-overlay"
     :width="$vuetify.display.mobile ? '60vw' : '25vw'">
-    <JHover v-slot="{ isHovering, hoverProps }">
+    <JHover v-slot="{ isHovering }">
       <div
-        v-bind="hoverProps"
         class="minimized-video-container" />
       <VOverlay
         :model-value="isHovering"
-        v-bind="hoverProps"
         contained
         scrim
         height="100%"

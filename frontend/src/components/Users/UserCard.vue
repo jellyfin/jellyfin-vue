@@ -1,8 +1,7 @@
 <template>
-  <JHover v-slot="{ isHovering, hoverProps }">
+  <JHover v-slot="{ isHovering }">
     <div
       class="ma-2 d-flex flex-column pointer"
-      v-bind="hoverProps"
       @click="$emit('connect', user)">
       <VBtn
         :active="isHovering"
