@@ -3,7 +3,7 @@
     :model-value="model"
     :title="$t('identify')"
     :subtitle="itemPath"
-    loading
+    :loading="isLoading"
     @close="close">
     <template #loader>
       <VProgressLinear
@@ -94,7 +94,7 @@ import type {
   RemoteSearchResult
 } from '@jellyfin/sdk/lib/generated-client';
 import { getItemLookupApi } from '@jellyfin/sdk/lib/utils/api/item-lookup-api';
-import { computed, ref, toRaw } from 'vue';
+import { computed, ref, shallowRef, toRaw } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useConfirmDialog } from '@/composables/use-confirm-dialog';
 import { useSnackbar } from '@/composables/use-snackbar';
@@ -130,10 +130,10 @@ const availableProviders = (
   })
 ).data;
 
-const model = ref(true);
-const isLoading = ref(false);
+const model = shallowRef(true);
+const isLoading = shallowRef(false);
 const searchResults = ref<RemoteSearchResult[]>();
-const replaceImage = ref(false);
+const replaceImage = shallowRef(false);
 const errorMessage = t('anErrorHappened');
 const searchFields = computed<IdentifyField[]>(() => {
   const result = [
