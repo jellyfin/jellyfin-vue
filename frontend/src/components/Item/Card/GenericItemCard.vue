@@ -3,7 +3,7 @@
     <Component
       :is="to ? 'router-link' : 'div'"
       :to="to"
-      :class="{ 'card-box': to }">
+      :class="{ 'card-box': to, 'pointer': hasClick }">
       <JHover v-slot="{ isHovering }">
         <div
           :class="shape"
@@ -43,23 +43,24 @@
     <div
       v-if="$slots.title || ($slots.title && $slots.subtitle)"
       class="card-text">
-      <JSlot class="d-block font-weight-medium pa-0 mt-1 text-truncate">
+      <a class="d-block font-weight-medium pa-0 mt-1 text-truncate">
         <slot name="title" />
-      </JSlot>
-      <JSlot class="d-block v-card-subtitle text-truncate">
+      </a>
+      <a class="v-card-subtitle">
         <slot
           name="subtitle" />
-      </JSlot>
+      </a>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useAttrs, computed } from 'vue';
 import { isNil } from '@/utils/validation';
 import { isFinePointer } from '@/store';
 import type { CardShapes } from '@/utils/items';
 
-interface Props extends /* @vue-ignore */ Partial<HTMLDivElement> {
+interface Props {
   shape: CardShapes;
   /**
    * Progress to show in the bottom of the image
@@ -85,9 +86,13 @@ interface Props extends /* @vue-ignore */ Partial<HTMLDivElement> {
 }
 
 defineProps<Props>();
+
+const attrs = useAttrs();
+
+const hasClick = computed(() => !!attrs.onClick);
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .portrait-card {
   position: relative;
   padding-bottom: 150%;
