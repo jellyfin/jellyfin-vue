@@ -31,7 +31,7 @@
                 :class="{ 'py-1': $vuetify.display.smAndDown }"
                 cols="12"
                 md="4">
-                <Card
+                <ItemCard
                   :class="{ 'mx-8 mt-8': $vuetify.display.smAndDown }"
                   :item="episode" />
               </VCol>

@@ -1,5 +1,5 @@
 <template>
-  <div class="card-margin">
+  <div :class="{ 'card-margin': margin }">
     <Component
       :is="to ? 'router-link' : 'div'"
       :to="to"
@@ -59,7 +59,7 @@ import { isNil } from '@/utils/validation';
 import { isFinePointer } from '@/store';
 import type { CardShapes } from '@/utils/items';
 
-defineProps<{
+interface Props extends /* @vue-ignore */ Partial<HTMLDivElement> {
   shape: CardShapes;
   /**
    * Progress to show in the bottom of the image
@@ -73,7 +73,13 @@ defineProps<{
    * Whether clicking on the card should navigate to a link
    */
   to?: string;
-}>();
+  /**
+   * Whether to apply a margin to the card
+   */
+  margin?: boolean;
+}
+
+defineProps<Props>();
 </script>
 
 <style lang="scss" scoped>

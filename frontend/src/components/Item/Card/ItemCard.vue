@@ -1,9 +1,10 @@
 <template>
-  <GenericCard
+  <GenericItemCard
     :progress="progress"
-    :shape="cardType"
+    :shape="shape ?? cardType"
     :overlay="overlay"
-    :to="cardTitleLink">
+    :to="cardTitleLink"
+    :margin="margin">
     <template #image>
       <BlurhashImage
         :item="item"
@@ -25,7 +26,9 @@
         {{ item.UserData.UnplayedItemCount }}
       </VChip>
     </template>
-    <template #center-content>
+    <template
+      v-if="canPlay(item)"
+      #center-content>
       <PlayButton
         fab
         :item="item" />
@@ -37,14 +40,18 @@
         :item="item" />
       <ItemMenu :item="item" />
     </template>
-    <template #title>
+    <template
+      v-if="text"
+      #title>
       <RouterLink
         class="link"
         :to="cardTitleLink">
         {{ cardTitle }}
       </RouterLink>
     </template>
-    <template #subtitle>
+    <template
+      v-if="text"
+      #subtitle>
       <RouterLink
         v-if="cardSubtitleLink"
         class="link"
@@ -55,7 +62,7 @@
         {{ cardSubtitle ?? '' }}
       </div>
     </template>
-  </GenericCard>
+  </GenericItemCard>
 </template>
 
 <script setup lang="ts">
@@ -78,7 +85,11 @@ import { taskManager } from '@/store/taskManager';
 
 const props = defineProps<{
   item: BaseItemDto;
+  shape?: CardShapes;
   overlay?: boolean;
+  text?: boolean;
+  margin?: boolean;
+  link?: boolean;
 }>();
 
 const { t } = useI18n();
