@@ -37,8 +37,8 @@
         :free-mode="display.mobile.value"
         effect="slide"
         :navigation="navigation"
-        :slides-per-view="slidesPerView"
-        :slides-per-group="slidesPerGroup"
+        :slides-per-view="slides"
+        :slides-per-group="slides"
         :breakpoints="breakpoints"
         a11y>
         <SwiperSlide
@@ -46,7 +46,6 @@
           :key="item.Id"
           :virtual-index="item.Id">
           <Card
-            :shape="cardShape"
             :item="item"
             margin
             text
@@ -67,9 +66,9 @@ import 'swiper/css/virtual';
 import { A11y, FreeMode, Navigation, Virtual } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { v4 } from 'uuid';
-import { ref } from 'vue';
+import { computed } from 'vue';
 import { useDisplay, useTheme } from 'vuetify';
-import { CardShapes, getShapeFromItemType } from '@/utils/items';
+import { CardShapes } from '@/utils/items';
 
 const props = withDefaults(
   defineProps<{
@@ -79,13 +78,10 @@ const props = withDefaults(
   }>(),
   { shape: undefined }
 );
+
+const uuid = v4();
 const display = useDisplay();
 const theme = useTheme();
-
-const cardShape = ref<string>(
-  props.shape || getShapeFromItemType(props.items?.[0]?.Type)
-);
-const uuid = v4();
 
 /**
  * Swiper options
@@ -96,9 +92,8 @@ const navigation = {
   prevEl: `.swiper-section-${uuid} .swiper-prev`,
   disabledClass: 'swiper-button-disabled v-btn--disabled'
 };
-const slidesPerView = props.shape === CardShapes.Thumb ? 2 : 3;
-const slidesPerGroup = props.shape === CardShapes.Thumb ? 2 : 3;
-const breakpoints = {
+const slides = computed(() => props.shape === CardShapes.Thumb ? 2 : 3);
+const breakpoints = computed(() => ({
   600: {
     slidesPerView: props.shape === CardShapes.Thumb ? 3 : 4,
     slidesPerGroup: props.shape === CardShapes.Thumb ? 3 : 4
@@ -111,7 +106,7 @@ const breakpoints = {
     slidesPerView: props.shape === CardShapes.Thumb ? 4 : 8,
     slidesPerGroup: props.shape === CardShapes.Thumb ? 4 : 8
   }
-};
+}));
 </script>
 
 <style lang="scss" scoped>
