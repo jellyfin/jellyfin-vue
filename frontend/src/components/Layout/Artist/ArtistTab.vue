@@ -10,7 +10,7 @@
           <VCol
             lg="2"
             sm="1">
-            <Card
+            <ItemCard
               :item="release"
               overlay
               link />

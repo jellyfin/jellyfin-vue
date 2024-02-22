@@ -7,7 +7,7 @@
         <VCol
           cols="6"
           md="3">
-          <Card :item="item" />
+          <ItemCard :item="item" />
         </VCol>
         <VCol
           cols="12"

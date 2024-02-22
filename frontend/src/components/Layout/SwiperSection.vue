@@ -45,8 +45,9 @@
           v-for="item in items"
           :key="item.Id"
           :virtual-index="item.Id">
-          <Card
+          <ItemCard
             :item="item"
+            :shape="shape"
             margin
             text
             overlay
@@ -70,14 +71,11 @@ import { computed } from 'vue';
 import { useDisplay, useTheme } from 'vuetify';
 import { CardShapes } from '@/utils/items';
 
-const props = withDefaults(
-  defineProps<{
-    title: string;
-    items: BaseItemDto[];
-    shape?: CardShapes;
-  }>(),
-  { shape: undefined }
-);
+const props = defineProps<{
+  title: string;
+  items: BaseItemDto[];
+  shape?: CardShapes;
+}>();
 
 const uuid = v4();
 const display = useDisplay();

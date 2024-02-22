@@ -5,7 +5,7 @@
       v-slot="{ item, style }"
       :items="items"
       :class="useResponsiveClasses('card-grid-container')">
-      <Card
+      <ItemCard
         :style="style"
         :item="item"
         margin
@@ -19,7 +19,7 @@
       <template
         v-for="item of items"
         :key="item.Id">
-        <Card
+        <ItemCard
           :item="item"
           margin
           text
