@@ -71,7 +71,7 @@ import IMdiPlaylistPlus from 'virtual:icons/mdi/playlist-plus';
 import IMdiRefresh from 'virtual:icons/mdi/refresh';
 import IMdiReplay from 'virtual:icons/mdi/replay';
 import IMdiShuffle from 'virtual:icons/mdi/shuffle';
-import { computed, getCurrentInstance, onMounted, ref } from 'vue';
+import { computed, getCurrentInstance, onMounted, shallowRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router/auto';
 import { isStr } from '@/utils/validation';
@@ -102,7 +102,7 @@ type MenuOption = {
 /**
  * SHARED STATE ACROSS ALL THE COMPONENT INSTANCES
  */
-const openMenu = ref<string>();
+const openMenu = shallowRef<string>();
 </script>
 
 <script setup lang="ts">
@@ -123,6 +123,12 @@ const menuProps = withDefaults(
     mediaSourceIndex: undefined
   }
 );
+
+const emit = defineEmits<{
+  active: [];
+  inactive: [];
+}>();
+
 const { t } = useI18n();
 const instanceId = v4();
 const router = useRouter();
@@ -141,17 +147,25 @@ const show = computed({
     openMenu.value = newVal ? instanceId : undefined;
   }
 });
+
 const itemId = computed(
   () => getItemIdFromSourceIndex(
     menuProps.item, menuProps.mediaSourceIndex
   )
 );
-const positionX = ref<number | undefined>(undefined);
-const positionY = ref<number | undefined>(undefined);
-const metadataDialog = ref(false);
-const refreshDialog = ref(false);
-const identifyItemDialog = ref(false);
-const mediaInfoDialog = ref(false);
+const positionX = shallowRef<number | undefined>();
+const positionY = shallowRef<number | undefined>();
+const metadataDialog = shallowRef(false);
+const refreshDialog = shallowRef(false);
+const identifyItemDialog = shallowRef(false);
+const mediaInfoDialog = shallowRef(false);
+
+const isActive = computed(() => show.value || metadataDialog.value || refreshDialog.value || identifyItemDialog.value || mediaInfoDialog.value);
+
+watch(isActive, (newVal) => {
+  newVal ? emit('active') : emit('inactive');
+});
+
 const errorMessage = t('anErrorHappened');
 const isItemRefreshing = computed(
   () => taskManager.getTask(menuProps.item.Id ?? '') !== undefined
