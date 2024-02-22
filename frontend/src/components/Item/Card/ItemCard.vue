@@ -3,6 +3,7 @@
     :progress="progress"
     :shape="shape ?? cardType"
     :overlay="overlay"
+    :force-overlay="isMenuOpen"
     :to="cardTitleLink"
     :margin="margin">
     <template #image>
@@ -38,7 +39,10 @@
       <LikeButton
         v-if="canPlay(item)"
         :item="item" />
-      <ItemMenu :item="item" />
+      <ItemMenu
+        :item="item"
+        @active="isMenuOpen = true"
+        @inactive="isMenuOpen = false" />
     </template>
     <template
       v-if="text"
@@ -72,7 +76,7 @@ import {
   ImageType,
   type BaseItemDto
 } from '@jellyfin/sdk/lib/generated-client';
-import { computed } from 'vue';
+import { computed, shallowRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { isNil } from '@/utils/validation';
 import {
@@ -93,6 +97,7 @@ const props = defineProps<{
 }>();
 
 const { t } = useI18n();
+const isMenuOpen = shallowRef(false);
 
 const cardType = computed(() => getShapeFromItemType(props.item.Type));
 

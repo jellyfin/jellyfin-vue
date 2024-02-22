@@ -22,7 +22,7 @@
               <slot name="upper-content" />
             </div>
             <div
-              v-if="isHovering && overlay && isFinePointer"
+              v-if="(isHovering && overlay && isFinePointer) || forceOverlay"
               class="card-overlay-hover-hidden">
               <slot name="center-content" />
               <div class="card-lower-content d-flex justify-center align-center">
@@ -69,6 +69,11 @@ interface Props extends /* @vue-ignore */ Partial<HTMLDivElement> {
    * Whether to show an overlay on hover
    */
   overlay?: boolean;
+  /**
+   * By default, the overlay DOM will be destroyed as soon as hover ends.
+   * However, you can override that behaviour with this prop.
+   */
+  forceOverlay?: boolean;
   /**
    * Whether clicking on the card should navigate to a link
    */
