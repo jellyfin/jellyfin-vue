@@ -94,6 +94,7 @@ declare module 'vue' {
     ItemsCarousel: typeof import('./../../src/components/Layout/Carousel/Item/ItemsCarousel.vue')['default']
     ItemsCarouselTitle: typeof import('./../../src/components/Layout/Carousel/Item/ItemsCarouselTitle.vue')['default']
     JHover: typeof import('./../../src/components/lib/JHover.vue')['default']
+    JSlot: typeof import('./../../src/components/lib/JSlot.vue')['default']
     LikeButton: typeof import('./../../src/components/Buttons/LikeButton.vue')['default']
     LoadingIndicator: typeof import('./../../src/components/System/LoadingIndicator.vue')['default']
     LocaleSwitcher: typeof import('./../../src/components/System/LocaleSwitcher.vue')['default']
