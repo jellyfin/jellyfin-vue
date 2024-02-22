@@ -17,6 +17,7 @@ declare module 'vue' {
     Backdrop: typeof import('./../../src/components/Layout/Backdrop.vue')['default']
     BlurhashCanvas: typeof import('./../../src/components/Layout/Images/Blurhash/BlurhashCanvas.vue')['default']
     BlurhashImage: typeof import('./../../src/components/Layout/Images/Blurhash/BlurhashImage.vue')['default']
+    BlurhashImageIcon: typeof import('./../../src/components/Layout/Images/Blurhash/BlurhashImageIcon.vue')['default']
     Carousel: typeof import('./../../src/components/Layout/Carousel/Carousel.vue')['default']
     CarouselProgressBar: typeof import('./../../src/components/Layout/Carousel/CarouselProgressBar.vue')['default']
     CastButton: typeof import('./../../src/components/Layout/AppBar/Buttons/CastButton.vue')['default']

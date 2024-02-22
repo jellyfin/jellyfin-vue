@@ -1,12 +1,12 @@
 <template>
-  <VFadeTransition>
-    <canvas
-      ref="canvas"
-      :key="`canvas-${hash}`"
-      :width="width"
-      :height="height"
-      class="absolute-cover" />
-  </VFadeTransition>
+  <canvas
+    v-if="!error"
+    ref="canvas"
+    v-bind="$attrs"
+    :key="`canvas-${hash}`"
+    :width="width"
+    :height="height" />
+  <slot v-else />
 </template>
 
 <script lang="ts">
@@ -43,11 +43,8 @@ const props = withDefaults(
   { width: 32, height: 32, punch: 1 }
 );
 
-const emit = defineEmits<{
-  error: [];
-}>();
-
 const pixels = ref<Uint8ClampedArray>();
+const error = shallowRef(false);
 const canvas = shallowRef<HTMLCanvasElement>();
 
 watch([props, canvas], async () => {
@@ -56,6 +53,7 @@ watch([props, canvas], async () => {
     const imageData = context?.createImageData(props.width, props.height);
 
     try {
+      error.value = false;
       pixels.value = await pixelWorker.getPixels(
         props.hash,
         props.width,
@@ -64,7 +62,7 @@ watch([props, canvas], async () => {
       );
     } catch {
       pixels.value = undefined;
-      emit('error');
+      error.value = true;
 
       return;
     }
@@ -76,15 +74,3 @@ watch([props, canvas], async () => {
   }
 });
 </script>
-
-<style lang="scss" scoped>
-.fade-fast-enter-active,
-.fade-fast-leave-active {
-  transition: opacity 0.15s;
-}
-
-.fade-fast-enter,
-.fade-fast-leave-to {
-  opacity: 0;
-}
-</style>

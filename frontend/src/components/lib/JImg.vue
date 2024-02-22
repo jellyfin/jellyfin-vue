@@ -1,19 +1,27 @@
 <template>
   <template v-if="src">
-    <component
-      :is="type"
-      v-if="!loading && !error"
-      class="image"
-      v-bind="$attrs"
-      :src="type === 'img' ? src : undefined">
-      <slot />
-    </component>
-    <slot
-      v-else-if="loading"
-      name="loading" />
-    <slot
-      v-else-if="error"
-      name="error" />
+    <VFadeTransition
+      group
+      mode="in-out">
+      <template v-if="shown">
+        <component
+          :is="type"
+          class="j-img"
+          v-bind="$attrs"
+          :src="type === 'img' ? src : undefined" />
+      </template>
+      <template v-else>
+        <slot
+          v-if="$slots.placeholder"
+          name="placeholder" />
+        <slot
+          v-else-if="loading"
+          name="loading" />
+        <slot
+          v-else-if="error"
+          name="error" />
+      </template>
+    </VFadeTransition>
   </template>
   <slot v-else />
 </template>
@@ -22,22 +30,21 @@
 import { computed, watch, shallowRef } from 'vue';
 
 interface Props {
-  type: 'div' | 'img';
   src?: string | null;
   /**
-   * When used as div, enable cover sizing
+   * Cover the parent area. This renders the component as a div
    */
   cover?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), { type: 'img' });
+const props = defineProps<Props>();
 
 const loading = shallowRef(true);
 const error = shallowRef(false);
 
 const url = computed(() => `url('${props.src}'')`);
-const size = computed(() => props.cover ? '100%' : 'initial');
-const cover = computed(() => props.cover ? 'cover' : 'initial');
+const type = computed(() => props.cover ? 'div' : 'img');
+const shown = computed(() => !loading.value && !error.value);
 
 watch(() => props.src, () => {
   if (props.src) {
@@ -64,16 +71,14 @@ watch(() => props.src, () => {
 </script>
 
 <style scoped>
-img.image {
+.j-img {
   width: 100%;
   height: 100%;
 }
 
-div.image {
-  width: v-bind(size);
-  height: v-bind(size);
+div.j-img {
   background-image: v-bind(url);
-  background-size: v-bind(cover);
+  background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
 }
