@@ -28,7 +28,7 @@ const selectProps = defineProps<{
   label?: string;
 }>();
 
-const emits = defineEmits<{
+const emit = defineEmits<{
   input: [newIndex: number];
 }>();
 
@@ -42,6 +42,6 @@ watch(currentSource, () => {
     (s) => s.Id === currentSource.value.Id
   );
 
-  emits('input', newIndex);
+  emit('input', newIndex);
 });
 </script>
