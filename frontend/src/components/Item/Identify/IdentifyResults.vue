@@ -12,10 +12,9 @@
         <VTooltip location="top">
           {{ item.Name }}
         </VTooltip>
-        <JHover v-slot="{ isHovering, hoverProps }">
+        <JHover v-slot="{ isHovering }">
           <VImg
             :src="item.ImageUrl ?? undefined"
-            v-bind="hoverProps"
             aspect-ratio="0.75"
             cover
             :gradient="

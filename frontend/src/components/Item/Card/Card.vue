@@ -4,11 +4,10 @@
       :is="link ? 'router-link' : 'div'"
       :to="link ? getItemDetailsLink(item) : null"
       :class="{ 'card-box': link }">
-      <JHover v-slot="{ isHovering, hoverProps }">
+      <JHover v-slot="{ isHovering }">
         <div
           :class="shape || cardType"
-          class="elevation-2"
-          v-bind="hoverProps">
+          class="elevation-2">
           <div
             class="absolute-cover card-content d-flex justify-center align-center">
             <BlurhashImage

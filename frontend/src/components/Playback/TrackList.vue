@@ -47,10 +47,9 @@
         <template
           v-for="track in tracksOnDisc"
           :key="track.Id">
-          <JHover v-slot="{ isHovering, hoverProps }">
+          <JHover v-slot="{ isHovering }">
             <tr
               :class="{ 'text-primary': isPlaying(track) }"
-              v-bind="hoverProps"
               @dblclick="playTracks(track)">
               <td
                 style="width: 4em"

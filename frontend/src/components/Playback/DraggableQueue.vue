@@ -3,9 +3,8 @@
     <template
       v-for="(item, index) of playbackManager.queue"
       :key="item.Id">
-      <JHover v-slot="{ isHovering, hoverProps }">
+      <JHover v-slot="{ isHovering }">
         <VListItem
-          v-bind="hoverProps"
           :title="item.Name ?? ''"
           :subtitle="getArtists(item)"
           class="grab-cursor"
