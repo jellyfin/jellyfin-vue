@@ -4,44 +4,32 @@
       v-for="(item, idx) in items"
       :key="idx"
       :cols="2">
-      <VCard
-        variant="tonal"
-        class="flex-grow-0 h-100"
-        :class="cardClass"
+      <GenericItemCard
+        :shape="shape"
+        margin
         @click="$emit('select', item)">
-        <VTooltip location="top">
-          {{ item.Name }}
-        </VTooltip>
-        <JHover v-slot="{ isHovering }">
-          <VImg
-            :src="item.ImageUrl ?? undefined"
-            aspect-ratio="0.75"
-            cover
-            :gradient="
-              isHovering ? undefined : 'to bottom, rgba(0,0,0,1), rgba(0,0,0,0)'
-            "
-            class="absolute-cover">
-            <template #placeholder>
-              <div class="d-flex justify-center align-center h-100">
-                <VProgressCircular
-                  v-if="item.ImageUrl"
-                  indeterminate />
-                <VIcon v-else>
-                  <IMdiImageBrokenVariant />
-                </VIcon>
-              </div>
+        <template #image>
+          <JImg :src="item.ImageUrl">
+            <template #loading>
+              <VProgressCircular indeterminate />
             </template>
-            <VFadeTransition group>
-              <VCardTitle v-if="!isHovering">
-                {{ item.Name }}
-              </VCardTitle>
-              <VCardSubtitle v-if="!isHovering && getSubtitle(item)">
-                {{ getSubtitle(item) }}
-              </VCardSubtitle>
-            </VFadeTransition>
-          </VImg>
-        </JHover>
-      </VCard>
+            <template #error>
+              <VIcon>
+                <IMdiImageBrokenVariant />
+              </VIcon>
+            </template>
+            <VIcon>
+              <IMdiImage />
+            </VIcon>
+          </JImg>
+        </template>
+        <template #title>
+          {{ item.Name }}
+        </template>
+        <template #subtitle>
+          {{ getSubtitle(item) }}
+        </template>
+      </GenericItemCard>
     </VCol>
   </VRow>
 </template>
@@ -52,7 +40,7 @@ import type {
   RemoteSearchResult
 } from '@jellyfin/sdk/lib/generated-client';
 import { computed } from 'vue';
-import { CardShapes, getShapeFromItemType } from '@/utils/items';
+import { getShapeFromItemType } from '@/utils/items';
 
 const props = defineProps<{
   items: RemoteSearchResult[];
@@ -64,22 +52,6 @@ defineEmits<{
 }>();
 
 const shape = computed(() => getShapeFromItemType(props.itemType));
-const cardClass = computed<
-'thumb-card' | 'portrait-card' | 'square-card' | undefined
->(() => {
-  switch (shape.value) {
-    case CardShapes.Thumb:
-    case CardShapes.Banner: {
-      return 'thumb-card';
-    }
-    case CardShapes.Portrait: {
-      return 'portrait-card';
-    }
-    case CardShapes.Square: {
-      return 'square-card';
-    }
-  }
-});
 
 /**
  * Generate card's subtitles
