@@ -41,10 +41,3 @@ const iconSize = computed(() => {
   return props.size * 0.75;
 });
 </script>
-
-<style lang="scss" scoped>
-.user-image {
-  background-size: cover;
-  background-position: center center;
-}
-</style>

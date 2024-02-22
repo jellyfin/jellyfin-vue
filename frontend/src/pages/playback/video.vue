@@ -216,8 +216,12 @@ watch(staticOverlay, (val) => {
 });
 </script>
 
-<style>
-.fullscreen-video-container video {
+<style scoped>
+.fullscreen-video-container {
+  background: black;
+}
+
+:deep(.fullscreen-video-container video) {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -226,15 +230,9 @@ watch(staticOverlay, (val) => {
   max-height: 100%;
 }
 
-.fullscreen-video-container video.stretched {
+:deep(.fullscreen-video-container video.stretched) {
   width: 100%;
   height: 100%;
-}
-</style>
-
-<style scoped>
-.fullscreen-video-container {
-  background: black;
 }
 
 .controls-wrapper {

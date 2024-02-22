@@ -293,10 +293,6 @@ watch(
   transform: translate(-50%, -50%);
 }
 
-.card-grid-container {
-  display: grid;
-}
-
 .image-results {
   height: 50vh;
   overflow-y: scroll;
