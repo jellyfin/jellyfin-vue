@@ -34,6 +34,10 @@ export const mediaWebAudio = {
  */
 export const prefersNoMotion = useMediaQuery('(prefers-reduced-motion)');
 /**
+ * Reactively tracks if the device has a high precision input (like a mouse)
+ */
+export const isFinePointer = useMediaQuery('(pointer:fine)');
+/**
  * Reactively tracks if the user is connected to the internet
  */
 export const network = useNetwork();

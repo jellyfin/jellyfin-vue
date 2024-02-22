@@ -1,96 +1,70 @@
 <template>
-  <div :class="{ 'card-margin': margin }">
-    <Component
-      :is="link ? 'router-link' : 'div'"
-      :to="link ? getItemDetailsLink(item) : null"
-      :class="{ 'card-box': link }">
-      <JHover v-slot="{ isHovering }">
-        <div
-          :class="shape || cardType"
-          class="elevation-2">
-          <div
-            class="absolute-cover card-content d-flex justify-center align-center">
-            <BlurhashImage
-              :item="item"
-              :type="getImageType"
-              :alt="item.Name || ''"
-              class="card-image" />
-          </div>
-          <div
-            class="absolute-cover card-overlay d-flex justify-center align-center"
-            :class="{ 'card-overlay-hover': overlay && isFinePointer }">
-            <div class="card-upper-content d-flex justify-center align-center">
-              <VProgressCircular
-                v-if="refreshProgress !== undefined"
-                :model-value="refreshProgress"
-                :indeterminate="refreshProgress === 0"
-                size="24" />
-              <WatchedIndicator v-if="item.UserData && item.UserData.Played" />
-              <VChip
-                v-if="item.UserData && item.UserData.UnplayedItemCount"
-                color="primary"
-                variant="elevated"
-                size="small">
-                {{ item.UserData.UnplayedItemCount }}
-              </VChip>
-            </div>
-            <div
-              v-if="isHovering && overlay && isFinePointer"
-              class="card-overlay-hover-hidden">
-              <PlayButton
-                fab
-                :item="item" />
-              <div class="card-lower-content d-flex justify-center align-center">
-                <MarkPlayedButton :item="item" />
-                <LikeButton
-                  v-if="canPlay(item)"
-                  :item="item" />
-                <ItemMenu :item="item" />
-              </div>
-            </div>
-            <VProgressLinear
-              v-if="
-                item.UserData &&
-                  item.UserData.PlayedPercentage &&
-                  item.UserData.PlayedPercentage > 0
-              "
-              v-model="progress"
-              absolute
-              location="bottom" />
-          </div>
-        </div>
-      </JHover>
-    </Component>
-    <div
-      v-if="text"
-      class="card-text">
+  <GenericCard
+    :progress="progress"
+    :shape="cardType"
+    :overlay="overlay"
+    :to="cardTitleLink">
+    <template #image>
+      <BlurhashImage
+        :item="item"
+        :type="getImageType"
+        :alt="item.Name || ''" />
+    </template>
+    <template #upper-content>
+      <VProgressCircular
+        v-if="refreshProgress !== undefined"
+        :model-value="refreshProgress"
+        :indeterminate="refreshProgress === 0"
+        size="24" />
+      <WatchedIndicator v-if="item.UserData && item.UserData.Played" />
+      <VChip
+        v-if="item.UserData && item.UserData.UnplayedItemCount"
+        color="primary"
+        variant="elevated"
+        size="small">
+        {{ item.UserData.UnplayedItemCount }}
+      </VChip>
+    </template>
+    <template #center-content>
+      <PlayButton
+        fab
+        :item="item" />
+    </template>
+    <template #bottom-content>
+      <MarkPlayedButton :item="item" />
+      <LikeButton
+        v-if="canPlay(item)"
+        :item="item" />
+      <ItemMenu :item="item" />
+    </template>
+    <template #title>
       <RouterLink
-        class="link d-block font-weight-medium pa-0 mt-1 text-truncate"
+        class="link"
         :to="cardTitleLink">
         {{ cardTitle }}
       </RouterLink>
+    </template>
+    <template #subtitle>
       <RouterLink
         v-if="cardSubtitleLink"
-        class="link d-block v-card-subtitle text-truncate"
+        class="link"
         :to="cardSubtitleLink">
         {{ cardSubtitle ?? '' }}
       </RouterLink>
-      <div
-        v-else
-        class="v-card-subtitle text-truncate">
+      <div v-else>
         {{ cardSubtitle ?? '' }}
       </div>
-    </div>
-  </div>
+    </template>
+  </GenericCard>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+
 import {
   BaseItemKind,
   ImageType,
   type BaseItemDto
 } from '@jellyfin/sdk/lib/generated-client';
-import { useMediaQuery } from '@vueuse/core';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { isNil } from '@/utils/validation';
@@ -102,32 +76,10 @@ import {
 } from '@/utils/items';
 import { taskManager } from '@/store/taskManager';
 
-/**
- * SHARED STATE ACROSS ALL THE COMPONENT INSTANCES
- */
-const isFinePointer = useMediaQuery('(pointer:fine)');
-</script>
-
-<script setup lang="ts">
-const props = withDefaults(
-  defineProps<{
-    item: BaseItemDto;
-    shape?: string | boolean;
-    episode?: boolean;
-    overlay?: boolean;
-    text?: boolean;
-    margin?: boolean;
-    link?: boolean;
-  }>(),
-  {
-    shape: false,
-    episode: false,
-    overlay: false,
-    text: false,
-    margin: false,
-    link: false
-  }
-);
+const props = defineProps<{
+  item: BaseItemDto;
+  overlay?: boolean;
+}>();
 
 const { t } = useI18n();
 
@@ -209,11 +161,11 @@ const cardSubtitleLink = computed(() => {
 });
 
 const progress = computed(
-  () => props.item.UserData?.PlayedPercentage || undefined
+  () => props.item.UserData?.PlayedPercentage ?? undefined
 );
 
 const getImageType = computed(() =>
-  props.shape === CardShapes.Thumb ? ImageType.Thumb : ImageType.Primary
+  cardType.value === CardShapes.Thumb ? ImageType.Thumb : ImageType.Primary
 );
 
 /**
@@ -223,101 +175,3 @@ const refreshProgress = computed(
   () => taskManager.getTask(props.item.Id || '')?.progress
 );
 </script>
-
-<style lang="scss">
-.portrait-card {
-  position: relative;
-  padding-bottom: 150%;
-  contain: strict;
-  border-radius: 0.3em;
-}
-
-.thumb-card {
-  position: relative;
-  padding-bottom: 56.25%;
-  contain: strict;
-  border-radius: 0.3em;
-}
-
-.square-card {
-  position: relative;
-  padding-bottom: 100%;
-  contain: strict;
-  border-radius: 0.3em;
-}
-
-.card-image {
-  width: 100%;
-  height: 100%;
-}
-</style>
-
-<style lang="scss" scoped>
-.card-upper-content {
-  position: absolute;
-  right: 0.5em;
-  top: 0.5em;
-  gap: 0.3em;
-}
-.card-lower-content {
-  position: absolute;
-  right: 0.5em;
-  bottom: 0.5em;
-  gap: 0.3em;
-}
-
-.card-margin {
-  margin: 0.6em;
-}
-
-.card-content {
-  background-color: rgb(var(--v-theme-menu));
-  overflow: hidden;
-  margin: 0 !important;
-  contain: strict;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-clip: content-box;
-  background-position: center center;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.card-overlay {
-  transition: all 0.2s;
-}
-
-.overlay-hover {
-  transition: opacity 0.2s;
-}
-
-.card-overlay-hover-hidden {
-  transition: inherit;
-  opacity: 0;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .card-box:hover .card-overlay-hover {
-    background: rgba(var(--v-theme-background), 0.5);
-  }
-  .card-box:hover .card-overlay-hover .card-overlay-hover-hidden {
-    opacity: 1;
-  }
-}
-
-.card-text {
-  text-align: center;
-  padding: 0 0.25em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-a.card-box {
-  text-decoration: none;
-  color: unset;
-}
-
-.absolute {
-  position: absolute;
-}
-</style>

@@ -215,7 +215,8 @@ module.exports = {
     'vue/html-closing-bracket-newline': ['error', { multiline: 'never' }],
     'vue/multiline-html-element-content-newline': 'error',
     'vue/multi-word-component-names': 'off',
-    'vue/return-in-computed-property': 'off'
+    'vue/return-in-computed-property': 'off',
+    'vue/require-default-prop': 'off'
   },
   /**
    * Overrides allows us to omit the --ext CLI argument, simplifying package.json scripts section
