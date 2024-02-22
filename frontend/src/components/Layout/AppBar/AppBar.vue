@@ -90,8 +90,4 @@ const navigationDrawer = inject<Ref<boolean>>('NavigationDrawer');
 .app-bar-safe-zone {
   height: calc(48px + env(safe-area-inset-top)) !important;
 }
-
-.v-toolbar.ml-n3 {
-  max-width: initial !important;
-}
 </style>

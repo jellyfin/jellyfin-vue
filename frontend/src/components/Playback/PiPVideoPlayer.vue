@@ -94,14 +94,14 @@ onBeforeUnmount(() => {
 });
 </script>
 
-<style>
-.minimized-overlay {
+<style scoped>
+:deep(.minimized-overlay) {
   position: absolute;
   right: 2em;
   bottom: 2em;
 }
 
-.minimized-video-container video {
+:deep(.minimized-video-container video) {
   max-width: 100%;
   max-height: 100%;
 }

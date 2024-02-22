@@ -11,7 +11,7 @@
       :text="$t('language')"
       :location="bottom ? 'bottom' : 'top'" />
     <VMenu>
-      <VList class="overflow-y-auto">
+      <VList class="overflow-y-auto list">
         <VListItem
           :title="$t('auto')"
           @click="clientSettings.locale = 'auto'" />
@@ -43,7 +43,7 @@ const i18n = useI18n();
 </script>
 
 <style lang="scss" scoped>
-.v-list {
+.list {
   max-height: 31em;
 }
 </style>
