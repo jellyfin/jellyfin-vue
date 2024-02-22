@@ -42,7 +42,7 @@ const props = withDefaults(
   }>(),
   { defaultStreamIndex: undefined }
 );
-const emits = defineEmits<{
+const emit = defineEmits<{
   input: [newIndex?: number];
 }>();
 const { t, locale } = useI18n();
@@ -134,7 +134,7 @@ if (
 watch(
   trackIndex,
   (newValue) => {
-    emits('input', newValue ?? undefined);
+    emit('input', newValue ?? undefined);
   },
   { immediate: true }
 );
