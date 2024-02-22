@@ -206,9 +206,7 @@ watch(
 
     if (!isNil(scrollParents.value)) {
       for (const parent of scrollParents.value) {
-        const cleanup = useEventListener(parent, 'scroll', (): void => {
-          scrollEvents.value++;
-        }, {
+        const cleanup = useEventListener(parent, 'scroll', () => scrollEvents.value++, {
           passive: true,
           capture: true
         });

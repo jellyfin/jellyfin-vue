@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, watch, shallowRef } from 'vue';
+import { computed, watch, shallowRef, nextTick } from 'vue';
 
 interface Props {
   src?: string | null;
@@ -53,18 +53,17 @@ watch(() => props.src, () => {
     preloaderImg.src = props.src;
 
     preloaderImg.addEventListener('loadstart', () => {
-      preloaderImg.remove();
       loading.value = true;
     }, { once: true });
-    preloaderImg.addEventListener('load', () => {
-      preloaderImg.remove();
+    preloaderImg.addEventListener('load', async () => {
       error.value = false;
       loading.value = false;
+      await nextTick(() => preloaderImg.remove());
     }, { once: true });
-    preloaderImg.addEventListener('error', () => {
-      preloaderImg.remove();
+    preloaderImg.addEventListener('error', async () => {
       loading.value = false;
       error.value = true;
+      await nextTick(() => preloaderImg.remove());
     }, { once: true });
   }
 }, { immediate: true });
