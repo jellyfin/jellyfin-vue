@@ -40,12 +40,12 @@ import { useBaseItem } from '@/composables/apis';
 /**
  * A list of valid collections that should be treated as folders.
  */
-export const validLibraryTypes: string[] = [
-  'CollectionFolder',
-  'Folder',
-  'UserView',
-  'Playlist',
-  'PhotoAlbum'
+export const validLibraryTypes: BaseItemKind[] = [
+  BaseItemKind.CollectionFolder,
+  BaseItemKind.Folder,
+  BaseItemKind.UserView,
+  BaseItemKind.Playlist,
+  BaseItemKind.PhotoAlbum
 ];
 
 export const validPersonTypes = [
@@ -91,7 +91,7 @@ export function isPerson(
  * Checks if the item is a library
  */
 export function isLibrary(item: BaseItemDto): boolean {
-  return validLibraryTypes.includes(item.Type ?? '');
+  return item.Type ? validLibraryTypes.includes(item.Type) : false;
 }
 
 /**
@@ -176,19 +176,20 @@ export function getShapeFromItemType(
   }
 
   switch (itemType) {
-    case 'Audio':
-    case 'Folder':
-    case 'MusicAlbum':
-    case 'MusicArtist':
-    case 'MusicGenre':
-    case 'PhotoAlbum':
-    case 'Playlist':
-    case 'Video': {
+    case BaseItemKind.Audio:
+    case BaseItemKind.Folder:
+    case BaseItemKind.MusicAlbum:
+    case BaseItemKind.MusicArtist:
+    case BaseItemKind.MusicGenre:
+    case BaseItemKind.PhotoAlbum:
+    case BaseItemKind.Playlist:
+    case BaseItemKind.Video: {
       return CardShapes.Square;
     }
-    case 'Episode':
-    case 'MusicVideo':
-    case 'Studio': {
+    case BaseItemKind.Episode:
+    case BaseItemKind.MusicVideo:
+    case BaseItemKind.CollectionFolder:
+    case BaseItemKind.Studio: {
       return CardShapes.Thumb;
     }
     default: {
@@ -323,7 +324,7 @@ export function getItemDetailsLink(
   const itemId = String(item.Id);
   let routeName: keyof RouteNamedMap;
 
-  if (item.Type && validLibraryTypes.includes(item.Type)) {
+  if (!isPerson(item) && isLibrary(item)) {
     routeName = '/library/[itemId]';
   } else {
     const type = overrideType || item.Type;
