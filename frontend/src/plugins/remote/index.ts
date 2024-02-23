@@ -39,13 +39,18 @@ export function createPlugin(): {
       const auth = remote.auth;
       const config = await getJSONConfig();
       const defaultServers = config.defaultServerURLs;
-      const missingServers = defaultServers.filter((serverUrl) => {
-        const server = auth.servers.find(
-          (lsServer) => lsServer.PublicAddress === serverUrl
-        );
+      /**
+       * We reverse the list so the first server is the last to be connected,
+       * and thus is the chosen one by default
+       */
+      const missingServers = defaultServers
+        .filter((serverUrl) => {
+          const server = auth.servers.find(
+            (lsServer) => lsServer.PublicAddress === serverUrl
+          );
 
-        return isNil(server);
-      });
+          return isNil(server);
+        }).reverse();
 
       for (const serverUrl of missingServers) {
         await auth.connectServer(serverUrl, true);

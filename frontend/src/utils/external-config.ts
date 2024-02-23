@@ -1,7 +1,8 @@
-import { isArray, isNil, isObj, isStr } from '@/utils/validation';
+import { isArray, isBool, isNil, isObj, isStr } from '@/utils/validation';
 
 interface ExternalJSONConfig {
   defaultServerURLs: string[];
+  allowServerSelection: boolean;
   routerMode: 'hash' | 'history';
 }
 
@@ -30,6 +31,10 @@ function validateJsonConfig(
     )
   ) {
     throw new Error('Expected defaultServerURLs to be a list of strings');
+  }
+
+  if (!('allowServerSelection' in config) || !isBool(config.allowServerSelection)) {
+    throw new Error('Expected allowServerSelection to be boolean');
   }
 
   if (

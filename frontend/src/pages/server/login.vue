@@ -45,6 +45,7 @@
             sm="6"
             class="d-flex justify-center">
             <VBtn
+              v-if="jsonConfig.allowServerSelection"
               block
               to="/server/select"
               size="large"
@@ -102,7 +103,9 @@ import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router/auto';
 import { remote } from '@/plugins/remote';
+import { getJSONConfig } from '@/utils/external-config';
 
+const jsonConfig = await getJSONConfig();
 const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
