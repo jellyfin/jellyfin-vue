@@ -32,7 +32,7 @@
         no-gutters>
         <VCol class="mr-2">
           <VBtn
-            v-if="isEmpty(user)"
+            v-if="isEmpty(user) && jsonConfig.allowServerSelection"
             to="/server/select"
             block
             size="large"
@@ -75,6 +75,7 @@ import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router/auto';
 import { fetchIndexPage } from '@/utils/items';
 import { remote } from '@/plugins/remote';
+import { getJSONConfig } from '@/utils/external-config';
 
 const props = defineProps<{ user: UserDto }>();
 
@@ -82,6 +83,7 @@ defineEmits<{
   change: [];
 }>();
 
+const jsonConfig = await getJSONConfig();
 const { t } = useI18n();
 
 const router = useRouter();

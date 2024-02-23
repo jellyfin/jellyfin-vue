@@ -18,6 +18,7 @@
           v-if="previousServerLength"
           class="mr-2">
           <VBtn
+            v-if="jsonConfig.allowServerSelection"
             block
             size="large"
             variant="elevated"
@@ -47,7 +48,9 @@ import { ref, unref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router/auto';
 import { remote } from '@/plugins/remote';
+import { getJSONConfig } from '@/utils/external-config';
 
+const jsonConfig = await getJSONConfig();
 const router = useRouter();
 const i18n = useI18n();
 const valid = ref(false);
