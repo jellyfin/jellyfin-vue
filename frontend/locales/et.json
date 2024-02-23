@@ -93,7 +93,7 @@
   "series": "Seriaal",
   "server": "Server",
   "serverVersion": "Serveri versioon",
-  "serverVersionTooLow": "Serveri versioon peab olema 10.7.0 või uuem",
+  "serverVersionTooLow": "Serveri versioon peab olema {version} või uuem",
   "shows": "Sarjad",
   "signIn": "Logi sisse",
   "songs": "Lood",
