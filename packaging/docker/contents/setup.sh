@@ -9,20 +9,20 @@ else
     ROUTER_MODE="history"
 fi
 
-if [[ "$ALLOW_SERVER_SELECTION" == "1" ]]; then
-    ALLOW_SERVER_SELECTION="true"
+if [[ "$DISABLE_SERVER_SELECTION" == "1" ]]; then
+    ALLOW_SERVER_SELECTION=false
 else
-    ALLOW_SERVER_SELECTION="false"
+    ALLOW_SERVER_SELECTION=true
 fi
 
 echo "DEFAULT_SERVERS value: $DEFAULT_SERVERS"
 echo "ALLOW_SERVER_SELECTION value: $ALLOW_SERVER_SELECTION"
 echo "ROUTER_MODE value: $ROUTER_MODE"
 
-output=$(jq -r --arg R_MODE "$ROUTER_MODE" --arg SERVS "$DEFAULT_SERVERS" --arg SELECTION_ALLOW "$ALLOW_SERVER_SELECTION" '
+output=$(jq -r --arg R_MODE "$ROUTER_MODE" --arg SERVS "$DEFAULT_SERVERS" '
     .defaultServerURLs = ($SERVS | split(",")) |
     .routerMode = $R_MODE |
-    .allowServerSelection = $SELECTION_ALLOW
+    .allowServerSelection = ('"$ALLOW_SERVER_SELECTION"')
     ' $CONFIG_FILE_PATH
 )
 
