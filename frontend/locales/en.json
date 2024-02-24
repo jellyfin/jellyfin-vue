@@ -136,6 +136,7 @@
   "information": "Information",
   "instantMix": "Instant mix",
   "instantMixQueued": "Instant mix added to queue",
+  "itemPlayNext": "The item was queued to be played next",
   "jellyfinLogo": "Jellyfin logo",
   "kickedOut": "Authorization has been revoked and this session is no longer valid. Please log in again",
   "language": "Language",

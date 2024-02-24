@@ -199,7 +199,7 @@ const playNextAction = {
   icon: IMdiPlaySpeed,
   action: async (): Promise<void> => {
     await playbackManager.playNext(menuProps.item);
-    useSnackbar(t('playNext'), 'success');
+    useSnackbar(t('itemPlayNext'), 'success');
   }
 };
 const pushToTopOfQueueAction = {
