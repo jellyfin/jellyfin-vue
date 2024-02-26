@@ -54,19 +54,6 @@ const vuetifyExports = localeNames
   .filter((l): l is string => typeof l === 'string');
 
 /**
- * Map the RTL value of the mapped locales
- */
-const transformedVuetifyRtl: Record<string, boolean> = {};
-
-for (const e of vuetifyExports) {
-  const localeSplitted = e.includes(' as ') ? e.split(' as ') : e;
-  const originalLocale = Array.isArray(localeSplitted) ? localeSplitted[0] : e;
-  const targetLocale = Array.isArray(localeSplitted) ? localeSplitted[1] : e;
-
-  transformedVuetifyRtl[targetLocale] = vuetify.defaultRtl[originalLocale as keyof typeof vuetify.defaultRtl];
-}
-
-/**
  * Get commit hash
  */
 const commit_available = !Number(process.env.IS_STABLE) && Boolean(process.env.COMMIT_HASH);
@@ -84,8 +71,5 @@ export default {
   'virtual:locales/vuetify': `export { ${vuetifyExports.join(
     ', '
   )} } from 'vuetify/locale'`,
-  'virtual:locales/vuetify/rtl': `export const defaultRtl = ${JSON.stringify(
-    transformedVuetifyRtl
-  )}`,
   'virtual:commit': `export const commit_hash = ${commit_hash}`
 };
