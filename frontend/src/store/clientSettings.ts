@@ -2,15 +2,14 @@ import {
   useNavigatorLanguage,
   usePreferredDark,
   useLocalStorage,
-  watchPausable,
-  type RemovableRef
+  watchPausable
 } from '@vueuse/core';
 import { computed, nextTick, watch } from 'vue';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { i18n } from '@/plugins/i18n';
 import { remote } from '@/plugins/remote';
 import { vuetify } from '@/plugins/vuetify';
-import { mergeExcludingUnknown } from '@/utils/data-manipulation';
+import { defuSchema } from '@/utils/data-manipulation';
 import { fetchDefaultedCustomPrefs, syncCustomPrefs } from '@/utils/store-sync';
 
 /**
@@ -50,12 +49,11 @@ class ClientSettingsStore {
     return cleanString[0];
   });
 
-  private readonly _state: RemovableRef<ClientSettingsState> = useLocalStorage(
+  private readonly _state = useLocalStorage<ClientSettingsState>(
     this._storeKey,
     structuredClone(this._defaultState),
     {
-      mergeDefaults: (storageValue, defaults) =>
-        mergeExcludingUnknown(storageValue, defaults)
+      mergeDefaults: defuSchema
     }
   );
 

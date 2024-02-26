@@ -1,8 +1,8 @@
 import { type Api, Jellyfin } from '@jellyfin/sdk';
-import { type RemovableRef, useLocalStorage } from '@vueuse/core';
+import { useLocalStorage } from '@vueuse/core';
 import { v4 } from 'uuid';
 import type { DeviceState } from './types';
-import { mergeExcludingUnknown } from '@/utils/data-manipulation';
+import { defuSchema } from '@/utils/data-manipulation';
 import {
   isAndroid,
   isApple,
@@ -16,14 +16,13 @@ import {
 } from '@/utils/browser-detection';
 import { version } from '@/../package.json';
 
-const state: RemovableRef<DeviceState> = useLocalStorage(
+const state = useLocalStorage<DeviceState>(
   'deviceProfile',
   {
     deviceId: v4()
   },
   {
-    mergeDefaults: (storageValue, defaults) =>
-      mergeExcludingUnknown(storageValue, defaults)
+    mergeDefaults: defuSchema
   }
 );
 
