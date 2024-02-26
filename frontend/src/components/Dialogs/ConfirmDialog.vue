@@ -79,8 +79,8 @@ const model = computed({
  * Composable for invoking confirm dialog
  * @param func - Function to run if the action is confirmed
  * @param [params] - Set the state of the component for the function invocation
- * @param [params.title] - Dialog title
- * @param [params.subtitle] - Dialog subtitle
+ * @param [params.title] - Dialog title (rendered as VCardTitle)
+ * @param [params.subtitle] - Dialog subtitle (rendered as VCardSubtitle)
  * @param [params.text] - Dialog's body
  * @param [params.confirmText] - Confirm's button text
  * @param [params.confirmColor] - Vuetify's color for the confirm button

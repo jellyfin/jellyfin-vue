@@ -479,8 +479,8 @@ class PlaybackManagerStore {
       !this._isProgressUpdating &&
       reactiveDate.value.valueOf() - this._state.lastProgressUpdate >=
       this._progressReportInterval &&
-        this.status !== PlaybackStatus.Stopped &&
-          this.status !== PlaybackStatus.Error
+      this.status !== PlaybackStatus.Stopped &&
+      this.status !== PlaybackStatus.Error
     );
   }
 
@@ -1032,12 +1032,12 @@ class PlaybackManagerStore {
       () => {
         if (
           this.status === PlaybackStatus.Playing &&
-            !mediaControls.playing.value
+          !mediaControls.playing.value
         ) {
           mediaControls.playing.value = true;
         } else if (
           this.status === PlaybackStatus.Paused &&
-            mediaControls.playing.value
+          mediaControls.playing.value
         ) {
           mediaControls.playing.value = false;
         }
@@ -1168,7 +1168,7 @@ class PlaybackManagerStore {
     watchEffect(() => {
       const remove =
         this.status === PlaybackStatus.Error ||
-          this.status === PlaybackStatus.Stopped;
+        this.status === PlaybackStatus.Stopped;
 
       if (
         window.navigator.mediaSession &&
@@ -1263,7 +1263,7 @@ class PlaybackManagerStore {
     watchEffect(async () => {
       if (
         this._pendingProgressReport &&
-          this.status !== PlaybackStatus.Buffering
+        this.status !== PlaybackStatus.Buffering
       ) {
         await this._reportPlaybackProgress();
       }
@@ -1285,7 +1285,7 @@ class PlaybackManagerStore {
     watch(mediaControls.playing, () => {
       if (
         this.status !== PlaybackStatus.Buffering &&
-          !this.isRemotePlayer
+        !this.isRemotePlayer
       ) {
         this._state.status = mediaControls.playing.value
           ? PlaybackStatus.Playing
