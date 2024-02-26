@@ -11,9 +11,9 @@ import { merge } from 'lodash-es';
 import SDK, { useOneTimeAPI } from '../sdk/sdk-utils';
 import type { AuthState, ServerInfo } from './types';
 import { isAxiosError, isNil } from '@/utils/validation';
+import { mergeExcludingUnknown } from '@/utils/data-manipulation';
 import { i18n } from '@/plugins/i18n';
 import { useSnackbar } from '@/composables/use-snackbar';
-import { defuSchema } from '@/utils/data-manipulation';
 
 class RemotePluginAuth {
   /**
@@ -30,7 +30,8 @@ class RemotePluginAuth {
       accessTokens: {}
     },
     {
-      mergeDefaults: defuSchema
+      mergeDefaults: (storageValue, defaults) =>
+        mergeExcludingUnknown(storageValue, defaults)
     }
   );
   /**

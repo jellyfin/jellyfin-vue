@@ -1,4 +1,4 @@
-import { defu } from 'defu';
+import { defaultsDeep } from 'lodash-es';
 import { reactive } from 'vue';
 import type {
   RouteLocationNormalized,
@@ -41,7 +41,7 @@ export function metaGuard(
   to: RouteLocationNormalized,
   from: RouteLocationNormalized
 ): boolean | RouteLocationRaw {
-  to.meta = reactive<RouteMeta>(defu(to.meta, defaultMeta));
+  to.meta = reactive<RouteMeta>(defaultsDeep(to.meta, defaultMeta));
 
   if (from.meta.transition?.leave) {
     if (to.meta.transition) {

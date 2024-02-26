@@ -1,9 +1,9 @@
-import { useSessionStorage } from '@vueuse/core';
+import { useSessionStorage, type RemovableRef } from '@vueuse/core';
 import { v4 } from 'uuid';
 import { watch } from 'vue';
 import { remote } from '@/plugins/remote';
 import { apiStore } from '@/store/api';
-import { defuSchema } from '@/utils/data-manipulation';
+import { mergeExcludingUnknown } from '@/utils/data-manipulation';
 import { isArray, isObj, isStr } from '@/utils/validation';
 
 /**
@@ -57,11 +57,12 @@ class TaskManagerStore {
     finishedTasksTimeout: 5000
   };
 
-  private readonly _state = useSessionStorage<TaskManagerState>(
+  private readonly _state: RemovableRef<TaskManagerState> = useSessionStorage(
     this._storeKey,
     structuredClone(this._defaultState),
     {
-      mergeDefaults: defuSchema
+      mergeDefaults: (storageValue, defaults) =>
+        mergeExcludingUnknown(storageValue, defaults)
     }
   );
   /**
