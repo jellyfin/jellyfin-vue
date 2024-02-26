@@ -17,7 +17,7 @@ edition = "2021"
 tauri-build = { version = "=1.5.1", features = [] }
 
 [dependencies]
-tauri = { version = "=1.5.4", features = ["api-all"] }
+tauri = { version = "=1.6.0", features = ["api-all"] }
 
 [features]
 default = ["custom-protocol"]
