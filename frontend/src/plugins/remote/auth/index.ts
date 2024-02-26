@@ -6,7 +6,7 @@ import {
 import type { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
 import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
-import { useStorage } from '@vueuse/core';
+import { useLocalStorage } from '@vueuse/core';
 import { merge } from 'lodash-es';
 import SDK, { useOneTimeAPI } from '../sdk/sdk-utils';
 import type { AuthState, ServerInfo } from './types';
@@ -19,7 +19,7 @@ class RemotePluginAuth {
   /**
    * == STATE ==
    */
-  private _state = useStorage<AuthState>(
+  private _state = useLocalStorage<AuthState>(
     'auth',
     {
       servers: [],
@@ -29,7 +29,6 @@ class RemotePluginAuth {
       rememberMe: true,
       accessTokens: {}
     },
-    localStorage,
     {
       mergeDefaults: (storageValue, defaults) =>
         mergeExcludingUnknown(storageValue, defaults)

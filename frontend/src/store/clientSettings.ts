@@ -1,7 +1,7 @@
 import {
   useNavigatorLanguage,
   usePreferredDark,
-  useStorage,
+  useLocalStorage,
   watchPausable,
   type RemovableRef
 } from '@vueuse/core';
@@ -31,6 +31,13 @@ class ClientSettingsStore {
    * == NON REACTIVE STATE AND UTILITY VARIABLES ==
    */
   private readonly _storeKey = 'clientSettings';
+  private readonly _defaultState: ClientSettingsState = {
+    darkMode: 'auto',
+    locale: 'auto'
+  };
+  /**
+   * == STATE SECTION ==
+   */
   private readonly _browserPrefersDark = usePreferredDark();
   private readonly _navigatorLanguage = useNavigatorLanguage();
   private readonly _BROWSER_LANGUAGE = computed<string>(() => {
@@ -42,18 +49,10 @@ class ClientSettingsStore {
 
     return cleanString[0];
   });
-  /**
-   * == STATE SECTION ==
-   */
-  private readonly _defaultState: ClientSettingsState = {
-    darkMode: 'auto',
-    locale: 'auto'
-  };
 
-  private readonly _state: RemovableRef<ClientSettingsState> = useStorage(
+  private readonly _state: RemovableRef<ClientSettingsState> = useLocalStorage(
     this._storeKey,
     structuredClone(this._defaultState),
-    localStorage,
     {
       mergeDefaults: (storageValue, defaults) =>
         mergeExcludingUnknown(storageValue, defaults)

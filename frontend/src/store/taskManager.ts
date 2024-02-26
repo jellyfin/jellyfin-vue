@@ -1,4 +1,4 @@
-import { useStorage, type RemovableRef } from '@vueuse/core';
+import { useSessionStorage, type RemovableRef } from '@vueuse/core';
 import { v4 } from 'uuid';
 import { watch } from 'vue';
 import { remote } from '@/plugins/remote';
@@ -57,10 +57,9 @@ class TaskManagerStore {
     finishedTasksTimeout: 5000
   };
 
-  private readonly _state: RemovableRef<TaskManagerState> = useStorage(
+  private readonly _state: RemovableRef<TaskManagerState> = useSessionStorage(
     this._storeKey,
     structuredClone(this._defaultState),
-    sessionStorage,
     {
       mergeDefaults: (storageValue, defaults) =>
         mergeExcludingUnknown(storageValue, defaults)
