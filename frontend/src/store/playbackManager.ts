@@ -19,7 +19,7 @@ import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getMediaInfoApi } from '@jellyfin/sdk/lib/utils/api/media-info-api';
 import { getPlaystateApi } from '@jellyfin/sdk/lib/utils/api/playstate-api';
 import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
-import { useEventListener } from '@vueuse/core';
+import { useEventListener, useThrottleFn } from '@vueuse/core';
 import { shuffle } from 'lodash-es';
 import { v4 } from 'uuid';
 import { reactive, watch, watchEffect } from 'vue';
@@ -33,7 +33,7 @@ import { getImageInfo } from '@/utils/images';
 import { getItemRuntime } from '@/utils/items';
 import playbackProfile from '@/utils/playback-profiles';
 import { msToTicks } from '@/utils/time';
-import { mediaControls, now as reactiveDate } from '@/store';
+import { mediaControls } from '@/store';
 
 /**
  * == INTERFACES AND TYPES ==
@@ -84,7 +84,6 @@ interface PlaybackManagerState {
   currentAudioStreamIndex: number | undefined;
   currentSubtitleStreamIndex: number | undefined;
   remotePlaybackTime: number;
-  lastProgressUpdate: number;
   remoteCurrentVolume: number;
   isRemotePlayer: boolean;
   isRemoteMuted: boolean;
@@ -104,7 +103,6 @@ class PlaybackManagerStore {
   /**
    * == NON REACTIVE STATE AND UTILITY VARIABLES ==
    */
-  private _isProgressUpdating = false;
   /**
    * Amount of time to wait between playback reports
    */
@@ -126,7 +124,6 @@ class PlaybackManagerStore {
     currentAudioStreamIndex: undefined,
     currentSubtitleStreamIndex: undefined,
     remotePlaybackTime: 0,
-    lastProgressUpdate: 0,
     remoteCurrentVolume: 100,
     isRemotePlayer: false,
     isRemoteMuted: false,
@@ -474,16 +471,6 @@ class PlaybackManagerStore {
     }
   }
 
-  private get _pendingProgressReport(): boolean {
-    return (
-      !this._isProgressUpdating &&
-      reactiveDate.value.valueOf() - this._state.lastProgressUpdate >=
-      this._progressReportInterval &&
-      this.status !== PlaybackStatus.Stopped &&
-      this.status !== PlaybackStatus.Error
-    );
-  }
-
   /**
    * == ACTIONS ==
    */
@@ -491,25 +478,19 @@ class PlaybackManagerStore {
    * Report current item playback progress to server
    */
   private readonly _reportPlaybackProgress = async (): Promise<void> => {
-    this._isProgressUpdating = true;
-
-    try {
-      if (!isNil(this.currentTime) && !isNil(this.currentItem)) {
-        await remote.sdk.newUserApi(getPlaystateApi).reportPlaybackProgress({
-          playbackProgressInfo: {
-            ItemId: this.currentItem.Id,
-            PlaySessionId: this._state.playSessionId,
-            IsPaused: this.isPaused,
-            PositionTicks: Math.round(msToTicks(this.currentTime * 1000))
-          }
-        });
-
-        this._state.lastProgressUpdate = Date.now();
-      }
-    } finally {
-      this._isProgressUpdating = false;
+    if (!isNil(this.currentTime) && !isNil(this.currentItem)) {
+      await remote.sdk.newUserApi(getPlaystateApi).reportPlaybackProgress({
+        playbackProgressInfo: {
+          ItemId: this.currentItem.Id,
+          PlaySessionId: this._state.playSessionId,
+          IsPaused: this.isPaused,
+          PositionTicks: Math.round(msToTicks(this.currentTime * 1000))
+        }
+      });
     }
   };
+
+  private readonly _reportPlaybackProgressThrottled = useThrottleFn(this._reportPlaybackProgress, this._progressReportInterval);
 
   /**
    * Report playback stopped to the server. Used by the "Now playing" statistics in other clients.
@@ -517,50 +498,31 @@ class PlaybackManagerStore {
   private readonly _reportPlaybackStopped = async (
     itemId: string,
     sessionId = this._state.playSessionId,
-    currentTime = this.currentTime,
-    updateState = true
+    currentTime = this.currentTime
   ): Promise<void> => {
-    this._isProgressUpdating = true;
-
-    try {
-      await remote.sdk.newUserApi(getPlaystateApi).reportPlaybackStopped({
-        playbackStopInfo: {
-          ItemId: itemId,
-          PlaySessionId: sessionId,
-          PositionTicks: msToTicks((currentTime || 0) * 1000)
-        }
-      });
-
-      if (updateState) {
-        this._state.lastProgressUpdate = Date.now();
+    await remote.sdk.newUserApi(getPlaystateApi).reportPlaybackStopped({
+      playbackStopInfo: {
+        ItemId: itemId,
+        PlaySessionId: sessionId,
+        PositionTicks: msToTicks((currentTime || 0) * 1000)
       }
-    } finally {
-      this._isProgressUpdating = false;
-    }
+    });
   };
 
   /**
    * Report playback start to the server. Used by the "Now playing" statistics in other clients.
    */
   private readonly _reportPlaybackStart = async (itemId: string): Promise<void> => {
-    this._isProgressUpdating = true;
-
-    try {
-      await remote.sdk.newUserApi(getPlaystateApi).reportPlaybackStart({
-        playbackStartInfo: {
-          CanSeek: true,
-          ItemId: itemId,
-          PlaySessionId: this._state.playSessionId,
-          MediaSourceId: this._state.currentMediaSource?.Id,
-          AudioStreamIndex: this._state.currentAudioStreamIndex,
-          SubtitleStreamIndex: this._state.currentSubtitleStreamIndex
-        }
-      });
-
-      this._state.lastProgressUpdate = Date.now();
-    } finally {
-      this._isProgressUpdating = false;
-    }
+    await remote.sdk.newUserApi(getPlaystateApi).reportPlaybackStart({
+      playbackStartInfo: {
+        CanSeek: true,
+        ItemId: itemId,
+        PlaySessionId: this._state.playSessionId,
+        MediaSourceId: this._state.currentMediaSource?.Id,
+        AudioStreamIndex: this._state.currentAudioStreamIndex,
+        SubtitleStreamIndex: this._state.currentSubtitleStreamIndex
+      }
+    });
   };
 
   public readonly addToQueue = async (item: BaseItemDto): Promise<void> => {
@@ -756,7 +718,7 @@ class PlaybackManagerStore {
     window.setTimeout(async () => {
       try {
         if (sessionId && itemId && time && remote.auth.currentUser) {
-          await this._reportPlaybackStopped(itemId, sessionId, time, false);
+          await this._reportPlaybackStopped(itemId, sessionId, time);
         }
       } catch {}
     });
@@ -1125,7 +1087,7 @@ class PlaybackManagerStore {
     });
     watch(
       () => this.status,
-      (newValue, oldValue) => {
+      async (newValue, oldValue) => {
         const remove =
           newValue === PlaybackStatus.Error ||
           newValue === PlaybackStatus.Stopped;
@@ -1162,6 +1124,8 @@ class PlaybackManagerStore {
               );
             }
           }
+
+          await this._reportPlaybackProgress();
         }
       }
     );
@@ -1260,14 +1224,7 @@ class PlaybackManagerStore {
       }
     }, { flush: 'sync' });
 
-    watchEffect(async () => {
-      if (
-        this._pendingProgressReport &&
-        this.status !== PlaybackStatus.Buffering
-      ) {
-        await this._reportPlaybackProgress();
-      }
-    }, { flush: 'sync' });
+    watch(() => this.currentTime, this._reportPlaybackProgressThrottled);
 
     /**
      * Report playback stop when closing the tab
