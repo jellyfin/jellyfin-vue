@@ -1,5 +1,4 @@
 import * as vuetifyLocales from 'virtual:locales/vuetify';
-import { defaultRtl } from 'virtual:locales/vuetify/rtl';
 import { createVuetify, type ThemeDefinition } from 'vuetify';
 import { md3 } from 'vuetify/blueprints';
 import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
@@ -79,8 +78,7 @@ export const vuetify = createVuetify({
   },
   locale: {
     fallback: 'en',
-    messages: vuetifyLocales,
-    rtl: defaultRtl
+    messages: vuetifyLocales
   },
   theme: {
     themes: {
