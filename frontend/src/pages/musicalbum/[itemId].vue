@@ -106,7 +106,7 @@
 import { ImageType } from '@jellyfin/sdk/lib/generated-client';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
-import { useRoute } from 'vue-router/auto';
+import { useRoute } from 'vue-router';
 import { getItemDetailsLink } from '@/utils/items';
 import { getBlurhash } from '@/utils/images';
 import { useBaseItem } from '@/composables/apis';

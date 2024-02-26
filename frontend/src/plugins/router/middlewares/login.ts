@@ -2,7 +2,7 @@ import type {
   RouteLocationNormalized,
   RouteLocationPathRaw,
   RouteLocationRaw
-} from 'vue-router/auto';
+} from 'vue-router';
 import { effectScope, watch } from 'vue';
 import { remote } from '@/plugins/remote';
 import { isNil } from '@/utils/validation';

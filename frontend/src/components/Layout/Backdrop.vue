@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useRoute } from 'vue-router/auto';
+import { useRoute } from 'vue-router';
 
 const route = useRoute();
 const blurhash = computed(() => route.meta.backdrop?.blurhash);

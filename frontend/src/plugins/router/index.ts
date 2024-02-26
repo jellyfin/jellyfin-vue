@@ -5,7 +5,6 @@ import {
   createWebHashHistory,
   createWebHistory
 } from 'vue-router';
-import type { RouterTyped } from 'vue-router/auto';
 import { remote } from '../remote';
 import { adminGuard } from './middlewares/admin-pages';
 import { loginGuard } from './middlewares/login';
@@ -26,7 +25,7 @@ export const router = createRouter({
   scrollBehavior(_to, _from, savedPosition) {
     return savedPosition ?? { top: 0 };
   }
-}) as RouterTyped;
+});
 
 /**
  * Middleware pipeline: The order IS IMPORTANT (meta handling should always go first)

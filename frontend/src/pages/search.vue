@@ -83,7 +83,7 @@ import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getPersonsApi } from '@jellyfin/sdk/lib/utils/api/persons-api';
 import { refDebounced } from '@vueuse/core';
 import { computed, shallowRef } from 'vue';
-import { useRoute } from 'vue-router/auto';
+import { useRoute } from 'vue-router';
 import { apiStore } from '@/store/api';
 import { useResponsiveClasses } from '@/composables/use-responsive-classes';
 import { useBaseItem } from '@/composables/apis';

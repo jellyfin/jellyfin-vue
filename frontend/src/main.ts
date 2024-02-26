@@ -5,7 +5,7 @@
  */
 
 import { createApp } from 'vue';
-import { routes } from 'vue-router/auto/routes';
+import { routes } from 'vue-router/auto-routes';
 import Root from '@/App.vue';
 import { hideDirective } from '@/plugins/directives';
 import { vuePlugin as i18n } from '@/plugins/i18n';

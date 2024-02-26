@@ -72,7 +72,7 @@ import { getPersonsApi } from '@jellyfin/sdk/lib/utils/api/persons-api';
 import { getStudiosApi } from '@jellyfin/sdk/lib/utils/api/studios-api';
 import { computed, onBeforeMount, ref, shallowRef } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router/auto';
+import { useRoute } from 'vue-router';
 import { apiStore } from '@/store/api';
 import { methodsAsObject, useBaseItem } from '@/composables/apis';
 import type { Filters } from '@/components/Buttons/FilterButton.vue';

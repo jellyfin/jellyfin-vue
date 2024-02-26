@@ -35,7 +35,7 @@ const excludeViewTypes = new Set([
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router/auto';
+import { useRoute } from 'vue-router';
 import { isNil } from '@/utils/validation';
 import { CardShapes, fetchIndexPage, getShapeFromCollectionType } from '@/utils/items';
 

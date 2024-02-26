@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute, type RouteMeta } from 'vue-router/auto';
+import { useRoute, type RouteMeta } from 'vue-router';
 import { prefersNoMotion } from '@/store';
 
 const route = useRoute();

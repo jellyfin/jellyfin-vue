@@ -30,7 +30,7 @@ import IMdiTelevisionClassic from 'virtual:icons/mdi/television-classic';
 import IMdiYoutube from 'virtual:icons/mdi/youtube';
 import IMdiYoutubeTV from 'virtual:icons/mdi/youtube-tv';
 import { effectScope, watch, type ComputedRef } from 'vue';
-import type { RouteNamedMap } from 'vue-router/auto/routes';
+import type { RouteNamedMap } from 'vue-router/auto-routes';
 import { ticksToMs } from './time';
 import { isNil } from '@/utils/validation';
 import { router } from '@/plugins/router';

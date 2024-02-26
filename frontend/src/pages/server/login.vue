@@ -101,7 +101,7 @@ import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
 import { isEmpty } from 'lodash-es';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute, useRouter } from 'vue-router/auto';
+import { useRoute, useRouter } from 'vue-router';
 import { remote } from '@/plugins/remote';
 import { getJSONConfig } from '@/utils/external-config';
 
