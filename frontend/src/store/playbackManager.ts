@@ -477,7 +477,7 @@ class PlaybackManagerStore {
   /**
    * Report current item playback progress to server
    */
-  private readonly _reportPlaybackProgress = useThrottleFn(async (): Promise<void> => {
+  private readonly _reportPlaybackProgress = async (): Promise<void> => {
     if (!isNil(this.currentTime) && !isNil(this.currentItem)) {
       await remote.sdk.newUserApi(getPlaystateApi).reportPlaybackProgress({
         playbackProgressInfo: {
@@ -488,7 +488,9 @@ class PlaybackManagerStore {
         }
       });
     }
-  }, this._progressReportInterval);
+  };
+
+  private readonly _reportPlaybackProgressThrottled = useThrottleFn(this._reportPlaybackProgress, this._progressReportInterval);
 
   /**
    * Report playback stopped to the server. Used by the "Now playing" statistics in other clients.
@@ -1085,7 +1087,7 @@ class PlaybackManagerStore {
     });
     watch(
       () => this.status,
-      (newValue, oldValue) => {
+      async (newValue, oldValue) => {
         const remove =
           newValue === PlaybackStatus.Error ||
           newValue === PlaybackStatus.Stopped;
@@ -1122,6 +1124,8 @@ class PlaybackManagerStore {
               );
             }
           }
+
+          await this._reportPlaybackProgress();
         }
       }
     );
@@ -1220,7 +1224,7 @@ class PlaybackManagerStore {
       }
     }, { flush: 'sync' });
 
-    watch(() => this.currentTime, this._reportPlaybackProgress);
+    watch(() => this.currentTime, this._reportPlaybackProgressThrottled);
 
     /**
      * Report playback stop when closing the tab
