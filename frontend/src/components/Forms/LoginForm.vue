@@ -20,7 +20,7 @@
         :label="$t('password')"
         :append-inner-icon="showPassword ? IconEyeOff : IconEye"
         :type="showPassword ? 'text' : 'password'"
-        @click:append="() => (showPassword = !showPassword)" />
+        @click:append-inner="() => (showPassword = !showPassword)" />
       <VCheckbox
         v-model="login.rememberMe"
         hide-details
