@@ -5,7 +5,6 @@
  * an agnostic way, regardless of where the media is being played (remotely or locally)
  */
 import JASSUB from 'jassub';
-import jassubDefaultFont from 'jassub/dist/default.woff2?url';
 import jassubWorker from 'jassub/dist/jassub-worker.js?url';
 import jassubWasmUrl from 'jassub/dist/jassub-worker.wasm?url';
 import { nextTick, reactive, watch } from 'vue';
@@ -98,10 +97,12 @@ class PlayerElementStore {
         fonts: attachedFonts,
         workerUrl: jassubWorker,
         wasmUrl: jassubWasmUrl,
-        availableFonts: { 'liberation sans': jassubDefaultFont },
+        fallbackFont: 'InterVariable',
         // Both parameters needed for subs to work on iOS
         prescaleFactor: 0.8,
-        onDemandRender: false
+        onDemandRender: false,
+        // OffscreenCanvas doesn't work perfectly on Workers: https://github.com/ThaUnknown/jassub/issues/33
+        offscreenRender: false
       });
     } else if (jassub) {
       if (isArray(attachedFonts)) {

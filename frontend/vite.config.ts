@@ -12,6 +12,9 @@ import {
   VueUseDirectiveResolver
 } from 'unplugin-vue-components/resolvers';
 import Components from 'unplugin-vue-components/vite';
+import RadixVueResolver from 'radix-vue/resolver';
+import UnoCSS from 'unocss/vite';
+import { presetUno } from 'unocss';
 import VueRouter from 'unplugin-vue-router/vite';
 import { defineConfig, type UserConfig } from 'vite';
 import { entrypoints, localeFilesFolder, srcRoot } from './scripts/paths';
@@ -41,7 +44,10 @@ export default defineConfig(({ mode }): UserConfig => {
           IconsResolver(),
           VueUseComponentsResolver(),
           Vuetify3Resolver(),
-          VueUseDirectiveResolver()
+          VueUseDirectiveResolver(),
+          RadixVueResolver({
+            prefix: 'R'
+          })
         ]
       }),
       /**
@@ -57,6 +63,11 @@ export default defineConfig(({ mode }): UserConfig => {
         fullInstall: false,
         forceStringify: true,
         include: localeFilesFolder
+      }),
+      UnoCSS({
+        presets: [
+          presetUno()
+        ]
       })
     ],
     build: {

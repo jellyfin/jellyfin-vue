@@ -11,7 +11,6 @@
         <div
           :class="useResponsiveClasses('slide-backdrop')"
           data-swiper-parallax="-100">
-          <div class="default-icon" />
           <BlurhashImage
             :key="`${item.Id}-image`"
             :item="getRelatedItem(item)"
