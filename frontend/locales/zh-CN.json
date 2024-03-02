@@ -96,6 +96,7 @@
   "disc": "碟片",
   "discNumber": "碟片 {discNumber}",
   "discography": "唱片目录",
+  "dlna": "DLNA",
   "dlnaSettingsDescription": "配置DLNA设置和配置文件",
   "editMetadata": "编辑元数据",
   "editPerson": "编辑人物",
