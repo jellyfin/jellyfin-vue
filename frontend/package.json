@@ -38,9 +38,9 @@
     "swiper": "11.0.7",
     "uuid": "9.0.1",
     "vue": "3.4.21",
-    "vue-i18n": "9.9.1",
+    "vue-i18n": "9.10.1",
     "vue-router": "4.3.0",
-    "vuetify": "3.5.6"
+    "vuetify": "3.5.7"
   },
   "devDependencies": {
     "@iconify/json": "2.2.188",
