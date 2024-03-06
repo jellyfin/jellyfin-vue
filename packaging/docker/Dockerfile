@@ -13,11 +13,8 @@ COPY .git /app/.git
 COPY frontend /app/frontend
 WORKDIR /app/frontend
 
-# Install dependencies
-RUN npm ci --no-audit
-
 # Build client
-RUN COMMIT_HASH=$(git rev-parse HEAD) npm run build
+RUN npm ci --no-audit && COMMIT_HASH=$(git rev-parse HEAD) npm run build
 
 # Deploy built distribution to nginx
 FROM nginx:stable-alpine-slim
@@ -34,4 +31,3 @@ EXPOSE 80
 # Set labels
 LABEL maintainer="Jellyfin Packaging Team - packaging@jellyfin.org"
 LABEL org.opencontainers.image.source="https://github.com/jellyfin/jellyfin-vue"
-LABEL org.opencontainers.image.description="Commit: ${COMMIT_HASH}"
