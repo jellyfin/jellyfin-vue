@@ -52,7 +52,7 @@
     "@stylistic/eslint-plugin": "1.6.3",
     "@types/dompurify": "3.0.5",
     "@types/lodash-es": "4.17.12",
-    "@types/node": "20.11.24",
+    "@types/node": "20.11.25",
     "@types/sortablejs": "1.15.8",
     "@types/uuid": "9.0.8",
     "@typescript-eslint/eslint-plugin": "7.1.1",
@@ -80,7 +80,7 @@
     "lightningcss": "1.24.0",
     "rollup-plugin-visualizer": "5.12.0",
     "sass": "1.71.1",
-    "typescript": "5.3.3",
+    "typescript": "5.4.2",
     "typescript-eslint-parser-for-extra-files": "0.6.0",
     "unocss": "0.58.5",
     "unplugin-icons": "0.18.5",
@@ -88,6 +88,6 @@
     "unplugin-vue-router": "0.8.4",
     "vite": "5.1.5",
     "vue-eslint-parser": "9.4.2",
-    "vue-tsc": "2.0.4"
+    "vue-tsc": "2.0.6"
   }
 }
