@@ -259,6 +259,22 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
     const normalizeArgs = (): Parameters<T[K]> => args.map((a) => toValue(a)) as Parameters<T[K]>;
     const runNormally = async (): Promise<void> => await run({});
     const runWithRetry = async (): Promise<void> => await run({ onlyPending: true });
+    const returnablePromise = async (): Promise<ReturnPayload<T, K, typeof ofBaseItem>> => {
+      const scope = effectScope();
+
+      await runNormally();
+
+      return new Promise((resolve) => {
+        scope.run(() => {
+          watch(isCached, () => {
+            if (isCached.value && !ops.skipCache.request) {
+              scope.stop();
+              resolve({ loading, data });
+            }
+          }, { immediate: true, flush: 'sync' });
+        });
+      });
+    };
 
     argsRef.value = normalizeArgs();
 
@@ -293,25 +309,12 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
     }
 
     if (!isCached.value && isFuncDefined()) {
-      const scope = effectScope();
-
       /**
        * Wait for the cache to be populated before resolving the promise
        * If the promise never resolves (and the component never gets mounted),
        * the problem is that there is an issue in your logic, not in this composable.
        */
-      // eslint-disable-next-line no-async-promise-executor
-      return new Promise(async (resolve) => {
-        await runNormally();
-        scope.run(() => {
-          watch(isCached, () => {
-            if (isCached.value && !ops.skipCache.request) {
-              scope.stop();
-              resolve({ loading, data });
-            }
-          }, { immediate: true, flush: 'sync' });
-        });
-      });
+      return returnablePromise();
     }
 
     return { loading, data };
