@@ -16,8 +16,16 @@ import { vuetify } from '@/plugins/vuetify';
 /**
  * - GLOBAL STYLES -
  */
+import 'inter-ui/inter-variable.css';
+/**
+ * TODO: Re-enable once Vuetify is gone
+ */
+/*
+ * import 'uno.css';
+ * import 'virtual:unocss-devtools';
+ */
+import '@unocss/reset/tailwind.css';
 import '@/assets/styles/global.scss';
-import '@fontsource/roboto';
 
 /**
  * - VUE PLUGINS, STORE AND DIRECTIVE -

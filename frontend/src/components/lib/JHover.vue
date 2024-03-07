@@ -1,10 +1,10 @@
 <template>
-  <JSlot
+  <RSlot
     @mouseenter="isHovering = true"
     @mouseleave="isHovering = false">
     <slot
       :is-hovering="isHovering" />
-  </JSlot>
+  </RSlot>
 </template>
 
 <script setup lang="ts">
