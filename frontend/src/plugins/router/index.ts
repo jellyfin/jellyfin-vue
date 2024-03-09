@@ -31,7 +31,6 @@ export const router = createRouter({
  * Middleware pipeline: The order IS IMPORTANT (meta handling should always go first)
  *
  * Route-specific guards should be defined in the route itself, not here.
- * See the playback pages for an example of this.
  */
 router.beforeEach(metaGuard);
 router.beforeEach(loginGuard);

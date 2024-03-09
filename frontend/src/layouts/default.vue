@@ -11,8 +11,7 @@
   <AudioControls />
   <PiPVideoPlayer
     v-if="
-      playbackManager.currentlyPlayingMediaType === 'Video' &&
-        !playerElement.isFullscreenVideoPlayer
+      playbackManager.currentlyPlayingMediaType === 'Video'
     " />
 </template>
 
@@ -22,7 +21,6 @@ import { computed, onBeforeMount, onUnmounted, provide, ref, watch } from 'vue';
 import { useDisplay } from 'vuetify';
 import type { DrawerItem } from '@/components/Layout/Navigation/NavigationDrawer.vue';
 import { playbackManager } from '@/store/playback-manager';
-import { playerElement } from '@/store/player-element';
 import { fetchIndexPage, getLibraryIcon } from '@/utils/items';
 
 const display = useDisplay();
