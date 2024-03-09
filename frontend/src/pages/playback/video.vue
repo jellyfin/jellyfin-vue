@@ -220,6 +220,8 @@ watch(staticOverlay, (val) => {
 .fullscreen-video-container {
   background: black;
   display: flex;
+  height: 100vh !important;
+  justify-content: center;
 }
 
 .controls-wrapper {
