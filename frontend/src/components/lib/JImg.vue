@@ -74,6 +74,7 @@ watchImmediate(() => props.src, () => {
 .j-img {
   width: 100%;
   height: 100%;
+  object-fit: cover;
 }
 
 div.j-img {
