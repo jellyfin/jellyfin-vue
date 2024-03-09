@@ -37,7 +37,7 @@ class PlayerElementStore {
   private readonly _defaultState: PlayerElementState = {
     isFullscreenMounted: false,
     isPiPMounted: false,
-    isStretched: true
+    isStretched: false
   };
 
   private readonly _state = reactive<PlayerElementState>(
