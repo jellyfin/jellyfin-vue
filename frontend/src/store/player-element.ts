@@ -7,16 +7,12 @@
 import JASSUB from 'jassub';
 import jassubWorker from 'jassub/dist/jassub-worker.js?url';
 import jassubWasmUrl from 'jassub/dist/jassub-worker.wasm?url';
-import { nextTick, reactive, watch } from 'vue';
+import { computed, nextTick, reactive, watch } from 'vue';
 import { playbackManager } from './playback-manager';
 import { isArray, isNil, sealed } from '@/utils/validation';
 import { mediaElementRef } from '@/store';
 import { router } from '@/plugins/router';
 import { remote } from '@/plugins/remote';
-
-let jassub: JASSUB | undefined;
-const fullscreenVideoRoute = '/playback/video';
-const fullscreenMusicRoute = '/playback/music';
 
 /**
  * == INTERFACES AND TYPES ==
@@ -33,6 +29,11 @@ interface PlayerElementState {
 @sealed
 class PlayerElementStore {
   /**
+   * == NON REACTIVE STATE ==
+   */
+  private readonly _fullscreenVideoRoute = '/playback/video';
+  private _jassub: JASSUB | undefined;
+  /**
    * == STATE SECTION ==
    */
   private readonly _defaultState: PlayerElementState = {
@@ -47,52 +48,49 @@ class PlayerElementStore {
   /**
    * == GETTERS AND SETTERS ==
    */
-  public get isFullscreenMounted(): boolean {
-    return this._state.isFullscreenMounted;
-  }
+  public readonly isFullscreenMounted = computed({
+    get: () => this._state.isFullscreenMounted,
+    set: (newVal: boolean) => {
+      this._state.isFullscreenMounted = newVal;
+    }
+  });
 
-  public set isFullscreenMounted(newIsMounted: boolean) {
-    this._state.isFullscreenMounted = newIsMounted;
-  }
+  public readonly isPiPMounted = computed({
+    get: () => this._state.isPiPMounted,
+    set: (newVal: boolean) => {
+      this._state.isPiPMounted = newVal;
+    }
+  });
 
-  public get isPiPMounted(): boolean {
-    return this._state.isPiPMounted;
-  }
+  public readonly isStretched = computed({
+    get: () => this._state.isStretched,
+    set: (newVal: boolean) => {
+      this._state.isStretched = newVal;
+    }
+  });
 
-  public set isPiPMounted(newIsPipMounted: boolean) {
-    this._state.isPiPMounted = newIsPipMounted;
-  }
-
-  public get isStretched(): boolean {
-    return this._state.isStretched;
-  }
-
-  public set isStretched(newIsStretched: boolean) {
-    this._state.isStretched = newIsStretched;
-  }
-
-  public get isFullscreenVideoPlayer(): boolean {
-    return router.currentRoute.value.fullPath === fullscreenVideoRoute;
-  }
+  public readonly isFullscreenVideoPlayer = computed(
+    () => router.currentRoute.value.fullPath === this._fullscreenVideoRoute
+  );
 
   /**
    * == ACTIONS ==
    */
   public readonly toggleFullscreenVideoPlayer = async (): Promise<void> => {
-    if (this.isFullscreenVideoPlayer) {
+    if (this.isFullscreenVideoPlayer.value) {
       router.back();
     } else {
-      await router.push(fullscreenVideoRoute);
+      await router.push(this._fullscreenVideoRoute);
     }
   };
 
   private readonly _setSsaTrack = (trackSrc: string, attachedFonts?: string[]): void => {
     if (
-      !jassub &&
+      !this._jassub &&
       mediaElementRef.value &&
       mediaElementRef.value instanceof HTMLVideoElement
     ) {
-      jassub = new JASSUB({
+      this._jassub = new JASSUB({
         video: mediaElementRef.value,
         subUrl: trackSrc,
         fonts: attachedFonts,
@@ -105,24 +103,24 @@ class PlayerElementStore {
         // OffscreenCanvas doesn't work perfectly on Workers: https://github.com/ThaUnknown/jassub/issues/33
         offscreenRender: false
       });
-    } else if (jassub) {
+    } else if (this._jassub) {
       if (isArray(attachedFonts)) {
         for (const font of attachedFonts) {
-          jassub.addFont(font);
+          this._jassub.addFont(font);
         }
       }
 
-      jassub.setTrackByUrl(trackSrc);
+      this._jassub.setTrackByUrl(trackSrc);
     }
   };
 
   public readonly freeSsaTrack = (): void => {
-    if (jassub) {
+    if (this._jassub) {
       try {
-        jassub.destroy();
+        this._jassub.destroy();
       } catch {}
 
-      jassub = undefined;
+      this._jassub = undefined;
     }
   };
 
@@ -212,15 +210,7 @@ class PlayerElementStore {
     watch(
       () => playbackManager.currentItem,
       async (newValue, oldValue) => {
-        const currentFullPath = router.currentRoute.value.fullPath;
-
         if (
-          !newValue &&
-          (currentFullPath.includes(fullscreenMusicRoute) ||
-          currentFullPath.includes(fullscreenVideoRoute))
-        ) {
-          router.back();
-        } else if (
           newValue &&
           !oldValue &&
           playbackManager.currentlyPlayingMediaType === 'Video'

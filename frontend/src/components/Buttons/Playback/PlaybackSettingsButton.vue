@@ -75,7 +75,7 @@
               :cols="8"
               class="text-right">
               <VSwitch
-                v-model="stretched"
+                v-model="playerElement.isStretched.value"
                 color="primary"
                 hide-details />
             </VCol>
@@ -87,19 +87,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import { playbackManager } from '@/store/playback-manager';
 import { playerElement } from '@/store/player-element';
 
 const menuModel = defineModel<boolean>();
-
-const stretched = computed({
-  get() {
-    return playerElement.isStretched;
-  },
-  set(v: boolean) {
-    playerElement.isStretched = v;
-  }
-});
 </script>
-@/store/playback-manager

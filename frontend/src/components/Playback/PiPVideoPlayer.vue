@@ -1,19 +1,18 @@
 <template>
-  <VOverlay
-    :model-value="true"
-    persistent
-    no-click-animation
-    scrim
-    scroll-strategy="none"
-    content-class="minimized-overlay"
-    :width="$vuetify.display.mobile ? '60vw' : '25vw'">
-    <JHover v-slot="{ isHovering }">
+  <JHover v-slot="{ isHovering }">
+    <VOverlay
+      :model-value="true"
+      persistent
+      no-click-animation
+      :scrim="false"
+      scroll-strategy="none"
+      content-class="minimized-overlay"
+      :width="$vuetify.display.mobile ? '60vw' : '25vw'">
       <div
         class="minimized-video-container" />
       <VOverlay
         :model-value="isHovering"
         contained
-        scrim
         height="100%"
         width="100%">
         <div class="d-flex flex-column">
@@ -40,7 +39,7 @@
               class="pointer-events-all"
               icon
               size="large"
-              @click="() => playbackManager.setPreviousItem()">
+              @click="playbackManager.setPreviousItem">
               <VIcon size="32">
                 <IMdiSkipPrevious />
               </VIcon>
@@ -67,22 +66,17 @@
           </div>
         </div>
       </VOverlay>
-    </JHover>
-  </VOverlay>
+    </VOverlay>
+  </JHover>
 </template>
 
 <script setup lang="ts">
-import { useMagicKeys, whenever } from '@vueuse/core';
 import { onBeforeUnmount, onMounted } from 'vue';
 import { playbackManager } from '@/store/playback-manager';
 import { playerElement } from '@/store/player-element';
 
-const keys = useMagicKeys();
-
-whenever(keys.f, playerElement.toggleFullscreenVideoPlayer);
-
 onMounted(() => {
-  playerElement.isPiPMounted = true;
+  playerElement.isPiPMounted.value = true;
 });
 
 onBeforeUnmount(() => {
@@ -90,7 +84,7 @@ onBeforeUnmount(() => {
    * We need to destroy JASSUB so the canvas can be recreated in the other view
    */
   playerElement.freeSsaTrack();
-  playerElement.isPiPMounted = false;
+  playerElement.isPiPMounted.value = false;
 });
 </script>
 

@@ -183,10 +183,6 @@ function handleMouseMove(): void {
 }
 
 onBeforeUnmount(() => {
-  if (playerElement.isFullscreenVideoPlayer) {
-    playbackManager.stop();
-  }
-
   /**
    * We need to destroy JASSUB so the canvas can be recreated in the other view
    */

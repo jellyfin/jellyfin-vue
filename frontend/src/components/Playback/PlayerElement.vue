@@ -12,7 +12,7 @@
         crossorigin
         playsinline
         :loop="playbackManager.isRepeatingOnce"
-        :class="{ stretched: playerElement.isStretched }"
+        :class="{ stretched: playerElement.isStretched.value }"
         @loadeddata="onLoadedData">
         <track
           v-for="sub in playbackManager.currentItemVttParsedSubtitleTracks"
@@ -88,9 +88,9 @@ const teleportTarget = computed<
 '.fullscreen-video-container' | '.minimized-video-container' | undefined
 >(() => {
   if (playbackManager.currentlyPlayingMediaType === 'Video') {
-    if (playerElement.isFullscreenMounted) {
+    if (playerElement.isFullscreenMounted.value) {
       return '.fullscreen-video-container';
-    } else if (playerElement.isPiPMounted) {
+    } else if (playerElement.isPiPMounted.value) {
       return '.minimized-video-container';
     }
   }
