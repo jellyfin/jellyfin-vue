@@ -725,13 +725,33 @@ class PlaybackManagerStore {
     });
   };
 
+  /**
+   * Seek forward 15 seconds
+   */
   public readonly skipForward = (): void => {
     this.currentTime = (this.currentTime || 0) + 15;
   };
 
+  /**
+   * Seek backwards 15 seconds
+   */
   public readonly skipBackward = (): void => {
     this.currentTime =
       (this.currentTime || 0) > 15 ? (this.currentTime || 0) - 15 : 0;
+  };
+
+  /**
+   * Increase volume by 5
+   */
+  public readonly volumeUp = (): void => {
+    this.currentVolume = this.currentVolume + 5;
+  };
+
+  /**
+   * Decrease volume by 5
+   */
+  public readonly volumeDown = (): void => {
+    this.currentVolume = this.currentVolume - 5;
   };
 
   public readonly toggleShuffle = (preserveCurrentItem = true): void => {
