@@ -306,14 +306,14 @@ import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { computed, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute } from 'vue-router/auto';
 import { getItemDetailsLink, getMediaStreams } from '@/utils/items';
 import { getBlurhash } from '@/utils/images';
 import { sanitizeHtml } from '@/utils/html';
 import { getItemizedSelect } from '@/utils/forms';
 import { useBaseItem } from '@/composables/apis';
 
-const route = useRoute<'/genre/[itemId]'>();
+const route = useRoute('/genre/[itemId]');
 
 const { data: item } = await useBaseItem(getUserLibraryApi, 'getItem')(() => ({
   itemId: route.params.itemId

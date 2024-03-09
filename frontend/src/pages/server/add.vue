@@ -23,7 +23,7 @@ meta:
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
+import { useRoute } from 'vue-router/auto';
 
 const { t } = useI18n();
 const route = useRoute();

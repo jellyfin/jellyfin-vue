@@ -176,14 +176,14 @@ import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { format } from 'date-fns';
 import { computed, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute } from 'vue-router/auto';
 import { defaultSortOrder as sortBy } from '@/utils/items';
 import { getBlurhash } from '@/utils/images';
 import { sanitizeHtml } from '@/utils/html';
 import { useDateFns } from '@/composables/use-datefns';
 import { useBaseItem } from '@/composables/apis';
 
-const route = useRoute<'/person/[itemId]'>();
+const route = useRoute('/person/[itemId]');
 
 const activeTab = ref(4);
 

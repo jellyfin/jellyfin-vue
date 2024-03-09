@@ -154,7 +154,7 @@ import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { computed, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute } from 'vue-router/auto';
 import { msToTicks } from '@/utils/time';
 import { defaultSortOrder as sortBy } from '@/utils/items';
 import { getBlurhash } from '@/utils/images';
@@ -164,7 +164,7 @@ import { useBaseItem } from '@/composables/apis';
 const SINGLE_MAX_LENGTH_MS = 600_000;
 const EP_MAX_LENGTH_MS = 1_800_000;
 
-const route = useRoute<'/artist/[itemId]'>();
+const route = useRoute('/artist/[itemId]');
 
 const activeTab = ref(0);
 

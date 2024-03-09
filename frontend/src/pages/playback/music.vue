@@ -107,7 +107,7 @@ import 'swiper/css/virtual';
 import { A11y, EffectCoverflow, Virtual } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { computed, ref, shallowRef, watchEffect } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute } from 'vue-router/auto';
 import { playbackGuard } from '@/plugins/router/middlewares/playback';
 import { playbackManager } from '@/store/playback-manager';
 import { isNil } from '@/utils/validation';
