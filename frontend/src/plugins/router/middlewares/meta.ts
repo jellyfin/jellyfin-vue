@@ -4,7 +4,7 @@ import type {
   RouteLocationNormalized,
   RouteLocationRaw,
   RouteMeta
-} from 'vue-router';
+} from 'vue-router/auto';
 
 const defaultMeta: RouteMeta = {
   layout: 'default',

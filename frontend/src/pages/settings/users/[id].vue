@@ -318,7 +318,7 @@ import { getLocalizationApi } from '@jellyfin/sdk/lib/utils/api/localization-api
 import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router/auto';
 import { remote } from '@/plugins/remote';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { useConfirmDialog } from '@/composables/use-confirm-dialog';
@@ -336,7 +336,7 @@ interface CurrentUser {
 }
 
 const { t } = useI18n();
-const route = useRoute<'/settings/users/[id]'>();
+const route = useRoute('/settings/users/[id]');
 const router = useRouter();
 
 const loading = ref<boolean>(false);

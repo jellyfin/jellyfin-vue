@@ -188,13 +188,13 @@ import {
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { computed } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute } from 'vue-router/auto';
 import { getItemDetailsLink } from '@/utils/items';
 import { getBlurhash } from '@/utils/images';
 import { sanitizeHtml } from '@/utils/html';
 import { useBaseItem } from '@/composables/apis';
 
-const route = useRoute<'/series/[itemId]'>();
+const route = useRoute('/series/[itemId]');
 
 const { data: item } = await useBaseItem(getUserLibraryApi, 'getItem')(() => ({
   itemId: route.params.itemId

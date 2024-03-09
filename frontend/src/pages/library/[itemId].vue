@@ -72,13 +72,13 @@ import { getPersonsApi } from '@jellyfin/sdk/lib/utils/api/persons-api';
 import { getStudiosApi } from '@jellyfin/sdk/lib/utils/api/studios-api';
 import { computed, onBeforeMount, ref, shallowRef } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
+import { useRoute } from 'vue-router/auto';
 import { apiStore } from '@/store/api';
 import { methodsAsObject, useBaseItem } from '@/composables/apis';
 import type { Filters } from '@/components/Buttons/FilterButton.vue';
 
 const { t } = useI18n();
-const route = useRoute<'/library/[itemId]'>();
+const route = useRoute('/library/[itemId]');
 
 const lazyLoadLimit = 50;
 const COLLECTION_TYPES_MAPPINGS: { [key: string]: BaseItemKind } = {
