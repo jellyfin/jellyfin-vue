@@ -42,7 +42,7 @@
 <script setup lang="ts">
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { ref } from 'vue';
-import { playbackManager } from '@/store/playbackManager';
+import { playbackManager } from '@/store/playback-manager';
 import { canPlay, canResume } from '@/utils/items';
 import { ticksToMs } from '@/utils/time';
 

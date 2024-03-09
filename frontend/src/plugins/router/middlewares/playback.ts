@@ -1,5 +1,5 @@
 import type { RouteLocationRaw } from 'vue-router';
-import { playbackManager } from '@/store/playbackManager';
+import { playbackManager } from '@/store/playback-manager';
 import { isNil } from '@/utils/validation';
 
 /**

@@ -23,7 +23,7 @@ import { useEventListener, useThrottleFn } from '@vueuse/core';
 import { shuffle } from 'lodash-es';
 import { v4 } from 'uuid';
 import { reactive, watch, watchEffect } from 'vue';
-import { isNil } from '@/utils/validation';
+import { isNil, sealed } from '@/utils/validation';
 import { useBaseItem } from '@/composables/apis';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { i18n } from '@/plugins/i18n';
@@ -99,6 +99,7 @@ interface PlaybackManagerState {
 /**
  * == CLASS CONSTRUCTOR ==
  */
+@sealed
 class PlaybackManagerStore {
   /**
    * == NON REACTIVE STATE AND UTILITY VARIABLES ==

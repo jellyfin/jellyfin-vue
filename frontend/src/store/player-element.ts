@@ -8,8 +8,8 @@ import JASSUB from 'jassub';
 import jassubWorker from 'jassub/dist/jassub-worker.js?url';
 import jassubWasmUrl from 'jassub/dist/jassub-worker.wasm?url';
 import { nextTick, reactive, watch } from 'vue';
-import { playbackManager } from './playbackManager';
-import { isArray, isNil } from '@/utils/validation';
+import { playbackManager } from './playback-manager';
+import { isArray, isNil, sealed } from '@/utils/validation';
 import { mediaElementRef } from '@/store';
 import { router } from '@/plugins/router';
 import { remote } from '@/plugins/remote';
@@ -30,6 +30,7 @@ interface PlayerElementState {
 /**
  * == CLASS CONSTRUCTOR ==
  */
+@sealed
 class PlayerElementStore {
   /**
    * == STATE SECTION ==

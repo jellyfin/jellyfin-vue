@@ -4,7 +4,7 @@ import { destr } from 'destr';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { i18n } from '@/plugins/i18n';
 import { remote } from '@/plugins/remote';
-import { taskManager } from '@/store/taskManager';
+import { taskManager } from '@/store/task-manager';
 import { isStr, isUndef } from '@/utils/validation';
 
 const CLIENT = 'vue';

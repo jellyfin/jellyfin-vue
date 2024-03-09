@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 import IMdiSkipPrevious from 'virtual:icons/mdi/skip-previous';
-import { playbackManager } from '@/store/playbackManager';
+import { playbackManager } from '@/store/playback-manager';
 
 defineProps<{ size?: string }>();
 </script>

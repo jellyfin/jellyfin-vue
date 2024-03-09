@@ -76,7 +76,7 @@ import IMdiShuffle from 'virtual:icons/mdi/shuffle';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { getTotalEndsAtTime } from '@/utils/time';
-import { InitMode, playbackManager } from '@/store/playbackManager';
+import { InitMode, playbackManager } from '@/store/playback-manager';
 
 const props = withDefaults(
   defineProps<{

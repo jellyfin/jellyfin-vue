@@ -2,7 +2,7 @@
  * Load splashcreen color scheme based on stored settings or user-agent preferences
  */
 import { destr } from 'destr';
-import type { ClientSettingsState } from './store/clientSettings';
+import type { ClientSettingsState } from '@/store/client-settings';
 
 const store = localStorage.getItem('clientSettings') ?? '{}';
 const parsedStore = destr<ClientSettingsState>(store);

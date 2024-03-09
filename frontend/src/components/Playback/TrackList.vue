@@ -123,7 +123,7 @@ import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { groupBy } from 'lodash-es';
 import { computed } from 'vue';
 import { useBaseItem } from '@/composables/apis';
-import { playbackManager } from '@/store/playbackManager';
+import { playbackManager } from '@/store/playback-manager';
 import { getItemDetailsLink } from '@/utils/items';
 import { formatTicks } from '@/utils/time';
 

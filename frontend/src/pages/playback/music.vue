@@ -110,7 +110,7 @@ import { Swiper, SwiperSlide } from 'swiper/vue';
 import { computed, ref, shallowRef, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import { playbackGuard } from '@/plugins/router/middlewares/playback';
-import { playbackManager } from '@/store/playbackManager';
+import { playbackManager } from '@/store/playback-manager';
 import { isNil } from '@/utils/validation';
 import { getBlurhash } from '@/utils/images';
 

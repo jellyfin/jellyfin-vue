@@ -7,7 +7,9 @@ import axios, {
 import auth from '../auth';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { i18n } from '@/plugins/i18n';
+import { sealed } from '@/utils/validation';
 
+@sealed
 class RemotePluginAxios {
   public readonly instance = axios.create();
   private readonly _defaults = this.instance.defaults;

@@ -10,11 +10,12 @@ import { useLocalStorage } from '@vueuse/core';
 import { merge } from 'lodash-es';
 import SDK, { useOneTimeAPI } from '../sdk/sdk-utils';
 import type { AuthState, ServerInfo } from './types';
-import { isAxiosError, isNil } from '@/utils/validation';
+import { isAxiosError, isNil, sealed } from '@/utils/validation';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
 import { i18n } from '@/plugins/i18n';
 import { useSnackbar } from '@/composables/use-snackbar';
 
+@sealed
 class RemotePluginAuth {
   /**
    * == STATE ==

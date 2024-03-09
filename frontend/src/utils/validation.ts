@@ -76,3 +76,14 @@ export function isAxiosError(object: unknown): object is AxiosError {
 export function isArray(object: unknown): object is unknown[] {
   return Array.isArray(object);
 }
+
+/**
+ * Seals a class
+ *
+ * @type TypeScript Decorator
+ */
+// eslint-disable-next-line @typescript-eslint/ban-types
+export function sealed(constructor: Function): void {
+  Object.seal(constructor);
+  Object.seal(constructor.prototype);
+}

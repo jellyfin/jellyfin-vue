@@ -85,8 +85,8 @@ import {
   getItemSeasonDownloadMap,
   getItemSeriesDownloadMap
 } from '@/utils/items';
-import { taskManager } from '@/store/taskManager';
-import { playbackManager } from '@/store/playbackManager';
+import { taskManager } from '@/store/task-manager';
+import { playbackManager } from '@/store/playback-manager';
 import { apiStore } from '@/store/api';
 import { remote } from '@/plugins/remote';
 import { useSnackbar } from '@/composables/use-snackbar';

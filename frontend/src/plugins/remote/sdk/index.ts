@@ -7,8 +7,9 @@ import { watchEffect } from 'vue';
 import RemotePluginAuthInstance from '../auth';
 import RemotePluginAxiosInstance from '../axios';
 import SDK, { useOneTimeAPI } from './sdk-utils';
-import { isNil } from '@/utils/validation';
+import { isNil, sealed } from '@/utils/validation';
 
+@sealed
 class RemotePluginSDK {
   private sdk = SDK;
   public clientInfo = this.sdk.clientInfo;
