@@ -219,20 +219,7 @@ watch(staticOverlay, (val) => {
 <style scoped>
 .fullscreen-video-container {
   background: black;
-}
-
-:deep(.fullscreen-video-container video) {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  max-width: 100%;
-  max-height: 100%;
-}
-
-:deep(.fullscreen-video-container video.stretched) {
-  width: 100%;
-  height: 100%;
+  display: flex;
 }
 
 .controls-wrapper {

@@ -217,3 +217,9 @@ watch(
   }
 );
 </script>
+
+<style scoped>
+.stretched {
+  object-fit: fill;
+}
+</style>
