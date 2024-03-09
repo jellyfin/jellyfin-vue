@@ -41,7 +41,7 @@ import { SubtitleDeliveryMethod } from '@jellyfin/sdk/lib/generated-client';
 import IMdiCheck from 'virtual:icons/mdi/check';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { playbackManager } from '@/store/playbackManager';
+import { playbackManager } from '@/store/playback-manager';
 
 const menuModel = defineModel<boolean>();
 

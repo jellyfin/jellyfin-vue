@@ -25,7 +25,7 @@ import IMdiVolumeLow from 'virtual:icons/mdi/volume-low';
 import IMdiVolumeMedium from 'virtual:icons/mdi/volume-medium';
 import IMdiVolumeMute from 'virtual:icons/mdi/volume-mute';
 import { computed } from 'vue';
-import { playbackManager } from '@/store/playbackManager';
+import { playbackManager } from '@/store/playback-manager';
 
 const sliderValue = computed({
   get() {

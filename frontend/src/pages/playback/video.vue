@@ -140,8 +140,8 @@ import {
   mediaControls,
   mediaElementRef
 } from '@/store';
-import { playbackManager } from '@/store/playbackManager';
-import { playerElement } from '@/store/playerElement';
+import { playbackManager } from '@/store/playback-manager';
+import { playerElement } from '@/store/player-element';
 import { getEndsAtTime } from '@/utils/time';
 
 defineOptions({

@@ -62,7 +62,7 @@
 import { computed, inject, type Ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { network, windowScroll } from '@/store';
-import { clientSettings } from '@/store/clientSettings';
+import { clientSettings } from '@/store/client-settings';
 
 const route = useRoute();
 const { y } = windowScroll;

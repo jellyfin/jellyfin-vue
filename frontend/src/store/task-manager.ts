@@ -4,7 +4,7 @@ import { watch } from 'vue';
 import { remote } from '@/plugins/remote';
 import { apiStore } from '@/store/api';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
-import { isArray, isObj, isStr } from '@/utils/validation';
+import { isArray, isObj, isStr, sealed } from '@/utils/validation';
 
 /**
  * == INTERFACES AND TYPES ==
@@ -44,6 +44,7 @@ export interface TaskManagerState {
 /**
  * == CLASS CONSTRUCTOR ==
  */
+@sealed
 class TaskManagerStore {
   /**
    * == UTILITY VARIABLES ==

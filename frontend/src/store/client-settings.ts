@@ -12,6 +12,7 @@ import { remote } from '@/plugins/remote';
 import { vuetify } from '@/plugins/vuetify';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
 import { fetchDefaultedCustomPrefs, syncCustomPrefs } from '@/utils/store-sync';
+import { sealed } from '@/utils/validation';
 
 /**
  * == INTERFACES AND TYPES ==
@@ -26,6 +27,7 @@ export interface ClientSettingsState {
 /**
  * == CLASS CONSTRUCTOR ==
  */
+@sealed
 class ClientSettingsStore {
   /**
    * == NON REACTIVE STATE AND UTILITY VARIABLES ==

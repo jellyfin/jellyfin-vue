@@ -85,7 +85,7 @@ import {
   getItemDetailsLink,
   getShapeFromItemType
 } from '@/utils/items';
-import { taskManager } from '@/store/taskManager';
+import { taskManager } from '@/store/task-manager';
 
 const props = defineProps<{
   item: BaseItemDto;

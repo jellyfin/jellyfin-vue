@@ -6,12 +6,13 @@ import { ImageType, ItemFields, type BaseItemDto } from '@jellyfin/sdk/lib/gener
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { reactive, watch } from 'vue';
-import { isArray, isObj, isStr } from '@/utils/validation';
+import { isArray, isObj, isStr, sealed } from '@/utils/validation';
 import { remote } from '@/plugins/remote';
 
 /**
  * Class that we can use to transform to BaseItem when necessary
  */
+@sealed
 class CachedResponse {
   public wasArray: boolean | undefined;
   public ids: BaseItemDto['Id'][] = [];
@@ -33,6 +34,7 @@ class CachedResponse {
 /**
  * == CLASS CONSTRUCTOR ==
  */
+@sealed
 class ApiStore {
   /**
    * == STATE SECTION ==

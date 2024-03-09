@@ -4,8 +4,9 @@ import { computed, watch } from 'vue';
 import auth from '../auth';
 import sdk from '../sdk';
 import type { WebSocketMessage } from './types';
-import { isNil } from '@/utils/validation';
+import { isNil, sealed } from '@/utils/validation';
 
+@sealed
 class RemotePluginSocket {
   /**
    * == STATE ==

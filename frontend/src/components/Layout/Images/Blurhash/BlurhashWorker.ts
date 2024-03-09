@@ -1,6 +1,8 @@
 import { decode } from 'blurhash';
 import { expose } from 'comlink';
+import { sealed } from '@/utils/validation';
 
+@sealed
 class BlurhashWorker {
   private readonly _cache = new Map<string, Uint8ClampedArray>();
   /**
