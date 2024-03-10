@@ -7,10 +7,10 @@
 import JASSUB from 'jassub';
 import jassubWorker from 'jassub/dist/jassub-worker.js?url';
 import jassubWasmUrl from 'jassub/dist/jassub-worker.wasm?url';
-import { computed, nextTick, reactive, watch } from 'vue';
+import { computed, nextTick, watch } from 'vue';
 import { playbackManager } from './playback-manager';
 import { isArray, isNil, sealed } from '@/utils/validation';
-import { mediaElementRef } from '@/store';
+import { CommonStore, mediaElementRef } from '@/store';
 import { router } from '@/plugins/router';
 import { remote } from '@/plugins/remote';
 
@@ -27,24 +27,14 @@ interface PlayerElementState {
  * == CLASS CONSTRUCTOR ==
  */
 @sealed
-class PlayerElementStore {
+class PlayerElementStore extends CommonStore<PlayerElementState> {
   /**
    * == NON REACTIVE STATE ==
+   * Reactive state is defined in the super() constructor
    */
   private readonly _fullscreenVideoRoute = '/playback/video';
   private _jassub: JASSUB | undefined;
-  /**
-   * == STATE SECTION ==
-   */
-  private readonly _defaultState: PlayerElementState = {
-    isFullscreenMounted: false,
-    isPiPMounted: false,
-    isStretched: false
-  };
-
-  private readonly _state = reactive<PlayerElementState>(
-    structuredClone(this._defaultState)
-  );
+  protected _storeKey = 'playerElement';
   /**
    * == GETTERS AND SETTERS ==
    */
@@ -198,11 +188,12 @@ class PlayerElementStore {
     }
   };
 
-  private readonly _clear = (): void => {
-    Object.assign(this._state, this._defaultState);
-  };
-
   public constructor() {
+    super('playerElement', {
+      isFullscreenMounted: false,
+      isPiPMounted: false,
+      isStretched: false
+    });
     /**
      * * Move user to the fullscreen page when starting video playback by default
      * * Move user out of the fullscreen pages when playback is over
@@ -224,7 +215,7 @@ class PlayerElementStore {
       () => remote.auth.currentUser,
       () => {
         if (!remote.auth.currentUser) {
-          this._clear();
+          this._reset();
         }
       }, { flush: 'post' }
     );

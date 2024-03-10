@@ -1,9 +1,8 @@
-import { useSessionStorage, type RemovableRef } from '@vueuse/core';
 import { v4 } from 'uuid';
 import { watch } from 'vue';
+import { CommonStore } from '@/store';
 import { remote } from '@/plugins/remote';
 import { apiStore } from '@/store/api';
-import { mergeExcludingUnknown } from '@/utils/data-manipulation';
 import { isArray, isObj, isStr, sealed } from '@/utils/validation';
 
 /**
@@ -45,35 +44,18 @@ export interface TaskManagerState {
  * == CLASS CONSTRUCTOR ==
  */
 @sealed
-class TaskManagerStore {
+class TaskManagerStore extends CommonStore<TaskManagerState> {
   /**
-   * == UTILITY VARIABLES ==
+   * Reactive state is defined in the super() constructor
    */
-  private readonly _storeKey = 'taskManager';
-  /**
-   * == STATE SECTION ==
-   */
-  private readonly _defaultState: TaskManagerState = {
-    tasks: [],
-    finishedTasksTimeout: 5000
-  };
-
-  private readonly _state: RemovableRef<TaskManagerState> = useSessionStorage(
-    this._storeKey,
-    structuredClone(this._defaultState),
-    {
-      mergeDefaults: (storageValue, defaults) =>
-        mergeExcludingUnknown(storageValue, defaults)
-    }
-  );
   /**
    * == GETTERS AND SETTERS ==
    */
-  public get tasks(): typeof this._state.value.tasks {
-    return this._state.value.tasks;
+  public get tasks(): typeof this._state.tasks {
+    return this._state.tasks;
   }
   public readonly getTask = (id: string): RunningTask | undefined =>
-    this._state.value.tasks.find((payload) => payload.id === id);
+    this._state.tasks.find((payload) => payload.id === id);
   /**
    * == ACTIONS ==
    */
@@ -85,25 +67,25 @@ class TaskManagerStore {
     }
 
     if (this.getTask(task.id) === undefined) {
-      this._state.value.tasks.push(task);
+      this._state.tasks.push(task);
     }
   };
 
   public readonly finishTask = (id: string): void => {
     const clearTask = (): void => {
-      const taskIndex = this._state.value.tasks.findIndex(
+      const taskIndex = this._state.tasks.findIndex(
         (task) => task.id === id
       );
 
-      this._state.value.tasks.splice(taskIndex, 1);
+      this._state.tasks.splice(taskIndex, 1);
     };
 
     const task = this.getTask(id);
 
     if (task) {
-      if (this._state.value.finishedTasksTimeout > 0) {
+      if (this._state.finishedTasksTimeout > 0) {
         task.progress = 100;
-        window.setTimeout(clearTask, this._state.value.finishedTasksTimeout);
+        window.setTimeout(clearTask, this._state.finishedTasksTimeout);
       } else {
         clearTask();
       }
@@ -121,11 +103,12 @@ class TaskManagerStore {
     return payload.id;
   };
 
-  private readonly _clear = (): void => {
-    Object.assign(this._state.value, this._defaultState);
-  };
-
   public constructor() {
+    super('taskManager', {
+      tasks: [],
+      finishedTasksTimeout: 5000
+    }, 'sessionStorage');
+
     /**
      * Handle refresh progress update for library items
      */
@@ -202,7 +185,7 @@ class TaskManagerStore {
       () => remote.auth.currentUser,
       () => {
         if (!remote.auth.currentUser) {
-          this._clear();
+          this._reset();
         }
       }, { flush: 'post' }
     );
