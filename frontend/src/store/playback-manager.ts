@@ -22,7 +22,7 @@ import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
 import { useEventListener, useThrottleFn } from '@vueuse/core';
 import { shuffle } from 'lodash-es';
 import { v4 } from 'uuid';
-import { reactive, watch, watchEffect } from 'vue';
+import { watch, watchEffect } from 'vue';
 import { isNil, sealed } from '@/utils/validation';
 import { useBaseItem } from '@/composables/apis';
 import { useSnackbar } from '@/composables/use-snackbar';
@@ -33,7 +33,7 @@ import { getImageInfo } from '@/utils/images';
 import { getItemRuntime } from '@/utils/items';
 import playbackProfile from '@/utils/playback-profiles';
 import { msToTicks } from '@/utils/time';
-import { mediaControls } from '@/store';
+import { CommonStore, mediaControls } from '@/store';
 
 /**
  * == INTERFACES AND TYPES ==
@@ -100,46 +100,16 @@ interface PlaybackManagerState {
  * == CLASS CONSTRUCTOR ==
  */
 @sealed
-class PlaybackManagerStore {
+class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   /**
    * == NON REACTIVE STATE AND UTILITY VARIABLES ==
+   * Reactive state is defined in the super() constructor
    */
   /**
    * Amount of time to wait between playback reports
    */
   private readonly _progressReportInterval = 3500;
   private _mediaSourceRequestId: string | undefined = undefined;
-  /**
-   * == STATE ==
-   */
-  /**
-   * Reactive state
-   */
-  private readonly _defaultState: PlaybackManagerState = {
-    status: PlaybackStatus.Stopped,
-    currentSourceUrl: undefined,
-    currentItemIndex: undefined,
-    currentMediaSource: undefined,
-    currentMediaSourceIndex: undefined,
-    currentVideoStreamIndex: undefined,
-    currentAudioStreamIndex: undefined,
-    currentSubtitleStreamIndex: undefined,
-    remotePlaybackTime: 0,
-    remoteCurrentVolume: 100,
-    isRemotePlayer: false,
-    isRemoteMuted: false,
-    isShuffling: false,
-    repeatMode: RepeatMode.RepeatNone,
-    queue: [],
-    originalQueue: [],
-    playSessionId: undefined,
-    playbackInitiator: undefined,
-    playbackInitMode: InitMode.Unknown
-  };
-
-  private readonly _state = reactive<PlaybackManagerState>(
-    structuredClone(this._defaultState)
-  );
   /**
    * == GETTERS AND SETTERS ==
    */
@@ -713,7 +683,7 @@ class PlaybackManagerStore {
     const itemId = String(this.currentItem?.Id ?? '');
     const volume = Number(this.currentVolume);
 
-    Object.assign(this._state, this._defaultState);
+    this._reset();
     this.currentVolume = volume;
 
     window.setTimeout(async () => {
@@ -997,6 +967,27 @@ class PlaybackManagerStore {
   };
 
   public constructor() {
+    super('playbackManager', {
+      status: PlaybackStatus.Stopped,
+      currentSourceUrl: undefined,
+      currentItemIndex: undefined,
+      currentMediaSource: undefined,
+      currentMediaSourceIndex: undefined,
+      currentVideoStreamIndex: undefined,
+      currentAudioStreamIndex: undefined,
+      currentSubtitleStreamIndex: undefined,
+      remotePlaybackTime: 0,
+      remoteCurrentVolume: 100,
+      isRemotePlayer: false,
+      isRemoteMuted: false,
+      isShuffling: false,
+      repeatMode: RepeatMode.RepeatNone,
+      queue: [],
+      originalQueue: [],
+      playSessionId: undefined,
+      playbackInitiator: undefined,
+      playbackInitMode: InitMode.Unknown
+    });
     /**
      * Logic is divided by concerns and scope. Watchers for callbacks
      * that rely on the same variables might not be together. Categories:

@@ -13,6 +13,7 @@ import { vuetify } from '@/plugins/vuetify';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
 import { fetchDefaultedCustomPrefs, syncCustomPrefs } from '@/utils/store-sync';
 import { sealed } from '@/utils/validation';
+import { SyncedStore } from '@/store';
 
 /**
  * == INTERFACES AND TYPES ==
@@ -24,22 +25,8 @@ export interface ClientSettingsState {
   locale: string;
 }
 
-/**
- * == CLASS CONSTRUCTOR ==
- */
 @sealed
-class ClientSettingsStore {
-  /**
-   * == NON REACTIVE STATE AND UTILITY VARIABLES ==
-   */
-  private readonly _storeKey = 'clientSettings';
-  private readonly _defaultState: ClientSettingsState = {
-    darkMode: 'auto',
-    locale: 'auto'
-  };
-  /**
-   * == STATE SECTION ==
-   */
+class ClientSettingsStore extends SyncedStore<ClientSettingsState> {
   private readonly _browserPrefersDark = usePreferredDark();
   private readonly _navigatorLanguage = useNavigatorLanguage();
   private readonly _BROWSER_LANGUAGE = computed<string>(() => {
@@ -52,38 +39,22 @@ class ClientSettingsStore {
     return cleanString[0];
   });
 
-  private readonly _state: RemovableRef<ClientSettingsState> = useLocalStorage(
-    this._storeKey,
-    structuredClone(this._defaultState),
-    {
-      mergeDefaults: (storageValue, defaults) =>
-        mergeExcludingUnknown(storageValue, defaults)
-    }
-  );
-
-  /**
-   * == NON REACTIVE STATE AND UTILITY VARIABLES ==
-   */
-
-  /**
-   * == GETTERS AND SETTERS ==
-   */
   public set locale(newVal: string) {
-    this._state.value.locale =
+    this._state.locale =
       i18n.availableLocales.includes(newVal) && newVal !== 'auto'
         ? newVal : 'auto';
   }
 
   public get locale(): string {
-    return this._state.value.locale;
+    return this._state.locale;
   }
 
   public set darkMode(newVal: 'auto' | boolean) {
-    this._state.value.darkMode = newVal;
+    this._state.darkMode = newVal;
   }
 
   public get darkMode(): 'auto' | boolean {
-    return this._state.value.darkMode;
+    return this._state.darkMode;
   }
 
   private readonly _updateLocale = (): void => {
@@ -109,11 +80,11 @@ class ClientSettingsStore {
     });
   };
 
-  private readonly _clear = (): void => {
-    Object.assign(this._state.value, this._defaultState);
-  };
-
   public constructor() {
+    super('clientSettings', {
+      darkMode: 'auto',
+      locale: 'auto'
+    }, 'localStorage');
     /**
      * == WATCHERS ==
      */
@@ -123,7 +94,7 @@ class ClientSettingsStore {
      */
     const syncDataWatcher = watchPausable(this._state, async () => {
       if (remote.auth.currentUser) {
-        await syncCustomPrefs(this._storeKey, this._state.value);
+        await syncCustomPrefs(this._storeKey, this._state);
       }
     });
 
@@ -137,12 +108,12 @@ class ClientSettingsStore {
           try {
             const data = await fetchDefaultedCustomPrefs(
               this._storeKey,
-              this._state.value
+              this._state
             );
 
             if (data) {
               syncDataWatcher.pause();
-              Object.assign(this._state.value, data);
+              Object.assign(this._state, data);
               await nextTick();
               syncDataWatcher.resume();
             }
@@ -177,7 +148,7 @@ class ClientSettingsStore {
       () => remote.auth.currentUser,
       () => {
         if (!remote.auth.currentUser) {
-          this._clear();
+          this._reset();
         }
       }, { flush: 'post' }
     );
