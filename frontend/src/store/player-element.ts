@@ -10,7 +10,8 @@ import jassubWasmUrl from 'jassub/dist/jassub-worker.wasm?url';
 import { computed, nextTick, watch } from 'vue';
 import { playbackManager } from './playback-manager';
 import { isArray, isNil, sealed } from '@/utils/validation';
-import { CommonStore, mediaElementRef } from '@/store';
+import { mediaElementRef } from '@/store';
+import { CommonStore } from '@/store/super/common-store';
 import { router } from '@/plugins/router';
 import { remote } from '@/plugins/remote';
 

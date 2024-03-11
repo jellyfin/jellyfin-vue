@@ -1,6 +1,6 @@
 import { v4 } from 'uuid';
 import { watch } from 'vue';
-import { CommonStore } from '@/store';
+import { CommonStore } from '@/store/super/common-store';
 import { remote } from '@/plugins/remote';
 import { apiStore } from '@/store/api';
 import { isArray, isObj, isStr, sealed } from '@/utils/validation';

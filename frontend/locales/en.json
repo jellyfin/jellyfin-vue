@@ -108,7 +108,7 @@
   "enableUPNP": "Enable UPnP",
   "endsAt": "Ends at {time}",
   "eps": "EPs",
-  "failedSettingDisplayPreferences": "Unable to update display preferences.",
+  "failedSyncingUserSettings": "Unable to sync user settings",
   "favorite": "Favorite",
   "features": "Features",
   "filter": "Filter",

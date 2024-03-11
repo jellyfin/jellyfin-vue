@@ -1,19 +1,14 @@
 import {
   useNavigatorLanguage,
   usePreferredDark,
-  useLocalStorage,
-  watchPausable,
-  type RemovableRef
-} from '@vueuse/core';
+  watchPausable} from '@vueuse/core';
 import { computed, nextTick, watch } from 'vue';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { i18n } from '@/plugins/i18n';
 import { remote } from '@/plugins/remote';
 import { vuetify } from '@/plugins/vuetify';
-import { mergeExcludingUnknown } from '@/utils/data-manipulation';
-import { fetchDefaultedCustomPrefs, syncCustomPrefs } from '@/utils/store-sync';
 import { sealed } from '@/utils/validation';
-import { SyncedStore } from '@/store';
+import { SyncedStore } from '@/store/super/synced-store';
 
 /**
  * == INTERFACES AND TYPES ==
@@ -90,45 +85,8 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState> {
      */
 
     /**
-     * Sync data with server
-     */
-    const syncDataWatcher = watchPausable(this._state, async () => {
-      if (remote.auth.currentUser) {
-        await syncCustomPrefs(this._storeKey, this._state);
-      }
-    });
-
-    /**
-     * Fetch data when the user logs in
-     */
-    watch(
-      () => remote.auth.currentUser,
-      async () => {
-        if (remote.auth.currentUser) {
-          try {
-            const data = await fetchDefaultedCustomPrefs(
-              this._storeKey,
-              this._state
-            );
-
-            if (data) {
-              syncDataWatcher.pause();
-              Object.assign(this._state, data);
-              await nextTick();
-              syncDataWatcher.resume();
-            }
-          } catch {
-            useSnackbar(i18n.t('failedSettingDisplayPreferences'), 'error');
-          }
-        }
-      },
-      { immediate: true }
-    );
-
-    /**
      * Locale change
      */
-
     watch(
       [this._BROWSER_LANGUAGE, (): typeof this.locale => this.locale],
       this._updateLocale,

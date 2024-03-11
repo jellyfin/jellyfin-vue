@@ -33,7 +33,8 @@ import { getImageInfo } from '@/utils/images';
 import { getItemRuntime } from '@/utils/items';
 import playbackProfile from '@/utils/playback-profiles';
 import { msToTicks } from '@/utils/time';
-import { CommonStore, mediaControls } from '@/store';
+import { mediaControls } from '@/store';
+import { CommonStore } from '@/store/super/common-store';
 
 /**
  * == INTERFACES AND TYPES ==
