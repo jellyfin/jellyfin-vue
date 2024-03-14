@@ -131,6 +131,7 @@
   "information": "信息",
   "instantMix": "速成合辑",
   "instantMixQueued": "速成合辑已添加至队列",
+  "itemPlayNext": "项目已在队列等待播放",
   "jellyfinLogo": "Jellyfin 图标",
   "kickedOut": "授权已被撤销，此会话不再有效。请重新登录",
   "language": "语言",
