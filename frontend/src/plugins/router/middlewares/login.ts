@@ -3,7 +3,8 @@ import type {
   RouteLocationPathRaw,
   RouteLocationRaw
 } from 'vue-router/auto';
-import { effectScope, watch } from 'vue';
+import { effectScope } from 'vue';
+import { watchImmediate } from '@vueuse/core';
 import { remote } from '@/plugins/remote';
 import { isNil } from '@/utils/validation';
 import { getJSONConfig } from '@/utils/external-config';
@@ -22,11 +23,11 @@ async function ensureServer(): Promise<void> {
 
   await new Promise<void>((resolve) => {
     scope.run(() => {
-      watch(() => remote.auth.currentServer, () => {
+      watchImmediate(() => remote.auth.currentServer, () => {
         if (remote.auth.currentServer) {
           resolve();
         }
-      }, { immediate: true });
+      });
     });
   });
   scope.stop();

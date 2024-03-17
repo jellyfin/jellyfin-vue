@@ -1200,7 +1200,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
         if (newValue) {
           await this._reportPlaybackStart(newValue);
         }
-      }, { flush: 'sync' }
+      }
     );
 
     watch(
@@ -1224,7 +1224,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
            */
           await this._setCurrentMediaSource();
         }
-      }, { flush: 'sync' }
+      }
     );
 
     watch(() => this.currentAudioStreamIndex, async (oldVal, newVal) => {
@@ -1235,7 +1235,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
          */
         await this._setCurrentMediaSource();
       }
-    }, { flush: 'sync' });
+    });
 
     watch(() => this.currentTime, this._reportPlaybackProgressThrottled);
 
@@ -1261,7 +1261,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
           ? PlaybackStatus.Playing
           : PlaybackStatus.Paused;
       }
-    }, { flush: 'sync' });
+    });
 
     watch(mediaControls.waiting, () => {
       if (!this.isRemotePlayer) {
@@ -1269,13 +1269,13 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
           ? PlaybackStatus.Buffering
           : PlaybackStatus.Playing;
       }
-    }, { flush: 'sync' });
+    });
 
     watch(mediaControls.ended, () => {
       if (mediaControls.ended.value && !this.isRemotePlayer) {
         this.setNextItem();
       }
-    }, { flush: 'sync' });
+    });
 
     /**
      * Dispose on logout

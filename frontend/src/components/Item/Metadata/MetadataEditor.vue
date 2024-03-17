@@ -225,8 +225,9 @@ import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api'
 import { AxiosError } from 'axios';
 import { format, formatISO } from 'date-fns';
 import { pick, set } from 'lodash-es';
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { watchImmediate } from '@vueuse/core';
 import { isArray } from '@/utils/validation';
 import { remote } from '@/plugins/remote';
 import { useSnackbar } from '@/composables/use-snackbar';
@@ -531,5 +532,5 @@ function onPersonDel(index: number): void {
   metadata.value.People.splice(index, 1);
 }
 
-watch(() => props.itemId, getData, { immediate: true });
+watchImmediate(() => props.itemId, getData);
 </script>

@@ -104,8 +104,9 @@ import {
   ImageType
 } from '@jellyfin/sdk/lib/generated-client';
 import { getImageApi } from '@jellyfin/sdk/lib/utils/api/image-api';
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { watchImmediate } from '@vueuse/core';
 import {
   getContainerAspectRatioForImageType,
   getImageInfo
@@ -185,5 +186,5 @@ async function onDelete(item: ImageInfo): Promise<void> {
   await getItemImageInfos();
 }
 
-watch(() => props.metadata, getItemImageInfos, { immediate: true });
+watchImmediate(() => props.metadata, getItemImageInfos);
 </script>
