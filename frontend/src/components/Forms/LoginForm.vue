@@ -70,7 +70,7 @@ import type { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { isEmpty } from 'lodash-es';
 import IconEye from 'virtual:icons/mdi/eye';
 import IconEyeOff from 'virtual:icons/mdi/eye-off';
-import { ref } from 'vue';
+import { ref, shallowRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router/auto';
 import { fetchIndexPage } from '@/utils/items';
@@ -88,10 +88,10 @@ const { t } = useI18n();
 
 const router = useRouter();
 
-const valid = ref(false);
+const valid = shallowRef(false);
 const login = ref({ username: '', password: '', rememberMe: true });
-const showPassword = ref(false);
-const loading = ref(false);
+const showPassword = shallowRef(false);
+const loading = shallowRef(false);
 const rules = [
   (v: string): boolean | string => !!v.trim() || t('required')
 ];
