@@ -1,5 +1,5 @@
-import { defaultsDeep } from 'lodash-es';
-import { reactive } from 'vue';
+import defu from 'defu';
+import { ref } from 'vue';
 import type {
   RouteLocationNormalized,
   RouteLocationRaw,
@@ -14,6 +14,8 @@ const defaultMeta: RouteMeta = {
     opacity: 0.25
   }
 };
+
+const reactiveMeta = ref(structuredClone(defaultMeta));
 
 /**
  * This middleware handles the meta property between routes
@@ -41,7 +43,8 @@ export function metaGuard(
   to: RouteLocationNormalized,
   from: RouteLocationNormalized
 ): boolean | RouteLocationRaw {
-  to.meta = reactive<RouteMeta>(defaultsDeep(to.meta, defaultMeta));
+  reactiveMeta.value = defu(to.meta, defaultMeta);
+  to.meta = reactiveMeta.value;
 
   if (from.meta.transition?.leave) {
     if (to.meta.transition) {
