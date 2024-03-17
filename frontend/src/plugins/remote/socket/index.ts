@@ -34,10 +34,7 @@ class RemotePluginSocket {
    * Formats the message to be sent to the socket
    */
   private readonly _webSocket = useWebSocket(this._socketUrl, {
-    heartbeat: false,
-    autoReconnect: { retries: () => true },
-    immediate: true,
-    autoClose: false
+    autoReconnect: { retries: () => true }
   });
   private readonly _parsedmsg = computed<WebSocketMessage | undefined>(() => destr(this._webSocket.data.value));
   public readonly message = computed<WebSocketMessage | undefined>((previous) => {
