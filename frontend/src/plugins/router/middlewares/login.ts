@@ -26,7 +26,7 @@ async function ensureServer(): Promise<void> {
         if (remote.auth.currentServer) {
           resolve();
         }
-      }, { immediate: true, flush: 'sync' });
+      }, { immediate: true });
     });
   });
   scope.stop();
@@ -40,6 +40,10 @@ export async function loginGuard(
 ): Promise<boolean | RouteLocationRaw> {
   let destinationRoute: RouteLocationPathRaw | undefined;
   const jsonConfig = await getJSONConfig();
+
+  if (!isNil(remote.auth.currentServer) && !isNil(remote.auth.currentUser) && !isNil(remote.auth.currentUserToken) && routes.has(to.path)) {
+    destinationRoute = { path: '/', replace: true };
+  }
 
   if (remote.auth.servers.length <= 0 && jsonConfig.defaultServerURLs.length <= 0) {
     destinationRoute = { path: serverAddUrl, replace: true };
