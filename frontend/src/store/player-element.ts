@@ -195,6 +195,7 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
       isPiPMounted: false,
       isStretched: false
     });
+
     /**
      * * Move user to the fullscreen page when starting video playback by default
      * * Move user out of the fullscreen pages when playback is over

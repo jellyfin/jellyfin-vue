@@ -32,6 +32,7 @@ import IMdiSurroundSound31 from 'virtual:icons/mdi/surround-sound-3-1';
 import IMdiSurroundSound51 from 'virtual:icons/mdi/surround-sound-5-1';
 import IMdiSurroundSound71 from 'virtual:icons/mdi/surround-sound-7-1';
 import IMdiSurroundSound from 'virtual:icons/mdi/surround-sound';
+import { watchImmediate } from '@vueuse/core';
 import { getLocaleName } from '@/utils/i18n';
 
 const props = withDefaults(
@@ -131,12 +132,11 @@ if (
   trackIndex.value = selectItems.value[0].value ?? null;
 }
 
-watch(
+watchImmediate(
   trackIndex,
   (newValue) => {
     emit('input', newValue ?? undefined);
-  },
-  { immediate: true }
+  }
 );
 
 watch(

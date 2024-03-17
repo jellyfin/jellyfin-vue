@@ -1,8 +1,8 @@
 import type { DisplayPreferencesDto } from '@jellyfin/sdk/lib/generated-client';
 import { getDisplayPreferencesApi } from '@jellyfin/sdk/lib/utils/api/display-preferences-api';
 import destr from 'destr';
-import { toRaw, watch } from 'vue';
-import { watchPausable, type WatchPausableReturn } from '@vueuse/core';
+import { toRaw } from 'vue';
+import { watchImmediate, watchPausable, type WatchPausableReturn } from '@vueuse/core';
 import { taskManager } from '../task-manager';
 import { remote } from '@/plugins/remote';
 import { CommonStore, type Persistence } from '@/store/super/common-store';
@@ -143,18 +143,18 @@ export abstract class SyncedStore<T extends object> extends CommonStore<T> {
     if (keys) {
       for (const key of keys) {
         this._pausableWatchers.push(
-          watchPausable(() => this._state[key], this._updateState, { flush: 'sync' })
+          watchPausable(() => this._state[key], this._updateState)
         );
       }
     } else {
       this._pausableWatchers.push(
-        watchPausable(this._state, this._updateState, { flush: 'sync' })
+        watchPausable(this._state, this._updateState)
       );
     }
 
     /**
      * Trigger sync when the user logs in
      */
-    watch(() => remote.auth.currentUser, this._triggerSync, { immediate: true, flush: 'sync' });
+    watchImmediate(() => remote.auth.currentUser, this._triggerSync);
   }
 }

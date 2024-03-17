@@ -29,7 +29,7 @@ import IMdiPlaylistPlay from 'virtual:icons/mdi/playlist-play';
 import IMdiTelevisionClassic from 'virtual:icons/mdi/television-classic';
 import IMdiYoutube from 'virtual:icons/mdi/youtube';
 import IMdiYoutubeTV from 'virtual:icons/mdi/youtube-tv';
-import { effectScope, watch, type ComputedRef } from 'vue';
+import type { ComputedRef } from 'vue';
 import type { RouteNamedMap } from 'vue-router/auto-routes';
 import { ticksToMs } from './time';
 import { isNil } from '@/utils/validation';

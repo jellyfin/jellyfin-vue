@@ -27,7 +27,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, watch, shallowRef, nextTick } from 'vue';
+import { watchImmediate } from '@vueuse/core';
+import { computed, shallowRef, nextTick } from 'vue';
 
 interface Props {
   src?: string | null;
@@ -46,7 +47,7 @@ const url = computed(() => `url('${props.src}'')`);
 const type = computed(() => props.cover ? 'div' : 'img');
 const shown = computed(() => !loading.value && !error.value);
 
-watch(() => props.src, () => {
+watchImmediate(() => props.src, () => {
   if (props.src) {
     const preloaderImg = new Image();
 
@@ -66,7 +67,7 @@ watch(() => props.src, () => {
       await nextTick(() => preloaderImg.remove());
     }, { once: true });
   }
-}, { immediate: true });
+});
 </script>
 
 <style scoped>

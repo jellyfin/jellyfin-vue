@@ -3,6 +3,7 @@ import type { BaseItemDto, BaseItemDtoQueryResult } from '@jellyfin/sdk/lib/gene
 import type { AxiosResponse } from 'axios';
 import { deepEqual } from 'fast-equals';
 import { computed, effectScope, getCurrentScope, isRef, shallowRef, toValue, unref, watch, type ComputedRef, type Ref } from 'vue';
+import { watchImmediate } from '@vueuse/core';
 import { useLoading } from '@/composables/use-loading';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { i18n } from '@/plugins/i18n';
@@ -266,12 +267,12 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
 
       return new Promise((resolve) => {
         scope.run(() => {
-          watch(isCached, () => {
+          watchImmediate(isCached, () => {
             if (isCached.value && !ops.skipCache.request) {
               scope.stop();
               resolve({ loading, data });
             }
-          }, { immediate: true, flush: 'sync' });
+          }, { flush: 'sync' });
         });
       });
     };

@@ -1,9 +1,8 @@
 import {
   useNavigatorLanguage,
   usePreferredDark,
-  watchPausable} from '@vueuse/core';
-import { computed, nextTick, watch } from 'vue';
-import { useSnackbar } from '@/composables/use-snackbar';
+  watchImmediate } from '@vueuse/core';
+import { computed, watch } from 'vue';
 import { i18n } from '@/plugins/i18n';
 import { remote } from '@/plugins/remote';
 import { vuetify } from '@/plugins/vuetify';
@@ -87,19 +86,17 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState> {
     /**
      * Locale change
      */
-    watch(
+    watchImmediate(
       [this._BROWSER_LANGUAGE, (): typeof this.locale => this.locale],
-      this._updateLocale,
-      { immediate: true }
+      this._updateLocale
     );
 
     /**
      * Vuetify theme change
      */
-    watch(
+    watchImmediate(
       [this._browserPrefersDark, (): typeof this.darkMode => this.darkMode],
-      this._updateTheme,
-      { immediate: true }
+      this._updateTheme
     );
 
     watch(

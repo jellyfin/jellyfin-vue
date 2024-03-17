@@ -76,9 +76,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { type BaseItemPerson, ImageType } from '@jellyfin/sdk/lib/generated-client';
+import { watchImmediate } from '@vueuse/core';
 
 const props = defineProps<{ person: BaseItemPerson | undefined }>();
 
@@ -99,12 +100,11 @@ const options = computed(() => [
   { text: t('writer'), value: 'Writer' }
 ]);
 
-watch(
+watchImmediate(
   () => props.person,
   (person) => {
     editState.value = { ...person };
-  },
-  { immediate: true }
+  }
 );
 
 /**

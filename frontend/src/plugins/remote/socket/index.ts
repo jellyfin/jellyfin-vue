@@ -83,8 +83,7 @@ class RemotePluginSocket {
       if (this._parsedmsg.value?.MessageType === this._forceKeepAliveMessage) {
         this.sendToSocket(this._keepAliveMessage);
       }
-    }, { flush: 'sync' }
-    );
+    }, { flush: 'sync' });
   }
 }
 
