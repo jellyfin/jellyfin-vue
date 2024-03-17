@@ -33,6 +33,10 @@
                   {{ clientVersion }}
                 </td>
               </tr>
+              <tr>
+                <td>{{ $t('deviceName') }}</td>
+                <td>{{ remote.sdk.deviceInfo.name }}</td>
+              </tr>
             </tbody>
           </VTable>
         </div>

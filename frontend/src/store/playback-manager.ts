@@ -31,7 +31,6 @@ import { remote } from '@/plugins/remote';
 import { apiStore } from '@/store/api';
 import { getImageInfo } from '@/utils/images';
 import { getItemRuntime } from '@/utils/items';
-import playbackProfile from '@/utils/playback-profiles';
 import { msToTicks } from '@/utils/time';
 import { mediaControls, mediaElementRef } from '@/store';
 import { CommonStore } from '@/store/super/common-store';

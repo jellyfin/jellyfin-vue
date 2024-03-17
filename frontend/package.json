@@ -40,6 +40,7 @@
     "radix-vue": "1.7.4",
     "sortablejs": "1.15.2",
     "swiper": "11.1.1",
+    "unique-names-generator": "4.7.1",
     "uuid": "9.0.1",
     "vue": "3.4.27",
     "vue-i18n": "9.13.1",
