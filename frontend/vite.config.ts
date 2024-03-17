@@ -94,7 +94,7 @@ export default defineConfig(({ mode }): UserConfig => {
             /**
              * This is the default value: https://rollupjs.org/configuration-options/#output-chunkfilenames
              */
-            return chunkInfo.name === 'index' ? 'shared-[hash].js': '[name]-[hash].js';
+            return chunkInfo.name === 'index' ? 'assets/common-[hash].js': '[name]-[hash].js';
           },
           validate: true,
           plugins: [
@@ -118,7 +118,7 @@ export default defineConfig(({ mode }): UserConfig => {
               id.includes('virtual:locales') ||
               id.includes('@intlify/unplugin-vue-i18n/messages')
             ) {
-              return 'locales';
+              return 'assets/locales';
             }
           }
         }

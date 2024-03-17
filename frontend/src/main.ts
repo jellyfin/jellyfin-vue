@@ -24,7 +24,11 @@ import 'inter-ui/inter-variable.css';
  * import 'uno.css';
  * import 'virtual:unocss-devtools';
  */
-import '@unocss/reset/tailwind.css';
+/**
+ *  Unocss already includes the reset, no need of @unocss/reset
+ */
+/* eslint-disable-next-line import/no-extraneous-dependencies */
+import '@unocss/reset/tailwind-compat.css';
 import '@/assets/styles/global.scss';
 
 /**
