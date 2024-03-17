@@ -7,7 +7,7 @@ import { useLoading } from '@/composables/use-loading';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { i18n } from '@/plugins/i18n';
 import { remote } from '@/plugins/remote';
-import { network } from '@/store';
+import { isConnectedToServer } from '@/store';
 import { apiStore } from '@/store/api';
 import { isArray, isNil } from '@/utils/validation';
 
@@ -238,7 +238,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
 
     if (argsRef.value && !onlyPending) {
       try {
-        if (network.isOnline.value && remote.socket.isConnected) {
+        if (isConnectedToServer.value) {
           const resolved = await resolveAndAdd(unrefApi, unrefMethod, ofBaseItem, isRefresh ? undefined : loading, stringArgs.value, ops, ...argsRef.value);
 
           result.value = resolved as ReturnData<T, K, typeof ofBaseItem>;
@@ -290,8 +290,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
           await runNormally();
         }
       });
-      watch(remote.socket.isConnected, runWithRetry);
-      watch(network.isOnline, runWithRetry);
+      watch(isConnectedToServer, runWithRetry);
       isRef(api) && watch(api, runNormally);
       isRef(methodName) && watch(methodName, runNormally);
     }

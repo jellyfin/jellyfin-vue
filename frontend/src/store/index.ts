@@ -1,5 +1,8 @@
-import { useMediaControls, useMediaQuery, useNetwork, useNow, useScroll } from '@vueuse/core';
+import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
+import { computedAsync, useMediaControls, useMediaQuery, useNetwork, useNow, useScroll } from '@vueuse/core';
 import { shallowRef } from 'vue';
+import { remote } from '@/plugins/remote';
+import { isNil } from '@/utils/validation';
 /**
  * This file contains global variables (specially VueUse refs) that are used multiple times across the client.
  * VueUse composables will set new event handlers, so it's more
@@ -37,7 +40,21 @@ export const prefersNoMotion = useMediaQuery('(prefers-reduced-motion)');
  * Reactively tracks if the device has a high precision input (like a mouse)
  */
 export const isFinePointer = useMediaQuery('(pointer:fine)');
+
 /**
- * Reactively tracks if the user is connected to the internet
+ * Reactively tracks if the user is connected to the server
  */
-export const network = useNetwork();
+const network = useNetwork();
+export const isConnectedToServer = computedAsync(async () => {
+  if ((network.isSupported.value && network.isOnline.value)) {
+    return true;
+  } else if (!isNil(remote.auth.currentServer) && !remote.socket.isConnected.value) {
+    try {
+      await remote.sdk.newUserApi(getSystemApi).getPingSystem();
+
+      return true;
+    } catch {}
+  }
+
+  return false;
+}, true);
