@@ -101,10 +101,10 @@ jobs:
         uses: docker/setup-qemu-action@v3.0.0
 
       - name: Configure Docker Buildx ⚙️
-        uses: docker/setup-buildx-action@v3.1.0
+        uses: docker/setup-buildx-action@v3.2.0
 
       - name: Build Docker images 🛠️
-        uses: docker/build-push-action@v5.2.0
+        uses: docker/build-push-action@v5.3.0
         with:
           context: .
           file: packaging/docker/Dockerfile
