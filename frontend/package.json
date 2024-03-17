@@ -19,7 +19,6 @@
   },
   "dependencies": {
     "@jellyfin/sdk": "0.8.2",
-    "@unocss/reset": "0.58.5",
     "@vueuse/components": "10.9.0",
     "@vueuse/core": "10.9.0",
     "audiomotion-analyzer": "4.4.0",
