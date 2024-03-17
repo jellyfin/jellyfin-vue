@@ -1,4 +1,4 @@
-import { defaultsDeep } from 'lodash-es';
+import defu from 'defu';
 
 /**
  * Merge 2 objects, excluding the keys from the destination that are not present in source
@@ -16,7 +16,7 @@ export function mergeExcludingUnknown<T extends object, K extends keyof T>(
     (key) => !defaultKeys.has(key)
   );
 
-  defaultsDeep(object, defaultObject);
+  defu(object, defaultObject);
 
   for (const key of missingKeys) {
     delete object[key];
