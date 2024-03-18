@@ -95,6 +95,7 @@ interface PlaybackManagerState {
   playSessionId: string | undefined;
   playbackInitiator: BaseItemDto | undefined;
   playbackInitMode: InitMode;
+  playbackSpeed: number;
 }
 
 /**
@@ -440,6 +441,17 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       this._state.remoteCurrentVolume = newVolume;
     } else {
       mediaControls.volume.value = newVolume / 100;
+    }
+  }
+
+  public get playbackSpeed(): number {
+    return this._state.playbackSpeed;
+  }
+
+  public set playbackSpeed(speed: number) {
+    if(speed in [0.5, 0.75, 1, 1.25, 1.5, 2]) {
+      this._state.playbackSpeed = speed;
+      mediaControls.rate.value = speed;
     }
   }
 
@@ -987,7 +999,8 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       originalQueue: [],
       playSessionId: undefined,
       playbackInitiator: undefined,
-      playbackInitMode: InitMode.Unknown
+      playbackInitMode: InitMode.Unknown,
+      playbackSpeed: 1
     });
     /**
      * Logic is divided by concerns and scope. Watchers for callbacks
@@ -1158,8 +1171,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
             ? undefined
             : {
                 duration,
-                // TODO: Change this when playback rate changes are implemented
-                playbackRate: 1,
+                playbackRate: this.playbackSpeed,
                 position: this.currentTime <= duration ? this.currentTime : 0
               }
         );
