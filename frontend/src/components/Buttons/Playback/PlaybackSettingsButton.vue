@@ -62,9 +62,12 @@
             </VCol>
             <VCol :cols="8">
               <VSelect
+                v-model="playbackManager.playbackSpeed"
                 density="comfortable"
-                disabled
-                hide-details />
+                hide-details
+                :items="playbackSpeed"
+                item-title="title"
+                item-value="speed" />
             </VCol>
           </VRow>
           <VRow align="center">
@@ -91,4 +94,30 @@ import { playbackManager } from '@/store/playback-manager';
 import { playerElement } from '@/store/player-element';
 
 const menuModel = defineModel<boolean>();
+const playbackSpeed = [
+  {
+    title: '0.5x',
+    speed: 0.5
+  },
+  {
+    title: '0.75x',
+    speed: 0.75
+  },
+  {
+    title: '1x',
+    speed: 1
+  },
+  {
+    title: '1.25x',
+    speed: 1.25
+  },
+  {
+    title: '1.5x',
+    speed: 1.5
+  },
+  {
+    title: '2x',
+    speed: 2
+  }
+];
 </script>
