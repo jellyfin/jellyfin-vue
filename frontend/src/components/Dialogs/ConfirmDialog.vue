@@ -1,0 +1,116 @@
+<template>
+  <VDialog
+    v-model="model"
+    width="auto"
+    :fullscreen="$vuetify.display.mobile">
+    <VCard>
+      <VCardTitle
+        v-if="state.title"
+        class="text-center">
+        {{ state.title }}
+      </VCardTitle>
+      <VCardSubtitle
+        v-if="state.subtitle"
+        class="text-center">
+        {{ state.subtitle }}
+      </VCardSubtitle>
+
+      <VDivider />
+      <!-- eslint-disable vue/no-v-html vue/no-v-text-v-html-on-component -->
+      <VCardText
+        class="d-flex text-center align-center justify-center"
+        v-html="sanitizeHtml(innerHtml)" />
+      <!-- eslint-enable vue/no-v-html vue/no-v-text-v-html-on-component -->
+      <VCardActions class="align-center justify-center">
+        <VBtn
+          variant="elevated"
+          color="secondary"
+          width="8em"
+          @click="cancel">
+          {{ t('cancel') }}
+        </VBtn>
+        <VBtn
+          width="8em"
+          variant="elevated"
+          :color="state.confirmColor ?? 'error'"
+          @click="confirm">
+          {{ state.confirmText }}
+        </VBtn>
+      </VCardActions>
+    </VCard>
+  </VDialog>
+</template>
+
+<script lang="ts">
+import { reactive, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useConfirmDialog as vUseConfirmDialog } from '@vueuse/core';
+import { sanitizeHtml } from '@/utils/html';
+
+interface ConfirmDialogState {
+  title: string;
+  text: string;
+  confirmText?: string;
+  subtitle?: string;
+  confirmColor?: string;
+}
+
+const state = reactive<ConfirmDialogState>({
+  title: '',
+  text: '',
+  confirmText: undefined,
+  subtitle: undefined,
+  confirmColor: undefined
+});
+
+const { isRevealed, reveal, confirm, cancel } = vUseConfirmDialog();
+const model = computed({
+  get() {
+    return isRevealed.value;
+  },
+  set(newVal) {
+    if (newVal === false) {
+      cancel();
+    }
+  }
+});
+
+/**
+ * Composable for invoking confirm dialog
+ * @param func - Function to run if the action is confirmed
+ * @param [params] - Set the state of the component for the function invocation
+ * @param [params.title] - Dialog title (rendered as VCardTitle)
+ * @param [params.subtitle] - Dialog subtitle (rendered as VCardSubtitle)
+ * @param [params.text] - Dialog's body
+ * @param [params.confirmText] - Confirm's button text
+ * @param [params.confirmColor] - Vuetify's color for the confirm button
+ * @param raiseError - If you want the cancel action to trigger a promise reject
+ */
+export async function useConfirmDialog<T>(
+  func: () => T | Promise<T>,
+  params: ConfirmDialogState,
+  raiseError = false
+): Promise<T | void> {
+  state.title = params.title || '';
+  state.subtitle = params.subtitle;
+  state.text = params.text || '';
+  state.confirmText = params.confirmText;
+  state.confirmColor = params.confirmColor;
+
+  const { isCanceled } = await reveal();
+
+  if (isCanceled) {
+    if (raiseError) {
+      throw new EvalError('Cancelled action by the user');
+    }
+  } else {
+    return await func();
+  }
+}
+</script>
+
+<script setup lang="ts">
+const { t } = useI18n();
+
+const innerHtml = computed(() => state.text ?? t('accept'));
+</script>

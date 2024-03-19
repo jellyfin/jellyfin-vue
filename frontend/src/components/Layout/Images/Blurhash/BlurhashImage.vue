@@ -1,0 +1,90 @@
+<template>
+  <div ref="imageElement">
+    <JImg
+      class="absolute-cover img"
+      :src="imageUrl"
+      v-bind="$attrs">
+      <template #placeholder>
+        <BlurhashCanvas
+          v-if="hash"
+          :hash="hash"
+          :width="width"
+          :height="height"
+          :punch="punch"
+          class="absolute-cover">
+          <BlurhashImageIcon :item="item" />
+        </BlurhashCanvas>
+        <BlurhashImageIcon
+          v-else
+          :item="item" />
+      </template>
+      <BlurhashImageIcon :item="item" />
+    </JImg>
+  </div>
+</template>
+
+<script lang="ts">
+import {
+  type BaseItemDto,
+  type BaseItemPerson,
+  ImageType
+} from '@jellyfin/sdk/lib/generated-client';
+import { refDebounced } from '@vueuse/core';
+import { computed, shallowRef } from 'vue';
+import { vuetify } from '@/plugins/vuetify';
+import { getBlurhash, getImageInfo } from '@/utils/images';
+
+/**
+ * SHARED STATE ACROSS ALL THE COMPONENT INSTANCES
+ */
+const display = vuetify.display;
+const displayWidth = refDebounced(display.width, 2000);
+const displayHeight = refDebounced(display.height, 2000);
+</script>
+
+<script setup lang="ts">
+const props = withDefaults(
+  defineProps<{
+    item: BaseItemDto | BaseItemPerson;
+    width?: number;
+    height?: number;
+    punch?: number;
+    type?: ImageType;
+  }>(),
+  { width: 32, height: 32, punch: 1, type: ImageType.Primary }
+);
+
+const imageElement = shallowRef<HTMLDivElement>();
+const imageUrl = computed(() => {
+  const element = imageElement.value;
+
+  /**
+   * We want to track the state of those dependencies
+   */
+  if (
+    element &&
+    displayWidth.value !== undefined &&
+    displayHeight.value !== undefined
+  ) {
+    const imageInfo = getImageInfo(props.item, {
+      preferThumb: props.type === ImageType.Thumb,
+      preferBanner: props.type === ImageType.Banner,
+      preferLogo: props.type === ImageType.Logo,
+      preferBackdrop: props.type === ImageType.Backdrop,
+      width: element?.clientWidth,
+      ratio: window.devicePixelRatio || 1
+    });
+
+    return imageInfo.url;
+  }
+});
+
+const hash = computed(() => getBlurhash(props.item, props.type));
+</script>
+
+<style lang="scss" scoped>
+.img {
+  color: transparent;
+  object-fit: cover;
+}
+</style>

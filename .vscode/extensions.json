@@ -1,0 +1,20 @@
+{
+  "recommendations": [
+    "antfu.vite",
+    "antfu.browse-lite",
+    "antfu.iconify",
+    "aaron-bond.better-comments",
+    "eamodio.gitlens",
+    "vue.volar",
+    "vue.vscode-typescript-vue-plugin",
+    "dbaeumer.vscode-eslint",
+    "lokalise.i18n-ally",
+    "ryanluker.vscode-coverage-gutters",
+    "yoavbls.pretty-ts-errors",
+    "SonarSource.sonarlint-vscode"
+  ],
+  "unwantedRecommendations": [
+    "octref.vetur",
+    "esbenp.prettier-vscode"
+  ]
+}

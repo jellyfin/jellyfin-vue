@@ -1,0 +1,16 @@
+Source: jellyfin-vue
+Section: misc
+Priority: optional
+Maintainer: Jellyfin Team <team@jellyfin.org>
+Build-Depends:  debhelper (>= 10),
+                nodejs
+Standards-Version: 3.9.4
+Homepage: https://jellyfin.org/
+Vcs-Git: https://github.org/jellyfin/jellyfin-vue.git
+Vcs-Browser: https://github.org/jellyfin/jellyfin-vue
+
+Package: jellyfin-vue
+Recommends: jellyfin-server
+Architecture: all
+Description: Jellyfin is the Free Software Media System.
+ This package provides the Jellyfin vue.js client.

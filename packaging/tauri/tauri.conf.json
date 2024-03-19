@@ -1,0 +1,59 @@
+{
+  "package": {
+    "productName": "jellyfin-vue",
+    "version": "../../frontend/package.json"
+  },
+  "build": {
+    "distDir": "../../frontend/dist",
+    "devPath": "http://127.0.0.1:3000",
+    "beforeDevCommand": "cd ../../frontend && npm start",
+    "beforeBuildCommand": "cd ../../frontend && npm run build"
+  },
+  "tauri": {
+    "bundle": {
+      "active": true,
+      "targets": "all",
+      "identifier": "org.jellyfin.vue.tauri",
+      "resources": [],
+      "externalBin": [],
+      "copyright": "",
+      "category": "Entertainment",
+      "shortDescription": "",
+      "longDescription": "",
+      "deb": {
+        "depends": []
+      },
+      "macOS": {
+        "frameworks": [],
+        "minimumSystemVersion": "",
+        "exceptionDomain": "",
+        "signingIdentity": null,
+        "entitlements": null
+      },
+      "windows": {
+        "certificateThumbprint": null,
+        "digestAlgorithm": "sha256",
+        "timestampUrl": ""
+      }
+    },
+    "updater": {
+      "active": false
+    },
+    "allowlist": {
+      "all": true
+    },
+    "windows": [
+      {
+        "title": "Jellyfin Vue",
+        "width": 800,
+        "height": 600,
+        "resizable": true,
+        "fullscreen": false
+      }
+    ],
+    "security": {
+      "csp": null,
+      "dangerousUseHttpScheme": true
+    }
+  }
+}

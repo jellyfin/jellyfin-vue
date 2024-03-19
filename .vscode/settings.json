@@ -1,0 +1,46 @@
+{
+  "editor.formatOnSave": true, 
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "always",
+    "source.organizeImports": "never"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[vue]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "i18n-ally.keystyle": "flat",
+  "i18n-ally.sortKeys": true,
+  "i18n-ally.sourceLanguage": "en",
+  "i18n-ally.localesPaths": [
+    "frontend/locales"
+  ],
+  "i18n-ally.enabledFrameworks": [
+    "vue"
+  ],
+  "eslint.validate": [
+    "vue",
+    "javascript",
+    "typescript"
+  ],
+  "eslint.format.enable": true,
+  "eslint.workingDirectories": [
+    {
+      "mode": "auto"
+    }
+  ],
+  "vue.autoInsert.dotValue": true,
+  "vue.server.fullCompletionList": true,
+  "sonarlint.output.showAnalyzerLogs": true,
+  "sonarlint.output.showVerboseLogs": true,
+  "sonarlint.connectedMode.project": {
+    "connectionId": "jellyfin-vue",
+    "projectKey": "jellyfin_jellyfin-vue"
+  },
+  "typescript.preferences.autoImportFileExcludePatterns": ["vue-router"]
+}

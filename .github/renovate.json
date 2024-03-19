@@ -1,0 +1,94 @@
+{
+  "timezone": "Europe/Madrid",
+  "packageRules": [
+    {
+      "matchManagers": [
+        "npm"
+      ],
+      "matchDepTypes": [
+        "devDependencies"
+      ],
+      "groupName": "npm development dependencies",
+      "groupSlug": "npm-dev"
+    },
+    {
+      "matchManagers": [
+        "npm"
+      ],
+      "matchDepTypes": [
+        "dependencies"
+      ],
+      "groupName": "npm dependencies",
+      "groupSlug": "npm"
+    },
+    {
+      "matchManagers": [
+        "github-actions"
+      ],
+      "separateMajorMinor": false,
+      "groupName": "CI dependencies",
+      "groupSlug": "ci-deps"
+    },
+    {
+      "matchManagers": [
+        "cargo"
+      ],
+      "matchUpdateTypes": [
+        "patch",
+        "minor",
+        "major"
+      ],
+      "groupName": "cargo dependencies",
+      "groupSlug": "cargo"
+    },
+    {
+      "matchUpdateTypes": [
+        "lockFileMaintenance"
+      ],
+      "groupSlug": "lockfiles",
+      "dependencyDashboardApproval": true
+    }
+  ],
+  "dependencyDashboard": true,
+  "prConcurrentLimit": 0,
+  "prHourlyLimit": 0,
+  "transitiveRemediation": true,
+  "osvVulnerabilityAlerts": true,
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "groupName": "vulnerable dependencies",
+    "groupSlug": "vulnerabilities",
+    "labels": [
+      "security",
+      "dependencies"
+    ]
+  },
+  "ignoreDeps": [
+    "npm",
+    "node"
+  ],
+  "enabledManagers": [
+    "npm",
+    "github-actions",
+    "cargo"
+  ],
+  "labels": [
+    "dependencies"
+  ],
+  "rebaseWhen": "behind-base-branch",
+  "rangeStrategy": "pin",
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": [
+      "every month"
+    ]
+  },
+  "assignees": [
+    "ferferga",
+    "ThibaultNocchi"
+  ],
+  "reviewers": [
+    "ferferga",
+    "ThibaultNocchi"
+  ]
+}

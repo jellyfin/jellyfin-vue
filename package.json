@@ -1,0 +1,23 @@
+{
+  "name": "@jellyfin-vue",
+  "private": true,
+  "homepage": "https://jellyfin.org/",
+  "bugs": {
+    "url": "https://github.com/jellyfin/jellyfin-vue/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jellyfin/jellyfin-vue/"
+  },
+  "license": "GPL-3.0-only",
+  "author": "jellyfin-vue Contributors (https://github.com/jellyfin/jellyfin-vue/graphs/contributors)",
+  "workspaces": [
+    "frontend",
+    "packaging/tauri"
+  ],
+  "engines": {
+    "node": ">=20.8.1 <21.0.0",
+    "npm": ">=10.1.0",
+    "yarn": "Yarn is not supported. Please use NPM."
+  }
+}

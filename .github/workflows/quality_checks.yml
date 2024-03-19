@@ -1,0 +1,250 @@
+name: Quality checks 👌🧪
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    paths-ignore:
+      - "**/*.md"
+  merge_group:
+  schedule:
+    - cron: "30 7 * * 6"
+  workflow_dispatch:
+
+jobs:
+  dependency-review:
+    name: Vulnerable dependencies 🔎
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4.1.1
+        with:
+          show-progress: false
+
+      - name: Scan
+        uses: actions/dependency-review-action@v4.1.3
+        with:
+          ## Workaround from https://github.com/actions/dependency-review-action/issues/456
+          ## TODO: Remove when necessary
+          base-ref: ${{ github.event.pull_request.base.sha || 'master' }}
+          head-ref: ${{ github.event.pull_request.head.sha || github.ref }}
+
+  lint:
+    name: Lint 🔬
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: Checkout ⬇️
+        uses: actions/checkout@v4.1.1
+        with:
+          show-progress: false
+
+      - name: Setup node environment ⚙️
+        uses: actions/setup-node@v4.0.2
+        with:
+          node-version: 20
+          check-latest: true
+
+      - name: Install dependencies 📦
+        run: npm ci --no-audit
+
+      - name: Run linter ✏️
+        run: npm run lint
+
+  typecheck:
+    name: Typecheck 🈯
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: Checkout ⬇️
+        uses: actions/checkout@v4.1.1
+        with:
+          show-progress: false
+
+      - name: Setup node environment ⚙️
+        uses: actions/setup-node@v4.0.2
+        with:
+          node-version: 20
+          check-latest: true
+
+      - name: Install dependencies 📦
+        run: npm ci --no-audit
+
+      - name: Run typecheck 📖
+        run: npm run typecheck
+
+  build:
+    name: Build frontend 🛠️
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - "linux/amd64"
+          - "linux/arm64"
+
+    steps:
+      - name: Checkout ⬇️
+        uses: actions/checkout@v4.1.1
+        with:
+          show-progress: false
+
+      - name: Configure QEMU ⚙️
+        uses: docker/setup-qemu-action@v3.0.0
+
+      - name: Configure Docker Buildx ⚙️
+        uses: docker/setup-buildx-action@v3.2.0
+
+      - name: Build Docker images 🛠️
+        uses: docker/build-push-action@v5.3.0
+        with:
+          context: .
+          file: packaging/docker/Dockerfile
+          platforms: ${{ matrix.platform }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          load: true
+          tags: |
+            jellyfin/jellyfin-vue:pr-build
+
+      - name: Extract built client and Docker image for artifact publishing 📦
+        if: ${{ matrix.platform == 'linux/amd64' }}
+        run: |
+          docker save jellyfin/jellyfin-vue:pr-build > docker_image.tar
+          docker cp $(docker create --name jf jellyfin/jellyfin-vue:pr-build):/usr/share/nginx/html/ ./dist
+          docker rm jf
+
+      - name: Upload artifact (Docker image) ⬆️📦
+        uses: actions/upload-artifact@v4.3.1
+        if: ${{ matrix.platform == 'linux/amd64' }}
+        with:
+          compression-level: 0
+          name: docker_image
+          path: |
+            docker_image.tar
+
+      - name: Upload artifact (Client) ⬆️💻
+        uses: actions/upload-artifact@v4.3.1
+        if: ${{ matrix.platform == 'linux/amd64' }}
+        with:
+          compression-level: 0
+          name: frontend
+          path: |
+            dist
+
+  build_tauri:
+    name: Build Tauri 🛠️
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - "macos-latest"
+          - "ubuntu-latest"
+          - "windows-latest"
+    defaults:
+      run:
+        working-directory: packaging/tauri
+
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - name: Checkout ⬇️
+        uses: actions/checkout@v4.1.1
+        with:
+          show-progress: false
+
+      - name: Setup node environment ⚙️
+        uses: actions/setup-node@v4.0.2
+        with:
+          node-version: 20
+          check-latest: true
+
+      - name: Install npm dependencies 📦
+        run: npm ci --no-audit
+
+      - name: Install Linux dependencies 📦🐧
+        if: matrix.platform == 'ubuntu-latest'
+        run: |
+          sudo apt update -qq
+          sudo apt install -y --no-install-recommends $(cat apt_packages)
+
+      - name: Build Tauri 🛠️
+        run: npm run build
+
+      - name: Upload artifact (Linux) ⬆️🐧
+        uses: actions/upload-artifact@v4.3.1
+        if: matrix.platform == 'ubuntu-latest'
+        with:
+          compression-level: 0
+          name: jellyfin-vue_linux-amd64
+          path: |
+            packaging/tauri/target/release/bundle/deb/*.deb
+            packaging/tauri/target/release/bundle/appimage_deb
+
+      - name: Upload artifact (MacOS) ⬆️🍎
+        uses: actions/upload-artifact@v4.3.1
+        if: matrix.platform == 'macos-latest'
+        with:
+          compression-level: 0
+          name: jellyfin-vue_macOS
+          path: |
+            packaging/tauri/target/release/bundle/macos
+            packaging/tauri/target/release/bundle/dmg/*.dmg
+
+      - name: Upload artifact (Windows) ⬆️🪟
+        uses: actions/upload-artifact@v4.3.1
+        if: matrix.platform == 'windows-latest'
+        with:
+          compression-level: 0
+          name: jellyfin-vue_windows_amd64
+          path: packaging/tauri/target/release/jellyfin-vue.exe
+
+  pr_context:
+    name: Save PR context as artifact
+    if: ${{ always() && !cancelled() && github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    needs:
+      - dependency-review
+      - lint
+      - typecheck
+      - build
+      - build_tauri
+
+    steps:
+      - name: Save PR context
+        env:
+          PR_NUMBER: ${{ github.event.number }}
+          PR_SHA: ${{ github.sha }}
+        run: |
+          echo $PR_NUMBER > PR_number
+          echo $PR_SHA > PR_sha
+
+      - name: Upload PR number as artifact
+        uses: actions/upload-artifact@v4.3.1
+        with:
+          compression-level: 0
+          name: PR_context
+          path: |
+            PR_number
+            PR_sha
+
+  conventional_commits:
+    name: Conventional commits check 💬
+    if: ${{ github.event_name == 'pull_request' || github.event_name == 'merge_group' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout ⬇️
+        uses: actions/checkout@v4.1.1
+        with:
+          show-progress: false
+
+      - name: Check if all commits comply with the specification
+        uses: webiny/action-conventional-commits@v1.3.0

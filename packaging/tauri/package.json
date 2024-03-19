@@ -1,0 +1,16 @@
+{
+  "name": "@jellyfin-vue/tauri",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "start": "npm run gen-icon && tauri dev",
+    "gen-icon": "tauri icon ../../frontend/public/icon.png",
+    "build": "npm run gen-icon && tauri build"
+  },
+  "dependencies": {
+    "@jellyfin-vue/frontend": "*"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "1.5.11"
+  }
+}

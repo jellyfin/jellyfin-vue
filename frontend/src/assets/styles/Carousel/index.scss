@@ -1,0 +1,106 @@
+.swiperContainer {
+  min-width: 100%;
+  min-height: 100%;
+  position: relative;
+}
+
+.progress-bar {
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  margin-top: 0;
+}
+
+.slide-backdrop {
+  position: relative;
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  top: 0;
+  padding-bottom: calc(9 / 16) * 100%;
+  background-position: center top;
+  background-size: contain;
+  background-repeat: no-repeat;
+  box-sizing: border-box;
+  mask-image: linear-gradient(
+    180deg,
+    rgba(37, 18, 18, 0.75) 0%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  z-index: 1;
+}
+
+.slide-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  box-sizing: border-box;
+  z-index: 2;
+}
+
+.slide-backdrop.sm-and-up {
+  width: 80%;
+  margin-left: auto;
+  margin-right: 0;
+  padding-bottom: calc(9 / 16) * 80%;
+  background-position: right center;
+  mask-image: linear-gradient(
+      to right,
+      hsla(0, 0%, 0%, 0) 0%,
+      hsla(0, 0%, 0%, 0.182) 5.6%,
+      hsla(0, 0%, 0%, 0.34) 9.9%,
+      hsla(0, 0%, 0%, 0.476) 13.1%,
+      hsla(0, 0%, 0%, 0.593) 15.7%,
+      hsla(0, 0%, 0%, 0.69) 17.9%,
+      hsla(0, 0%, 0%, 0.771) 20.2%,
+      hsla(0, 0%, 0%, 0.836) 22.9%,
+      hsla(0, 0%, 0%, 0.888) 26.3%,
+      hsla(0, 0%, 0%, 0.927) 30.8%,
+      hsla(0, 0%, 0%, 0.956) 36.7%,
+      hsla(0, 0%, 0%, 0.976) 44.4%,
+      hsla(0, 0%, 0%, 0.989) 54.3%,
+      hsla(0, 0%, 0%, 0.996) 66.6%,
+      hsla(0, 0%, 0%, 0.999) 81.7%,
+      hsl(0, 0%, 0%) 100%
+    ),
+    linear-gradient(
+      to top,
+      hsla(0, 0%, 0%, 0) 0%,
+      hsla(0, 0%, 0%, 0.182) 5.6%,
+      hsla(0, 0%, 0%, 0.34) 9.9%,
+      hsla(0, 0%, 0%, 0.476) 13.1%,
+      hsla(0, 0%, 0%, 0.593) 15.7%,
+      hsla(0, 0%, 0%, 0.69) 17.9%,
+      hsla(0, 0%, 0%, 0.771) 20.2%,
+      hsla(0, 0%, 0%, 0.836) 22.9%,
+      hsla(0, 0%, 0%, 0.888) 26.3%,
+      hsla(0, 0%, 0%, 0.927) 30.8%,
+      hsla(0, 0%, 0%, 0.956) 36.7%,
+      hsla(0, 0%, 0%, 0.976) 44.4%,
+      hsla(0, 0%, 0%, 0.989) 54.3%,
+      hsla(0, 0%, 0%, 0.996) 66.6%,
+      hsla(0, 0%, 0%, 0.999) 81.7%,
+      hsl(0, 0%, 0%) 100%
+    );
+  mask-composite: intersect;
+}
+
+.swiper.sm-and-up {
+  margin-top: -64px;
+}
+
+.slide-content.sm-and-up {
+  top: 56px;
+}
+
+.progress-bar.sm-and-up {
+  position: relative !important;
+  top: initial;
+  margin-top: initial;
+}
+
+.swiper.md-and-up {
+  margin-bottom: -128px !important;
+}
