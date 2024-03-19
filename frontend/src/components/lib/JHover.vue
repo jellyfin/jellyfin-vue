@@ -1,7 +1,7 @@
 <template>
   <RSlot
-    @mouseenter="isHovering = true"
-    @mouseleave="isHovering = false">
+    @pointerenter="isHovering = true"
+    @pointerleave="isHovering = false">
     <slot
       :is-hovering="isHovering" />
   </RSlot>
