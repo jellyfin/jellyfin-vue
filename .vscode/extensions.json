@@ -6,7 +6,6 @@
     "aaron-bond.better-comments",
     "eamodio.gitlens",
     "vue.volar",
-    "vue.vscode-typescript-vue-plugin",
     "dbaeumer.vscode-eslint",
     "lokalise.i18n-ally",
     "ryanluker.vscode-coverage-gutters",
@@ -15,6 +14,7 @@
   ],
   "unwantedRecommendations": [
     "octref.vetur",
-    "esbenp.prettier-vscode"
+    "esbenp.prettier-vscode",
+    "vue.vscode-typescript-vue-plugin"
   ]
 }
