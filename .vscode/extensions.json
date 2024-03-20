@@ -1,7 +1,5 @@
 {
   "recommendations": [
-    "antfu.vite",
-    "antfu.browse-lite",
     "antfu.iconify",
     "aaron-bond.better-comments",
     "eamodio.gitlens",

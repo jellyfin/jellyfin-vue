@@ -67,6 +67,7 @@ module.exports = {
     'file-progress'
   ],
   rules: {
+    '@stylistic/object-curly-spacing': ['error', 'always'],
     '@stylistic/semi': ['error', 'always'],
     '@stylistic/quotes': ['error', 'single', { 'avoidEscape': true }],
     '@stylistic/comma-dangle': 'error',

@@ -15,7 +15,7 @@
     "lint": "eslint . --ignore-path ../.gitignore --max-warnings=0 --cache --cache-location ../node_modules/.cache/eslint",
     "lint-fix": "eslint . --fix --ignore-path ../.gitignore --max-warnings=0 --cache --cache-location ../node_modules/.cache/eslint",
     "prod": "npm run build && npm run serve",
-    "typecheck": "vue-tsc --noEmit --skipLibCheck"
+    "typecheck": "vue-tsc"
   },
   "dependencies": {
     "@jellyfin/sdk": "0.8.2",

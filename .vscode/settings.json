@@ -35,12 +35,19 @@
     }
   ],
   "vue.autoInsert.dotValue": true,
-  "vue.server.fullCompletionList": true,
+  "vue.inlayHints.missingProps": true,
+  "vue.complete.casing.props": "kebab",
+  "vue.complete.casing.tags": "pascal",
+  "vue.format.script.initialIndent": true,
+  "vue.format.style.initialIndent": true,
+  "vue.inlayHints.inlineHandlerLeading": true,
+  "vue.inlayHints.vBindShorthand": true,
   "sonarlint.output.showAnalyzerLogs": true,
   "sonarlint.output.showVerboseLogs": true,
   "sonarlint.connectedMode.project": {
     "connectionId": "jellyfin-vue",
     "projectKey": "jellyfin_jellyfin-vue"
   },
-  "typescript.preferences.autoImportFileExcludePatterns": ["vue-router"]
+  "typescript.preferences.autoImportFileExcludePatterns": ["vue-router"],
+  "typescript.tsserver.experimental.enableProjectDiagnostics": true
 }
