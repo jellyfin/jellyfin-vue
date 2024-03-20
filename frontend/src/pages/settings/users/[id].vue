@@ -357,9 +357,37 @@ const model = ref<CurrentUser>({
   BlockedTags: []
 });
 const tab = ref<number>(1);
-const blockingCategories = computed(() => {
-  return [{label: t('books'), value: 'Book'}, {label: t('channels'), value: 'ChannelContent'}, {label: t('liveTv'), value: 'LiveTvChannel'}, {label: t('movies'), value: 'Movie'}, {label: t('music'), value: 'Music'}, {label: t('trailer'), value: 'Trailer'}, {label: t('shows'), value: 'Series'}];
-});
+const blockingCategories = computed(() =>
+  [
+    {
+      label: t('books'),
+      value: 'Book'
+    },
+    {
+      label: t('channels'),
+      value: 'ChannelContent'
+    },
+    {
+      label: t('liveTv'),
+      value: 'LiveTvChannel'
+    },
+    {
+      label: t('movies'),
+      value: 'Movie'
+    },
+    {
+      label: t('music'),
+      value: 'Music'
+    },
+    {
+      label: t('trailer'),
+      value: 'Trailer'
+    },
+    {
+      label: t('shows'),
+      value: 'Series'
+    }]
+);
 
 /**
  * Loads all data required for this page
@@ -371,7 +399,7 @@ async function load(): Promise<void> {
     userId: id
   })).data;
   initializeUser();
-  libraries.value = (await remote.sdk.newUserApi(getLibraryApi).getMediaFolders({isHidden: false})).data;
+  libraries.value = (await remote.sdk.newUserApi(getLibraryApi).getMediaFolders({ isHidden: false })).data;
 
   const cats = (await remote.sdk.newUserApi(getLocalizationApi).getParentalRatings()).data;
 
@@ -379,13 +407,13 @@ async function load(): Promise<void> {
     if (parentalCategories.value.some((c) => c.id === cat.Value!)) {
       parentalCategories.value = parentalCategories.value.map((c) => {
         if (c.id === cat.Value!) {
-          return {label: `${c.label}/${cat.Name!}`, id: cat.Value};
+          return { label: `${c.label}/${cat.Name!}`, id: cat.Value };
         }
 
         return c;
       });
     } else {
-      parentalCategories.value.push({label: cat.Name!, id: cat.Value!});
+      parentalCategories.value.push({ label: cat.Name!, id: cat.Value! });
     }
   }
 }
@@ -403,7 +431,7 @@ async function saveAccess(): Promise<void> {
   loading.value = true;
   await remote.sdk.newUserApi(getUserApi).updateUserPolicy({
     userId: user.value.Id,
-    userPolicy: {...user.value.Policy, EnableAllFolders: model.value.CanAccessAllLibraries, EnabledFolders: model.value.Folders}
+    userPolicy: { ...user.value.Policy, EnableAllFolders: model.value.CanAccessAllLibraries, EnabledFolders: model.value.Folders }
   });
   await refreshData();
   loading.value = false;
@@ -420,7 +448,7 @@ async function saveProfile(): Promise<void> {
   loading.value = true;
   await remote.sdk.newUserApi(getUserApi).updateUser({
     userId: user.value.Id,
-    userDto: {...user.value, Name: model.value.Name}
+    userDto: { ...user.value, Name: model.value.Name }
   });
   await refreshData();
   loading.value = false;
@@ -461,8 +489,8 @@ async function submitPassword(): Promise<void> {
   }
 
   loading.value = true;
-  await remote.sdk.newUserApi(getUserApi).updateUserPassword({userId: user.value.Id, updateUserPassword: {NewPw: model.value.Password, ...(user.value.HasPassword && {CurrentPw: model.value.ConfirmPassword})}});
-  model.value = {...model.value, CurrentPassword: '',Password: '', ConfirmPassword: ''};
+  await remote.sdk.newUserApi(getUserApi).updateUserPassword({ userId: user.value.Id, updateUserPassword: { NewPw: model.value.Password, ...(user.value.HasPassword && { CurrentPw: model.value.ConfirmPassword }) } });
+  model.value = { ...model.value, CurrentPassword: '',Password: '', ConfirmPassword: '' };
   await refreshData();
   loading.value = false;
 }
@@ -486,7 +514,7 @@ async function refreshData(): Promise<void> {
  */
 async function deleteUser():Promise<void> {
   await useConfirmDialog(async () => {
-    await remote.sdk.newUserApi(getUserApi).deleteUser({userId: user.value.Id!});
+    await remote.sdk.newUserApi(getUserApi).deleteUser({ userId: user.value.Id! });
     await router.push('/settings/users');
   }, {
     title: t('deleteUser'),
@@ -504,9 +532,9 @@ async function resetPassword(): Promise<void> {
   }
 
   loading.value = true;
-  await remote.sdk.newUserApi(getUserApi).updateUserPassword({userId: user.value.Id, updateUserPassword: {
+  await remote.sdk.newUserApi(getUserApi).updateUserPassword({ userId: user.value.Id, updateUserPassword: {
     ResetPassword: true
-  }});
+  } });
   await refreshData();
   loading.value = false;
 }

@@ -789,7 +789,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   };
 
   public readonly instantMixFromItem = async (itemId: string): Promise<void> => {
-    const { data: items } = await useBaseItem(getInstantMixApi, 'getInstantMixFromItem', { skipCache: { request: true }})(() => ({
+    const { data: items } = await useBaseItem(getInstantMixApi, 'getInstantMixFromItem', { skipCache: { request: true } })(() => ({
       id: itemId
     }));
 

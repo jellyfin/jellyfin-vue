@@ -97,7 +97,9 @@ const canAccessAllLibraries = ref(true);
 const accessableLibraries = ref<string[]>([]);
 const loading = ref(false);
 
-const libraries = (await remote.sdk.newUserApi(getLibraryApi).getMediaFolders({isHidden: false})).data;
+const libraries = (
+  await remote.sdk.newUserApi(getLibraryApi).getMediaFolders({ isHidden: false })
+).data;
 
 /**
  * Creates a new user
