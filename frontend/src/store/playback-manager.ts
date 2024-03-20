@@ -449,10 +449,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   }
 
   public set playbackSpeed(speed: number) {
-    if(speed in [0.5, 0.75, 1, 1.25, 1.5, 2]) {
-      this._state.playbackSpeed = speed;
-      mediaControls.rate.value = speed;
-    }
+    this._state.playbackSpeed = speed;
   }
 
   /**
@@ -1287,6 +1284,10 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       if (mediaControls.ended.value && !this.isRemotePlayer) {
         this.setNextItem();
       }
+    });
+
+    watch(() => this.playbackSpeed, () => {
+      mediaControls.rate.value = this.playbackSpeed;
     });
 
     /**
