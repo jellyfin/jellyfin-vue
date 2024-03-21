@@ -55,10 +55,10 @@ class RemotePluginAuth {
   }
 
   public get currentUserToken(): string | undefined {
-    return this.getUserAccessToken(this.currentUser);
+    return this._getUserAccessToken(this.currentUser);
   }
 
-  public readonly getUserAccessToken = (
+  private readonly _getUserAccessToken = (
     user: UserDto | undefined
   ): string | undefined => {
     return user?.Id ? this._state.value.accessTokens[user.Id] : undefined;
@@ -221,7 +221,7 @@ class RemotePluginAuth {
     if (!isNil(this.currentUser) && !isNil(this.currentServer)) {
       const api = useOneTimeAPI(
         this.currentServer.PublicAddress,
-        this.getUserAccessToken(this.currentUser)
+        this.currentUserToken
       );
 
       this._state.value.users[this._state.value.currentUserIndex] = (
@@ -259,7 +259,7 @@ class RemotePluginAuth {
       if (!skipRequest) {
         await useOneTimeAPI(
           server.PublicAddress,
-          this.getUserAccessToken(user)
+          this._getUserAccessToken(user)
         ).logout();
       }
     } catch (error) {
