@@ -26,10 +26,15 @@ class RemotePluginAxios {
     if (
       error.response?.status === 401 &&
       auth.currentUser &&
-      !error.config?.url?.includes('/Sessions/Logout')
+      !error.config?.url?.includes('/Sessions/Logout') &&
+      !error.config?.url?.includes('/Users/Me')
     ) {
-      await auth.logoutCurrentUser(true);
-      useSnackbar(i18n.t('kickedOut'), 'error');
+      try {
+        await auth.refreshCurrentUserInfo();
+      } catch {
+        await auth.logoutCurrentUser(true);
+        useSnackbar(i18n.t('kickedOut'), 'error');
+      }
     }
 
     /**

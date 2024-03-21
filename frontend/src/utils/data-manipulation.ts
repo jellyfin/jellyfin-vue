@@ -16,7 +16,7 @@ export function mergeExcludingUnknown<T extends object, K extends keyof T>(
     (key) => !defaultKeys.has(key)
   );
 
-  defu(object, defaultObject);
+  object = defu(object, defaultObject);
 
   for (const key of missingKeys) {
     delete object[key];
