@@ -102,7 +102,6 @@
   "editPerson": "עריכת אדם",
   "enableUPNP": "הפעלת UPnP",
   "endsAt": "מסתיים בעוד {time}",
-  "failedSettingDisplayPreferences": "לא ניתן לעדכן הגדרות תצוגה.",
   "favorite": "מועדף",
   "features": "תכונות",
   "filter": "סינון",
@@ -170,7 +169,6 @@
   "nextUp": "הבא בתור",
   "noImagesFound": "לא נמצאו תמונות",
   "noInformationAvailable": "אין מידע זמין",
-  "noNetworkConnection": "אין חיבור לרשת",
   "noResultsFound": "אין כאן כלום",
   "operatingSystem": "מערכת הפעלה"
 }
