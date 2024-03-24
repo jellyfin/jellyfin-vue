@@ -66,7 +66,7 @@ jobs:
           repo-token: "${{ secrets.JF_BOT_TOKEN }}"
 
       - name: Check all PRs for merge conflicts ⛔
-        uses: eps1lon/actions-label-merge-conflict@v2.1.0
+        uses: eps1lon/actions-label-merge-conflict@v3.0.0
         with:
           dirtyLabel: "merge conflict"
           repoToken: ${{ secrets.JF_BOT_TOKEN }}
