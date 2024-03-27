@@ -46,9 +46,9 @@ export const isFinePointer = useMediaQuery('(pointer:fine)');
  */
 const network = useNetwork();
 export const isConnectedToServer = computedAsync(async () => {
-  if ((network.isSupported.value && network.isOnline.value)) {
+  if (network.isSupported.value && network.isOnline.value) {
     return true;
-  } else if (!isNil(remote.auth.currentServer) && !remote.socket.isConnected.value) {
+  } else if (!isNil(remote.auth.currentServer) || !remote.socket.isConnected.value) {
     try {
       await remote.sdk.newUserApi(getSystemApi).getPingSystem();
 
