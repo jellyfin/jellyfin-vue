@@ -33,7 +33,7 @@ import { getImageInfo } from '@/utils/images';
 import { getItemRuntime } from '@/utils/items';
 import playbackProfile from '@/utils/playback-profiles';
 import { msToTicks } from '@/utils/time';
-import { mediaControls } from '@/store';
+import { mediaControls, mediaElementRef } from '@/store';
 import { CommonStore } from '@/store/super/common-store';
 
 /**
@@ -1288,6 +1288,10 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
 
     watch(() => this.playbackSpeed, () => {
       mediaControls.rate.value = this.playbackSpeed;
+
+      if (mediaElementRef.value) {
+        mediaElementRef.value.preservesPitch = true;
+      }
     });
 
     /**
