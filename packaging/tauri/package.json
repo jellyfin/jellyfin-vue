@@ -5,7 +5,8 @@
   "scripts": {
     "start": "npm run gen-icon && tauri dev",
     "gen-icon": "tauri icon ../../frontend/public/icon.png",
-    "build": "npm run gen-icon && tauri build"
+    "build": "npm run gen-icon && tauri build",
+    "clean": "git clean -fxd"
   },
   "dependencies": {
     "@jellyfin-vue/frontend": "*"
