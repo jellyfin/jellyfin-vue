@@ -22,3 +22,8 @@ tauri = { version = "=1.6.1", features = ["api-all"] }
 [features]
 default = ["custom-protocol"]
 custom-protocol = ["tauri/custom-protocol"]
+
+[profile.release]
+strip = true
+lto = true
+opt-level = 3

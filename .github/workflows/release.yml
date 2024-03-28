@@ -114,9 +114,7 @@ jobs:
         with:
           compression-level: 0
           name: jellyfin-vue_linux-amd64
-          path: |
-            packaging/tauri/target/release/bundle/deb/*.deb
-            packaging/tauri/target/release/bundle/appimage_deb
+          path: packaging/tauri/target/release/bundle/appimage_deb
 
       - name: Upload artifact (MacOS) ⬆️🍎
         uses: actions/upload-artifact@v4.3.1
@@ -124,9 +122,7 @@ jobs:
         with:
           compression-level: 0
           name: jellyfin-vue_macOS
-          path: |
-            packaging/tauri/target/release/bundle/macos
-            packaging/tauri/target/release/bundle/dmg/*.dmg
+          path: packaging/tauri/target/release/bundle/macos
 
       - name: Upload artifact (Windows) ⬆️🪟
         uses: actions/upload-artifact@v4.3.1
