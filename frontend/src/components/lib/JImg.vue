@@ -1,34 +1,45 @@
 <template>
   <template v-if="src">
+    <!-- The link element is the browser standard for resource prefetching. We need it for handling divs and img with display: none -->
+    <link
+      v-if="!shown"
+      rel="preload prerender"
+      as="image"
+      :href="src"
+      :style="undefined"
+      @load="onLoad"
+      @error="onError" />
     <VFadeTransition
       group
       mode="in-out">
-      <template v-if="shown">
-        <component
-          :is="type"
-          class="j-img"
-          v-bind="$attrs"
-          :src="type === 'img' ? src : undefined" />
-      </template>
-      <template v-else>
+      <component
+        :is="type"
+        v-show="shown"
+        key="img"
+        class="j-img"
+        v-bind="$attrs"
+        :src="type === 'img' ? src : undefined" />
+      <template v-if="!shown">
         <slot
           v-if="$slots.placeholder"
+          key="placeholder"
           name="placeholder" />
         <slot
           v-else-if="loading"
+          key="loading"
           name="loading" />
         <slot
           v-else-if="error"
+          key="error"
           name="error" />
       </template>
     </VFadeTransition>
   </template>
-  <slot v-else />
+  <slot v-bind="$attrs" />
 </template>
 
 <script setup lang="ts">
-import { watchImmediate } from '@vueuse/core';
-import { computed, shallowRef, nextTick } from 'vue';
+import { computed, shallowRef, watch } from 'vue';
 
 interface Props {
   src?: string | null;
@@ -36,6 +47,11 @@ interface Props {
    * Cover the parent area. This renders the component as a div
    */
   cover?: boolean;
+  /**
+   * If this is true, the image won't follow the load procedures after a src change and the image will simply be
+   * updated in place without showing any of the slots.
+   */
+  once?: boolean;
 }
 
 const props = defineProps<Props>();
@@ -47,27 +63,32 @@ const url = computed(() => `url('${props.src}'')`);
 const type = computed(() => props.cover ? 'div' : 'img');
 const shown = computed(() => !loading.value && !error.value);
 
-watchImmediate(() => props.src, () => {
-  if (props.src) {
-    const preloaderImg = new Image();
-
-    preloaderImg.src = props.src;
-
-    preloaderImg.addEventListener('loadstart', () => {
-      loading.value = true;
-    }, { once: true });
-    preloaderImg.addEventListener('load', async () => {
-      error.value = false;
-      loading.value = false;
-      await nextTick(() => preloaderImg.remove());
-    }, { once: true });
-    preloaderImg.addEventListener('error', async () => {
-      loading.value = false;
-      error.value = true;
-      await nextTick(() => preloaderImg.remove());
-    }, { once: true });
+/**
+ * Event handler for the loadstart event
+ */
+function onLoadStart(): void {
+  if (!props.once) {
+    loading.value = true;
   }
-});
+}
+
+/**
+ * Event handler for the load event
+ */
+function onLoad(): void {
+  loading.value = false;
+  error.value = false;
+}
+
+/**
+ * Event handler for the error event
+ */
+function onError(): void {
+  loading.value = false;
+  error.value = true;
+}
+
+watch(() => props.src, onLoadStart);
 </script>
 
 <style scoped>

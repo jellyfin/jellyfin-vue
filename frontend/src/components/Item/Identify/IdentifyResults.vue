@@ -9,7 +9,9 @@
         margin
         @click="$emit('select', item)">
         <template #image>
-          <JImg :src="item.ImageUrl">
+          <JImg
+            :src="item.ImageUrl"
+            once>
             <template #loading>
               <VProgressCircular indeterminate />
             </template>
