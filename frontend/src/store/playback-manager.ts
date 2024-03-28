@@ -33,7 +33,7 @@ import { getImageInfo } from '@/utils/images';
 import { getItemRuntime } from '@/utils/items';
 import playbackProfile from '@/utils/playback-profiles';
 import { msToTicks } from '@/utils/time';
-import { mediaControls } from '@/store';
+import { mediaControls, mediaElementRef } from '@/store';
 import { CommonStore } from '@/store/super/common-store';
 
 /**
@@ -95,6 +95,7 @@ interface PlaybackManagerState {
   playSessionId: string | undefined;
   playbackInitiator: BaseItemDto | undefined;
   playbackInitMode: InitMode;
+  playbackSpeed: number;
 }
 
 /**
@@ -441,6 +442,14 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     } else {
       mediaControls.volume.value = newVolume / 100;
     }
+  }
+
+  public get playbackSpeed(): number {
+    return this._state.playbackSpeed;
+  }
+
+  public set playbackSpeed(speed: number) {
+    this._state.playbackSpeed = speed;
   }
 
   /**
@@ -987,7 +996,8 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       originalQueue: [],
       playSessionId: undefined,
       playbackInitiator: undefined,
-      playbackInitMode: InitMode.Unknown
+      playbackInitMode: InitMode.Unknown,
+      playbackSpeed: 1
     });
     /**
      * Logic is divided by concerns and scope. Watchers for callbacks
@@ -1158,8 +1168,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
             ? undefined
             : {
                 duration,
-                // TODO: Change this when playback rate changes are implemented
-                playbackRate: 1,
+                playbackRate: this.playbackSpeed,
                 position: this.currentTime <= duration ? this.currentTime : 0
               }
         );
@@ -1274,6 +1283,14 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     watch(mediaControls.ended, () => {
       if (mediaControls.ended.value && !this.isRemotePlayer) {
         this.setNextItem();
+      }
+    });
+
+    watch(() => this.playbackSpeed, () => {
+      mediaControls.rate.value = this.playbackSpeed;
+
+      if (mediaElementRef.value) {
+        mediaElementRef.value.preservesPitch = true;
       }
     });
 
