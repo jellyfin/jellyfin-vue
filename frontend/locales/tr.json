@@ -213,6 +213,8 @@
   "next": "İleri",
   "nextUp": "Sıradaki bölümler",
   "noLogsFound": "Günlük bulunamadı",
+  "noServerConnection": "Sunucuya bağlantı yok",
+  "noWebSocketConnection": "Kısmi sunucu bağlantı kaybı (WebSocket yok)",
   "notifications": "Bildirimler",
   "numberTracks": "{number} parça",
   "operatingSystem": "İşletim sistemi",
