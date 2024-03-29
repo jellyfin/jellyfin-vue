@@ -13,7 +13,9 @@
           :height="height"
           :punch="punch"
           class="absolute-cover">
-          <BlurhashImageIcon :item="item" />
+          <BlurhashImageIcon
+            :item="item"
+            class="z-1" />
         </BlurhashCanvas>
         <BlurhashImageIcon
           v-else
@@ -86,5 +88,9 @@ const hash = computed(() => getBlurhash(props.item, props.type));
 .img {
   color: transparent;
   object-fit: cover;
+}
+
+.z-1 {
+  z-index: -1;
 }
 </style>
