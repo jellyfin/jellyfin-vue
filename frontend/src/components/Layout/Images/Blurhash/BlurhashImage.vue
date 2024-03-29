@@ -2,6 +2,7 @@
   <div ref="imageElement">
     <JImg
       class="absolute-cover img"
+      once
       :src="imageUrl"
       v-bind="$attrs">
       <template #placeholder>
