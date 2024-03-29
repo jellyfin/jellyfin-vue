@@ -19,7 +19,6 @@
           v-else
           :item="item" />
       </template>
-      <BlurhashImageIcon :item="item" />
     </JImg>
   </div>
 </template>

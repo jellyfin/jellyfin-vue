@@ -1,6 +1,5 @@
 <template>
   <template v-if="src">
-    <!-- The link element is the browser standard for resource prefetching. We need it for handling divs and img with display: none -->
     <link
       v-if="!shown"
       rel="preload prerender"
@@ -15,31 +14,49 @@
       <component
         :is="type"
         v-show="shown"
-        key="img"
+        key="1"
         class="j-img"
         v-bind="$attrs"
-        :src="type === 'img' ? src : undefined" />
+        :src="type === 'img' ? src : undefined">
+        <slot />
+      </component>
       <template v-if="!shown">
         <slot
           v-if="$slots.placeholder"
-          key="placeholder"
+          key="2"
+          v-bind="$attrs"
           name="placeholder" />
         <slot
           v-else-if="loading"
-          key="loading"
+          key="3"
+          v-bind="$attrs"
           name="loading" />
         <slot
           v-else-if="error"
-          key="error"
+          key="4"
+          v-bind="$attrs"
           name="error" />
       </template>
     </VFadeTransition>
   </template>
-  <slot v-bind="$attrs" />
+  <slot
+    v-else-if="$slots.placeholder"
+    v-bind="$attrs"
+    name="placeholder" />
+  <slot
+    v-else
+    v-bind="$attrs" />
 </template>
 
 <script setup lang="ts">
 import { computed, shallowRef, watch } from 'vue';
+
+/**
+ * In this component, we use a link element for image preload.
+ * The link element is the browser standard for resource prefetching and we can use it everytime, regardless if the component is a div or an img.
+ *
+ * Given the img at loading is v-show'ed to false (display: none), the load events doesn't trigger either
+ */
 
 interface Props {
   src?: string | null;
