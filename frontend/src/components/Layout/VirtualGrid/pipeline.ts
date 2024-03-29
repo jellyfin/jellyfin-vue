@@ -81,12 +81,12 @@ export function getScrollParents(
     const parentStyle = getComputedStyle(parent);
 
     horizontal =
-      overflowRegex.test(parentStyle.overflowX) && !horizontal
+      overflowRegex.test(parentStyle.overflowX)
         ? parent
         : undefined;
 
     vertical =
-      overflowRegex.test(parentStyle.overflowY) && !vertical
+      overflowRegex.test(parentStyle.overflowY)
         ? parent
         : undefined;
 
