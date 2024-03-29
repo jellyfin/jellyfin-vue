@@ -156,7 +156,7 @@ module.exports = {
     'import/order': 'error',
     'import/no-cycle': 'error',
     'import/no-nodejs-modules': 'error',
-    'import/no-duplicates': ['error', { 'prefer-inline' : true }],
+    'import/no-duplicates': ['error', { 'prefer-inline' : true, 'considerQueryString': true }],
     'jsdoc/require-hyphen-before-param-description': 'error',
     'jsdoc/require-description': 'error',
     'jsdoc/no-types': 'error',

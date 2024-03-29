@@ -52,7 +52,7 @@ const props = withDefaults(
     punch?: number;
     type?: ImageType;
   }>(),
-  { width: 32, height: 32, punch: 1, type: ImageType.Primary }
+  { type: ImageType.Primary }
 );
 
 const imageElement = shallowRef<HTMLDivElement>();

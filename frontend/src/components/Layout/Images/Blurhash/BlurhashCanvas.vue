@@ -11,7 +11,8 @@
 
 <script lang="ts">
 import { wrap } from 'comlink';
-import { ref, shallowRef, watch } from 'vue';
+import { shallowRef, watch } from 'vue';
+import { DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_PUNCH } from './BlurhashWorker';
 import BlurhashWorker from './BlurhashWorker?worker';
 import { remote } from '@/plugins/remote';
 
@@ -40,10 +41,10 @@ const props = withDefaults(
     height?: number;
     punch?: number;
   }>(),
-  { width: 32, height: 32, punch: 1 }
+  { width: DEFAULT_WIDTH, height: DEFAULT_HEIGHT, punch: DEFAULT_PUNCH }
 );
 
-const pixels = ref<Uint8ClampedArray>();
+const pixels = shallowRef<Uint8ClampedArray>();
 const error = shallowRef(false);
 const canvas = shallowRef<HTMLCanvasElement>();
 
