@@ -5,7 +5,6 @@
       rel="preload prerender"
       as="image"
       :href="src"
-      :style="undefined"
       @load="onLoad"
       @error="onError" />
     <VFadeTransition
@@ -13,43 +12,43 @@
       mode="in-out">
       <component
         :is="type"
-        v-show="shown"
+        v-if="shown"
         key="1"
         class="j-img"
         v-bind="$attrs"
         :src="type === 'img' ? src : undefined">
         <slot />
       </component>
-      <template v-if="!shown">
+      <template v-else>
         <slot
           v-if="$slots.placeholder"
           key="2"
-          v-bind="$attrs"
           name="placeholder" />
         <slot
           v-else-if="loading"
           key="3"
-          v-bind="$attrs"
           name="loading" />
         <slot
           v-else-if="error"
           key="4"
-          v-bind="$attrs"
           name="error" />
       </template>
     </VFadeTransition>
   </template>
   <slot
     v-else-if="$slots.placeholder"
-    v-bind="$attrs"
     name="placeholder" />
-  <slot
-    v-else
-    v-bind="$attrs" />
+  <slot v-else />
 </template>
 
 <script setup lang="ts">
 import { computed, shallowRef, watch } from 'vue';
+
+defineOptions({
+  inheritAttrs: false
+});
+
+const props = defineProps<Props>();
 
 /**
  * In this component, we use a link element for image preload.
@@ -70,8 +69,6 @@ interface Props {
    */
   once?: boolean;
 }
-
-const props = defineProps<Props>();
 
 const loading = shallowRef(true);
 const error = shallowRef(false);
