@@ -166,11 +166,12 @@ watch(
 );
 
 watch(mediaElementRef, async () => {
-  await nextTick();
   detachHls();
   await detachWebAudio();
 
   if (mediaElementRef.value) {
+    await nextTick();
+
     if (mediaElementType.value === 'video' && hls) {
       hls.attachMedia(mediaElementRef.value);
       hls.on(Events.ERROR, onHlsEror);
@@ -182,7 +183,10 @@ watch(mediaElementRef, async () => {
     );
     mediaWebAudio.sourceNode.connect(mediaWebAudio.context.destination);
   }
-});
+  /**
+   * Needed so WebAudio is properly disposed
+   */
+}, { flush: 'sync' });
 
 watch(
   () => playbackManager.currentSourceUrl,
