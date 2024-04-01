@@ -31,14 +31,14 @@ export const router = createRouter({
 }) as _RouterTyped<RouteNamedMap>;
 
 /**
- * Middleware pipeline: The order IS IMPORTANT (meta handling should always go first)
+ * Middleware pipeline: The order IS IMPORTANT (meta handling should always go last)
  *
  * Route-specific guards should be defined in the route itself, not here.
  */
-router.beforeEach(metaGuard);
 router.beforeEach(loginGuard);
 router.beforeEach(adminGuard);
 router.beforeEach(validateGuard);
+router.beforeEach(metaGuard);
 
 /**
  * Replaces the 'back' function, taking into account if there's a previous page or not.

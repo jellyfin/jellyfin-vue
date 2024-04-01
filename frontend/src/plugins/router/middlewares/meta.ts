@@ -1,4 +1,4 @@
-import defu from 'defu';
+import { defu } from 'defu';
 import { ref } from 'vue';
 import type {
   RouteLocationNormalized,
@@ -43,14 +43,19 @@ export function metaGuard(
   to: RouteLocationNormalized,
   from: RouteLocationNormalized
 ): boolean | RouteLocationRaw {
-  reactiveMeta.value = defu(to.meta, defaultMeta);
-  to.meta = reactiveMeta.value;
+  /**
+   * Skip if it's in the same page (i.e for param or query changes)
+   */
+  if (from.path !== to.path) {
+    reactiveMeta.value = defu(to.meta, structuredClone(defaultMeta));
+    to.meta = reactiveMeta.value;
 
-  if (from.meta.transition?.leave) {
-    if (to.meta.transition) {
-      to.meta.transition.enter = from.meta.transition.leave;
-    } else {
-      to.meta.transition = { enter: from.meta.transition.leave };
+    if (from.meta.transition?.leave) {
+      if (to.meta.transition) {
+        to.meta.transition.enter = from.meta.transition.leave;
+      } else {
+        to.meta.transition = { enter: from.meta.transition.leave };
+      }
     }
   }
 
