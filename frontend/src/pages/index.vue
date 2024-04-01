@@ -31,6 +31,11 @@ const excludeViewTypes = new Set([
 ]);
 </script>
 
+<route lang="yaml">
+meta:
+  transparentLayout: true
+</route>
+
 <script setup lang="ts">
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { computed } from 'vue';
@@ -50,7 +55,6 @@ const { t } = useI18n();
 const route = useRoute();
 
 route.meta.title = t('home');
-route.meta.transparentLayout = true;
 
 const { carousel, nextUp, views, resumeVideo, latestPerLibrary } = await fetchIndexPage();
 

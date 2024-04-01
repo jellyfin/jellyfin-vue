@@ -67,9 +67,7 @@ import { remote } from '@/plugins/remote';
 
 const route = useRoute();
 const { y } = windowScroll;
-const transparentAppBar = computed<boolean>(() => {
-  return (route.meta.transparentLayout || false) && y.value < 10;
-});
+const transparentAppBar = computed(() => Boolean(route.meta.transparentLayout) && y.value < 10);
 
 /**
  * Cycle between the different color schemas

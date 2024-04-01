@@ -1,4 +1,4 @@
-import defu from 'defu';
+import { defu } from 'defu';
 
 /**
  * Merge 2 objects, excluding the keys from the destination that are not present in source
