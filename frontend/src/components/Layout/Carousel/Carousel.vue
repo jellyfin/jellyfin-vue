@@ -21,7 +21,7 @@
       keyboard
       a11y
       @swiper="(swiper) => swiperInstance = swiper"
-      @slide-change="onSlideChange"
+      @real-index-change="onSlideChange"
       @touch-start="onTouch"
       @touch-end="onTouch">
       <slot name="slides" />

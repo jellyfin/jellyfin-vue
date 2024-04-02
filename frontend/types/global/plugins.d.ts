@@ -19,7 +19,7 @@ declare module 'vue-router' {
     transition?: RouteTransition;
     readonly admin: boolean;
     title?: string | null;
-    backdrop: BackdropPayload;
+    readonly backdrop: BackdropPayload;
   }
 }
 

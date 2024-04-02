@@ -18,8 +18,8 @@ import { computed } from 'vue';
 import { useRoute } from 'vue-router/auto';
 
 const route = useRoute();
-const blurhash = computed(() => route.meta.backdrop?.blurhash);
-const opacity = computed(() => route.meta.backdrop?.opacity || 0.25);
+const blurhash = computed(() => route.meta.backdrop.blurhash);
+const opacity = computed(() => route.meta.backdrop.opacity);
 </script>
 
 <style lang="scss" scoped>

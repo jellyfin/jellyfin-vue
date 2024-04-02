@@ -11,6 +11,7 @@ const defaultMeta: RouteMeta = {
   transparentLayout: false,
   admin: false,
   backdrop: {
+    blurhash: undefined,
     opacity: 0.25
   }
 };
@@ -43,19 +44,14 @@ export function metaGuard(
   to: RouteLocationNormalized,
   from: RouteLocationNormalized
 ): boolean | RouteLocationRaw {
-  /**
-   * Skip if it's in the same page (i.e for param or query changes)
-   */
-  if (from.path !== to.path) {
-    reactiveMeta.value = defu(to.meta, structuredClone(defaultMeta));
-    to.meta = reactiveMeta.value;
+  reactiveMeta.value = defu(to.meta, structuredClone(defaultMeta));
+  to.meta = reactiveMeta.value;
 
-    if (from.meta.transition?.leave) {
-      if (to.meta.transition) {
-        to.meta.transition.enter = from.meta.transition.leave;
-      } else {
-        to.meta.transition = { enter: from.meta.transition.leave };
-      }
+  if (from.meta.transition?.leave) {
+    if (to.meta.transition) {
+      to.meta.transition.enter = from.meta.transition.leave;
+    } else {
+      to.meta.transition = { enter: from.meta.transition.leave };
     }
   }
 
