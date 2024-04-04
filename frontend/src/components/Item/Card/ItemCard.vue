@@ -9,8 +9,7 @@
     <template #image>
       <BlurhashImage
         :item="item"
-        :type="getImageType"
-        :alt="item.Name || ''" />
+        :type="getImageType" />
     </template>
     <template #upper-content>
       <VProgressCircular
