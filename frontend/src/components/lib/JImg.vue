@@ -10,15 +10,12 @@
     <component
       :is="props.transitionProps ? JTransition : JNoop"
       v-bind="isObj(props.transitionProps) ? props.transitionProps : undefined">
-      <component
-        :is="type"
+      <img
         v-if="shown"
         key="1"
         class="j-img"
         v-bind="mergeProps($props, $attrs)"
-        :src="type === 'img' ? src : undefined">
-        <slot />
-      </component>
+        :alt="$props.alt" />
       <template v-else>
         <slot
           v-if="$slots.placeholder"
@@ -49,17 +46,14 @@ import JNoop from '@/components/lib/JNoop.vue';
 
 /**
  * In this component, we use a link element for image preload.
- * The link element is the browser standard for resource prefetching and we can use it everytime, regardless if the component is a div or an img.
+ * The link element is the browser standard for resource prefetching and we can use it everytime, regardless the
+ * underlying element type being used.
  *
  * Given the img at loading is v-show'ed to false (display: none), the load events doesn't trigger either
  */
 
 interface Props extends BetterOmit<ImgHTMLAttributes, 'src'> {
   src?: string | null;
-  /**
-   * Cover the parent area. This renders the component as a div
-   */
-  cover?: boolean;
   /**
    * If this is true, the image won't follow the load procedures after a src change and the image will simply be
    * updated in place without showing any of the slots.
@@ -68,16 +62,23 @@ interface Props extends BetterOmit<ImgHTMLAttributes, 'src'> {
   /**
    * Transition between the non-default slot and the image. Uses JTransition with its
    * default values (which you can override by passing this prop). If passed false, disables de transition completely.
+   *
+   * @default true
    */
   transitionProps?: JTransitionProps | boolean;
 }
 
+/**
+ * We don't want <link> to inherit any attributes and the component might not render any
+ * element at all, printing unnecessary warnings in development.
+ */
+defineOptions({
+  inheritAttrs: false
+});
 const props = withDefaults(defineProps<Props>(), { transitionProps: true });
 const loading = shallowRef(true);
 const error = shallowRef(false);
 
-const url = computed(() => `url('${props.src}'')`);
-const type = computed(() => props.cover ? 'div' : 'img');
 const shown = computed(() => !loading.value && !error.value);
 
 /**
@@ -113,12 +114,5 @@ watch(() => props.src, onLoadStart);
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-div.j-img {
-  background-image: v-bind(url);
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
 }
 </style>

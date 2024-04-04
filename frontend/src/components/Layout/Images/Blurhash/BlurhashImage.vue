@@ -1,9 +1,10 @@
 <template>
   <div ref="imageElement">
     <JImg
-      class="absolute-cover img"
+      class="absolute-cover"
       once
       :src="imageUrl"
+      :alt="props.item.Name ?? $t('unknown')"
       v-bind="$attrs">
       <template #placeholder>
         <BlurhashCanvas
@@ -85,11 +86,6 @@ const hash = computed(() => getBlurhash(props.item, props.type));
 </script>
 
 <style lang="scss" scoped>
-.img {
-  color: transparent;
-  object-fit: cover;
-}
-
 .z-1 {
   z-index: -1;
 }
