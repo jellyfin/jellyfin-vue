@@ -19,7 +19,7 @@ import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getMediaInfoApi } from '@jellyfin/sdk/lib/utils/api/media-info-api';
 import { getPlaystateApi } from '@jellyfin/sdk/lib/utils/api/playstate-api';
 import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
-import { useEventListener, useThrottleFn } from '@vueuse/core';
+import { useEventListener, watchThrottled } from '@vueuse/core';
 import { shuffle } from 'lodash-es';
 import { v4 } from 'uuid';
 import { watch, watchEffect } from 'vue';
@@ -470,8 +470,6 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       });
     }
   };
-
-  private readonly _reportPlaybackProgressThrottled = useThrottleFn(this._reportPlaybackProgress, this._progressReportInterval);
 
   /**
    * Report playback stopped to the server. Used by the "Now playing" statistics in other clients.
@@ -1246,7 +1244,12 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       }
     });
 
-    watch(() => this.currentTime, this._reportPlaybackProgressThrottled);
+    watchThrottled(
+      () => this.currentTime,
+      this._reportPlaybackProgress,
+      { throttle: this._progressReportInterval }
+    );
+    watch(() => this.status, this._reportPlaybackProgress);
 
     /**
      * Report playback stop when closing the tab
