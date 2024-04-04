@@ -1,9 +1,10 @@
 <template>
   <VAvatar :size="size">
-    <VImg
+    <JImg
       :src="url"
-      :width="size"
-      cover>
+      :transition-props="{
+        mode: 'out-in'
+      }">
       <template #placeholder>
         <VAvatar
           color="primary"
@@ -13,7 +14,7 @@
           </VIcon>
         </VAvatar>
       </template>
-    </VImg>
+    </JImg>
   </VAvatar>
 </template>
 

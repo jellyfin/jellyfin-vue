@@ -7,13 +7,15 @@
       :href="src"
       @load="onLoad"
       @error="onError" />
-    <JFadeTransition>
+    <component
+      :is="props.transitionProps ? JTransition : JNoop"
+      v-bind="isObj(props.transitionProps) ? props.transitionProps : undefined">
       <component
         :is="type"
         v-if="shown"
         key="1"
         class="j-img"
-        v-bind="$attrs"
+        v-bind="mergeProps($props, $attrs)"
         :src="type === 'img' ? src : undefined">
         <slot />
       </component>
@@ -31,7 +33,7 @@
           key="4"
           name="error" />
       </template>
-    </JFadeTransition>
+    </component>
   </template>
   <slot
     v-else-if="$slots.placeholder"
@@ -40,7 +42,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, shallowRef, watch } from 'vue';
+import { computed, shallowRef, watch, type ImgHTMLAttributes, mergeProps } from 'vue';
+import { isObj } from '@/utils/validation';
+import JTransition, { type JTransitionProps } from '@/components/lib/JTransition.vue';
+import JNoop from '@/components/lib/JNoop.vue';
 
 /**
  * In this component, we use a link element for image preload.
@@ -49,7 +54,7 @@ import { computed, shallowRef, watch } from 'vue';
  * Given the img at loading is v-show'ed to false (display: none), the load events doesn't trigger either
  */
 
-interface Props {
+interface Props extends BetterOmit<ImgHTMLAttributes, 'src'> {
   src?: string | null;
   /**
    * Cover the parent area. This renders the component as a div
@@ -60,14 +65,14 @@ interface Props {
    * updated in place without showing any of the slots.
    */
   once?: boolean;
+  /**
+   * Transition between the non-default slot and the image. Uses JTransition with its
+   * default values (which you can override by passing this prop). If passed false, disables de transition completely.
+   */
+  transitionProps?: JTransitionProps | boolean;
 }
 
-defineOptions({
-  inheritAttrs: false
-});
-
-const props = defineProps<Props>();
-
+const props = withDefaults(defineProps<Props>(), { transitionProps: true });
 const loading = shallowRef(true);
 const error = shallowRef(false);
 

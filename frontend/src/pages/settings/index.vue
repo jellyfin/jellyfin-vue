@@ -12,7 +12,7 @@
             systemInfo &&
               $remote.auth.currentUser?.Policy?.IsAdministrator
           ">
-          <VImg
+          <JImg
             class="logo"
             src="/icon.png"
             :alt="$t('jellyfinLogo')" />

@@ -150,19 +150,21 @@
               @click="onPersonEdit(item)">
               <template #prepend>
                 <VAvatar>
-                  <VImg
+                  <JImg
                     v-if="item.Id && item.PrimaryImageTag"
                     :src="
                       remote.sdk.api?.getItemImageUrl(
                         item.Id,
                         ImageType.Primary
                       )
-                    " />
-                  <VIcon
-                    v-else
-                    class="bg-grey-darken-3">
-                    <IMdiAccount />
-                  </VIcon>
+                    ">
+                    <template #placeholder>
+                      <VIcon
+                        class="bg-grey-darken-3">
+                        <IMdiAccount />
+                      </VIcon>
+                    </template>
+                  </JImg>
                 </VAvatar>
               </template>
               <template #append>
