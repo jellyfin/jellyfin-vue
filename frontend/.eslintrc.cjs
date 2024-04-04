@@ -65,6 +65,10 @@ module.exports = {
     'file-progress'
   ],
   rules: {
+    /**
+     * See https://typescript-eslint.io/troubleshooting/#i-get-errors-from-the-no-undef-rule-about-global-variables-not-being-defined-even-though-there-are-no-typescript-errors
+     */
+    'no-undef': 'off',
     'unicorn/import-style': 'off',
     '@stylistic/object-curly-spacing': ['error', 'always'],
     '@stylistic/semi': ['error', 'always'],

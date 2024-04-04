@@ -12,16 +12,17 @@
             <VAvatar
               size="160"
               class="ml-2">
-              <VImg
-                v-if="person?.Id && person?.PrimaryImageTag"
+              <JImg
                 :src="
-                  $remote.sdk.api?.getItemImageUrl(person.Id, ImageType.Primary)
-                " />
-              <VIcon
-                v-else
-                class="bg-grey-darken-3">
-                <IMdiAccount />
-              </VIcon>
+                  person?.Id && $remote.sdk.api?.getItemImageUrl(person.Id, ImageType.Primary)
+                ">
+                <template #placeholder>
+                  <VIcon
+                    class="bg-grey-darken-3">
+                    <IMdiAccount />
+                  </VIcon>
+                </template>
+              </JImg>
             </VAvatar>
           </VCol>
           <VCol>

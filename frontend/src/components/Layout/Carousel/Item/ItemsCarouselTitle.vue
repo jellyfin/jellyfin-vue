@@ -3,7 +3,7 @@
     <RouterLink
       v-if="logo && logoLink"
       :to="logoLink">
-      <VImg
+      <JImg
         class="mb-2"
         data-swiper-parallax="-300"
         :style="{

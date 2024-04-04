@@ -11,12 +11,10 @@
           density="compact">
           <VListItem>
             <template #prepend>
-              <VAvatar>
-                <UserImage
-                  :user="auth.currentUser"
-                  :size="40"
-                  rounded />
-              </VAvatar>
+              <UserImage
+                :user="auth.currentUser"
+                :size="40"
+                rounded />
             </template>
             <template #title>
               <VListItemTitle class="text-body-1">
