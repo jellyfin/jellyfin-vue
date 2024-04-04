@@ -8,10 +8,8 @@
         {{ genre.Name }}
       </span>
       <VSpacer />
-      <VFadeTransition>
-        <PlayButton
-          :item="genre" />
-      </VFadeTransition>
+      <PlayButton
+        :item="genre" />
       <VBtn
         class="play-button mr-2"
         min-width="8em"

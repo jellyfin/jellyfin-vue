@@ -7,9 +7,7 @@
       :href="src"
       @load="onLoad"
       @error="onError" />
-    <VFadeTransition
-      group
-      mode="in-out">
+    <JFadeTransition>
       <component
         :is="type"
         v-if="shown"
@@ -33,7 +31,7 @@
           key="4"
           name="error" />
       </template>
-    </VFadeTransition>
+    </JFadeTransition>
   </template>
   <slot
     v-else-if="$slots.placeholder"
@@ -43,12 +41,6 @@
 
 <script setup lang="ts">
 import { computed, shallowRef, watch } from 'vue';
-
-defineOptions({
-  inheritAttrs: false
-});
-
-const props = defineProps<Props>();
 
 /**
  * In this component, we use a link element for image preload.
@@ -69,6 +61,12 @@ interface Props {
    */
   once?: boolean;
 }
+
+defineOptions({
+  inheritAttrs: false
+});
+
+const props = defineProps<Props>();
 
 const loading = shallowRef(true);
 const error = shallowRef(false);
