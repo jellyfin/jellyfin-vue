@@ -1,6 +1,7 @@
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
-import virtual from '@rollup/plugin-virtual';
-import vue from '@vitejs/plugin-vue';
+import Virtual from '@rollup/plugin-virtual';
+import VueMacros from 'unplugin-vue-macros/vite';
+import Vue from '@vitejs/plugin-vue';
 import browserslist from 'browserslist';
 import { browserslistToTargets } from 'lightningcss';
 import { visualizer } from 'rollup-plugin-visualizer';
@@ -26,14 +27,18 @@ export default defineConfig(({ mode }): UserConfig => {
     base: './',
     cacheDir: '../node_modules/.cache/vite',
     plugins: [
-      virtual(virtualModules),
+      Virtual(virtualModules),
       VueRouter({
         dts: './types/global/routes.d.ts',
         importMode: 'sync',
         routeBlockLang: 'yaml'
       }),
-      vue(),
-      // This plugin allows to autoimport vue components
+      VueMacros({
+        plugins: {
+          vue: Vue()
+        }
+      }),
+      // This plugin allows to autoimport Vue components
       Components({
         dts: './types/global/components.d.ts',
         /**

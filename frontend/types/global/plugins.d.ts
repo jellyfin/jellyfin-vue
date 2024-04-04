@@ -1,4 +1,5 @@
 import type en from '@/../locales/en.json';
+import type { JTransitionProps } from '@/components/lib/JTransition.vue';
 import type { RemotePlugin } from '@/plugins/remote/types';
 
 /**
@@ -9,8 +10,8 @@ interface BackdropPayload {
   opacity?: number;
 }
 interface RouteTransition {
-  enter: string;
-  leave?: string;
+  enter: NonNullable<JTransitionProps['name']>;
+  leave?: JTransitionProps['name'];
 }
 declare module 'vue-router' {
   interface RouteMeta {
