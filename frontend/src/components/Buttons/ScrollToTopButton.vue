@@ -1,5 +1,5 @@
 <template>
-  <VFabTransition>
+  <JTransition name="rotated-zoom">
     <VBtn
       v-show="y > 1"
       class="ma-4"
@@ -13,7 +13,7 @@
         <IMdiChevronUp />
       </VIcon>
     </VBtn>
-  </VFabTransition>
+  </JTransition>
 </template>
 
 <script setup lang="ts">

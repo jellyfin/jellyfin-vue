@@ -1,5 +1,7 @@
 <template>
-  <VSlideYReverseTransition mode="out-in">
+  <JTransition
+    name="slide-y-reverse"
+    mode="out-in">
     <VFooter
       v-if="
         playbackManager.isPlaying &&
@@ -105,7 +107,7 @@
         </VRow>
       </VContainer>
     </VFooter>
-  </VSlideYReverseTransition>
+  </JTransition>
 </template>
 
 <script setup lang="ts">

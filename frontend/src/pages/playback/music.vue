@@ -19,7 +19,7 @@
       </AppBarButtonLayout>
     </VAppBar>
     <VCol class="px-0">
-      <VFadeTransition mode="out-in">
+      <JTransition mode="out-in">
         <Swiper
           v-if="!isVisualizing"
           class="d-flex justify-center align-center user-select-none"
@@ -46,7 +46,7 @@
         <MusicVisualizer
           v-else
           class="d-flex justify-center align-center user-select-none presentation-height" />
-      </VFadeTransition>
+      </JTransition>
       <VRow class="justify-center align-center mt-3">
         <VCol cols="6">
           <VRow class="justify-center align-center">
