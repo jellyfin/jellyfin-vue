@@ -67,6 +67,7 @@ module.exports = {
     'file-progress'
   ],
   rules: {
+    'unicorn/import-style': 'off',
     '@stylistic/object-curly-spacing': ['error', 'always'],
     '@stylistic/semi': ['error', 'always'],
     '@stylistic/quotes': ['error', 'single', { 'avoidEscape': true }],
