@@ -108,6 +108,7 @@
   "enableUPNP": "UPnP inschakelen",
   "endsAt": "Eindigt om {time}",
   "eps": "EP's",
+  "failedSyncingUserSettings": "Kon gebruikersinstellingen niet synchroniseren",
   "favorite": "Favoriet",
   "features": "Kenmerken",
   "filter": "Filter",

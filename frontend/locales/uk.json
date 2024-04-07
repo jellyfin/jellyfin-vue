@@ -239,7 +239,7 @@
   "noResultsFound": "Тут нічого немає",
   "noServerConnection": "Немає з'єднання з сервером",
   "noWebSocketConnection": "Часткова втрата з'єднання з сервером (відсутній WebSocket)",
-  "normal": "Нормально",
+  "normal": "Нормальна",
   "notifications": "Сповіщення",
   "notificationsSettingsDescription": "Керувати і конфігурувати сповіщення, надіслані цим сервером",
   "numberTracks": "{number} треків",
