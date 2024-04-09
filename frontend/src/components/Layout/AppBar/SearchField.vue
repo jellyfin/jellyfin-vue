@@ -22,8 +22,8 @@ const searchQuery = computed({
   get(): string {
     return route.query.q?.toString() ?? '';
   },
-  async set(value) {
-    await router.replace({
+  set(value) {
+    void router.replace({
       ...router.currentRoute,
       query: {
         q: value.trim() || undefined

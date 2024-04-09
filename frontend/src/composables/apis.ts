@@ -303,9 +303,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
      * mounted. setTimeout executes it when the event loop is clear, avoiding overwhelming the engine.
      */
     if (isCached.value) {
-      window.setTimeout(async () => {
-        await run({ isRefresh: true });
-      });
+      void run({ isRefresh: true });
     }
 
     if (!isCached.value && isFuncDefined()) {

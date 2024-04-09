@@ -61,14 +61,9 @@ router.back = (): ReturnType<typeof router.back> => {
     route.value.meta.transition.leave = leaveTransition;
   }
 
-  window.setTimeout(
-    async () =>
-      await router.replace(
-        isStr(router.options.history.state.back)
-          ? router.options.history.state.back
-          : '/'
-      )
-  );
+  void router.replace(isStr(router.options.history.state.back)
+    ? router.options.history.state.back
+    : '/');
 };
 
 /**
