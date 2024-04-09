@@ -694,13 +694,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     this._reset();
     this.currentVolume = volume;
 
-    window.setTimeout(async () => {
-      try {
-        if (sessionId && itemId && time && remote.auth.currentUser) {
-          await this._reportPlaybackStopped(itemId, sessionId, time);
-        }
-      } catch {}
-    });
+    void this._reportPlaybackStopped(itemId, sessionId, time);
   };
 
   /**

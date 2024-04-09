@@ -42,6 +42,7 @@
   "vue.format.style.initialIndent": true,
   "vue.inlayHints.inlineHandlerLeading": true,
   "vue.inlayHints.vBindShorthand": true,
+  "vue.server.hybridMode": false,
   "sonarlint.output.showAnalyzerLogs": true,
   "sonarlint.output.showVerboseLogs": true,
   "sonarlint.connectedMode.project": {
