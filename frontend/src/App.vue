@@ -8,7 +8,7 @@
         <Suspense @resolve="apploaded = true">
           <div
             :key="route.meta.layout"
-            class="h-100">
+            class="h-100 j-transition">
             <component
               :is="getLayoutComponent(route.meta.layout)"
               :key="route.meta.layout">
@@ -18,7 +18,7 @@
                 <Suspense suspensible>
                   <div
                     :key="route.path"
-                    class="h-100">
+                    class="h-100 j-transition">
                     <component
                       :is="Component"
                       :key="route.path" />
@@ -37,6 +37,9 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * TODO: Remove j-transition classes from this file once https://github.com/vuejs/core/issues/5148 is fixed
+ */
 import { whenever } from '@vueuse/core';
 import { shallowRef, type Component as VueComponent } from 'vue';
 import type { RouteMeta } from 'vue-router/auto';
