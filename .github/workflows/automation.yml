@@ -59,7 +59,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Label PR depending on modified files
-        uses: actions/labeler@v5
+        uses: actions/labeler@v5.0.0
         if: ${{ github.event_name == 'pull_request_target' }}
         continue-on-error: true
         with:
