@@ -17,7 +17,7 @@
             md="3"
             class="d-flex flex-row pa-0">
             <RouterLink :to="'/playback/music'">
-              <div class="w-20 h-20 img">
+              <div class="uno-w-20 uno-h-20 img">
                 <BlurhashImage :item="playbackManager.currentItem" />
               </div>
             </RouterLink>
@@ -28,7 +28,7 @@
                   :to="getItemDetailsLink(playbackManager.currentItem)"
                   custom>
                   <span
-                    class="text-truncate link h-fit"
+                    class="text-truncate link uno-h-fit"
                     @click="navigate">
                     {{ playbackManager.currentItem.Name }}
                   </span>

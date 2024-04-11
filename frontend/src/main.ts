@@ -3,13 +3,6 @@
  * for TypeScript compiler (check tsconfig.json)
  * https://caniuse.com/mdn-javascript_operators_await_top_level
  */
-/**
- * TODO: Move UnoCSS classes down (alongside our own stylesheets) when
- * Vuetify is removed. The order herer is important so Vuetify styles override
- * UnoCSS ones.
- */
-import 'uno.css';
-import 'virtual:unocss-devtools';
 import { createApp } from 'vue';
 import { routes } from 'vue-router/auto-routes';
 import Root from '@/App.vue';
@@ -25,6 +18,8 @@ import { vuetify } from '@/plugins/vuetify';
 import 'inter-ui/inter-variable.css';
 /* eslint-disable-next-line import/no-extraneous-dependencies */
 import '@unocss/reset/tailwind-compat.css';
+import 'uno.css';
+import 'virtual:unocss-devtools';
 import '@/assets/styles/global.scss';
 
 /**

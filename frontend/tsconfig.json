@@ -41,7 +41,7 @@
     "**/**/*.json",
     "types/**/*.d.ts",
     ".eslintrc.cjs",
-    "vite.config.ts"
+    "*.config.ts"
   ],
   "exclude": ["node_modules"]
 }

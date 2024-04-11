@@ -15,7 +15,6 @@ import {
 import Components from 'unplugin-vue-components/vite';
 import RadixVueResolver from 'radix-vue/resolver';
 import UnoCSS from 'unocss/vite';
-import { presetUno } from 'unocss';
 import VueRouter from 'unplugin-vue-router/vite';
 import { defineConfig, type UserConfig } from 'vite';
 import { entrypoints, localeFilesFolder, srcRoot } from './scripts/paths';
@@ -69,11 +68,7 @@ export default defineConfig(({ mode }): UserConfig => {
         forceStringify: true,
         include: localeFilesFolder
       }),
-      UnoCSS({
-        presets: [
-          presetUno()
-        ]
-      })
+      UnoCSS()
     ],
     build: {
       /**
