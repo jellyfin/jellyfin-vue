@@ -2,7 +2,7 @@
   <div ref="imageElement">
     <JImg
       class="absolute-cover"
-      once
+      :once
       :src="imageUrl"
       :alt="props.item.Name ?? $t('unknown')"
       v-bind="$attrs">
@@ -33,7 +33,7 @@ import {
   ImageType
 } from '@jellyfin/sdk/lib/generated-client';
 import { refDebounced } from '@vueuse/core';
-import { computed, shallowRef } from 'vue';
+import { computed, shallowRef, watch } from 'vue';
 import { vuetify } from '@/plugins/vuetify';
 import { getBlurhash, getImageInfo } from '@/utils/images';
 
@@ -58,6 +58,7 @@ const props = withDefaults(
 );
 
 const imageElement = shallowRef<HTMLDivElement>();
+const once = shallowRef(true);
 const imageUrl = computed(() => {
   const element = imageElement.value;
 
@@ -83,6 +84,13 @@ const imageUrl = computed(() => {
 });
 
 const hash = computed(() => getBlurhash(props.item, props.type));
+
+/**
+ * Needed so item changes pass properly through all the loading states of JImg,
+ * but window size changes does it only on first load.
+ */
+watch(() => props.item, () => once.value = false);
+watch([displayWidth, displayHeight], () => once.value = true);
 </script>
 
 <style lang="scss" scoped>
