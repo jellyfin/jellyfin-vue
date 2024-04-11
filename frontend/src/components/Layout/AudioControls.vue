@@ -17,11 +17,9 @@
             md="3"
             class="d-flex flex-row pa-0">
             <RouterLink :to="'/playback/music'">
-              <VAvatar
-                :size="$vuetify.display.xs ? 50 : 85"
-                color="primary">
+              <div class="w-20 h-20 img">
                 <BlurhashImage :item="playbackManager.currentItem" />
-              </VAvatar>
+              </div>
             </RouterLink>
             <VCol class="d-flex flex-column justify-center ml-4">
               <VRow class="align-end">
@@ -30,7 +28,7 @@
                   :to="getItemDetailsLink(playbackManager.currentItem)"
                   custom>
                   <span
-                    class="text-truncate link height-fit-content"
+                    class="text-truncate link h-fit"
                     @click="navigate">
                     {{ playbackManager.currentItem.Name }}
                   </span>
@@ -116,7 +114,15 @@ import { getItemDetailsLink } from '@/utils/items';
 </script>
 
 <style lang="scss" scoped>
-.height-fit-content {
-  height: fit-content;
+/* TODO: This class was extracted from VAvatar. Remove this once a JAvatar component is created */
+.img {
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  line-height: normal;
+  overflow: hidden;
+  position: relative;
+  text-align: center;
+  vertical-align: middle;
 }
 </style>
