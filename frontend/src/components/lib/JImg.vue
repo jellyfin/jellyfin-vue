@@ -2,7 +2,7 @@
   <template v-if="src">
     <link
       v-if="!shown"
-      rel="preload prerender"
+      rel="preload"
       as="image"
       :href="src"
       @load="onLoad"
@@ -75,6 +75,7 @@ interface Props extends BetterOmit<ImgHTMLAttributes, 'src'> {
 defineOptions({
   inheritAttrs: false
 });
+
 const props = withDefaults(defineProps<Props>(), { transitionProps: true });
 const loading = shallowRef(true);
 const error = shallowRef(false);
