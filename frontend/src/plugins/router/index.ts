@@ -50,8 +50,8 @@ router.back = (): ReturnType<typeof router.back> => {
   const route = router.currentRoute;
 
   /**
-   * Play the same transition we do at RouterViewTransition.vue (slide-x-reverse-transition)
-   * but reversed, to play a different effect when going to the previous page.
+   * Play the default page transition but reversed, to play a different effect when going
+   * to the previous page.
    */
   if (!route.value.meta.transition) {
     route.value.meta.transition = {
