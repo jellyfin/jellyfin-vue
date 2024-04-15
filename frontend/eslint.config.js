@@ -28,7 +28,7 @@ function flatArrayOfObjects(obj) {
   return Object.assign({}, ...obj);
 }
 
-const test = tseslint.config(
+export default tseslint.config(
   /** Global settings */
   js.configs.recommended,
   unicorn.configs['flat/recommended'],
@@ -104,6 +104,12 @@ const test = tseslint.config(
     ...flatArrayOfObjects(tseslint.configs.stylisticTypeChecked),
     name: '(typescript-eslint) Extended stylistic type checked rules',
     files: vueAndTsFiles,
+  },
+  {
+    
+    ...tseslint.configs.eslintRecommended,
+    files: vueAndTsFiles,
+    name: '(typescript-eslint) Extended ESLint recommended rules for typechecking',
   },
   {
     ...flatArrayOfObjects(compat.extends('plugin:optimize-regex/recommended')),
@@ -205,10 +211,6 @@ const test = tseslint.config(
     name: 'Custom config for TypeScript and Vue SFC settings',
     files: vueAndTsFiles,
     rules: {
-    /**
-     * See https://typescript-eslint.io/troubleshooting/#i-get-errors-from-the-no-undef-rule-about-global-variables-not-being-defined-even-though-there-are-no-typescript-errors
-     */
-      'no-undef': 'off',
       '@typescript-eslint/consistent-type-exports': 'error',
       '@typescript-eslint/no-redundant-type-constituents': 'off',
       '@typescript-eslint/restrict-template-expressions': 'off',
@@ -335,5 +337,3 @@ const test = tseslint.config(
     ],
   }
 );
-
-export default test;
