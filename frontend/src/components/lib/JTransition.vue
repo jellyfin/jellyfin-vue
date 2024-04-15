@@ -60,6 +60,7 @@ function getComponent(): VueComponent {
 .j-transition-fade-enter-active,
 .j-transition-fade-leave-active {
   transition-property: opacity !important;
+  will-change: opacity !important;
 }
 
 /** rotated-zoom */
@@ -71,6 +72,17 @@ function getComponent(): VueComponent {
 .j-transition-rotated-zoom-enter-active,
 .j-transition-rotated-zoom-leave-active {
   transition-property: transform !important;
+  will-change: transform !important;
+}
+
+/** slide-* common classes */
+.j-transition-slide-x-reverse-enter-active,
+.j-transition-slide-x-reverse-leave-active,
+.j-transition-slide-y-reverse-enter-active,
+.j-transition-slide-y-reverse-leave-active,
+.j-transition-slide-x-enter-active,
+.j-transition-slide-x-leave-active {
+  transition-property: transform, opacity !important;
 }
 
 /** slide-y-reverse */
@@ -80,11 +92,6 @@ function getComponent(): VueComponent {
   transform: translateY(15px);
 }
 
-.j-transition-slide-y-reverse-enter-active,
-.j-transition-slide-y-reverse-leave-active {
-  transition-property: transform, opacity !important;
-}
-
 /** slide-x-reverse */
 .j-transition-slide-x-reverse-enter-from,
 .j-transition-slide-x-reverse-leave-to {
@@ -92,19 +99,10 @@ function getComponent(): VueComponent {
   transform: translateX(15px);
 }
 
-.j-transition-slide-x-reverse-enter-active,
-.j-transition-slide-x-reverse-leave-active {
-  transition-property: transform, opacity !important;
-}
 /** slide-x */
 .j-transition-slide-x-enter-from,
 .j-transition-slide-x-leave-to {
   opacity: 0;
   transform: translateX(-15px);
-}
-
-.j-transition-slide-x-enter-active,
-.j-transition-slide-x-leave-active {
-  transition-property: transform, opacity !important;
 }
 </style>
