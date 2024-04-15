@@ -12,8 +12,8 @@ import {
  *
  * @returns An array of subtitle profiles for the current platform.
  */
-export function getSubtitleProfiles(): Array<SubtitleProfile> {
-  const SubtitleProfiles: Array<SubtitleProfile> = [];
+export function getSubtitleProfiles(): SubtitleProfile[] {
+  const SubtitleProfiles: SubtitleProfile[] = [];
 
   SubtitleProfiles.push(
     {

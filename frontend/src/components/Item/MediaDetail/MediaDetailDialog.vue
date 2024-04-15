@@ -165,7 +165,7 @@ const currentTab = ref<string>();
 /**
  * Closes the dialog and kills the DOM element.
  */
-function close (): void {
+function close(): void {
   model.value = false;
   emit('close');
 }
@@ -180,22 +180,22 @@ const selectedMediaSource = computed<MediaSourceInfo | undefined>(
 );
 const selectedMediaStreamsVideo = computed<MediaStream[]>(() =>
   (selectedMediaSource.value?.MediaStreams ?? []).filter(
-    (s) => s.Type === 'Video'
+    s => s.Type === 'Video'
   )
 );
 const selectedMediaStreamsAudio = computed<MediaStream[]>(() =>
   (selectedMediaSource.value?.MediaStreams ?? []).filter(
-    (s) => s.Type === 'Audio'
+    s => s.Type === 'Audio'
   )
 );
 const selectedMediaStreamsSubs = computed<MediaStream[]>(() =>
   (selectedMediaSource.value?.MediaStreams ?? []).filter(
-    (s) => s.Type === 'Subtitle'
+    s => s.Type === 'Subtitle'
   )
 );
 const selectedMediaStreamsImage = computed<MediaStream[]>(() =>
   (selectedMediaSource.value?.MediaStreams ?? []).filter(
-    (s) => s.Type === 'EmbeddedImage'
+    s => s.Type === 'EmbeddedImage'
   )
 );
 
@@ -213,17 +213,17 @@ const displayName = computed(() => {
 const generalProperties = computed(() => {
   if (selectedMediaSource.value) {
     const p = new Map<string, string | number | boolean | null | undefined>();
-    const formats =
-      isArray(selectedMediaSource.value.Formats) &&
-      selectedMediaSource.value.Formats.length > 0
+    const formats
+      = isArray(selectedMediaSource.value.Formats)
+      && selectedMediaSource.value.Formats.length > 0
         ? selectedMediaSource.value.Formats.join(',')
         : undefined;
     const fileSize = isNumber(selectedMediaSource.value.Size)
       ? formatFileSize(selectedMediaSource.value.Size)
       : undefined;
-    const bitrate =
-      isNumber(selectedMediaSource.value.Bitrate) &&
-      selectedMediaSource.value.Bitrate > 0
+    const bitrate
+      = isNumber(selectedMediaSource.value.Bitrate)
+      && selectedMediaSource.value.Bitrate > 0
         ? formatBitRate(selectedMediaSource.value.Bitrate)
         : undefined;
 

@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
 import IMdiHome from 'virtual:icons/mdi/home';
-import { computed, inject, type Ref } from 'vue';
+import { type Ref, computed, inject } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router/auto';
 import type { RouteNamedMap } from 'vue-router/auto-routes';

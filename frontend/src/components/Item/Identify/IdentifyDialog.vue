@@ -117,7 +117,7 @@ const emit = defineEmits<{
 /**
  * Closes the dialog and kills the DOM element.
  */
-function close (): void {
+function close(): void {
   model.value = false;
   emit('close');
 }
@@ -173,8 +173,8 @@ const searchFields = computed<IdentifyField[]>(() => {
    */
   const populatedKeys = Object.keys(props.item.ProviderIds ?? {});
   const missingProviders = availableProviders
-    .filter((p) => !populatedKeys.includes(p.Key ?? ''))
-    .map((p) => p.Key)
+    .filter(p => !populatedKeys.includes(p.Key ?? ''))
+    .map(p => p.Key)
     .filter((p): p is string => p !== undefined);
 
   for (const key of missingProviders) {
@@ -229,7 +229,7 @@ async function getItemRemoteSearch(
   interface Query {
     Name?: string;
     Year?: number;
-    ProviderIds: { [key: string]: string };
+    ProviderIds: Record<string, string>;
   }
 
   const searcher = remote.sdk.newUserApi(getItemLookupApi);
@@ -256,8 +256,8 @@ async function getItemRemoteSearch(
    * These provider IDs are basically directly use to pull information from said provider.
    */
   for (const field of fields) {
-    const value =
-      isStr(field.value) ? field.value.trim() : field.value;
+    const value
+      = isStr(field.value) ? field.value.trim() : field.value;
 
     if (field.key === 'search-name' && value) {
       searchQuery.Name = value;

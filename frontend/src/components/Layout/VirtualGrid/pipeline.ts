@@ -1,5 +1,5 @@
-import { unrefElement, type MaybeElementRef } from '@vueuse/core';
-import { computed, type ComputedRef } from 'vue';
+import { type MaybeElementRef, unrefElement } from '@vueuse/core';
+import { type ComputedRef, computed } from 'vue';
 
 /**
  * == TYPES AND INTERFACES ==
@@ -80,13 +80,13 @@ export function getScrollParents(
   while (parent && !vertical && !horizontal) {
     const parentStyle = getComputedStyle(parent);
 
-    horizontal =
-      overflowRegex.test(parentStyle.overflowX)
+    horizontal
+      = overflowRegex.test(parentStyle.overflowX)
         ? parent
         : undefined;
 
-    vertical =
-      overflowRegex.test(parentStyle.overflowY)
+    vertical
+      = overflowRegex.test(parentStyle.overflowY)
         ? parent
         : undefined;
 
@@ -122,7 +122,7 @@ export function fromScrollParent(
        */
       return (
         vertical === horizontal ? [vertical] : [vertical, horizontal]
-      ).map((parent) =>
+      ).map(parent =>
         parent === document.documentElement ? window : parent
       );
     }
@@ -240,8 +240,8 @@ export function getBufferMeta(
    * Take in account as well the user-provided multiplier
    */
   const intersectedWithMultiplier = itemsIntersectingViewport * multiplier;
-  const renderedItems =
-    (intersectedWithMultiplier) % 2 === 0
+  const renderedItems
+    = (intersectedWithMultiplier) % 2 === 0
       ? intersectedWithMultiplier * 4
       : intersectedWithMultiplier * 4 + 1;
   /**
@@ -269,8 +269,8 @@ export function getItemOffsetByIndex(
   index: number,
   resizeMeasurement: ResizeMeasurement
 ): ItemOffset {
-  const { flow, columns, rows, itemWidthWithGap, itemHeightWithGap } =
-    resizeMeasurement;
+  const { flow, columns, rows, itemWidthWithGap, itemHeightWithGap }
+    = resizeMeasurement;
 
   let x;
   let y;
@@ -313,12 +313,12 @@ export function getVisibleItems<T>(
   let last = allItems.length;
 
   if (allItems.length > bufferedLength) {
-    first =
-      allItems.length < offsetPlusLength
+    first
+      = allItems.length < offsetPlusLength
         ? allItems.length - bufferedLength
         : bufferedOffset;
-    last =
-      allItems.length < offsetPlusLength ? allItems.length : offsetPlusLength;
+    last
+      = allItems.length < offsetPlusLength ? allItems.length : offsetPlusLength;
   }
 
   return allItems.slice(first, last).map((value, localIndex) => {

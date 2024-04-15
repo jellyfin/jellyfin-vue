@@ -39,7 +39,7 @@ const selectSources = computed(() => getItemizedSelect(selectProps.sources));
 
 watch(currentSource, () => {
   const newIndex = selectProps.sources.findIndex(
-    (s) => s.Id === currentSource.value.Id
+    s => s.Id === currentSource.value.Id
   );
 
   emit('input', newIndex);

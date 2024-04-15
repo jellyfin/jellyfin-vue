@@ -2,7 +2,7 @@ import type { DisplayPreferencesDto } from '@jellyfin/sdk/lib/generated-client';
 import { getDisplayPreferencesApi } from '@jellyfin/sdk/lib/utils/api/display-preferences-api';
 import destr from 'destr';
 import { toRaw } from 'vue';
-import { watchImmediate, watchPausable, type WatchPausableReturn } from '@vueuse/core';
+import { type WatchPausableReturn, watchImmediate, watchPausable } from '@vueuse/core';
 import { taskManager } from '../task-manager';
 import { remote } from '@/plugins/remote';
 import { CommonStore, type Persistence } from '@/store/super/common-store';
@@ -12,7 +12,7 @@ import { i18n } from '@/plugins/i18n';
 
 export abstract class SyncedStore<T extends object> extends CommonStore<T> {
   private readonly _clientSyncName = 'vue';
-  private readonly _syncedKeys: Array<keyof T> = [];
+  private readonly _syncedKeys: (keyof T)[] = [];
   private readonly _pausableWatchers: WatchPausableReturn[] = [];
   /**
    * Serializes custom pref values for storage as string
@@ -131,12 +131,13 @@ export abstract class SyncedStore<T extends object> extends CommonStore<T> {
       }
     }
   };
+
   /**
    * This store syncs the state of the parent store with the remote server.
    *
    * @param keys - The keys to be synced with the server. If not provided, all keys will be synced
    */
-  protected constructor(storeKey: string, defaultState: T, persistence?: Persistence, keys?: Array<keyof T>) {
+  protected constructor(storeKey: string, defaultState: T, persistence?: Persistence, keys?: (keyof T)[]) {
     super(storeKey, defaultState, persistence);
     this._syncedKeys = keys ?? [];
 

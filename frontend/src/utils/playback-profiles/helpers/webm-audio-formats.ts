@@ -15,8 +15,8 @@ export function getSupportedWebMAudioCodecs(
   codecs.push('vorbis');
 
   if (
-    !isWebOS() &&
-    videoTestElement.canPlayType('audio/ogg; codecs="opus"').replace(/no/, '')
+    !isWebOS()
+    && videoTestElement.canPlayType('audio/ogg; codecs="opus"').replace(/no/, '')
   ) {
     codecs.push('opus');
   }

@@ -3,7 +3,7 @@
  */
 
 import { hasH264Support, hasH265Support } from './mp4-video-formats';
-import { hasEac3Support, hasAacSupport } from './mp4-audio-formats';
+import { hasAacSupport, hasEac3Support } from './mp4-audio-formats';
 import { getSupportedAudioCodecs } from './audio-formats';
 import { isTv } from '@/utils/browser-detection';
 
@@ -24,8 +24,8 @@ function supportsAc3InHls(
     return (
       videoTestElement
         .canPlayType('application/x-mpegurl; codecs="avc1.42E01E, ac-3"')
-        .replace(/no/, '') ||
-        videoTestElement
+        .replace(/no/, '')
+        || videoTestElement
           .canPlayType(
             'application/vnd.apple.mpegURL; codecs="avc1.42E01E, ac-3"'
           )

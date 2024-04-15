@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import { reactive, computed } from 'vue';
+import { computed, reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useConfirmDialog as vUseConfirmDialog } from '@vueuse/core';
 import { sanitizeHtml } from '@/utils/html';
@@ -69,7 +69,7 @@ const model = computed({
     return isRevealed.value;
   },
   set(newVal) {
-    if (newVal === false) {
+    if (!newVal) {
       cancel();
     }
   }

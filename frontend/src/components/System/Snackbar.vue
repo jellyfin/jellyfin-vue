@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import { reactive, computed } from 'vue';
+import { computed, reactive } from 'vue';
 
 interface SnackbarState {
   message: string;
@@ -37,7 +37,7 @@ const model = computed({
     return state.message !== '';
   },
   set(newValue) {
-    if (newValue === false) {
+    if (!newValue) {
       state.message = '';
       state.color = '';
     }

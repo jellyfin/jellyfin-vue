@@ -47,8 +47,8 @@
 
 <script setup lang="ts">
 import {
-  SortOrder,
-  type BaseItemKind
+  type BaseItemKind,
+  SortOrder
 } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';

@@ -81,7 +81,7 @@ export default tseslint.config(
       'unicorn/filename-case': 'off',
       'unicorn/consistent-function-scoping': 'off',
       'unicorn/prevent-abbreviations': 'off',
-      'unicorn/no-await-expression-member': 'off',
+      'unicorn/no-await-expression-member': 'off'
     }
   },
   /** Common TypeScript rules */
@@ -99,18 +99,18 @@ export default tseslint.config(
   {
     ...flatArrayOfObjects(tseslint.configs.strictTypeChecked),
     name: '(typescript-eslint) Extended strict type checking rules',
-    files: vueAndTsFiles,
+    files: vueAndTsFiles
   },
   {
     ...flatArrayOfObjects(tseslint.configs.stylisticTypeChecked),
     name: '(typescript-eslint) Extended stylistic type checked rules',
-    files: vueAndTsFiles,
+    files: vueAndTsFiles
   },
   {
-    
+
     ...tseslint.configs.eslintRecommended,
     files: vueAndTsFiles,
-    name: '(typescript-eslint) Extended ESLint recommended rules for typechecking',
+    name: '(typescript-eslint) Extended ESLint recommended rules for typechecking'
   },
   {
     ...flatArrayOfObjects(compat.extends('plugin:optimize-regex/recommended')),
@@ -205,7 +205,7 @@ export default tseslint.config(
       'jsdoc/require-description': 'error',
       'jsdoc/no-types': 'error',
       'jsdoc/require-jsdoc': 'error',
-      'jsdoc/informative-docs': 'error',
+      'jsdoc/informative-docs': 'error'
     }
   },
   {
@@ -225,21 +225,23 @@ export default tseslint.config(
     }
   },
   /** TODO: Not working, fix when the plugin is updated */
-  // {
-  //   ...flatArrayOfObjects(compat.extends("plugin:sonarjs/recommended")),
-  //   name: 'SonarCloud recommended rules',
-  //   files: vueAndTsFiles
-  // },
+  /*
+   * {
+   *   ...flatArrayOfObjects(compat.extends("plugin:sonarjs/recommended")),
+   *   name: 'SonarCloud recommended rules',
+   *   files: vueAndTsFiles
+   * },
+   */
   /** SFC rules */
   {
     ...flatArrayOfObjects(vue.configs['flat/recommended']),
     name: 'Base config for Vue SFC files',
-    files: vueFiles,
+    files: vueFiles
   },
   {
     ...flatArrayOfObjects(vueScopedCSS.configs['flat/recommended']),
     name: 'Base config for Vue SFC files (Scoped CSS)',
-    files: vueFiles,
+    files: vueFiles
   },
   {
     ...flatArrayOfObjects(compat.extends('plugin:css/recommended')),
@@ -274,7 +276,7 @@ export default tseslint.config(
   {
     ...flatArrayOfObjects(jsonc.configs['flat/recommended-with-json']),
     name: 'Base config for JSON files',
-    files: ['*.json', '**/*.json'],
+    files: ['*.json', '**/*.json']
   },
   {
     name: 'Custom config for JSON files',
@@ -321,7 +323,7 @@ export default tseslint.config(
   },
   {
     ...stylistic.configs['disable-legacy'],
-    name: 'Disable legacy rules',
+    name: 'Disable legacy rules'
   },
   /**
    * Extra files to include and ignores that should override all the others
@@ -336,6 +338,6 @@ export default tseslint.config(
       'types/global/routes.d.ts',
       'types/global/components.d.ts',
       ...gitignore
-    ],
+    ]
   }
 );

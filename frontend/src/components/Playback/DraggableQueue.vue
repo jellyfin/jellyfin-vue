@@ -88,7 +88,7 @@ watch(container, () => {
         if (isNumber(oldIndex)) {
           const item = playbackManager.queue[oldIndex];
 
-          if (item?.Id && isNumber(e.newIndex)) {
+          if (item.Id && isNumber(e.newIndex)) {
             playbackManager.changeItemPosition(item.Id, e.newIndex);
           }
         }

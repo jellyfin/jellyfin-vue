@@ -1,13 +1,13 @@
-import { computed, ref, watch, type ComputedRef } from 'vue';
+import { type ComputedRef, computed, ref, watch } from 'vue';
 
 const requests = ref(0);
 const isLoading = computed(() => requests.value > 0);
 const cssVarKey = '--j-client-cursor';
 
 watch(isLoading, () => {
-  isLoading.value ?
-    window.document.documentElement.style.setProperty(cssVarKey, 'wait') :
-    window.document.documentElement.style.removeProperty(cssVarKey);
+  isLoading.value
+    ? window.document.documentElement.style.setProperty(cssVarKey, 'wait')
+    : window.document.documentElement.style.removeProperty(cssVarKey);
 });
 
 /**

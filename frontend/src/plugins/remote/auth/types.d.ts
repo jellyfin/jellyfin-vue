@@ -14,5 +14,5 @@ export interface AuthState {
   /**
    * Key: userId. Value: Access token
    */
-  accessTokens: { [key: string]: string };
+  accessTokens: Record<string, string>;
 }

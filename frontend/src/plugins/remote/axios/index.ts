@@ -24,10 +24,10 @@ class RemotePluginAxios {
    */
   public logoutInterceptor = async (error: AxiosError): Promise<void> => {
     if (
-      error.response?.status === 401 &&
-      auth.currentUser &&
-      !error.config?.url?.includes('/Sessions/Logout') &&
-      !error.config?.url?.includes('/Users/Me')
+      error.response?.status === 401
+      && auth.currentUser
+      && !error.config?.url?.includes('/Sessions/Logout')
+      && !error.config?.url?.includes('/Users/Me')
     ) {
       try {
         await auth.refreshCurrentUserInfo();

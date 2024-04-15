@@ -147,9 +147,9 @@ import IMdiServer from 'virtual:icons/mdi/server';
 import IMdiSubtitles from 'virtual:icons/mdi/subtitles';
 import IMdiTelevisionClassic from 'virtual:icons/mdi/television-classic';
 import IMdiTextBox from 'virtual:icons/mdi/text-box';
-import { computed, type Component } from 'vue';
+import { type Component, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute, type RouteLocationRaw } from 'vue-router/auto';
+import { type RouteLocationRaw, useRoute } from 'vue-router/auto';
 import { remote } from '@/plugins/remote';
 import { useApi } from '@/composables/apis';
 import { version as clientVersion } from '@/../package.json';
@@ -161,7 +161,7 @@ interface MenuOptions {
   icon: Component;
   name: string;
   description: string;
-  link?: RouteLocationRaw
+  link?: RouteLocationRaw;
 }
 
 route.meta.title = t('settings');

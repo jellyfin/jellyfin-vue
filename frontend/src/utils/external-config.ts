@@ -19,15 +19,15 @@ function validateJsonConfig(
   }
 
   if (
-    !('defaultServerURLs' in config) ||
-    !isArray(config.defaultServerURLs)
+    !('defaultServerURLs' in config)
+    || !isArray(config.defaultServerURLs)
   ) {
     throw new Error('Expected defaultServerURLS array');
   }
 
   if (
     config.defaultServerURLs.some(
-      (defaultServerURL) => !isStr(defaultServerURL)
+      defaultServerURL => !isStr(defaultServerURL)
     )
   ) {
     throw new Error('Expected defaultServerURLs to be a list of strings');
@@ -38,9 +38,9 @@ function validateJsonConfig(
   }
 
   if (
-    !('routerMode' in config) ||
-    !isStr(config.routerMode) ||
-    !['hash', 'history'].includes(config.routerMode)
+    !('routerMode' in config)
+    || !isStr(config.routerMode)
+    || !['hash', 'history'].includes(config.routerMode)
   ) {
     throw new Error('Expected router mode to be either hash or history');
   }

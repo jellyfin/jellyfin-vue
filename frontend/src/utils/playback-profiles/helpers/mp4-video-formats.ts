@@ -19,7 +19,7 @@ import {
 export function hasH264Support(videoTestElement: HTMLVideoElement): boolean {
   return !!(
     videoTestElement
-      .canPlayType?.('video/mp4; codecs="avc1.42E01E, mp4a.40.2"')
+      .canPlayType('video/mp4; codecs="avc1.42E01E, mp4a.40.2"')
       .replace(/no/, '')
   );
 }
@@ -36,17 +36,17 @@ export function hasH265Support(videoTestElement: HTMLVideoElement): boolean {
   }
 
   return !!(
-    videoTestElement.canPlayType &&
-    (videoTestElement
+    videoTestElement.canPlayType
+    && (videoTestElement
       .canPlayType('video/mp4; codecs="hvc1.1.L120"')
-      .replace(/no/, '') ||
-      videoTestElement
+      .replace(/no/, '')
+      || videoTestElement
         .canPlayType('video/mp4; codecs="hev1.1.L120"')
-        .replace(/no/, '') ||
-        videoTestElement
+        .replace(/no/, '')
+        || videoTestElement
           .canPlayType('video/mp4; codecs="hvc1.1.0.L120"')
-          .replace(/no/, '') ||
-          videoTestElement
+          .replace(/no/, '')
+          || videoTestElement
             .canPlayType('video/mp4; codecs="hev1.1.0.L120"')
             .replace(/no/, ''))
   );
@@ -64,17 +64,17 @@ export function hasHevcSupport(videoTestElement: HTMLVideoElement): boolean {
   }
 
   return !!(
-    !!videoTestElement.canPlayType &&
-    (videoTestElement
+    !!videoTestElement.canPlayType
+    && (videoTestElement
       .canPlayType('video/mp4; codecs="hvc1.1.L120"')
-      .replace(/no/, '') ||
-      videoTestElement
+      .replace(/no/, '')
+      || videoTestElement
         .canPlayType('video/mp4; codecs="hev1.1.L120"')
-        .replace(/no/, '') ||
-        videoTestElement
+        .replace(/no/, '')
+        || videoTestElement
           .canPlayType('video/mp4; codecs="hvc1.1.0.L120"')
-          .replace(/no/, '') ||
-          videoTestElement
+          .replace(/no/, '')
+          || videoTestElement
             .canPlayType('video/mp4; codecs="hev1.1.0.L120"')
             .replace(/no/, ''))
   );
@@ -88,15 +88,15 @@ export function hasHevcSupport(videoTestElement: HTMLVideoElement): boolean {
  */
 export function hasAv1Support(videoTestElement: HTMLVideoElement): boolean {
   if (
-    (isTizen() && isTizen55()) ||
-    (isWebOS5() && window.outerHeight >= 2160)
+    (isTizen() && isTizen55())
+    || (isWebOS5() && window.outerHeight >= 2160)
   ) {
     return true;
   }
 
   return !!(
     videoTestElement
-      .canPlayType?.('video/webm; codecs="av01.0.15M.10"')
+      .canPlayType('video/webm; codecs="av01.0.15M.10"')
       .replace(/no/, '')
   );
 }
@@ -109,8 +109,8 @@ export function hasAv1Support(videoTestElement: HTMLVideoElement): boolean {
  */
 function hasVc1Support(videoTestElement: HTMLVideoElement): boolean {
   return !!(
-    isTv() ||
-    videoTestElement.canPlayType('video/mp4; codecs="vc-1"').replace(/no/, '')
+    isTv()
+    || videoTestElement.canPlayType('video/mp4; codecs="vc-1"').replace(/no/, '')
   );
 }
 
@@ -122,7 +122,7 @@ function hasVc1Support(videoTestElement: HTMLVideoElement): boolean {
  */
 export function hasVp8Support(videoTestElement: HTMLVideoElement): boolean {
   return !!(
-    videoTestElement.canPlayType?.('video/webm; codecs="vp8"').replace(/no/, '')
+    videoTestElement.canPlayType('video/webm; codecs="vp8"').replace(/no/, '')
   );
 }
 
@@ -134,7 +134,7 @@ export function hasVp8Support(videoTestElement: HTMLVideoElement): boolean {
  */
 export function hasVp9Support(videoTestElement: HTMLVideoElement): boolean {
   return !!(
-    videoTestElement.canPlayType?.('video/webm; codecs="vp9"').replace(/no/, '')
+    videoTestElement.canPlayType('video/webm; codecs="vp9"').replace(/no/, '')
   );
 }
 
@@ -154,8 +154,8 @@ export function getSupportedMP4VideoCodecs(
   }
 
   if (
-    hasHevcSupport(videoTestElement) && // Safari is lying on HDR and 60fps videos, use fMP4 instead
-    !isApple()
+    hasHevcSupport(videoTestElement) // Safari is lying on HDR and 60fps videos, use fMP4 instead
+    && !isApple()
   ) {
     codecs.push('hevc');
   }

@@ -59,9 +59,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, type Ref } from 'vue';
+import { type Ref, computed, inject } from 'vue';
 import { useRoute } from 'vue-router/auto';
-import { windowScroll, isConnectedToServer } from '@/store';
+import { isConnectedToServer, windowScroll } from '@/store';
 import { clientSettings } from '@/store/client-settings';
 import { remote } from '@/plugins/remote';
 

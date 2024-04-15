@@ -55,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import { useAttrs, computed } from 'vue';
+import { computed, useAttrs } from 'vue';
 import { isNil } from '@/utils/validation';
 import { isFinePointer } from '@/store';
 import type { CardShapes } from '@/utils/items';

@@ -62,8 +62,8 @@ function getSubtitle(item: RemoteSearchResult): string | undefined {
   const yearString = item.ProductionYear
     ? String(item.ProductionYear)
     : undefined;
-  const value =
-    yearString && item.SearchProviderName
+  const value
+    = yearString && item.SearchProviderName
       ? `${yearString} - ${item.SearchProviderName}`
       : yearString ?? item.SearchProviderName;
 

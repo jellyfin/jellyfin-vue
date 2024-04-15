@@ -8,6 +8,6 @@ export function hideDirective(
   binding: DirectiveBinding<boolean>
 ): void {
   if (element) {
-    element.style.visibility = binding.value === true ? 'hidden' : 'visible';
+    element.style.visibility = binding.value ? 'hidden' : 'visible';
   }
 }

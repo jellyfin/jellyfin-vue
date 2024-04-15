@@ -47,7 +47,7 @@ const { t } = useI18n();
 
 const model = ref<string[]>([]);
 
-const items = computed<Array<Record<string, string>>>(() => [
+const items = computed<Record<string, string>[]>(() => [
   { title: t('name'), value: 'SortName' },
   { title: t('rating'), value: 'CommunityRating' },
   { title: t('releaseDate'), value: 'PremiereDate' },
@@ -63,7 +63,7 @@ const sortingLabel = computed(() =>
     type:
       model.value.length === 0
         ? items.value[0].title
-        : items.value.find((x) => x.value === model.value[0])?.title
+        : items.value.find(x => x.value === model.value[0])?.title
   })
 );
 </script>

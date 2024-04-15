@@ -21,7 +21,7 @@ import { getSupportedAudioCodecs } from './helpers/audio-formats';
  */
 export function getDirectPlayProfiles(
   videoTestElement: HTMLVideoElement
-): Array<DirectPlayProfile> {
+): DirectPlayProfile[] {
   const DirectPlayProfiles: DirectPlayProfile[] = [];
 
   const webmVideoCodecs = getSupportedWebMVideoCodecs(videoTestElement);
@@ -71,7 +71,7 @@ export function getDirectPlayProfiles(
     'oga'
   ];
 
-  for (const audioFormat of supportedAudio.filter((format) =>
+  for (const audioFormat of supportedAudio.filter(format =>
     getSupportedAudioCodecs(format)
   )) {
     DirectPlayProfiles.push({

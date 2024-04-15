@@ -12,7 +12,7 @@
 <script lang="ts">
 import { wrap } from 'comlink';
 import { shallowRef, watch } from 'vue';
-import { DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_PUNCH } from './BlurhashWorker';
+import { DEFAULT_HEIGHT, DEFAULT_PUNCH, DEFAULT_WIDTH } from './BlurhashWorker';
 import BlurhashWorker from './BlurhashWorker?worker';
 import { remote } from '@/plugins/remote';
 

@@ -8,15 +8,15 @@ import { visualizer } from 'rollup-plugin-visualizer';
 import IconsResolver from 'unplugin-icons/resolver';
 import Icons from 'unplugin-icons/vite';
 import {
-  Vuetify3Resolver,
   VueUseComponentsResolver,
-  VueUseDirectiveResolver
+  VueUseDirectiveResolver,
+  Vuetify3Resolver
 } from 'unplugin-vue-components/resolvers';
 import Components from 'unplugin-vue-components/vite';
 import RadixVueResolver from 'radix-vue/resolver';
 import UnoCSS from 'unocss/vite';
 import VueRouter from 'unplugin-vue-router/vite';
-import { defineConfig, type UserConfig } from 'vite';
+import { type UserConfig, defineConfig } from 'vite';
 import { entrypoints, localeFilesFolder, srcRoot } from './scripts/paths';
 import virtualModules from './scripts/virtual-modules';
 
@@ -94,13 +94,12 @@ export default defineConfig(({ mode }): UserConfig => {
             /**
              * This is the default value: https://rollupjs.org/configuration-options/#output-chunkfilenames
              */
-            return chunkInfo.name === 'index' ? 'assets/common-[hash].js': '[name]-[hash].js';
+            return chunkInfo.name === 'index' ? 'assets/common-[hash].js' : '[name]-[hash].js';
           },
           validate: true,
           plugins: [
             mode === 'analyze'
-              ?
-              visualizer({
+              ? visualizer({
                 open: true,
                 filename: 'dist/stats.html'
               })
@@ -115,8 +114,8 @@ export default defineConfig(({ mode }): UserConfig => {
            */
           manualChunks(id) {
             if (
-              id.includes('virtual:locales') ||
-              id.includes('@intlify/unplugin-vue-i18n/messages')
+              id.includes('virtual:locales')
+              || id.includes('@intlify/unplugin-vue-i18n/messages')
             ) {
               return 'assets/locales';
             }

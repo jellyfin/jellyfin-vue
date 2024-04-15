@@ -46,17 +46,17 @@
  * - Improved documentation and comments
  */
 import {
+  type Fn,
   refDebounced,
   useEventListener,
-  useResizeObserver,
-  type Fn
+  useResizeObserver
 } from '@vueuse/core';
 import {
+  type StyleValue,
   computed,
   onBeforeUnmount,
   shallowRef,
-  watch,
-  type StyleValue
+  watch
 } from 'vue';
 import {
   fromScrollParent,
@@ -110,19 +110,19 @@ const eventCleanups: Fn[] = [];
  * Vue to track.
  */
 const resizeMeasurement = computed(() => {
-  return rootRef.value &&
-    itemRect.value &&
-    displayWidth.value !== undefined &&
-    displayHeight.value !== undefined &&
-    !isNil(props.items)
+  return rootRef.value
+    && itemRect.value
+    && displayWidth.value !== undefined
+    && displayHeight.value !== undefined
+    && !isNil(props.items)
     ? getResizeMeasurement(rootRef.value, itemRect.value)
     : undefined;
 });
 const contentSize = computed(() => {
-  return resizeMeasurement.value &&
-    displayWidth.value !== undefined &&
-    displayHeight.value !== undefined &&
-    !isNil(props.items)
+  return resizeMeasurement.value
+    && displayWidth.value !== undefined
+    && displayHeight.value !== undefined
+    && !isNil(props.items)
     ? getContentSize(resizeMeasurement.value, props.items.length)
     : undefined;
 });
@@ -139,11 +139,11 @@ const rootStyles = computed<StyleValue>(() => {
  */
 const boundingClientRect = computed(() => {
   if (
-    displayWidth.value !== undefined &&
-    displayHeight.value !== undefined &&
-    !isNil(rootRef.value) &&
-    !isNil(scrollEvents.value) &&
-    !isNil(props.items)
+    displayWidth.value !== undefined
+    && displayHeight.value !== undefined
+    && !isNil(rootRef.value)
+    && !isNil(scrollEvents.value)
+    && !isNil(props.items)
   ) {
     return rootRef.value.getBoundingClientRect();
   }

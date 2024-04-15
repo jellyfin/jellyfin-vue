@@ -19,7 +19,7 @@ import type {
   TransportStreamTimestamp
 } from '@jellyfin/sdk/lib/generated-client';
 import { useI18n } from 'vue-i18n';
-import { isNumber, isBool } from '@/utils/validation';
+import { isBool, isNumber } from '@/utils/validation';
 import { getLocaleName } from '@/utils/i18n';
 import { formatBitRate } from '@/utils/items';
 
@@ -32,8 +32,8 @@ const { t, locale } = useI18n();
 
 const properties = computed(() => {
   const p = new Map<string, string | number | boolean | null | undefined>();
-  const resolution =
-    props.stream.Width && props.stream.Height
+  const resolution
+    = props.stream.Width && props.stream.Height
       ? `${props.stream.Width}x${props.stream.Height}`
       : undefined;
   const framerate = props.stream.AverageFrameRate ?? props.stream.RealFrameRate;

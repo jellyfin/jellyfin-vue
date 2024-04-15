@@ -14,19 +14,19 @@ import {
   hasVp8Support
 } from './helpers/mp4-video-formats';
 import {
-  canPlayNativeHls,
   canPlayHlsWithMSE,
+  canPlayNativeHls,
   hasMkvSupport
 } from './helpers/transcoding-formats';
 import { getSupportedTsAudioCodecs } from './helpers/ts-audio-formats';
 import { getSupportedTsVideoCodecs } from './helpers/ts-video-formats';
 import {
-  isTv,
-  isApple,
-  isEdge,
-  isChromiumBased,
   isAndroid,
-  isTizen
+  isApple,
+  isChromiumBased,
+  isEdge,
+  isTizen,
+  isTv
 } from '@/utils/browser-detection';
 
 /**
@@ -37,14 +37,14 @@ import {
  */
 export function getTranscodingProfiles(
   videoTestElement: HTMLVideoElement
-): Array<TranscodingProfile> {
+): TranscodingProfile[] {
   const TranscodingProfiles: TranscodingProfile[] = [];
   const physicalAudioChannels = isTv() ? 6 : 2;
 
   const hlsBreakOnNonKeyFrames = !!(
-    isApple() ||
-    (isEdge() && !isChromiumBased()) ||
-    !canPlayNativeHls(videoTestElement)
+    isApple()
+    || (isEdge() && !isChromiumBased())
+    || !canPlayNativeHls(videoTestElement)
   );
 
   const mp4AudioCodecs = getSupportedMP4AudioCodecs(videoTestElement);
@@ -55,9 +55,9 @@ export function getTranscodingProfiles(
     TranscodingProfiles.push({
       // Hlsjs, edge, and android all seem to require ts container
       Container:
-        !canPlayNativeHls(videoTestElement) ||
-        (isEdge() && !isChromiumBased()) ||
-        isAndroid()
+        !canPlayNativeHls(videoTestElement)
+        || (isEdge() && !isChromiumBased())
+        || isAndroid()
           ? 'ts'
           : 'aac',
       Type: DlnaProfileType.Audio,
@@ -70,7 +70,7 @@ export function getTranscodingProfiles(
     });
   }
 
-  for (const audioFormat of ['aac', 'mp3', 'opus', 'wav'].filter((format) =>
+  for (const audioFormat of ['aac', 'mp3', 'opus', 'wav'].filter(format =>
     getSupportedAudioCodecs(format)
   )) {
     TranscodingProfiles.push({
@@ -87,9 +87,9 @@ export function getTranscodingProfiles(
   const hlsInTsAudioCodecs = getSupportedTsAudioCodecs(videoTestElement);
 
   if (
-    canPlayHls &&
-    hlsInTsVideoCodecs.length > 0 &&
-    hlsInTsAudioCodecs.length > 0
+    canPlayHls
+    && hlsInTsVideoCodecs.length > 0
+    && hlsInTsAudioCodecs.length > 0
   ) {
     TranscodingProfiles.push({
       Container: 'ts',

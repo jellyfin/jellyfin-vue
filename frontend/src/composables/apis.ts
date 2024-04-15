@@ -2,7 +2,7 @@ import type { Api } from '@jellyfin/sdk';
 import type { BaseItemDto, BaseItemDtoQueryResult } from '@jellyfin/sdk/lib/generated-client';
 import type { AxiosResponse } from 'axios';
 import { deepEqual } from 'fast-equals';
-import { computed, effectScope, getCurrentScope, isRef, shallowRef, toValue, unref, watch, type ComputedRef, type Ref } from 'vue';
+import { type ComputedRef, type Ref, computed, effectScope, getCurrentScope, isRef, shallowRef, toValue, unref, watch } from 'vue';
 import { watchImmediate } from '@vueuse/core';
 import { useLoading } from '@/composables/use-loading';
 import { useSnackbar } from '@/composables/use-snackbar';
@@ -17,7 +17,7 @@ type OmittedKeys = 'fields' | 'userId' | 'enableImages' | 'enableTotalRecordCoun
 type ParametersAsGetters<T extends (...args: any[]) => any> = T extends (...args: infer P) => any
   ? { [K in keyof P]: () => BetterOmit<Mutable<P[K]>, OmittedKeys> }
   : never;
-type ExtractResponseDataType<T> = Awaited<T> extends AxiosResponse<infer U, any> ? U : undefined;
+type ExtractResponseDataType<T> = Awaited<T> extends AxiosResponse<infer U> ? U : undefined;
 type Validate<T, U> = T extends U ? U : never;
 type ComposableParams<T extends Record<K, (...args: any[]) => any>, K extends keyof T, U extends ParametersAsGetters<T[K]>> =
   Validate<ParametersAsGetters<T[K]>, U>;
@@ -26,22 +26,22 @@ type ComposableParams<T extends Record<K, (...args: any[]) => any>, K extends ke
  * so we return the appropiate type for it. We also remove null and undefined since we already check for that
  * in the runtime logic.
  */
-type ExtractItems<T> = T extends { 'Items'?: infer U } ? U extends Array<infer V> ? NonNullable<V>[] : never : T;
+type ExtractItems<T> = T extends { Items?: infer U } ? U extends (infer V)[] ? NonNullable<V>[] : never : T;
 
 /**
  * If response.data is BaseItemDto or BaseItemDto[], returns it. Otherwise, returns undefined.
  */
 type ExtractBaseItemDtoResponse<T> =
   (ExtractResponseDataType<T> extends BaseItemDto ? BaseItemDto :
-  (ExtractResponseDataType<T> extends BaseItemDtoQueryResult ? BaseItemDto[] :
-  ExtractResponseDataType<T> extends BaseItemDto[] ? BaseItemDto[] : undefined));
+      (ExtractResponseDataType<T> extends BaseItemDtoQueryResult ? BaseItemDto[] :
+        ExtractResponseDataType<T> extends BaseItemDto[] ? BaseItemDto[] : undefined));
 /**
  * If response.data is BaseItemDto or BaseItemDto[], returns undefined. Otherwise, returns the data type.
  */
 type ExtractResponseType<T> =
   (ExtractResponseDataType<T> extends BaseItemDto ? undefined :
-  (ExtractResponseDataType<T> extends BaseItemDtoQueryResult ? undefined :
-  ExtractItems<ExtractResponseDataType<T>>));
+      (ExtractResponseDataType<T> extends BaseItemDtoQueryResult ? undefined :
+        ExtractItems<ExtractResponseDataType<T>>));
 
 type ReturnData<T extends Record<K, (...args: any[]) => any>, K extends keyof T, J extends boolean> =
   J extends true ? ExtractBaseItemDtoResponse<ReturnType<T[K]>> : ExtractResponseType<ReturnType<T[K]>>;
@@ -49,7 +49,7 @@ type ReturnData<T extends Record<K, (...args: any[]) => any>, K extends keyof T,
 type MaybeReadonlyRef<T> = T | Ref<T> | ComputedRef<T>;
 
 interface ReturnPayload<T extends Record<K, (...args: any[]) => any>, K extends keyof T, J extends boolean> {
-  loading: Ref<boolean | undefined>,
+  loading: Ref<boolean | undefined>;
   data: ComputedRef<ReturnData<T, K, J>>;
 }
 
@@ -179,8 +179,8 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
   api: MaybeReadonlyRef<((api: Api) => T) | undefined>,
   methodName: MaybeReadonlyRef<K | undefined>,
   ops: Required<ComposableOps>
-): (this: any, ...args: ComposableParams<T,K,U>) => Promise<ReturnPayload<T, K, typeof ofBaseItem>> | ReturnPayload<T, K, typeof ofBaseItem> {
-  const offlineParams: OfflineParams<T,K>[] = [];
+): (this: any, ...args: ComposableParams<T, K, U>) => Promise<ReturnPayload<T, K, typeof ofBaseItem>> | ReturnPayload<T, K, typeof ofBaseItem> {
+  const offlineParams: OfflineParams<T, K>[] = [];
   const isFuncDefined = (): boolean => unref(api) !== undefined && unref(methodName) !== undefined;
 
   const loading = shallowRef<boolean | undefined>(false);
@@ -206,9 +206,9 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
   const data = computed<ReturnData<T, K, typeof ofBaseItem>>(() => {
     if (ops.skipCache.request && result.value) {
       if (ofBaseItem) {
-        return isArray(result.value) ?
-          apiStore.getItemsById((result.value as BaseItemDto[]).map((r) => r.Id)) as ReturnData<T, K, typeof ofBaseItem> :
-          apiStore.getItemById((result.value as BaseItemDto).Id) as ReturnData<T, K, typeof ofBaseItem>;
+        return isArray(result.value)
+          ? apiStore.getItemsById((result.value as BaseItemDto[]).map(r => r.Id)) as ReturnData<T, K, typeof ofBaseItem>
+          : apiStore.getItemById((result.value as BaseItemDto).Id) as ReturnData<T, K, typeof ofBaseItem>;
       } else {
         return result.value;
       }
@@ -233,7 +233,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
      * Rerun previous parameters when the user is back online
      */
     if (offlineParams.length > 0) {
-      await Promise.all(offlineParams.map((p) => void resolveAndAdd(p.api, p.methodName, ofBaseItem, loading, stringArgs.value, ops, ...p.args)));
+      await Promise.all(offlineParams.map(p => void resolveAndAdd(p.api, p.methodName, ofBaseItem, loading, stringArgs.value, ops, ...p.args)));
       offlineParams.length = 0;
     }
 
@@ -256,10 +256,10 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
     }
   };
 
-  return function (this: any, ...args: ComposableParams<T,K,U>) {
-    const normalizeArgs = (): Parameters<T[K]> => args.map((a) => toValue(a)) as Parameters<T[K]>;
-    const runNormally = async (): Promise<void> => await run({});
-    const runWithRetry = async (): Promise<void> => await run({ onlyPending: true });
+  return function (this: any, ...args: ComposableParams<T, K, U>) {
+    const normalizeArgs = (): Parameters<T[K]> => args.map(a => toValue(a)) as Parameters<T[K]>;
+    const runNormally = async (): Promise<void> => { await run({}); };
+    const runWithRetry = async (): Promise<void> => { await run({ onlyPending: true }); };
     const returnablePromise = async (): Promise<ReturnPayload<T, K, typeof ofBaseItem>> => {
       const scope = effectScope();
 
@@ -286,7 +286,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
         /**
          * Does a deep comparison to avoid useless double requests
          */
-        if (!normalizedArgs.every((a, index) => deepEqual(a, toValue(oldVal?.[index])))) {
+        if (!normalizedArgs.every((a, index) => deepEqual(a, toValue(oldVal[index])))) {
           argsRef.value = normalizedArgs;
           await runNormally();
         }
@@ -371,7 +371,7 @@ export function useBaseItem<T extends Record<K, (...args: any[]) => any>, K exte
   api: MaybeReadonlyRef<((api: Api) => T) | undefined>,
   methodName: MaybeReadonlyRef<K | undefined>,
   ops?: BaseItemComposableOps
-): (this: any, ...args: ComposableParams<T,K,U>) => Promise<ReturnPayload<T, K, true>> | ReturnPayload<T, K, true> {
+): (this: any, ...args: ComposableParams<T, K, U>) => Promise<ReturnPayload<T, K, true>> | ReturnPayload<T, K, true> {
   return _sharedInternalLogic<T, K, U>(true, api, methodName, (ops ? { ...ops, ...defaultOps } : defaultOps) as Required<ComposableOps>);
 }
 
@@ -431,7 +431,7 @@ export function useApi<T extends Record<K, (...args: any[]) => any>, K extends k
   api: MaybeReadonlyRef<((api: Api) => T) | undefined>,
   methodName: MaybeReadonlyRef<K | undefined>,
   ops?: ComposableOps
-): (this: any, ...args: ComposableParams<T,K,U>) => Promise<ReturnPayload<T, K, false>> | ReturnPayload<T, K, false> {
+): (this: any, ...args: ComposableParams<T, K, U>) => Promise<ReturnPayload<T, K, false>> | ReturnPayload<T, K, false> {
   return _sharedInternalLogic<T, K, U>(false, api, methodName, (ops ? { ...ops, ...defaultOps } : defaultOps) as Required<ComposableOps>);
 }
 
@@ -442,7 +442,7 @@ export function useApi<T extends Record<K, (...args: any[]) => any>, K extends k
 export function methodsAsObject<T extends Record<K, (...args: any[]) => any>, K extends keyof T>(
   api: (api: Api) => T,
   methodName: K
-): { api: (api: Api) => T, methodName: K } {
+): { api: (api: Api) => T; methodName: K } {
   return {
     api,
     methodName

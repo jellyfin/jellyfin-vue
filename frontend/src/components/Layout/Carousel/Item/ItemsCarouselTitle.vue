@@ -48,8 +48,8 @@ const titleString = computed(() => {
   if (props.item.Type === BaseItemKind.MusicAlbum && props.item.AlbumArtist) {
     return props.item.AlbumArtist;
   } else if (
-    props.item.Type === BaseItemKind.Episode &&
-    props.item.SeriesName
+    props.item.Type === BaseItemKind.Episode
+    && props.item.SeriesName
   ) {
     return props.item.SeriesName;
   } else {
@@ -59,8 +59,8 @@ const titleString = computed(() => {
 
 const logoLink = computed(() => {
   if (
-    props.item.Type === BaseItemKind.MusicAlbum &&
-    props.item.AlbumArtists?.length
+    props.item.Type === BaseItemKind.MusicAlbum
+    && props.item.AlbumArtists?.length
   ) {
     return getItemDetailsLink(
       props.item.AlbumArtists[0],
@@ -73,8 +73,8 @@ const logoLink = computed(() => {
 
 const subtitle = computed(() => {
   if (
-    props.item.Type === BaseItemKind.MusicAlbum ||
-    props.item.Type === BaseItemKind.Episode
+    props.item.Type === BaseItemKind.MusicAlbum
+    || props.item.Type === BaseItemKind.Episode
   ) {
     return props.item.Name;
   }

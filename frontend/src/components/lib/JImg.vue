@@ -6,7 +6,7 @@
       as="image"
       :href="src"
       @load="onLoad"
-      @error="onError" />
+      @error="onError" >
     <component
       :is="props.transitionProps ? JTransition : JNoop"
       v-bind="isObj(props.transitionProps) ? props.transitionProps : undefined">
@@ -15,7 +15,7 @@
         key="1"
         class="j-img"
         v-bind="mergeProps($props, $attrs)"
-        :alt="$props.alt" />
+        :alt="$props.alt" >
       <template v-else>
         <slot
           v-if="$slots.placeholder"
@@ -39,7 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, shallowRef, watch, type ImgHTMLAttributes, mergeProps } from 'vue';
+import { type ImgHTMLAttributes, computed, mergeProps, shallowRef, watch } from 'vue';
 import { isObj } from '@/utils/validation';
 import JTransition, { type JTransitionProps } from '@/components/lib/JTransition.vue';
 import JNoop from '@/components/lib/JNoop.vue';

@@ -193,12 +193,11 @@ const types = computed(() => [
 const sources = computed(() =>
   providers.value
     .filter(
-      (provider) =>
-        provider.Name &&
-        provider.SupportedImages &&
-        provider.SupportedImages.includes(type.value)
+      provider =>
+        provider.Name
+        && provider.SupportedImages?.includes(type.value)
     )
-    .map((provider) => provider.Name ?? '')
+    .map(provider => provider.Name ?? '')
 );
 
 /**
@@ -225,8 +224,8 @@ async function getImages(): Promise<void> {
   }
 
   loading.value = true;
-  images.value =
-    (
+  images.value
+    = (
       await remote.sdk.newUserApi(getRemoteImageApi).getRemoteImages({
         itemId: props.metadata.Id,
         type: type.value,

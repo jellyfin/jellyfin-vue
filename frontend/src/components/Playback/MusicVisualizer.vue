@@ -10,7 +10,6 @@ import { mediaWebAudio } from '@/store';
 let visualizerInstance: AudioMotionAnalyzer | undefined;
 const visualizerElement = shallowRef<HTMLDivElement>();
 
-
 /**
  * Destroy the visualizer instance.
  */

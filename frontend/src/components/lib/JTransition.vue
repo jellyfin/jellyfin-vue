@@ -23,7 +23,7 @@ export interface JTransitionProps extends BetterOmit<TransitionProps, 'name'> {
   /**
    * JTransition custom props
    */
-  group?: boolean
+  group?: boolean;
 }
 
 const props = withDefaults(defineProps<JTransitionProps>(), { name: 'fade' });

@@ -59,7 +59,7 @@
 </template>
 
 <script setup lang="ts">
-import { BaseItemKind, ImageType, type BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
+import { type BaseItemDto, BaseItemKind, ImageType } from '@jellyfin/sdk/lib/generated-client';
 import { SwiperSlide } from 'swiper/vue';
 import { useRoute } from 'vue-router/auto';
 import { useResponsiveClasses } from '@/composables/use-responsive-classes';

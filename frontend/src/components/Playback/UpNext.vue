@@ -30,7 +30,7 @@
                 })
               }}
               <span v-if="$vuetify.display.smAndUp"> - </span>
-              <br v-else />
+              <br v-else >
               {{ playbackManager.nextItem.Name }}
             </span>
             <span v-if="playbackManager.currentItem.Type === 'Movie'">
@@ -102,9 +102,9 @@ const nextUpDuration = computed(() => {
 });
 const visible = computed(
   () =>
-    !isHiddenByUser.value &&
-    playbackManager.currentlyPlayingMediaType === 'Video' &&
-    currentItemTimeLeft.value <= nextUpDuration.value
+    !isHiddenByUser.value
+    && playbackManager.currentlyPlayingMediaType === 'Video'
+    && currentItemTimeLeft.value <= nextUpDuration.value
 );
 
 watch(
@@ -113,7 +113,7 @@ watch(
     isHiddenByUser.value = false;
   }
 );
-watch(visible, () => emit('change', visible.value));
+watch(visible, () => { emit('change', visible.value); });
 </script>
 <style lang="scss" scoped>
 .up-next-dialog {

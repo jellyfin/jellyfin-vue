@@ -1,5 +1,5 @@
 import * as vuetifyLocales from 'virtual:locales/vuetify';
-import { createVuetify, type ThemeDefinition } from 'vuetify';
+import { type ThemeDefinition, createVuetify } from 'vuetify';
 import { md3 } from 'vuetify/blueprints';
 import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
 import 'vuetify/styles';

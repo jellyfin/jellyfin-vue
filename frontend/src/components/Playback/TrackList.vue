@@ -116,8 +116,8 @@
 
 <script setup lang="ts">
 import {
-  SortOrder,
-  type BaseItemDto
+  type BaseItemDto,
+  SortOrder
 } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { groupBy } from 'lodash-es';
@@ -128,7 +128,7 @@ import { getItemDetailsLink } from '@/utils/items';
 import { formatTicks } from '@/utils/time';
 
 const props = defineProps<{
-  item: BaseItemDto
+  item: BaseItemDto;
 }>();
 
 const { data: tracks } = await useBaseItem(getItemsApi, 'getItems')(() => ({

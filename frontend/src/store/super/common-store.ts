@@ -1,4 +1,4 @@
-import { useStorage, type RemovableRef } from '@vueuse/core';
+import { type RemovableRef, useStorage } from '@vueuse/core';
 import { isRef, reactive } from 'vue';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
 import { isNil } from '@/utils/validation';
@@ -30,8 +30,9 @@ export abstract class CommonStore<T extends object> {
       storage = sessionStorage;
     }
 
-    this._internalState = isNil(storage) ? reactive(structuredClone(defaultState)) as T :
-      useStorage(storeKey, structuredClone(defaultState), storage, {
+    this._internalState = isNil(storage)
+      ? reactive(structuredClone(defaultState)) as T
+      : useStorage(storeKey, structuredClone(defaultState), storage, {
         mergeDefaults: (storageValue, defaults) =>
           mergeExcludingUnknown(storageValue, defaults)
       });

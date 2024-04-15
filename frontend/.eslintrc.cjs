@@ -4,7 +4,7 @@
  *
  * The rules here have not been migrated to the new flat config format, and
  * here are some reasons why.
- * 
+ *
  * Lots of the rules were not defined in the flat config file because they were
  * already using the default values (tested using ESLint Config Inspector).
  */
@@ -13,7 +13,7 @@ module.exports = {
   rules: {
     // Only that option was different from the default values
     '@stylistic/indent': ['error', 2, {
-      'VariableDeclarator': 2,
+      VariableDeclarator: 2
     }],
     /**
      * This rule got quite annoying. Let's see how it goes with TypeScript typechecking
@@ -61,7 +61,7 @@ module.exports = {
     'capitalized-comments': [
       'error', 'always',
       {
-        'ignoreInlineComments': true,
+        ignoreInlineComments: true,
         ignoreConsecutiveComments: true
       }],
     // This rule should be enforced by properly setting the env var in the flat config file.
@@ -82,7 +82,7 @@ module.exports = {
     'import/order': 'error',
     'import/no-cycle': 'error',
     'import/no-nodejs-modules': 'error',
-    'import/no-duplicates': ['error', { 'prefer-inline' : true, 'considerQueryString': true }],
+    'import/no-duplicates': ['error', { 'prefer-inline': true, 'considerQueryString': true }],
     // Promise plugin is still not working with ESLint v9
     'promise/no-nesting': 'error',
     'promise/no-return-in-finally': 'error',

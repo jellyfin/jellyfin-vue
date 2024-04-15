@@ -2,10 +2,10 @@
  * Item and playback helpers
  */
 import {
-  BaseItemKind,
-  ItemFields,
   type BaseItemDto,
+  BaseItemKind,
   type BaseItemPerson,
+  ItemFields,
   type MediaStream
 } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
@@ -82,8 +82,8 @@ export function isPerson(
   item: BaseItemDto | BaseItemPerson
 ): item is BaseItemPerson {
   return !!(
-    'Role' in item ||
-    (item.Type && validPersonTypes.includes(item.Type))
+    'Role' in item
+    || (item.Type && validPersonTypes.includes(item.Type))
   );
 }
 
@@ -247,16 +247,16 @@ export function canPlay(item: BaseItemDto | undefined): boolean {
       'Series',
       'Trailer',
       'Video'
-    ].includes(item.Type || '') ||
-    ['Video', 'Audio'].includes(item.MediaType || '') ||
-    item.IsFolder
+    ].includes(item.Type || '')
+    || ['Video', 'Audio'].includes(item.MediaType || '')
+    || item.IsFolder
   );
 }
 /**
  * Check if an item can be resumed
  */
 export function canResume(item: BaseItemDto): boolean {
-  return Boolean(item?.UserData?.PlaybackPositionTicks && item.UserData.PlaybackPositionTicks > 0);
+  return Boolean(item.UserData?.PlaybackPositionTicks && item.UserData.PlaybackPositionTicks > 0);
 }
 /**
  * Determine if an item can be mark as played
@@ -298,15 +298,15 @@ export function canRefreshMetadata(item: BaseItemDto): boolean {
     return false;
   }
 
-  const incompleteRecording =
-    item.Type === BaseItemKind.Recording && item.Status !== 'Completed';
-  const IsAdministrator =
-    remote.auth.currentUser?.Policy?.IsAdministrator ?? false;
+  const incompleteRecording
+    = item.Type === BaseItemKind.Recording && item.Status !== 'Completed';
+  const IsAdministrator
+    = remote.auth.currentUser?.Policy?.IsAdministrator ?? false;
 
   return (
-    IsAdministrator &&
-    !incompleteRecording &&
-    !invalidRefreshType.includes(item.Type ?? '')
+    IsAdministrator
+    && !incompleteRecording
+    && !invalidRefreshType.includes(item.Type ?? '')
   );
 }
 
@@ -449,7 +449,7 @@ export function getMediaStreams(
   mediaStreams: MediaStream[],
   streamType: string
 ): MediaStream[] {
-  return mediaStreams.filter((mediaStream) => mediaStream.Type === streamType);
+  return mediaStreams.filter(mediaStream => mediaStream.Type === streamType);
 }
 
 /**
@@ -498,8 +498,8 @@ export async function getItemSeasonDownloadMap(
 ): Promise<Map<string, string>> {
   const result = new Map<string, string>();
 
-  const episodes =
-    (
+  const episodes
+    = (
       await remote.sdk.newUserApi(getItemsApi).getItems({
         userId: remote.auth.currentUserId,
         parentId: seasonId,
@@ -530,8 +530,8 @@ export async function getItemSeriesDownloadMap(
 ): Promise<Map<string, string>> {
   let result = new Map<string, string>();
 
-  const seasons =
-    (
+  const seasons
+    = (
       await remote.sdk.newUserApi(getTvShowsApi).getSeasons({
         userId: remote.auth.currentUserId,
         seriesId: seriesId
@@ -574,7 +574,6 @@ export function formatFileSize(size: number): string {
 export function formatBitRate(bitrate: number): string {
   return `${(bitrate / 1000).toFixed(2)} kbps`;
 }
-
 
 /**
  * Gets all the items that need to be resolved to populate the interface

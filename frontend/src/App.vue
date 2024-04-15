@@ -41,7 +41,7 @@
  * TODO: Remove j-transition classes from this file once https://github.com/vuejs/core/issues/5148 is fixed
  */
 import { whenever } from '@vueuse/core';
-import { shallowRef, type Component as VueComponent } from 'vue';
+import { type Component as VueComponent, shallowRef } from 'vue';
 import type { RouteMeta } from 'vue-router/auto';
 import DefaultLayout from '@/layouts/default.vue';
 import FullPageLayout from '@/layouts/fullpage.vue';

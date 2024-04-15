@@ -344,7 +344,7 @@ const addTagDialogOpen = ref<boolean>(false);
 const newTagValue = ref<string>('');
 const user = ref<UserDto>({});
 const libraries = ref<BaseItemDtoQueryResult>();
-const parentalCategories = ref<{ label: string, id: number | undefined }[]>([]);
+const parentalCategories = ref<{ label: string; id: number | undefined }[]>([]);
 const model = ref<CurrentUser>({
   Name: '',
   CurrentPassword: '',
@@ -404,7 +404,7 @@ async function load(): Promise<void> {
   const cats = (await remote.sdk.newUserApi(getLocalizationApi).getParentalRatings()).data;
 
   for (const cat of cats) {
-    if (parentalCategories.value.some((c) => c.id === cat.Value!)) {
+    if (parentalCategories.value.some(c => c.id === cat.Value!)) {
       parentalCategories.value = parentalCategories.value.map((c) => {
         if (c.id === cat.Value!) {
           return { label: `${c.label}/${cat.Name!}`, id: cat.Value };
@@ -490,7 +490,7 @@ async function submitPassword(): Promise<void> {
 
   loading.value = true;
   await remote.sdk.newUserApi(getUserApi).updateUserPassword({ userId: user.value.Id, updateUserPassword: { NewPw: model.value.Password, ...(user.value.HasPassword && { CurrentPw: model.value.ConfirmPassword }) } });
-  model.value = { ...model.value, CurrentPassword: '',Password: '', ConfirmPassword: '' };
+  model.value = { ...model.value, CurrentPassword: '', Password: '', ConfirmPassword: '' };
   await refreshData();
   loading.value = false;
 }
@@ -512,7 +512,7 @@ async function refreshData(): Promise<void> {
 /**
  * Deletes the user
  */
-async function deleteUser():Promise<void> {
+async function deleteUser(): Promise<void> {
   await useConfirmDialog(async () => {
     await remote.sdk.newUserApi(getUserApi).deleteUser({ userId: user.value.Id! });
     await router.push('/settings/users');

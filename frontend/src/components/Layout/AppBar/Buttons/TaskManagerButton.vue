@@ -49,7 +49,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { taskManager, TaskType } from '@/store/task-manager';
+import { TaskType, taskManager } from '@/store/task-manager';
 
 interface TaskInfo {
   progress: undefined | number;
@@ -87,7 +87,7 @@ const mappedTaskList = computed<TaskInfo[]>(() => {
 });
 
 const mappedCompleted = computed(() =>
-  mappedTaskList.value.filter((t) => t.progress === 100)
+  mappedTaskList.value.filter(t => t.progress === 100)
 );
 const allCompleted = computed(
   () => mappedCompleted.value.length === mappedTaskList.value.length
@@ -97,7 +97,7 @@ const buttonColor = computed(() =>
 );
 const UITaskList = computed(() => [
   ...(menu.value
-    ? mappedTaskList.value.filter((t) => t.progress !== 100)
+    ? mappedTaskList.value.filter(t => t.progress !== 100)
     : mappedTaskList.value),
   ...completedTaskList.value
 ]);
@@ -105,10 +105,10 @@ const showButton = computed(() => UITaskList.value.length > 0);
 
 watch([menu, mappedCompleted], () => {
   if (menu.value) {
-    const ids = new Set(completedTaskList.value.map((t) => t.id));
+    const ids = new Set(completedTaskList.value.map(t => t.id));
 
     completedTaskList.value.push(
-      ...mappedCompleted.value.filter((t) => !ids.has(t.id))
+      ...mappedCompleted.value.filter(t => !ids.has(t.id))
     );
   } else {
     completedTaskList.value = [];

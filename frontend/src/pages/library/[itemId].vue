@@ -62,7 +62,7 @@
 
 <script setup lang="ts">
 import {
-  BaseItemKind, SortOrder, type BaseItemDto
+  type BaseItemDto, BaseItemKind, SortOrder
 } from '@jellyfin/sdk/lib/generated-client';
 import { getArtistsApi } from '@jellyfin/sdk/lib/utils/api/artists-api';
 import { getGenresApi } from '@jellyfin/sdk/lib/utils/api/genres-api';
@@ -81,7 +81,7 @@ const { t } = useI18n();
 const route = useRoute('/library/[itemId]');
 
 const lazyLoadLimit = 50;
-const COLLECTION_TYPES_MAPPINGS: { [key: string]: BaseItemKind } = {
+const COLLECTION_TYPES_MAPPINGS: Record<string, BaseItemKind> = {
   tvshows: BaseItemKind.Series,
   movies: BaseItemKind.Movie,
   books: BaseItemKind.Book,
@@ -121,13 +121,13 @@ function onChangeFilter(changedFilters: Filters): void {
 const { data: libraryQuery } = await useBaseItem(getItemsApi, 'getItems')(() => ({
   ids: [route.params.itemId]
 }));
-const library = computed(() => libraryQuery.value?.[0]);
+const library = computed(() => libraryQuery.value[0]);
 const viewType = computed({
   get() {
     if (innerItemKind.value) {
       return innerItemKind.value;
     } else {
-      return library.value?.CollectionType ? COLLECTION_TYPES_MAPPINGS[library.value.CollectionType] : undefined;
+      return library.value.CollectionType ? COLLECTION_TYPES_MAPPINGS[library.value.CollectionType] : undefined;
     }
   },
   set(newVal) {
@@ -140,18 +140,18 @@ const hasFilters = computed(() =>
 );
 const hasViewTypes = computed(
   () =>
-    library.value?.CollectionType === 'movies' ||
-    library.value?.CollectionType === 'music' ||
-    library.value?.CollectionType === 'tvshows'
+    library.value.CollectionType === 'movies'
+    || library.value.CollectionType === 'music'
+    || library.value.CollectionType === 'tvshows'
 );
 const isSortable = computed(
   () =>
-    viewType.value &&
+    viewType.value
     /**
      * Not everything is sortable, so depending on what we're showing, we need to hide the sort menu.
      * Reusing this as "isFilterable" too, since these seem to go hand in hand for now.
      */
-    ![
+    && ![
       'MusicArtist',
       'Person',
       'Genre',
@@ -162,15 +162,15 @@ const isSortable = computed(
 );
 
 const recursive = computed(() =>
-  library.value?.CollectionType === 'homevideos' ||
-  library.value?.Type === 'Folder' ||
-  (library.value?.Type === 'CollectionFolder' &&
-  !('CollectionType' in library.value))
+  library.value.CollectionType === 'homevideos'
+  || library.value.Type === 'Folder'
+  || (library.value.Type === 'CollectionFolder'
+  && !('CollectionType' in library.value))
     ? undefined
     : true
 );
 
-const parentId = computed(() => library.value?.Id);
+const parentId = computed(() => library.value.Id);
 const methods = computed(() => {
   switch (viewType.value) {
     case 'MusicArtist': {
@@ -189,7 +189,7 @@ const methods = computed(() => {
       return methodsAsObject(getStudiosApi, 'getStudios');
     }
     default: {
-      return methodsAsObject(getItemsApi, 'getItems' );
+      return methodsAsObject(getItemsApi, 'getItems');
     }
   }
 });
@@ -235,7 +235,7 @@ route.meta.title = library.value.Name;
  * We fetch the 1st 100 items and, after mount, we fetch the rest.
  */
 onBeforeMount(() => {
-  lazyLoadIds.value = queryItems.value.map((i) => i.Id);
+  lazyLoadIds.value = queryItems.value.map(i => i.Id);
   queryLimit.value = undefined;
 });
 </script>
