@@ -69,6 +69,7 @@ export default tseslint.config(
     },
     rules: {
       'no-empty': ['error', { allowEmptyCatch: true }],
+      'sort-imports': 'error',
       'no-extend-native': 'error',
       'curly': ['error', 'all'],
       'prefer-arrow-callback': 'error',
@@ -219,7 +220,8 @@ export default tseslint.config(
         prefer: 'type-imports',
         fixStyle: 'inline-type-imports'
       }],
-      '@typescript-eslint/explicit-member-accessibility': 'error'
+      '@typescript-eslint/explicit-member-accessibility': 'error',
+      '@typescript-eslint/no-empty-interface': ['error', { allowSingleExtends: true }]
     }
   },
   /** TODO: Not working, fix when the plugin is updated */

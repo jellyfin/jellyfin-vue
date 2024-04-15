@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/consistent-indexed-object-style */
+
 declare module '@vue/runtime-core' {
   export interface AllowedComponentProps {
     [key: `data${string}`]: string;
@@ -14,6 +16,5 @@ declare module '@vue/runtime-dom' {
     [key: `data${string}`]: string;
   }
 }
-
 
 export {};
