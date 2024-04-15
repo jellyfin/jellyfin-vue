@@ -1,6 +1,6 @@
 import jsdoc from 'eslint-plugin-jsdoc';
 import unicorn from 'eslint-plugin-unicorn';
-import fileProgress from 'eslint-plugin-file-progress';
+// import fileProgress from 'eslint-plugin-file-progress';
 import js from '@eslint/js';
 import globals from 'globals';
 import vueScopedCSS from 'eslint-plugin-vue-scoped-css';
@@ -13,7 +13,7 @@ import jsonc from 'eslint-plugin-jsonc';
 
 const vueAndTsFiles = ['*.vue', '**/*.vue', '*.ts', '**/*.ts'];
 const vueFiles = ['*.vue', '**/*.vue'];
-const CI_environment = process.env.CI ? 0 : 1;
+// const CI_environment = process.env.CI ? 0 : 1;
 
 /**
  * TODO: Can be removed once all ESLint plugins are updated to support Flat config
@@ -41,20 +41,20 @@ export default tseslint.config(
     blockSpacing: true
   }),
   /** File progress plugin */
-  {
-    name: 'Progress reporting',
-    settings: {
-      progress: {
-        successMessage: 'Linting done!'
-      }
-    },
-    plugins: {
-      'file-progress': fileProgress
-    },
-    rules: {
-      'file-progress/activate': CI_environment
-    }
-  },
+  // {
+  //   name: 'Progress reporting',
+  //   settings: {
+  //     progress: {
+  //       successMessage: 'Linting done!'
+  //     }
+  //   },
+  //   plugins: {
+  //     'file-progress': fileProgress
+  //   },
+  //   rules: {
+  //     'file-progress/activate': CI_environment
+  //   }
+  // },
   {
     name: 'Common settings',
     linterOptions: {
