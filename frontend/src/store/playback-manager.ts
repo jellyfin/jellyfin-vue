@@ -1078,8 +1078,8 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
               }
             ]
           })
-          : /* eslint-disable-next-line unicorn/no-null */
-          null;
+          /* eslint-disable-next-line unicorn/no-null */
+          : null;
       }
     });
     watchEffect(() => {
