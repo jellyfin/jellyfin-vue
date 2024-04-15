@@ -17,11 +17,11 @@
                 :mode="defaultTransitionMode">
                 <Suspense suspensible>
                   <div
-                    :key="route.path"
+                    :key="route.name ?? route.path"
                     class="h-100 j-transition">
                     <component
                       :is="Component"
-                      :key="route.path" />
+                      :key="route.name ?? route.path" />
                   </div>
                 </Suspense>
               </JTransition>
