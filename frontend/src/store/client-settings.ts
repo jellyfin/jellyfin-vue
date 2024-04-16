@@ -34,9 +34,10 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState> {
   });
 
   public set locale(newVal: string) {
-    this._state.locale =
-      i18n.availableLocales.includes(newVal) && newVal !== 'auto'
-        ? newVal : 'auto';
+    this._state.locale
+      = i18n.availableLocales.includes(newVal) && newVal !== 'auto'
+        ? newVal
+        : 'auto';
   }
 
   public get locale(): string {
@@ -52,8 +53,8 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState> {
   }
 
   private readonly _updateLocale = (): void => {
-    i18n.locale.value =
-      this.locale === 'auto'
+    i18n.locale.value
+      = this.locale === 'auto'
         ? this._BROWSER_LANGUAGE.value || String(i18n.fallbackLocale.value)
         : this.locale;
     vuetify.locale.current.value = i18n.locale.value;
@@ -65,11 +66,11 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState> {
         const dark = 'dark';
         const light = 'light';
         const browserColor = this._browserPrefersDark.value ? dark : light;
-        const userColor =
-          this.darkMode !== 'auto' && this.darkMode ? dark : light;
+        const userColor
+          = this.darkMode !== 'auto' && this.darkMode ? dark : light;
 
-        vuetify.theme.global.name.value =
-          this.darkMode === 'auto' ? browserColor : userColor;
+        vuetify.theme.global.name.value
+          = this.darkMode === 'auto' ? browserColor : userColor;
       });
     });
   };

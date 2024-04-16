@@ -34,8 +34,8 @@ export function createPlugin(): {
       /**
        * `remote` is readonly but this is the one place it should actually be set
        */
-      (app.config.globalProperties.$remote as typeof remote) =
-        remote;
+      (app.config.globalProperties.$remote as typeof remote)
+        = remote;
 
       const auth = remote.auth;
       const config = await getJSONConfig();
@@ -47,7 +47,7 @@ export function createPlugin(): {
       const missingServers = defaultServers
         .filter((serverUrl) => {
           const server = auth.servers.find(
-            (lsServer) => lsServer.PublicAddress === serverUrl
+            lsServer => lsServer.PublicAddress === serverUrl
           );
 
           return isNil(server);

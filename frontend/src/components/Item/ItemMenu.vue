@@ -92,12 +92,12 @@ import { remote } from '@/plugins/remote';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { useConfirmDialog } from '@/composables/use-confirm-dialog';
 
-type MenuOption = {
+interface MenuOption {
   title: string;
   icon: typeof IMdiPlaySpeed;
   action: () => void;
   disabled?: boolean;
-};
+}
 
 /**
  * SHARED STATE ACROSS ALL THE COMPONENT INSTANCES
@@ -172,8 +172,8 @@ const isItemRefreshing = computed(
 );
 const itemDeletionName = computed(() => {
   const parentName = menuProps.item.Name ?? undefined;
-  const mediaSource =
-    menuProps.item.MediaSources?.[menuProps.mediaSourceIndex ?? -1];
+  const mediaSource
+    = menuProps.item.MediaSources?.[menuProps.mediaSourceIndex ?? -1];
 
   if (mediaSource?.Name) {
     let name = mediaSource.Name;
@@ -363,8 +363,8 @@ const copyDownloadURLAction = {
       /**
        * The Map is mapped to an string like: EpisodeName: DownloadUrl
        */
-      const text =
-        streamUrls instanceof Map
+      const text
+        = streamUrls instanceof Map
           ? [...streamUrls.entries()]
               .map(([k, v]) => `(${k}) - ${v}`)
               .join('\n')
@@ -378,7 +378,7 @@ const copyDownloadURLAction = {
       if (text) {
         await (isStr(streamUrls)
           ? copyAction(text)
-          : useConfirmDialog(async () => await copyAction(text), {
+          : useConfirmDialog(async () => { await copyAction(text); }, {
             title: t('copyPrompt'),
             text: text,
             confirmText: t('accept')
@@ -400,8 +400,8 @@ function getQueueOptions(): MenuOption[] {
   const queueOptions: MenuOption[] = [];
 
   if (
-    menuProps.queue &&
-    playbackManager.queueIds.includes(menuProps.item.Id || '')
+    menuProps.queue
+    && playbackManager.queueIds.includes(menuProps.item.Id || '')
   ) {
     queueOptions.push(pushToTopOfQueueAction);
 
@@ -410,8 +410,8 @@ function getQueueOptions(): MenuOption[] {
     }
 
     if (
-      playbackManager.nextItem?.Id !== menuProps.item.Id &&
-      playbackManager.currentItem?.Id !== menuProps.item.Id
+      playbackManager.nextItem?.Id !== menuProps.item.Id
+      && playbackManager.currentItem?.Id !== menuProps.item.Id
     ) {
       queueOptions.push(playNextAction);
     }
@@ -436,9 +436,9 @@ function getPlaybackOptions(): MenuOption[] {
 
   if (playbackManager.currentItem) {
     if (
-      playbackManager.nextItem?.Id !== menuProps.item.Id &&
-      playbackManager.currentItem?.Id !== menuProps.item.Id &&
-      !menuProps.queue
+      playbackManager.nextItem?.Id !== menuProps.item.Id
+      && playbackManager.currentItem.Id !== menuProps.item.Id
+      && !menuProps.queue
     ) {
       playbackOptions.push(playNextAction);
     }
@@ -489,8 +489,8 @@ function getLibraryOptions(): MenuOption[] {
   }
 
   if (
-    remote.auth.currentUser?.Policy?.EnableContentDeletion ||
-    remote.auth.currentUser?.Policy?.EnableContentDeletionFromFolders
+    remote.auth.currentUser?.Policy?.EnableContentDeletion
+    || remote.auth.currentUser?.Policy?.EnableContentDeletionFromFolders
   ) {
     libraryOptions.push(deleteItemAction);
   }

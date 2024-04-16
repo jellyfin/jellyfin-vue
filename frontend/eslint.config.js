@@ -24,7 +24,7 @@ const compat = new FlatCompat({
 });
 
 const gitignore = (await globifyGitIgnoreFile(`${import.meta.dirname}/..`)).map(l => l.glob);
-const flatArrayOfObjects = (obj) => Object.assign({}, ...obj);
+const flatArrayOfObjects = obj => Object.assign({}, ...obj);
 
 export default tseslint.config(
   /** Global settings */
@@ -78,7 +78,7 @@ export default tseslint.config(
       'unicorn/filename-case': 'off',
       'unicorn/consistent-function-scoping': 'off',
       'unicorn/prevent-abbreviations': 'off',
-      'unicorn/no-await-expression-member': 'off',
+      'unicorn/no-await-expression-member': 'off'
     }
   },
   /** Common TypeScript rules */
@@ -96,17 +96,17 @@ export default tseslint.config(
   {
     ...flatArrayOfObjects(tseslint.configs.strictTypeChecked),
     name: '(typescript-eslint) Extended strict type checking rules',
-    files: vueAndTsFiles,
+    files: vueAndTsFiles
   },
   {
     ...flatArrayOfObjects(tseslint.configs.stylisticTypeChecked),
     name: '(typescript-eslint) Extended stylistic type checked rules',
-    files: vueAndTsFiles,
+    files: vueAndTsFiles
   },
   {
     ...tseslint.configs.eslintRecommended,
     files: vueAndTsFiles,
-    name: '(typescript-eslint) Extended ESLint recommended rules for typechecking',
+    name: '(typescript-eslint) Extended ESLint recommended rules for typechecking'
   },
   {
     ...flatArrayOfObjects(compat.extends('plugin:optimize-regex/recommended')),
@@ -118,24 +118,26 @@ export default tseslint.config(
     name: '(you-dont-need-lodash) Extended rules',
     files: vueAndTsFiles
   },
-  // {
-  //   ...flatArrayOfObjects(compat.extends('plugin:promise/recommended')),
-  //   name: '(promise) Extended rules',
-  //   files: vueAndTsFiles
-  // },
-  // {
-  //   name: '(promise) Custom rule configs',
-  //   files: vueAndTsFiles,
-  //   rules: {
-  //     'promise/prefer-await-to-callbacks': 'error',
-  //     'promise/prefer-await-to-then': 'error',
-  //   }
-  // },
-  // {
-  //   ...flatArrayOfObjects(compat.extends('plugin:import/typescript')),
-  //   name: '(import) Extended rules (TypeScript)',
-  //   files: vueAndTsFiles
-  // },
+  /*
+   * {
+   *   ...flatArrayOfObjects(compat.extends('plugin:promise/recommended')),
+   *   name: '(promise) Extended rules',
+   *   files: vueAndTsFiles
+   * },
+   * {
+   *   name: '(promise) Custom rule configs',
+   *   files: vueAndTsFiles,
+   *   rules: {
+   *     'promise/prefer-await-to-callbacks': 'error',
+   *     'promise/prefer-await-to-then': 'error',
+   *   }
+   * },
+   * {
+   *   ...flatArrayOfObjects(compat.extends('plugin:import/typescript')),
+   *   name: '(import) Extended rules (TypeScript)',
+   *   files: vueAndTsFiles
+   * },
+   */
   {
     name: '(import) Custom rule configs',
     files: vueAndTsFiles,
@@ -199,7 +201,7 @@ export default tseslint.config(
       'jsdoc/require-description': 'error',
       'jsdoc/no-types': 'error',
       'jsdoc/require-jsdoc': 'error',
-      'jsdoc/informative-docs': 'error',
+      'jsdoc/informative-docs': 'error'
     }
   },
   {
@@ -219,20 +221,20 @@ export default tseslint.config(
     }
   },
   {
-    ...flatArrayOfObjects(compat.extends("plugin:sonarjs/recommended")),
+    ...flatArrayOfObjects(compat.extends('plugin:sonarjs/recommended')),
     name: 'SonarCloud recommended rules',
     files: vueAndTsFiles
-   },
+  },
   /** SFC rules */
   {
     ...flatArrayOfObjects(vue.configs['flat/recommended']),
     name: 'Base config for Vue SFC files',
-    files: vueFiles,
+    files: vueFiles
   },
   {
     ...flatArrayOfObjects(vueScopedCSS.configs['flat/recommended']),
     name: 'Base config for Vue SFC files (Scoped CSS)',
-    files: vueFiles,
+    files: vueFiles
   },
   {
     ...flatArrayOfObjects(compat.extends('plugin:css/recommended')),
@@ -267,7 +269,7 @@ export default tseslint.config(
   {
     ...flatArrayOfObjects(jsonc.configs['flat/recommended-with-json']),
     name: 'Base config for JSON files',
-    files: ['*.json', '**/*.json'],
+    files: ['*.json', '**/*.json']
   },
   {
     name: 'Custom config for JSON files',
@@ -289,7 +291,7 @@ export default tseslint.config(
         ...globals.nodeBuiltin
       }
     },
-    rules:  {
+    rules: {
       'import/no-nodejs-modules': 'off'
     }
   },
@@ -317,7 +319,7 @@ export default tseslint.config(
   },
   {
     ...stylistic.configs['disable-legacy'],
-    name: 'Disable legacy rules',
+    name: 'Disable legacy rules'
   },
   /**
    * Extra files to include and ignores that should override all the others
@@ -332,6 +334,6 @@ export default tseslint.config(
       'types/global/routes.d.ts',
       'types/global/components.d.ts',
       ...gitignore
-    ],
+    ]
   }
 );

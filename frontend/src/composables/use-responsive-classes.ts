@@ -17,7 +17,7 @@ const display = vuetify.display;
  * when the mobile breakpoint is active.
  */
 export function useResponsiveClasses(classes: string): string {
-  let out = `${classes}`;
+  let out = classes;
 
   if (display.lg.value) {
     out += ' lg';

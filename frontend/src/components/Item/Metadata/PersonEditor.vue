@@ -86,7 +86,7 @@ const props = defineProps<{ person: BaseItemPerson | undefined }>();
 
 const emit = defineEmits<{
   'update:person': [person: BaseItemPerson];
-  close: [];
+  'close': [];
 }>();
 
 const { t } = useI18n();

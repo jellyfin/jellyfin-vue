@@ -20,7 +20,7 @@
           kind="subtitles"
           :label="sub.label"
           :srclang="sub.srcLang"
-          :src="sub.src" />
+          :src="sub.src" >
       </Component>
     </Teleport>
   </template>
@@ -97,8 +97,8 @@ const teleportTarget = computed<
 });
 
 const posterUrl = computed(() =>
-  !isNil(playbackManager.currentItem) &&
-  playbackManager.currentlyPlayingMediaType === 'Video'
+  !isNil(playbackManager.currentItem)
+  && playbackManager.currentlyPlayingMediaType === 'Video'
     ? getImageInfo(playbackManager.currentItem, {
       preferBackdrop: true
     }).url
@@ -196,10 +196,10 @@ watch(
     }
 
     if (
-      mediaElementRef.value &&
-      (!newUrl ||
-      playbackManager.currentMediaSource?.SupportsDirectPlay ||
-      !hls)
+      mediaElementRef.value
+      && (!newUrl
+      || playbackManager.currentMediaSource?.SupportsDirectPlay
+      || !hls)
     ) {
       /**
        * For the video case, Safari iOS doesn't support hls.js but supports native HLS.
@@ -209,9 +209,9 @@ watch(
        */
       mediaElementRef.value.src = String(newUrl);
     } else if (
-      hls &&
-      playbackManager.currentlyPlayingMediaType === 'Video' &&
-      newUrl
+      hls
+      && playbackManager.currentlyPlayingMediaType === 'Video'
+      && newUrl
     ) {
       /**
        * We need to check if HLS.js can handle transcoded audio to remove the video check

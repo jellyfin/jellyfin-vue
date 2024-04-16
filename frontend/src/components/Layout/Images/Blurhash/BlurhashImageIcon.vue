@@ -28,4 +28,3 @@ defineProps<{ item: BaseItemDto | BaseItemPerson }>();
   height: 100%;
 }
 </style>
-

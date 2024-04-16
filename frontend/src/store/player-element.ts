@@ -77,9 +77,9 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
 
   private readonly _setSsaTrack = (trackSrc: string, attachedFonts?: string[]): void => {
     if (
-      !this._jassub &&
-      mediaElementRef.value &&
-      mediaElementRef.value instanceof HTMLVideoElement
+      !this._jassub
+      && mediaElementRef.value
+      && mediaElementRef.value instanceof HTMLVideoElement
     ) {
       this._jassub = new JASSUB({
         video: mediaElementRef.value,
@@ -117,11 +117,11 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
 
   private readonly _isSupportedFont = (mimeType: string | undefined | null): boolean => {
     return (
-      !isNil(mimeType) &&
-      mimeType.startsWith('font/') &&
-      (mimeType.includes('ttf') ||
-      mimeType.includes('otf') ||
-      mimeType.includes('woff'))
+      !isNil(mimeType)
+      && mimeType.startsWith('font/')
+      && (mimeType.includes('ttf')
+      || mimeType.includes('otf')
+      || mimeType.includes('woff'))
     );
   };
 
@@ -143,13 +143,13 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
      * Finding (if it exists) the VTT or SSA track associated to the newly picked subtitle
      */
     const vttIdx = playbackManager.currentItemVttParsedSubtitleTracks.findIndex(
-      (sub) => sub.srcIndex === playbackManager.currentSubtitleStreamIndex
+      sub => sub.srcIndex === playbackManager.currentSubtitleStreamIndex
     );
     const ass = playbackManager.currentItemAssParsedSubtitleTracks.find(
-      (sub) => sub.srcIndex === playbackManager.currentSubtitleStreamIndex
+      sub => sub.srcIndex === playbackManager.currentSubtitleStreamIndex
     );
-    const attachedFonts =
-      playbackManager.currentMediaSource?.MediaAttachments?.filter((a) =>
+    const attachedFonts
+      = playbackManager.currentMediaSource?.MediaAttachments?.filter(a =>
         this._isSupportedFont(a.MimeType)
       )
         .map((a) => {
@@ -204,9 +204,9 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
       () => playbackManager.currentItem,
       async (newValue, oldValue) => {
         if (
-          newValue &&
-          !oldValue &&
-          playbackManager.currentlyPlayingMediaType === 'Video'
+          newValue
+          && !oldValue
+          && playbackManager.currentlyPlayingMediaType === 'Video'
         ) {
           await this.toggleFullscreenVideoPlayer();
         }

@@ -28,16 +28,15 @@ import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { ref } from 'vue';
 import { remote } from '@/plugins/remote';
 
-type ITreeNode = {
+interface ITreeNode {
   id: string;
   name: string | null | undefined;
   children?: ITreeNode[];
-};
-
+}
 
 const initialItems = (
-  (await remote.sdk.newUserApi(getLibraryApi).getMediaFolders()).data.Items ??
-  []
+  (await remote.sdk.newUserApi(getLibraryApi).getMediaFolders()).data.Items
+  ?? []
 ).map((dir) => {
   if (!dir.Id) {
     throw new Error('received item without id');
@@ -61,8 +60,8 @@ async function fetchChildItems(node: ITreeNode): Promise<void> {
     throw new Error('expanding a node without children');
   }
 
-  const libraryItems =
-    (
+  const libraryItems
+    = (
       await remote.sdk.newUserApi(getItemsApi).getItemsByUserId({
         userId: remote.auth.currentUserId ?? '',
         parentId: node.id,

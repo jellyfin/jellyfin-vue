@@ -59,7 +59,7 @@
                 <template v-else>
                   <span>{{ playbackManager.currentItem?.Name }}</span>
                 </template>
-                <br />
+                <br>
                 <span
                   v-if="playbackManager.currentItem?.RunTimeTicks"
                   class="text-subtitle-2 text--secondary text-truncate">
@@ -150,14 +150,14 @@ const subtitleSelectionButtonOpened = shallowRef(false);
 const playbackSettingsButtonOpened = shallowRef(false);
 const staticOverlay = computed(
   () =>
-    playbackManager.isPaused ||
-    subtitleSelectionButtonOpened.value ||
-    playbackSettingsButtonOpened.value
+    playbackManager.isPaused
+    || subtitleSelectionButtonOpened.value
+    || playbackSettingsButtonOpened.value
 );
 
 const overlay = computed({
   get: () => staticOverlay.value || osd.value,
-  set: (newValue) => (osd.value = newValue)
+  set: newValue => (osd.value = newValue)
 });
 
 const timeout = useTimeoutFn(() => {

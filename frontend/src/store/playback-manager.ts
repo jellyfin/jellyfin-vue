@@ -118,54 +118,63 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   public get status(): PlaybackStatus {
     return this._state.status;
   }
+
   /**
    * Get if playback is buffering
    */
   public get isBuffering(): boolean {
     return this.status === PlaybackStatus.Buffering;
   }
+
   /**
    * Get if an item is being played at this moment
    */
   public get isPlaying(): boolean {
     return this.status !== PlaybackStatus.Stopped;
   }
+
   /**
    * Get if the repeat status is not set to none
    */
   public get isRepeating(): boolean {
     return this._state.repeatMode !== RepeatMode.RepeatNone;
   }
+
   /**
    * Get if the queue is being repeated
    */
   public get isRepeatingAll(): boolean {
     return this._state.repeatMode === RepeatMode.RepeatAll;
   }
+
   /**
    * Get if an item is being repeated
    */
   public get isRepeatingOnce(): boolean {
     return this._state.repeatMode === RepeatMode.RepeatOne;
   }
+
   /**
    * Get if an item is paused at this moment
    */
   public get isPaused(): boolean {
     return this.status === PlaybackStatus.Paused;
   }
+
   /**
    * Get if the current playback session is remote or local
    */
   public get isRemotePlayer(): boolean {
     return this._state.isRemotePlayer;
   }
+
   /**
    * Get reactive BaseItemDto's objects of the queue
    */
   public get queue(): BaseItemDto[] {
     return apiStore.getItemsById(this._state.queue) as BaseItemDto[] ?? [];
   }
+
   /**
    * Get a reactive BaseItemDto object of the currently playing item
    */
@@ -198,6 +207,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       return this._state.currentItemIndex + 1;
     }
   }
+
   /**
    * Get a reactive BaseItemDto object of the next item in queue
    */
@@ -206,6 +216,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       return this.queue[this._nextItemIndex];
     }
   }
+
   /**
    * Get the type of the currently playing item
    */
@@ -215,6 +226,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
         ?.Type;
     }
   }
+
   /**
    * Get the media type of the currently playing item
    */
@@ -224,22 +236,24 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
         ?.MediaType;
     }
   }
+
   /**
    * Get current's item audio tracks
    */
   public get currentItemAudioTracks(): MediaStream[] | undefined {
     if (!isNil(this._state.currentMediaSource?.MediaStreams)) {
-      return this._state.currentMediaSource?.MediaStreams.filter((stream) => {
+      return this._state.currentMediaSource.MediaStreams.filter((stream) => {
         return stream.Type === 'Audio';
       });
     }
   }
+
   /**
    * Get current's item subtitle tracks
    */
   public get currentItemSubtitleTracks(): MediaStream[] | undefined {
     if (!isNil(this._state.currentMediaSource?.MediaStreams)) {
-      return this._state.currentMediaSource?.MediaStreams.filter((stream) => {
+      return this._state.currentMediaSource.MediaStreams.filter((stream) => {
         return stream.Type === 'Subtitle';
       });
     }
@@ -254,16 +268,16 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
         })
       )
         .filter(
-          (sub) =>
-            sub.Type === MediaStreamType.Subtitle &&
-            (sub.DeliveryMethod === SubtitleDeliveryMethod.Encode ||
-            sub.DeliveryMethod === SubtitleDeliveryMethod.External)
+          sub =>
+            sub.Type === MediaStreamType.Subtitle
+            && (sub.DeliveryMethod === SubtitleDeliveryMethod.Encode
+            || sub.DeliveryMethod === SubtitleDeliveryMethod.External)
         )
-        .map((sub) => ({
+        .map(sub => ({
           label: sub.DisplayTitle ?? 'Undefined',
           src:
             sub.DeliveryMethod === SubtitleDeliveryMethod.External && remote.sdk.api?.basePath && sub.DeliveryUrl
-              ? `${remote.sdk.api?.basePath}${sub.DeliveryUrl}`
+              ? `${remote.sdk.api.basePath}${sub.DeliveryUrl}`
               : undefined,
           srcLang: sub.Language ?? undefined,
           type: sub.DeliveryMethod ?? SubtitleDeliveryMethod.Drop,
@@ -293,48 +307,48 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     return (
       this.currentItemParsedSubtitleTracks?.filter(
         (sub): sub is PlaybackExternalTrack =>
-          !!sub.codec &&
-          (sub.codec === 'ass' || sub.codec === 'ssa') &&
-          !!sub.src
+          !!sub.codec
+          && (sub.codec === 'ass' || sub.codec === 'ssa')
+          && !!sub.src
       ) ?? []
     );
   }
 
   public get currentVideoTrack(): MediaStream | undefined {
     if (
-      !isNil(this._state.currentMediaSource?.MediaStreams) &&
-      !isNil(this._state.currentVideoStreamIndex)
+      !isNil(this._state.currentMediaSource?.MediaStreams)
+      && !isNil(this._state.currentVideoStreamIndex)
     ) {
-      return this._state.currentMediaSource?.MediaStreams.find(
-        (stream) =>
-          stream.Type === 'Video' &&
-          stream.Index === this._state.currentVideoStreamIndex
+      return this._state.currentMediaSource.MediaStreams.find(
+        stream =>
+          stream.Type === 'Video'
+          && stream.Index === this._state.currentVideoStreamIndex
       );
     }
   }
 
   public get currentAudioTrack(): MediaStream | undefined {
     if (
-      !isNil(this._state.currentMediaSource?.MediaStreams) &&
-      !isNil(this._state.currentAudioStreamIndex)
+      !isNil(this._state.currentMediaSource?.MediaStreams)
+      && !isNil(this._state.currentAudioStreamIndex)
     ) {
-      return this._state.currentMediaSource?.MediaStreams.find(
-        (stream) =>
-          stream.Type === 'Audio' &&
-          stream.Index === this._state.currentAudioStreamIndex
+      return this._state.currentMediaSource.MediaStreams.find(
+        stream =>
+          stream.Type === 'Audio'
+          && stream.Index === this._state.currentAudioStreamIndex
       );
     }
   }
 
   public get currentSubtitleTrack(): MediaStream | undefined {
     if (
-      !isNil(this._state.currentMediaSource?.MediaStreams) &&
-      !isNil(this._state.currentSubtitleStreamIndex)
+      !isNil(this._state.currentMediaSource?.MediaStreams)
+      && !isNil(this._state.currentSubtitleStreamIndex)
     ) {
-      return this._state.currentMediaSource?.MediaStreams.find(
-        (stream) =>
-          stream.Type === 'Subtitle' &&
-          stream.Index === this._state.currentSubtitleStreamIndex
+      return this._state.currentMediaSource.MediaStreams.find(
+        stream =>
+          stream.Type === 'Subtitle'
+          && stream.Index === this._state.currentSubtitleStreamIndex
       );
     }
   }
@@ -342,6 +356,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   public get currentSubtitleStreamIndex(): number | undefined {
     return this._state.currentSubtitleStreamIndex;
   }
+
   public set currentSubtitleStreamIndex(newIndex: number | undefined) {
     this._state.currentSubtitleStreamIndex = newIndex;
   }
@@ -349,6 +364,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   public get currentAudioStreamIndex(): number | undefined {
     return this._state.currentAudioStreamIndex;
   }
+
   public set currentAudioStreamIndex(newIndex: number | undefined) {
     this._state.currentAudioStreamIndex = newIndex;
   }
@@ -388,6 +404,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       ? this._state.remotePlaybackTime
       : mediaControls.currentTime.value;
   }
+
   public set currentTime(newValue: number) {
     if (this.isRemotePlayer) {
       this._state.remotePlaybackTime = newValue;
@@ -399,6 +416,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   public get currentItemIndex(): number | undefined {
     return this._state.currentItemIndex;
   }
+
   public set currentItemIndex(index: number | undefined) {
     if (this._state.currentItemIndex !== index) {
       this._state.currentItemIndex = index;
@@ -419,6 +437,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       ? this._state.isRemoteMuted
       : mediaControls.muted.value;
   }
+
   private set isMuted(newValue: boolean) {
     if (this._state.isRemotePlayer) {
       this._state.isRemoteMuted = newValue;
@@ -432,6 +451,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       ? this._state.remoteCurrentVolume
       : mediaControls.volume.value * 100;
   }
+
   public set currentVolume(newVolume: number) {
     newVolume = newVolume > 100 ? 100 : newVolume;
     newVolume = newVolume < 0 ? 0 : newVolume;
@@ -607,7 +627,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
        * Removes the elements that already exists and append the new ones next to the currently playing item
        */
       const newQueue = this._state.queue.filter(
-        (index) => !translatedItem.includes(index)
+        index => !translatedItem.includes(index)
       );
 
       newQueue.splice(this._state.currentItemIndex + 1, 0, ...translatedItem);
@@ -660,13 +680,13 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   };
 
   public readonly setNewQueue = (queue: string[]): void => {
-    const item =
-      this._state.currentItemIndex === undefined
+    const item
+      = this._state.currentItemIndex === undefined
         ? undefined
         : this._state.queue[this._state.currentItemIndex];
 
     if (item) {
-      const newIndex = queue?.indexOf(item);
+      const newIndex = queue.indexOf(item);
 
       this._state.queue = queue;
       this._state.currentItemIndex = newIndex;
@@ -678,7 +698,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     newIndex: number
   ): void => {
     if (itemId && this._state.queue.includes(itemId)) {
-      const newQueue = this._state.queue.filter((index) => index !== itemId);
+      const newQueue = this._state.queue.filter(index => index !== itemId);
 
       newQueue.splice(newIndex, 0, itemId);
       this.setNewQueue(newQueue);
@@ -708,8 +728,8 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    * Seek backwards 15 seconds
    */
   public readonly skipBackward = (): void => {
-    this.currentTime =
-      (this.currentTime || 0) > 15 ? (this.currentTime || 0) - 15 : 0;
+    this.currentTime
+      = (this.currentTime || 0) > 15 ? (this.currentTime || 0) - 15 : 0;
   };
 
   /**
@@ -762,13 +782,13 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    */
   public readonly toggleRepeatMode = (): void => {
     if (this._state.repeatMode === RepeatMode.RepeatNone) {
-      this._state.repeatMode =
-        this._state.queue.length > 1
+      this._state.repeatMode
+        = this._state.queue.length > 1
           ? RepeatMode.RepeatAll
           : RepeatMode.RepeatOne;
     } else if (this._state.repeatMode === RepeatMode.RepeatAll) {
-      this._state.repeatMode =
-        this._state.queue.length > 1
+      this._state.repeatMode
+        = this._state.queue.length > 1
           ? RepeatMode.RepeatOne
           : RepeatMode.RepeatNone;
     } else {
@@ -817,7 +837,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
           autoOpenLiveStream: true,
           playbackInfoDto: { DeviceProfile: playbackProfile },
           mediaSourceId:
-            item.MediaSources?.[mediaSourceIndex]?.Id ?? item.Id,
+            item.MediaSources[mediaSourceIndex]?.Id ?? item.Id,
           audioStreamIndex,
           subtitleStreamIndex
         })
@@ -837,25 +857,25 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       return [];
     }
 
-    const sortOrder =
-      item.Type === BaseItemKind.Playlist || item.Type === BaseItemKind.BoxSet
+    const sortOrder
+      = item.Type === BaseItemKind.Playlist || item.Type === BaseItemKind.BoxSet
         ? undefined
         : ['SortName'];
-    const ids =
-      item.Type === BaseItemKind.Program && item.ChannelId
+    const ids
+      = item.Type === BaseItemKind.Program && item.ChannelId
         ? [item.ChannelId]
         : undefined;
-    const artistIds =
-      item.Type === BaseItemKind.MusicArtist ? [item.Id] : undefined;
+    const artistIds
+      = item.Type === BaseItemKind.MusicArtist ? [item.Id] : undefined;
     const parentId = item.IsFolder ? item.Id : undefined;
     let request: BaseItemDto[] = [];
 
     if (
-      item.Type === BaseItemKind.Program ||
-      item.Type === BaseItemKind.Playlist ||
-      item.Type === BaseItemKind.MusicArtist ||
-      item.Type === BaseItemKind.MusicGenre ||
-      item.IsFolder
+      item.Type === BaseItemKind.Program
+      || item.Type === BaseItemKind.Playlist
+      || item.Type === BaseItemKind.MusicArtist
+      || item.Type === BaseItemKind.MusicGenre
+      || item.IsFolder
     ) {
       const { data: response } = await useBaseItem(getItemsApi, 'getItems')(() => ({
         ids,
@@ -868,15 +888,15 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
 
       request = response.value;
     } else if (
-      item.Type === BaseItemKind.Episode &&
-      remote.auth.currentUser?.Configuration?.EnableNextEpisodeAutoPlay &&
-      item.SeriesId
+      item.Type === BaseItemKind.Episode
+      && remote.auth.currentUser?.Configuration?.EnableNextEpisodeAutoPlay
+      && item.SeriesId
     ) {
       /**
        * If autoplay is enabled and we have a seriesId, get the rest of the episodes
        */
       const { data: response } = await useBaseItem(getTvShowsApi, 'getEpisodes')(() => ({
-        seriesId: item.SeriesId as string,
+        seriesId: item.SeriesId!,
         isMissing: false,
         startItemId: item.Id
       }));
@@ -889,7 +909,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       request.push(item);
     }
 
-    return request.map((i) => i.Id as string);
+    return request.map(i => i.Id!);
   };
 
   public readonly getItemPlaybackUrl = (
@@ -897,13 +917,13 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     mediaType = this.currentlyPlayingMediaType
   ): string | undefined => {
     if (
-      remote.sdk.api?.basePath &&
-      remote.auth.currentUserToken &&
-      mediaType &&
-      mediaSource?.SupportsDirectStream &&
-      mediaSource.Type &&
-      mediaSource.Id &&
-      mediaSource.Container
+      remote.sdk.api?.basePath
+      && remote.auth.currentUserToken
+      && mediaType
+      && mediaSource?.SupportsDirectStream
+      && mediaSource.Type
+      && mediaSource.Id
+      && mediaSource.Container
     ) {
       const directOptions: Record<string, string> = {
         Static: String(true),
@@ -954,7 +974,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       const mediaSource = playbackInfo.MediaSources?.[0];
       const playbackUrl = this.getItemPlaybackUrl(mediaSource);
 
-      if (mediaSource && playbackInfo?.PlaySessionId && playbackUrl) {
+      if (mediaSource && playbackInfo.PlaySessionId && playbackUrl) {
         this._state.playSessionId = playbackInfo.PlaySessionId;
         this._state.currentMediaSource = mediaSource;
         this._state.currentSourceUrl = playbackUrl;
@@ -1008,13 +1028,13 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       () => this.status,
       () => {
         if (
-          this.status === PlaybackStatus.Playing &&
-          !mediaControls.playing.value
+          this.status === PlaybackStatus.Playing
+          && !mediaControls.playing.value
         ) {
           mediaControls.playing.value = true;
         } else if (
-          this.status === PlaybackStatus.Paused &&
-          mediaControls.playing.value
+          this.status === PlaybackStatus.Paused
+          && mediaControls.playing.value
         ) {
           mediaControls.playing.value = false;
         }
@@ -1103,12 +1123,12 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     watch(
       () => this.status,
       async (newValue, oldValue) => {
-        const remove =
-          newValue === PlaybackStatus.Error ||
-          newValue === PlaybackStatus.Stopped;
-        const add =
-          oldValue === PlaybackStatus.Error ||
-          oldValue === PlaybackStatus.Stopped;
+        const remove
+          = newValue === PlaybackStatus.Error
+          || newValue === PlaybackStatus.Stopped;
+        const add
+          = oldValue === PlaybackStatus.Error
+          || oldValue === PlaybackStatus.Stopped;
 
         if (window.navigator.mediaSession && (remove || add)) {
           const actionHandlers: {
@@ -1116,7 +1136,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
           } = {
             play: this.unpause,
             pause: this.pause,
-            previoustrack: () => this.setPreviousItem(),
+            previoustrack: () => { this.setPreviousItem(); },
             nexttrack: this.setNextItem,
             stop: this.stop,
             seekbackward: this.skipBackward,
@@ -1145,13 +1165,13 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       }
     );
     watchEffect(() => {
-      const remove =
-        this.status === PlaybackStatus.Error ||
-        this.status === PlaybackStatus.Stopped;
+      const remove
+        = this.status === PlaybackStatus.Error
+        || this.status === PlaybackStatus.Stopped;
 
       if (
-        window.navigator.mediaSession &&
-        this.currentTime <= this.currentItemRuntime
+        window.navigator.mediaSession
+        && this.currentTime <= this.currentItemRuntime
       ) {
         const duration = this.currentItemRuntime / 1000;
 
@@ -1211,12 +1231,12 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       }),
       async (oldVal, newVal) => {
         if (
-          oldVal.currentSubtitleStreamIndex !==
-          newVal.currentSubtitleStreamIndex &&
-          (oldVal.currentSubtitleTrack?.DeliveryMethod ===
-          SubtitleDeliveryMethod.Encode ||
-          newVal.currentSubtitleTrack?.DeliveryMethod ===
-          SubtitleDeliveryMethod.Encode)
+          oldVal.currentSubtitleStreamIndex
+          !== newVal.currentSubtitleStreamIndex
+          && (oldVal.currentSubtitleTrack?.DeliveryMethod
+          === SubtitleDeliveryMethod.Encode
+          || newVal.currentSubtitleTrack?.DeliveryMethod
+          === SubtitleDeliveryMethod.Encode)
         ) {
           /**
            * We need to set a new media source when:
@@ -1260,8 +1280,8 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
 
     watch(mediaControls.playing, () => {
       if (
-        this.status !== PlaybackStatus.Buffering &&
-        !this.isRemotePlayer
+        this.status !== PlaybackStatus.Buffering
+        && !this.isRemotePlayer
       ) {
         this._state.status = mediaControls.playing.value
           ? PlaybackStatus.Playing

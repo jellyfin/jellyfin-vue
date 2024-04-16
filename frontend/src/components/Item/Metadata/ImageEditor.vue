@@ -116,15 +116,15 @@ const { t } = useI18n();
 
 const generalImages = computed<ImageInfo[]>(() =>
   images.value.filter(
-    (image) =>
-      image.ImageType !== ImageType.Screenshot &&
-      image.ImageType !== ImageType.Backdrop &&
-      image.ImageType !== ImageType.Chapter
+    image =>
+      image.ImageType !== ImageType.Screenshot
+      && image.ImageType !== ImageType.Backdrop
+      && image.ImageType !== ImageType.Chapter
   )
 );
 
 const backdropImages = computed<ImageInfo[]>(() =>
-  images.value.filter((image) => image.ImageType === ImageType.Backdrop)
+  images.value.filter(image => image.ImageType === ImageType.Backdrop)
 );
 
 /**

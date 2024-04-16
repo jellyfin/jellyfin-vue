@@ -32,15 +32,15 @@ function getGlobalMaxVideoBitrate(): number | undefined {
   let isTizenFhd = false;
 
   if (
-    isTizen() &&
-    'webapis' in window &&
-    isObj(window.webapis) &&
-    window.webapis &&
-    'productinfo' in window.webapis &&
-    isObj(window.webapis.productinfo) &&
-    window.webapis.productinfo &&
-    'isUdPanelSupported' in window.webapis.productinfo &&
-    isFunc(window.webapis.productinfo.isUdPanelSupported)
+    isTizen()
+    && 'webapis' in window
+    && isObj(window.webapis)
+    && window.webapis
+    && 'productinfo' in window.webapis
+    && isObj(window.webapis.productinfo)
+    && window.webapis.productinfo
+    && 'isUdPanelSupported' in window.webapis.productinfo
+    && isFunc(window.webapis.productinfo.isUdPanelSupported)
   ) {
     isTizenFhd = !window.webapis.productinfo.isUdPanelSupported();
   }
@@ -167,8 +167,8 @@ export function getCodecProfiles(
   let h264Profiles = 'high|main|baseline|constrained baseline';
 
   if (
-    isTv() ||
-    videoTestElement
+    isTv()
+    || videoTestElement
       .canPlayType('video/mp4; codecs="avc1.640833"')
       .replace(/no/, '')
   ) {
@@ -184,11 +184,11 @@ export function getCodecProfiles(
   }
 
   if (
-    (isTizen() ||
-    videoTestElement
+    (isTizen()
+    || videoTestElement
       .canPlayType('video/mp4; codecs="avc1.6e0033"')
-      .replace(/no/, '')) && // TODO: These tests are passing in Safari, but playback is failing
-      (!isApple() || !isWebOS() || !(isEdge() && !isChromiumBased()))
+      .replace(/no/, '')) // TODO: These tests are passing in Safari, but playback is failing
+      && (!isApple() || !isWebOS() || !(isEdge() && !isChromiumBased()))
   ) {
     h264Profiles += '|high 10';
   }
@@ -201,8 +201,8 @@ export function getCodecProfiles(
   if (
     videoTestElement
       .canPlayType('video/mp4; codecs="hvc1.1.4.L123"')
-      .replace(/no/, '') ||
-      videoTestElement
+      .replace(/no/, '')
+      || videoTestElement
         .canPlayType('video/mp4; codecs="hev1.1.4.L123"')
         .replace(/no/, '')
   ) {
@@ -213,8 +213,8 @@ export function getCodecProfiles(
   if (
     videoTestElement
       .canPlayType('video/mp4; codecs="hvc1.2.4.L123"')
-      .replace(/no/, '') ||
-      videoTestElement
+      .replace(/no/, '')
+      || videoTestElement
         .canPlayType('video/mp4; codecs="hev1.2.4.L123"')
         .replace(/no/, '')
   ) {
@@ -226,8 +226,8 @@ export function getCodecProfiles(
   if (
     videoTestElement
       .canPlayType('video/mp4; codecs="hvc1.2.4.L153"')
-      .replace(/no/, '') ||
-      videoTestElement
+      .replace(/no/, '')
+      || videoTestElement
         .canPlayType('video/mp4; codecs="hev1.2.4.L153"')
         .replace(/no/, '')
   ) {
@@ -239,8 +239,8 @@ export function getCodecProfiles(
   if (
     videoTestElement
       .canPlayType('video/mp4; codecs="hvc1.2.4.L183"')
-      .replace(/no/, '') ||
-      videoTestElement
+      .replace(/no/, '')
+      || videoTestElement
         .canPlayType('video/mp4; codecs="hev1.2.4.L183"')
         .replace(/no/, '')
   ) {

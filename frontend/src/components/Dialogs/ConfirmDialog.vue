@@ -69,7 +69,7 @@ const model = computed({
     return isRevealed.value;
   },
   set(newVal) {
-    if (newVal === false) {
+    if (!newVal) {
       cancel();
     }
   }

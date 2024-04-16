@@ -146,9 +146,9 @@ async function deleteAllDevices(): Promise<void> {
 
     useSnackbar(t('deleteAllDevicesSuccess'), 'success');
 
-    devices.value =
-      (await remote.sdk.newUserApi(getDevicesApi).getDevices()).data.Items ??
-      [];
+    devices.value
+      = (await remote.sdk.newUserApi(getDevicesApi).getDevices()).data.Items
+      ?? [];
   } catch (error) {
     useSnackbar(t('deleteAllDevicesError'), 'error');
     console.error(error);
@@ -168,9 +168,9 @@ async function deleteDevice(deviceId: string): Promise<void> {
 
     useSnackbar(t('deleteDeviceSuccess'), 'success');
 
-    devices.value =
-      (await remote.sdk.newUserApi(getDevicesApi).getDevices()).data.Items ??
-      [];
+    devices.value
+      = (await remote.sdk.newUserApi(getDevicesApi).getDevices()).data.Items
+      ?? [];
   } catch (error) {
     useSnackbar(t('deleteDeviceError'), 'error');
     console.error(error);

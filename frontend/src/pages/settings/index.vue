@@ -161,7 +161,7 @@ interface MenuOptions {
   icon: Component;
   name: string;
   description: string;
-  link?: RouteLocationRaw
+  link?: RouteLocationRaw;
 }
 
 route.meta.title = t('settings');

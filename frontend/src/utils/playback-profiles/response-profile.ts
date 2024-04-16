@@ -12,7 +12,7 @@ import {
  *
  * @returns An array of subtitle profiles for the current platform.
  */
-export function getResponseProfiles(): Array<ResponseProfile> {
+export function getResponseProfiles(): ResponseProfile[] {
   const ResponseProfiles = [];
 
   ResponseProfiles.push({

@@ -195,8 +195,8 @@ async function revokeAllApiKeys(): Promise<void> {
  */
 async function refreshApiKeys(): Promise<void> {
   try {
-    apiKeys.value =
-      (await remote.sdk.newUserApi(getApiKeyApi).getKeys()).data.Items ?? [];
+    apiKeys.value
+      = (await remote.sdk.newUserApi(getApiKeyApi).getKeys()).data.Items ?? [];
   } catch (error) {
     apiKeys.value = [];
     console.error(error);

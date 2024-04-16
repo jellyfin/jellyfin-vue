@@ -9,12 +9,12 @@ import { readdirSync } from 'node:fs';
 import { localeFilesFolder } from './paths';
 
 const localeFiles = readdirSync(localeFilesFolder.replace('**', ''));
-const localeNames = localeFiles.map((l) => l.replace('.json', ''));
+const localeNames = localeFiles.map(l => l.replace('.json', ''));
 
 /**
  * Normalizes the locale names from the JSON files to ESM-compatible exports
  */
-function localeTransform (keys: string[], l: string): string | undefined {
+function localeTransform(keys: string[], l: string): string | undefined {
   const testStrings = l.split('-');
   const lang = testStrings.join('');
 
@@ -41,7 +41,7 @@ const dfnskeys = Object.keys(await import('date-fns/locale'));
  * We need this due to the differences between the vue i18n and date-fns locales.
  */
 const dfnsExports = localeNames
-  .map((l) => localeTransform(dfnskeys, l))
+  .map(l => localeTransform(dfnskeys, l))
   .filter((l): l is string => typeof l === 'string');
 
 /**
@@ -50,7 +50,7 @@ const dfnsExports = localeNames
 const vuetify = await import('vuetify/locale');
 const vuetifyKeys = Object.keys(vuetify);
 const vuetifyExports = localeNames
-  .map((l) => localeTransform(vuetifyKeys, l))
+  .map(l => localeTransform(vuetifyKeys, l))
   .filter((l): l is string => typeof l === 'string');
 
 /**

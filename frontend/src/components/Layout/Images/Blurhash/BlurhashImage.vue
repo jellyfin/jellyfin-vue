@@ -66,16 +66,16 @@ const imageUrl = computed(() => {
    * We want to track the state of those dependencies
    */
   if (
-    element &&
-    displayWidth.value !== undefined &&
-    displayHeight.value !== undefined
+    element
+    && displayWidth.value !== undefined
+    && displayHeight.value !== undefined
   ) {
     const imageInfo = getImageInfo(props.item, {
       preferThumb: props.type === ImageType.Thumb,
       preferBanner: props.type === ImageType.Banner,
       preferLogo: props.type === ImageType.Logo,
       preferBackdrop: props.type === ImageType.Backdrop,
-      width: element?.clientWidth,
+      width: element.clientWidth,
       ratio: window.devicePixelRatio || 1
     });
 

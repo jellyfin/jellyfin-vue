@@ -33,7 +33,7 @@ export interface RunningTask {
 }
 
 export interface TaskManagerState {
-  tasks: Array<RunningTask>;
+  tasks: RunningTask[];
   /**
    * The number of seconds to keep a finished task in the task list
    */
@@ -54,8 +54,10 @@ class TaskManagerStore extends CommonStore<TaskManagerState> {
   public get tasks(): typeof this._state.tasks {
     return this._state.tasks;
   }
+
   public readonly getTask = (id: string): RunningTask | undefined =>
-    this._state.tasks.find((payload) => payload.id === id);
+    this._state.tasks.find(payload => payload.id === id);
+
   /**
    * == ACTIONS ==
    */
@@ -74,7 +76,7 @@ class TaskManagerStore extends CommonStore<TaskManagerState> {
   public readonly finishTask = (id: string): void => {
     const clearTask = (): void => {
       const taskIndex = this._state.tasks.findIndex(
-        (task) => task.id === id
+        task => task.id === id
       );
 
       this._state.tasks.splice(taskIndex, 1);
@@ -114,10 +116,10 @@ class TaskManagerStore extends CommonStore<TaskManagerState> {
      */
     const refreshProgressAction = (type: string, data: object): void => {
       if (
-        type === 'RefreshProgress' &&
-          'ItemId' in data &&
-          isStr(data.ItemId) &&
-          'Progress' in data
+        type === 'RefreshProgress'
+          && 'ItemId' in data
+          && isStr(data.ItemId)
+          && 'Progress' in data
       ) {
         // TODO: Verify all the different tasks that this message may belong to - here we assume libraries.
 
@@ -151,9 +153,9 @@ class TaskManagerStore extends CommonStore<TaskManagerState> {
      */
     const libraryChangedAction = (type: string, data: object): void => {
       if (
-        type === 'LibraryChanged' &&
-          'ItemsUpdated' in data &&
-          isArray(data.ItemsUpdated)
+        type === 'LibraryChanged'
+          && 'ItemsUpdated' in data
+          && isArray(data.ItemsUpdated)
       ) {
         for (const id of data.ItemsUpdated) {
           if (isStr(id)) {

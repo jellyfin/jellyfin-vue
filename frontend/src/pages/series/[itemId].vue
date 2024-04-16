@@ -205,23 +205,23 @@ const { data: relatedItems } = await useBaseItem(getLibraryApi, 'getSimilarItems
 }));
 
 const crew = computed<BaseItemPerson[]>(() =>
-  (item.value.People ?? []).filter((person) =>
-    ['Director', 'Writer'].includes(person?.Type ?? '')
+  (item.value.People ?? []).filter(person =>
+    ['Director', 'Writer'].includes(person.Type ?? '')
   )
 );
 
 const actors = computed<BaseItemPerson[]>(() =>
   (item.value.People ?? [])
-    .filter((person) => person.Type === 'Actor')
+    .filter(person => person.Type === 'Actor')
     .slice(0, 10)
 );
 
 const directors = computed(() =>
-  crew.value.filter((person) => person.Type === 'Director')
+  crew.value.filter(person => person.Type === 'Director')
 );
 
 const writers = computed(() =>
-  crew.value.filter((person) => person.Type === 'Writer')
+  crew.value.filter(person => person.Type === 'Writer')
 );
 
 route.meta.title = item.value.Name;

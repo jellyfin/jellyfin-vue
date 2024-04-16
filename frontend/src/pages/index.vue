@@ -61,8 +61,8 @@ const { carousel, nextUp, views, resumeVideo, latestPerLibrary } = await fetchIn
 const latestMediaSections = computed(() => {
   return views.value.map((userView) => {
     if (
-      userView.CollectionType &&
-      !excludeViewTypes.has(userView.CollectionType)
+      userView.CollectionType
+      && !excludeViewTypes.has(userView.CollectionType)
     ) {
       return {
         title: t('latestLibrary', { libraryName: userView.Name }),

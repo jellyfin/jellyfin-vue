@@ -339,21 +339,21 @@ const currentAudioTrack = ref<number>();
 const currentSubtitleTrack = ref<number>();
 
 const crew = computed<BaseItemPerson[]>(() =>
-  (item.value.People ?? []).filter((person) =>
-    ['Director', 'Writer'].includes(person?.Type ?? '')
+  (item.value.People ?? []).filter(person =>
+    ['Director', 'Writer'].includes(person.Type ?? '')
   )
 );
 
 const actors = computed<BaseItemPerson[]>(() =>
-  (item.value.People ?? []).filter((person) => person.Type === 'Actor').slice(0, 10)
+  (item.value.People ?? []).filter(person => person.Type === 'Actor').slice(0, 10)
 );
 
 const directors = computed<BaseItemPerson[]>(() =>
-  crew.value.filter((person) => person.Type === 'Director')
+  crew.value.filter(person => person.Type === 'Director')
 );
 
 const writers = computed<BaseItemPerson[]>(() =>
-  crew.value.filter((person) => person.Type === 'Writer')
+  crew.value.filter(person => person.Type === 'Writer')
 );
 
 const selectSources = computed(() =>
@@ -361,12 +361,12 @@ const selectSources = computed(() =>
 );
 
 const currentSourceIndex = computed(() =>
-  selectSources.value.findIndex((el) => el.value.Id === currentSource.value.Id)
+  selectSources.value.findIndex(el => el.value.Id === currentSource.value.Id)
 );
 
 const currentSource = computed({
   get() {
-    return selectedSource.value ?? item.value?.MediaSources?.[0] ?? {};
+    return selectedSource.value ?? item.value.MediaSources?.[0] ?? {};
   },
   set(newValue) {
     selectedSource.value = newValue;

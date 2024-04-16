@@ -35,6 +35,7 @@ class RemotePluginAuth {
         mergeExcludingUnknown(storageValue, defaults)
     }
   );
+
   /**
    * Getters
    */
@@ -67,14 +68,14 @@ class RemotePluginAuth {
   public readonly getServerById = (
     serverId: string | undefined | null
   ): ServerInfo | undefined => {
-    return this._state.value.servers.find((server) => server.Id === serverId);
+    return this._state.value.servers.find(server => server.Id === serverId);
   };
 
   public readonly getUsersFromServer = (
     server: ServerInfo | undefined
   ): UserDto[] | undefined => {
     return this._state.value.users.filter(
-      (user) => user.ServerId === server?.Id
+      user => user.ServerId === server?.Id
     );
   };
 
@@ -93,7 +94,7 @@ class RemotePluginAuth {
     if (isNil(oldServer)) {
       this._state.value.servers.push(server);
 
-      return this.servers.indexOf(this.getServerById(server.Id) as ServerInfo);
+      return this.servers.indexOf(this.getServerById(server.Id)!);
     } else {
       const servIndex = this.servers.indexOf(oldServer);
 
@@ -102,6 +103,7 @@ class RemotePluginAuth {
       return servIndex;
     }
   }
+
   /**
    * Connects to a server
    *
@@ -122,13 +124,13 @@ class RemotePluginAuth {
     const best = SDK.discovery.findBestServer(candidates);
 
     if (best) {
-      const issues = candidates.flatMap((s) => s.issues);
+      const issues = candidates.flatMap(s => s.issues);
 
       if (
         issues.some(
-          (i) =>
-            i instanceof VersionOutdatedIssue ||
-            i instanceof VersionUnsupportedIssue
+          i =>
+            i instanceof VersionOutdatedIssue
+            || i instanceof VersionUnsupportedIssue
         )
       ) {
         useSnackbar(
@@ -200,8 +202,8 @@ class RemotePluginAuth {
         if (!error.response) {
           errorMessage = error.message || t('serverNotFound');
         } else if (
-          error.response.status === 500 ||
-          error.response.status === 401
+          error.response.status === 500
+          || error.response.status === 401
         ) {
           errorMessage = t('incorrectUsernameOrPassword');
         } else if (error.response.status === 400) {
@@ -266,7 +268,7 @@ class RemotePluginAuth {
       console.error(error);
     }
 
-    const storeUser = this._state.value.users.find((u) => u.Id === user.Id);
+    const storeUser = this._state.value.users.find(u => u.Id === user.Id);
 
     if (!isNil(storeUser)) {
       this._state.value.users.splice(
@@ -287,7 +289,7 @@ class RemotePluginAuth {
    */
   public async deleteServer(serverUrl: string): Promise<void> {
     const server = this._state.value.servers.find(
-      (s) => s.PublicAddress === serverUrl
+      s => s.PublicAddress === serverUrl
     );
 
     if (!server) {

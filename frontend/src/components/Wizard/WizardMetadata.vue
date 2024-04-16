@@ -72,8 +72,8 @@ onMounted(async () => {
     await getStartupApi(api).getStartupConfiguration()
   ).data;
 
-  metadataLanguage.value = initialConfig.value?.MetadataCountryCode ?? '';
-  metadataCountry.value = initialConfig.value?.PreferredMetadataLanguage ?? '';
+  metadataLanguage.value = initialConfig.value.MetadataCountryCode ?? '';
+  metadataCountry.value = initialConfig.value.PreferredMetadataLanguage ?? '';
 
   cultureOptions.value = (await getLocalizationApi(api).getCultures()).data;
   countryOptions.value = (await getLocalizationApi(api).getCountries()).data;

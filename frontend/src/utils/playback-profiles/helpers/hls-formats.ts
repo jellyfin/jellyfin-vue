@@ -24,8 +24,8 @@ function supportsAc3InHls(
     return (
       videoTestElement
         .canPlayType('application/x-mpegurl; codecs="avc1.42E01E, ac-3"')
-        .replace(/no/, '') ||
-        videoTestElement
+        .replace(/no/, '')
+        || videoTestElement
           .canPlayType(
             'application/vnd.apple.mpegURL; codecs="avc1.42E01E, ac-3"'
           )

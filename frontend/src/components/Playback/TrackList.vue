@@ -128,7 +128,7 @@ import { getItemDetailsLink } from '@/utils/items';
 import { formatTicks } from '@/utils/time';
 
 const props = defineProps<{
-  item: BaseItemDto
+  item: BaseItemDto;
 }>();
 
 const { data: tracks } = await useBaseItem(getItemsApi, 'getItems')(() => ({

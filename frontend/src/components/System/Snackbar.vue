@@ -37,7 +37,7 @@ const model = computed({
     return state.message !== '';
   },
   set(newValue) {
-    if (newValue === false) {
+    if (!newValue) {
       state.message = '';
       state.color = '';
     }

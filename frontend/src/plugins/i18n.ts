@@ -1,5 +1,5 @@
 import { createI18n } from 'vue-i18n';
-/* eslint-disable-next-line import/no-extraneous-dependencies */
+
 import messages from '@intlify/unplugin-vue-i18n/messages';
 
 /**

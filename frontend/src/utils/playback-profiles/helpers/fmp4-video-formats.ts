@@ -24,20 +24,20 @@ export function getSupportedFmp4VideoCodecs(
   const codecs = [];
 
   if (
-    (isApple() || isEdge() || isTizen() || isWebOS()) &&
-    hasHevcSupport(videoTestElement)
+    (isApple() || isEdge() || isTizen() || isWebOS())
+    && hasHevcSupport(videoTestElement)
   ) {
     codecs.push('hevc');
   }
 
   if (
-    hasH264Support(videoTestElement) &&
-    (isChrome() ||
-    isFirefox() ||
-    isApple() ||
-    isEdge() ||
-    isTizen() ||
-    isWebOS())
+    hasH264Support(videoTestElement)
+    && (isChrome()
+    || isFirefox()
+    || isApple()
+    || isEdge()
+    || isTizen()
+    || isWebOS())
   ) {
     codecs.push('h264');
   }

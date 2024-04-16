@@ -70,7 +70,7 @@ interface TvShowItem {
   /**
    * SeasonEpisodes: Stores an array for each season containing all the season episodes
    */
-  seasonEpisodes: { [key: string]: BaseItemDto[] };
+  seasonEpisodes: Record<string, BaseItemDto[]>;
 }
 
 const props = defineProps<{ item: BaseItemDto }>();

@@ -94,13 +94,12 @@ export default defineConfig(({ mode }): UserConfig => {
             /**
              * This is the default value: https://rollupjs.org/configuration-options/#output-chunkfilenames
              */
-            return chunkInfo.name === 'index' ? 'assets/common-[hash].js': '[name]-[hash].js';
+            return chunkInfo.name === 'index' ? 'assets/common-[hash].js' : '[name]-[hash].js';
           },
           validate: true,
           plugins: [
             mode === 'analyze'
-              ?
-              visualizer({
+              ? visualizer({
                 open: true,
                 filename: 'dist/stats.html'
               })
@@ -115,8 +114,8 @@ export default defineConfig(({ mode }): UserConfig => {
            */
           manualChunks(id) {
             if (
-              id.includes('virtual:locales') ||
-              id.includes('@intlify/unplugin-vue-i18n/messages')
+              id.includes('virtual:locales')
+              || id.includes('@intlify/unplugin-vue-i18n/messages')
             ) {
               return 'assets/locales';
             }

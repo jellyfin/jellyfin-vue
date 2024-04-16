@@ -5,9 +5,9 @@ const isLoading = computed(() => requests.value > 0);
 const cssVarKey = '--j-client-cursor';
 
 watch(isLoading, () => {
-  isLoading.value ?
-    window.document.documentElement.style.setProperty(cssVarKey, 'wait') :
-    window.document.documentElement.style.removeProperty(cssVarKey);
+  isLoading.value
+    ? window.document.documentElement.style.setProperty(cssVarKey, 'wait')
+    : window.document.documentElement.style.removeProperty(cssVarKey);
 });
 
 /**

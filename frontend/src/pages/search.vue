@@ -92,7 +92,7 @@ const route = useRoute();
 
 const searchTab = shallowRef(0);
 
-const searchQuery = computed(() => route.query?.q?.toString() ?? '');
+const searchQuery = computed(() => route.query.q?.toString() ?? '');
 const searchDebounced = refDebounced(searchQuery, 400);
 const itemSearchMethod = computed(() => searchDebounced.value ? 'getItemsByUserId' : undefined);
 const peopleSearchMethod = computed(() => searchDebounced.value ? 'getPersons' : undefined);
@@ -120,7 +120,7 @@ const { loading: peopleLoading, data: peopleSearch } = await useBaseItem(getPers
 
 const serverSearchIds = computed(() => {
   if (!peopleLoading.value && !itemLoading.value) {
-    return [...(itemSearch.value ?? []), ...(peopleSearch.value ?? [])].map((i) => i.Id as string);
+    return [...(itemSearch.value ?? []), ...(peopleSearch.value ?? [])].map(i => i.Id!);
   }
 
   return [];
@@ -128,8 +128,8 @@ const serverSearchIds = computed(() => {
 const items = computed(() => {
   if (searchDebounced.value) {
     const items = apiStore.findItems(searchDebounced.value);
-    const itemsIds = new Set(items.map((i) => i.Id as string));
-    const serverItems = serverSearchIds.value.filter((i) => !itemsIds.has(i));
+    const itemsIds = new Set(items.map(i => i.Id!));
+    const serverItems = serverSearchIds.value.filter(i => !itemsIds.has(i));
 
     return [...items, ...(apiStore.getItemsById(serverItems) as BaseItemDto[])];
   }
@@ -137,24 +137,24 @@ const items = computed(() => {
   return [];
 });
 const movies = computed(() =>
-  items.value.filter((item) => item.Type === BaseItemKind.Movie)
+  items.value.filter(item => item.Type === BaseItemKind.Movie)
 );
 const series = computed(() =>
-  items.value.filter((item) => item.Type === BaseItemKind.Series)
+  items.value.filter(item => item.Type === BaseItemKind.Series)
 );
 const albums = computed(() =>
-  items.value.filter((item) => item.Type === BaseItemKind.MusicAlbum)
+  items.value.filter(item => item.Type === BaseItemKind.MusicAlbum)
 );
 const tracks = computed(() =>
-  items.value.filter((item) => item.Type === BaseItemKind.Audio)
+  items.value.filter(item => item.Type === BaseItemKind.Audio)
 );
 const books = computed(() =>
-  items.value.filter((item) => item.Type === BaseItemKind.Book)
+  items.value.filter(item => item.Type === BaseItemKind.Book)
 );
 const artists = computed(() =>
-  items.value.filter((item) => item.Type === BaseItemKind.MusicArtist)
+  items.value.filter(item => item.Type === BaseItemKind.MusicArtist)
 );
-const people = computed(() => items.value.filter((item) => item.Type === BaseItemKind.Person));
+const people = computed(() => items.value.filter(item => item.Type === BaseItemKind.Person));
 </script>
 
 <style lang="scss" scoped>
