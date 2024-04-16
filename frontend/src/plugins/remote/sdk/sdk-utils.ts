@@ -1,8 +1,5 @@
 import { type Api, Jellyfin } from '@jellyfin/sdk';
-import { type RemovableRef, useLocalStorage } from '@vueuse/core';
 import { v4 } from 'uuid';
-import type { DeviceState } from './types';
-import { mergeExcludingUnknown } from '@/utils/data-manipulation';
 import {
   isAndroid,
   isApple,
@@ -16,16 +13,22 @@ import {
 } from '@/utils/browser-detection';
 import { version } from '@/../package.json';
 
-const state: RemovableRef<DeviceState> = useLocalStorage(
-  'deviceProfile',
-  {
-    deviceId: v4()
-  },
-  {
-    mergeDefaults: (storageValue, defaults) =>
-      mergeExcludingUnknown(storageValue, defaults)
+/**
+ * Returns the device ID, creating it in case it does not exist
+ */
+function ensureDeviceId(): string {
+  const storageKey = 'deviceId';
+  const val = window.localStorage.getItem(storageKey);
+
+  if (!val) {
+    const id = v4();
+
+    window.localStorage.setItem(storageKey, id);
+    return id;
   }
-);
+
+  return val;
+}
 
 const SDK = new Jellyfin({
   clientInfo: {
@@ -34,7 +37,7 @@ const SDK = new Jellyfin({
   },
   deviceInfo: {
     name: getDeviceName(),
-    id: state.value.deviceId
+    id: ensureDeviceId()
   }
 });
 

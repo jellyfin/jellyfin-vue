@@ -6,49 +6,29 @@ import {
 import type { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
 import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
-import { useLocalStorage } from '@vueuse/core';
 import { merge } from 'lodash-es';
 import SDK, { useOneTimeAPI } from '../sdk/sdk-utils';
 import type { AuthState, ServerInfo } from './types';
 import { isAxiosError, isNil, sealed } from '@/utils/validation';
-import { mergeExcludingUnknown } from '@/utils/data-manipulation';
 import { i18n } from '@/plugins/i18n';
 import { useSnackbar } from '@/composables/use-snackbar';
+import { CommonStore } from '@/store/super/common-store';
 
 @sealed
-class RemotePluginAuth {
-  /**
-   * == STATE ==
-   */
-  private _state = useLocalStorage<AuthState>(
-    'auth',
-    {
-      servers: [],
-      currentServerIndex: -1,
-      currentUserIndex: -1,
-      users: [],
-      rememberMe: true,
-      accessTokens: {}
-    },
-    {
-      mergeDefaults: (storageValue, defaults) =>
-        mergeExcludingUnknown(storageValue, defaults)
-    }
-  );
-
+class RemotePluginAuth extends CommonStore<AuthState> {
   /**
    * Getters
    */
   public get servers(): ServerInfo[] {
-    return this._state.value.servers;
+    return this._state.servers;
   }
 
   public get currentServer(): ServerInfo | undefined {
-    return this._state.value.servers[this._state.value.currentServerIndex];
+    return this._state.servers[this._state.currentServerIndex];
   }
 
   public get currentUser(): UserDto | undefined {
-    return this._state.value.users[this._state.value.currentUserIndex];
+    return this._state.users[this._state.currentUserIndex];
   }
 
   public get currentUserId(): string | undefined {
@@ -62,19 +42,19 @@ class RemotePluginAuth {
   private readonly _getUserAccessToken = (
     user: UserDto | undefined
   ): string | undefined => {
-    return user?.Id ? this._state.value.accessTokens[user.Id] : undefined;
+    return user?.Id ? this._state.accessTokens[user.Id] : undefined;
   };
 
   public readonly getServerById = (
     serverId: string | undefined | null
   ): ServerInfo | undefined => {
-    return this._state.value.servers.find(server => server.Id === serverId);
+    return this._state.servers.find(server => server.Id === serverId);
   };
 
   public readonly getUsersFromServer = (
     server: ServerInfo | undefined
   ): UserDto[] | undefined => {
-    return this._state.value.users.filter(
+    return this._state.users.filter(
       user => user.ServerId === server?.Id
     );
   };
@@ -92,7 +72,7 @@ class RemotePluginAuth {
     const oldServer = this.getServerById(server.Id);
 
     if (isNil(oldServer)) {
-      this._state.value.servers.push(server);
+      this._state.servers.push(server);
 
       return this.servers.indexOf(this.getServerById(server.Id)!);
     } else {
@@ -152,7 +132,7 @@ class RemotePluginAuth {
           isDefault: isDefault
         };
 
-        this._state.value.currentServerIndex = this._addOrRefreshServer(serv);
+        this._state.currentServerIndex = this._addOrRefreshServer(serv);
       } catch (error) {
         useSnackbar(t('anErrorHappened'), 'error');
         console.error(error);
@@ -184,13 +164,13 @@ class RemotePluginAuth {
         this.currentServer.PublicAddress
       ).authenticateUserByName(username, password);
 
-      this._state.value.rememberMe = rememberMe;
+      this._state.rememberMe = rememberMe;
 
       if (data.User?.Id && data.AccessToken) {
-        this._state.value.accessTokens[data.User.Id] = data.AccessToken;
+        this._state.accessTokens[data.User.Id] = data.AccessToken;
 
-        this._state.value.users.push(data.User);
-        this._state.value.currentUserIndex = this._state.value.users.indexOf(
+        this._state.users.push(data.User);
+        this._state.currentUserIndex = this._state.users.indexOf(
           data.User
         );
       }
@@ -226,7 +206,7 @@ class RemotePluginAuth {
         this.currentUserToken
       );
 
-      this._state.value.users[this._state.value.currentUserIndex] = (
+      this._state.users[this._state.currentUserIndex] = (
         await getUserApi(api).getCurrentUser()
       ).data;
     }
@@ -241,7 +221,7 @@ class RemotePluginAuth {
     if (!isNil(this.currentUser) && !isNil(this.currentServer)) {
       await this.logoutUser(this.currentUser, this.currentServer, skipRequest);
 
-      this._state.value.currentUserIndex = -1;
+      this._state.currentUserIndex = -1;
     }
   }
 
@@ -268,17 +248,17 @@ class RemotePluginAuth {
       console.error(error);
     }
 
-    const storeUser = this._state.value.users.find(u => u.Id === user.Id);
+    const storeUser = this._state.users.find(u => u.Id === user.Id);
 
     if (!isNil(storeUser)) {
-      this._state.value.users.splice(
-        this._state.value.users.indexOf(storeUser),
+      this._state.users.splice(
+        this._state.users.indexOf(storeUser),
         1
       );
     }
 
     if (!isNil(user.Id)) {
-      delete this._state.value.accessTokens[user.Id];
+      delete this._state.accessTokens[user.Id];
     }
   }
 
@@ -288,7 +268,7 @@ class RemotePluginAuth {
    * @param serverUrl
    */
   public async deleteServer(serverUrl: string): Promise<void> {
-    const server = this._state.value.servers.find(
+    const server = this._state.servers.find(
       s => s.PublicAddress === serverUrl
     );
 
@@ -304,13 +284,21 @@ class RemotePluginAuth {
       }
     }
 
-    this._state.value.servers.splice(
-      this._state.value.servers.indexOf(server),
+    this._state.servers.splice(
+      this._state.servers.indexOf(server),
       1
     );
   }
 
   public constructor() {
+    super('auth', {
+      servers: [],
+      currentServerIndex: -1,
+      currentUserIndex: -1,
+      users: [],
+      rememberMe: true,
+      accessTokens: {}
+    }, 'localStorage');
     void this.refreshCurrentUserInfo();
   }
 }

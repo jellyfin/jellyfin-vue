@@ -11,10 +11,10 @@ import { isNil, sealed } from '@/utils/validation';
 
 @sealed
 class RemotePluginSDK {
-  private sdk = SDK;
-  public clientInfo = this.sdk.clientInfo;
-  public deviceInfo = this.sdk.deviceInfo;
-  public discovery = this.sdk.discovery;
+  private readonly sdk = SDK;
+  public readonly clientInfo = this.sdk.clientInfo;
+  public readonly deviceInfo = this.sdk.deviceInfo;
+  public readonly discovery = this.sdk.discovery;
   public api: Api | undefined;
 
   public constructor(auth: typeof RemotePluginAuthInstance) {

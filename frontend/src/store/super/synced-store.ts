@@ -79,7 +79,7 @@ export abstract class SyncedStore<T extends object> extends CommonStore<T> {
   /**
    * Updates CustomPrefs by merging passed in value with existing custom prefs
    */
-  private _updateState = async (): Promise<void> => {
+  private readonly _updateState = async (): Promise<void> => {
     if (remote.auth.currentUser) {
       /**
        * Creates a config syncing task, so UI can show that there's a syncing in progress
