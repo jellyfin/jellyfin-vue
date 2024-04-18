@@ -41,10 +41,10 @@
     "sortablejs": "1.15.2",
     "swiper": "11.1.1",
     "uuid": "9.0.1",
-    "vue": "3.4.22",
-    "vue-i18n": "9.12.1",
-    "vue-router": "4.3.0",
-    "vuetify": "3.5.15"
+    "vue": "3.4.23",
+    "vue-i18n": "9.13.0",
+    "vue-router": "4.3.1",
+    "vuetify": "3.5.16"
   },
   "devDependencies": {
     "@eslint/config-inspector": "0.4.6",
