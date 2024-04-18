@@ -99,6 +99,7 @@ declare module 'vue' {
     JHover: typeof import('./../../src/components/lib/JHover.vue')['default']
     JImg: typeof import('./../../src/components/lib/JImg.vue')['default']
     JNoop: typeof import('./../../src/components/lib/JNoop.vue')['default']
+    JSafeHtml: typeof import('./../../src/components/lib/JSafeHtml.vue')['default']
     JTransition: typeof import('./../../src/components/lib/JTransition.vue')['default']
     LikeButton: typeof import('./../../src/components/Buttons/LikeButton.vue')['default']
     LoadingIndicator: typeof import('./../../src/components/System/LoadingIndicator.vue')['default']

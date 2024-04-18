@@ -117,13 +117,11 @@
                     <VCol
                       cols="12"
                       md="7">
-                      <!-- eslint-disable vue/no-v-html -
-                        Output is properly sanitized using sanitizeHtml -->
                       <span
                         v-if="item.Overview"
-                        class="item-overview"
-                        v-html="sanitizeHtml(item.Overview, true)" />
-                      <!-- eslint-enable vue/no-v-html -->
+                        class="item-overview">
+                        <JSafeHtml :html="item.Overview" markdown />
+                      </span>
                     </VCol>
                   </VCol>
                 </VRow>
@@ -158,7 +156,6 @@ import { useRoute } from 'vue-router/auto';
 import { msToTicks } from '@/utils/time';
 import { defaultSortOrder as sortBy } from '@/utils/items';
 import { getBlurhash } from '@/utils/images';
-import { sanitizeHtml } from '@/utils/html';
 import { useBaseItem } from '@/composables/apis';
 
 const SINGLE_MAX_LENGTH_MS = 600_000;
