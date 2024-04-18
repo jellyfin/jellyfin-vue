@@ -258,13 +258,11 @@
               class="text-subtitle-1 text-truncate">
               {{ item.Taglines[0] }}
             </p>
-            <!-- eslint-disable vue/no-v-html -
-              Output is properly sanitized using sanitizeHtml -->
             <p
               v-if="item.Overview"
-              class="item-overview"
-              v-html="sanitizeHtml(item.Overview, true)" />
-            <!-- eslint-enable vue/no-v-html -->
+              class="item-overview">
+              <JSafeHtml :html="item.Overview" markdown />
+          </p>
           </div>
         </VCol>
       </VRow>
@@ -309,7 +307,6 @@ import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router/auto';
 import { getItemDetailsLink, getMediaStreams } from '@/utils/items';
 import { getBlurhash } from '@/utils/images';
-import { sanitizeHtml } from '@/utils/html';
 import { getItemizedSelect } from '@/utils/forms';
 import { useBaseItem } from '@/composables/apis';
 

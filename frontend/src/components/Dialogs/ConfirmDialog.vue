@@ -16,11 +16,10 @@
       </VCardSubtitle>
 
       <VDivider />
-      <!-- eslint-disable vue/no-v-html vue/no-v-text-v-html-on-component -->
       <VCardText
-        class="d-flex text-center align-center justify-center"
-        v-html="sanitizeHtml(innerHtml)" />
-      <!-- eslint-enable vue/no-v-html vue/no-v-text-v-html-on-component -->
+        class="d-flex text-center align-center justify-center">
+        <JSafeHtml :html="innerHtml" />
+      </VCardText>
       <VCardActions class="align-center justify-center">
         <VBtn
           variant="elevated"
@@ -45,7 +44,6 @@
 import { reactive, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useConfirmDialog as vUseConfirmDialog } from '@vueuse/core';
-import { sanitizeHtml } from '@/utils/html';
 
 interface ConfirmDialogState {
   title: string;
