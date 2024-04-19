@@ -330,8 +330,7 @@ export function getVisibleItems<T>(
       value,
       style: {
         gridArea: '1/1',
-        transform: `translate(${x}px, ${y}px)`,
-        contentVisibility: 'auto'
+        transform: `translate(${x}px, ${y}px)`
       }
     };
   });
