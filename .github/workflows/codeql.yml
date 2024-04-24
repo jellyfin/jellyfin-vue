@@ -33,20 +33,20 @@ jobs:
 
     steps:
       - name: Checkout repository ⬇️
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v4.1.3
         with:
           show-progress: false
 
       - name: Initialize CodeQL 🛠️
-        uses: github/codeql-action/init@v3.24.10
+        uses: github/codeql-action/init@v3.25.2
         with:
           queries: security-and-quality
           languages: ${{ matrix.language }}
 
       - name: Autobuild 📦
-        uses: github/codeql-action/autobuild@v3.24.10
+        uses: github/codeql-action/autobuild@v3.25.2
 
       - name: Perform CodeQL Analysis 🧪
-        uses: github/codeql-action/analyze@v3.24.10
+        uses: github/codeql-action/analyze@v3.25.2
         with:
           category: '/language:${{matrix.language}}'
