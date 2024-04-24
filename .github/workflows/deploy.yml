@@ -3,8 +3,10 @@ name: Deploy 🏗️
 on:
   workflow_run:
     workflows:
+      # Deploy on pull requests
       - Quality checks 👌🧪
-      - Unstable release 🪲📦
+      # Deploy on all releases
+      - Release 🌍
     types:
       - completed
 
