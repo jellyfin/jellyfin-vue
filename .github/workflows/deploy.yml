@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - name: Download workflow artifact ⬇️
-        uses: actions/download-artifact@v4.1.4
+        uses: actions/download-artifact@v4.1.7
         with:
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ secrets.JF_BOT_TOKEN }}
@@ -47,7 +47,7 @@ jobs:
 
     steps:
       - name: Get PR context ⬇️
-        uses: actions/download-artifact@v4.1.4
+        uses: actions/download-artifact@v4.1.7
         id: pr_context
         with:
           run-id: ${{ github.event.workflow_run.id }}
