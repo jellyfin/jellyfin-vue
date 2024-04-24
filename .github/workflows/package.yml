@@ -1,0 +1,300 @@
+name: Packaging 📦
+
+on:
+  workflow_call:
+    inputs:
+      commit:
+        required: true
+        type: string
+      tag_name:
+        required: false
+        type: string
+      is_prerelease:
+        required: false
+        type: boolean
+      push:
+        required: false
+        type: boolean
+      architectures:
+        description: As GitHub Actions doesn't support globals and/or arrays, you must pass this as an string, like '["amd64", "arm64"]'
+        required: false
+        type: string
+        default: '["amd64", "arm64"]'
+
+env:
+  REGISTRY_IMAGE: jellyfin/jellyfin-vue
+  RELEASE_TAG: stable
+  PRERELEASE_TAG: stable-rc
+  COMMIT_TAG: unstable
+
+defaults:
+  run:
+    shell: bash
+
+jobs:      
+  tauri:
+    name: Tauri for ${{ matrix.platform }} 🖥️
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - MacOS
+          - Ubuntu
+          - Windows
+    defaults:
+      run:
+        working-directory: packaging/tauri
+
+    runs-on: ${{ matrix.platform }}-latest
+    steps:
+      - name: Checkout ⬇️
+        uses: actions/checkout@v4.1.1
+        with:
+          show-progress: false
+
+      - name: Setup node environment ⚙️
+        uses: actions/setup-node@v4.0.2
+        with:
+          node-version: 20
+          check-latest: true
+
+      - name: Install npm dependencies 📦
+        run: npm ci --no-audit
+
+      - name: Install Linux dependencies 📦🐧
+        if: ${{ matrix.platform == 'ubuntu' }}
+        run: |
+          sudo apt update -qq
+          sudo apt install -y --no-install-recommends $(cat apt_packages)
+
+      - name: Build application 🛠️
+        run: npm run build
+
+      - name: Upload artifact (Linux) ⬆️🐧
+        uses: actions/upload-artifact@v4.3.1
+        if: ${{ matrix.platform == 'ubuntu' }}
+        with:
+          compression-level: 0
+          name: jellyfin-vue_linux-amd64
+          path: packaging/tauri/target/release/bundle/appimage_deb
+
+      - name: Upload artifact (MacOS) ⬆️🍎
+        uses: actions/upload-artifact@v4.3.1
+        if: ${{ matrix.platform == 'macos' }}
+        with:
+          compression-level: 0
+          name: jellyfin-vue_macOS
+          path: packaging/tauri/target/release/bundle/macos
+
+      - name: Upload artifact (Windows) ⬆️🪟
+        uses: actions/upload-artifact@v4.3.1
+        if: ${{ matrix.platform == 'windows' }}
+        with:
+          compression-level: 0
+          name: jellyfin-vue_windows_amd64
+          path: packaging/tauri/target/release/jellyfin-vue.exe
+
+  docker_inputs:
+    name: Prepare Docker build variables 🏷️🐳
+    runs-on: ubuntu-latest
+    outputs:
+      tags: ${{ env.tags }}
+      platforms: ${{ env.platforms }}
+      caches: ${{ env.caches }}
+
+    # EOF is needed for multiline environment variables in a GitHub Actions context
+    steps:
+      - name: Get current date ⌛
+        id: date
+        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+
+      - name: Parse commit hash ⚙️
+        if: ${{ inputs.commit != '' }}
+        id: sha
+        run: |
+          PARSEABLE_SHA='${{ inputs.commit }}'
+          echo "sha=${PARSEABLE_SHA::7}" >> $GITHUB_OUTPUT
+
+      ## How tags are assigned:
+      ## - 1º block: Handle 'stable' release: No commit, is_prerelease=false
+      ## - 2º block: Handle 'stable-rc' release: No commit, is_prerelease=true
+      ## - 3º block: Handle 'unstable' release: Has commit hash
+      #
+      ## Before setting as output, we remove the blank lines
+      - name: Generate tags 🏷️
+        run: |
+          TG='${{ inputs.commit == '' && !inputs.is_prerelease && format('{0}:{1}', env.REGISTRY_IMAGE, 'latest') || '' }}\n'
+          TG+='${{ inputs.commit == '' && !inputs.is_prerelease && format('{0}:{1}', env.REGISTRY_IMAGE, env.RELEASE_TAG) || '' }}\n'
+          TG+='${{ inputs.commit == '' && !inputs.is_prerelease && inputs.tag_name && format('{0}:{1}.{2}', env.REGISTRY_IMAGE, env.RELEASE_TAG, inputs.tag_name) || '' }}\n'
+          TG+='${{ inputs.commit == '' && !inputs.is_prerelease && format('ghcr.io/{0}:{1}', env.REGISTRY_IMAGE, 'latest') || '' }}\n'
+          TG+='${{ inputs.commit == '' && !inputs.is_prerelease && format('ghcr.io/{0}:{1}', env.REGISTRY_IMAGE, env.RELEASE_TAG) || '' }}\n'
+          TG+='${{ inputs.commit == '' && !inputs.is_prerelease && inputs.tag_name && format('ghcr.io/{0}:{1}.{2}', env.REGISTRY_IMAGE, env.RELEASE_TAG, inputs.tag_name) || '' }}\n'
+
+          TG+='${{ inputs.commit == '' && inputs.is_prerelease && format('{0}:{1}', env.REGISTRY_IMAGE, env.PRERELEASE_TAG) || '' }}\n'
+          TG+='${{ inputs.commit == '' && inputs.is_prerelease && inputs.tag_name && format('{0}:{1}.{2}', env.REGISTRY_IMAGE, env.PRERELEASE_TAG, inputs.tag_name) || '' }}\n'
+          TG+='${{ inputs.commit == '' && inputs.is_prerelease && format('ghcr.io/{0}:{1}', env.REGISTRY_IMAGE, env.PRERELEASE_TAG) || '' }}\n'
+          TG+='${{ inputs.commit == '' && inputs.is_prerelease && inputs.tag_name && format('ghcr.io/{0}:{1}.{2}', env.REGISTRY_IMAGE, env.PRERELEASE_TAG, inputs.tag_name) || '' }}\n'
+
+          TG+='${{ inputs.commit != '' && format('{0}:{1}', env.REGISTRY_IMAGE, env.COMMIT_TAG) || '' }}\n'
+          TG+='${{ inputs.commit != '' && format('{0}:{1}.{2}.{3}', env.REGISTRY_IMAGE, env.COMMIT_TAG, steps.date.outputs.date, steps.sha.outputs.sha) || '' }}\n'
+          TG+='${{ inputs.commit != '' && format('ghcr.io/{0}:{1}', env.REGISTRY_IMAGE, env.COMMIT_TAG) || '' }}\n'
+          TG+='${{ inputs.commit != '' && format('ghcr.io/{0}:{1}.{2}.{3}', env.REGISTRY_IMAGE, env.COMMIT_TAG, steps.date.outputs.date, steps.sha.outputs.sha) || '' }}'
+          echo "tags<<EOF" >> $GITHUB_ENV
+          echo -e "$TG" | tr -s '\n' >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Generate platform array 🖥️📝
+        run: |
+          PARSED_ARRAY=$(echo '${{ inputs.architectures }}' | jq '. | map("linux/" + .) | .[]' | tr -d '"')
+          echo "platforms<<EOF" >> $GITHUB_ENV
+          echo "$PARSED_ARRAY" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Generate cache array 💾📝
+        run: |
+          PARSED_ARRAY=$(echo '${{ inputs.architectures }}' | jq '. | map("type=local,mode=min,src=/tmp/${{ env.REGISTRY_IMAGE }}/cache/buildx-" + .) | .[]' | tr -d '"')
+          echo "caches<<EOF" >> $GITHUB_ENV
+          echo "$PARSED_ARRAY" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+  docker:
+    name: Docker image for ${{ matrix.platform }} 💿🐳
+    runs-on: ubuntu-latest
+    needs: docker_inputs
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: ${{ fromJson(inputs.architectures) }}
+
+    steps:
+      - name: Checkout ⬇️
+        uses: actions/checkout@v4.1.1
+        with:
+          show-progress: false
+
+      - name: Configure QEMU ⚙️
+        uses: docker/setup-qemu-action@v3.0.0
+
+      - name: Configure Docker Buildx ⚙️
+        uses: docker/setup-buildx-action@v3.2.0
+
+      - name: Build images 🛠️
+        uses: docker/build-push-action@v5.3.0
+        id: image
+        with:
+          context: .
+          file: packaging/docker/Dockerfile
+          platforms: ${{ format('linux/{0}', matrix.platform) }}
+          no-cache: true
+          cache-to: type=local,mode=min,dest=/tmp/${{ env.REGISTRY_IMAGE }}/cache/${{ matrix.platform }}
+          outputs: type=docker,dest=docker_image.tar
+          build-args: |
+            ${{ inputs.commit == '' && 'IS_STABLE=1' || '' }}
+            ${{ inputs.commit != '' && format('COMMIT_HASH={0}', inputs.commit) || '' }}
+          tags: |
+            ${{ needs.docker_inputs.outputs.tags }}
+
+      - name: Upload Docker image as artifact ⬆️📦
+        uses: actions/upload-artifact@v4.3.1
+        with:
+          compression-level: 0
+          name: docker_image-linux_${{ matrix.platform }}
+          path: |
+            docker_image.tar
+
+      - name: Upload cache artifact ⬆️⚙️
+        uses: actions/upload-artifact@v4.3.1
+        if: ${{ inputs.push }}
+        with:
+          compression-level: 0
+          name: buildx-${{ matrix.platform }}
+          path: |
+            /tmp/${{ env.REGISTRY_IMAGE }}/cache/${{ matrix.platform }}
+
+  frontend:
+    name: Publish frontend artifact 🚀
+    runs-on: ubuntu-latest
+    needs: docker
+
+    steps:         
+      - name: Download Docker image artifact 📦⬇️
+        uses: actions/download-artifact@v4.1.4
+        with:
+          name: docker_image-linux_amd64
+
+      - name: Extract built client from Docker image 🗜️
+        run: |
+          docker load < docker_image.tar
+          docker cp $(docker create --name jf $(docker images --filter=reference='${{ env.REGISTRY_IMAGE }}' -q | head -n 1)):/usr/share/nginx/html/ ./dist
+
+      - name: Upload client artifact ⬆️💻
+        uses: actions/upload-artifact@v4.3.1
+        with:
+          compression-level: 0
+          name: frontend
+          path: |
+            dist
+
+  docker_merge:
+    name: Merge Docker images 💿🐳
+    runs-on: ubuntu-latest
+    if: ${{ inputs.push }}
+    needs:
+      - docker
+      - docker_inputs
+
+    steps:
+      - name: Download cache artifacts 📦⬇️
+        uses: actions/download-artifact@v4.1.4
+        with:
+          pattern: buildx-*
+          path: /tmp/${{ env.REGISTRY_IMAGE }}/cache/
+  
+      - name: Checkout ⬇️
+        uses: actions/checkout@v4.1.1
+        with:
+          show-progress: false
+
+      - name: Configure QEMU ⚙️
+        uses: docker/setup-qemu-action@v3.0.0
+
+      - name: Configure Docker Buildx ⚙️
+        uses: docker/setup-buildx-action@v3.2.0
+
+      - name: Login to Docker Hub 🔑
+        uses: docker/login-action@v3.1.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Login to GitHub Container Registry 🔑
+        uses: docker/login-action@v3.1.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.JF_BOT_TOKEN }}
+
+      - name: Create multiplatform image ${{ inputs.push && 'and push 🛠️⬆️' || '🛠️' }} 
+        uses: docker/build-push-action@v5.3.0
+        id: image
+        with:
+          context: .
+          file: packaging/docker/Dockerfile
+          push: true
+          provenance: true
+          sbom: true
+          cache-from: |
+            ${{ needs.docker_inputs.outputs.caches }}
+          platforms: |
+            ${{ needs.docker_inputs.outputs.platforms }}
+          build-args: |
+            ${{ inputs.commit == '' && 'IS_STABLE=1' || '' }}
+            ${{ inputs.commit != '' && format('COMMIT_HASH={0}', inputs.commit) || '' }}
+          tags: |
+            ${{ needs.docker_inputs.outputs.tags }}
+
+      - name: Remove cache artifacts 🗑️
+        uses: geekyeggo/delete-artifact@v5.0.0
+        with:
+          name: |
+            buildx-*

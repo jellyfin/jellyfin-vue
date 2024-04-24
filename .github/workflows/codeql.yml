@@ -1,7 +1,7 @@
 name: GitHub CodeQL 🔬
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  group: ${{ github.workflow }}-${{ github.event_name == 'push' && github.ref || github.head_ref || github.run_id }}
   cancel-in-progress: true
 
 on:
@@ -10,11 +10,11 @@ on:
       - master
   pull_request:
     paths-ignore:
-      - "**/*.md"
+      - '**/*.md'
   merge_group:
   workflow_call:
   schedule:
-    - cron: "0 0 * * MON,FRI"
+    - cron: 0 0 * * MON,FRI
 
 jobs:
   analyze:
@@ -29,7 +29,7 @@ jobs:
       fail-fast: false
       matrix:
         language:
-          - "javascript-typescript"
+          - javascript-typescript
 
     steps:
       - name: Checkout repository ⬇️
@@ -49,4 +49,4 @@ jobs:
       - name: Perform CodeQL Analysis 🧪
         uses: github/codeql-action/analyze@v3.24.10
         with:
-          category: "/language:${{matrix.language}}"
+          category: '/language:${{matrix.language}}'
