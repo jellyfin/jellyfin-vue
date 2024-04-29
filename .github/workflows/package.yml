@@ -70,29 +70,15 @@ jobs:
       - name: Build application 🛠️
         run: npm run build
 
-      - name: Upload artifact (Linux) ⬆️🐧
+      - name: Upload built application artifact ⬆️🐧🍎🪟
         uses: actions/upload-artifact@v4.3.3
-        if: ${{ matrix.platform == 'ubuntu' }}
         with:
           compression-level: 0
-          name: jellyfin-vue_linux-amd64
-          path: packaging/tauri/target/release/bundle/appimage_deb
-
-      - name: Upload artifact (MacOS) ⬆️🍎
-        uses: actions/upload-artifact@v4.3.3
-        if: ${{ matrix.platform == 'macos' }}
-        with:
-          compression-level: 0
-          name: jellyfin-vue_macOS
-          path: packaging/tauri/target/release/bundle/macos
-
-      - name: Upload artifact (Windows) ⬆️🪟
-        uses: actions/upload-artifact@v4.3.3
-        if: ${{ matrix.platform == 'windows' }}
-        with:
-          compression-level: 0
-          name: jellyfin-vue_windows_amd64
-          path: packaging/tauri/target/release/jellyfin-vue.exe
+          name: jellyfin-vue_${{ matrix.platform }}
+          path: |
+            ${{ matrix.platform == 'ubuntu' && 'packaging/tauri/target/release/bundle/appimage_deb' || '' }}
+            ${{ matrix.platform == 'macos' && 'packaging/tauri/target/release/bundle/macos' || '' }}
+            ${{ matrix.platform == 'windows' && 'packaging/tauri/target/release/jellyfin-vue.exe' || '' }}
 
   docker_inputs:
     name: Prepare Docker build variables 🏷️🐳
