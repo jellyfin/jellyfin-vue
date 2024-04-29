@@ -267,7 +267,7 @@ jobs:
           context: .
           file: packaging/docker/Dockerfile
           push: true
-          provenance: true
+          provenance: mode=max
           sbom: true
           cache-from: |
             ${{ needs.docker_inputs.outputs.caches }}
