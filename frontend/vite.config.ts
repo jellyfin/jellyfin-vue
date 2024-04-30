@@ -79,7 +79,7 @@ export default defineConfig(({ mode }): UserConfig => {
        * Disable chunk size warnings
        */
       chunkSizeWarningLimit: Number.NaN,
-      cssCodeSplit: false,
+      cssCodeSplit: true,
       cssMinify: 'lightningcss',
       modulePreload: false,
       reportCompressedSize: false,
@@ -94,7 +94,7 @@ export default defineConfig(({ mode }): UserConfig => {
             /**
              * This is the default value: https://rollupjs.org/configuration-options/#output-chunkfilenames
              */
-            return chunkInfo.name === 'index' ? 'assets/common-[hash].js' : '[name]-[hash].js';
+            return chunkInfo.name === 'validation' ? 'assets/common-[hash].js' : '[name]-[hash].js';
           },
           validate: true,
           plugins: [

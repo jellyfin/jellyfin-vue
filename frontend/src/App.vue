@@ -27,6 +27,9 @@
               </JTransition>
             </component>
           </div>
+          <template v-if="!apploaded" #fallback>
+            <JSplashscreen />
+          </template>
         </Suspense>
       </JTransition>
     </RouterView>
@@ -40,7 +43,6 @@
 /**
  * TODO: Remove j-transition classes from this file once https://github.com/vuejs/core/issues/5148 is fixed
  */
-import { whenever } from '@vueuse/core';
 import { shallowRef, type Component as VueComponent } from 'vue';
 import type { RouteMeta } from 'vue-router/auto';
 import DefaultLayout from '@/layouts/default.vue';
@@ -50,43 +52,6 @@ import ServerLayout from '@/layouts/server.vue';
 const apploaded = shallowRef(false);
 const defaultTransition = 'slide-x-reverse';
 const defaultTransitionMode = 'out-in';
-
-/**
- * - SPLASHSCREEN REMOVAL -
- *
- * Without window.setTimeout and window.requestAnimationFrame, the
- * splash screen gets frozen an small (but noticeable) amount of time.
- *
- * Once we reach this point, all the async dependencies will be completely loaded and mounted,
- * so we add a loadFinished class (defined in index.html) that fires the defined transition
- * in the HTML markup to give a nice effect while hiding the splashscreen
- */
-const stop = whenever(apploaded, () => {
-  window.setTimeout(() => {
-    window.requestAnimationFrame(() => {
-      const splashDOM = document.querySelector('.splashBackground');
-
-      if (!splashDOM) {
-        throw new Error('could not locate splash div in DOM');
-      }
-
-      splashDOM.addEventListener(
-        'transitionend',
-        () => {
-          window.setTimeout(() => {
-            window.requestAnimationFrame(() => {
-              splashDOM.remove();
-              stop();
-            });
-          });
-        },
-        { once: true }
-      );
-
-      splashDOM.classList.add('loadFinished');
-    });
-  });
-});
 
 /**
  * Return the appropiate layout component according to the route's meta.layout property

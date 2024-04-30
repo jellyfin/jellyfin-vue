@@ -100,6 +100,7 @@ declare module 'vue' {
     JImg: typeof import('./../../src/components/lib/JImg.vue')['default']
     JNoop: typeof import('./../../src/components/lib/JNoop.vue')['default']
     JSafeHtml: typeof import('./../../src/components/lib/JSafeHtml.vue')['default']
+    JSplashscreen: typeof import('./../../src/components/lib/JSplashscreen.vue')['default']
     JTransition: typeof import('./../../src/components/lib/JTransition.vue')['default']
     LikeButton: typeof import('./../../src/components/Buttons/LikeButton.vue')['default']
     LoadingIndicator: typeof import('./../../src/components/System/LoadingIndicator.vue')['default']

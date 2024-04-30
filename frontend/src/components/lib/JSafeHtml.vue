@@ -10,7 +10,7 @@ defineOptions({
 });
 
 defineProps<{
-  html: string
-  markdown?: boolean
+  html: string;
+  markdown?: boolean;
 }>();
 </script>
