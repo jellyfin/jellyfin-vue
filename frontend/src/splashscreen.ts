@@ -3,6 +3,8 @@
  */
 import { destr } from 'destr';
 import type { ClientSettingsState } from '@/store/client-settings';
+import { isBool } from '@/utils/validation';
+import '@/assets/styles/splashscreen.css';
 
 const store = localStorage.getItem('clientSettings') ?? '{}';
 const parsedStore = destr<ClientSettingsState>(store);
@@ -14,12 +16,12 @@ let classToApply: 'light' | 'dark' = matchedDarkColorScheme ? 'dark' : 'light';
 if ('darkMode' in parsedStore) {
   const storeDarkMode = parsedStore.darkMode;
 
-  if (typeof storeDarkMode === 'boolean') {
+  if (isBool(storeDarkMode)) {
     classToApply = parsedStore.darkMode === true ? 'dark' : 'light';
   }
 }
 
-const element = document.querySelector('.splashBackground');
+const element = document.querySelector('.j-splash');
 
 if (element) {
   element.classList.add(classToApply);

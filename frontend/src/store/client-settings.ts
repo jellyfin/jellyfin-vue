@@ -52,6 +52,8 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState> {
     return this._state.darkMode;
   }
 
+  public readonly currentTheme = computed(() => vuetify.theme.global.name.value as 'dark' | 'light');
+
   private readonly _updateLocale = (): void => {
     i18n.locale.value
       = this.locale === 'auto'

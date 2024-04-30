@@ -54,9 +54,5 @@ await router.isReady();
 
 /**
  * MOUNTING POINT
- *
- * See how we remove the splashcreen on App.vue file
  */
-window.requestAnimationFrame(() => {
-  app.mount('#app');
-});
+app.mount('body');
