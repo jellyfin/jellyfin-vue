@@ -52,7 +52,15 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState> {
     return this._state.darkMode;
   }
 
-  public readonly currentTheme = computed(() => vuetify.theme.global.name.value as 'dark' | 'light');
+  public readonly currentTheme = computed(() => {
+    const dark = 'dark';
+    const light = 'light';
+    const browserColor = this._browserPrefersDark.value ? dark : light;
+    const userColor
+      = this.darkMode !== 'auto' && this.darkMode ? dark : light;
+
+    return this.darkMode === 'auto' ? browserColor : userColor;
+  });
 
   private readonly _updateLocale = (): void => {
     i18n.locale.value
@@ -60,21 +68,6 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState> {
         ? this._BROWSER_LANGUAGE.value || String(i18n.fallbackLocale.value)
         : this.locale;
     vuetify.locale.current.value = i18n.locale.value;
-  };
-
-  private readonly _updateTheme = (): void => {
-    window.setTimeout(() => {
-      window.requestAnimationFrame(() => {
-        const dark = 'dark';
-        const light = 'light';
-        const browserColor = this._browserPrefersDark.value ? dark : light;
-        const userColor
-          = this.darkMode !== 'auto' && this.darkMode ? dark : light;
-
-        vuetify.theme.global.name.value
-          = this.darkMode === 'auto' ? browserColor : userColor;
-      });
-    });
   };
 
   public constructor() {
@@ -97,10 +90,12 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState> {
     /**
      * Vuetify theme change
      */
-    watchImmediate(
-      [this._browserPrefersDark, (): typeof this.darkMode => this.darkMode],
-      this._updateTheme
-    );
+    watchImmediate(this.currentTheme, () => {
+      window.requestAnimationFrame(() => {
+        vuetify.theme.global.name.value
+          = this.currentTheme.value;
+      });
+    });
 
     watch(
       () => remote.auth.currentUser,

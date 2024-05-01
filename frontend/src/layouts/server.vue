@@ -1,6 +1,6 @@
 <template>
   <LoadingIndicator />
-  <VMain class="h-100">
+  <VMain class="uno-h-full">
     <slot />
   </VMain>
   <VFooter

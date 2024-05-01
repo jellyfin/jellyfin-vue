@@ -34,7 +34,13 @@ export default defineConfig(({ mode }): UserConfig => {
       }),
       VueMacros({
         plugins: {
-          vue: Vue()
+          vue: Vue({
+            template: {
+              transformAssetUrls: {
+                img: []
+              }
+            }
+          })
         }
       }),
       // This plugin allows to autoimport Vue components
