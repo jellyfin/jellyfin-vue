@@ -80,8 +80,8 @@
         <LoginForm
           :user="currentUser"
           @change="resetCurrentUser" />
-        <p class="text-p mt-6 text-center">
-          {{ disclaimer }}
+        <p v-if="disclaimer" class="text-p mt-6 text-center">
+          <JSafeHtml :html="disclaimer" />
         </p>
       </VCol>
     </VRow>
@@ -95,36 +95,30 @@ meta:
 
 <script setup lang="ts">
 import type { UserDto } from '@jellyfin/sdk/lib/generated-client';
-import { getBrandingApi } from '@jellyfin/sdk/lib/utils/api/branding-api';
-import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
-import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
 import { isEmpty } from 'lodash-es';
-import { ref, shallowRef } from 'vue';
+import { ref, shallowRef, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router/auto';
+import { watchImmediate } from '@vueuse/core';
 import { remote } from '@/plugins/remote';
 import { getJSONConfig } from '@/utils/external-config';
+import { isConnectedToServer } from '@/store';
 
 const jsonConfig = await getJSONConfig();
 const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
-const api = remote.sdk.oneTimeSetup(
-  remote.auth.currentServer?.PublicAddress ?? ''
-);
 
 route.meta.title = t('login');
 
-try {
-  await getSystemApi(api).getPublicSystemInfo();
-} catch {
-  await router.replace('/server/select');
-}
+watchImmediate(isConnectedToServer, async () => {
+  if (!isConnectedToServer.value) {
+    await router.replace('/server/select');
+  }
+});
 
-const brandingData = (await getBrandingApi(api).getBrandingOptions()).data;
-const publicUsers = (await getUserApi(api).getPublicUsers({})).data;
-
-const disclaimer = brandingData.LoginDisclaimer;
+const disclaimer = computed(() => remote.auth.currentServer?.BrandingOptions.LoginDisclaimer);
+const publicUsers = computed(() => remote.auth.currentServer?.PublicUsers ?? []);
 
 const loginAsOther = shallowRef(false);
 const currentUser = ref<UserDto>({});

@@ -3,10 +3,10 @@ import {
   VersionOutdatedIssue,
   VersionUnsupportedIssue
 } from '@jellyfin/sdk';
-import type { UserDto, PublicSystemInfo } from '@jellyfin/sdk/lib/generated-client';
+import type { UserDto, PublicSystemInfo, BrandingOptions } from '@jellyfin/sdk/lib/generated-client';
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
+import { getBrandingApi } from '@jellyfin/sdk/lib/utils/api/branding-api';
 import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
-import { merge } from 'lodash-es';
 import SDK, { useOneTimeAPI } from './sdk/sdk-utils';
 import { isAxiosError, isNil, sealed } from '@/utils/validation';
 import { i18n } from '@/plugins/i18n';
@@ -16,6 +16,8 @@ import { CommonStore } from '@/store/super/common-store';
 interface ServerInfo extends BetterOmit<PublicSystemInfo, 'LocalAddress'> {
   PublicAddress: string;
   isDefault: boolean;
+  BrandingOptions: BrandingOptions;
+  PublicUsers: UserDto[];
 }
 
 interface AuthState {
@@ -94,10 +96,27 @@ class RemotePluginAuth extends CommonStore<AuthState> {
     } else {
       const servIndex = this.servers.indexOf(oldServer);
 
-      this.servers[servIndex] = merge(oldServer, server);
+      this.servers[servIndex] = server;
 
       return servIndex;
     }
+  };
+
+  private readonly _fetchServerData = async (address: string, isDefault = false): Promise<ServerInfo> => {
+    const api = useOneTimeAPI(address);
+    const { data: systemInfo } = await getSystemApi(api).getPublicSystemInfo();
+    const { data: BrandingOptions } = await getBrandingApi(api).getBrandingOptions();
+    const { data: PublicUsers } = await getUserApi(api).getPublicUsers({});
+
+    delete systemInfo.LocalAddress;
+
+    return {
+      ...systemInfo,
+      PublicAddress: address,
+      isDefault: isDefault,
+      BrandingOptions,
+      PublicUsers
+    };
   };
 
   /**
@@ -137,17 +156,7 @@ class RemotePluginAuth extends CommonStore<AuthState> {
       }
 
       try {
-        const api = useOneTimeAPI(best.address);
-        const { data } = await getSystemApi(api).getPublicSystemInfo();
-
-        delete data.LocalAddress;
-
-        const serv = {
-          ...data,
-          PublicAddress: best.address,
-          isDefault: isDefault
-        };
-
+        const serv = await this._fetchServerData(best.address, isDefault);
         this._state.currentServerIndex = this._addOrRefreshServer(serv);
       } catch (error) {
         useSnackbar(t('anErrorHappened'), 'error');
@@ -225,6 +234,16 @@ class RemotePluginAuth extends CommonStore<AuthState> {
       this._state.users[this._state.currentUserIndex] = (
         await getUserApi(api).getCurrentUser()
       ).data;
+    }
+  };
+
+  private readonly _refreshServers = async (): Promise<void> => {
+    for (const server of this.servers) {
+      try {
+        const info = await this._fetchServerData(server.PublicAddress, server.isDefault);
+
+        this._addOrRefreshServer(info);
+      } catch {}
     }
   };
 
@@ -316,6 +335,7 @@ class RemotePluginAuth extends CommonStore<AuthState> {
       accessTokens: {}
     }, 'localStorage');
     void this.refreshCurrentUserInfo();
+    void this._refreshServers();
   }
 }
 
