@@ -98,7 +98,6 @@ declare module 'vue' {
     ItemsCarouselTitle: typeof import('./../../src/components/Layout/Carousel/Item/ItemsCarouselTitle.vue')['default']
     JHover: typeof import('./../../src/components/lib/JHover.vue')['default']
     JImg: typeof import('./../../src/components/lib/JImg.vue')['default']
-    JNoop: typeof import('./../../src/components/lib/JNoop.vue')['default']
     JSafeHtml: typeof import('./../../src/components/lib/JSafeHtml.vue')['default']
     JSplashscreen: typeof import('./../../src/components/lib/JSplashscreen.vue')['default']
     JTransition: typeof import('./../../src/components/lib/JTransition.vue')['default']

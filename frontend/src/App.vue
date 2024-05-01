@@ -5,7 +5,7 @@
       <JTransition
         :name="route.meta.transition?.enter ?? defaultTransition"
         :mode="defaultTransitionMode"
-        :disabled="!apploaded"
+        :disabled="!mounted"
         appear>
         <Suspense @resolve="apploaded = true">
           <div
@@ -52,6 +52,7 @@ import FullPageLayout from '@/layouts/fullpage.vue';
 import ServerLayout from '@/layouts/server.vue';
 
 const apploaded = shallowRef(false);
+const mounted = shallowRef(false);
 const defaultTransition = 'slide-x-reverse';
 const defaultTransitionMode = 'out-in';
 
@@ -61,6 +62,7 @@ const defaultTransitionMode = 'out-in';
  */
 onMounted(() => {
   document.body.removeAttribute('class');
+  mounted.value = true;
 });
 
 /**
