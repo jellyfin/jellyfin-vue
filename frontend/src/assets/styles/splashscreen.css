@@ -1,32 +1,23 @@
 .j-splash {
-  position: absolute;
-  padding: 0;
-  margin: 0;
-  top: 0;
-  left: 0;
+  height: 100vh;
   display: flex;
-  justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 100%;
-  background-size: 400% 400%;
-  z-index: 99999999;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.j-splash > img {
+  min-width: 30% !important;
+  min-height: 30% !important;
+  width: 30% !important;
+  height: 30% !important;
+  object-fit: contain;
 }
 
 .j-splash.light {
-  background: #f2f2f2;
+  background-color: #f2f2f2 !important;
 }
 
 .j-splash.dark {
-  background: #111827;
-}
-
-.j-splash > .logo {
-  width: 30%;
-  height: 30%;
-  /* This file is in the 'public' folder, so it will be placed at the root when the client is built */
-  background-image: url(../../../public/icon.png);
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: contain;
+  background-color: #111827 !important;
 }

@@ -24,15 +24,16 @@ export interface JTransitionProps extends BetterOmit<TransitionProps, 'name'> {
    * JTransition custom props
    */
   group?: boolean;
+  disabled?: boolean;
 }
 
-const props = withDefaults(defineProps<JTransitionProps>(), { name: 'fade' });
+const props = withDefaults(defineProps<JTransitionProps>(), { name: 'fade', group: undefined, disabled: undefined });
 
 /**
  * Get the component to use based on props and the current motion preference
  */
 function getComponent(): VueComponent {
-  if (prefersNoMotion.value) {
+  if (prefersNoMotion.value || props.disabled) {
     return JNoop;
   } else if (props.group) {
     return TransitionGroup;

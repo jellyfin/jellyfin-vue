@@ -55,4 +55,4 @@ await router.isReady();
 /**
  * MOUNTING POINT
  */
-app.mount('body');
+app.mount(document.body);
