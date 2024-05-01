@@ -3,16 +3,32 @@ import {
   VersionOutdatedIssue,
   VersionUnsupportedIssue
 } from '@jellyfin/sdk';
-import type { UserDto } from '@jellyfin/sdk/lib/generated-client';
+import type { UserDto, PublicSystemInfo } from '@jellyfin/sdk/lib/generated-client';
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
 import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
 import { merge } from 'lodash-es';
-import SDK, { useOneTimeAPI } from '../sdk/sdk-utils';
-import type { AuthState, ServerInfo } from './types';
+import SDK, { useOneTimeAPI } from './sdk/sdk-utils';
 import { isAxiosError, isNil, sealed } from '@/utils/validation';
 import { i18n } from '@/plugins/i18n';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { CommonStore } from '@/store/super/common-store';
+
+interface ServerInfo extends BetterOmit<PublicSystemInfo, 'LocalAddress'> {
+  PublicAddress: string;
+  isDefault: boolean;
+}
+
+interface AuthState {
+  servers: ServerInfo[];
+  currentServerIndex: number;
+  currentUserIndex: number;
+  users: UserDto[];
+  rememberMe: boolean;
+  /**
+   * Key: userId. Value: Access token
+   */
+  accessTokens: Record<string, string>;
+}
 
 @sealed
 class RemotePluginAuth extends CommonStore<AuthState> {

@@ -1,10 +1,14 @@
 import { useWebSocket } from '@vueuse/core';
 import { destr } from 'destr';
 import { computed, watch } from 'vue';
-import auth from '../auth';
-import sdk from '../sdk';
-import type { WebSocketMessage } from './types';
+import auth from './auth';
+import sdk from './sdk';
 import { isNil, sealed } from '@/utils/validation';
+
+interface WebSocketMessage {
+  MessageType: string;
+  Data?: unknown;
+}
 
 @sealed
 class RemotePluginSocket {
