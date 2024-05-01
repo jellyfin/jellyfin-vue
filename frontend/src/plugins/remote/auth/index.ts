@@ -68,7 +68,7 @@ class RemotePluginAuth extends CommonStore<AuthState> {
    * @param server - Payload of the
    * @returns - Index of the server
    */
-  private _addOrRefreshServer(server: ServerInfo): number {
+  private readonly _addOrRefreshServer = (server: ServerInfo): number => {
     const oldServer = this.getServerById(server.Id);
 
     if (isNil(oldServer)) {
@@ -82,7 +82,7 @@ class RemotePluginAuth extends CommonStore<AuthState> {
 
       return servIndex;
     }
-  }
+  };
 
   /**
    * Connects to a server
@@ -90,10 +90,10 @@ class RemotePluginAuth extends CommonStore<AuthState> {
    * @param serverUrl
    * @param isDefault
    */
-  public async connectServer(
+  public readonly connectServer = async (
     serverUrl: string,
     isDefault = false
-  ): Promise<void> {
+  ): Promise<void> => {
     const { t } = i18n;
 
     serverUrl = serverUrl.replace(/\/$/, '').trim();
@@ -141,7 +141,7 @@ class RemotePluginAuth extends CommonStore<AuthState> {
     } else {
       useSnackbar(t('serverNotFound'), 'error');
     }
-  }
+  };
 
   /**
    * Logs the user to the current server
@@ -150,11 +150,11 @@ class RemotePluginAuth extends CommonStore<AuthState> {
    * @param password
    * @param rememberMe
    */
-  public async loginUser(
+  public readonly loginUser = async (
     username: string,
     password: string,
     rememberMe = true
-  ): Promise<void> {
+  ): Promise<void> => {
     if (!this.currentServer) {
       throw new Error('There is no server in use');
     }
@@ -194,12 +194,12 @@ class RemotePluginAuth extends CommonStore<AuthState> {
         throw error;
       }
     }
-  }
+  };
 
   /**
    * Refreshes the current user infos, to fetch a new picture for instance
    */
-  public async refreshCurrentUserInfo(): Promise<void> {
+  public readonly refreshCurrentUserInfo = async (): Promise<void> => {
     if (!isNil(this.currentUser) && !isNil(this.currentServer)) {
       const api = useOneTimeAPI(
         this.currentServer.PublicAddress,
@@ -210,20 +210,20 @@ class RemotePluginAuth extends CommonStore<AuthState> {
         await getUserApi(api).getCurrentUser()
       ).data;
     }
-  }
+  };
 
   /**
    * Logs out the user from the server using the current base url and access token parameters.
    *
    * @param skipRequest - Skips the request and directly removes the user from the store
    */
-  public async logoutCurrentUser(skipRequest = false): Promise<void> {
+  public readonly logoutCurrentUser = async (skipRequest = false): Promise<void> => {
     if (!isNil(this.currentUser) && !isNil(this.currentServer)) {
       await this.logoutUser(this.currentUser, this.currentServer, skipRequest);
 
       this._state.currentUserIndex = -1;
     }
-  }
+  };
 
   /**
    * Logs out an user from its server
@@ -232,11 +232,11 @@ class RemotePluginAuth extends CommonStore<AuthState> {
    * @param server
    * @param skipRequest
    */
-  public async logoutUser(
+  public readonly logoutUser = async (
     user: UserDto,
     server: ServerInfo,
     skipRequest = false
-  ): Promise<void> {
+  ): Promise<void> => {
     try {
       if (!skipRequest) {
         await useOneTimeAPI(
@@ -260,14 +260,14 @@ class RemotePluginAuth extends CommonStore<AuthState> {
     if (!isNil(user.Id)) {
       delete this._state.accessTokens[user.Id];
     }
-  }
+  };
 
   /**
    * Logs out all the user sessions from the provided server and removes it from the store
    *
    * @param serverUrl
    */
-  public async deleteServer(serverUrl: string): Promise<void> {
+  public readonly deleteServer = async (serverUrl: string): Promise<void> => {
     const server = this._state.servers.find(
       s => s.PublicAddress === serverUrl
     );
@@ -288,7 +288,7 @@ class RemotePluginAuth extends CommonStore<AuthState> {
       this._state.servers.indexOf(server),
       1
     );
-  }
+  };
 
   public constructor() {
     super('auth', {
