@@ -1,16 +1,15 @@
 <template>
   <component
-    :is="getComponent()"
+    :is="props.group ? TransitionGroup : Transition"
     class="j-transition"
     v-bind="mergeProps($props, $attrs)"
-    :name="`j-transition-${props.name}`">
+    :name="prefersNoMotion || props.disabled ? undefined : `j-transition-${props.name}`">
     <slot />
   </component>
 </template>
 
 <script setup lang="ts">
-import { Transition, TransitionGroup, type TransitionProps, type Component as VueComponent, mergeProps } from 'vue';
-import JNoop from '@/components/lib/JNoop.vue';
+import { Transition, TransitionGroup, type TransitionProps, mergeProps } from 'vue';
 import { prefersNoMotion } from '@/store';
 
 export interface JTransitionProps extends BetterOmit<TransitionProps, 'name'> {
@@ -28,19 +27,6 @@ export interface JTransitionProps extends BetterOmit<TransitionProps, 'name'> {
 }
 
 const props = withDefaults(defineProps<JTransitionProps>(), { name: 'fade', group: undefined, disabled: undefined });
-
-/**
- * Get the component to use based on props and the current motion preference
- */
-function getComponent(): VueComponent {
-  if (prefersNoMotion.value || props.disabled) {
-    return JNoop;
-  } else if (props.group) {
-    return TransitionGroup;
-  } else {
-    return Transition;
-  }
-}
 </script>
 
 <!-- TODO: Set scoped and remove .j-transition* prefix after: https://github.com/vuejs/core/issues/5148 -->

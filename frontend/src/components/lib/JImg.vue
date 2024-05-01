@@ -7,9 +7,9 @@
       :href="src"
       @load="onLoad"
       @error="onError" >
-    <component
-      :is="props.transitionProps ? JTransition : JNoop"
-      v-bind="isObj(props.transitionProps) ? props.transitionProps : undefined">
+    <JTransition
+      v-bind="isObj(props.transitionProps) ? props.transitionProps : undefined"
+      :disabled="!props.transitionProps">
       <img
         v-if="shown"
         key="1"
@@ -30,7 +30,7 @@
           key="4"
           name="error" />
       </template>
-    </component>
+    </JTransition>
   </template>
   <slot
     v-else-if="$slots.placeholder"
@@ -42,7 +42,6 @@
 import { computed, shallowRef, watch, type ImgHTMLAttributes, mergeProps } from 'vue';
 import { isObj } from '@/utils/validation';
 import JTransition, { type JTransitionProps } from '@/components/lib/JTransition.vue';
-import JNoop from '@/components/lib/JNoop.vue';
 
 /**
  * In this component, we use a link element for image preload.
