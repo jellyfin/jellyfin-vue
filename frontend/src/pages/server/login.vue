@@ -4,7 +4,7 @@
     fluid>
     <VRow justify="center">
       <VCol
-        v-if="isEmpty(currentUser) && !loginAsOther && publicUsers.length > 0"
+        v-if="!currentUser && !loginAsOther && publicUsers.length > 0"
         sm="10"
         md="7"
         lg="5">
@@ -57,7 +57,7 @@
       </VCol>
       <VCol
         v-else-if="
-          !isEmpty(currentUser) ||
+          currentUser ||
             loginAsOther ||
             (publicUsers.length === 0 && $remote.auth.currentServer?.ServerName)
         "
@@ -65,7 +65,7 @@
         md="6"
         lg="5">
         <h1
-          v-if="!isEmpty(currentUser)"
+          v-if="currentUser"
           class="text-h4 mb-3 text-center">
           {{ $t('loginAs', { name: currentUser.Name }) }}
         </h1>
@@ -95,7 +95,6 @@ meta:
 
 <script setup lang="ts">
 import type { UserDto } from '@jellyfin/sdk/lib/generated-client';
-import { isEmpty } from 'lodash-es';
 import { ref, shallowRef, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router/auto';
@@ -121,7 +120,7 @@ const disclaimer = computed(() => remote.auth.currentServer?.BrandingOptions.Log
 const publicUsers = computed(() => remote.auth.currentServer?.PublicUsers ?? []);
 
 const loginAsOther = shallowRef(false);
-const currentUser = ref<UserDto>({});
+const currentUser = ref<UserDto>();
 
 /**
  * Sets the current user for public user login
@@ -140,7 +139,7 @@ async function setCurrentUser(user: UserDto): Promise<void> {
  * Resets the currently selected user
  */
 function resetCurrentUser(): void {
-  currentUser.value = {};
+  currentUser.value = undefined;
   loginAsOther.value = false;
 }
 </script>
