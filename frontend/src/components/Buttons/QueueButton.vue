@@ -10,7 +10,7 @@
       location="top" />
     <VMenu
       v-model="menuModel"
-      :close-on-content-click="false"
+      :close-on-content-click="closeOnClick"
       :transition="'slide-y-transition'"
       :width="listWidth"
       location="top">
@@ -81,8 +81,9 @@ import { InitMode, playbackManager } from '@/store/playback-manager';
 const props = withDefaults(
   defineProps<{
     size?: number;
+    closeOnClick?: boolean;
   }>(),
-  { size: 40 }
+  { size: 40, closeOnClick: false }
 );
 
 const { t } = useI18n();
