@@ -6,7 +6,7 @@
       "profile": "default"
     },
     "ghcr.io/devcontainers/features/docker-in-docker:2": {
-      "dockerDashComposeVersion": "v2"
+      "installDockerComposeSwitch": false
     },
     "ghcr.io/eitsupi/devcontainer-features/jq-likes:2": {},
     "ghcr.io/devcontainers/features/github-cli:1": {}
