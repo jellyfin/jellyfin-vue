@@ -13,7 +13,7 @@ import { i18n } from '@/plugins/i18n';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { CommonStore } from '@/store/super/common-store';
 
-interface ServerInfo extends BetterOmit<PublicSystemInfo, 'LocalAddress'> {
+export interface ServerInfo extends BetterOmit<PublicSystemInfo, 'LocalAddress'> {
   PublicAddress: string;
   isDefault: boolean;
   BrandingOptions: BrandingOptions;

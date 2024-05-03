@@ -44,7 +44,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router/auto';
 import { remote } from '@/plugins/remote';
-import type { ServerInfo } from '@/plugins/remote/auth/types';
+import type { ServerInfo } from '@/plugins/remote/auth';
 
 const props = defineProps<{ serverInfo: ServerInfo }>();
 
