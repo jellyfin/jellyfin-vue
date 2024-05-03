@@ -24,3 +24,7 @@ export function mergeExcludingUnknown<T extends object, K extends keyof T>(
 
   return object;
 }
+
+export function upperFirst<T extends string>(str: T): Capitalize<T> {
+  return (str[0].toUpperCase() + str.substring(1)) as Capitalize<T>;
+}

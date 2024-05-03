@@ -6,7 +6,7 @@
     density="comfortable"
     single-line
     hide-details
-    class="text-truncate"
+    class="text-truncate uno-text-capitalize"
     :items="selectItems">
     <template #selection="{ item }">
       {{ item.raw.selection }}
@@ -24,7 +24,6 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import { upperFirst } from 'lodash-es';
 import type { MediaStream } from '@jellyfin/sdk/lib/generated-client';
 import { useI18n } from 'vue-i18n';
 import IMdiSurroundSound20 from 'virtual:icons/mdi/surround-sound-2-0';
@@ -34,6 +33,7 @@ import IMdiSurroundSound71 from 'virtual:icons/mdi/surround-sound-7-1';
 import IMdiSurroundSound from 'virtual:icons/mdi/surround-sound';
 import { watchImmediate } from '@vueuse/core';
 import { getLocaleName } from '@/utils/i18n';
+import { upperFirst } from '@/utils/data-manipulation';
 
 const props = withDefaults(
   defineProps<{
