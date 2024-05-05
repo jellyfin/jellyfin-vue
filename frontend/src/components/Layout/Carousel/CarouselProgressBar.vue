@@ -68,7 +68,7 @@ const barClasses = computed(() =>
 );
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .progress-bar-container {
   box-sizing: border-box;
   display: flex;

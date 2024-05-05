@@ -161,7 +161,7 @@ function previousStep(): void {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .transparent-background {
   background-color: transparent !important;
 }

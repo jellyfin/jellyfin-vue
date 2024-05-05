@@ -535,7 +535,7 @@ onMounted(() => {
 });
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .text {
   font-size: unset !important;
   line-height: unset !important;

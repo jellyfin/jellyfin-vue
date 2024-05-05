@@ -296,7 +296,7 @@ const adminSections = computed<MenuOptions[][]>(() => {
 });
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .information td {
   height: 3.4em !important;
   border-bottom: 0 !important;

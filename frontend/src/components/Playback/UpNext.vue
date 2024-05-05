@@ -115,7 +115,7 @@ watch(
 );
 watch(visible, () => { emit('change', visible.value); });
 </script>
-<style lang="scss" scoped>
+<style scoped>
 .up-next-dialog {
   position: absolute;
   bottom: 0;

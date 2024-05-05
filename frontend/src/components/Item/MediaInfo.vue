@@ -50,7 +50,7 @@ withDefaults(
 );
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 span {
   margin-left: 0.6em;
   margin-right: 0.6em;

@@ -282,7 +282,7 @@ watch(
 );
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .loading-bar {
   position: absolute;
   top: 50%;

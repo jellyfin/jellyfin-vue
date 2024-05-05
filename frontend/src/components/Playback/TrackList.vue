@@ -162,7 +162,7 @@ async function playTracks(track: BaseItemDto): Promise<void> {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .v-data-table.track-table {
   background-color: transparent;
 }

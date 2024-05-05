@@ -165,7 +165,7 @@ function onSlideChange(): void {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .album-cover {
   position: relative;
   min-width: 65vh;

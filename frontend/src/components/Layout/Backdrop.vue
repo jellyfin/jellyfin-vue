@@ -21,7 +21,7 @@ const route = useRoute();
 const opacity = computed(() => route.meta.backdrop.opacity);
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .backdrop {
   background-color: rgb(var(--v-theme-background));
   opacity: v-bind(opacity);

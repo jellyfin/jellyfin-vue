@@ -92,7 +92,7 @@ async function addApiKey(): Promise<void> {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .add-key-form {
   width: 100%;
 }

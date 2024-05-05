@@ -85,7 +85,7 @@ function switchColorTheme(): void {
 const navigationDrawer = inject<Ref<boolean>>('NavigationDrawer');
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .app-bar-safe-zone {
   height: calc(48px + env(safe-area-inset-top)) !important;
 }

@@ -27,7 +27,7 @@ const skeletonCardShape = computed(() => {
 });
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .card-grid-container {
   display: grid;
 }

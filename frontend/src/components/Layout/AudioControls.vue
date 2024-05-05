@@ -113,7 +113,7 @@ import { playbackManager } from '@/store/playback-manager';
 import { getItemDetailsLink } from '@/utils/items';
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 /* TODO: This class was extracted from VAvatar. Remove this once a JAvatar component is created */
 .img {
   align-items: center;
