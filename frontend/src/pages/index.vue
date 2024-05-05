@@ -3,8 +3,7 @@
     <ItemsCarousel
       v-if="carousel.length > 0"
       :items="carousel"
-      page-backdrop
-      class="top-carousel">
+      page-backdrop>
       <template #referenceText>
         {{ $t('recentlyAdded') }}
       </template>

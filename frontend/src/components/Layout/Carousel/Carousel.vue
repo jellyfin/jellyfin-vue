@@ -1,5 +1,5 @@
 <template>
-  <div class="swiperContainer user-select-none">
+  <div class="swiper-parent user-select-none">
     <CarouselProgressBar
       v-if="progressBar && topProgressBar && slides > 0"
       :pages="slides"
@@ -12,7 +12,7 @@
       @progress-clicked="onProgressClicked" />
     <Swiper
       :modules="modules"
-      :class="useResponsiveClasses('swiper')"
+      :class="useResponsiveClasses('swiper-el')"
       loop
       parallax
       autoplay
@@ -120,5 +120,30 @@ function onProgressClicked(index: number): void {
 </script>
 
 <style scoped>
-@import '@/assets/styles/Carousel/index.css';
+.swiper-parent {
+  min-width: 100%;
+  min-height: 100%;
+  position: relative;
+}
+
+.swiper-el.md-and-up {
+  margin-bottom: -128px !important;
+}
+
+.swiper-el.sm-and-up {
+  margin-top: -64px;
+}
+
+.progress-bar {
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  margin-top: 0;
+}
+
+.progress-bar.sm-and-up {
+  position: relative !important;
+  top: initial;
+  margin-top: initial;
+}
 </style>
