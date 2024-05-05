@@ -15,14 +15,16 @@ const parsedStore = destr<ClientSettingsState>(store);
 const matchedDarkColorScheme = window.matchMedia(
   '(prefers-color-scheme: dark)'
 ).matches;
-let classToApply: 'light' | 'dark' = matchedDarkColorScheme ? 'dark' : 'light';
+const darkColor = '#111827';
+const lightColor = '#f2f2f2';
+let colorToApply: typeof darkColor | typeof lightColor = matchedDarkColorScheme ? darkColor : lightColor;
 
 if ('darkMode' in parsedStore) {
   const storeDarkMode = parsedStore.darkMode;
 
   if (isBool(storeDarkMode)) {
-    classToApply = parsedStore.darkMode === true ? 'dark' : 'light';
+    colorToApply = parsedStore.darkMode === true ? darkColor : lightColor;
   }
 }
 
-document.body.classList.add(classToApply);
+document.body.style.setProperty('--j-background-color', colorToApply);

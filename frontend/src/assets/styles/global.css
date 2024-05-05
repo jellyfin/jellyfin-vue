@@ -1,10 +1,10 @@
 * {
   font-family: "InterVariable", system-ui !important;
-  cursor: var(--j-client-cursor);
 }
 
 html {
   overscroll-behavior: none;
+  color-scheme: light dark;
 }
 
 html.no-forced-scrollbar {

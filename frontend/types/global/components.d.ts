@@ -96,6 +96,7 @@ declare module 'vue' {
     ItemMenu: typeof import('./../../src/components/Item/ItemMenu.vue')['default']
     ItemsCarousel: typeof import('./../../src/components/Layout/Carousel/Item/ItemsCarousel.vue')['default']
     ItemsCarouselTitle: typeof import('./../../src/components/Layout/Carousel/Item/ItemsCarouselTitle.vue')['default']
+    JApp: typeof import('./../../src/components/lib/JApp.vue')['default']
     JHover: typeof import('./../../src/components/lib/JHover.vue')['default']
     JImg: typeof import('./../../src/components/lib/JImg.vue')['default']
     JSafeHtml: typeof import('./../../src/components/lib/JSafeHtml.vue')['default']

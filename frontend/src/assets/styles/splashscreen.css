@@ -4,6 +4,7 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  background-color: var(--j-background-color) !important;
 }
 
 .j-splash > img {
@@ -12,12 +13,4 @@
   width: 30% !important;
   height: 30% !important;
   object-fit: contain;
-}
-
-.j-splash.light {
-  background-color: #f2f2f2 !important;
-}
-
-.j-splash.dark {
-  background-color: #111827 !important;
 }
