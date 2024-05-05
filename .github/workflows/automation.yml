@@ -51,12 +51,13 @@ jobs:
 
   label:
     name: Labeling 🏷️
-    if: ${{ github.event_name == 'pull_request_target' }}
+    if: ${{ always() && !cancelled() }}
     runs-on: ubuntu-latest
 
     steps:
       - name: Label PR depending on modified files
         uses: actions/labeler@v5.0.0
+        if: ${{ github.event_name == 'pull_request_target' }}
         continue-on-error: true
         with:
           repo-token: "${{ secrets.JF_BOT_TOKEN }}"
