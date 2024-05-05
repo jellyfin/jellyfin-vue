@@ -1,7 +1,7 @@
 <template>
   <VMain
     class="fullscreen-video-container fill-height"
-    :class="{ 'no-cursor': !overlay }"
+    :class="{ 'uno-cursor-none': !overlay }"
     @mousemove="handleMouseMove"
     @touchend="handleMouseMove">
     <VOverlay

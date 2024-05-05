@@ -1,7 +1,7 @@
 <template>
   <VTable
     density="compact"
-    class="track-table user-select-none">
+    class="track-table uno-select-none">
     <thead>
       <tr>
         <th

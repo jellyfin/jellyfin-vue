@@ -9,7 +9,7 @@
           playbackManager.currentItem
       "
       app
-      class="user-select-none pa-0">
+      class="uno-select-none pa-0">
       <VContainer fluid>
         <VRow class="ma-0">
           <VCol

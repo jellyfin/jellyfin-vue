@@ -7,13 +7,10 @@
     <Component
       :is="probeTag"
       ref="probeRef"
+      class="uno-invisible uno-pointer-events-none uno-place-self-stretch uno-opacity-0"
       :style="{
-        opacity: 0,
-        visibility: 'hidden',
         gridArea: '1/1',
-        pointerEvents: 'none',
-        zIndex: -1,
-        placeSelf: 'stretch'
+        zIndex: -1
       }">
       <slot
         :item="items[0]"

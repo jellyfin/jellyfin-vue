@@ -13,10 +13,6 @@ html.no-forced-scrollbar {
 
 /* Custom utility classes */
 
-.user-select-none {
-  user-select: none;
-}
-
 .absolute-cover {
   height: 100%;
   width: 100%;
@@ -27,22 +23,6 @@ html.no-forced-scrollbar {
   bottom: 0;
 }
 
-.pointer {
-  cursor: pointer;
-}
-
-.no-cursor {
-  cursor: none;
-}
-
-.pointer-events-none {
-  pointer-events: none;
-}
-
-.pointer-events-all {
-  pointer-events: all;
-}
-
 .link {
   cursor: pointer;
   color: inherit !important;
@@ -51,10 +31,6 @@ html.no-forced-scrollbar {
 
 .link:hover {
   text-decoration: underline;
-}
-
-.flex-0 {
-  flex: 0;
 }
 
 .pa-s {
@@ -80,8 +56,4 @@ html.no-forced-scrollbar {
 
 .text-capitalize-first-letter::first-letter {
   text-transform: uppercase;
-}
-
-.overflow-hidden {
-  overflow: hidden;
 }
