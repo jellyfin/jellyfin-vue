@@ -107,7 +107,7 @@ const breakpoints = computed(() => ({
 }));
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .swiper-section .header::before {
   content: '';
   position: relative;

@@ -157,7 +157,7 @@ const artists = computed(() =>
 const people = computed(() => items.value.filter(item => item.Type === BaseItemKind.Person));
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .second-toolbar {
   top: 56px;
 }

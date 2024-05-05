@@ -42,7 +42,7 @@ defineProps<{
 const i18n = useI18n();
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .list {
   max-height: 31em;
 }

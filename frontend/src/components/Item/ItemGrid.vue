@@ -68,7 +68,7 @@ withDefaults(
 );
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .empty-card-container {
   max-height: 90vh;
   overflow: hidden;

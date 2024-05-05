@@ -28,7 +28,7 @@ withDefaults(
 );
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .skeleton-card {
   padding: 0.6em;
 }

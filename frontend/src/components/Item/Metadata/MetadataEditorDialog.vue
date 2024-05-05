@@ -24,7 +24,7 @@ const model = ref(true);
 
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .metadata-dialog {
   height: 60vh;
 }

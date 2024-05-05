@@ -323,7 +323,7 @@ function emitFilterChange(): void {
 watch(() => props.item, refreshItems);
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .filter-content {
   max-height: 15rem;
 }

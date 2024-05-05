@@ -94,7 +94,7 @@ function onExpandItems(ids: string[]): void {
   itemId.value = ids[0];
 }
 </script>
-<style lang="scss" scoped>
+<style scoped>
 .metadata {
   height: calc(100vh - 64px);
   overflow: hidden;

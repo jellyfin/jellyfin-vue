@@ -53,7 +53,7 @@ withDefaults(
 const { t } = useI18n();
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .header span {
   padding-left: 0.25em;
 }

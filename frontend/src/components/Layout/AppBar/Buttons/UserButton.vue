@@ -98,7 +98,7 @@ const menuItems = computed<MenuItem[]>(() => {
 });
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .min-list-width {
   min-width: 200px;
 }

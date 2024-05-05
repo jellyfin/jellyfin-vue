@@ -119,6 +119,6 @@ function onProgressClicked(index: number): void {
 }
 </script>
 
-<style lang="scss" scoped>
-@import '@/assets/styles/Carousel/index.scss';
+<style scoped>
+@import '@/assets/styles/Carousel/index.css';
 </style>

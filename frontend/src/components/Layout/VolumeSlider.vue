@@ -57,7 +57,7 @@ const icon = computed(() => {
 });
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .volume-slider {
   width: 10em;
 }

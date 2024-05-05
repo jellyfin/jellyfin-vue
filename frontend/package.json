@@ -80,7 +80,6 @@
     "globify-gitignore": "1.0.3",
     "lightningcss": "1.24.1",
     "rollup-plugin-visualizer": "5.12.0",
-    "sass": "1.76.0",
     "typescript": "5.4.5",
     "typescript-eslint": "7.8.0",
     "unocss": "0.59.4",

@@ -93,7 +93,7 @@ watch(() => props.item, () => once.value = false);
 watch([displayWidth, displayHeight], () => once.value = true);
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .z-1 {
   z-index: -1;
 }

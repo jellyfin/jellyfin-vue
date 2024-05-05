@@ -135,7 +135,7 @@ const modeIcon = computed(() =>
 );
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .queue-area {
   min-height: v-bind(listHeight);
   max-height: v-bind(listHeight);

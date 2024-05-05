@@ -100,7 +100,7 @@ watch(container, () => {
 onBeforeUnmount(destroy);
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .grab-cursor {
   cursor: grab;
 }

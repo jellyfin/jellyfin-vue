@@ -134,7 +134,7 @@ function getHomeSectionContent(section: HomeSection): BaseItemDto[] {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .sections-after-header {
   position: relative;
   z-index: 4;
