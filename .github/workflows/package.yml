@@ -27,6 +27,10 @@ env:
   PRERELEASE_TAG: stable-rc
   COMMIT_TAG: unstable
 
+permissions:
+  id-token: write
+  attestations: write
+
 defaults:
   run:
     shell: bash
@@ -185,8 +189,12 @@ jobs:
         with:
           compression-level: 0
           name: docker_image-linux_${{ matrix.platform }}
-          path: |
-            docker_image.tar
+          path: docker_image.tar
+
+      - name: Create provenance attestation 🔏
+        uses: actions/attest-build-provenance@v1.0.0
+        with:
+          subject-path: docker_image.tar
 
       - name: Upload cache artifact ⬆️⚙️
         uses: actions/upload-artifact@v4.3.3
@@ -218,8 +226,7 @@ jobs:
         with:
           compression-level: 0
           name: frontend
-          path: |
-            dist
+          path: dist
 
   docker_merge:
     name: Merge Docker images 💿🐳
