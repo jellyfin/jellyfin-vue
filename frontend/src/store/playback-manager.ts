@@ -243,7 +243,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   public get currentItemAudioTracks(): MediaStream[] | undefined {
     if (!isNil(this._state.currentMediaSource?.MediaStreams)) {
       return this._state.currentMediaSource.MediaStreams.filter((stream) => {
-        return stream.Type === 'Audio';
+        return stream.Type === MediaStreamType.Audio;
       });
     }
   }
@@ -254,7 +254,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   public get currentItemSubtitleTracks(): MediaStream[] | undefined {
     if (!isNil(this._state.currentMediaSource?.MediaStreams)) {
       return this._state.currentMediaSource.MediaStreams.filter((stream) => {
-        return stream.Type === 'Subtitle';
+        return stream.Type === MediaStreamType.Subtitle;
       });
     }
   }
@@ -321,7 +321,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     ) {
       return this._state.currentMediaSource.MediaStreams.find(
         stream =>
-          stream.Type === 'Video'
+          stream.Type === MediaStreamType.Video
           && stream.Index === this._state.currentVideoStreamIndex
       );
     }
@@ -334,7 +334,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     ) {
       return this._state.currentMediaSource.MediaStreams.find(
         stream =>
-          stream.Type === 'Audio'
+          stream.Type === MediaStreamType.Audio
           && stream.Index === this._state.currentAudioStreamIndex
       );
     }
@@ -347,7 +347,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     ) {
       return this._state.currentMediaSource.MediaStreams.find(
         stream =>
-          stream.Type === 'Subtitle'
+          stream.Type === MediaStreamType.Subtitle
           && stream.Index === this._state.currentSubtitleStreamIndex
       );
     }
@@ -1053,50 +1053,13 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
             title: this.currentItem.Name ?? t('unknownTitle'),
             artist: this.currentItem.AlbumArtist ?? t('unknownArtist'),
             album: this.currentItem.Album ?? t('unknownAlbum'),
-            artwork: [
-              {
-                src:
-                    getImageInfo(this.currentItem, {
-                      width: 96
-                    }).url ?? '',
-                sizes: '96x96'
-              },
-              {
-                src:
-                    getImageInfo(this.currentItem, {
-                      width: 128
-                    }).url ?? '',
-                sizes: '128x128'
-              },
-              {
-                src:
-                    getImageInfo(this.currentItem, {
-                      width: 192
-                    }).url ?? '',
-                sizes: '192x192'
-              },
-              {
-                src:
-                    getImageInfo(this.currentItem, {
-                      width: 256
-                    }).url ?? '',
-                sizes: '256x256'
-              },
-              {
-                src:
-                    getImageInfo(this.currentItem, {
-                      width: 384
-                    }).url ?? '',
-                sizes: '384x384'
-              },
-              {
-                src:
-                    getImageInfo(this.currentItem, {
-                      width: 512
-                    }).url ?? '',
-                sizes: '512x512'
-              }
-            ]
+            artwork: [96, 128, 192, 256, 384, 512].map(size => ({
+              src:
+                getImageInfo(this.currentItem!, {
+                  width: size
+                }).url ?? '',
+              sizes: `${size}x${size}`
+            }))
           })
           /* eslint-disable-next-line unicorn/no-null */
           : null;
