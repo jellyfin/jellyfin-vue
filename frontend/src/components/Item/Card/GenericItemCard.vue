@@ -3,7 +3,7 @@
     <Component
       :is="to ? 'router-link' : 'div'"
       :to="to"
-      :class="{ 'card-box': to, 'pointer': hasClick }">
+      :class="{ 'card-box': to, 'uno-cursor-pointer': hasClick }">
       <JHover v-slot="{ isHovering }">
         <div
           :class="shape"

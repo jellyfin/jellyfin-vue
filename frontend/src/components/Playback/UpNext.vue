@@ -1,7 +1,7 @@
 <template>
   <VContainer
     v-if="visible && playbackManager.currentItem && playbackManager.nextItem"
-    class="up-next-dialog pointer-events-none pa-lg-6">
+    class="up-next-dialog uno-pointer-events-none pa-lg-6">
     <VRow>
       <VCol
         cols="12"
@@ -11,7 +11,7 @@
         lg="4"
         offset-xl="9"
         xl="3">
-        <VCard class="pointer-events-all">
+        <VCard>
           <VCardTitle class="text-h6">
             <span>
               {{ $t('nextItemPlayingIn') }}

@@ -34,9 +34,8 @@
             </VBtn>
           </div>
           <div
-            class="absolute-cover pointer-events-none d-flex flex-row justify-center align-center">
+            class="absolute-cover uno-pointer-events-none d-flex flex-row justify-center align-center">
             <VBtn
-              class="pointer-events-all"
               icon
               size="large"
               @click="playbackManager.setPreviousItem">
@@ -45,7 +44,6 @@
               </VIcon>
             </VBtn>
             <VBtn
-              class="pointer-events-all"
               icon
               size="x-large"
               @click="playbackManager.playPause">
@@ -55,7 +53,6 @@
               </VIcon>
             </VBtn>
             <VBtn
-              class="pointer-events-all"
               icon
               size="large"
               @click="playbackManager.setNextItem">

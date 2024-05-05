@@ -18,7 +18,7 @@
       :close-on-content-click="false"
       transition="slide-y-transition"
       location="top">
-      <VList class="overflow-hidden">
+      <VList class="uno-overflow-hidden">
         <VListItem
           v-for="track of tracks"
           :key="track.srcIndex"

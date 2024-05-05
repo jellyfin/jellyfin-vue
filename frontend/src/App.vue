@@ -61,7 +61,7 @@ const defaultTransitionMode = 'out-in';
 /**
  * When app is mounted, the classes and styles we initialized in the pre-Vue splashscreen in body
  * are now useless and can break the page if not removed.
- * 
+ *
  * We set all the styles and vars in JApp, so we want a body with 0 styling attributes.
  */
 onMounted(() => {

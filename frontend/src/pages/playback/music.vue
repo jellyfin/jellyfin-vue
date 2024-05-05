@@ -22,7 +22,7 @@
       <JTransition mode="out-in">
         <Swiper
           v-if="!isVisualizing"
-          class="d-flex justify-center align-center user-select-none"
+          class="d-flex justify-center align-center uno-select-none"
           :modules="modules"
           :slides-per-view="4"
           centered-slides
@@ -45,7 +45,7 @@
         </Swiper>
         <MusicVisualizer
           v-else
-          class="d-flex justify-center align-center user-select-none presentation-height" />
+          class="d-flex justify-center align-center uno-select-none presentation-height" />
       </JTransition>
       <VRow class="justify-center align-center mt-3">
         <VCol cols="6">
