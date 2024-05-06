@@ -85,35 +85,7 @@ jobs:
     name: Build 🏗️
     uses: ./.github/workflows/package.yml
     with:
-      commit: ${{ github.event_name == 'pull_request' && github.sha || github.run_id }}
-
-  pr_context:
-    name: Save PR context as artifact
-    if: ${{ always() && !cancelled() && github.event_name == 'pull_request' }}
-    runs-on: ubuntu-latest
-    needs:
-      - dependency-review
-      - lint
-      - typecheck
-      - build
-
-    steps:
-      - name: Save PR context
-        env:
-          PR_NUMBER: ${{ github.event.number }}
-          PR_SHA: ${{ github.sha }}
-        run: |
-          echo $PR_NUMBER > PR_number
-          echo $PR_SHA > PR_sha
-
-      - name: Upload PR number as artifact
-        uses: actions/upload-artifact@v4.3.3
-        with:
-          compression-level: 0
-          name: PR_context
-          path: |
-            PR_number
-            PR_sha
+      commit: ${{ github.sha }}
 
   conventional_commits:
     name: Conventional commits check 💬
