@@ -33,7 +33,8 @@
             block
             size="large"
             color="primary"
-            variant="elevated">
+            variant="elevated"
+            type="submit">
             {{ $t('connect') }}
           </VBtn>
         </VCol>
