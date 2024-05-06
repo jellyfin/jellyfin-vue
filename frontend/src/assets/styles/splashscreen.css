@@ -1,16 +1,16 @@
 .j-splash {
-  height: 100vh;
+  height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background-color: var(--j-background-color) !important;
+  background-color: var(--j-background-color);
 }
 
 .j-splash > img {
-  min-width: 30% !important;
-  min-height: 30% !important;
-  width: 30% !important;
-  height: 30% !important;
+  min-width: 30%;
+  min-height: 30%;
+  width: 30%;
+  height: 30%;
   object-fit: contain;
 }
