@@ -35,7 +35,7 @@
             </VBtn>
           </div>
           <div
-            class="absolute-cover uno-pointer-events-none d-flex flex-row justify-center align-center">
+            class="d-flex flex-row justify-center align-center">
             <VBtn
               icon
               size="large"
@@ -56,6 +56,7 @@
             <VBtn
               icon
               size="large"
+              :disabled="!playbackManager.nextItem"
               @click="playbackManager.setNextItem">
               <VIcon size="32">
                 <IMdiSkipNext />
