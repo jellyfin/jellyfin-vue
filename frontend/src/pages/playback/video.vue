@@ -217,7 +217,7 @@ watch(staticOverlay, (val) => {
 
 .osd-bottom > div,
 .osd-top > div {
-  max-width: calc(100vh * 1.77 - 2vh);
+  max-width: 175vh;
   margin: auto;
 }
 

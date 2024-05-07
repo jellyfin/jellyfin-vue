@@ -73,9 +73,9 @@ async function detachWebAudio(): Promise<void> {
 }
 
 const mediaElementType = computed<'audio' | 'video' | undefined>(() => {
-  if (playbackManager.currentlyPlayingMediaType === 'Audio') {
+  if (playbackManager.isAudio) {
     return 'audio';
-  } else if (playbackManager.currentlyPlayingMediaType === 'Video') {
+  } else if (playbackManager.isVideo) {
     return 'video';
   }
 });
@@ -87,7 +87,7 @@ const mediaElementType = computed<'audio' | 'video' | undefined>(() => {
 const teleportTarget = computed<
 '.fullscreen-video-container' | '.minimized-video-container' | undefined
 >(() => {
-  if (playbackManager.currentlyPlayingMediaType === 'Video') {
+  if (playbackManager.isVideo) {
     if (playerElement.isFullscreenMounted.value) {
       return '.fullscreen-video-container';
     } else if (playerElement.isPiPMounted.value) {
@@ -98,7 +98,7 @@ const teleportTarget = computed<
 
 const posterUrl = computed(() =>
   !isNil(playbackManager.currentItem)
-  && playbackManager.currentlyPlayingMediaType === 'Video'
+  && playbackManager.isVideo
     ? getImageInfo(playbackManager.currentItem, {
       preferBackdrop: true
     }).url
@@ -109,7 +109,7 @@ const posterUrl = computed(() =>
  * Called by the media element when the playback is ready
  */
 async function onLoadedData(): Promise<void> {
-  if (playbackManager.currentlyPlayingMediaType === 'Video') {
+  if (playbackManager.isVideo) {
     if (mediaElementRef.value) {
       /**
        * Makes the resume start from the correct time
@@ -210,7 +210,7 @@ watch(
       mediaElementRef.value.src = String(newUrl);
     } else if (
       hls
-      && playbackManager.currentlyPlayingMediaType === 'Video'
+      && playbackManager.isVideo
       && newUrl
     ) {
       /**

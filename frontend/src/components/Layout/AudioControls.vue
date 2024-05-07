@@ -5,7 +5,7 @@
     <VFooter
       v-if="
         playbackManager.isPlaying &&
-          playbackManager.currentlyPlayingMediaType === 'Audio' &&
+          playbackManager.isAudio &&
           playbackManager.currentItem
       "
       app

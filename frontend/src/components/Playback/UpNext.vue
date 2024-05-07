@@ -103,7 +103,7 @@ const nextUpDuration = computed(() => {
 const visible = computed(
   () =>
     !isHiddenByUser.value
-    && playbackManager.currentlyPlayingMediaType === 'Video'
+    && playbackManager.isVideo
     && currentItemTimeLeft.value <= nextUpDuration.value
 );
 

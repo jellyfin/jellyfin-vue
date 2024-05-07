@@ -201,12 +201,11 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
      * * Move user out of the fullscreen pages when playback is over
      */
     watch(
-      () => playbackManager.currentItem,
+      () => playbackManager.isVideo,
       async (newValue, oldValue) => {
         if (
           newValue
           && !oldValue
-          && playbackManager.currentlyPlayingMediaType === 'Video'
         ) {
           await this.toggleFullscreenVideoPlayer();
         }
