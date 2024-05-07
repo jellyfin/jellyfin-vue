@@ -13,7 +13,7 @@ import { Transition, TransitionGroup, type TransitionProps, mergeProps } from 'v
 import { prefersNoMotion } from '@/store';
 
 export interface JTransitionProps extends BetterOmit<TransitionProps, 'name'> {
-  name?: 'fade' | 'rotated-zoom' | 'slide-y-reverse' | 'slide-x' | 'slide-x-reverse';
+  name?: 'fade' | 'rotated-zoom' | 'slide-y' | 'slide-y-reverse' | 'slide-x' | 'slide-x-reverse';
   /**
    * Transition group props
    */
@@ -68,8 +68,17 @@ const props = withDefaults(defineProps<JTransitionProps>(), { name: 'fade', grou
 .j-transition-slide-y-reverse-enter-active,
 .j-transition-slide-y-reverse-leave-active,
 .j-transition-slide-x-enter-active,
-.j-transition-slide-x-leave-active {
+.j-transition-slide-x-leave-active,
+.j-transition-slide-y-enter-from,
+.j-transition-slide-y-leave-to {
   transition-property: transform, opacity !important;
+}
+
+/** slide-y */
+.j-transition-slide-y-enter-from,
+.j-transition-slide-y-leave-to {
+  opacity: 0;
+  transform: translateY(-15px);
 }
 
 /** slide-y-reverse */
