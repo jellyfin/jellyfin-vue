@@ -59,7 +59,7 @@ const route = useRoute();
 const { t } = useI18n();
 
 const drawer = inject<Ref<boolean>>('NavigationDrawer');
-const transparentLayout = computed(() => Boolean(route.meta.transparentLayout));
+const transparentLayout = computed(() => route.meta.layout.transparent);
 
 const items = [
   {

@@ -222,5 +222,5 @@ const writers = computed(() =>
 );
 
 route.meta.title = item.value.Name;
-route.meta.backdrop.blurhash = getBlurhash(item.value, ImageType.Backdrop);
+route.meta.layout.backdrop.blurhash = getBlurhash(item.value, ImageType.Backdrop);
 </script>

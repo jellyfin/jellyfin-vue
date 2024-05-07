@@ -121,10 +121,11 @@
 
 <route lang="yaml">
 meta:
-  layout: fullpage
-  transition:
-    enter: 'scroll-y-reverse-transition'
-    leave: 'scroll-y-transition'
+  layout:
+    name: fullpage
+    transition:
+      enter: 'slide-y-reverse'
+      leave: 'slide-y'
 </route>
 
 <script setup lang="ts">

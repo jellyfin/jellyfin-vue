@@ -1,11 +1,11 @@
 <template>
   <JTransition>
     <div
-      v-if="route.meta.backdrop.blurhash"
-      :key="`backdrop-${route.meta.backdrop.blurhash}`"
+      v-if="blurhash"
+      :key="`backdrop-${blurhash}`"
       class="backdrop sizing">
       <BlurhashCanvas
-        :hash="route.meta.backdrop.blurhash"
+        :hash="blurhash"
         :width="32"
         :height="32"
         class="sizing" />
@@ -18,7 +18,8 @@ import { computed } from 'vue';
 import { useRoute } from 'vue-router/auto';
 
 const route = useRoute();
-const opacity = computed(() => route.meta.backdrop.opacity);
+const opacity = computed(() => route.meta.layout.backdrop.opacity ?? 0.25);
+const blurhash = computed(() => route.meta.layout.backdrop.blurhash);
 </script>
 
 <style scoped>

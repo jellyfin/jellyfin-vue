@@ -112,7 +112,7 @@ function updateBackdrop(index: number): void {
   if (props.pageBackdrop) {
     const hash = getBlurhash(props.items[index], ImageType.Backdrop);
 
-    route.meta.backdrop.blurhash = hash;
+    route.meta.layout.backdrop.blurhash = hash;
   }
 }
 

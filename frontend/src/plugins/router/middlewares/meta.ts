@@ -1,5 +1,5 @@
 import { defu } from 'defu';
-import { ref } from 'vue';
+import { ref, toRaw } from 'vue';
 import type {
   RouteLocationNormalized,
   RouteLocationRaw,
@@ -7,12 +7,9 @@ import type {
 } from 'vue-router/auto';
 
 const defaultMeta: RouteMeta = {
-  layout: 'default',
-  transparentLayout: false,
-  admin: false,
-  backdrop: {
-    blurhash: undefined,
-    opacity: 0.25
+  layout: {
+    backdrop: {},
+    transition: {}
   }
 };
 
@@ -26,7 +23,8 @@ const reactiveMeta = ref(structuredClone(defaultMeta));
  *
  * <route lang="yaml">
  *  meta:
- *    layout: server
+ *    layout:
+ *      name: server
  * </route>
  *
  * That block is also needed when a property needs to be resolved before
@@ -45,14 +43,14 @@ export function metaGuard(
   from: RouteLocationNormalized
 ): boolean | RouteLocationRaw {
   reactiveMeta.value = defu(to.meta, structuredClone(defaultMeta));
+  /**
+   * This is needed to ensure all the meta matches the expected data
+   */
+  from.meta = defu(toRaw(from.meta), structuredClone(defaultMeta));
   to.meta = reactiveMeta.value;
 
-  if (from.meta.transition?.leave) {
-    if (to.meta.transition) {
-      to.meta.transition.enter = from.meta.transition.leave;
-    } else {
-      to.meta.transition = { enter: from.meta.transition.leave };
-    }
+  if (from.meta.layout.transition.leave) {
+    to.meta.layout.transition.enter = from.meta.layout.transition.leave;
   }
 
   return true;

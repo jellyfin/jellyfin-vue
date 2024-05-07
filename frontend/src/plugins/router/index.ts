@@ -53,14 +53,10 @@ router.back = (): ReturnType<typeof router.back> => {
    * Play the default page transition but reversed, to play a different effect when going
    * to the previous page.
    */
-  if (!route.value.meta.transition) {
-    route.value.meta.transition = {
-      enter: 'slide-x-reverse',
-      leave: backTransition
-    };
-  } else if (!route.value.meta.transition.leave) {
-    route.value.meta.transition.leave = backTransition;
-  }
+  route.value.meta.layout.transition = {
+    enter: 'slide-x-reverse',
+    leave: route.value.meta.layout.transition.leave ?? backTransition
+  };
 
   void router.replace(
     isStr(router.options.history.state.back)

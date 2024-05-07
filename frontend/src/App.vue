@@ -4,20 +4,18 @@
     <JApp>
       <RouterView v-slot="{ Component, route }">
         <JTransition
-          :name="route.meta.transition?.enter ?? defaultTransition"
-          :mode="defaultTransitionMode"
-          :disabled="!mounted"
-          appear>
+          :name="route.meta.layout.transition.enter ?? defaultTransition"
+          :mode="defaultTransitionMode ?? route.meta.layout.transition.mode">
           <Suspense @resolve="apploaded = true">
             <div
-              :key="route.meta.layout"
+              :key="route.meta.layout.name ?? 'default'"
               class="uno-h-full j-transition">
               <component
-                :is="getLayoutComponent(route.meta.layout)"
-                :key="route.meta.layout">
+                :is="getLayoutComponent(route.meta.layout.name)"
+                :key="route.meta.layout.name ?? 'default'">
                 <JTransition
-                  :name="route.meta.transition?.enter ?? defaultTransition"
-                  :mode="defaultTransitionMode">
+                  :name="route.meta.layout.transition.enter ?? defaultTransition"
+                  :mode="defaultTransitionMode ?? route.meta.layout.transition.mode">
                   <Suspense suspensible>
                     <div
                       :key="route.name ?? route.path"
@@ -54,7 +52,6 @@ import FullPageLayout from '@/layouts/fullpage.vue';
 import ServerLayout from '@/layouts/server.vue';
 
 const apploaded = shallowRef(false);
-const mounted = shallowRef(false);
 const defaultTransition = 'slide-x-reverse';
 const defaultTransitionMode = 'out-in';
 
@@ -67,13 +64,12 @@ const defaultTransitionMode = 'out-in';
 onMounted(() => {
   document.body.removeAttribute('class');
   document.body.removeAttribute('style');
-  mounted.value = true;
 });
 
 /**
  * Return the appropiate layout component according to the route's meta.layout property
  */
-function getLayoutComponent(layout: RouteMeta['layout']): VueComponent {
+function getLayoutComponent(layout: RouteMeta['layout']['name']): VueComponent {
   switch (layout) {
     case 'fullpage': {
       return FullPageLayout as VueComponent;

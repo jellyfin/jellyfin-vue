@@ -88,12 +88,13 @@
 
 <route lang="yaml">
 meta:
-  layout: fullpage
-  backdrop:
-    opacity: 0.75
-  transition:
-    enter: 'scroll-y-reverse-transition'
-    leave: 'scroll-y-transition'
+  layout:
+    name: fullpage
+    backdrop:
+      opacity: 0.75
+    transition:
+      enter: 'slide-y-reverse'
+      leave: 'slide-y'
 </route>
 
 <script setup lang="ts">
@@ -150,7 +151,7 @@ watchEffect(() => {
   }
 
   if (backdropHash.value) {
-    route.meta.backdrop.blurhash = backdropHash.value;
+    route.meta.layout.backdrop.blurhash = backdropHash.value;
   }
 }
 );

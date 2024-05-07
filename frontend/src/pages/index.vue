@@ -32,7 +32,8 @@ const excludeViewTypes = new Set([
 
 <route lang="yaml">
 meta:
-  transparentLayout: true
+  layout:
+    transparent: true
 </route>
 
 <script setup lang="ts">

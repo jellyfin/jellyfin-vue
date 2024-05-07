@@ -90,7 +90,8 @@
 
 <route lang="yaml">
 meta:
-  layout: server
+  layout:
+    name: server
 </route>
 
 <script setup lang="ts">
