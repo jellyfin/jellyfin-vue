@@ -1,118 +1,121 @@
 <template>
-  <VMain
-    class="fullscreen-video-container fill-height"
-    :class="{ 'uno-cursor-none': !overlay }"
-    @mousemove="handleMouseMove"
-    @touchend="handleMouseMove">
-    <VOverlay
-      v-model="overlay"
-      contained
-      scrim="transparent"
-      width="100%"
-      height="100%">
-      <div
-        class="d-flex flex-column justify-space-between align-center player-overlay">
-        <div class="osd-top pt-s pl-s pr-s">
-          <div class="d-flex align-center py-2 px-4">
-            <div class="d-flex">
-              <VBtn
-                :icon="IMdiClose"
-                @click="playbackManager.stop" />
-              <VBtn
-                :icon="IMdiChevronDown"
-                @click="playerElement.toggleFullscreenVideoPlayer" />
-            </div>
-            <div class="d-flex ml-auto">
-              <CastButton />
+  <VMain>
+    <div
+      ref="videoContainerRef"
+      class="fullscreen-video-container fill-height"
+      :class="{ 'uno-cursor-none': !overlay }"
+      @mousemove="handleMouseMove"
+      @touchend="handleMouseMove">
+      <VOverlay
+        v-model="overlay"
+        contained
+        scrim="transparent"
+        width="100%"
+        height="100%">
+        <div
+          class="d-flex flex-column justify-space-between align-center player-overlay">
+          <div class="osd-top pt-s pl-s pr-s">
+            <div class="d-flex align-center py-2 px-4">
+              <div class="d-flex">
+                <VBtn
+                  :icon="IMdiClose"
+                  @click="playbackManager.stop" />
+                <VBtn
+                  :icon="IMdiChevronDown"
+                  @click="playerElement.toggleFullscreenVideoPlayer" />
+              </div>
+              <div class="d-flex ml-auto">
+                <CastButton />
+              </div>
             </div>
           </div>
-        </div>
-        <div class="osd-bottom pb-s pl-s pr-s">
-          <div class="pa-4">
-            <TimeSlider />
-            <div
-              class="controls-wrapper d-flex align-stretch justify-space-between">
+          <div class="osd-bottom pb-s pl-s pr-s">
+            <div class="pa-4">
+              <TimeSlider />
               <div
-                v-if="$vuetify.display.mdAndUp"
-                class="d-flex flex-column align-start justify-center mr-auto video-title">
-                <template
-                  v-if="
-                    playbackManager.currentlyPlayingType ===
-                      BaseItemKind.Episode
-                  ">
-                  <span class="mt-1 text-subtitle-1 text-truncate">
-                    {{ playbackManager.currentItem?.Name }}
-                  </span>
-                  <span class="text-subtitle-2 text--secondary text-truncate">
-                    {{ playbackManager.currentItem?.SeriesName }}
-                  </span>
-                  <span class="text-subtitle-2 text--secondary text-truncate">
+                class="controls-wrapper d-flex align-stretch justify-space-between">
+                <div
+                  v-if="$vuetify.display.mdAndUp"
+                  class="d-flex flex-column align-start justify-center mr-auto video-title">
+                  <template
+                    v-if="
+                      playbackManager.currentlyPlayingType ===
+                        BaseItemKind.Episode
+                    ">
+                    <span class="mt-1 text-subtitle-1 text-truncate">
+                      {{ playbackManager.currentItem?.Name }}
+                    </span>
+                    <span class="text-subtitle-2 text--secondary text-truncate">
+                      {{ playbackManager.currentItem?.SeriesName }}
+                    </span>
+                    <span class="text-subtitle-2 text--secondary text-truncate">
+                      {{
+                        $t('seasonEpisode', {
+                          seasonNumber:
+                            playbackManager.currentItem?.ParentIndexNumber,
+                          episodeNumber: playbackManager.currentItem?.IndexNumber
+                        })
+                      }}
+                    </span>
+                  </template>
+                  <template v-else>
+                    <span>{{ playbackManager.currentItem?.Name }}</span>
+                  </template>
+                  <br>
+                  <span
+                    v-if="playbackManager.currentItem?.RunTimeTicks"
+                    class="text-subtitle-2 text--secondary text-truncate">
                     {{
-                      $t('seasonEpisode', {
-                        seasonNumber:
-                          playbackManager.currentItem?.ParentIndexNumber,
-                        episodeNumber: playbackManager.currentItem?.IndexNumber
-                      })
+                      getEndsAtTime(playbackManager.currentItem.RunTimeTicks)
+                        .value
                     }}
                   </span>
-                </template>
-                <template v-else>
-                  <span>{{ playbackManager.currentItem?.Name }}</span>
-                </template>
-                <br>
-                <span
-                  v-if="playbackManager.currentItem?.RunTimeTicks"
-                  class="text-subtitle-2 text--secondary text-truncate">
-                  {{
-                    getEndsAtTime(playbackManager.currentItem.RunTimeTicks)
-                      .value
-                  }}
-                </span>
-              </div>
-              <div
-                class="d-flex player-controls align-center justify-start justify-md-center">
-                <PreviousTrackButton class="mx-1" />
-                <PlayPauseButton class="mx-1" />
-                <NextTrackButton class="mx-1" />
-              </div>
-              <div class="d-flex aligh-center ml-auto ml-md-0">
-                <VolumeSlider
-                  v-if="$vuetify.display.smAndUp"
-                  class="mr-2" />
-                <QueueButton close-on-click />
-                <SubtitleSelectionButton
-                  v-if="$vuetify.display.smAndUp"
-                  v-model="subtitleSelectionButtonOpened" />
-                <PlaybackSettingsButton
-                  v-model="playbackSettingsButtonOpened" />
-                <VBtn
-                  v-if="mediaControls.supportsPictureInPicture"
-                  class="align-self-center"
-                  icon
-                  @click="mediaControls.togglePictureInPicture">
-                  <VIcon>
-                    <IMdiPictureInPictureBottomRight />
-                  </VIcon>
-                </VBtn>
-                <VBtn
-                  v-if="fullscreen.isSupported"
-                  class="align-self-center"
-                  icon
-                  @click="fullscreen.toggle">
-                  <VIcon>
-                    <IMdiFullscreen v-if="fullscreen.isFullscreen" />
-                    <IMdiFullscreenExit v-else />
-                  </VIcon>
-                  <VTooltip
-                    :text="$t('fullScreen')"
-                    location="top" />
-                </VBtn>
+                </div>
+                <div
+                  class="d-flex player-controls align-center justify-start justify-md-center">
+                  <PreviousTrackButton class="mx-1" />
+                  <PlayPauseButton class="mx-1" />
+                  <NextTrackButton class="mx-1" />
+                </div>
+                <div class="d-flex aligh-center ml-auto ml-md-0">
+                  <VolumeSlider
+                    v-if="$vuetify.display.smAndUp"
+                    class="mr-2" />
+                  <QueueButton close-on-click />
+                  <SubtitleSelectionButton
+                    v-if="$vuetify.display.smAndUp"
+                    v-model="subtitleSelectionButtonOpened" />
+                  <PlaybackSettingsButton
+                    v-model="playbackSettingsButtonOpened" />
+                  <VBtn
+                    v-if="mediaControls.supportsPictureInPicture"
+                    class="align-self-center"
+                    icon
+                    @click="mediaControls.togglePictureInPicture">
+                    <VIcon>
+                      <IMdiPictureInPictureBottomRight />
+                    </VIcon>
+                  </VBtn>
+                  <VBtn
+                    v-if="fullscreen.isSupported"
+                    class="align-self-center"
+                    icon
+                    @click="fullscreen.toggle">
+                    <VIcon>
+                      <IMdiFullscreen v-if="fullscreen.isFullscreen" />
+                      <IMdiFullscreenExit v-else />
+                    </VIcon>
+                    <VTooltip
+                      :text="$t('fullScreen')"
+                      location="top" />
+                  </VBtn>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </VOverlay>
+      </VOverlay>
+    </div>
   </VMain>
 </template>
 
@@ -129,13 +132,13 @@ import { BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
 import { useTimeoutFn } from '@vueuse/core';
 import IMdiChevronDown from 'virtual:icons/mdi/chevron-down';
 import IMdiClose from 'virtual:icons/mdi/close';
-import { computed, onBeforeUnmount, onMounted, shallowRef, watch } from 'vue';
+import { computed, shallowRef, watch } from 'vue';
 import { playbackGuard } from '@/plugins/router/middlewares/playback';
 import {
   mediaControls
 } from '@/store';
 import { playbackManager } from '@/store/playback-manager';
-import { playerElement } from '@/store/player-element';
+import { playerElement, videoContainerRef } from '@/store/player-element';
 import { getEndsAtTime } from '@/utils/time';
 import { usePlayback } from '@/composables/use-playback';
 
@@ -171,18 +174,6 @@ function handleMouseMove(): void {
   overlay.value = true;
   timeout.start();
 }
-
-onBeforeUnmount(() => {
-  /**
-   * We need to destroy JASSUB so the canvas can be recreated in the other view
-   */
-  playerElement.freeSsaTrack();
-  playerElement.isFullscreenMounted.value = false;
-});
-
-onMounted(() => {
-  playerElement.isFullscreenMounted.value = true;
-});
 
 watch(staticOverlay, (val) => {
   if (val) {

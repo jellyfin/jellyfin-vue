@@ -1,11 +1,11 @@
 <template>
   <template v-if="mediaElementType">
     <Teleport
-      :to="teleportTarget"
-      :disabled="!teleportTarget">
+      :to="videoContainerRef"
+      :disabled="!videoContainerRef">
       <Component
         :is="mediaElementType"
-        v-show="mediaElementType === 'video' && teleportTarget"
+        v-show="mediaElementType === 'video' && videoContainerRef"
         ref="mediaElementRef"
         :poster="String(posterUrl)"
         autoplay
@@ -37,7 +37,7 @@ import {
   mediaWebAudio
 } from '@/store';
 import { playbackManager } from '@/store/playback-manager';
-import { playerElement } from '@/store/player-element';
+import { playerElement, videoContainerRef } from '@/store/player-element';
 import { getImageInfo } from '@/utils/images';
 import { isNil } from '@/utils/validation';
 
@@ -77,22 +77,6 @@ const mediaElementType = computed<'audio' | 'video' | undefined>(() => {
     return 'audio';
   } else if (playbackManager.isVideo) {
     return 'video';
-  }
-});
-
-/**
- * If the player is a video element and we're in the PiP player or fullscreen video playback,
- * we need to ensure the DOM elements are mounted before the teleport target is ready
- */
-const teleportTarget = computed<
-'.fullscreen-video-container' | '.minimized-video-container' | undefined
->(() => {
-  if (playbackManager.isVideo) {
-    if (playerElement.isFullscreenMounted.value) {
-      return '.fullscreen-video-container';
-    } else if (playerElement.isPiPMounted.value) {
-      return '.minimized-video-container';
-    }
   }
 });
 
@@ -151,19 +135,6 @@ function onHlsEror(_event: typeof Hls.Events.ERROR, data: ErrorData): void {
     }
   }
 }
-
-watch(
-  () => [
-    playbackManager.currentSubtitleStreamIndex,
-    playerElement.isFullscreenMounted,
-    playerElement.isPiPMounted
-  ],
-  async (newVal) => {
-    if (newVal[1] || newVal[2]) {
-      await playerElement.applyCurrentSubtitle();
-    }
-  }
-);
 
 watch(mediaElementRef, async () => {
   detachHls();
