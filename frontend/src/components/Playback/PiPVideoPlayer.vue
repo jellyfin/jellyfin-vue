@@ -9,6 +9,7 @@
       content-class="minimized-overlay"
       :width="$vuetify.display.mobile ? '60vw' : '25vw'">
       <div
+        ref="videoContainerRef"
         class="minimized-video-container" />
       <VOverlay
         :model-value="isHovering"
@@ -68,21 +69,8 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted } from 'vue';
 import { playbackManager } from '@/store/playback-manager';
-import { playerElement } from '@/store/player-element';
-
-onMounted(() => {
-  playerElement.isPiPMounted.value = true;
-});
-
-onBeforeUnmount(() => {
-  /**
-   * We need to destroy JASSUB so the canvas can be recreated in the other view
-   */
-  playerElement.freeSsaTrack();
-  playerElement.isPiPMounted.value = false;
-});
+import { playerElement, videoContainerRef } from '@/store/player-element';
 </script>
 
 <style scoped>
