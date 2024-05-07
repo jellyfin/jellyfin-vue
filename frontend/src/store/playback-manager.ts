@@ -237,6 +237,14 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     }
   }
 
+  public get isVideo(): boolean {
+    return this.currentlyPlayingMediaType === 'Video';
+  }
+
+  public get isAudio(): boolean {
+    return this.currentlyPlayingMediaType === 'Audio';
+  }
+
   /**
    * Get current's item audio tracks
    */

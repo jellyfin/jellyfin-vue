@@ -11,7 +11,7 @@
   <AudioControls />
   <PiPVideoPlayer
     v-if="
-      playbackManager.currentlyPlayingMediaType === 'Video'
+      playbackManager.isVideo
     " />
 </template>
 
