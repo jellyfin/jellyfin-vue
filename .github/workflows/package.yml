@@ -192,7 +192,7 @@ jobs:
           path: docker_image.tar
 
       - name: Create provenance attestation 🔏
-        uses: actions/attest-build-provenance@v1.0.0
+        uses: actions/attest-build-provenance@v1.1.0
         with:
           subject-path: docker_image.tar
 
