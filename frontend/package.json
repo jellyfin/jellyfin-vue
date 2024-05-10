@@ -20,6 +20,7 @@
     "clean": "git clean -fxd"
   },
   "dependencies": {
+    "@fontsource-variable/figtree": "5.0.21",
     "@jellyfin/sdk": "0.8.2",
     "@vueuse/components": "10.9.0",
     "@vueuse/core": "10.9.0",
@@ -33,7 +34,6 @@
     "dompurify": "3.1.2",
     "fast-equals": "5.0.1",
     "hls.js": "1.5.8",
-    "inter-ui": "4.0.2",
     "jassub": "1.7.15",
     "lodash-es": "4.17.21",
     "marked": "12.0.2",
