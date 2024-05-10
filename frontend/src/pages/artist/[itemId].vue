@@ -18,7 +18,7 @@
                 class="text-subtitle-1 text--secondary font-weight-medium text-capitalize">
                 {{ $t('artist') }}
               </div>
-              <h1 class="text-h4 text-md-h2 font-weight-light">
+              <h1 class="text-h4 text-md-h2">
                 {{ item.Name }}
               </h1>
             </div>
