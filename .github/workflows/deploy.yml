@@ -14,8 +14,20 @@ jobs:
   cf-pages:
     name: CloudFlare Pages 📃
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    # We set the environment variable here (and as an output) because,
+    # given no real runner is dispatched in compose-comment job (it's dispatched in the reusable workflow) in this workflow definition,
+    # the env. context is not valid.
+    env:
+      TARGET_BRANCH: |
+        github.event.workflow_run.head_repository.full_name == github.repository
+        && github.event.workflow_run.head_branch
+        || format('{0}/{1}', github.event.workflow_run.head_repository.full_name, github.event.workflow_run.head_branch)
     outputs:
       url: ${{ steps.cf.outputs.url }}
+      branch: ${{ env.TARGET_BRANCH }}
 
     steps:
       - name: Download workflow artifact ⬇️
@@ -34,7 +46,7 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: jf-vue
           directory: dist
-          branch: ${{ github.event.workflow_run.head_branch }}
+          branch: ${{ env.TARGET_BRANCH }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
   compose-comment:
@@ -45,7 +57,7 @@ jobs:
       - cf-pages
 
     with:
-      branch: ${{ github.event.workflow_run.head_branch }}
+      branch: ${{ needs.cf-pages.outputs.branch }}
       commit: ${{ github.event.workflow_run.head_commit.id }}
       preview_url: ${{ needs.cf-pages.outputs.url }}
       build_workflow_run_id: ${{ github.event.workflow_run.id }}
