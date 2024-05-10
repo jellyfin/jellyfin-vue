@@ -46,7 +46,7 @@
                       :to="getItemDetailsLink(artist, 'MusicArtist')"
                       custom>
                       <span
-                        class="font-weight-light text-caption text-truncate link"
+                        class="text-caption text-truncate link"
                         @click="navigate">
                         {{ artist.Name }}
                       </span>

@@ -7,7 +7,7 @@
       class="swiper-section">
       <div class="d-flex ma-2">
         <h1
-          class="text-h6 text-sm-h5 font-weight-light header"
+          class="text-h6 text-sm-h5 header"
           :class="{ 'header-white-mode': !theme.current.value.dark }">
           <span class="pl-4">{{ title }}</span>
         </h1>
