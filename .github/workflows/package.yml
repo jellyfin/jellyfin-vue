@@ -74,6 +74,14 @@ jobs:
       - name: Build application 🛠️
         run: npm run build
 
+      - name: Create provenance attestation 🔏
+        uses: actions/attest-build-provenance@v1.1.0
+        with:
+          subject-path: |
+            ${{ matrix.platform == 'ubuntu' && 'packaging/tauri/target/release/bundle/appimage_deb' || '' }}
+            ${{ matrix.platform == 'macos' && 'packaging/tauri/target/release/bundle/macos' || '' }}
+            ${{ matrix.platform == 'windows' && 'packaging/tauri/target/release/jellyfin-vue.exe' || '' }}
+
       - name: Upload built application artifact ⬆️🐧🍎🪟
         uses: actions/upload-artifact@v4.3.3
         with:
@@ -220,6 +228,11 @@ jobs:
         run: |
           docker load < docker_image.tar
           docker cp $(docker create --name jf $(docker images --filter=reference='${{ env.REGISTRY_IMAGE }}' -q | head -n 1)):/usr/share/nginx/html/ ./dist
+
+      - name: Create provenance attestation 🔏
+        uses: actions/attest-build-provenance@v1.1.0
+        with:
+          subject-path: dist
 
       - name: Upload client artifact ⬆️💻
         uses: actions/upload-artifact@v4.3.3
