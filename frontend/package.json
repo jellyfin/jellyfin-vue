@@ -31,7 +31,7 @@
     "date-fns": "3.6.0",
     "defu": "6.1.4",
     "destr": "2.0.3",
-    "dompurify": "3.1.2",
+    "dompurify": "3.1.3",
     "fast-equals": "5.0.1",
     "hls.js": "1.5.8",
     "jassub": "1.7.15",
@@ -44,7 +44,7 @@
     "vue": "3.4.27",
     "vue-i18n": "9.13.1",
     "vue-router": "4.3.2",
-    "vuetify": "3.6.3"
+    "vuetify": "3.6.5"
   },
   "devDependencies": {
     "@eslint/config-inspector": "0.4.8",
