@@ -9,7 +9,7 @@
         class="py-4">
         <div
           v-if="
-            systemInfo &&
+            remote.auth.currentServer &&
               $remote.auth.currentUser?.Policy?.IsAdministrator
           ">
           <JImg
@@ -20,19 +20,11 @@
             <tbody>
               <tr>
                 <td>{{ $t('server') }}</td>
-                <td>{{ systemInfo.ServerName }}</td>
+                <td>{{ remote.auth.currentServer.ServerName }}</td>
               </tr>
               <tr>
                 <td>{{ $t('serverVersion') }}</td>
-                <td>{{ systemInfo.Version }}</td>
-              </tr>
-              <tr>
-                <td>{{ $t('operatingSystem') }}</td>
-                <td>{{ systemInfo.OperatingSystemDisplayName }}</td>
-              </tr>
-              <tr>
-                <td>{{ $t('architecture') }}</td>
-                <td>{{ systemInfo.SystemArchitecture }}</td>
+                <td>{{ remote.auth.currentServer.Version }}</td>
               </tr>
               <tr>
                 <td>{{ $t('vueClientVersion') }}</td>
@@ -127,7 +119,6 @@
 </template>
 
 <script setup lang="ts">
-import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
 import { commit_hash } from 'virtual:commit';
 import IMdiAccount from 'virtual:icons/mdi/account';
 import IMdiAccountMultiple from 'virtual:icons/mdi/account-multiple';
@@ -151,7 +142,6 @@ import { computed, type Component } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, type RouteLocationRaw } from 'vue-router/auto';
 import { remote } from '@/plugins/remote';
-import { useApi } from '@/composables/apis';
 import { version as clientVersion } from '@/../package.json';
 
 const { t } = useI18n();
@@ -165,9 +155,6 @@ interface MenuOptions {
 }
 
 route.meta.title = t('settings');
-
-const method = computed(() => remote.auth.currentUser?.Policy?.IsAdministrator ? 'getSystemInfo' : undefined);
-const { data: systemInfo } = await useApi(getSystemApi, method)(() => ({}));
 
 const userItems = computed<MenuOptions[]>(() => {
   return [
