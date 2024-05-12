@@ -22,9 +22,11 @@ jobs:
     # the env. context is not valid.
     env:
       TARGET_BRANCH: |
-        github.event.workflow_run.head_repository.full_name == github.repository
-        && github.event.workflow_run.head_branch
-        || format('{0}/{1}', github.event.workflow_run.head_repository.full_name, github.event.workflow_run.head_branch)
+        ${{ 
+          github.event.workflow_run.head_repository.full_name == github.repository
+          && github.event.workflow_run.head_branch
+          || format('{0}/{1}', github.event.workflow_run.head_repository.full_name, github.event.workflow_run.head_branch)
+        }}
     outputs:
       url: ${{ steps.cf.outputs.url }}
       branch: ${{ env.TARGET_BRANCH }}
