@@ -28,7 +28,6 @@
   "apiKeysSettingsDescription": "הוספת ושלילת מפתחות API לגישה חיצונית לשרת שלך",
   "appName": "שם היישום",
   "appVersion": "גרסת היישום",
-  "architecture": "ארכיטקטורה",
   "art": "אומנות",
   "artist": "אומן",
   "artists": "אומנים",
@@ -169,6 +168,5 @@
   "nextUp": "הבא בתור",
   "noImagesFound": "לא נמצאו תמונות",
   "noInformationAvailable": "אין מידע זמין",
-  "noResultsFound": "אין כאן כלום",
-  "operatingSystem": "מערכת הפעלה"
+  "noResultsFound": "אין כאן כלום"
 }
