@@ -65,7 +65,8 @@
   },
   "ignoreDeps": [
     "npm",
-    "node"
+    "node",
+    "vuetify"
   ],
   "enabledManagers": [
     "npm",
