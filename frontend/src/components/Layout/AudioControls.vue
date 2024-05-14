@@ -6,7 +6,7 @@
       v-if="
         playbackManager.isPlaying &&
           playbackManager.isAudio &&
-          playbackManager.currentItem
+          !isNil(playbackManager.currentItem)
       "
       app
       class="uno-select-none pa-0">
@@ -109,6 +109,7 @@
 </template>
 
 <script setup lang="ts">
+import { isNil } from '@/utils/validation';
 import { playbackManager } from '@/store/playback-manager';
 import { getItemDetailsLink } from '@/utils/items';
 </script>
