@@ -2,7 +2,7 @@ import type { Api } from '@jellyfin/sdk';
 import type { BaseItemDto, BaseItemDtoQueryResult } from '@jellyfin/sdk/lib/generated-client';
 import type { AxiosResponse } from 'axios';
 import { deepEqual } from 'fast-equals';
-import { computed, getCurrentScope, isRef, shallowRef, toValue, unref, watch, type ComputedRef, type Ref } from 'vue';
+import { computed, effectScope, getCurrentScope, isRef, shallowRef, toValue, unref, watch, type ComputedRef, type Ref } from 'vue';
 import { until } from '@vueuse/core';
 import { useLoading } from '@/composables/use-loading';
 import { useSnackbar } from '@/composables/use-snackbar';
@@ -11,6 +11,7 @@ import { remote } from '@/plugins/remote';
 import { isConnectedToServer } from '@/store';
 import { apiStore } from '@/store/api';
 import { isArray, isNil } from '@/utils/validation';
+import { router } from '@/plugins/router';
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-return */
 type OmittedKeys = 'fields' | 'userId' | 'enableImages' | 'enableTotalRecordCount' | 'enableImageTypes';
@@ -191,6 +192,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
   const stringArgs = computed(() => {
     return JSON.stringify(argsRef.value);
   });
+
   /**
    * TODO: Check why previous returns unknown by default without the type annotation
    */
@@ -275,29 +277,38 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
     argsRef.value = normalizeArgs();
 
     if (getCurrentScope() !== undefined) {
-      if (args.length) {
-        watch(args, async (_newVal, oldVal) => {
-          const normalizedArgs = normalizeArgs();
+      const handleArgsChange = async (_: typeof args, old: typeof args | undefined): Promise<void> => {
+        const normalizedArgs = normalizeArgs();
 
-          /**
-           * Does a deep comparison to avoid useless double requests
-           */
-          if (!normalizedArgs.every((a, index) => deepEqual(a, toValue(oldVal[index])))) {
-            argsRef.value = normalizedArgs;
-            await runNormally();
-          }
-        });
-      }
+        /**
+         * Does a deep comparison to avoid useless double requests
+         */
+        if (old && !normalizedArgs.every((a, index) => deepEqual(a, toValue(old[index])))) {
+          argsRef.value = normalizedArgs;
+          await runNormally();
+        }
+      };
+      const scope = effectScope();
 
-      watch(isConnectedToServer, runWithRetry);
+      scope.run(() => {
+        if (args.length) {
+          watch(args, handleArgsChange);
+        }
 
-      if (isRef(api)) {
-        watch(api, runNormally);
-      }
+        watch(isConnectedToServer, runWithRetry);
 
-      if (isRef(methodName)) {
-        watch(methodName, runNormally);
-      }
+        if (isRef(api)) {
+          watch(api, runNormally);
+        }
+
+        if (isRef(methodName)) {
+          watch(methodName, runNormally);
+        }
+      });
+
+      watch(() => router.currentRoute.value.name, () => scope.stop(),
+        { once: true, flush: 'sync' }
+      );
     }
 
     /**

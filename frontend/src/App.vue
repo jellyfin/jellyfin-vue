@@ -15,7 +15,7 @@
                 :mode="defaultTransitionMode ?? route.meta.layout.transition.mode">
                 <Suspense suspensible>
                   <JView
-                    :key="route.path"
+                    :key="route.name"
                     :comp="Component" />
                 </Suspense>
               </JTransition>

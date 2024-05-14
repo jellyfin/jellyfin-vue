@@ -321,16 +321,12 @@ const { data: relatedItems } = await useBaseItem(getLibraryApi, 'getSimilarItems
   itemId: route.params.itemId,
   limit: 12
 }));
-const { data: currentSeries } = await useBaseItem(getUserLibraryApi, 'getItem')(
-  () => ({
-    itemId: item.value.SeriesId ?? ''
-  })
-);
-const { data: childItems } = await useBaseItem(getItemsApi, 'getItems')(
-  () => ({
-    parentId: item.value.Id
-  })
-);
+const { data: currentSeries } = await useBaseItem(getUserLibraryApi, 'getItem')(() => ({
+  itemId: item.value.SeriesId ?? ''
+}));
+const { data: childItems } = await useBaseItem(getItemsApi, 'getItems')(() => ({
+  parentId: item.value.Id
+}));
 
 const selectedSource = ref<MediaSourceInfo>();
 const currentVideoTrack = ref<number>();
