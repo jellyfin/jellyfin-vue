@@ -34,6 +34,9 @@ export default defineConfig({
       routeBlockLang: 'yaml'
     }),
     Vue({
+      features: {
+        optionsAPI: false
+      },
       template: {
         transformAssetUrls: {
           img: []
