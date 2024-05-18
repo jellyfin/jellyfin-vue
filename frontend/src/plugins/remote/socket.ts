@@ -35,11 +35,17 @@ class RemotePluginSocket {
 
   private readonly _keepAliveMessage = 'KeepAlive';
   private readonly _forceKeepAliveMessage = 'ForceKeepAlive';
+  private readonly _updateInterval = '0,1';
   /**
    * Formats the message to be sent to the socket
    */
   private readonly _webSocket = useWebSocket(this._socketUrl, {
-    autoReconnect: { retries: () => true }
+    autoReconnect: { retries: () => true },
+    onConnected: () => {
+      this.sendToSocket('ScheduledTasksInfoStart', this._updateInterval);
+      this.sendToSocket('ActivityLogEntryStart', this._updateInterval);
+      this.sendToSocket('SessionsStart', this._updateInterval);
+    }
   });
 
   private readonly _parsedmsg = computed<WebSocketMessage | undefined>(() => destr(this._webSocket.data.value));
