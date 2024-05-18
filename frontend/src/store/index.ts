@@ -75,9 +75,16 @@ export const isSlow = useMediaQuery('(update:slow)');
  */
 const network = useNetwork();
 export const isConnectedToServer = computedAsync(async () => {
-  if (network.isSupported.value && network.isOnline.value) {
-    return true;
-  } else if (!isNil(remote.auth.currentServer) || !remote.socket.isConnected.value) {
+  /**
+   * These can't be merged inside the if statement as they must be picked up by watchEffect, and the OR operation
+   * stops evaluating in the first await tick as soon as the first truthy value is found.
+   *
+   * See https://vuejs.org/guide/essentials/watchers.html#watcheffect
+   */
+  const socket = remote.socket.isConnected.value;
+  const networkAPI = network.isOnline.value;
+
+  if (!isNil(remote.auth.currentServer) || !socket || !networkAPI) {
     try {
       await remote.sdk.newUserApi(getSystemApi).getPingSystem();
 

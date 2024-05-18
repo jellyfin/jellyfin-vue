@@ -3,7 +3,7 @@
  * It also sets the header and base URL for our axios instance
  */
 import type { Api } from '@jellyfin/sdk';
-import { watchEffect } from 'vue';
+import { watchSyncEffect } from 'vue';
 import RemotePluginAuthInstance from '../auth';
 import RemotePluginAxiosInstance from '../axios';
 import SDK, { useOneTimeAPI } from './sdk-utils';
@@ -21,7 +21,7 @@ class RemotePluginSDK {
     /**
      * Configure app's axios instance to perform requests to the given Jellyfin server.
      */
-    watchEffect(() => {
+    watchSyncEffect(() => {
       const server = auth.currentServer;
       const accessToken = auth.currentUserToken;
 

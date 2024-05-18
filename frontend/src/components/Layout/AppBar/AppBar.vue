@@ -19,8 +19,8 @@
     <SearchField />
     <VSpacer />
     <AppBarButtonLayout
-      v-if="!remote.socket.isConnected.value || !isConnectedToServer"
-      :color="!remote.socket.isConnected.value ? 'yellow' : 'red'">
+      v-hide="remote.socket.isConnected.value && isConnectedToServer"
+      :color="isConnectedToServer ? 'yellow' : 'red'">
       <template #icon>
         <VIcon>
           <IMdiNetworkOffOutline />
