@@ -1,4 +1,5 @@
 import type { AxiosError } from 'axios';
+import { NOOP } from '@vue/shared';
 
 /**
  * Validator to which enforces that a select component has at least one value selected
@@ -86,4 +87,16 @@ export function isArray(object: unknown): object is unknown[] {
 export function sealed(constructor: Function): void {
   Object.seal(constructor);
   Object.seal(constructor.prototype);
+}
+
+/**
+ * Creates a promise from setTimeout
+ */
+export async function promisifyTimeout(fn = NOOP, timeout = 0): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      fn();
+      resolve();
+    }, timeout);
+  });
 }

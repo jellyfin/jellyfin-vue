@@ -300,7 +300,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
      * If there's available data before component mount, we return the cached data rightaway (see below how
      * we skip the promise) to get the component mounted as soon as possible.
      * However, we queue a request to the server to update the data after the component is
-     * mounted. setTimeout executes it when the event loop is clear, avoiding overwhelming the engine.
+     * mounted.
      */
     if (isCached.value) {
       void run({ isRefresh: true });

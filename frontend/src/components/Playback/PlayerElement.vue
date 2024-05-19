@@ -27,9 +27,16 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * This component should call detachHls and detachWebAudio when it's unmounted.
+ * However, there's no onBeforeUnmount/onUnmounted lifecycle hook because in the current
+ * App.vue setip, this component never unmounts.
+ * 
+ * If at some point this component is unmounted, the lifecycle hook must be added.
+ */
 import Hls, { ErrorTypes, Events, type ErrorData } from 'hls.js';
 import HlsWorkerUrl from 'hls.js/dist/hls.worker.js?url';
-import { computed, nextTick, watch } from 'vue';
+import { computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useSnackbar } from '@/composables/use-snackbar';
 import {
@@ -39,9 +46,10 @@ import {
 import { playbackManager } from '@/store/playback-manager';
 import { playerElement, videoContainerRef } from '@/store/player-element';
 import { getImageInfo } from '@/utils/images';
-import { isNil } from '@/utils/validation';
+import { isNil, promisifyTimeout } from '@/utils/validation';
 
 const { t } = useI18n();
+let attachingWebAudio = false;
 
 const hls = Hls.isSupported()
   ? new Hls({
@@ -61,15 +69,57 @@ function detachHls(): void {
 }
 
 /**
- * Suspends WebAudio when no playback is in place
+ * Suspends WebAudio
  */
 async function detachWebAudio(): Promise<void> {
+  /**
+   * We need this to avoid cracks when switching tracks really fast.
+   * setValueAtTime and promisifyTimeout gives enough time for WebAudio to apply the gain, avoiding cracks
+   */
+  if (mediaWebAudio.gainNode) {
+    mediaWebAudio.gainNode.gain.value = 0;
+  }
+
+  /**
+   * This is needed so WebAudio has enough time to apply the gain.
+   * nextTick is faster than this and doesn't ensure the event loop is not as busy, so it's not enough
+   * for WebAudio to apply the gain.
+   */
+  await promisifyTimeout();
+  await promisifyTimeout(() => {
+    if (mediaWebAudio.context.state === 'running') {
+      void mediaWebAudio.context.suspend();
+    }
+  });
+
   if (mediaWebAudio.sourceNode) {
     mediaWebAudio.sourceNode.disconnect();
     mediaWebAudio.sourceNode = undefined;
   }
 
-  await mediaWebAudio.context.suspend();
+  if (mediaWebAudio.gainNode) {
+    mediaWebAudio.gainNode.disconnect();
+    mediaWebAudio.gainNode = undefined;
+  }
+}
+
+/**
+ * Resumes and attaches WebAudio and all the nodes to the current element.
+ */
+async function attachWebAudio(): Promise<void> {
+  await detachWebAudio();
+
+  if (mediaElementRef.value && !attachingWebAudio) {
+    attachingWebAudio = true;
+    await mediaWebAudio.context.resume();
+    mediaWebAudio.sourceNode = mediaWebAudio.context.createMediaElementSource(
+      mediaElementRef.value
+    );
+    mediaWebAudio.gainNode = mediaWebAudio.context.createGain();
+    mediaWebAudio.sourceNode.connect(mediaWebAudio.context.destination);
+    mediaWebAudio.sourceNode.connect(mediaWebAudio.gainNode);
+    attachingWebAudio = false;
+  }
 }
 
 const mediaElementType = computed<'audio' | 'video' | undefined>(() => {
@@ -115,7 +165,7 @@ function onHlsEror(_event: typeof Hls.Events.ERROR, data: ErrorData): void {
         // Try to recover network error
         useSnackbar(t('networkError'), 'error');
         console.error('fatal network error encountered, try to recover');
-        hls.startLoad();
+        hls.startLoad(playbackManager.currentTime);
         break;
       }
       case ErrorTypes.MEDIA_ERROR: {
@@ -136,28 +186,18 @@ function onHlsEror(_event: typeof Hls.Events.ERROR, data: ErrorData): void {
   }
 }
 
-watch(mediaElementRef, async () => {
+watch(mediaElementRef, () => {
   detachHls();
-  await detachWebAudio();
 
   if (mediaElementRef.value) {
-    await nextTick();
-
     if (mediaElementType.value === 'video' && hls) {
       hls.attachMedia(mediaElementRef.value);
       hls.on(Events.ERROR, onHlsEror);
     }
-
-    await mediaWebAudio.context.resume();
-    mediaWebAudio.sourceNode = mediaWebAudio.context.createMediaElementSource(
-      mediaElementRef.value
-    );
-    mediaWebAudio.sourceNode.connect(mediaWebAudio.context.destination);
   }
-  /**
-   * Needed so WebAudio is properly disposed
-   */
-}, { flush: 'sync' });
+
+  void attachWebAudio();
+});
 
 watch(
   () => playbackManager.currentSourceUrl,

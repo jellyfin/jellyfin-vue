@@ -30,7 +30,8 @@ export const mediaControls = useMediaControls(mediaElementRef);
  */
 export const mediaWebAudio = {
   context: new AudioContext(),
-  sourceNode: undefined as undefined | MediaElementAudioSourceNode
+  sourceNode: undefined as undefined | MediaElementAudioSourceNode,
+  gainNode: undefined as undefined | GainNode
 };
 /**
  * Reactively tracks if the user wants animations (false) or not (true).
