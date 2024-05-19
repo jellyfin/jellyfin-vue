@@ -2,8 +2,8 @@ import type { Api } from '@jellyfin/sdk';
 import type { BaseItemDto, BaseItemDtoQueryResult } from '@jellyfin/sdk/lib/generated-client';
 import type { AxiosResponse } from 'axios';
 import { deepEqual } from 'fast-equals';
-import { computed, effectScope, getCurrentScope, isRef, shallowRef, toValue, unref, watch, type ComputedRef, type Ref } from 'vue';
-import { watchImmediate } from '@vueuse/core';
+import { computed, getCurrentScope, isRef, shallowRef, toValue, unref, watch, type ComputedRef, type Ref } from 'vue';
+import { until } from '@vueuse/core';
 import { useLoading } from '@/composables/use-loading';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { i18n } from '@/plugins/i18n';
@@ -261,20 +261,10 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
     const runNormally = async (): Promise<void> => { await run({}); };
     const runWithRetry = async (): Promise<void> => { await run({ onlyPending: true }); };
     const returnablePromise = async (): Promise<ReturnPayload<T, K, typeof ofBaseItem>> => {
-      const scope = effectScope();
-
       await runNormally();
+      await until(data).toMatch(d => !isNil(d));
 
-      return new Promise((resolve) => {
-        scope.run(() => {
-          watchImmediate(isCached, () => {
-            if (isCached.value && !ops.skipCache.request) {
-              scope.stop();
-              resolve({ loading, data });
-            }
-          }, { flush: 'sync' });
-        });
-      });
+      return { loading, data };
     };
 
     argsRef.value = normalizeArgs();
@@ -304,9 +294,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
      */
     if (isCached.value) {
       void run({ isRefresh: true });
-    }
-
-    if (!isCached.value && isFuncDefined()) {
+    } else if (isFuncDefined()) {
       /**
        * Wait for the cache to be populated before resolving the promise
        * If the promise never resolves (and the component never gets mounted),
