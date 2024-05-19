@@ -33,7 +33,7 @@ import IMdiSurroundSound71 from 'virtual:icons/mdi/surround-sound-7-1';
 import IMdiSurroundSound from 'virtual:icons/mdi/surround-sound';
 import { watchImmediate } from '@vueuse/core';
 import { getLocaleName } from '@/utils/i18n';
-import { upperFirst } from '@/utils/data-manipulation';
+import { capitalize } from '@vue/shared';
 
 const props = withDefaults(
   defineProps<{
@@ -90,7 +90,7 @@ function getTrackIcon(
  */
 function getTrackSubtitle(track: MediaStream): string | undefined {
   if ((props.type === 'Audio' || props.type === 'Subtitle') && track.Language) {
-    return upperFirst(
+    return capitalize(
       getLocaleName(track.Language, locale.value)
       ?? `${t('unknown')} (${track.Language})`
     );
