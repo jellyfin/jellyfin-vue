@@ -188,6 +188,7 @@
   "mediaInfoVideoColorRange": "Renk aralığı",
   "mediaInfoVideoColorSpace": "Renk alanı",
   "mediaInfoVideoColorTransfer": "Renk aktarımı",
+  "mediaInfoVideoDoViBlPresent": "DoVi BL mevcut",
   "mediaInfoVideoDoViBlSignalCompatId": "DV bl sinyal uyumluluk kimliği",
   "mediaInfoVideoDoViElPresent": "DV el önayar etiketi",
   "mediaInfoVideoDoViLevel": "DV düzeyi",
