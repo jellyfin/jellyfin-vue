@@ -75,7 +75,7 @@ jobs:
         run: npm run build
 
       - name: Create provenance attestation 🔏
-        uses: actions/attest-build-provenance@v1.1.2
+        uses: actions/attest-build-provenance@v1.2.0
         with:
           subject-path: |
             ${{ matrix.platform == 'ubuntu' && 'packaging/tauri/target/release/bundle/appimage_deb' || '' }}
@@ -200,7 +200,7 @@ jobs:
           path: docker_image.tar
 
       - name: Create provenance attestation 🔏
-        uses: actions/attest-build-provenance@v1.1.2
+        uses: actions/attest-build-provenance@v1.2.0
         with:
           subject-path: docker_image.tar
 
@@ -230,7 +230,7 @@ jobs:
           docker cp $(docker create --name jf $(docker images --filter=reference='${{ env.REGISTRY_IMAGE }}' -q | head -n 1)):/usr/share/nginx/html/ ./dist
 
       - name: Create provenance attestation 🔏
-        uses: actions/attest-build-provenance@v1.1.2
+        uses: actions/attest-build-provenance@v1.2.0
         with:
           subject-path: dist
 
