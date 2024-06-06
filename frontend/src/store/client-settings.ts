@@ -73,6 +73,13 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState> {
    * CSS Style Properties for subtitles 
    */
   public get subtitleStyle(): CSSProperties {
+    const strokeStyle = {
+      WebkitTextStrokeColor: "black",
+      WebkitTextStrokeWidth: "7px",
+      textShadow: "2px 2px 15px black",
+      paintOrder: "stroke fill"
+    }
+
     return {
       fontFamily: `${this.subtitleAppearance.fontFamily}, ${FALLBACK_SUBTITLE_FONT} !important`,
       fontSize: `${this.subtitleAppearance.fontSize}em`,
@@ -81,30 +88,10 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState> {
       padding: '10px',
       color: 'white',
       /**
-       * If stroke is enabled we use the textShadow property
-       * to create a stroke outline around the text
+       * Unwrap stroke style if stroke is enabled
        */
-      textShadow: this.subtitleAppearance.stroke
-        ? `
-        4px 0 0 black,
-        3.6956px 1.5308px 0 black,
-        2.8284px 2.8284px 0 black,
-        1.5308px 3.6956px 0 black,
-        0 4px 0 black,
-        -1.5308px 3.6956px 0 black,
-        -2.8284px 2.8284px 0 black,
-        -3.6956px 1.5308px 0 black,
-        -4px 0 0 black,
-        -3.6956px -1.5308px 0 black,
-        -2.8284px -2.8284px 0 black,
-        -1.5308px -3.6956px 0 black,
-        0 -4px 0 black,
-        1.5308px -3.6956px 0 black,
-        2.8284px -2.8284px 0 black,
-        3.6956px -1.5308px 0 black,
-        2px 2px 15px black !important`
-        : undefined
-      }
+      ...(this.subtitleAppearance.stroke && strokeStyle)
+    }
   }
 
   public readonly currentTheme = computed(() => {
