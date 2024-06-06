@@ -7,17 +7,17 @@
           :name="route.meta.layout.transition.enter ?? defaultTransition"
           :mode="defaultTransitionMode ?? route.meta.layout.transition.mode">
           <Suspense @resolve="apploaded = true">
-            <AppComp
+            <JView
               :key="route.meta.layout.name ?? 'default'"
               :comp="getLayoutComponent(route.meta.layout.name)">
                 <JTransition
                   :name="route.meta.layout.transition.enter ?? defaultTransition"
                   :mode="defaultTransitionMode ?? route.meta.layout.transition.mode">
                   <Suspense suspensible>
-                    <AppComp :key="route.path" :comp="Component" />
+                    <JView :key="route.path" :comp="Component" />
                   </Suspense>
                 </JTransition>
-            </AppComp>
+            </JView>
             <template v-if="!apploaded" #fallback>
               <JSplashscreen />
             </template>
@@ -40,7 +40,6 @@ import type { RouteMeta } from 'vue-router/auto';
 import DefaultLayout from '@/layouts/default.vue';
 import FullPageLayout from '@/layouts/fullpage.vue';
 import ServerLayout from '@/layouts/server.vue';
-import AppComp from '@/AppComp.vue';
 
 const apploaded = shallowRef(false);
 const defaultTransition = 'slide-x-reverse';

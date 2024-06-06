@@ -1,18 +1,17 @@
 <template>
   <div :class="large ? useResponsiveClasses('large-grid') : undefined">
-    <VirtualGrid
+    <JVirtualGrid
       v-if="items.length > 0 && !noVirtual"
-      v-slot="{ item, style }"
+      v-slot="{ item }"
       :items="items"
       :class="useResponsiveClasses('card-grid-container')">
       <ItemCard
-        :style="style"
         :item="item"
         margin
         text
         overlay
         link />
-    </VirtualGrid>
+    </JVirtualGrid>
     <div
       v-else-if="items.length > 0 && noVirtual"
       :class="useResponsiveClasses('card-grid-container')">
