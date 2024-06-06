@@ -10,10 +10,10 @@
           class="elevation-2">
           <div
             class="absolute-cover card-content d-flex justify-center align-center">
-            <RSlot class="card-image">
+            <JSlot class="card-image">
               <slot
                 name="image" />
-            </RSlot>
+            </JSlot>
           </div>
           <div
             class="absolute-cover card-overlay d-flex justify-center align-center"

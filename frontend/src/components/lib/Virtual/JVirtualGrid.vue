@@ -14,16 +14,16 @@
       }">
       <slot
         :item="items[0]"
-        :index="0"
-        :style="undefined" />
+        :index="0" />
     </Component>
     <template v-if="visibleItems && visibleItems.length > 0">
-      <slot
-        v-for="(_n, i) in visibleItems.length"
+      <JSlot v-for="(_n, i) in visibleItems.length"
         :key="visibleItems[i].index"
-        :item="visibleItems[i].value"
-        :index="visibleItems[i].index"
-        :style="visibleItems[i].style" />
+        :style="visibleItems[i].style">
+        <slot
+          :item="visibleItems[i].value"
+          :index="visibleItems[i].index"/>
+      </JSlot>
     </template>
   </Component>
 </template>
