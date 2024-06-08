@@ -90,16 +90,13 @@ const loadAvailableFonts = async () => {
   };
 
   const fontChecks = SUBTITLE_FONT_FAMILIES.map(checkFontAvailability);
+  const fonts = await Promise.all(fontChecks);  
+  const validFonts = fonts.filter(font => font !== undefined);  
 
-  Promise.all(fontChecks).then(fonts => {
-    const validFonts = fonts.filter(font => font !== undefined);
-    availableSubtitleFonts.value = validFonts;
-  })
+  availableSubtitleFonts.value = validFonts;
 };
 
-onMounted(() => {
-  loadAvailableFonts()
-})
+await loadAvailableFonts();
 </script>
 
 <style scoped>
