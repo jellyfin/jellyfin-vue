@@ -30,7 +30,6 @@ import { getCodecProfiles } from './helpers/codec-profiles';
 import { getDirectPlayProfiles } from './directplay-profile';
 import { getTranscodingProfiles } from './transcoding-profile';
 import { getSubtitleProfiles } from './subtitle-profile';
-import { getResponseProfiles } from './response-profile';
 
 /**
  * Creates a device profile containing supported codecs for the active Cast device.
@@ -47,8 +46,7 @@ function getDeviceProfile(videoTestElement: HTMLVideoElement): DeviceProfile {
     TranscodingProfiles: getTranscodingProfiles(videoTestElement),
     ContainerProfiles: [],
     CodecProfiles: getCodecProfiles(videoTestElement),
-    SubtitleProfiles: getSubtitleProfiles(),
-    ResponseProfiles: getResponseProfiles()
+    SubtitleProfiles: getSubtitleProfiles()
   };
 }
 

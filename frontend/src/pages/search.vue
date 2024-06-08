@@ -94,7 +94,7 @@ const searchTab = shallowRef(0);
 
 const searchQuery = computed(() => route.query.q?.toString() ?? '');
 const searchDebounced = refDebounced(searchQuery, 400);
-const itemSearchMethod = computed(() => searchDebounced.value ? 'getItemsByUserId' : undefined);
+const itemSearchMethod = computed(() => searchDebounced.value ? 'getItems' : undefined);
 const peopleSearchMethod = computed(() => searchDebounced.value ? 'getPersons' : undefined);
 const { loading: itemLoading, data: itemSearch } = await useBaseItem(getItemsApi, itemSearchMethod, {
   skipCache: { request: true }
