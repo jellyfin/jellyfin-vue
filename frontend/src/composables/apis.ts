@@ -232,7 +232,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
     /**
      * Rerun previous parameters when the user is back online
      */
-    if (offlineParams.length > 0) {
+    if (offlineParams.length) {
       await Promise.all(offlineParams.map(p => void resolveAndAdd(p.api, p.methodName, ofBaseItem, loading, stringArgs.value, ops, ...p.args)));
       offlineParams.length = 0;
     }

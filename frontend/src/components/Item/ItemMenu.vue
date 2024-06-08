@@ -1,6 +1,6 @@
 <template>
   <VBtn
-    v-if="options.length > 0"
+    v-if="options.length"
     :variant="outlined ? 'outlined' : undefined"
     icon
     size="small"
@@ -20,7 +20,7 @@
       <VList nav>
         <template v-for="(section, index1) in options">
           <VDivider
-            v-if="section.length > 0 && index1 > 0"
+            v-if="section.length && index1 > 0"
             :key="`item-${item.Id}-section-${index1}-divider`" />
           <VListItem
             v-for="(menuOption, index2) in section"

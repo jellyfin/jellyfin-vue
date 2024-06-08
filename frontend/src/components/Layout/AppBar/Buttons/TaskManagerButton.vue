@@ -101,7 +101,7 @@ const UITaskList = computed(() => [
     : mappedTaskList.value),
   ...completedTaskList.value
 ]);
-const showButton = computed(() => UITaskList.value.length > 0);
+const showButton = computed(() => UITaskList.value.length);
 
 watch([menu, mappedCompleted], () => {
   if (menu.value) {

@@ -215,7 +215,7 @@ const generalProperties = computed(() => {
     const p = new Map<string, string | number | boolean | null | undefined>();
     const formats
       = isArray(selectedMediaSource.value.Formats)
-      && selectedMediaSource.value.Formats.length > 0
+      && selectedMediaSource.value.Formats.length
         ? selectedMediaSource.value.Formats.join(',')
         : undefined;
     const fileSize = isNumber(selectedMediaSource.value.Size)

@@ -65,7 +65,7 @@ export abstract class SyncedStore<T extends object> extends CommonStore<T> {
 
     const newState = {} as Partial<T>;
 
-    for (const key of this._syncedKeys.length > 0 ? this._syncedKeys : Object.keys(toRaw(this._state))) {
+    for (const key of this._syncedKeys.length ? this._syncedKeys : Object.keys(toRaw(this._state))) {
       const obj = displayPreferences.CustomPrefs?.[String(key)];
 
       if (!isNil(obj)) {
@@ -89,7 +89,7 @@ export abstract class SyncedStore<T extends object> extends CommonStore<T> {
       try {
         const newPrefs: DisplayPreferencesDto['CustomPrefs'] = {};
 
-        for (const key of this._syncedKeys.length > 0 ? this._syncedKeys : Object.keys(toRaw(this._state))) {
+        for (const key of this._syncedKeys.length ? this._syncedKeys : Object.keys(toRaw(this._state))) {
           newPrefs[String(key)] = this._serializeCustomPref(this._state[key as keyof T]);
         }
 

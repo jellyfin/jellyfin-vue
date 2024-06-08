@@ -3,7 +3,7 @@
     :class="`swiper-section-${uuid}`"
     style="width: 100%">
     <VCol
-      v-show="items && items.length > 0"
+      v-show="items && items.length"
       class="swiper-section">
       <div class="d-flex ma-2">
         <h1

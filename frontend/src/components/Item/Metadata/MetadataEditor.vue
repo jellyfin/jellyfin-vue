@@ -37,7 +37,7 @@
         class="pa-2 flex-fill">
         <VWindowItem value="general">
           <VSelect
-            v-if="contentOptions.length > 0"
+            v-if="contentOptions.length"
             v-model="contentOption"
             :items="contentOptions"
             :label="t('contentType')"

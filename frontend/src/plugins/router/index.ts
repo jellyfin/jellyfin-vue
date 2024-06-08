@@ -98,13 +98,13 @@ watch(
       await router.replace('/server/add');
     } else if (
       !remote.auth.currentUser
-      && remote.auth.servers.length > 0
+      && remote.auth.servers.length
       && remote.auth.currentServer
     ) {
       await (remote.auth.currentServer.StartupWizardCompleted ? router.replace('/server/login') : router.replace('/wizard'));
     } else if (
       !remote.auth.currentUser
-      && remote.auth.servers.length > 0
+      && remote.auth.servers.length
       && !remote.auth.currentServer
     ) {
       await router.replace('/server/select');

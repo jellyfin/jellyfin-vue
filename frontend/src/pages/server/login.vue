@@ -4,7 +4,7 @@
     fluid>
     <VRow justify="center">
       <VCol
-        v-if="!currentUser && !loginAsOther && publicUsers.length > 0"
+        v-if="!currentUser && !loginAsOther && publicUsers.length"
         sm="10"
         md="7"
         lg="5">

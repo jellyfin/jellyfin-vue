@@ -9,7 +9,7 @@
         {{ t('addNewKey') }}
       </VBtn>
       <VBtn
-        v-if="apiKeys.length > 0"
+        v-if="apiKeys.length"
         color="error"
         variant="elevated"
         :loading="loading"

@@ -88,8 +88,8 @@ export function getTranscodingProfiles(
 
   if (
     canPlayHls
-    && hlsInTsVideoCodecs.length > 0
-    && hlsInTsAudioCodecs.length > 0
+    && hlsInTsVideoCodecs.length
+    && hlsInTsAudioCodecs.length
   ) {
     TranscodingProfiles.push({
       Container: 'ts',
