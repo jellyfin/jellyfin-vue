@@ -30,7 +30,7 @@ export function getDirectPlayProfiles(
   const mp4VideoCodecs = getSupportedMP4VideoCodecs(videoTestElement);
   const mp4AudioCodecs = getSupportedMP4AudioCodecs(videoTestElement);
 
-  if (webmVideoCodecs.length > 0) {
+  if (webmVideoCodecs.length) {
     DirectPlayProfiles.push({
       Container: 'webm',
       Type: DlnaProfileType.Video,
@@ -39,7 +39,7 @@ export function getDirectPlayProfiles(
     });
   }
 
-  if (mp4VideoCodecs.length > 0) {
+  if (mp4VideoCodecs.length) {
     DirectPlayProfiles.push({
       Container: 'mp4,m4v',
       Type: DlnaProfileType.Video,
@@ -48,7 +48,7 @@ export function getDirectPlayProfiles(
     });
   }
 
-  if (hasMkvSupport(videoTestElement) && mp4VideoCodecs.length > 0) {
+  if (hasMkvSupport(videoTestElement) && mp4VideoCodecs.length) {
     DirectPlayProfiles.push({
       Container: 'mkv',
       Type: DlnaProfileType.Video,

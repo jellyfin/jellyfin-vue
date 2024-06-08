@@ -26,7 +26,7 @@
       {{ subtitle }}
     </p>
     <h2
-      v-if="item.Taglines && item.Taglines.length > 0"
+      v-if="item.Taglines && item.Taglines.length"
       data-swiper-parallax="-200"
       class="text-truncate">
       {{ item.Taglines[0] }}

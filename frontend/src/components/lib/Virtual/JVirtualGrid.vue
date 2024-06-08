@@ -1,7 +1,7 @@
 <template>
   <Component
     :is="tag"
-    v-show="items.length > 0"
+    v-show="items.length"
     ref="rootRef"
     :style="rootStyles">
     <Component
@@ -16,7 +16,7 @@
         :item="items[0]"
         :index="0" />
     </Component>
-    <template v-if="visibleItems && visibleItems.length > 0">
+    <template v-if="visibleItems && visibleItems.length">
       <JSlot v-for="(_n, i) in visibleItems.length"
         :key="visibleItems[i].index"
         :style="visibleItems[i].style">

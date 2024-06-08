@@ -2,7 +2,7 @@
   <VList
     bg-color="transparent"
     lines="two">
-    <div v-if="items.length > 0">
+    <div v-if="items.length">
       <VListItem
         v-for="(item, index) in items"
         :key="`${item.Id}-${index}`"

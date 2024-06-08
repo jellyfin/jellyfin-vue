@@ -1,7 +1,7 @@
 <template>
   <div>
     <ItemsCarousel
-      v-if="carousel.length > 0"
+      v-if="carousel.length"
       :items="carousel"
       page-backdrop>
       <template #referenceText>

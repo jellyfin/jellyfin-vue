@@ -20,7 +20,7 @@
     </VAppBar>
     <VContainer class="after-second-toolbar">
       <ItemGrid
-        v-if="genres.length > 0"
+        v-if="genres.length"
         :items="genres" />
       <VRow
         justify="center">

@@ -142,7 +142,7 @@ export function getCodecProfiles(
 
   const supportsSecondaryAudio = isTizen();
 
-  if (aacProfileConditions.length > 0) {
+  if (aacProfileConditions.length) {
     CodecProfiles.push({
       Type: CodecType.VideoAudio,
       Codec: 'aac',

@@ -61,7 +61,7 @@
           </VCheckbox>
           <VDivider />
           <IdentifyResults
-            v-if="isArray(searchResults) && searchResults.length > 0"
+            v-if="isArray(searchResults) && searchResults.length"
             :items="searchResults"
             :item-type="item.Type"
             @select="applySelectedSearch" />

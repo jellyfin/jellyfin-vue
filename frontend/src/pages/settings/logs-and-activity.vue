@@ -11,7 +11,7 @@
             {{ t('logs') }}
           </h2>
           <VList
-            v-if="logs.length > 0"
+            v-if="logs.length"
             key="log-list"
             lines="two"
             class="mb-2">
@@ -54,7 +54,7 @@
             {{ t('activity') }}
           </h2>
           <VList
-            v-if="activityList.length > 0"
+            v-if="activityList.length"
             key="activity-list"
             lines="two"
             class="mb-2">

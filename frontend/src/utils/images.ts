@@ -274,14 +274,14 @@ export function getImageInfo(
   } else if (
     preferThumb
     && item.BackdropImageTags
-    && item.BackdropImageTags.length > 0
+    && item.BackdropImageTags.length
   ) {
     imgType = ImageType.Backdrop;
     imgTag = item.BackdropImageTags[0];
   } else if (
     preferThumb
     && item.ParentBackdropImageTags
-    && item.ParentBackdropImageTags.length > 0
+    && item.ParentBackdropImageTags.length
     && inheritThumb
     && item.Type === BaseItemKind.Episode
   ) {
@@ -317,7 +317,7 @@ export function getImageInfo(
   ) {
     imgType = ImageType.Thumb;
     imgTag = item.ImageTags.Thumb;
-  } else if (item.BackdropImageTags && item.BackdropImageTags.length > 0) {
+  } else if (item.BackdropImageTags && item.BackdropImageTags.length) {
     imgType = ImageType.Backdrop;
     imgTag = item.BackdropImageTags[0];
   } else if (item.ImageTags?.Thumb) {
@@ -333,7 +333,7 @@ export function getImageInfo(
     itemId = item.ParentThumbItemId;
   } else if (
     item.ParentBackdropImageTags
-    && item.ParentBackdropImageTags.length > 0
+    && item.ParentBackdropImageTags.length
     && inheritThumb
   ) {
     imgType = ImageType.Backdrop;

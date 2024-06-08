@@ -2,7 +2,7 @@
   <SettingsPage page-title="devices">
     <template #actions>
       <VBtn
-        v-if="devices.length > 0"
+        v-if="devices.length"
         color="error"
         variant="elevated"
         class="ml-a"

@@ -138,7 +138,7 @@ class ApiStore {
    * @param itemIds - Ids of the items to update
    */
   private readonly _update = async (itemIds: BaseItemDto['Id'][]): Promise<void> => {
-    if (itemIds.length > 0) {
+    if (itemIds.length) {
       const { data } = await remote.sdk.newUserApi(getItemsApi).getItems({
         userId: remote.auth.currentUserId,
         ids: itemIds as string[],

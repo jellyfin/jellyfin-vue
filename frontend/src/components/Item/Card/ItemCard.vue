@@ -169,7 +169,7 @@ const cardSubtitleLink = computed(() => {
   if (
     props.item.Type === BaseItemKind.MusicAlbum
     && props.item.AlbumArtists
-    && props.item.AlbumArtists.length > 0
+    && props.item.AlbumArtists.length
   ) {
     return getItemDetailsLink(props.item.AlbumArtists[0], 'MusicArtist');
   } else if (props.item.Type === BaseItemKind.Episode) {

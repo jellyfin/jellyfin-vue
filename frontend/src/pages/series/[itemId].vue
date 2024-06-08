@@ -54,7 +54,7 @@
             cols="12"
             md="10">
             <VRow
-              v-if="item && item.GenreItems && item.GenreItems.length > 0"
+              v-if="item && item.GenreItems && item.GenreItems.length"
               align="center">
               <VCol
                 :cols="12"
@@ -82,7 +82,7 @@
               </VCol>
             </VRow>
             <VRow
-              v-if="item && directors.length > 0 && !$vuetify.display.smAndUp"
+              v-if="item && directors.length && !$vuetify.display.smAndUp"
               align="center">
               <VCol
                 :cols="12"
@@ -109,7 +109,7 @@
               </VCol>
             </VRow>
             <VRow
-              v-if="item && writers.length > 0 && !$vuetify.display.smAndUp"
+              v-if="item && writers.length && !$vuetify.display.smAndUp"
               align="center">
               <VCol
                 :cols="12"
@@ -138,7 +138,7 @@
           </VCol>
           <div>
             <p
-              v-if="item.Taglines && item.Taglines.length > 0"
+              v-if="item.Taglines && item.Taglines.length"
               class="text-subtitle-1 text-truncate">
               {{ item.Taglines[0] }}
             </p>
@@ -159,13 +159,13 @@
       </VRow>
     </template>
     <template #right>
-      <div v-if="crew.length > 0">
+      <div v-if="crew.length">
         <h2 class="text-h6 text-sm-h5">
           {{ $t('crew') }}
         </h2>
         <PeopleList :items="crew" />
       </div>
-      <div v-if="actors.length > 0">
+      <div v-if="actors.length">
         <h2 class="text-h6 text-sm-h5">
           {{ $t('cast') }}
         </h2>

@@ -63,7 +63,7 @@
           </VExpansionPanelText>
         </VExpansionPanel>
         <VExpansionPanel
-          v-if="genreFilters.length > 0"
+          v-if="genreFilters.length"
           :title="t('genres')">
           <VExpansionPanelText>
             <VList
@@ -88,7 +88,7 @@
           </VExpansionPanelText>
         </VExpansionPanel>
         <VExpansionPanel
-          v-if="ratingFilters.length > 0"
+          v-if="ratingFilters.length"
           :title="t('parentalRatings')">
           <VExpansionPanelText>
             <VList
@@ -138,7 +138,7 @@
           </VExpansionPanelText>
         </VExpansionPanel>
         <VExpansionPanel
-          v-if="yearFilters.length > 0"
+          v-if="yearFilters.length"
           :title="t('years')">
           <VExpansionPanelText>
             <VList
