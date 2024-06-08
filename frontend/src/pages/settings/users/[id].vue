@@ -311,7 +311,8 @@ meta:
 import type {
   BaseItemDtoQueryResult,
   UnratedItem,
-  UserDto
+  UserDto,
+UserPolicy
 } from '@jellyfin/sdk/lib/generated-client';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getLocalizationApi } from '@jellyfin/sdk/lib/utils/api/localization-api';
@@ -431,7 +432,7 @@ async function saveAccess(): Promise<void> {
   loading.value = true;
   await remote.sdk.newUserApi(getUserApi).updateUserPolicy({
     userId: user.value.Id,
-    userPolicy: { ...user.value.Policy, EnableAllFolders: model.value.CanAccessAllLibraries, EnabledFolders: model.value.Folders }
+    userPolicy: { ...user.value.Policy as UserPolicy, EnableAllFolders: model.value.CanAccessAllLibraries, EnabledFolders: model.value.Folders }
   });
   await refreshData();
   loading.value = false;
@@ -466,7 +467,7 @@ async function saveParentalControl(): Promise<void> {
   await remote.sdk.newUserApi(getUserApi).updateUserPolicy({
     userId: user.value.Id,
     userPolicy: {
-      ...user.value.Policy,
+      ...user.value.Policy as UserPolicy,
       MaxParentalRating: model.value.maxParentalRating,
       BlockUnratedItems: model.value.BlockUnratedItems
     }

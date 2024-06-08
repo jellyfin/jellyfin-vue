@@ -7,6 +7,7 @@
 import {
   BaseItemKind,
   ItemFilter,
+  ItemSortBy,
   MediaStreamType,
   SubtitleDeliveryMethod,
   type BaseItemDto,
@@ -819,7 +820,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
 
   public readonly instantMixFromItem = async (itemId: string): Promise<void> => {
     const { data: items } = await useBaseItem(getInstantMixApi, 'getInstantMixFromItem', { skipCache: { request: true } })(() => ({
-      id: itemId
+      itemId
     }));
 
     if (!items.value) {
@@ -868,7 +869,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     const sortOrder
       = item.Type === BaseItemKind.Playlist || item.Type === BaseItemKind.BoxSet
         ? undefined
-        : ['SortName'];
+        : [ItemSortBy.SortName];
     const ids
       = item.Type === BaseItemKind.Program && item.ChannelId
         ? [item.ChannelId]
