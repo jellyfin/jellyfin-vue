@@ -14,12 +14,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { computed } from 'vue';
 import { clientSettings } from '@/store/client-settings';
+import { mediaControls } from '@/store';
 import { playerElement } from '@/store/player-element'
-import { mediaElementRef } from '@/store';
-
-const currentSubtitle = ref(undefined);
+import { isNil } from '@/utils/validation';
 
 /**
  * Function to find the current subtitle based on the current time.
@@ -56,21 +55,14 @@ const findCurrentSubtitle = (data, currentTime) => {
   }
 };
 /**
- * Function to update the current subtitle based on the current time of the media element.
+ * Update the current subtitle based on the current time of the media element.
  */
-const updateSubtitle = () => {
-  const currentSubtitleTrackData = playerElement.currentExternalSubtitleTrack?.parsed;
-  const currentTime = mediaElementRef.value?.currentTime;
-
-  currentSubtitle.value = findCurrentSubtitle(currentSubtitleTrackData, currentTime);
-};
-/**
- * onMounted lifecycle hook to setup event listeners and initialize the subtitle update mechanism.
- */
-onMounted(() => {
-  // Add listener to the 'timeupdate' event on the media element to update the subtitle.
-  mediaElementRef.value.addEventListener('timeupdate', updateSubtitle);
-});
+const currentSubtitle = computed(() => 
+  !isNil(mediaControls.currentTime?.value)
+  && !isNil(playerElement.currentExternalSubtitleTrack?.parsed)
+    ? findCurrentSubtitle(playerElement.currentExternalSubtitleTrack.parsed, mediaControls.currentTime.value)
+    : undefined
+);
 </script>
 
 <style scoped>
