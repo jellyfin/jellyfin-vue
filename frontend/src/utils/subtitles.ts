@@ -2,6 +2,8 @@
  * Helper for subtitle manipulation and subtitle-related utility functions
  */
 
+import axios from "axios";
+
 interface Subtitle {
   start: number;
   end: number;
@@ -9,6 +11,7 @@ interface Subtitle {
 }
 
 export type ParsedSubtitleTrack = Subtitle[]
+type TagMap = Record<string, string>
 
 export const SUBTITLE_FONT_FAMILIES = [
   'Figtree Variable',
@@ -35,128 +38,177 @@ function parseTime(timeString: string) {
 }
 
 /**
-* Parses a VTT (WebVTT) file from a given URL
-* Extracts dialogue lines with start and end times, and text content.
-* 
-* Converts specific tags to styled <span> tags, 
-* and sanitizes the content by removing harmful tags.
-*/
-export async function parseVttFile(src: string) {
-    return fetch(src)
-      .then(response => response.text())
-      .then((vttText) => {
-        try {
-          const subtitles: ParsedSubtitleTrack = [];
-          const vttLines = vttText.split('\n');
-
-          let i = 0;
-          while (i < vttLines.length) {
-            // Skip empty lines
-            if (vttLines[i].trim() === '') {
-              i++;
-              continue;
-            }
-
-            if (vttLines[i].includes('-->')) {
-              const [start, end] = vttLines[i].split(' --> ');
-              let text = '';
-              i++;
-              while (i < vttLines.length && !vttLines[i].includes('-->')) {
-                text += vttLines[i] + '\n';
-                i++;
-              }
-
-              // Replace tags with html elements & remove harmful tags to sanitize
-              const sanitizedText = text
-                .replace(/<i>/g, '<span style="font-style: italic;">')
-                .replace(/<\/i>/g, '</span>')
-                .replace(/<b>/g, '<span style="font-weight: bold;">')
-                .replace(/<\/b>/g, '</span>')
-                .replace(/<u>/g, '<span style="text-decoration: underline;">')
-                .replace(/<\/u>/g, '</span>')
-                .replace(/<em>/g, '<span style="font-style: italic;">')
-                .replace(/<\/em>/g, '</span>')
-                .replace(/<strong>/g, '<span style="font-weight: bold;">')
-                .replace(/<\/strong>/g, '</span>')
-                .replace(/<mark>/g, '<span style="background-color: yellow;">')
-                .replace(/<\/mark>/g, '</span>')
-                .replace(/<script.*?>.*?<\/script>/g, '')
-                .replace(/<iframe.*?>.*?<\/iframe>/g, '')
-                .replace(/<object.*?>.*?<\/object>/g, '')
-                .replace(/<embed.*?>.*?<\/embed>/g, '')
-                .replace(/<style.*?>.*?<\/style>/g, '');
-
-              subtitles.push({
-                start: parseTime(start),
-                end: parseTime(end),
-                text: sanitizedText.trim()
-              });
-            } else {
-              i++;
-            }
-          }
-
-          return subtitles;
-        } catch (err) {
-          console.error("error parsing VTT subtitles", err);
-        }
-      });
+ * Formats the provided text by replacing specified tags with HTML elements.
+ */
+function formatText(text: string, tagMap: TagMap): string {
+  let formattedText = text;
+  for (const [tag, replacement] of Object.entries(tagMap)) {
+    const regex = new RegExp(tag, 'g');
+    formattedText = formattedText.replace(regex, replacement);
   }
+  return formattedText;
+}
 
 /**
-* Parses an ASS/SSA (SubStation Alpha) file from a given URL.
-* Extracts dialogue lines with start and end times, and text content.
-* 
-* Converts specific tags to styled <span> tags, 
-* and sanitizes the content by removing harmful tags.
-*/
-export async function parseSsaFile(src: string) {
-  return await fetch(src)
-    .then(res => res.text())
-    .then(ssaText => {
-      try {
-        const subtitles: ParsedSubtitleTrack = [];
-        const ssaLines = ssaText.split('\n');
-    
-        let i = 0;
-        while (i < ssaLines.length) {
-          const line = ssaLines[i].trim();
-    
-          if (line.startsWith('Dialogue:')) {
-            const dialogueParts = line.split(',');
-            const timeStart = dialogueParts[1].trim();
-            const timeEnd = dialogueParts[2].trim();
-            const text = dialogueParts.slice(9).join(',').trim();
-    
-            // Replace tags with HTML elements & remove harmful tags to sanitize
-            const sanitizedText = text
-              .replace(/{\\i1}/g, '<span style="font-style: italic;">')
-              .replace(/{\\i0}/g, '</span>')
-              .replace(/{\\b1}/g, '<span style="font-weight: bold;">')
-              .replace(/{\\b0}/g, '</span>')
-              .replace(/{\\u1}/g, '<span style="text-decoration: underline;">')
-              .replace(/{\\u0}/g, '</span>')
-              .replace(/{.*?}/g, '')
-              .replace(/<script.*?>.*?<\/script>/gi, '')
-              .replace(/<iframe.*?>.*?<\/iframe>/gi, '')
-              .replace(/<object.*?>.*?<\/object>/gi, '')
-              .replace(/<embed.*?>.*?<\/embed>/gi, '')
-              .replace(/<style.*?>.*?<\/style>/gi, '');
-    
-            subtitles.push({
-              start: parseTime(timeStart),
-              end: parseTime(timeEnd),
-              text: sanitizedText.trim(),
-            });
-          }
-    
+ * Parses a VTT (WebVTT) file from a given URL
+ * Extracts dialogue lines with start and end times, and text content.
+ * 
+ * Converts specific tags to styled <span> tags
+ */
+export async function parseVttFile(src: string) {
+  try {
+    const file = await axios.get(src);
+    const vttText: string = file.data;
+
+    if (!vttText) return
+
+    const subtitles: ParsedSubtitleTrack = [];
+    const vttLines = vttText.split('\n');
+
+    let i = 0;
+    while (i < vttLines.length) {
+      // Skip empty lines
+      if (vttLines[i].trim() === '') {
+        i++;
+        continue;
+      }
+
+      if (vttLines[i].includes('-->')) {
+        const [start, end] = vttLines[i].split(' --> ');
+        let text = '';
+        i++;
+        while (i < vttLines.length && !vttLines[i].includes('-->')) {
+          text += vttLines[i] + '\n';
           i++;
         }
 
-        return subtitles;
-      } catch (err) {
-        console.error('Error parsing ASS subtitles', err);
-        return [];
+        const formattedText = formatText(text, {
+          '<i>': '<span style="font-style: italic;">',
+          '</i>': '</span>',
+          '<b>': '<span style="font-weight: bold;">',
+          '</b>': '</span>',
+          '<u>': '<span style="text-decoration: underline;">',
+          '</u>': '</span>',
+          '<em>': '<span style="font-style: italic;">',
+          '</em>': '</span>',
+          '<strong>': '<span style="font-weight: bold;">',
+          '</strong>': '</span>',
+          '<mark>': '<span style="background-color: yellow;">',
+          '</mark>': '</span>',
+        });
+
+        subtitles.push({
+          start: parseTime(start),
+          end: parseTime(end),
+          text: formattedText.trim()
+        });
+      } else {
+        i++;
       }
-    });
+    }
+
+    return subtitles;
+  } catch (err) {
+    console.error("Error parsing VTT subtitles", err);
+  }
+}
+
+/**
+ * Parses dialogue line from SSA file.
+ */
+const parseSsaDialogue = (line: string, formatFields: string[]) => {
+  const dialogueParts = line.split('Dialogue:')[1].split(',').map(field => field.trim());
+  const dialogueData: Record<string, string> = {};
+
+  formatFields.forEach((field, fieldIndex) => {
+    if (field === "Text") {
+      dialogueData[field] = dialogueParts.slice(fieldIndex).join(', ').trim();
+    } else {
+      dialogueData[field] = dialogueParts[fieldIndex]?.trim();
+    }
+  });
+
+  const timeStart = dialogueData['Start'];
+  const timeEnd = dialogueData['End'];
+  const text = dialogueData['Text'];
+
+  const formattedText = formatText(text, {
+    '{\\i1}': '<span style="font-style: italic;">',
+    '{\\i0}': '</span>',
+    '{\\b1}': '<span style="font-weight: bold;">',
+    '{\\b0}': '</span>',
+    '{\\u1}': '<span style="text-decoration: underline;">',
+    '{\\u0}': '</span>',
+    '{.*?}': '', // Remove other SSA tags
+  });
+
+  return { start: parseTime(timeStart), end: parseTime(timeEnd), text: formattedText.trim() };
+};
+
+/**
+ * Parses an ASS/SSA (SubStation Alpha) file from a given URL.
+ * Extracts dialogue lines with start and end times, and text content.
+ * 
+ * Converts specific tags to styled <span> tags
+ */
+export async function parseSsaFile(src: string) {
+  try {
+    const file = await axios.get(src);
+    const ssaText: string = file.data;
+
+    if (!ssaText) return;
+
+    // Dialouge lines
+    const ssaLines = ssaText.split('[Events]')[1].split('\n');
+
+    const subtitles: ParsedSubtitleTrack = [];
+    let formatFields: string[] = [];
+    let index = 0;
+    while (index < ssaLines.length) {
+      const line = ssaLines[index].trim();
+
+      /**
+       * Parse format fields and save to a variable
+       * to index data from dialogue lines
+       */
+      if (line.startsWith('Format:')) {
+        formatFields = line.split('Format:')[1].split(',').map(field => field.trim());
+      }
+
+      /**
+       * Parse lines with dialouge
+       * add consecutive lines at the same time together
+       */
+      if (line.startsWith('Dialogue:')) {
+        if (!formatFields) break; // Format fields should be defined before dialogue begins 
+
+        const currentDialogue = parseSsaDialogue(line, formatFields);
+
+        // Handle consecutive dialogue lines with the same timestamp
+        while (index + 1 < ssaLines.length) {
+          const nextLine = ssaLines[index + 1].trim();
+          if (nextLine.startsWith('Dialogue:')) {
+            const nextDialogue = parseSsaDialogue(nextLine, formatFields);
+            if (nextDialogue.start === currentDialogue.start && nextDialogue.end === currentDialogue.end) {
+              // Add a newline between consecutive dialogue lines with the same timestamp
+              currentDialogue.text += '\n' + nextDialogue.text;
+              index++;
+            } else {
+              break;
+            }
+          } else {
+            break;
+          }
+        }
+
+        subtitles.push(currentDialogue);
+      }
+
+      index++;
+    }
+
+    return subtitles;
+  } catch (err) {
+    console.error('Error parsing ASS subtitles', err);
+  }
 }
