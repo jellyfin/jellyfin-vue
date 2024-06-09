@@ -78,7 +78,11 @@ export default tseslint.config(
       'unicorn/filename-case': 'off',
       'unicorn/consistent-function-scoping': 'off',
       'unicorn/prevent-abbreviations': 'off',
-      'unicorn/no-await-expression-member': 'off'
+      'unicorn/no-await-expression-member': 'off',
+      /**
+       * See https://github.com/jellyfin/jellyfin-vue/pull/2361
+       */
+      'unicorn/explicit-length-check': 'off'
     }
   },
   /** Common TypeScript rules */
