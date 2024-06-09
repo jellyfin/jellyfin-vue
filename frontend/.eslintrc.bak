@@ -22,13 +22,6 @@ module.exports = {
         'ignoreInlineComments': true,
         ignoreConsecutiveComments: true
       }],
-    // This rule should be enforced by properly setting the env var in the flat config file.
-    'no-restricted-globals': ['error', ...restrictedGlobals],
-    // Promise plugin is still not working with ESLint v9
-    'promise/no-nesting': 'error',
-    'promise/no-return-in-finally': 'error',
-    'promise/prefer-await-to-callbacks': 'error',
-    'promise/prefer-await-to-then': 'error',
     // This rule made sense in Options API, but atm is really verbose
     '@typescript-eslint/explicit-function-return-type': 'error'
   },
