@@ -312,7 +312,7 @@ import type {
   BaseItemDtoQueryResult,
   UnratedItem,
   UserDto,
-UserPolicy
+  UserPolicy
 } from '@jellyfin/sdk/lib/generated-client';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getLocalizationApi } from '@jellyfin/sdk/lib/utils/api/localization-api';
