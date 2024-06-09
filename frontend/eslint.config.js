@@ -9,6 +9,7 @@ import vue from 'eslint-plugin-vue';
 import { FlatCompat } from '@eslint/eslintrc';
 import { globifyGitIgnoreFile } from 'globify-gitignore';
 import stylistic from '@stylistic/eslint-plugin';
+import sonarjs from 'eslint-plugin-sonarjs';
 import tseslint from 'typescript-eslint';
 import jsonc from 'eslint-plugin-jsonc';
 
@@ -122,20 +123,20 @@ export default tseslint.config(
     name: '(you-dont-need-lodash) Extended rules',
     files: vueAndTsFiles
   },
+  {
+    ...flatArrayOfObjects(compat.extends('plugin:promise/recommended')),
+    name: '(promise) Extended rules',
+    files: vueAndTsFiles
+  },
+  {
+    name: '(promise) Custom rule configs',
+    files: vueAndTsFiles,
+    rules: {
+      'promise/prefer-await-to-callbacks': 'error',
+      'promise/prefer-await-to-then': 'error'
+    }
+  },
   /*
-   * {
-   *   ...flatArrayOfObjects(compat.extends('plugin:promise/recommended')),
-   *   name: '(promise) Extended rules',
-   *   files: vueAndTsFiles
-   * },
-   * {
-   *   name: '(promise) Custom rule configs',
-   *   files: vueAndTsFiles,
-   *   rules: {
-   *     'promise/prefer-await-to-callbacks': 'error',
-   *     'promise/prefer-await-to-then': 'error',
-   *   }
-   * },
    * {
    *   ...flatArrayOfObjects(compat.extends('plugin:import/typescript')),
    *   name: '(import) Extended rules (TypeScript)',
@@ -221,11 +222,12 @@ export default tseslint.config(
         fixStyle: 'inline-type-imports'
       }],
       '@typescript-eslint/explicit-member-accessibility': 'error',
-      '@typescript-eslint/no-empty-interface': ['error', { allowSingleExtends: true }]
+      '@typescript-eslint/no-empty-interface': ['error', { allowSingleExtends: true }],
+      '@typescript-eslint/no-non-null-assertion': 'off'
     }
   },
   {
-    ...flatArrayOfObjects(compat.extends('plugin:sonarjs/recommended')),
+    ...sonarjs.configs.recommended,
     name: 'SonarCloud recommended rules',
     files: vueAndTsFiles
   },
@@ -328,10 +330,6 @@ export default tseslint.config(
   /**
    * Extra files to include and ignores that should override all the others
    */
-  {
-    name: 'Extra files to lint',
-    files: ['index.html']
-  },
   {
     name: 'Ignored files',
     ignores: [

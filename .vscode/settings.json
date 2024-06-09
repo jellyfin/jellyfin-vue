@@ -29,6 +29,7 @@
     "typescript"
   ],
   "eslint.format.enable": true,
+  "eslint.experimental.useFlatConfig": true,
   "eslint.workingDirectories": [
     {
       "mode": "auto"
