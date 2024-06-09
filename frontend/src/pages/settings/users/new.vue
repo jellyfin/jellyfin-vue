@@ -88,7 +88,6 @@ import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router/auto';
 import { remote } from '@/plugins/remote';
-import type { UserPolicy } from '@jellyfin/sdk/lib/generated-client';
 
 const { t } = useI18n();
 const router = useRouter();
@@ -120,7 +119,7 @@ async function createUser(): Promise<void> {
     await remote.sdk.newUserApi(getUserApi).updateUserPolicy({
       userId: res.Id ?? '',
       userPolicy: {
-        ...res.Policy as UserPolicy,
+        ...res.Policy!,
         EnableAllFolders: canAccessAllLibraries.value,
         ...(!canAccessAllLibraries.value && {
           EnabledFolders: accessableLibraries.value
