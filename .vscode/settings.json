@@ -49,6 +49,6 @@
     "connectionId": "jellyfin-vue",
     "projectKey": "jellyfin_jellyfin-vue"
   },
-  "typescript.preferences.autoImportFileExcludePatterns": ["vue-router"],
+  "typescript.preferences.autoImportFileExcludePatterns": ["vue-router$"],
   "typescript.tsserver.experimental.enableProjectDiagnostics": true
 }

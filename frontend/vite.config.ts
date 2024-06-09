@@ -95,6 +95,9 @@ export default defineConfig(({ mode }): UserConfig => {
           main: entrypoints.main,
           index: entrypoints.index
         },
+        ...(mode === 'analyze' ? {
+          onwarn: (warning) => console.warn(warning)
+        } : {}),
         output: {
           chunkFileNames: (chunkInfo) => {
             /**
