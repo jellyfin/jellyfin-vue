@@ -10,6 +10,7 @@
     "skipLibCheck": true,
     "noEmit": true,
     "isolatedModules": true,
+    "moduleDetection": "force",
     "useDefineForClassFields": true,
     "noImplicitThis": true,
     "noImplicitAny": true,
