@@ -1,6 +1,6 @@
 import jsdoc from 'eslint-plugin-jsdoc';
 import unicorn from 'eslint-plugin-unicorn';
-import eslintImport from 'eslint-plugin-import';
+import eslintImportX from 'eslint-plugin-import-x';
 import fileProgress from 'eslint-plugin-file-progress';
 import js from '@eslint/js';
 import globals from 'globals';
@@ -139,10 +139,10 @@ export default tseslint.config(
     name: '(import) Custom rule configs',
     files: vueAndTsFiles,
     plugins: {
-      import: eslintImport
+      'import-x': eslintImportX
     },
     rules: {
-      'import/no-extraneous-dependencies': [
+      'import-x/no-extraneous-dependencies': [
         'error',
         {
           devDependencies: ['*.config.ts', 'scripts/**/*.ts'],
@@ -151,13 +151,13 @@ export default tseslint.config(
           bundledDependencies: false
         }
       ],
-      'import/order': 'error',
-      'import/no-cycle': 'error',
-      'import/no-nodejs-modules': 'error',
-      'import/no-duplicates': ['error', { 'prefer-inline': true, 'considerQueryString': true }],
+      'import-x/order': 'error',
+      'import-x/no-cycle': 'error',
+      'import-x/no-nodejs-modules': 'error',
+      'import-x/no-duplicates': ['error', { 'prefer-inline': true, 'considerQueryString': true }],
       // From the recommended preset
-      'import/named': 'error',
-      'import/export': 'error'
+      'import-x/named': 'error',
+      'import-x/export': 'error'
     }
   },
   {
