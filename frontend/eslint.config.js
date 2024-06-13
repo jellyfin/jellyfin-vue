@@ -6,6 +6,7 @@ import js from '@eslint/js';
 import globals from 'globals';
 import vueScopedCSS from 'eslint-plugin-vue-scoped-css';
 import vue from 'eslint-plugin-vue';
+import i18n from '@intlify/eslint-plugin-vue-i18n';
 import { FlatCompat } from '@eslint/eslintrc';
 import gitignore from 'eslint-config-flat-gitignore';
 import stylistic from '@stylistic/eslint-plugin';
@@ -28,16 +29,24 @@ const flatArrayOfObjects = obj => Object.assign({}, ...obj);
 
 export default tseslint.config(
   /** Global settings */
-  js.configs.recommended,
-  unicorn.configs['flat/recommended'],
-  stylistic.configs.customize({
-    quotes: 'single',
-    semi: true,
-    commaDangle: 'never',
-    braceStyle: '1tbs',
-    arrowParens: false,
-    blockSpacing: true
-  }),
+  { ...js.configs.recommended,
+    name: '(eslint) Extended recommended rules'
+  },
+  {
+    ...unicorn.configs['flat/recommended'],
+    name: '(unicorn) Extended rules'
+  },
+  {
+    ...stylistic.configs.customize({
+      quotes: 'single',
+      semi: true,
+      commaDangle: 'never',
+      braceStyle: '1tbs',
+      arrowParens: false,
+      blockSpacing: true
+    }),
+    name: '(@stylistic) Extended rules'
+  },
   /** File progress plugin */
   {
     name: 'Progress reporting',
@@ -63,6 +72,12 @@ export default tseslint.config(
       sourceType: 'module',
       globals: {
         ...globals.browser
+      }
+    },
+    settings: {
+      'vue-i18n': {
+        localeDir: 'locales/en.json',
+        messageSyntaxVersion: '^9.0.0'
       }
     },
     rules: {
@@ -160,16 +175,10 @@ export default tseslint.config(
       'import-x/export': 'error'
     }
   },
+  ...i18n.configs['flat/recommended'],
   {
-    ...flatArrayOfObjects(compat.extends('plugin:@intlify/vue-i18n/recommended')),
     name: '(@intlify/vue-i18n) Extended rules',
     files: vueAndTsFiles,
-    settings: {
-      'vue-i18n': {
-        localeDir: 'locales/en.json',
-        messageSyntaxVersion: '^9.0.0'
-      }
-    }
   },
   {
     name: '(@intlify/vue-i18n) Custom rule configs',
