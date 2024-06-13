@@ -7,7 +7,7 @@ import globals from 'globals';
 import vueScopedCSS from 'eslint-plugin-vue-scoped-css';
 import vue from 'eslint-plugin-vue';
 import { FlatCompat } from '@eslint/eslintrc';
-import { globifyGitIgnoreFile } from 'globify-gitignore';
+import gitignore from 'eslint-config-flat-gitignore';
 import stylistic from '@stylistic/eslint-plugin';
 import sonarjs from 'eslint-plugin-sonarjs';
 import tseslint from 'typescript-eslint';
@@ -24,7 +24,6 @@ const compat = new FlatCompat({
   baseDirectory: import.meta.dirname
 });
 
-const gitignore = (await globifyGitIgnoreFile(`${import.meta.dirname}/..`)).map(l => l.glob);
 const flatArrayOfObjects = obj => Object.assign({}, ...obj);
 
 export default tseslint.config(
@@ -328,7 +327,7 @@ export default tseslint.config(
     ignores: [
       'types/global/routes.d.ts',
       'types/global/components.d.ts',
-      ...gitignore
+      ...gitignore().ignores
     ]
   }
 );
