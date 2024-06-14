@@ -104,7 +104,7 @@ declare module 'vue' {
     JSplashscreen: typeof import('./../../src/components/lib/JSplashscreen.vue')['default']
     JTransition: typeof import('./../../src/components/lib/JTransition.vue')['default']
     JView: typeof import('./../../src/components/lib/JView.vue')['default']
-    JVirtualGrid: typeof import('./../../src/components/lib/Virtual/JVirtualGrid.vue')['default']
+    JVirtual: typeof import('./../../src/components/lib/JVirtual/JVirtual.vue')['default']
     LikeButton: typeof import('./../../src/components/Buttons/LikeButton.vue')['default']
     LoadingIndicator: typeof import('./../../src/components/System/LoadingIndicator.vue')['default']
     LocaleSwitcher: typeof import('./../../src/components/System/LocaleSwitcher.vue')['default']

@@ -1,10 +1,12 @@
 <template>
   <div :class="large ? useResponsiveClasses('large-grid') : undefined">
     <template v-if="items.length">
-      <JVirtualGrid
+      <JVirtual
         v-if="!noVirtual"
         v-slot="{ item }"
         :items="items"
+        grid
+        index-as-key
         :class="useResponsiveClasses('card-grid-container')">
         <ItemCard
           :item="item"
@@ -12,7 +14,7 @@
           text
           overlay
           link />
-      </JVirtualGrid>
+      </JVirtual>
       <div
         v-else
         :class="useResponsiveClasses('card-grid-container')">
