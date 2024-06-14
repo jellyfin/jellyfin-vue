@@ -16,7 +16,7 @@
     "lint-fix": "eslint . --fix --max-warnings=0 --cache --cache-location ../node_modules/.cache/eslint",
     "eslint-inspect": "eslint-config-inspector",
     "prod": "npm run build && npm run serve",
-    "typecheck": "vue-tsc",
+    "typecheck": "vue-tsc --incremental",
     "clean": "git clean -fxd"
   },
   "dependencies": {
