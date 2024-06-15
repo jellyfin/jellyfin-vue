@@ -217,9 +217,13 @@ class ApiStore {
     watch(
       () => remote.auth.currentUser,
       () => {
-        if (!remote.auth.currentUser) {
-          this._clear();
-        }
+        window.requestAnimationFrame(() => {
+          window.setTimeout(() => {
+            if (!remote.auth.currentUser) {
+              this._clear();
+            }
+          });
+        });
       }, { flush: 'post' }
     );
   }
