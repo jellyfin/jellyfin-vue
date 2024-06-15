@@ -15,7 +15,8 @@ export const DEFAULT_PUNCH = 1;
 
 @sealed
 class BlurhashWorker {
-  private readonly _cache = new Map<string, Uint8ClampedArray>();
+  private readonly _pixelsCache = new Map<string, Uint8ClampedArray>();
+
   /**
    * Decodes blurhash outside the main thread, in a web worker.
    *
@@ -32,25 +33,45 @@ class BlurhashWorker {
     punch: number = DEFAULT_PUNCH
   ): Uint8ClampedArray => {
     try {
-      const params = [hash, width, height, punch].toString();
-      let canvas = this._cache.get(params);
+      const params = String([hash, width, height, punch]);
+      let pixels = this._pixelsCache.get(params);
 
-      if (!canvas) {
-        canvas = decode(hash, width, height, punch);
-        this._cache.set(params, canvas);
+      if (!pixels) {
+        pixels = decode(hash, width, height, punch);
+        this._pixelsCache.set(params, pixels);
       }
 
-      return canvas;
+      return pixels;
     } catch {
       throw new TypeError(`Blurhash ${hash} is not valid`);
     }
   };
 
   /**
+   * Draws the transferred canvas from the main thread
+   *
+   * @param hash - Hash to decode.
+   * @param canvas - Canvas to draw the decoded pixels. Must come from main thread's canvas.transferControlToOffscreen()
+   * @param width - Width of the decoded pixel array
+   * @param height - Height of the decoded pixel array.
+   * @param punch - Contrast of the decoded pixels
+   * @returns - Returns the decoded pixels in the proxied response by Comlink
+   */
+  public readonly drawCanvas = ({
+    hash, canvas, width = DEFAULT_WIDTH, height = DEFAULT_HEIGHT, punch = DEFAULT_PUNCH
+  }: { hash: string; canvas: OffscreenCanvas; width: number; height: number; punch: number }) => {
+    const pixels = this.getPixels(hash, width, height, punch);
+    const ctx = canvas.getContext('2d');
+    const imageData = ctx!.createImageData(width, height);
+    imageData.data.set(pixels);
+    ctx!.putImageData(imageData, 0, 0);
+  };
+
+  /**
    * Clear the blurhashes cache
    */
   public readonly clearCache = (): void => {
-    this._cache.clear();
+    this._pixelsCache.clear();
   };
 }
 
