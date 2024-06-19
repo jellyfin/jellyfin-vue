@@ -17,12 +17,12 @@
           </div>
           <div
             class="absolute-cover card-overlay d-flex justify-center align-center"
-            :class="{ 'card-overlay-hover': overlay && isFinePointer }">
+            :class="{ 'card-overlay-hover': overlay && hasFinePointer }">
             <div class="card-upper-content d-flex justify-center align-center">
               <slot name="upper-content" />
             </div>
             <div
-              v-if="(isHovering && overlay && isFinePointer) || forceOverlay"
+              v-if="(isHovering && overlay && hasFinePointer) || forceOverlay"
               class="card-overlay-hover-hidden">
               <slot name="center-content" />
               <div class="card-lower-content d-flex justify-center align-center">
@@ -57,7 +57,7 @@
 <script setup lang="ts">
 import { useAttrs, computed } from 'vue';
 import { isNil } from '@/utils/validation';
-import { isFinePointer } from '@/store';
+import { hasFinePointer } from '@/store';
 import type { CardShapes } from '@/utils/items';
 
 interface Props {

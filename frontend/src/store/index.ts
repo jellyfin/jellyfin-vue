@@ -1,6 +1,6 @@
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
-import { computedAsync, useMediaControls, useMediaQuery, useNetwork, useNow, useScroll } from '@vueuse/core';
-import { shallowRef } from 'vue';
+import { computedAsync, useFps, useMediaControls, useMediaQuery, useNetwork, useNow, useScroll } from '@vueuse/core';
+import { shallowRef, computed } from 'vue';
 import { remote } from '@/plugins/remote';
 import { isNil } from '@/utils/validation';
 /**
@@ -36,10 +36,27 @@ export const mediaWebAudio = {
  * Reactively tracks if the user wants animations (false) or not (true).
  */
 export const prefersNoMotion = useMediaQuery('(prefers-reduced-motion)');
+
 /**
- * Reactively tracks if the device has a high precision input (like a mouse)
+ * IWhether the user is using a pointer with high precision (like a mouse)
  */
-export const isFinePointer = useMediaQuery('(pointer:fine)');
+export const hasFinePointer = useMediaQuery('(any-pointer:fine)');
+/**
+ * Whether the user is using a pointer with low precision (like touch)
+ */
+export const hasTouch = useMediaQuery('(any-pointer:coarse)');
+
+/**
+ * Track if there's HDR support in the screen
+ */
+export const hasHDRDisplay = useMediaQuery('(video-dynamic-range:high)');
+
+/**
+ * Track performance
+ */
+const fps = useFps();
+const isLowRefreshRateScreen = useMediaQuery('(update:slow)');
+export const isSlow = computed(() => isLowRefreshRateScreen.value || fps.value <= 15);
 
 /**
  * Reactively tracks if the user is connected to the server

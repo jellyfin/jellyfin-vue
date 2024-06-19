@@ -1,7 +1,7 @@
 <template>
   <div class="j-splash" :class="clientSettings.currentTheme.value">
     <img src="./icon.png" alt="Jellyfin Logo">
-    <JTransition name="slide-y-reverse" appear>
+    <JTransition name="slide-y-reverse" appear important>
       <div class="uno-flex uno-flex-col uno-gap-5 uno-bottom-25 uno-fixed uno-w-full uno-items-center">
         <VProgressCircular indeterminate />
         <VBtn v-if="remote.auth.currentUser" @click="remote.auth.logoutCurrentUser">
