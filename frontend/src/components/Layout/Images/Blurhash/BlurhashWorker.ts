@@ -55,7 +55,6 @@ class BlurhashWorker {
    * @param width - Width of the decoded pixel array
    * @param height - Height of the decoded pixel array.
    * @param punch - Contrast of the decoded pixels
-   * @returns - Returns the decoded pixels in the proxied response by Comlink
    */
   public readonly drawCanvas = ({
     hash, canvas, width = DEFAULT_WIDTH, height = DEFAULT_HEIGHT, punch = DEFAULT_PUNCH
