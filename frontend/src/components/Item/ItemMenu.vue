@@ -73,7 +73,7 @@ import IMdiReplay from 'virtual:icons/mdi/replay';
 import IMdiShuffle from 'virtual:icons/mdi/shuffle';
 import { computed, getCurrentInstance, onMounted, shallowRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute, useRouter } from 'vue-router/auto';
+import { useRoute, useRouter } from 'vue-router';
 import { isStr } from '@/utils/validation';
 import {
   canIdentify,

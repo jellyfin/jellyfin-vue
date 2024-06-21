@@ -152,7 +152,7 @@ import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { computed, ref } from 'vue';
-import { useRoute } from 'vue-router/auto';
+import { useRoute } from 'vue-router';
 import { msToTicks } from '@/utils/time';
 import { defaultSortOrder as sortBy } from '@/utils/items';
 import { getBlurhash } from '@/utils/images';

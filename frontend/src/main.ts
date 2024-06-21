@@ -32,9 +32,7 @@ const app = createApp(Root);
 
 /**
  * We add routes at this point instead of in the router plugin to avoid circular references
- * in components. At this stage, we're sure plugins are initiated.
- *
- * TODO: Track https://github.com/posva/unplugin-vue-router/pull/157 for proper fix
+ * in components. At this stage, we're sure plugins are instantiated.
  */
 for (const route of routes) {
   router.addRoute(route);

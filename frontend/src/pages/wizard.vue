@@ -91,7 +91,7 @@ meta:
 import { getStartupApi } from '@jellyfin/sdk/lib/utils/api/startup-api';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRouter } from 'vue-router/auto';
+import { useRouter } from 'vue-router';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { remote } from '@/plugins/remote';
 
