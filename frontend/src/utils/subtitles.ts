@@ -2,7 +2,7 @@
  * Helper for subtitle manipulation and subtitle-related utility functions
  */
 
-import axios from "axios";
+import axios from 'axios';
 
 interface Subtitle {
   start: number;
@@ -10,8 +10,8 @@ interface Subtitle {
   text: string;
 }
 
-export type ParsedSubtitleTrack = Subtitle[]
-type TagMap = Record<string, string>
+export type ParsedSubtitleTrack = Subtitle[];
+type TagMap = Record<string, string>;
 
 export const SUBTITLE_FONT_FAMILIES = [
   'Figtree Variable',
@@ -33,7 +33,10 @@ export const FALLBACK_SUBTITLE_FONT = 'sans-serif, system-ui';
  * Parse time string used in subtitle files to seconds
  */
 function parseTime(timeString: string) {
-  const [hours, minutes, seconds] = timeString.split(':').map(Number.parseFloat);
+  const [hours, minutes, seconds] = timeString.split(':').map((element) => {
+    return Number.parseFloat(element);
+  });
+
   return hours * 3600 + minutes * 60 + seconds;
 }
 
@@ -52,15 +55,17 @@ function formatText(text: string, tagMap: TagMap): string {
 /**
  * Parses a VTT (WebVTT) file from a given URL
  * Extracts dialogue lines with start and end times, and text content.
- * 
+ *
  * Converts specific tags to styled <span> tags
  */
 export async function parseVttFile(src: string) {
   try {
-    const file = await axios.get(src);
+    const file = await axios.get<string>(src);
     const vttText: string = file.data;
 
-    if (!vttText) return
+    if (!vttText) {
+      return;
+    }
 
     const subtitles: ParsedSubtitleTrack = [];
     const vttLines = vttText.split('\n');
@@ -94,7 +99,7 @@ export async function parseVttFile(src: string) {
           '<strong>': '<span style="font-weight: bold;">',
           '</strong>': '</span>',
           '<mark>': '<span style="background-color: yellow;">',
-          '</mark>': '</span>',
+          '</mark>': '</span>'
         });
 
         subtitles.push({
@@ -108,8 +113,8 @@ export async function parseVttFile(src: string) {
     }
 
     return subtitles;
-  } catch (err) {
-    console.error("Error parsing VTT subtitles", err);
+  } catch (error) {
+    console.error('Error parsing VTT subtitles', error);
   }
 }
 
@@ -120,17 +125,13 @@ const parseSsaDialogue = (line: string, formatFields: string[]) => {
   const dialogueParts = line.split('Dialogue:')[1].split(',').map(field => field.trim());
   const dialogueData: Record<string, string> = {};
 
-  formatFields.forEach((field, fieldIndex) => {
-    if (field === "Text") {
-      dialogueData[field] = dialogueParts.slice(fieldIndex).join(', ').trim();
-    } else {
-      dialogueData[field] = dialogueParts[fieldIndex]?.trim();
-    }
-  });
+  for (const [fieldIndex, field] of formatFields.entries()) {
+    dialogueData[field] = field === 'Text' ? dialogueParts.slice(fieldIndex).join(', ').trim() : dialogueParts[fieldIndex]?.trim();
+  }
 
-  const timeStart = dialogueData['Start'];
-  const timeEnd = dialogueData['End'];
-  const text = dialogueData['Text'];
+  const timeStart = dialogueData.Start;
+  const timeEnd = dialogueData.End;
+  const text = dialogueData.Text;
 
   const formattedText = formatText(text, {
     '{\\i1}': '<span style="font-style: italic;">',
@@ -139,7 +140,7 @@ const parseSsaDialogue = (line: string, formatFields: string[]) => {
     '{\\b0}': '</span>',
     '{\\u1}': '<span style="text-decoration: underline;">',
     '{\\u0}': '</span>',
-    '{.*?}': '', // Remove other SSA tags
+    '{.*?}': '' // Remove other SSA tags
   });
 
   return { start: parseTime(timeStart), end: parseTime(timeEnd), text: formattedText.trim() };
@@ -148,17 +149,19 @@ const parseSsaDialogue = (line: string, formatFields: string[]) => {
 /**
  * Parses an ASS/SSA (SubStation Alpha) file from a given URL.
  * Extracts dialogue lines with start and end times, and text content.
- * 
+ *
  * Converts specific tags to styled <span> tags
  */
 export async function parseSsaFile(src: string) {
   try {
-    const file = await axios.get(src);
+    const file = await axios.get<string>(src);
     const ssaText: string = file.data;
 
-    if (!ssaText) return;
+    if (!ssaText) {
+      return;
+    }
 
-    // Dialouge lines
+    // Dialogue lines
     const ssaLines = ssaText.split('[Events]')[1].split('\n');
 
     const subtitles: ParsedSubtitleTrack = [];
@@ -180,7 +183,10 @@ export async function parseSsaFile(src: string) {
        * add consecutive lines at the same time together
        */
       if (line.startsWith('Dialogue:')) {
-        if (!formatFields) break; // Format fields should be defined before dialogue begins 
+        // Format fields should be defined before dialogue begins
+        if (formatFields.length === 0) {
+          break;
+        }
 
         const currentDialogue = parseSsaDialogue(line, formatFields);
 
@@ -208,7 +214,7 @@ export async function parseSsaFile(src: string) {
     }
 
     return subtitles;
-  } catch (err) {
-    console.error('Error parsing ASS subtitles', err);
+  } catch (error) {
+    console.error('Error parsing SSA/ASS subtitles', error);
   }
 }
