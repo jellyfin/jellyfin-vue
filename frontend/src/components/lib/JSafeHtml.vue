@@ -1,4 +1,5 @@
 <script lang="ts">
+import { h } from 'vue';
 import { sanitizeHtml } from '@/utils/html';
 
 interface Props {
@@ -6,7 +7,7 @@ interface Props {
   markdown?: boolean;
 }
 
-const JSafeHtml = (props: Props) => sanitizeHtml(props.html, props.markdown);
+const JSafeHtml = (props: Props) => h('j-safe-html', { innerHTML: sanitizeHtml(props.html, props.markdown) });
 
 JSafeHtml.inheritAttrs = false;
 
