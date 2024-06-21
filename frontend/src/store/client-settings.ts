@@ -69,31 +69,6 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState> {
     return this._state.subtitleAppearance;
   }
 
-  /**
-   * CSS Style Properties for subtitles 
-   */
-  public get subtitleStyle(): CSSProperties {
-    const strokeStyle = {
-      WebkitTextStrokeColor: "black",
-      WebkitTextStrokeWidth: "7px",
-      textShadow: "2px 2px 15px black",
-      paintOrder: "stroke fill"
-    }
-
-    return {
-      fontFamily: `${this.subtitleAppearance.fontFamily}, ${FALLBACK_SUBTITLE_FONT} !important`,
-      fontSize: `${this.subtitleAppearance.fontSize}em`,
-      marginBottom: `${this.subtitleAppearance.positionFromBottom}vh`,
-      backgroundColor: this.subtitleAppearance.backdrop ? 'rgba(0, 0, 0, 0.5)' : 'transparent',
-      padding: '10px',
-      color: 'white',
-      /**
-       * Unwrap stroke style if stroke is enabled
-       */
-      ...(this.subtitleAppearance.stroke && strokeStyle)
-    }
-  }
-
   public readonly currentTheme = computed(() => {
     const dark = 'dark';
     const light = 'light';

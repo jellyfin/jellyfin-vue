@@ -33,23 +33,14 @@
                   v-model="clientSettings.subtitleAppearance.stroke"
                   :label="$t('stroke')"/>
 
-                <div class="subtitleappearance-preview-window">
-                  <span class="subtitleappearance-preview-text"
-                    :style="{
-                    ...clientSettings.subtitleStyle,
-                    fontSize: `${fontSize}em !important`,
-                    marginBottom: `${positionFromBottom}vh !important`
-                  }">
-                    {{ $t('subtitlePreviewText') }}
-                  </span>
-                </div>
+                <SubtitleTrack :previewText="$t('subtitlePreviewText')"/>
             </VCol>
         </template>
       </SettingsPage>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router/auto';
 import { clientSettings } from '@/store/client-settings';
@@ -77,40 +68,27 @@ const updatePositionFromBottom = () => {
 // Load subtitle fonts available to the client
 const loadAvailableFonts = async () => {
   const checkFontAvailability = async (font: string) => {
-    if (font == SUBTITLE_FONT_FAMILIES[0]) return font // Default font
+    // Default font
+    if (font == SUBTITLE_FONT_FAMILIES[0]) {
+      return font;
+    }
 
     try {
       const fontFace = new FontFace(font, `local(${font})`);
       const loaded = await fontFace.load();
 
-      if (loaded.status !== "error") {
+      if (loaded.status !== 'error') {
         return font;
       }
-    } catch { }
+    } catch {}
   };
 
   const fontChecks = SUBTITLE_FONT_FAMILIES.map(checkFontAvailability);
-  const fonts = await Promise.all(fontChecks);  
-  const validFonts = fonts.filter(font => font !== undefined);  
+  const fonts = await Promise.all(fontChecks);
+  const validFonts = fonts.filter(font => font !== undefined);
 
   availableSubtitleFonts.value = validFonts;
 };
 
 await loadAvailableFonts();
 </script>
-
-<style scoped>
-.subtitleappearance-preview-window {
-	position: fixed;
-	text-align: center;
-  user-select: none;
-	width: 100%;
-  bottom: 0;
-  left: 0;
-}
-
-.subtitleappearance-preview-text {
-  display: inline-block;
-  white-space: break-spaces;
-}
-</style>
