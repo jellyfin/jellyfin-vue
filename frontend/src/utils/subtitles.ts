@@ -48,9 +48,11 @@ function replaceTags(input: string, tagMap: TagMap) {
 
   // Iterate through tag mappings
   for (const [htmlTag, markdownTag] of Object.entries(tagMap)) {
-    const regex = new RegExp(htmlTag, 'gi');
+    const escapedHtmlTag = htmlTag.replaceAll('\\', '\\\\');
+    const regex = new RegExp(escapedHtmlTag, 'gi');
+
     formattedText = formattedText.replace(regex, (_, p1: string) => {
-      return markdownTag.replace('$1', p1);
+      return markdownTag.replace('$1', p1.trim());
     });
   }
 
@@ -93,10 +95,6 @@ export async function parseVttFile(src: string) {
         }
 
         const formattedText = replaceTags(text, {
-          '<i>(.*?)</i>': '_$1_', // Italics
-          '<b>(.*?)</b>': '**$1**', // Bold
-          '<em>(.*?)</em>': '_$1_', // Italics
-          '<strong>(.*?)</strong>': '**$1**', // Bold
           '<br>': '\n' // Line break
         });
 
@@ -124,7 +122,9 @@ const parseSsaDialogue = (line: string, formatFields: string[]) => {
   const dialogueData: Record<string, string> = {};
 
   for (const [fieldIndex, field] of formatFields.entries()) {
-    dialogueData[field] = field === 'Text' ? dialogueParts.slice(fieldIndex).join(', ').trim() : dialogueParts[fieldIndex]?.trim();
+    dialogueData[field] = field === 'Text'
+      ? dialogueParts.slice(fieldIndex).join(', ').trim() // Add dialogue together
+      : dialogueParts[fieldIndex]?.trim();
   }
 
   const timeStart = dialogueData.Start;
@@ -132,8 +132,8 @@ const parseSsaDialogue = (line: string, formatFields: string[]) => {
   const text = dialogueData.Text;
 
   const formattedText = replaceTags(text, {
-    '{\\i1}(.*?){\\i0}': '_$1_', // Italics
-    '{\\b1}(.*?){\\b0}': '**$1**' // Bold
+    '{\\i1}(.*?){\\i0}': '<i>$1</i>', // Italics
+    '{\\b1}(.*?){\\b0}': '<b>$1</b>' // Bold
   });
 
   return { start: parseTime(timeStart), end: parseTime(timeEnd), text: formattedText.trim() };
