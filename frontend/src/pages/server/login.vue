@@ -98,7 +98,7 @@ meta:
 import type { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { ref, shallowRef, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute, useRouter } from 'vue-router/auto';
+import { useRoute, useRouter } from 'vue-router';
 import { watchImmediate } from '@vueuse/core';
 import { remote } from '@/plugins/remote';
 import { getJSONConfig } from '@/utils/external-config';

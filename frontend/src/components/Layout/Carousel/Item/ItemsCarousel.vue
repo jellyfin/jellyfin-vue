@@ -61,7 +61,7 @@
 <script setup lang="ts">
 import { BaseItemKind, ImageType, type BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { SwiperSlide } from 'swiper/vue';
-import { useRoute } from 'vue-router/auto';
+import { useRoute } from 'vue-router';
 import { useResponsiveClasses } from '@/composables/use-responsive-classes';
 import { apiStore } from '@/store/api';
 import { getBlurhash } from '@/utils/images';

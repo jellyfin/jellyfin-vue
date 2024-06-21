@@ -51,7 +51,7 @@ import IMdiLogout from 'virtual:icons/mdi/logout';
 import IMdiPencil from 'virtual:icons/mdi/pencil';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRouter } from 'vue-router/auto';
+import { useRouter } from 'vue-router';
 import { remote } from '@/plugins/remote';
 
 interface MenuItem {

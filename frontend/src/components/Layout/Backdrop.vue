@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useRoute } from 'vue-router/auto';
+import { useRoute } from 'vue-router';
 
 const route = useRoute();
 const opacity = computed(() => route.meta.layout.backdrop.opacity ?? 0.25);

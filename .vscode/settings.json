@@ -29,7 +29,7 @@
     "typescript"
   ],
   "eslint.format.enable": true,
-  "eslint.experimental.useFlatConfig": true,
+  "eslint.useFlatConfig": true,
   "eslint.workingDirectories": [
     {
       "mode": "auto"
@@ -50,6 +50,5 @@
     "connectionId": "jellyfin-vue",
     "projectKey": "jellyfin_jellyfin-vue"
   },
-  "typescript.preferences.autoImportFileExcludePatterns": ["vue-router$"],
   "typescript.tsserver.experimental.enableProjectDiagnostics": true
 }

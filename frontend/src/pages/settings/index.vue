@@ -140,7 +140,7 @@ import IMdiTelevisionClassic from 'virtual:icons/mdi/television-classic';
 import IMdiTextBox from 'virtual:icons/mdi/text-box';
 import { computed, type Component } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute, type RouteLocationRaw } from 'vue-router/auto';
+import { useRoute, type RouteLocationRaw } from 'vue-router';
 import { remote } from '@/plugins/remote';
 import { version as clientVersion } from '@/../package.json';
 

@@ -17,6 +17,7 @@
     "experimentalDecorators": true,
     "removeComments": true,
     "verbatimModuleSyntax": true,
+    "incremental": true,
     "tsBuildInfoFile": "../node_modules/.cache/tsconfig.tsbuildinfo",
     "baseUrl": ".",
     "paths": {

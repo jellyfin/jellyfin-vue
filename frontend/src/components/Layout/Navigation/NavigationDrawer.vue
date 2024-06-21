@@ -40,7 +40,7 @@
 import IMdiHome from 'virtual:icons/mdi/home';
 import { computed, inject, type Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router/auto';
+import { useRoute } from 'vue-router';
 import type { RouteNamedMap } from 'vue-router/auto-routes';
 import type { getLibraryIcon } from '@/utils/items';
 

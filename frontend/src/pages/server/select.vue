@@ -40,7 +40,7 @@ meta:
 <script setup lang="ts">
 import { v4 } from 'uuid';
 import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router/auto';
+import { useRoute } from 'vue-router';
 
 const { t } = useI18n();
 const route = useRoute();

@@ -46,7 +46,7 @@
 <script setup lang="ts">
 import { shallowRef, unref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRouter } from 'vue-router/auto';
+import { useRouter } from 'vue-router';
 import { remote } from '@/plugins/remote';
 import { getJSONConfig } from '@/utils/external-config';
 
