@@ -43,12 +43,17 @@ function parseTime(timeString: string) {
 /**
  * Formats the provided text by replacing specified tags with HTML elements.
  */
-function formatText(text: string, tagMap: TagMap): string {
-  let formattedText = text;
-  for (const [tag, replacement] of Object.entries(tagMap)) {
-    const regex = new RegExp(tag, 'g');
-    formattedText = formattedText.replace(regex, replacement);
+function replaceTags(input: string, tagMap: TagMap) {
+  let formattedText = input;
+
+  // Iterate through tag mappings
+  for (const [htmlTag, markdownTag] of Object.entries(tagMap)) {
+    const regex = new RegExp(htmlTag, 'gi');
+    formattedText = formattedText.replace(regex, (_, p1: string) => {
+      return markdownTag.replace('$1', p1);
+    });
   }
+
   return formattedText;
 }
 
@@ -87,19 +92,12 @@ export async function parseVttFile(src: string) {
           i++;
         }
 
-        const formattedText = formatText(text, {
-          '<i>': '<span style="font-style: italic;">',
-          '</i>': '</span>',
-          '<b>': '<span style="font-weight: bold;">',
-          '</b>': '</span>',
-          '<u>': '<span style="text-decoration: underline;">',
-          '</u>': '</span>',
-          '<em>': '<span style="font-style: italic;">',
-          '</em>': '</span>',
-          '<strong>': '<span style="font-weight: bold;">',
-          '</strong>': '</span>',
-          '<mark>': '<span style="background-color: yellow;">',
-          '</mark>': '</span>'
+        const formattedText = replaceTags(text, {
+          '<i>(.*?)</i>': '_$1_', // Italics
+          '<b>(.*?)</b>': '**$1**', // Bold
+          '<em>(.*?)</em>': '_$1_', // Italics
+          '<strong>(.*?)</strong>': '**$1**', // Bold
+          '<br>': '\n' // Line break
         });
 
         subtitles.push({
@@ -133,14 +131,9 @@ const parseSsaDialogue = (line: string, formatFields: string[]) => {
   const timeEnd = dialogueData.End;
   const text = dialogueData.Text;
 
-  const formattedText = formatText(text, {
-    '{\\i1}': '<span style="font-style: italic;">',
-    '{\\i0}': '</span>',
-    '{\\b1}': '<span style="font-weight: bold;">',
-    '{\\b0}': '</span>',
-    '{\\u1}': '<span style="text-decoration: underline;">',
-    '{\\u0}': '</span>',
-    '{.*?}': '' // Remove other SSA tags
+  const formattedText = replaceTags(text, {
+    '{\\i1}(.*?){\\i0}': '_$1_', // Italics
+    '{\\b1}(.*?){\\b0}': '**$1**' // Bold
   });
 
   return { start: parseTime(timeStart), end: parseTime(timeEnd), text: formattedText.trim() };
