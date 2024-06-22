@@ -406,7 +406,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   }
 
   /**
-   * In milliseconds
+   * In seconds
    */
   public get currentTime(): number {
     return this.isRemotePlayer
