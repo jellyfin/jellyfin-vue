@@ -48,6 +48,11 @@ jobs:
     defaults:
       run:
         working-directory: packaging/tauri
+    env:
+      ARTIFACTS_PATH: |
+        ${{ matrix.platform == 'ubuntu' && 'packaging/tauri/target/release/bundle/appimage_deb' || '' }}
+        ${{ matrix.platform == 'macos' && 'packaging/tauri/target/release/bundle/macos' || '' }}
+        ${{ matrix.platform == 'windows' && 'packaging/tauri/target/release/jellyfin-vue.exe' || '' }}
 
     runs-on: ${{ matrix.platform }}-latest
     steps:
@@ -77,20 +82,14 @@ jobs:
       - name: Create provenance attestation 🔏
         uses: actions/attest-build-provenance@v1.3.2
         with:
-          subject-path: |
-            ${{ matrix.platform == 'ubuntu' && 'packaging/tauri/target/release/bundle/appimage_deb' || '' }}
-            ${{ matrix.platform == 'macos' && 'packaging/tauri/target/release/bundle/macos' || '' }}
-            ${{ matrix.platform == 'windows' && 'packaging/tauri/target/release/jellyfin-vue.exe' || '' }}
+          subject-path: ${{ env.ARTIFACTS_PATH }}
 
       - name: Upload built application artifact ⬆️🐧🍎🪟
         uses: actions/upload-artifact@v4.3.3
         with:
           compression-level: 0
           name: jellyfin-vue_${{ matrix.platform }}
-          path: |
-            ${{ matrix.platform == 'ubuntu' && 'packaging/tauri/target/release/bundle/appimage_deb' || '' }}
-            ${{ matrix.platform == 'macos' && 'packaging/tauri/target/release/bundle/macos' || '' }}
-            ${{ matrix.platform == 'windows' && 'packaging/tauri/target/release/jellyfin-vue.exe' || '' }}
+          path: ${{ env.ARTIFACTS_PATH }}
 
   docker_inputs:
     name: Prepare Docker build variables 🏷️🐳
