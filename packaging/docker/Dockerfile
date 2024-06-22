@@ -20,6 +20,7 @@ RUN npm ci --no-audit && npm run build
 # Deploy built distribution to nginx
 FROM nginx:stable-alpine-slim
 
+RUN rm -rf /usr/share/nginx/html/*
 COPY --from=build /app/frontend/dist/ /usr/share/nginx/html/
 COPY packaging/docker/contents/nginx.conf /etc/nginx/conf.d/default.conf
 COPY packaging/docker/contents/*.sh /
