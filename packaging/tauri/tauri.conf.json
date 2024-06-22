@@ -1,34 +1,36 @@
 {
-  "package": {
-    "productName": "jellyfin-vue",
-    "version": "../../frontend/package.json"
-  },
-  "build": {
-    "distDir": "../../frontend/dist",
-    "devPath": "http://127.0.0.1:3000",
-    "beforeDevCommand": "npm start -w @jellyfin-vue/frontend",
-    "beforeBuildCommand": "npm run build -w @jellyfin-vue/frontend"
-  },
-  "tauri": {
-    "bundle": {
-      "active": true,
-      "targets": ["appimage", "msi", "app"],
-      "identifier": "org.jellyfin.vue.tauri",
+  "bundle": {
+    "active": true,
+    "targets": [
+      "appimage",
+      "msi",
+      "app"
+    ],
+    "longDescription": "",
+    "shortDescription": "",
+    "resources": [],
+    "externalBin": [],
+    "copyright": "",
+    "category": "Entertainment",
+    "linux": {
       "appimage": {
         "bundleMediaFramework": true
-      },
-      "resources": [],
-      "externalBin": [],
-      "copyright": "",
-      "category": "Entertainment",
-      "shortDescription": "",
-      "longDescription": ""
-    },
-    "updater": {
-      "active": false
-    },
-    "allowlist": {
-      "all": true
+      }
+    }
+  },
+  "build": {
+    "beforeBuildCommand": "npm run build -w @jellyfin-vue/frontend",
+    "frontendDist": "../../frontend/dist",
+    "beforeDevCommand": "npm start -w @jellyfin-vue/frontend",
+    "devUrl": "http://127.0.0.1:3000"
+  },
+  "productName": "jellyfin-vue",
+  "version": "../../frontend/package.json",
+  "identifier": "org.jellyfin.vue.tauri",
+  "plugins": {},
+  "app": {
+    "security": {
+      "csp": null
     },
     "windows": [
       {
@@ -38,10 +40,6 @@
         "resizable": true,
         "fullscreen": false
       }
-    ],
-    "security": {
-      "csp": null,
-      "dangerousUseHttpScheme": true
-    }
+    ]
   }
 }
