@@ -43,7 +43,7 @@
               <span class="pl-4">
                 {{
                   $t('endsAt', {
-                    time: getEndsAtTime(playbackManager.nextItem.RunTimeTicks).value
+                    time: getEndsAtTime(playbackManager.nextItem.RunTimeTicks)
                   })
                 }}
               </span>

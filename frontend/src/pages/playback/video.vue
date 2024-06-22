@@ -65,10 +65,7 @@
                   <span
                     v-if="playbackManager.currentItem?.RunTimeTicks"
                     class="text-subtitle-2 text--secondary text-truncate">
-                    {{
-                      getEndsAtTime(playbackManager.currentItem.RunTimeTicks)
-                        .value
-                    }}
+                    {{ getEndsAtTime((playbackManager.currentItem?.RunTimeTicks ?? 0) - msToTicks(playbackManager.currentTime * 1000)) }}
                   </span>
                 </div>
                 <div
@@ -140,7 +137,7 @@ import {
 } from '@/store';
 import { playbackManager } from '@/store/playback-manager';
 import { playerElement, videoContainerRef } from '@/store/player-element';
-import { getEndsAtTime } from '@/utils/time';
+import { getEndsAtTime, msToTicks } from '@/utils/time';
 import { usePlayback } from '@/composables/use-playback';
 
 defineOptions({
