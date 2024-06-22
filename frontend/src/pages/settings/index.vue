@@ -14,7 +14,7 @@
           ">
           <JImg
             class="logo"
-            src="/icon.png"
+            src="/icon.svg"
             :alt="$t('jellyfinLogo')" />
           <VTable class="mb-4 pb-2 information">
             <tbody>
