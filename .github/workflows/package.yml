@@ -52,7 +52,7 @@ jobs:
       ARTIFACTS_PATH: |
         ${{ matrix.platform == 'ubuntu' && 'packaging/tauri/target/release/bundle/appimage_deb' || '' }}
         ${{ matrix.platform == 'macos' && 'packaging/tauri/target/release/bundle/macos' || '' }}
-        ${{ matrix.platform == 'windows' && 'packaging/tauri/target/release/jellyfin-vue.exe' || '' }}
+        ${{ matrix.platform == 'windows' && 'packaging/tauri/target/release/jellyfin-vue-tauri.exe' || '' }}
 
     runs-on: ${{ matrix.platform }}-latest
     steps:
