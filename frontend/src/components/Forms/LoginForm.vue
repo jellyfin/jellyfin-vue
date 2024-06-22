@@ -41,7 +41,7 @@
             {{ $t('changeServer') }}
           </VBtn>
           <VBtn
-            v-else
+            v-else-if="remote.auth.currentServer?.PublicUsers.length"
             block
             size="large"
             variant="elevated"
