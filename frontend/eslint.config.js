@@ -5,6 +5,7 @@ import fileProgress from 'eslint-plugin-file-progress';
 import js from '@eslint/js';
 import globals from 'globals';
 import vueScopedCSS from 'eslint-plugin-vue-scoped-css';
+import css from 'eslint-plugin-css';
 import vue from 'eslint-plugin-vue';
 import i18n from '@intlify/eslint-plugin-vue-i18n';
 import { FlatCompat } from '@eslint/eslintrc';
@@ -13,9 +14,11 @@ import stylistic from '@stylistic/eslint-plugin';
 import sonarjs from 'eslint-plugin-sonarjs';
 import tseslint from 'typescript-eslint';
 import jsonc from 'eslint-plugin-jsonc';
+import regexp from "eslint-plugin-regexp";
 
-const vueAndTsFiles = ['*.vue', '**/*.vue', '*.ts', '**/*.ts'];
+const tsFiles = ['*.ts', '**/*.ts'];
 const vueFiles = ['*.vue', '**/*.vue'];
+const vueAndTsFiles = [...vueFiles, ...tsFiles];
 const CI_environment = process.env.CI ? 0 : 1;
 
 /**
@@ -128,8 +131,8 @@ export default tseslint.config(
     name: '(typescript-eslint) Extended ESLint recommended rules for typechecking'
   },
   {
-    ...flatArrayOfObjects(compat.extends('plugin:optimize-regex/recommended')),
-    name: '(optimize-regex) Extended rules',
+    ...regexp.configs["flat/recommended"],
+    name: '(regexp) Extended rules',
     files: vueAndTsFiles
   },
   {
@@ -244,8 +247,8 @@ export default tseslint.config(
     files: vueFiles
   },
   {
-    ...flatArrayOfObjects(compat.extends('plugin:css/recommended')),
-    name: 'Base config for Vue SFC files (Scoped CSS - eslint-plugin-css)',
+    ...css.configs['flat/recommended'],
+    name: 'Base config for Vue SFC files (CSS attributes - eslint-plugin-css)',
     files: vueFiles
   },
   {
