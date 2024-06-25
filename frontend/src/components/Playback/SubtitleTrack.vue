@@ -1,15 +1,15 @@
 <template>
     <div
-        class="subtitle-track"
+        class="uno-absolute uno-text-center uno-w-full uno-bottom-0 uno-left-0"
         :label="playerElement.currentExternalSubtitleTrack?.label"
         :srclang="playerElement.currentExternalSubtitleTrack?.srcLang"
         :src="playerElement.currentExternalSubtitleTrack?.src" >
         <span
-          class="subtitle-track-text"
+          class="uno-inline-block"
           :style="subtitleStyle">
           <JSafeHtml
           v-if="currentSubtitle !== undefined"
-          :html="currentSubtitle.text"/>
+          :html="currentSubtitle.text" />
           {{ previewText }}
         </span>
     </div>
@@ -91,16 +91,3 @@ const subtitleStyle = computed(() => {
   };
 });
 </script>
-
-<style scoped>
-.subtitle-track {
-  position: absolute;
-  text-align: center;
-  width: 100%;
-  bottom: 0;
-  left: 0;
-}
-.subtitle-track-text {
-  display: inline-block;
-}
-</style>
