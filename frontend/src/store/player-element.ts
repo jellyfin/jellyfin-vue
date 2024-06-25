@@ -11,13 +11,13 @@ import { PgsRenderer } from 'libpgs';
 import pgssubWorker from 'libpgs/dist/libpgs.worker.js?url';
 import { computed, nextTick, shallowRef, watch } from 'vue';
 import { SubtitleDeliveryMethod } from '@jellyfin/sdk/lib/generated-client/models/subtitle-delivery-method';
+import { useFullscreen } from '@vueuse/core';
 import { playbackManager, type PlaybackExternalTrack } from './playback-manager';
 import { isArray, isNil, sealed } from '@/utils/validation';
 import { mediaElementRef } from '@/store';
 import { CommonStore } from '@/store/super/common-store';
 import { router } from '@/plugins/router';
 import { remote } from '@/plugins/remote';
-import { isMobile } from '@/utils/browser-detection';
 import { parseSsaFile, parseVttFile, type ParsedSubtitleTrack } from '@/utils/subtitles';
 
 interface SubtitleExternalTrack extends PlaybackExternalTrack {
@@ -85,7 +85,12 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
   private get _useCustomSubtitleTrack(): boolean {
     return !isNil(playbackManager.currentSubtitleTrack)
       && playbackManager.currentSubtitleTrack.DeliveryMethod === SubtitleDeliveryMethod.External
-      && !isMobile();
+      /**
+       * If useFullscreen isn't supported we can assume the media player is Safari iOS
+       * in this case we wouldn't apply a custom subtitle track, since it cannot
+       * be rendered in Safari iOS's fullscreen element
+       */
+      && useFullscreen().isSupported.value;
   }
 
   /**
