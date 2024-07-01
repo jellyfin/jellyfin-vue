@@ -609,16 +609,15 @@ export async function fetchIndexPage(): Promise<IndexPageQueries> {
     }
   };
 
-  const promises = [
+  const itemPromises = [
     useBaseItem(getItemsApi, 'getResumeItems')(() => ({
       mediaTypes: ['Video']
     })),
-    useBaseItem(getUserLibraryApi, 'getLatestMedia')(() => ({})),
-    useBaseItem(getTvShowsApi, 'getNextUp')(() => ({})),
-    latestFromLibrary()
+    useBaseItem(getUserLibraryApi, 'getLatestMedia')(),
+    useBaseItem(getTvShowsApi, 'getNextUp')()
   ];
 
-  const results = (await Promise.all(promises)).filter((r): r is Exclude<typeof r, void> => r !== undefined);
+  const results = (await Promise.all([Promise.all(itemPromises), latestFromLibrary]))[0];
 
   return {
     views,

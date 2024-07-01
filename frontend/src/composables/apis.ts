@@ -258,8 +258,12 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
 
   return function (this: any, ...args: ComposableParams<T, K, U>) {
     const normalizeArgs = (): Parameters<T[K]> => args.map(a => toValue(a)) as Parameters<T[K]>;
-    const runNormally = async (): Promise<void> => { await run({}); };
-    const runWithRetry = async (): Promise<void> => { await run({ onlyPending: true }); };
+    const runNormally = async (): Promise<void> => {
+      await run({});
+    };
+    const runWithRetry = async (): Promise<void> => {
+      await run({ onlyPending: true });
+    };
     const returnablePromise = async (): Promise<ReturnPayload<T, K, typeof ofBaseItem>> => {
       await runNormally();
       await until(data).toMatch(d => !isNil(d));
@@ -270,17 +274,19 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
     argsRef.value = normalizeArgs();
 
     if (getCurrentScope() !== undefined) {
-      watch(args, async (_newVal, oldVal) => {
-        const normalizedArgs = normalizeArgs();
+      if (args.length) {
+        watch(args, async (_newVal, oldVal) => {
+          const normalizedArgs = normalizeArgs();
 
-        /**
-         * Does a deep comparison to avoid useless double requests
-         */
-        if (!normalizedArgs.every((a, index) => deepEqual(a, toValue(oldVal[index])))) {
-          argsRef.value = normalizedArgs;
-          await runNormally();
-        }
-      });
+          /**
+           * Does a deep comparison to avoid useless double requests
+           */
+          if (!normalizedArgs.every((a, index) => deepEqual(a, toValue(oldVal[index])))) {
+            argsRef.value = normalizedArgs;
+            await runNormally();
+          }
+        });
+      }
       watch(isConnectedToServer, runWithRetry);
       isRef(api) && watch(api, runNormally);
       isRef(methodName) && watch(methodName, runNormally);
