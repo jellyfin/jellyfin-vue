@@ -218,7 +218,7 @@ export function canIdentify(item: BaseItemDto): boolean {
     'Trailer'
   ];
 
-  return valid.includes(item.Type || '');
+  return valid.includes(item.Type ?? '');
 }
 
 /**
@@ -602,7 +602,8 @@ export async function fetchIndexPage(): Promise<IndexPageQueries> {
   const latestFromLibrary = async (): Promise<void> => {
     for (const view of views.value) {
       const { data } = await useBaseItem(getUserLibraryApi, 'getLatestMedia')(() => ({
-        parentId: view.Id
+        parentId: view.Id,
+        isPlayed: true
       }));
 
       latestPerLibrary.set(view.Id, data);
@@ -613,7 +614,7 @@ export async function fetchIndexPage(): Promise<IndexPageQueries> {
     useBaseItem(getItemsApi, 'getResumeItems')(() => ({
       mediaTypes: ['Video']
     })),
-    useBaseItem(getUserLibraryApi, 'getLatestMedia')(),
+    useBaseItem(getUserLibraryApi, 'getLatestMedia')(() => ({ isPlayed: true })),
     useBaseItem(getTvShowsApi, 'getNextUp')()
   ];
 
