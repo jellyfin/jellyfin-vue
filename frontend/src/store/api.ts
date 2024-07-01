@@ -196,7 +196,6 @@ class ApiStore {
             (updatedData: unknown): updatedData is { ItemId: string } => {
               if (
                 isObj(updatedData)
-                && updatedData
                 && 'ItemId' in updatedData
                 && isStr(updatedData.ItemId)
               ) {
