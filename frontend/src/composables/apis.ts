@@ -135,6 +135,7 @@ async function resolveAndAdd<T extends Record<K, (...args: any[]) => any>, K ext
       ...args[0],
       ...(remote.auth.currentUserId && { userId: remote.auth.currentUserId }),
       fields: apiStore.apiEnums.fields,
+      enableUserData: true,
       enableImageTypes: apiStore.apiEnums.images,
       enableImages: true,
       enableTotalRecordCount: false
