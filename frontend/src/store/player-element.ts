@@ -245,21 +245,33 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
        * Check if client is able to display custom subtitle track
        * otherwise use Subtitle Opctopus
        */
+      let applySubtitleOctopus = !this._useCustomSubtitleTrack;
+
       if (this._useCustomSubtitleTrack) {
         const data = await parseSsaFile(ssa.src);
 
-        this.currentExternalSubtitleTrack.parsed = data;
-      } else {
+        /**
+         * If style isn't basic (animations, custom typographics, etc.)
+         * fallback to rendering subtitles with Subtitle Ocotopus
+         */
+        if (data?.isBasic) {
+          this.currentExternalSubtitleTrack.parsed = data;
+        } else {
+          applySubtitleOctopus = true;
+        }
+      }
+
+      if (applySubtitleOctopus) {
         const attachedFonts
-          = playbackManager.currentMediaSource?.MediaAttachments?.filter(a =>
-            this._isSupportedFont(a.MimeType)
-          )
-            .map((a) => {
-              if (a.DeliveryUrl && serverAddress) {
-                return `${serverAddress}${a.DeliveryUrl}`;
-              }
-            })
-            .filter((a): a is string => a !== undefined) ?? [];
+        = playbackManager.currentMediaSource?.MediaAttachments?.filter(a =>
+          this._isSupportedFont(a.MimeType)
+        )
+          .map((a) => {
+            if (a.DeliveryUrl && serverAddress) {
+              return `${serverAddress}${a.DeliveryUrl}`;
+            }
+          })
+          .filter((a): a is string => a !== undefined) ?? [];
 
         this._setSsaTrack(ssa.src, attachedFonts);
       }

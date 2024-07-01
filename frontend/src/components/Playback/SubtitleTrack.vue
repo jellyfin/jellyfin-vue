@@ -35,8 +35,8 @@ defineProps<{
 let lastIndex = 0; // Variable to store the last found index of the subtitle
 const findCurrentSubtitle = (data: ParsedSubtitleTrack, currentTime: number) => {
   // Start searching from the last found index
-  for (let i = lastIndex; i < data.length; i++) {
-    const subtitle = data[i];
+  for (let i = lastIndex; i < data.dialogue.length; i++) {
+    const subtitle = data.dialogue[i];
 
     if (subtitle.start < currentTime && subtitle.end > currentTime) {
       lastIndex = i; // Update the last found index
@@ -47,7 +47,7 @@ const findCurrentSubtitle = (data: ParsedSubtitleTrack, currentTime: number) => 
   }
 
   // Start searching from the beginning
-  for (const [i, subtitle] of data.entries()) {
+  for (const [i, subtitle] of data.dialogue.entries()) {
     if (subtitle.start < currentTime && subtitle.end > currentTime) {
       lastIndex = i; // Update the last found index
       return subtitle;
