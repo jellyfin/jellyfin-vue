@@ -3,7 +3,11 @@
     icon
     :size="size"
     :loading="playbackManager.isBuffering"
-    @click="playbackManager.playPause">
+    @click="(e: MouseEvent) => {
+      if ('pointerType' in e && e.pointerType) {
+        playbackManager.playPause()
+      }
+    }">
     <VIcon
       :size="size"
       :icon="playPauseIcon" />
@@ -11,6 +15,9 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * - Reason behind pointer checks: https://github.com/jellyfin/jellyfin-vue/issues/2353
+ */
 import IMdiExclamation from 'virtual:icons/mdi/exclamation';
 import IMdiPauseCircleOutline from 'virtual:icons/mdi/pause-circle-outline';
 import IMdiPlayCircleOutline from 'virtual:icons/mdi/play-circle-outline';
