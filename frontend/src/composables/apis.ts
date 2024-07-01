@@ -267,7 +267,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
     };
     const returnablePromise = async (): Promise<ReturnPayload<T, K, typeof ofBaseItem>> => {
       await runNormally();
-      await until(data).toMatch(d => !isNil(d));
+      await until(() => isCached.value && !ops.skipCache.request).toBeTruthy({ flush: 'pre' });
 
       return { loading, data };
     };

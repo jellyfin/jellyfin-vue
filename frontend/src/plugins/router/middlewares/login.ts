@@ -33,7 +33,7 @@ export async function loginGuard(
       if (jsonConfig.allowServerSelection) {
         destinationRoute = { path: serverSelectUrl, replace: true };
       } else {
-        await until(() => remote.auth.currentServer).toBeTruthy();
+        await until(() => remote.auth.currentServer).toBeTruthy({ flush: 'pre' });
 
         return loginGuard(to);
       }
