@@ -2,21 +2,30 @@ import {
   useNavigatorLanguage,
   usePreferredDark,
   watchImmediate } from '@vueuse/core';
-import { computed, watch } from 'vue';
+import { computed, watch, type CSSProperties } from 'vue';
 import { i18n } from '@/plugins/i18n';
 import { remote } from '@/plugins/remote';
 import { vuetify } from '@/plugins/vuetify';
 import { sealed } from '@/utils/validation';
 import { SyncedStore } from '@/store/super/synced-store';
+import { FALLBACK_SUBTITLE_FONT, SUBTITLE_FONT_FAMILIES } from '@/utils/subtitles';
 
 /**
  * == INTERFACES AND TYPES ==
  * Casted typings for the CustomPrefs property of DisplayPreferencesDto
  */
 
+export type subtitleFontFamily = typeof SUBTITLE_FONT_FAMILIES[number];
 export interface ClientSettingsState {
   darkMode: 'auto' | boolean;
   locale: string;
+  subtitleAppearance: {
+    fontFamily: subtitleFontFamily;
+    fontSize: number;
+    positionFromBottom: number;
+    backdrop: boolean;
+    stroke: boolean;
+  };
 }
 
 @sealed
@@ -52,6 +61,14 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState> {
     return this._state.darkMode;
   }
 
+  public set subtitleAppearance(newVal: ClientSettingsState['subtitleAppearance']) {
+    this._state.subtitleAppearance = newVal;
+  }
+
+  public get subtitleAppearance(): ClientSettingsState['subtitleAppearance'] {
+    return this._state.subtitleAppearance;
+  }
+
   public readonly currentTheme = computed(() => {
     const dark = 'dark';
     const light = 'light';
@@ -73,7 +90,14 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState> {
   public constructor() {
     super('clientSettings', {
       darkMode: 'auto',
-      locale: 'auto'
+      locale: 'auto',
+      subtitleAppearance: {
+        fontFamily: SUBTITLE_FONT_FAMILIES[0],
+        fontSize: 1.5,
+        positionFromBottom: 10,
+        backdrop: true,
+        stroke: false
+      }
     }, 'localStorage');
     /**
      * == WATCHERS ==

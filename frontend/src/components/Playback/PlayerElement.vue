@@ -14,14 +14,16 @@
         :loop="playbackManager.isRepeatingOnce"
         :class="{ stretched: playerElement.isStretched.value }"
         @loadeddata="onLoadedData">
-        <track
-          v-for="sub in playbackManager.currentItemVttParsedSubtitleTracks"
-          :key="`${playbackManager.currentSourceUrl}-${sub.srcIndex}`"
-          kind="subtitles"
-          :label="sub.label"
-          :srclang="sub.srcLang"
-          :src="sub.src" >
+          <track
+            v-for="sub in playbackManager.currentItemVttParsedSubtitleTracks"
+            :key="`${playbackManager.currentSourceUrl}-${sub.srcIndex}`"
+            kind="subtitles"
+            :label="sub.label"
+            :srclang="sub.srcLang"
+            :src="sub.src" >
       </Component>
+      <SubtitleTrack
+        v-if="mediaElementRef && playerElement.currentExternalSubtitleTrack?.parsed !== undefined"/>
     </Teleport>
   </template>
 </template>
