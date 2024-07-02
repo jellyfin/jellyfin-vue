@@ -10,11 +10,11 @@ import { loginGuard } from './middlewares/login';
 import { metaGuard } from './middlewares/meta';
 import { validateGuard } from './middlewares/validate';
 import { isStr } from '@/utils/validation';
-import { getJSONConfig } from '@/utils/external-config';
+import jsonConfig from '@/utils/external-config';
 
 export const router = createRouter({
   history:
-    (await getJSONConfig()).routerMode === 'history'
+    jsonConfig.routerMode === 'history'
       ? createWebHistory()
       : createWebHashHistory(),
   routes: [],

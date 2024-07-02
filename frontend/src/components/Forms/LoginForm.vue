@@ -75,7 +75,7 @@ import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { fetchIndexPage } from '@/utils/items';
 import { remote } from '@/plugins/remote';
-import { getJSONConfig } from '@/utils/external-config';
+import jsonConfig from '@/utils/external-config';
 
 const props = defineProps<{ user?: UserDto }>();
 
@@ -83,7 +83,6 @@ defineEmits<{
   change: [];
 }>();
 
-const jsonConfig = await getJSONConfig();
 const { t } = useI18n();
 
 const router = useRouter();

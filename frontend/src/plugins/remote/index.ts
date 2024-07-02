@@ -11,7 +11,7 @@ import RemotePluginAuthInstance from './auth';
 import RemotePluginSDKInstance from './sdk';
 import RemotePluginSocketInstance from './socket';
 import { isNil, sealed } from '@/utils/validation';
-import { getJSONConfig } from '@/utils/external-config';
+import jsonConfig from '@/utils/external-config';
 
 @sealed
 class RemotePlugin {
@@ -38,13 +38,11 @@ export function createPlugin(): {
         = remote;
 
       const auth = remote.auth;
-      const config = await getJSONConfig();
-      const defaultServers = config.defaultServerURLs;
       /**
        * We reverse the list so the first server is the last to be connected,
        * and thus is the chosen one by default
        */
-      const missingServers = defaultServers
+      const missingServers = jsonConfig.defaultServerURLs
         .filter((serverUrl) => {
           const server = auth.servers.find(
             lsServer => lsServer.PublicAddress === serverUrl

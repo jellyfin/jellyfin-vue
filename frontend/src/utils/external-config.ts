@@ -1,12 +1,10 @@
-import { isArray, isBool, isNil, isObj, isStr } from '@/utils/validation';
+import { isArray, isBool, isObj, isStr } from '@/utils/validation';
 
 interface ExternalJSONConfig {
   defaultServerURLs: string[];
   allowServerSelection: boolean;
   routerMode: 'hash' | 'history';
 }
-
-let externalConfig: ExternalJSONConfig | undefined;
 
 /**
  * Asserts that the config parameter is a valid configuration shape
@@ -48,18 +46,15 @@ function validateJsonConfig(
 
 /**
  * Fetch configuration at runtime from the config.json file
- * We use destr for serialization as it has better support for JS primitives.
  */
-export async function getJSONConfig(): Promise<ExternalJSONConfig> {
-  if (isNil(externalConfig)) {
-    const loadedConfig: unknown = await (
-      await fetch('config.json', { cache: 'no-store' })
-    ).json();
+async function getJSONConfig(): Promise<ExternalJSONConfig> {
+  const loadedConfig: unknown = await (
+    await fetch('config.json', { cache: 'no-store' })
+  ).json();
 
-    validateJsonConfig(loadedConfig);
+  validateJsonConfig(loadedConfig);
 
-    externalConfig = loadedConfig;
-  }
-
-  return externalConfig;
+  return loadedConfig;
 }
+
+export default await getJSONConfig();

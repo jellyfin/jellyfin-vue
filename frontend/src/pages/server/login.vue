@@ -103,11 +103,10 @@ import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { watchImmediate } from '@vueuse/core';
 import { remote } from '@/plugins/remote';
-import { getJSONConfig } from '@/utils/external-config';
+import jsonConfig from '@/utils/external-config';
 import { isConnectedToServer } from '@/store';
 import { usePageTitle } from '@/composables/page-title';
 
-const jsonConfig = await getJSONConfig();
 const { t } = useI18n();
 const router = useRouter();
 

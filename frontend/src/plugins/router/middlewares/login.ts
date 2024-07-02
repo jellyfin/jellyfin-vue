@@ -6,7 +6,7 @@ import type {
 import { until } from '@vueuse/core';
 import { remote } from '@/plugins/remote';
 import { isNil } from '@/utils/validation';
-import { getJSONConfig } from '@/utils/external-config';
+import jsonConfig from '@/utils/external-config';
 
 const serverAddUrl = '/server/add';
 const serverSelectUrl = '/server/select';
@@ -29,8 +29,6 @@ function doRedir(dest: RouteLocationPathRaw, to: RouteLocationNormalized) {
 export async function loginGuard(
   to: RouteLocationNormalized
 ): Promise<boolean | RouteLocationRaw> {
-  const jsonConfig = await getJSONConfig();
-
   if (jsonConfig.defaultServerURLs.length && isNil(remote.auth.currentServer)) {
     await until(() => remote.auth.currentServer).toBeTruthy({ flush: 'pre' });
   }
