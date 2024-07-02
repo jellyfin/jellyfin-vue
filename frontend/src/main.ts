@@ -3,8 +3,9 @@
  * for TypeScript compiler (check tsconfig.json)
  * https://caniuse.com/mdn-javascript_operators_await_top_level
  */
-import { createApp } from 'vue';
+import { createApp, effectScope } from 'vue';
 import { routes } from 'vue-router/auto-routes';
+import { useEventListener } from '@vueuse/core';
 import Root from '@/App.vue';
 import { hideDirective } from '@/plugins/directives';
 import { vuePlugin as i18n } from '@/plugins/i18n';
@@ -14,19 +15,15 @@ import { vuetify } from '@/plugins/vuetify';
 /**
  * - GLOBAL STYLES -
  */
-import '@fontsource-variable/figtree';
-/* eslint-disable-next-line import/no-extraneous-dependencies */
-import '@unocss/reset/tailwind-compat.css';
 import 'uno.css';
 import 'virtual:unocss-devtools';
-import '@/assets/styles/global.css';
+import '@/assets/styles/index.css';
 
 /**
  * - VUE PLUGINS, STORE AND DIRECTIVE -
  * The order of statements IS IMPORTANT
  */
 const remote = createRemote();
-
 const app = createApp(Root);
 
 /**
@@ -44,10 +41,13 @@ app.use(vuetify);
 app.directive('hide', hideDirective);
 
 /**
- * This ensures the transition plays: https://router.vuejs.org/guide/migration/#all-navigations-are-now-always-asynchronous
- * Also ensures Suspense component's content has loaded on first navigation (refer to RouterViewTransition component)
+ * Ensure everything is fully loaded before mounting the app
  */
-await router.isReady();
+await Promise.all([
+  router.isReady(),
+  ...[...document.fonts.keys()].map(font => font.load())
+]);
+await document.fonts.ready;
 
 /**
  * MOUNTING POINT
