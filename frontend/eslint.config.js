@@ -2,6 +2,7 @@ import jsdoc from 'eslint-plugin-jsdoc';
 import unicorn from 'eslint-plugin-unicorn';
 import eslintImportX from 'eslint-plugin-import-x';
 import fileProgress from 'eslint-plugin-file-progress';
+import promise from 'eslint-plugin-promise'
 import js from '@eslint/js';
 import globals from 'globals';
 import vueScopedCSS from 'eslint-plugin-vue-scoped-css';
@@ -141,7 +142,7 @@ export default tseslint.config(
     files: vueAndTsFiles
   },
   {
-    ...flatArrayOfObjects(compat.extends('plugin:promise/recommended')),
+    ...promise.configs['flat/recommended'],
     name: '(promise) Extended rules',
     files: vueAndTsFiles
   },
