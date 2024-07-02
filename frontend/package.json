@@ -63,7 +63,7 @@
     "@vitejs/plugin-vue": "5.0.5",
     "browserslist": "4.23.1",
     "dpdm": "3.14.0",
-    "eslint": "9.5.0",
+    "eslint": "9.6.0",
     "eslint-config-flat-gitignore": "0.1.5",
     "eslint-plugin-css": "0.10.0",
     "eslint-plugin-file-progress": "1.4.0",
