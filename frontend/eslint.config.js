@@ -256,7 +256,12 @@ export default tseslint.config(
     files: vueFiles,
     languageOptions: {
       parserOptions: {
-        parser: '@typescript-eslint/parser'
+        parser: tseslint.parser,
+        /**
+         * https://github.com/vuejs/vue-eslint-parser/issues/104#issuecomment-2148652586
+         */
+        allowAutomaticSingleRunInference: false,
+        disallowAutomaticSingleRunInference: true,
       }
     },
     rules: {
