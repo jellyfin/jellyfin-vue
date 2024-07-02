@@ -117,9 +117,9 @@ class TaskManagerStore extends CommonStore<TaskManagerState> {
     const refreshProgressAction = (type: string, data: object): void => {
       if (
         type === 'RefreshProgress'
-          && 'ItemId' in data
-          && isStr(data.ItemId)
-          && 'Progress' in data
+        && 'ItemId' in data
+        && isStr(data.ItemId)
+        && 'Progress' in data
       ) {
         // TODO: Verify all the different tasks that this message may belong to - here we assume libraries.
 
@@ -154,8 +154,8 @@ class TaskManagerStore extends CommonStore<TaskManagerState> {
     const libraryChangedAction = (type: string, data: object): void => {
       if (
         type === 'LibraryChanged'
-          && 'ItemsUpdated' in data
-          && isArray(data.ItemsUpdated)
+        && 'ItemsUpdated' in data
+        && isArray(data.ItemsUpdated)
       ) {
         for (const id of data.ItemsUpdated) {
           if (isStr(id)) {
