@@ -26,6 +26,7 @@ env:
   RELEASE_TAG: stable
   PRERELEASE_TAG: stable-rc
   COMMIT_TAG: unstable
+  DOCKER_BUILD_RECORD_UPLOAD: false
 
 permissions:
   id-token: write
