@@ -76,5 +76,6 @@ class BlurhashWorker {
 
 const instance = new BlurhashWorker();
 export default instance;
+export type IBlurhashWorker = typeof instance;
 
 expose(instance);

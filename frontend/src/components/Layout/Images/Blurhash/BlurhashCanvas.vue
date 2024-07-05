@@ -12,13 +12,12 @@
 <script lang="ts">
 import { wrap, transfer } from 'comlink';
 import { shallowRef, watch } from 'vue';
-import { DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_PUNCH } from './BlurhashWorker';
+import { DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_PUNCH, type IBlurhashWorker } from './BlurhashWorker';
 import BlurhashWorker from './BlurhashWorker?worker';
 import { remote } from '@/plugins/remote';
 
 const worker = new BlurhashWorker();
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-const blurhashWorker = wrap<typeof import('./BlurhashWorker')['default']>(worker);
+const blurhashWorker = wrap<IBlurhashWorker>(worker);
 
 /**
  * Clear cached blurhashes on logout
