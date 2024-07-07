@@ -2,6 +2,8 @@
  * == TYPES AND INTERFACES ==
  */
 
+import type { StyleValue } from 'vue';
+
 interface ScrollParents {
   vertical: Element;
   horizontal: Element;
@@ -25,7 +27,7 @@ export interface ResizeMeasurement extends GridMeasurement {
   itemWidthWithGap: number;
 }
 
-interface BufferMeta {
+export interface BufferMeta {
   bufferedOffset: number;
   bufferedLength: number;
 }
@@ -40,10 +42,9 @@ export interface ContentSize {
   height?: number;
 }
 
-export interface InternalItem<T> {
+export interface InternalItem {
   index: number;
-  value: T;
-  style?: { transform: string };
+  style: StyleValue;
 }
 
 /**
@@ -139,7 +140,7 @@ export function getResizeMeasurement(
 }
 
 /**
- * Wether the
+ * Whether the scroll direction is horizontal or not
  */
 function isHorizontallyScrolled(resizeMeasurement: ResizeMeasurement): boolean {
   return resizeMeasurement.flow === 'column';
@@ -259,55 +260,6 @@ export function getItemOffsetByIndex(
   }
 
   return { x, y };
-}
-
-/**
- * Gets the items that must be visible in the grid based on the buffer measurements
- */
-export function getVisibleItems<T>(
-  bufferMeta: BufferMeta,
-  resizeMeasurement: ResizeMeasurement,
-  allItems: T[]
-): InternalItem<T>[] {
-  const { bufferedOffset, bufferedLength } = bufferMeta;
-
-  /**
-   * When approaching the end of the VirtualGrid, we want to always be sure that
-   * bufferedLength = the amount of visible items,
-   * so no DOM nodes are destroyed (which would be a waste of resources if the user reverses the scroll),
-   * so we need to change the slice values depending on the current offset.
-   *
-   * OffsetPlusLength is the length ahead that we have DOM nodes available for rendering.
-   *
-   * We initialize 'first' to 0 and 'last' to allItems.length to take into account those cases
-   * where the available buffer is bigger than the real amount of items we need to display,
-   * the if statement is where we really take into account a real virtual scrolling scenario
-   */
-  const offsetPlusLength = bufferedOffset + bufferedLength;
-  let first = 0;
-  let last = allItems.length;
-
-  if (allItems.length > bufferedLength) {
-    first
-      = allItems.length < offsetPlusLength
-        ? allItems.length - bufferedLength
-        : bufferedOffset;
-    last
-      = allItems.length < offsetPlusLength ? allItems.length : offsetPlusLength;
-  }
-
-  return allItems.slice(first, last).map((value, localIndex) => {
-    const index = first + localIndex;
-    const { x, y } = getItemOffsetByIndex(index, resizeMeasurement);
-
-    return {
-      index,
-      value,
-      style: {
-        transform: `translate(${x}px, ${y}px)`
-      }
-    };
-  });
 }
 
 /**

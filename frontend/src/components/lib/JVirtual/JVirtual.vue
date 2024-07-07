@@ -1,8 +1,8 @@
 <template>
   <Component
     :is="tag"
-    v-show="items.length"
     ref="rootRef"
+    class="uno-will-change-contents"
     :style="rootStyles">
     <Component
       :is="probeTag"
@@ -11,14 +11,14 @@
       :class="gridClass">
       <slot :item="items[0]" />
     </Component>
-    <template v-if="visibleItems && visibleItems.length">
-      <JSlot v-for="(_n, i) in visibleItems.length"
-        :key="indexAsKey ? visibleItems[i].index : undefined"
+    <template v-if="visibleItems.length">
+      <JSlot v-for="internal_item in visibleItems"
+        :key="indexAsKey ? internal_item.index : undefined"
         :class="gridClass"
-        :style="visibleItems[i].style">
+        :style="internal_item.style">
         <slot
-          :item="visibleItems[i].value"
-          :index="visibleItems[i].index" />
+          :item="items[internal_item.index]"
+          :index="internal_item.index" />
       </JSlot>
     </template>
   </Component>
@@ -38,16 +38,20 @@ import {
   watch,
   type StyleValue
 } from 'vue';
+import { wrap } from 'comlink';
 import {
   getBufferMeta,
   getContentSize,
   getResizeMeasurement,
   getScrollParents,
   getScrollToInfo,
-  getVisibleItems
+  type InternalItem
 } from './pipeline';
+import type { IJVirtualWorker } from './j-virtual.worker';
+import JVirtualWorker from './j-virtual.worker?worker';
 import { vuetify } from '@/plugins/vuetify';
 import { isNil } from '@/utils/validation';
+
 /**
  * SHARED STATE ACROSS ALL THE COMPONENT INSTANCES
  */
@@ -106,7 +110,7 @@ const props = withDefaults(
   {
     tag: 'div',
     probeTag: 'div',
-    bufferMultiplier: 1
+    bufferMultiplier: 1.2
   }
 );
 
@@ -121,29 +125,39 @@ const probeRef = shallowRef<HTMLElement>();
  */
 const itemRect = shallowRef<DOMRectReadOnly>();
 const scrollEvents = shallowRef(0);
+const workerUpdates = shallowRef(0);
+
+/**
+ * == NON REACTIVE STATE ==
+ */
 const eventCleanups: Fn[] = [];
+const workerInstance = new JVirtualWorker();
+const worker = wrap<IJVirtualWorker>(workerInstance);
+const cache = new Map<number, InternalItem[]>();
 
 /**
  * == MEASUREMENTS OF THE GRID AREA AND STYLING ==
  * In the if check of each computed property we add all the objects that we want
- * Vue to track.
+ * Vue to track for changes. If we don't do this, Vue will not track the dependencies
+ * correctly.
  */
 const gridClass = computed(() => props.grid ? 'j-virtual-grid-area' : undefined);
+const itemsLength = computed(() => props.items.length);
 const resizeMeasurement = computed(() => {
   return rootRef.value
     && itemRect.value
-    && displayWidth.value !== undefined
-    && displayHeight.value !== undefined
+    && !isNil(displayWidth.value)
+    && !isNil(displayHeight.value)
     && !isNil(props.items)
     ? getResizeMeasurement(rootRef.value, itemRect.value)
     : undefined;
 });
 const contentSize = computed(() => {
   return resizeMeasurement.value
-    && displayWidth.value !== undefined
-    && displayHeight.value !== undefined
+    && !isNil(displayWidth.value)
+    && !isNil(displayHeight.value)
     && !isNil(props.items)
-    ? getContentSize(resizeMeasurement.value, props.items.length)
+    ? getContentSize(resizeMeasurement.value, itemsLength.value)
     : undefined;
 });
 const rootStyles = computed<StyleValue>(() => ({
@@ -157,8 +171,8 @@ const rootStyles = computed<StyleValue>(() => ({
    */
 const boundingClientRect = computed(() => {
   if (
-    displayWidth.value !== undefined
-    && displayHeight.value !== undefined
+    !isNil(displayWidth.value)
+    && !isNil(displayHeight.value)
     && !isNil(rootRef.value)
     && !isNil(scrollEvents.value)
     && !isNil(props.items)
@@ -169,7 +183,7 @@ const boundingClientRect = computed(() => {
 const leftSpaceAroundWindow = computed(() => Math.abs(Math.min(boundingClientRect.value?.left ?? 0, 0)));
 const topSpaceAroundWindow = computed(() => Math.abs(Math.min(boundingClientRect.value?.top ?? 0, 0)));
 const bufferMeta = computed(() => {
-  if (!isNil(leftSpaceAroundWindow.value) && !isNil(topSpaceAroundWindow.value) && !isNil(resizeMeasurement.value)) {
+  if (!isNil(resizeMeasurement.value)) {
     return getBufferMeta(
       {
         left: leftSpaceAroundWindow.value,
@@ -180,18 +194,34 @@ const bufferMeta = computed(() => {
     );
   }
 });
-const bufferLength = computed(() => bufferMeta.value?.bufferedLength);
-const bufferOffset = computed(() => bufferMeta.value?.bufferedOffset);
-const visibleItems = computed(() => {
-  if (!isNil(bufferLength.value) && !isNil(bufferOffset.value) && !isNil(resizeMeasurement.value)) {
-    return getVisibleItems(
-      { bufferedLength: bufferLength.value, bufferedOffset: bufferOffset.value },
-      resizeMeasurement.value,
-      props.items
+const bufferLength = computed(() => Math.ceil(bufferMeta.value?.bufferedLength ?? 0));
+const bufferOffset = computed(() => Math.ceil(bufferMeta.value?.bufferedOffset ?? 0));
+const visibleItems = computed<InternalItem[]>((previous) => {
+  if (Number.isFinite(workerUpdates.value)) {
+    const elems = cache.get(bufferOffset.value) ?? [];
+    return elems.length ? elems : previous ?? [];
+  }
+
+  return [];
+});
+const scrollParents = computed(() => rootRef.value && getScrollParents(rootRef.value));
+const scrollTargets = computed(() => {
+  const el = rootRef.value;
+
+  if (el && el instanceof HTMLElement) {
+    const { vertical, horizontal } = getScrollParents(el);
+
+    /**
+     * If the scrolling parent is the doc root, use window instead as using
+     * document root might not work properly.
+     */
+    return (
+      vertical === horizontal ? [vertical] : [vertical, horizontal]
+    ).map(parent =>
+      (parent === document.documentElement ? window : parent)
     );
   }
 });
-const scrollParents = computed(() => rootRef.value && getScrollParents(rootRef.value));
 
 /**
  * == VIRTUAL SCROLLING LOGIC ==
@@ -217,26 +247,70 @@ function destroyEventListeners(): void {
 }
 
 /**
- * Gets the appropiate DOM element for listening to scroll events
+ * Sets the cache
+ * ONLY USE INSIDE populateCache, since nullish checks are skipped here
  */
-const scrollTargets = computed(() => {
-  const el = rootRef.value;
+async function setCache(offset: number): Promise<void> {
+  /**
+   * Set the cache value rightaway to an empty value.
+   * That way, populateCache loop doesn't fire again
+   * with the same offset before this promise resolves.
+   */
+  cache.set(offset, []);
+  const values = await worker.getVisibleIndexes(
+    { bufferedLength: bufferLength.value, bufferedOffset: offset },
+    resizeMeasurement.value!,
+    itemsLength.value
+  );
 
-  if (el && el instanceof HTMLElement) {
-    const { vertical, horizontal } = getScrollParents(el);
+  /**
+   * If the WebWorker operation was running in the middle of a cache clear,
+   * old data might be pushed instead, so we avoid it here.
+   */
+  window.requestAnimationFrame(() => {
+    if (cache.size !== 0) {
+      cache.set(offset, values);
+      workerUpdates.value++;
+    }
+  });
+}
+
+/**
+ * Handles all the logic for caching the virtual scrolling items and
+ * the interaction with the worker.
+ *
+ * We cache the items to avoid the extra overhead of sending the items
+ * to the worker when scrolling fast. We cache 2 times the buffer length
+ */
+function populateCache(): void {
+  if (!isNil(resizeMeasurement.value)
+    && Number.isFinite(bufferLength.value)
+    && Number.isFinite(bufferOffset.value)
+  ) {
+    const area = bufferLength.value * 2;
+    const start = Math.max(1, bufferOffset.value - area);
+    const finish = bufferOffset.value + area;
 
     /**
-     * If the scrolling parent is the doc root, use window instead as using
-     * document root might not work properly.
+     * We always populate 0 first, so there's no blank space shown at the beginning
+     * or when scrolling to top after a resize in the bottom area.
      */
-    return (
-      vertical === horizontal ? [vertical] : [vertical, horizontal]
-    ).map(parent =>
-      parent === document.documentElement ? window : parent
-    );
-  }
-});
+    if (!cache.has(0)) {
+      void setCache(0);
+    }
 
+    for (let i = finish; i >= start && !cache.has(i); i--) {
+      /**
+       * Fire all the operations concurrently, no need to await them
+       */
+      void setCache(i);
+    }
+  }
+}
+
+/**
+ * Gets the appropiate DOM element for listening to scroll events
+ */
 watch(
   scrollTargets,
   () => {
@@ -244,7 +318,9 @@ watch(
 
     if (!isNil(scrollTargets.value)) {
       for (const parent of scrollTargets.value) {
-        const cleanup = useEventListener(parent, 'scroll', () => scrollEvents.value++, {
+        const cleanup = useEventListener(parent, 'scroll', () => {
+          window.requestAnimationFrame(() => scrollEvents.value++);
+        }, {
           passive: true,
           capture: true
         });
@@ -255,19 +331,35 @@ watch(
   }
 );
 
+/**
+ * Tracks if the scroll must be pointed at an specific element
+ */
 watch(() => props.scrollTo, () => {
   if (!isNil(rootRef.value)
     && !isNil(props.scrollTo)
     && !isNil(resizeMeasurement.value)
     && !isNil(scrollParents.value)
     && props.scrollTo > 0
-    && props.scrollTo < props.items.length) {
+    && props.scrollTo < itemsLength.value) {
     const { target, top, left } = getScrollToInfo(scrollParents.value, rootRef.value, resizeMeasurement.value, props.scrollTo);
     target.scrollTo({ top, left, behavior: 'smooth' });
   }
 });
 
+/**
+ * Populate and reset the cache according to the current buffer state
+ */
+watch([bufferLength, resizeMeasurement, itemsLength, bufferOffset], (val, oldVal) => {
+  if (val[0] !== oldVal[0] || val[1] !== oldVal[1] || val[2] !== oldVal[2]) {
+    cache.clear();
+  }
+
+  populateCache();
+});
+
 onBeforeUnmount(destroyEventListeners);
+onBeforeUnmount(() => workerInstance.terminate());
+onBeforeUnmount(() => cache.clear());
 </script>
 
 <style scoped>
