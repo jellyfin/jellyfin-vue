@@ -1,6 +1,6 @@
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
-import { computedAsync, useFps, useMediaControls, useMediaQuery, useNetwork, useNow, useScroll } from '@vueuse/core';
-import { shallowRef, computed } from 'vue';
+import { computedAsync, useMediaControls, useMediaQuery, useNetwork, useNow, useScroll } from '@vueuse/core';
+import { shallowRef } from 'vue';
 import { remote } from '@/plugins/remote';
 import { isNil } from '@/utils/validation';
 
@@ -65,11 +65,10 @@ export const hasTouch = useMediaQuery('(any-pointer:coarse)');
 export const hasHDRDisplay = useMediaQuery('(video-dynamic-range:high)');
 
 /**
- * Track performance
+ * Track severely underpowered devices:
+ * https://developer.mozilla.org/en-US/docs/Web/CSS/@media/update
  */
-const fps = useFps();
-const isLowRefreshRateScreen = useMediaQuery('(update:slow)');
-export const isSlow = computed(() => isLowRefreshRateScreen.value || fps.value <= 15);
+export const isSlow = useMediaQuery('(update:slow)');
 
 /**
  * Reactively tracks if the user is connected to the server

@@ -5,16 +5,14 @@
       <RouterView v-slot="{ Component, route }">
         <JTransition
           :name="route.meta.layout.transition.enter ?? defaultTransition"
-          :mode="defaultTransitionMode ?? route.meta.layout.transition.mode"
-          important>
+          :mode="defaultTransitionMode ?? route.meta.layout.transition.mode">
           <Suspense @resolve="apploaded = true">
             <JView
               :key="route.meta.layout.name ?? 'default'"
               :comp="getLayoutComponent(route.meta.layout.name)">
                 <JTransition
                   :name="route.meta.layout.transition.enter ?? defaultTransition"
-                  :mode="defaultTransitionMode ?? route.meta.layout.transition.mode"
-                  important>
+                  :mode="defaultTransitionMode ?? route.meta.layout.transition.mode">
                   <Suspense suspensible>
                     <JView :key="route.path" :comp="Component" />
                   </Suspense>
