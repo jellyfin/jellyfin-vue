@@ -1,5 +1,5 @@
 {
   "defaultServerURLs": [],
   "allowServerSelection": true,
-  "routerMode": "hash"
+  "routerMode": "history"
 }

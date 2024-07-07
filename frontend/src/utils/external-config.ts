@@ -47,13 +47,26 @@ function validateJsonConfig(
 }
 
 /**
+ * Get the base path for the application
+ */
+function getBasePath(): string {
+  const base = import.meta.env.BASE_URL;
+  if (base.endsWith('/')) {
+    return base.substring(0, base.length - 1);
+  }
+
+  return base;
+}
+
+/**
  * Fetch configuration at runtime from the config.json file
  * We use destr for serialization as it has better support for JS primitives.
  */
 export async function getJSONConfig(): Promise<ExternalJSONConfig> {
   if (isNil(externalConfig)) {
+    const basePath = getBasePath();
     const loadedConfig: unknown = await (
-      await fetch('/config.json', { cache: 'no-store' })
+      await fetch(basePath + '/config.json', { cache: 'no-store' })
     ).json();
 
     validateJsonConfig(loadedConfig);
