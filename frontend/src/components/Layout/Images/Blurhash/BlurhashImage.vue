@@ -15,7 +15,7 @@
           class="absolute-cover">
           <BlurhashImageIcon
             :item="item"
-            class="z-1" />
+            class="uno-z--1" />
         </BlurhashCanvas>
         <BlurhashImageIcon
           v-else
@@ -53,9 +53,3 @@ const imageUrl = computed(() => getImageInfo(props.item, {
 }).url);
 const hash = computed(() => getBlurhash(props.item, props.type));
 </script>
-
-<style scoped>
-.z-1 {
-  z-index: -1;
-}
-</style>
