@@ -12,22 +12,18 @@
       :disabled="!props.transitionProps">
       <img
         v-if="shown"
-        key="1"
         class="j-img"
         v-bind="mergeProps($props, $attrs)"
         :alt="$props.alt" >
       <template v-else>
         <slot
           v-if="$slots.placeholder"
-          key="2"
           name="placeholder" />
         <slot
           v-else-if="loading"
-          key="3"
           name="loading" />
         <slot
           v-else-if="error"
-          key="4"
           name="error" />
       </template>
     </JTransition>
