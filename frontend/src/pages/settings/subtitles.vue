@@ -10,20 +10,18 @@
                   :items="availableSubtitleFonts"/>
 
                 <VSlider
-                  v-model="fontSize"
+                  v-model="clientSettings.subtitleAppearance.fontSize"
                   :label="$t('fontSize')"
                   :min="1"
                   :max="4.5"
-                  :step="0.1"
-                  @end="updateFontSize"/>
+                  :step="0.1"/>
 
                 <VSlider
-                  v-model="positionFromBottom"
+                  v-model="clientSettings.subtitleAppearance.positionFromBottom"
                   :label="$t('positionFromBottom')"
                   :min="0"
                   :max="30"
-                  :step="1"
-                  @end="updatePositionFromBottom"/>
+                  :step="1"/>
 
                 <VCheckbox
                   v-model="clientSettings.subtitleAppearance.backdrop"
@@ -52,18 +50,6 @@ const route = useRoute();
 route.meta.title = t('subtitles');
 
 const availableSubtitleFonts = ref<string[]>([]);
-
-// Temporary values for slider preview
-const fontSize = ref(clientSettings.subtitleAppearance.fontSize);
-const positionFromBottom = ref(clientSettings.subtitleAppearance.positionFromBottom);
-
-// Functions to update settings on slider release
-const updateFontSize = () => {
-  clientSettings.subtitleAppearance.fontSize = fontSize.value;
-};
-const updatePositionFromBottom = () => {
-  clientSettings.subtitleAppearance.positionFromBottom = positionFromBottom.value;
-};
 
 // Load subtitle fonts available to the client
 const loadAvailableFonts = async () => {
