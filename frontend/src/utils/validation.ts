@@ -53,7 +53,7 @@ export function isNull(value: unknown): value is null {
  * Check if the value is null or undefined
  */
 export function isNil(value: unknown): value is null | undefined {
-  return isNull(value) || isUndef(value);
+  return isUndef(value) || isNull(value);
 }
 
 /**
