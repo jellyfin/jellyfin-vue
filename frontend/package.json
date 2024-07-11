@@ -67,7 +67,7 @@
     "eslint-config-flat-gitignore": "0.1.5",
     "eslint-plugin-css": "0.10.0",
     "eslint-plugin-file-progress": "1.4.0",
-    "eslint-plugin-import-x": "0.5.3",
+    "eslint-plugin-import-x": "3.0.0",
     "eslint-plugin-jsdoc": "48.5.0",
     "eslint-plugin-jsonc": "2.16.0",
     "eslint-plugin-promise": "6.4.0",
