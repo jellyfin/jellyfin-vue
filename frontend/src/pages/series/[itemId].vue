@@ -179,18 +179,17 @@
 </template>
 
 <script setup lang="ts">
-import {
-  ImageType,
-  type BaseItemPerson
+import type {
+  BaseItemPerson
 } from '@jellyfin/sdk/lib/generated-client';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { getItemDetailsLink } from '@/utils/items';
-import { getBlurhash } from '@/utils/images';
 import { useBaseItem } from '@/composables/apis';
 import { useItemBackdrop } from '@/composables/backdrop';
+import { useItemPageTitle } from '@/composables/page-title';
 
 const route = useRoute('/series/[itemId]');
 
@@ -222,6 +221,6 @@ const writers = computed(() =>
   crew.value.filter(person => person.Type === 'Writer')
 );
 
-route.meta.title = item.value.Name;
+useItemPageTitle(item);
 useItemBackdrop(item);
 </script>

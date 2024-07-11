@@ -105,12 +105,12 @@ import 'swiper/css/virtual';
 import { A11y, EffectCoverflow, Virtual } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { computed, shallowRef, watchEffect } from 'vue';
-import { useRoute } from 'vue-router';
 import { playbackGuard } from '@/plugins/router/middlewares/playback';
 import { playbackManager } from '@/store/playback-manager';
 import { isNil } from '@/utils/validation';
 import { usePlayback } from '@/composables/use-playback';
 import { useItemBackdrop } from '@/composables/backdrop';
+import { useItemPageTitle } from '@/composables/page-title';
 
 defineOptions({
   beforeRouteEnter: playbackGuard
@@ -119,7 +119,6 @@ defineOptions({
 usePlayback();
 
 const modules = [A11y, Virtual, EffectCoverflow];
-const route = useRoute();
 
 const coverflowEffect = {
   depth: 500,
@@ -135,11 +134,11 @@ const artistString = computed(() =>
 
 const swiperInstance = shallowRef<SwiperType>();
 useItemBackdrop(() => playbackManager.currentItem, 0.75);
+useItemPageTitle(() => playbackManager.currentItem);
 
 watchEffect(() => {
   if (swiperInstance.value && !isNil(playbackManager.currentItemIndex)) {
     swiperInstance.value.slideTo(playbackManager.currentItemIndex);
-    route.meta.title = playbackManager.currentItem?.Name ?? '';
   }
 }
 );

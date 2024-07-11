@@ -76,6 +76,7 @@ import { useRoute } from 'vue-router';
 import { apiStore } from '@/store/api';
 import { methodsAsObject, useBaseItem } from '@/composables/apis';
 import type { Filters } from '@/components/Buttons/FilterButton.vue';
+import { useItemPageTitle } from '@/composables/page-title';
 
 const { t } = useI18n();
 const route = useRoute('/library/[itemId]');
@@ -229,7 +230,7 @@ const { loading, data: queryItems } = await useBaseItem(api, method)(() => ({
 const fullQueryIsCached = computed(() => loading.value ? !queryLimit.value && queryItems.value[0].Id !== lazyLoadIds.value[0] : true);
 const items = computed(() => fullQueryIsCached.value ? [...(apiStore.getItemsById(lazyLoadIds.value) as BaseItemDto[]), ...queryItems.value] : queryItems.value);
 
-route.meta.title = library.value.Name;
+useItemPageTitle(library);
 
 /**
  * We fetch the 1st 100 items and, after mount, we fetch the rest.

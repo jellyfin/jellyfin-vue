@@ -57,6 +57,7 @@ import { useRoute } from 'vue-router';
 import { isStr } from '@/utils/validation';
 import { useResponsiveClasses } from '@/composables/use-responsive-classes';
 import { useBaseItem } from '@/composables/apis';
+import { useItemPageTitle } from '@/composables/page-title';
 
 const route = useRoute('/genre/[itemId]');
 
@@ -82,7 +83,7 @@ const { data: genres } = await useBaseItem(getItemsApi, 'getItems')(() => ({
   sortOrder: [SortOrder.Ascending]
 }));
 
-route.meta.title = genre.value.Name;
+useItemPageTitle(genre);
 </script>
 
 <style scoped>

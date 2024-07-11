@@ -144,7 +144,6 @@
 <script setup lang="ts">
 import {
   BaseItemKind,
-  ImageType,
   SortOrder,
   type BaseItemDto
 } from '@jellyfin/sdk/lib/generated-client';
@@ -155,9 +154,9 @@ import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { msToTicks } from '@/utils/time';
 import { defaultSortOrder as sortBy } from '@/utils/items';
-import { getBlurhash } from '@/utils/images';
 import { useBaseItem } from '@/composables/apis';
 import { useItemBackdrop } from '@/composables/backdrop';
+import { useItemPageTitle } from '@/composables/page-title';
 
 const SINGLE_MAX_LENGTH_MS = 600_000;
 const EP_MAX_LENGTH_MS = 1_800_000;
@@ -222,7 +221,7 @@ const albums = computed(() =>
   )
 );
 
-route.meta.title = item.value.Name;
+useItemPageTitle(item);
 useItemBackdrop(item);
 
 /**

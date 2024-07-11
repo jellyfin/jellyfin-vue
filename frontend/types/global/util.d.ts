@@ -23,3 +23,8 @@ type ExcludeFromTuple<T, K extends number, I extends unknown[] = []> = T extends
     ? [...ExcludeFromTuple<R, K, [F, ...I]>]
     : [F, ...ExcludeFromTuple<R, K, [F, ...I]>]
   : [];
+
+/**
+ * Sets a type as nullish
+ */
+type Nullish<T> = T | null | undefined;

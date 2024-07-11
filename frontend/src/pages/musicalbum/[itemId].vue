@@ -103,14 +103,13 @@
 </template>
 
 <script setup lang="ts">
-import { ImageType } from '@jellyfin/sdk/lib/generated-client';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { useRoute } from 'vue-router';
 import { getItemDetailsLink } from '@/utils/items';
-import { getBlurhash } from '@/utils/images';
 import { useBaseItem } from '@/composables/apis';
 import { useItemBackdrop } from '@/composables/backdrop';
+import { useItemPageTitle } from '@/composables/page-title';
 
 const route = useRoute('/musicalbum/[itemId]');
 
@@ -122,6 +121,6 @@ const { data: relatedItems } = await useBaseItem(getLibraryApi, 'getSimilarItems
   limit: 5
 }));
 
-route.meta.title = item.value.Name;
+useItemPageTitle(item);
 useItemBackdrop(item);
 </script>

@@ -166,7 +166,6 @@
 <script setup lang="ts">
 import {
   BaseItemKind,
-  ImageType,
   SortOrder
 } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
@@ -176,10 +175,10 @@ import { format } from 'date-fns';
 import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { defaultSortOrder as sortBy } from '@/utils/items';
-import { getBlurhash } from '@/utils/images';
 import { useDateFns } from '@/composables/use-datefns';
 import { useBaseItem } from '@/composables/apis';
 import { useItemBackdrop } from '@/composables/backdrop';
+import { useItemPageTitle } from '@/composables/page-title';
 
 const route = useRoute('/person/[itemId]');
 
@@ -237,7 +236,7 @@ const birthPlace = computed(
   () => item.value.ProductionLocations?.[0] ?? undefined
 );
 
-route.meta.title = item.value.Name;
+useItemPageTitle(item);
 useItemBackdrop(item);
 
 /**

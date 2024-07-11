@@ -40,9 +40,9 @@ meta:
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
 import { isNil } from '@/utils/validation';
 import { CardShapes, fetchIndexPage, getShapeFromCollectionType } from '@/utils/items';
+import { usePageTitle } from '@/composables/page-title';
 
 interface HomeSection {
   title: string;
@@ -52,9 +52,8 @@ interface HomeSection {
 }
 
 const { t } = useI18n();
-const route = useRoute();
 
-route.meta.title = t('home');
+usePageTitle(() => t('home'));
 
 const { carousel, nextUp, views, resumeVideo, latestPerLibrary } = await fetchIndexPage();
 
