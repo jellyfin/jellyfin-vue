@@ -157,6 +157,7 @@ import { msToTicks } from '@/utils/time';
 import { defaultSortOrder as sortBy } from '@/utils/items';
 import { getBlurhash } from '@/utils/images';
 import { useBaseItem } from '@/composables/apis';
+import { useItemBackdrop } from '@/composables/backdrop';
 
 const SINGLE_MAX_LENGTH_MS = 600_000;
 const EP_MAX_LENGTH_MS = 1_800_000;
@@ -222,7 +223,7 @@ const albums = computed(() =>
 );
 
 route.meta.title = item.value.Name;
-route.meta.layout.backdrop.blurhash = getBlurhash(item.value, ImageType.Backdrop);
+useItemBackdrop(item);
 
 /**
  * Set the most appropiate starting tag

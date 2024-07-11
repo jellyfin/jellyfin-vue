@@ -8,7 +8,6 @@ import type {
 
 const defaultMeta: RouteMeta = {
   layout: {
-    backdrop: {},
     transition: {}
   }
 };

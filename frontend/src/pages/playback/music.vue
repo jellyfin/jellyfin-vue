@@ -90,15 +90,12 @@
 meta:
   layout:
     name: fullpage
-    backdrop:
-      opacity: 0.75
     transition:
       enter: 'slide-y-reverse'
       leave: 'slide-y'
 </route>
 
 <script setup lang="ts">
-import { ImageType } from '@jellyfin/sdk/lib/generated-client';
 import type SwiperType from 'swiper';
 import 'swiper/css';
 import 'swiper/css/a11y';
@@ -107,13 +104,13 @@ import 'swiper/css/keyboard';
 import 'swiper/css/virtual';
 import { A11y, EffectCoverflow, Virtual } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import { computed, ref, shallowRef, watchEffect } from 'vue';
+import { computed, shallowRef, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import { playbackGuard } from '@/plugins/router/middlewares/playback';
 import { playbackManager } from '@/store/playback-manager';
 import { isNil } from '@/utils/validation';
-import { getBlurhash } from '@/utils/images';
 import { usePlayback } from '@/composables/use-playback';
+import { useItemBackdrop } from '@/composables/backdrop';
 
 defineOptions({
   beforeRouteEnter: playbackGuard
@@ -131,27 +128,18 @@ const coverflowEffect = {
   stretch: -400
 };
 
-const isVisualizing = ref(false);
-
-const backdropHash = computed(() => {
-  return playbackManager.currentItem
-    ? getBlurhash(playbackManager.currentItem, ImageType.Primary)
-    : '';
-});
+const isVisualizing = shallowRef(false);
 const artistString = computed(() =>
   playbackManager.currentItem?.Artists?.join(', ')
 );
 
 const swiperInstance = shallowRef<SwiperType>();
+useItemBackdrop(() => playbackManager.currentItem, 0.75);
 
 watchEffect(() => {
   if (swiperInstance.value && !isNil(playbackManager.currentItemIndex)) {
     swiperInstance.value.slideTo(playbackManager.currentItemIndex);
     route.meta.title = playbackManager.currentItem?.Name ?? '';
-  }
-
-  if (backdropHash.value) {
-    route.meta.layout.backdrop.blurhash = backdropHash.value;
   }
 }
 );

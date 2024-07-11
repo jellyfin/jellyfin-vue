@@ -190,6 +190,7 @@ import { useRoute } from 'vue-router';
 import { getItemDetailsLink } from '@/utils/items';
 import { getBlurhash } from '@/utils/images';
 import { useBaseItem } from '@/composables/apis';
+import { useItemBackdrop } from '@/composables/backdrop';
 
 const route = useRoute('/series/[itemId]');
 
@@ -222,5 +223,5 @@ const writers = computed(() =>
 );
 
 route.meta.title = item.value.Name;
-route.meta.layout.backdrop.blurhash = getBlurhash(item.value, ImageType.Backdrop);
+useItemBackdrop(item);
 </script>
