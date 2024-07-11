@@ -63,7 +63,7 @@ jobs:
           show-progress: false
 
       - name: Setup node environment ⚙️
-        uses: actions/setup-node@v4.0.2
+        uses: actions/setup-node@v4.0.3
         with:
           node-version: 20
           check-latest: true
@@ -81,7 +81,7 @@ jobs:
         run: npm run build
 
       - name: Create provenance attestation 🔏
-        uses: actions/attest-build-provenance@v1.3.2
+        uses: actions/attest-build-provenance@v1.3.3
         continue-on-error: true
         with:
           subject-path: ${{ env.ARTIFACTS_PATH }}
@@ -201,7 +201,7 @@ jobs:
           path: docker_image.tar
 
       - name: Create provenance attestation 🔏
-        uses: actions/attest-build-provenance@v1.3.2
+        uses: actions/attest-build-provenance@v1.3.3
         continue-on-error: true
         with:
           subject-path: docker_image.tar
@@ -232,7 +232,7 @@ jobs:
           docker cp $(docker create --name jf $(docker images --filter=reference='${{ env.REGISTRY_IMAGE }}' -q | head -n 1)):/usr/share/nginx/html/ ./dist
 
       - name: Create provenance attestation 🔏
-        uses: actions/attest-build-provenance@v1.3.2
+        uses: actions/attest-build-provenance@v1.3.3
         continue-on-error: true
         with:
           subject-path: dist
