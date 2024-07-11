@@ -5,10 +5,6 @@ import type { RemotePlugin } from '@/plugins/remote/types';
 /**
  * The object that represents RouteMeta is defined at @/plugins/router/middleware/meta
  */
-interface BackdropPayload {
-  blurhash?: string;
-  opacity?: number;
-}
 interface RouteTransitionPayload {
   enter?: NonNullable<JTransitionProps['name']>;
   leave?: JTransitionProps['name'];
@@ -18,7 +14,6 @@ interface RouteTransitionPayload {
 interface LayoutPayload {
   readonly name?: 'default' | 'fullpage' | 'server';
   transparent?: boolean;
-  backdrop: BackdropPayload;
   transition: RouteTransitionPayload;
 }
 declare module 'vue-router' {

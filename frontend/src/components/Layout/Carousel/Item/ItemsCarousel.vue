@@ -61,11 +61,11 @@
 <script setup lang="ts">
 import { BaseItemKind, ImageType, type BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { SwiperSlide } from 'swiper/vue';
-import { useRoute } from 'vue-router';
+import { shallowRef } from 'vue';
 import { useResponsiveClasses } from '@/composables/use-responsive-classes';
 import { apiStore } from '@/store/api';
-import { getBlurhash } from '@/utils/images';
 import { getItemDetailsLink } from '@/utils/items';
+import { useItemBackdrop } from '@/composables/backdrop';
 
 const props = withDefaults(
   defineProps<{
@@ -75,7 +75,8 @@ const props = withDefaults(
   { pageBackdrop: false }
 );
 
-const route = useRoute();
+const currentIndex = shallowRef(0);
+useItemBackdrop(() => props.pageBackdrop ? props.items[currentIndex.value] : undefined);
 
 /**
  * Get the related item passed from the parent component
@@ -106,21 +107,10 @@ function getRelatedItem(item: BaseItemDto): BaseItemDto {
 }
 
 /**
- * Update page backdrop
- */
-function updateBackdrop(index: number): void {
-  if (props.pageBackdrop) {
-    const hash = getBlurhash(props.items[index], ImageType.Backdrop);
-
-    route.meta.layout.backdrop.blurhash = hash;
-  }
-}
-
-/**
  * Handle slide changes
  */
 function onSlideChange(index: number): void {
-  updateBackdrop(index);
+  currentIndex.value = index;
 }
 </script>
 

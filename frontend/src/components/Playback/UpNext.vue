@@ -113,7 +113,7 @@ watch(
     isHiddenByUser.value = false;
   }
 );
-watch(visible, () => { emit('change', visible.value); });
+watch(visible, () => emit('change', visible.value));
 </script>
 <style scoped>
 .up-next-dialog {

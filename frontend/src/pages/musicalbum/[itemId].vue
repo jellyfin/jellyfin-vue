@@ -110,6 +110,7 @@ import { useRoute } from 'vue-router';
 import { getItemDetailsLink } from '@/utils/items';
 import { getBlurhash } from '@/utils/images';
 import { useBaseItem } from '@/composables/apis';
+import { useItemBackdrop } from '@/composables/backdrop';
 
 const route = useRoute('/musicalbum/[itemId]');
 
@@ -122,5 +123,5 @@ const { data: relatedItems } = await useBaseItem(getLibraryApi, 'getSimilarItems
 }));
 
 route.meta.title = item.value.Name;
-route.meta.layout.backdrop.blurhash = getBlurhash(item.value, ImageType.Backdrop);
+useItemBackdrop(item);
 </script>

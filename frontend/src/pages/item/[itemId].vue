@@ -309,6 +309,7 @@ import { getItemDetailsLink, getMediaStreams } from '@/utils/items';
 import { getBlurhash } from '@/utils/images';
 import { getItemizedSelect } from '@/utils/forms';
 import { useBaseItem } from '@/composables/apis';
+import { useItemBackdrop } from '@/composables/backdrop';
 
 const route = useRoute('/genre/[itemId]');
 
@@ -371,5 +372,5 @@ const currentSource = computed({
 });
 
 route.meta.title = item.value.Name;
-route.meta.layout.backdrop.blurhash = getBlurhash(item.value, ImageType.Backdrop);
+useItemBackdrop(item);
 </script>
