@@ -312,10 +312,10 @@ export default tseslint.config(
       'import/no-nodejs-modules': 'off'
     }
   },
-  /** Settings for WebWorkers (the pattern matches any file that includes the word 'worker', regardless it's capitalization) */
+  /** Settings for WebWorkers (the pattern matches any file that ends in .worker.ts) */
   {
     name: 'Environment config for WebWorker files',
-    files: ['**/*[Ww][Oo][Rr][Kk][Ee][Rr]*.ts'],
+    files: ['**/*.worker.ts'],
     languageOptions: {
       globals: {
         ...globals.worker
