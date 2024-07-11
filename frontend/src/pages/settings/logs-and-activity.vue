@@ -105,17 +105,16 @@ import IMdiLogout from 'virtual:icons/mdi/logout';
 import IMdiPlay from 'virtual:icons/mdi/play';
 import IMdiStop from 'virtual:icons/mdi/stop';
 import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
 import { useTheme } from 'vuetify';
 import { remote } from '@/plugins/remote';
 import { useDateFns } from '@/composables/use-datefns';
 import { useApi } from '@/composables/apis';
+import { usePageTitle } from '@/composables/page-title';
 
 const { t } = useI18n();
-const route = useRoute();
 const theme = useTheme();
 
-route.meta.title = t('logsAndActivity');
+usePageTitle(() => t('logsAndActivity'));
 
 /**
  * Return a UI colour given log severity

@@ -24,10 +24,9 @@ meta:
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
+import { usePageTitle } from '@/composables/page-title';
 
 const { t } = useI18n();
-const route = useRoute();
 
-route.meta.title = t('addServer');
+usePageTitle(() => t('addServer'));
 </script>

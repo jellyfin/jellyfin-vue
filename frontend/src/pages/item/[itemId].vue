@@ -295,10 +295,9 @@
 </template>
 
 <script setup lang="ts">
-import {
-  ImageType,
-  type BaseItemPerson,
-  type MediaSourceInfo
+import type {
+  BaseItemPerson,
+  MediaSourceInfo
 } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
@@ -306,10 +305,10 @@ import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api'
 import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { getItemDetailsLink, getMediaStreams } from '@/utils/items';
-import { getBlurhash } from '@/utils/images';
 import { getItemizedSelect } from '@/utils/forms';
 import { useBaseItem } from '@/composables/apis';
 import { useItemBackdrop } from '@/composables/backdrop';
+import { useItemPageTitle } from '@/composables/page-title';
 
 const route = useRoute('/genre/[itemId]');
 
@@ -371,6 +370,6 @@ const currentSource = computed({
   }
 });
 
-route.meta.title = item.value.Name;
+useItemPageTitle(item);
 useItemBackdrop(item);
 </script>
