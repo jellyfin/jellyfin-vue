@@ -7,6 +7,8 @@
 import JASSUB from 'jassub';
 import jassubWorker from 'jassub/dist/jassub-worker.js?url';
 import jassubWasmUrl from 'jassub/dist/jassub-worker.wasm?url';
+import { PgsRenderer } from 'libpgs';
+import pgssubWorker from 'libpgs/dist/libpgs.worker.js?url';
 import { computed, nextTick, shallowRef, watch } from 'vue';
 import { playbackManager } from './playback-manager';
 import { isArray, isNil, sealed } from '@/utils/validation';
@@ -35,6 +37,7 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
    */
   private readonly _fullscreenVideoRoute = '/playback/video';
   private _jassub: JASSUB | undefined;
+  private _pgssub: PgsRenderer | undefined;
   protected _storeKey = 'playerElement';
 
   public readonly isStretched = computed({
@@ -105,6 +108,30 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
     );
   };
 
+  private readonly _setPgsTrack = (trackSrc: string): void => {
+    if (
+      !this._pgssub
+      && mediaElementRef.value
+      && mediaElementRef.value instanceof HTMLVideoElement
+    ) {
+      this._pgssub = new PgsRenderer({
+        video: mediaElementRef.value,
+        subUrl: trackSrc,
+        workerUrl: pgssubWorker
+      });
+    } else if (this._pgssub) {
+      this._pgssub.loadFromUrl(trackSrc);
+    }
+  };
+
+  private readonly _freePgsTrack = (): void => {
+    if (this._pgssub) {
+      this._pgssub.dispose();
+    }
+
+    this._pgssub = undefined;
+  };
+
   /**
    * Applies the current subtitle from the playbackManager store
    *
@@ -126,6 +153,9 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
       sub => sub.srcIndex === playbackManager.currentSubtitleStreamIndex
     );
     const ass = playbackManager.currentItemAssParsedSubtitleTracks.find(
+      sub => sub.srcIndex === playbackManager.currentSubtitleStreamIndex
+    );
+    const pgs = playbackManager.currentItemPgsParsedSubtitleTracks.find(
       sub => sub.srcIndex === playbackManager.currentSubtitleStreamIndex
     );
     const attachedFonts
@@ -155,6 +185,7 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
     }
 
     this._freeSsaTrack();
+    this._freePgsTrack();
 
     if (vttIdx !== -1 && mediaElementRef.value.textTracks[vttIdx]) {
       /**
@@ -166,6 +197,11 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
        * If SSA, using Subtitle Opctopus
        */
       this._setSsaTrack(ass.src, attachedFonts);
+    } else if (pgs?.src) {
+      /**
+       * If PGS, using libpgs to render
+       */
+      this._setPgsTrack(pgs.src);
     }
   };
 
@@ -196,6 +232,7 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
     watch(videoContainerRef, () => {
       if (!videoContainerRef.value) {
         this._freeSsaTrack();
+        this._freePgsTrack();
       }
     }, { flush: 'sync' });
 
