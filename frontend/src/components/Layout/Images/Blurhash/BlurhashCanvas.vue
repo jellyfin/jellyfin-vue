@@ -9,30 +9,12 @@
   <slot v-else />
 </template>
 
-<script lang="ts">
-import { wrap, transfer } from 'comlink';
-import { shallowRef, watch } from 'vue';
-import { DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_PUNCH, type IBlurhashWorker } from './BlurhashWorker';
-import BlurhashWorker from './BlurhashWorker?worker';
-import { remote } from '@/plugins/remote';
-
-const worker = new BlurhashWorker();
-const blurhashWorker = wrap<IBlurhashWorker>(worker);
-
-/**
- * Clear cached blurhashes on logout
- */
-watch(
-  () => remote.auth.currentUser,
-  async () => {
-    if (remote.auth.currentUser === undefined) {
-      await blurhashWorker.clearCache();
-    }
-  }, { flush: 'post' }
-);
-</script>
-
 <script setup lang="ts">
+import { transfer } from 'comlink';
+import { shallowRef, watch } from 'vue';
+import { blurhashDecoder, canvasDrawer } from '@/plugins/workers';
+import { BLURHASH_DEFAULT_HEIGHT, BLURHASH_DEFAULT_WIDTH, BLURHASH_DEFAULT_PUNCH } from '@/store';
+
 const props = withDefaults(
   defineProps<{
     hash: string;
@@ -40,7 +22,7 @@ const props = withDefaults(
     height?: number;
     punch?: number;
   }>(),
-  { width: DEFAULT_WIDTH, height: DEFAULT_HEIGHT, punch: DEFAULT_PUNCH }
+  { width: BLURHASH_DEFAULT_WIDTH, height: BLURHASH_DEFAULT_HEIGHT, punch: BLURHASH_DEFAULT_PUNCH }
 );
 
 const error = shallowRef(false);
@@ -48,6 +30,8 @@ const canvas = shallowRef<HTMLCanvasElement>();
 let offscreen: OffscreenCanvas | undefined;
 
 watch([props, canvas], async () => {
+  const pixels = await blurhashDecoder.getPixels(props.hash, props.width, props.height, props.punch);
+
   if (canvas.value) {
     if (!offscreen) {
       offscreen = canvas.value.transferControlToOffscreen();
@@ -55,12 +39,11 @@ watch([props, canvas], async () => {
 
     try {
       error.value = false;
-      await blurhashWorker.drawCanvas(transfer(
-        { hash: props.hash,
-          canvas: offscreen,
+      await canvasDrawer.drawBlurhash(transfer(
+        { canvas: offscreen,
+          pixels,
           width: props.width,
-          height: props.height,
-          punch: props.punch
+          height: props.height
         }, [offscreen]));
     } catch {
       error.value = true;

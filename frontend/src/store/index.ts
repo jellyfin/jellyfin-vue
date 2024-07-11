@@ -3,11 +3,24 @@ import { computedAsync, useFps, useMediaControls, useMediaQuery, useNetwork, use
 import { shallowRef, computed } from 'vue';
 import { remote } from '@/plugins/remote';
 import { isNil } from '@/utils/validation';
+
 /**
  * This file contains global variables (specially VueUse refs) that are used multiple times across the client.
  * VueUse composables will set new event handlers, so it's more
  * efficient to reuse those, both in components and TS files.
  */
+
+/**
+ * == BLURHASH DEFAULTS ==
+ * By default, 20x20 pixels with a punch of 1 is returned.
+ * Although the default values recommended by Blurhash developers is 32x32,
+ * a size of 20x20 seems to be the sweet spot for us, improving the performance
+ * and reducing the memory usage, while retaining almost full blur quality.
+ * Lower values had more visible pixelation
+ */
+export const BLURHASH_DEFAULT_WIDTH = 20;
+export const BLURHASH_DEFAULT_HEIGHT = 20;
+export const BLURHASH_DEFAULT_PUNCH = 1;
 
 /**
  * Reactive Date.now() instance

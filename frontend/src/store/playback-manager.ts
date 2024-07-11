@@ -21,9 +21,8 @@ import { getMediaInfoApi } from '@jellyfin/sdk/lib/utils/api/media-info-api';
 import { getPlaystateApi } from '@jellyfin/sdk/lib/utils/api/playstate-api';
 import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
 import { useEventListener, watchThrottled } from '@vueuse/core';
-import { shuffle } from 'lodash-es';
 import { v4 } from 'uuid';
-import { watch, watchEffect } from 'vue';
+import { toRaw, watch, watchEffect } from 'vue';
 import { isNil, sealed } from '@/utils/validation';
 import { useBaseItem } from '@/composables/apis';
 import { useSnackbar } from '@/composables/use-snackbar';
@@ -36,6 +35,7 @@ import playbackProfile from '@/utils/playback-profiles';
 import { msToTicks } from '@/utils/time';
 import { mediaControls, mediaElementRef } from '@/store';
 import { CommonStore } from '@/store/super/common-store';
+import { genericWorker } from '@/plugins/workers';
 
 /**
  * == INTERFACES AND TYPES ==
@@ -600,7 +600,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       this._state.currentItemIndex = startFromIndex;
 
       if (startShuffled) {
-        this.toggleShuffle(false);
+        void this.toggleShuffle(false);
       }
 
       this.currentTime = startFromTime;
@@ -755,8 +755,8 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     this.currentVolume = this.currentVolume - 5;
   };
 
-  public readonly toggleShuffle = (preserveCurrentItem = true): void => {
-    if (this._state.queue && !isNil(this._state.currentItemIndex)) {
+  public readonly toggleShuffle = async (preserveCurrentItem = true): Promise<void> => {
+    if (!isNil(this._state.currentItemIndex)) {
       if (this._state.isShuffling) {
         const item = this._state.queue[this._state.currentItemIndex];
 
@@ -765,7 +765,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
         this._state.originalQueue = [];
         this._state.isShuffling = false;
       } else {
-        const queue = shuffle(this._state.queue);
+        const queue = await genericWorker.shuffle(toRaw(this._state.queue));
 
         this._state.originalQueue = this._state.queue;
 
