@@ -50,7 +50,7 @@ import {
 import type { IJVirtualWorker } from './j-virtual.worker';
 import JVirtualWorker from './j-virtual.worker?worker';
 import { vuetify } from '@/plugins/vuetify';
-import { isNil } from '@/utils/validation';
+import { isUndef } from '@/utils/validation';
 
 /**
  * SHARED STATE ACROSS ALL THE COMPONENT INSTANCES
@@ -146,17 +146,17 @@ const itemsLength = computed(() => props.items.length);
 const resizeMeasurement = computed(() => {
   return rootRef.value
     && itemRect.value
-    && !isNil(displayWidth.value)
-    && !isNil(displayHeight.value)
-    && !isNil(props.items)
+    && !isUndef(displayWidth.value)
+    && !isUndef(displayHeight.value)
+    && !isUndef(props.items)
     ? getResizeMeasurement(rootRef.value, itemRect.value)
     : undefined;
 });
 const contentSize = computed(() => {
   return resizeMeasurement.value
-    && !isNil(displayWidth.value)
-    && !isNil(displayHeight.value)
-    && !isNil(props.items)
+    && !isUndef(displayWidth.value)
+    && !isUndef(displayHeight.value)
+    && !isUndef(props.items)
     ? getContentSize(resizeMeasurement.value, itemsLength.value)
     : undefined;
 });
@@ -171,11 +171,11 @@ const rootStyles = computed<StyleValue>(() => ({
    */
 const boundingClientRect = computed(() => {
   if (
-    !isNil(displayWidth.value)
-    && !isNil(displayHeight.value)
-    && !isNil(rootRef.value)
-    && !isNil(scrollEvents.value)
-    && !isNil(props.items)
+    !isUndef(displayWidth.value)
+    && !isUndef(displayHeight.value)
+    && !isUndef(rootRef.value)
+    && !isUndef(scrollEvents.value)
+    && !isUndef(props.items)
   ) {
     return rootRef.value.getBoundingClientRect();
   }
@@ -183,7 +183,7 @@ const boundingClientRect = computed(() => {
 const leftSpaceAroundWindow = computed(() => Math.abs(Math.min(boundingClientRect.value?.left ?? 0, 0)));
 const topSpaceAroundWindow = computed(() => Math.abs(Math.min(boundingClientRect.value?.top ?? 0, 0)));
 const bufferMeta = computed(() => {
-  if (!isNil(resizeMeasurement.value)) {
+  if (!isUndef(resizeMeasurement.value)) {
     return getBufferMeta(
       {
         left: leftSpaceAroundWindow.value,
@@ -197,7 +197,7 @@ const bufferMeta = computed(() => {
 const bufferLength = computed(() => Math.ceil(bufferMeta.value?.bufferedLength ?? 0));
 const bufferOffset = computed(() => Math.ceil(bufferMeta.value?.bufferedOffset ?? 0));
 const visibleItems = computed<InternalItem[]>((previous) => {
-  if (Number.isFinite(workerUpdates.value)) {
+  if (Number.isFinite(workerUpdates.value) && Number.isFinite(scrollEvents.value)) {
     const elems = cache.get(bufferOffset.value) ?? [];
     return elems.length ? elems : previous ?? [];
   }
@@ -283,7 +283,7 @@ async function setCache(offset: number): Promise<void> {
  * to the worker when scrolling fast. We cache 2 times the buffer length
  */
 function populateCache(): void {
-  if (!isNil(resizeMeasurement.value)
+  if (!isUndef(resizeMeasurement.value)
     && Number.isFinite(bufferLength.value)
     && Number.isFinite(bufferOffset.value)
   ) {
@@ -316,7 +316,7 @@ watch(
   () => {
     destroyEventListeners();
 
-    if (!isNil(scrollTargets.value)) {
+    if (!isUndef(scrollTargets.value)) {
       for (const parent of scrollTargets.value) {
         const cleanup = useEventListener(parent, 'scroll', () => {
           window.requestAnimationFrame(() => scrollEvents.value++);
@@ -335,10 +335,10 @@ watch(
  * Tracks if the scroll must be pointed at an specific element
  */
 watch(() => props.scrollTo, () => {
-  if (!isNil(rootRef.value)
-    && !isNil(props.scrollTo)
-    && !isNil(resizeMeasurement.value)
-    && !isNil(scrollParents.value)
+  if (!isUndef(rootRef.value)
+    && !isUndef(props.scrollTo)
+    && !isUndef(resizeMeasurement.value)
+    && !isUndef(scrollParents.value)
     && props.scrollTo > 0
     && props.scrollTo < itemsLength.value) {
     const { target, top, left } = getScrollToInfo(scrollParents.value, rootRef.value, resizeMeasurement.value, props.scrollTo);
