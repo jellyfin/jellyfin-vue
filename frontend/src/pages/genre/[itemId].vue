@@ -11,7 +11,7 @@
       <PlayButton
         :item="genre" />
       <VBtn
-        class="play-button mr-2"
+        class="mr-2 play-button"
         min-width="8em"
         variant="outlined"
         :to="`./${genre.Id}/shuffle`">

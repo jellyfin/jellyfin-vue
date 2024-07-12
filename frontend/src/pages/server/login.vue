@@ -80,7 +80,9 @@
         <LoginForm
           :user="currentUser"
           @change="resetCurrentUser" />
-        <p v-if="disclaimer" class="text-p mt-6 text-center">
+        <p
+          v-if="disclaimer"
+          class="mt-6 text-center text-p">
           <JSafeHtml :html="disclaimer" />
         </p>
       </VCol>

@@ -6,7 +6,7 @@
       <tr>
         <th
           style="width: 4em"
-          class="pr-0 text-center"
+          class="text-center pr-0"
           scope="col">
           #
         </th>

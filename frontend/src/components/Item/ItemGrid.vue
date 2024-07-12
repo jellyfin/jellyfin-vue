@@ -10,8 +10,8 @@
         :class="useResponsiveClasses('card-grid-container')">
         <ItemCard
           :item="item"
-          margin
           text
+          margin
           overlay
           link />
       </JVirtual>
@@ -44,7 +44,7 @@
           text
           boilerplate />
       </VCol>
-      <div class="empty-message text-center">
+      <div class="text-center empty-message">
         <slot>
           <h1 class="text-h5">
             {{ $t('noResultsFound') }}

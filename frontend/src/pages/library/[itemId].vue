@@ -19,7 +19,7 @@
       <VDivider
         inset
         vertical
-        class="mx-2 hidden-sm-and-down" />
+        class="hidden-sm-and-down mx-2" />
       <TypeButton
         v-if="hasViewTypes"
         v-model="viewType"

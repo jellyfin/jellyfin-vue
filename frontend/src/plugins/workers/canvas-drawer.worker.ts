@@ -18,6 +18,7 @@ class CanvasDrawer {
   }: { canvas: OffscreenCanvas; pixels: Uint8ClampedArray; width: number; height: number }) => {
     const ctx = canvas.getContext('2d');
     const imageData = ctx!.createImageData(width, height);
+
     imageData.data.set(pixels);
     ctx!.putImageData(imageData, 0, 0);
   };

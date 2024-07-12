@@ -1,10 +1,18 @@
 <template>
-  <div class="j-splash" :class="clientSettings.currentTheme.value">
-    <img src="./icon.svg" alt="Jellyfin Logo">
-    <JTransition name="slide-y-reverse" appear>
-      <div class="uno-flex uno-flex-col uno-gap-5 uno-bottom-25 uno-fixed uno-w-full uno-items-center">
+  <div
+    class="j-splash"
+    :class="clientSettings.currentTheme.value">
+    <img
+      src="./icon.svg"
+      alt="Jellyfin Logo">
+    <JTransition
+      name="slide-y-reverse"
+      appear>
+      <div class="uno-fixed uno-bottom-25 uno-w-full uno-flex uno-flex-col uno-items-center uno-gap-5">
         <VProgressCircular indeterminate />
-        <VBtn v-if="remote.auth.currentUser" @click="remote.auth.logoutCurrentUser">
+        <VBtn
+          v-if="remote.auth.currentUser"
+          @click="remote.auth.logoutCurrentUser">
           {{ $t('logout') }}
         </VBtn>
       </div>

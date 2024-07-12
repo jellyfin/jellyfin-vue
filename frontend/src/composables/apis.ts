@@ -288,9 +288,16 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
           }
         });
       }
+
       watch(isConnectedToServer, runWithRetry);
-      isRef(api) && watch(api, runNormally);
-      isRef(methodName) && watch(methodName, runNormally);
+
+      if (isRef(api)) {
+        watch(api, runNormally);
+      }
+
+      if (isRef(methodName)) {
+        watch(methodName, runNormally);
+      }
     }
 
     /**

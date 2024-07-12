@@ -121,13 +121,13 @@
       </template>
       <h2
         v-else
-        class="no-media text-center">
+        class="text-center no-media">
         {{ t('NoMediaStreamsAvailable') }}
       </h2>
     </VCardText>
     <VCardText
       v-else
-      class="pa-0 pb-8 flex-grow-1"
+      class="pa-0 flex-grow-1 pb-8"
       :class="{
         'd-flex': !$vuetify.display.mobile,
         'flex-row': !$vuetify.display.mobile

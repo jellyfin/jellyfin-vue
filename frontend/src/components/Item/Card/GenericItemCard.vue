@@ -9,23 +9,23 @@
           :class="shape"
           class="elevation-2">
           <div
-            class="absolute-cover card-content d-flex justify-center align-center">
+            class="d-flex justify-center align-center absolute-cover card-content">
             <JSlot class="card-image">
               <slot
                 name="image" />
             </JSlot>
           </div>
           <div
-            class="absolute-cover card-overlay d-flex justify-center align-center"
+            class="absolute-cover d-flex justify-center align-center card-overlay"
             :class="{ 'card-overlay-hover': overlay && hasFinePointer }">
-            <div class="card-upper-content d-flex justify-center align-center">
+            <div class="d-flex justify-center align-center card-upper-content">
               <slot name="upper-content" />
             </div>
             <div
               v-if="(isHovering && overlay && hasFinePointer) || forceOverlay"
               class="card-overlay-hover-hidden">
               <slot name="center-content" />
-              <div class="card-lower-content d-flex justify-center align-center">
+              <div class="d-flex justify-center align-center card-lower-content">
                 <slot name="bottom-content" />
               </div>
             </div>

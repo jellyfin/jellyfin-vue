@@ -23,7 +23,7 @@
           <VRow
             justify="center"
             justify-sm="start">
-            <div class="ml-sm-4 d-flex flex-column">
+            <div class="d-flex flex-column ml-sm-4">
               <div
                 class="text-subtitle-1 text--secondary font-weight-medium text-capitalize">
                 {{ $t('person') }}
@@ -104,7 +104,9 @@
               <span
                 v-if="item.Overview"
                 class="item-overview">
-                <JSafeHtml :html="item.Overview" markdown />
+                <JSafeHtml
+                  :html="item.Overview"
+                  markdown />
               </span>
             </VCol>
             <VCol

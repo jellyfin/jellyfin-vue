@@ -1,10 +1,10 @@
 <template>
   <div
-    class="uno-h-full j-transition">
-      <component
-        :is="comp">
-        <slot />
-      </component>
+    class="j-transition uno-h-full">
+    <component
+      :is="comp">
+      <slot />
+    </component>
   </div>
 </template>
 
