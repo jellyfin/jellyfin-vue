@@ -1,5 +1,8 @@
 <template>
-  <SettingsPage page-title="devices">
+  <SettingsPage>
+    <template #title>
+      {{ t('devices') }}
+    </template>
     <template #actions>
       <VBtn
         v-if="devices.length"

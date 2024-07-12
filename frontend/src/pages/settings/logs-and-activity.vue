@@ -1,5 +1,8 @@
 <template>
-  <SettingsPage page-title="logs">
+  <SettingsPage>
+    <template #title>
+      {{ t('logsAndActivity') }}
+    </template>
     <template #content>
       <VCol
         md="6"
