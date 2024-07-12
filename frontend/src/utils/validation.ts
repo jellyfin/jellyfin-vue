@@ -82,8 +82,7 @@ export function isArray(object: unknown): object is unknown[] {
  *
  * @type TypeScript Decorator
  */
-// eslint-disable-next-line @typescript-eslint/ban-types
-export function sealed(constructor: Function): void {
+export function sealed<T extends new(...args: unknown[]) => unknown>(constructor: T): void {
   Object.seal(constructor);
   Object.seal(constructor.prototype);
 }
