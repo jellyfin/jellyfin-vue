@@ -157,6 +157,7 @@ class RemotePluginAuth extends CommonStore<AuthState> {
 
       try {
         const serv = await this._fetchServerData(best.address, isDefault);
+
         this._state.currentServerIndex = this._addOrRefreshServer(serv);
       } catch (error) {
         useSnackbar(t('anErrorHappened'), 'error');

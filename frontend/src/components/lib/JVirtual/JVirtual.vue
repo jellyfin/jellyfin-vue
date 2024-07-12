@@ -7,12 +7,13 @@
     <Component
       :is="probeTag"
       ref="probeRef"
-      class="uno-invisible uno-pointer-events-none uno-place-self-stretch uno-opacity-0 uno-z--1"
+      class="uno-pointer-events-none uno-invisible uno-z--1 uno-place-self-stretch uno-opacity-0"
       :class="gridClass">
       <slot :item="items[0]" />
     </Component>
     <template v-if="visibleItems.length">
-      <JSlot v-for="internal_item in visibleItems"
+      <JSlot
+        v-for="internal_item in visibleItems"
         :key="indexAsKey ? internal_item.index : undefined"
         :class="gridClass"
         :style="internal_item.style">
@@ -199,6 +200,7 @@ const bufferOffset = computed(() => Math.ceil(bufferMeta.value?.bufferedOffset ?
 const visibleItems = computed<InternalItem[]>((previous) => {
   if (Number.isFinite(workerUpdates.value) && Number.isFinite(scrollEvents.value)) {
     const elems = cache.get(bufferOffset.value) ?? [];
+
     return elems.length ? elems : previous ?? [];
   }
 
@@ -257,6 +259,7 @@ async function setCache(offset: number): Promise<void> {
    * with the same offset before this promise resolves.
    */
   cache.set(offset, []);
+
   const values = await worker.getVisibleIndexes(
     { bufferedLength: bufferLength.value, bufferedOffset: offset },
     resizeMeasurement.value!,
@@ -342,6 +345,7 @@ watch(() => props.scrollTo, () => {
     && props.scrollTo > 0
     && props.scrollTo < itemsLength.value) {
     const { target, top, left } = getScrollToInfo(scrollParents.value, rootRef.value, resizeMeasurement.value, props.scrollTo);
+
     target.scrollTo({ top, left, behavior: 'smooth' });
   }
 });

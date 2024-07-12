@@ -8,8 +8,8 @@
         v-if="!user"
         v-model="login.username"
         variant="outlined"
-        hide-details
         autofocus
+        hide-details
         :label="$t('username')"
         :rules="rules" />
       <VTextField
@@ -24,7 +24,7 @@
       <VCheckbox
         v-model="login.rememberMe"
         hide-details
-        class="mt-6 mb-6"
+        class="mb-6 mt-6"
         color="primary"
         :label="$t('rememberMe')" />
       <VRow

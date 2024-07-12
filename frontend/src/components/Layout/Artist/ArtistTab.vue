@@ -24,7 +24,7 @@
               :to="getItemDetailsLink(release)"
               custom>
               <h2
-                class="link font-weight-bold text-h6 text-md-h4"
+                class="link text-h6 font-weight-bold text-md-h4"
                 @click="navigate">
                 {{ release.Name }}
               </h2>

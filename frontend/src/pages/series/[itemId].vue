@@ -145,7 +145,9 @@
             <p
               v-if="item.Overview"
               class="item-overview">
-              <JSafeHtml :html="item.Overview" markdown />
+              <JSafeHtml
+                :html="item.Overview"
+                markdown />
             </p>
           </div>
         </VCol>

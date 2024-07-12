@@ -11,7 +11,6 @@ import { vuePlugin as i18n } from '@/plugins/i18n';
 import { createPlugin as createRemote } from '@/plugins/remote';
 import { router } from '@/plugins/router';
 import { vuetify } from '@/plugins/vuetify';
-
 /**
  * - GLOBAL STYLES -
  */

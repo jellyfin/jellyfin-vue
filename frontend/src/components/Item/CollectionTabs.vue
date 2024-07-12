@@ -13,7 +13,7 @@
     </VTabs>
     <h1
       v-if="!children"
-      class="text-h5 text-center">
+      class="text-center text-h5">
       {{ $t('collectionEmpty') }}
     </h1>
     <VWindow

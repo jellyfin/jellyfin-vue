@@ -1,7 +1,7 @@
 <template>
   <VContainer
     v-if="visible && playbackManager.currentItem && playbackManager.nextItem"
-    class="up-next-dialog uno-pointer-events-none pa-lg-6">
+    class="up-next-dialog pa-lg-6 uno-pointer-events-none">
     <VRow>
       <VCol
         cols="12"

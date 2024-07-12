@@ -25,11 +25,11 @@
           class="d-flex justify-center align-center uno-select-none"
           :modules="modules"
           :slides-per-view="4"
-          centered-slides
           :autoplay="false"
           effect="coverflow"
           :coverflow-effect="coverflowEffect"
           a11y
+          centered-slides
           virtual
           @swiper="(swiper) => swiperInstance = swiper"
           @slide-change="onSlideChange">
@@ -45,7 +45,7 @@
         </Swiper>
         <MusicVisualizer
           v-else
-          class="d-flex justify-center align-center uno-select-none presentation-height" />
+          class="d-flex justify-center align-center presentation-height uno-select-none" />
       </JTransition>
       <VRow class="justify-center align-center mt-3">
         <VCol cols="6">
@@ -133,6 +133,7 @@ const artistString = computed(() =>
 );
 
 const swiperInstance = shallowRef<SwiperType>();
+
 useItemBackdrop(() => playbackManager.currentItem, 0.75);
 useItemPageTitle(() => playbackManager.currentItem);
 

@@ -13,7 +13,7 @@
           cols="12"
           sm="7">
           <VRow class="d-flex flex-column">
-            <div class="ml-sm-4 d-flex flex-column">
+            <div class="d-flex flex-column ml-sm-4">
               <div
                 class="text-subtitle-1 text--secondary font-weight-medium text-capitalize">
                 {{ $t('artist') }}
@@ -120,7 +120,9 @@
                       <span
                         v-if="item.Overview"
                         class="item-overview">
-                        <JSafeHtml :html="item.Overview" markdown />
+                        <JSafeHtml
+                          :html="item.Overview"
+                          markdown />
                       </span>
                     </VCol>
                   </VCol>

@@ -4,8 +4,8 @@
     :clearable="$props.type === 'Subtitle'"
     :placeholder="$props.type === 'Subtitle' ? t('disabled') : undefined"
     density="comfortable"
-    single-line
     hide-details
+    single-line
     class="text-truncate uno-text-capitalize"
     :items="selectItems">
     <template #selection="{ item }">

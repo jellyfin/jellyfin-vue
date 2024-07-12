@@ -20,7 +20,7 @@
           kind="subtitles"
           :label="sub.label"
           :srclang="sub.srcLang"
-          :src="sub.src" >
+          :src="sub.src">
       </Component>
     </Teleport>
   </template>
