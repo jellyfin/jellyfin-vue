@@ -1,5 +1,8 @@
 <template>
-  <SettingsPage page-title="newUser">
+  <SettingsPage>
+    <template #title>
+      {{ t('users') }}
+    </template>
     <template #actions>
       <VBtn
         color="primary"

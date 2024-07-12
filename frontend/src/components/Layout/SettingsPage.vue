@@ -1,12 +1,10 @@
 <template>
   <VContainer>
-    <VRow v-if="pageTitle">
+    <VRow v-if="$slots.title">
       <VCol>
         <VRow class="mt-4 mx-0 mb-2 justify-space-between">
           <h2 class="text-h4">
-            <!-- We're sure that we're using correct keys at the type level -->
-            <!-- eslint-disable-next-line @intlify/vue-i18n/no-dynamic-keys -->
-            {{ $t(pageTitle) }}
+            <slot name="title" />
           </h2>
           <div>
             <slot name="actions" />
@@ -19,9 +17,3 @@
     </VRow>
   </VContainer>
 </template>
-
-<script setup lang="ts">
-import type { messages } from 'vue-i18n';
-
-defineProps<{ pageTitle?: keyof messages }>();
-</script>
