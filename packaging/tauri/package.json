@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "start": "npm run gen-icon && tauri dev",
-    "gen-icon": "tauri icon ../../frontend/public/icon.png",
+    "gen-icon": "tauri icon ../../frontend/public/icon.svg",
     "build": "npm run gen-icon && tauri build",
     "clean": "git clean -fxd"
   },
@@ -12,6 +12,6 @@
     "@jellyfin-vue/frontend": "*"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "1.5.14"
+    "@tauri-apps/cli": "2.0.0-beta.21"
   }
 }

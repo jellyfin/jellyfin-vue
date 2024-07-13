@@ -11,7 +11,7 @@
       <PlayButton
         :item="genre" />
       <VBtn
-        class="play-button mr-2"
+        class="mr-2 play-button"
         min-width="8em"
         variant="outlined"
         :to="`./${genre.Id}/shuffle`">
@@ -57,6 +57,7 @@ import { useRoute } from 'vue-router';
 import { isStr } from '@/utils/validation';
 import { useResponsiveClasses } from '@/composables/use-responsive-classes';
 import { useBaseItem } from '@/composables/apis';
+import { useItemPageTitle } from '@/composables/page-title';
 
 const route = useRoute('/genre/[itemId]');
 
@@ -82,7 +83,7 @@ const { data: genres } = await useBaseItem(getItemsApi, 'getItems')(() => ({
   sortOrder: [SortOrder.Ascending]
 }));
 
-route.meta.title = genre.value.Name;
+useItemPageTitle(genre);
 </script>
 
 <style scoped>

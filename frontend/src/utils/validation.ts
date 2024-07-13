@@ -53,7 +53,7 @@ export function isNull(value: unknown): value is null {
  * Check if the value is null or undefined
  */
 export function isNil(value: unknown): value is null | undefined {
-  return isNull(value) || isUndef(value);
+  return isUndef(value) || isNull(value);
 }
 
 /**
@@ -82,8 +82,7 @@ export function isArray(object: unknown): object is unknown[] {
  *
  * @type TypeScript Decorator
  */
-// eslint-disable-next-line @typescript-eslint/ban-types
-export function sealed(constructor: Function): void {
+export function sealed<T extends new(...args: unknown[]) => unknown>(constructor: T): void {
   Object.seal(constructor);
   Object.seal(constructor.prototype);
 }

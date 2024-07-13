@@ -1,5 +1,8 @@
 <template>
-  <SettingsPage page-title="newUser">
+  <SettingsPage>
+    <template #title>
+      {{ t('newUser') }}
+    </template>
     <template #actions>
       <VBtn
         variant="elevated"
@@ -14,7 +17,7 @@
         width="100%"
         height="100%">
         <VForm
-          class="py-5 px-2"
+          class="px-2 py-5"
           @submit.prevent="createUser">
           <VRow>
             <VCol>

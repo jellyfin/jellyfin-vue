@@ -14,7 +14,7 @@
           ">
           <JImg
             class="logo"
-            src="/icon.png"
+            src="/icon.svg"
             :alt="$t('jellyfinLogo')" />
           <VTable class="mb-4 pb-2 information">
             <tbody>
@@ -140,12 +140,12 @@ import IMdiTelevisionClassic from 'virtual:icons/mdi/television-classic';
 import IMdiTextBox from 'virtual:icons/mdi/text-box';
 import { computed, type Component } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute, type RouteLocationRaw } from 'vue-router';
+import type { RouteLocationRaw } from 'vue-router';
 import { remote } from '@/plugins/remote';
 import { version as clientVersion } from '@/../package.json';
+import { usePageTitle } from '@/composables/page-title';
 
 const { t } = useI18n();
-const route = useRoute();
 
 interface MenuOptions {
   icon: Component;
@@ -154,7 +154,7 @@ interface MenuOptions {
   link?: RouteLocationRaw;
 }
 
-route.meta.title = t('settings');
+usePageTitle(() => t('settings'));
 
 const userItems = computed<MenuOptions[]>(() => {
   return [

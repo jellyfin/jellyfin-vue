@@ -27,15 +27,14 @@ const props = withDefaults(
   defineProps<{
     user: UserDto;
     size?: number;
-    quality?: number;
     rounded?: boolean;
   }>(),
-  { size: 64, quality: 90, rounded: false }
+  { size: 64, rounded: false }
 );
 
 const url = computed(() => {
   return props.user.Id && props.user.PrimaryImageTag && remote.sdk.api?.basePath
-    ? `${remote.sdk.api.basePath}/Users/${props.user.Id}/Images/Primary/?tag=${props.user.PrimaryImageTag}&quality=${props.quality}`
+    ? `${remote.sdk.api.basePath}/Users/${props.user.Id}/Images/Primary/?tag=${props.user.PrimaryImageTag}`
     : undefined;
 });
 const iconSize = computed(() => {

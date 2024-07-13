@@ -23,7 +23,7 @@
           <VRow
             justify="center"
             justify-sm="start">
-            <div class="ml-sm-4 d-flex flex-column">
+            <div class="d-flex flex-column ml-sm-4">
               <div
                 class="text-subtitle-1 text--secondary font-weight-medium text-capitalize">
                 {{ $t('person') }}
@@ -104,7 +104,9 @@
               <span
                 v-if="item.Overview"
                 class="item-overview">
-                <JSafeHtml :html="item.Overview" markdown />
+                <JSafeHtml
+                  :html="item.Overview"
+                  markdown />
               </span>
             </VCol>
             <VCol
@@ -166,7 +168,6 @@
 <script setup lang="ts">
 import {
   BaseItemKind,
-  ImageType,
   SortOrder
 } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
@@ -176,9 +177,10 @@ import { format } from 'date-fns';
 import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { defaultSortOrder as sortBy } from '@/utils/items';
-import { getBlurhash } from '@/utils/images';
 import { useDateFns } from '@/composables/use-datefns';
 import { useBaseItem } from '@/composables/apis';
+import { useItemBackdrop } from '@/composables/backdrop';
+import { useItemPageTitle } from '@/composables/page-title';
 
 const route = useRoute('/person/[itemId]');
 
@@ -236,8 +238,8 @@ const birthPlace = computed(
   () => item.value.ProductionLocations?.[0] ?? undefined
 );
 
-route.meta.title = item.value.Name;
-route.meta.layout.backdrop.blurhash = getBlurhash(item.value, ImageType.Backdrop);
+useItemPageTitle(item);
+useItemBackdrop(item);
 
 /**
  * Pick the most relevant tab to display at mount

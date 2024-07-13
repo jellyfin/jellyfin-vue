@@ -13,13 +13,13 @@
     <Swiper
       :modules="modules"
       :class="useResponsiveClasses('swiper-el')"
-      loop
-      parallax
-      autoplay
       effect="fade"
       :fade-effect="{ crossFade: true }"
-      keyboard
+      autoplay
       a11y
+      loop
+      parallax
+      keyboard
       @swiper="(swiper) => swiperInstance = swiper"
       @real-index-change="onSlideChange"
       @touch-start="onTouch"

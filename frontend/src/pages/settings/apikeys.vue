@@ -1,5 +1,8 @@
 <template>
-  <SettingsPage page-title="apiKeys">
+  <SettingsPage>
+    <template #title>
+      {{ t('apiKeys') }}
+    </template>
     <template #actions>
       <VBtn
         color="primary"

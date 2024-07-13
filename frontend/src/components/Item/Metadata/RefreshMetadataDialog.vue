@@ -17,16 +17,14 @@
         item-title="title"
         item-value="value"
         single-line
-        persistent-hint
         return-object
+        persistent-hint
         style="display: unset" />
-
       <VSpacer v-if="selectedMethod.value !== 'scan'" />
       <VCheckbox
         v-if="selectedMethod.value !== 'scan'"
         v-model="replace"
         :label="t('replaceExistingImages')" />
-
       <VCardActions
         class="d-flex align-center"
         :class="{

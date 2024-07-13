@@ -80,7 +80,9 @@
         <LoginForm
           :user="currentUser"
           @change="resetCurrentUser" />
-        <p v-if="disclaimer" class="text-p mt-6 text-center">
+        <p
+          v-if="disclaimer"
+          class="mt-6 text-center text-p">
           <JSafeHtml :html="disclaimer" />
         </p>
       </VCol>
@@ -98,18 +100,18 @@ meta:
 import type { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { ref, shallowRef, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { watchImmediate } from '@vueuse/core';
 import { remote } from '@/plugins/remote';
 import { getJSONConfig } from '@/utils/external-config';
 import { isConnectedToServer } from '@/store';
+import { usePageTitle } from '@/composables/page-title';
 
 const jsonConfig = await getJSONConfig();
 const { t } = useI18n();
-const route = useRoute();
 const router = useRouter();
 
-route.meta.title = t('login');
+usePageTitle(() => t('login'));
 
 watchImmediate(isConnectedToServer, async () => {
   if (!isConnectedToServer.value) {

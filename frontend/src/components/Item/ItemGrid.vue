@@ -1,18 +1,20 @@
 <template>
   <div :class="large ? useResponsiveClasses('large-grid') : undefined">
     <template v-if="items.length">
-      <JVirtualGrid
+      <JVirtual
         v-if="!noVirtual"
         v-slot="{ item }"
         :items="items"
+        grid
+        index-as-key
         :class="useResponsiveClasses('card-grid-container')">
         <ItemCard
           :item="item"
-          margin
           text
+          margin
           overlay
           link />
-      </JVirtualGrid>
+      </JVirtual>
       <div
         v-else
         :class="useResponsiveClasses('card-grid-container')">
@@ -42,7 +44,7 @@
           text
           boilerplate />
       </VCol>
-      <div class="empty-message text-center">
+      <div class="text-center empty-message">
         <slot>
           <h1 class="text-h5">
             {{ $t('noResultsFound') }}

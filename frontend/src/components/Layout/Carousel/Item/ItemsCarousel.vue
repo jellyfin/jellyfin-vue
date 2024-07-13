@@ -19,24 +19,24 @@
         </div>
         <div :class="useResponsiveClasses('slide-content')">
           <VContainer
-            class="mx-md-10 mt-md-5 py-md-4 align-end align-sm-center align-md-start">
+            class="align-end mx-md-10 mt-md-5 py-md-4 align-sm-center align-md-start">
             <VRow>
               <VCol
                 cols="12"
                 sm="8"
                 md="6"
                 xl="5"
-                class="py-0 py-md-4">
-                <p class="text-overline text-truncate mb-2 my-2">
+                class="py-md-4 py-0">
+                <p class="text-truncate mb-2 my-2 text-overline">
                   <slot name="referenceText" />
                 </p>
                 <ItemsCarouselTitle :item="item" />
                 <MediaInfo
                   :item="item"
                   year
-                  tracks
                   runtime
                   rating
+                  tracks
                   class="mb-3"
                   data-swiper-parallax="-100" />
                 <PlayButton
@@ -61,11 +61,11 @@
 <script setup lang="ts">
 import { BaseItemKind, ImageType, type BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { SwiperSlide } from 'swiper/vue';
-import { useRoute } from 'vue-router';
+import { shallowRef } from 'vue';
 import { useResponsiveClasses } from '@/composables/use-responsive-classes';
 import { apiStore } from '@/store/api';
-import { getBlurhash } from '@/utils/images';
 import { getItemDetailsLink } from '@/utils/items';
+import { useItemBackdrop } from '@/composables/backdrop';
 
 const props = withDefaults(
   defineProps<{
@@ -75,7 +75,9 @@ const props = withDefaults(
   { pageBackdrop: false }
 );
 
-const route = useRoute();
+const currentIndex = shallowRef(0);
+
+useItemBackdrop(() => props.pageBackdrop ? props.items[currentIndex.value] : undefined);
 
 /**
  * Get the related item passed from the parent component
@@ -106,21 +108,10 @@ function getRelatedItem(item: BaseItemDto): BaseItemDto {
 }
 
 /**
- * Update page backdrop
- */
-function updateBackdrop(index: number): void {
-  if (props.pageBackdrop) {
-    const hash = getBlurhash(props.items[index], ImageType.Backdrop);
-
-    route.meta.layout.backdrop.blurhash = hash;
-  }
-}
-
-/**
  * Handle slide changes
  */
 function onSlideChange(index: number): void {
-  updateBackdrop(index);
+  currentIndex.value = index;
 }
 </script>
 

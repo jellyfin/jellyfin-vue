@@ -14,6 +14,7 @@
     "useDefineForClassFields": true,
     "noImplicitThis": true,
     "noImplicitAny": true,
+    "noErrorTruncation": true,
     "experimentalDecorators": true,
     "removeComments": true,
     "verbatimModuleSyntax": true,

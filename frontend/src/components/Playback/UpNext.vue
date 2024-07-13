@@ -1,7 +1,7 @@
 <template>
   <VContainer
     v-if="visible && playbackManager.currentItem && playbackManager.nextItem"
-    class="up-next-dialog uno-pointer-events-none pa-lg-6">
+    class="up-next-dialog pa-lg-6 uno-pointer-events-none">
     <VRow>
       <VCol
         cols="12"
@@ -43,7 +43,7 @@
               <span class="pl-4">
                 {{
                   $t('endsAt', {
-                    time: getEndsAtTime(playbackManager.nextItem.RunTimeTicks).value
+                    time: getEndsAtTime(playbackManager.nextItem.RunTimeTicks)
                   })
                 }}
               </span>
@@ -113,7 +113,7 @@ watch(
     isHiddenByUser.value = false;
   }
 );
-watch(visible, () => { emit('change', visible.value); });
+watch(visible, () => emit('change', visible.value));
 </script>
 <style scoped>
 .up-next-dialog {

@@ -3,7 +3,7 @@
     :is="props.group ? TransitionGroup : Transition"
     class="j-transition"
     v-bind="mergeProps($props, $attrs)"
-    :name="prefersNoMotion || disabled || (isSlow && !important) ? undefined : `j-transition-${props.name}`">
+    :name="prefersNoMotion || disabled || isSlow ? undefined : `j-transition-${props.name}`">
     <slot />
   </component>
 </template>
@@ -24,10 +24,6 @@ export interface JTransitionProps extends BetterOmit<TransitionProps, 'name'> {
    */
   group?: boolean;
   disabled?: boolean;
-  /**
-   * Run the transition even on low FPS scenarios
-   */
-  important?: boolean;
 }
 
 const props = withDefaults(defineProps<JTransitionProps>(), { name: 'fade', group: undefined, disabled: undefined });

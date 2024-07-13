@@ -1,5 +1,4 @@
-import { useTitle } from '@vueuse/core';
-import { computed, watch } from 'vue';
+import { watch } from 'vue';
 import {
   createRouter,
   createWebHashHistory,
@@ -61,17 +60,6 @@ router.back = (): ReturnType<typeof router.back> => {
       : '/'
   );
 };
-
-/**
- * Handle page title changes
- */
-const pageTitle = computed(() => {
-  const title = router.currentRoute.value.meta.title?.trim();
-
-  return title ? `${title} | Jellyfin Vue` : 'Jellyfin Vue';
-});
-
-useTitle(pageTitle);
 
 /**
  * Re-run the middleware pipeline when the user logs out or state is cleared

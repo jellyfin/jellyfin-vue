@@ -9,15 +9,15 @@
           !isNil(playbackManager.currentItem)
       "
       app
-      class="uno-select-none pa-0">
+      class="pa-0 uno-select-none">
       <VContainer fluid>
         <VRow class="ma-0">
           <VCol
             cols="9"
             md="3"
-            class="d-flex flex-row pa-0">
+            class="d-flex pa-0 flex-row">
             <RouterLink :to="'/playback/music'">
-              <div class="uno-w-20 uno-h-20 img">
+              <div class="img uno-h-20 uno-w-20">
                 <BlurhashImage :item="playbackManager.currentItem" />
               </div>
             </RouterLink>
@@ -28,7 +28,7 @@
                   :to="getItemDetailsLink(playbackManager.currentItem)"
                   custom>
                   <span
-                    class="text-truncate link uno-h-fit"
+                    class="link text-truncate uno-h-fit"
                     @click="navigate">
                     {{ playbackManager.currentItem.Name }}
                   </span>
@@ -40,13 +40,13 @@
                 <span
                   v-for="artist in playbackManager.currentItem.ArtistItems"
                   :key="`artist-${artist.Id}`">
-                  <p class="mb-0 mr-2">
+                  <p class="mr-2 mb-0">
                     <RouterLink
                       v-slot="{ navigate }"
                       :to="getItemDetailsLink(artist, 'MusicArtist')"
                       custom>
                       <span
-                        class="text-caption text-truncate link"
+                        class="text-truncate link text-caption"
                         @click="navigate">
                         {{ artist.Name }}
                       </span>
@@ -72,7 +72,7 @@
           </VCol>
           <VCol
             cols="3"
-            class="d-none d-md-flex align-center justify-end">
+            class="d-none align-center d-md-flex justify-end">
             <LikeButton :item="playbackManager.currentItem" />
             <QueueButton />
             <div class="hidden-lg-and-down">
@@ -92,7 +92,7 @@
           </VCol>
           <VCol
             cols="3"
-            class="d-flex d-md-none pa-0 align-center justify-end">
+            class="d-flex pa-0 align-center justify-end d-md-none">
             <PlayPauseButton class="mx-1" />
             <NextTrackButton class="mx-1" />
             <RepeatButton

@@ -11,7 +11,7 @@
       <VDivider />
       <VRow
         align="center"
-        class="mx-16 my-4">
+        class="my-4 mx-16">
         <VSelect
           v-model="source"
           class="mx-4"
@@ -19,10 +19,10 @@
           :disabled="loading"
           :label="t('source')"
           :placeholder="t('all')"
-          persistent-placeholder
           variant="outlined"
           hide-details
-          clearable />
+          clearable
+          persistent-placeholder />
         <VSelect
           v-model="type"
           class="mx-4"
@@ -35,7 +35,7 @@
           hide-details />
         <VCheckbox
           v-model="allLanguages"
-          class="mt-0 mx-4"
+          class="mx-4 mt-0"
           :label="t('allLanguages')"
           :disabled="loading"
           hide-details />

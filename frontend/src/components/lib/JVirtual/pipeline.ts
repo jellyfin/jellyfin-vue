@@ -1,9 +1,8 @@
-import { unrefElement, type MaybeElementRef } from '@vueuse/core';
-import { computed, type ComputedRef } from 'vue';
-
 /**
  * == TYPES AND INTERFACES ==
  */
+
+import type { StyleValue } from 'vue';
 
 interface ScrollParents {
   vertical: Element;
@@ -28,7 +27,7 @@ export interface ResizeMeasurement extends GridMeasurement {
   itemWidthWithGap: number;
 }
 
-interface BufferMeta {
+export interface BufferMeta {
   bufferedOffset: number;
   bufferedLength: number;
 }
@@ -43,10 +42,9 @@ export interface ContentSize {
   height?: number;
 }
 
-export interface InternalItem<T> {
+export interface InternalItem {
   index: number;
-  value: T;
-  style?: { transform: string; gridArea: string };
+  style: StyleValue;
 }
 
 /**
@@ -60,7 +58,7 @@ export function getScrollParents(
   element: HTMLElement,
   includeHidden = false
 ): ScrollParents {
-  const style = getComputedStyle(element);
+  const style = window.getComputedStyle(element);
 
   if (style.position === 'fixed') {
     return {
@@ -78,7 +76,7 @@ export function getScrollParents(
   let parent: HTMLElement | null = element;
 
   while (parent && !vertical && !horizontal) {
-    const parentStyle = getComputedStyle(parent);
+    const parentStyle = window.getComputedStyle(parent);
 
     horizontal
       = overflowRegex.test(parentStyle.overflowX)
@@ -105,44 +103,16 @@ export function getScrollParents(
 }
 
 /**
- * Gets the appropiate DOM element for listening to scroll events
- */
-export function fromScrollParent(
-  elRef: MaybeElementRef
-): ComputedRef<(Element | (Window & typeof globalThis))[] | undefined> {
-  return computed(() => {
-    const el = unrefElement(elRef);
-
-    if (el && el instanceof HTMLElement) {
-      const { vertical, horizontal } = getScrollParents(el);
-
-      /**
-       * If the scrolling parent is the doc root, use window instead as using
-       * document root might not work properly.
-       */
-      return (
-        vertical === horizontal ? [vertical] : [vertical, horizontal]
-      ).map(parent =>
-        parent === document.documentElement ? window : parent
-      );
-    }
-  });
-}
-
-/**
  * Gets the gap and spacing between grid elements, alongside the flow of the grid
  */
 export function getGridMeasurement(rootEl: Element): GridMeasurement {
   const computedStyle = window.getComputedStyle(rootEl);
 
   return {
-    rowGap: Number.parseInt(computedStyle.getPropertyValue('row-gap')) || 0,
-    colGap: Number.parseInt(computedStyle.getPropertyValue('column-gap')) || 0,
-    flow: computedStyle.getPropertyValue('grid-auto-flow').startsWith('column')
-      ? 'column'
-      : 'row',
-    columns: computedStyle.getPropertyValue('grid-template-columns').split(' ')
-      .length,
+    rowGap: Number(computedStyle.getPropertyValue('row-gap')) || 0,
+    colGap: Number(computedStyle.getPropertyValue('column-gap')) || 0,
+    flow: computedStyle.getPropertyValue('grid-auto-flow') as 'column' | 'row',
+    columns: computedStyle.getPropertyValue('grid-template-columns').split(' ').length,
     rows: computedStyle.getPropertyValue('grid-template-rows').split(' ').length
   };
 }
@@ -170,6 +140,13 @@ export function getResizeMeasurement(
 }
 
 /**
+ * Whether the scroll direction is horizontal or not
+ */
+function isHorizontallyScrolled(resizeMeasurement: ResizeMeasurement): boolean {
+  return resizeMeasurement.flow === 'column';
+}
+
+/**
  * Gets the position of the virtual buffer (bufferOffset) and the
  * length of visible DOM nodes (bufferedLength)
  */
@@ -183,7 +160,6 @@ export function getBufferMeta(
   const {
     colGap,
     rowGap,
-    flow,
     columns,
     rows,
     itemHeightWithGap,
@@ -196,18 +172,18 @@ export function getBufferMeta(
   let windowInnerSize: number;
   let spaceBehind: number;
 
-  if (flow === 'row') {
-    crosswiseLines = columns;
-    gap = rowGap;
-    itemSizeWithGap = itemHeightWithGap;
-    windowInnerSize = windowInnerHeight;
-    spaceBehind = spaceAroundWindow.top;
-  } else {
+  if (isHorizontallyScrolled(resizeMeasurement)) {
     crosswiseLines = rows;
     gap = colGap;
     itemSizeWithGap = itemWidthWithGap;
     windowInnerSize = windowInnerWidth;
     spaceBehind = spaceAroundWindow.left;
+  } else {
+    crosswiseLines = columns;
+    gap = rowGap;
+    itemSizeWithGap = itemHeightWithGap;
+    windowInnerSize = windowInnerHeight;
+    spaceBehind = spaceAroundWindow.top;
   }
 
   /**
@@ -269,71 +245,21 @@ export function getItemOffsetByIndex(
   index: number,
   resizeMeasurement: ResizeMeasurement
 ): ItemOffset {
-  const { flow, columns, rows, itemWidthWithGap, itemHeightWithGap }
+  const { columns, rows, itemWidthWithGap, itemHeightWithGap }
     = resizeMeasurement;
 
-  let x;
-  let y;
+  let x: number;
+  let y: number;
 
-  if (flow === 'row') {
-    x = (index % columns) * itemWidthWithGap;
-    y = Math.floor(index / columns) * itemHeightWithGap;
-  } else {
+  if (isHorizontallyScrolled(resizeMeasurement)) {
     x = Math.floor(index / rows) * itemWidthWithGap;
     y = (index % rows) * itemHeightWithGap;
+  } else {
+    x = (index % columns) * itemWidthWithGap;
+    y = Math.floor(index / columns) * itemHeightWithGap;
   }
 
   return { x, y };
-}
-
-/**
- * Gets the items that must be visible in the grid based on the buffer measurements
- */
-export function getVisibleItems<T>(
-  bufferMeta: BufferMeta,
-  resizeMeasurement: ResizeMeasurement,
-  allItems: T[]
-): InternalItem<T>[] {
-  const { bufferedOffset, bufferedLength } = bufferMeta;
-
-  /**
-   * When approaching the end of the VirtualGrid, we want to always be sure that
-   * bufferedLength = the amount of visible items,
-   * so no DOM nodes are destroyed (which would be a waste of resources if the user reverses the scroll),
-   * so we need to change the slice values depending on the current offset.
-   *
-   * OffsetPlusLength is the length ahead that we have DOM nodes available for rendering.
-   *
-   * We initialize 'first' to 0 and 'last' to allItems.length to take into account those cases
-   * where the available buffer is bigger than the real amount of items we need to display,
-   * the if statement is where we really take into account a real virtual scrolling scenario
-   */
-  const offsetPlusLength = bufferedOffset + bufferedLength;
-  let first = 0;
-  let last = allItems.length;
-
-  if (allItems.length > bufferedLength) {
-    first
-      = allItems.length < offsetPlusLength
-        ? allItems.length - bufferedLength
-        : bufferedOffset;
-    last
-      = allItems.length < offsetPlusLength ? allItems.length : offsetPlusLength;
-  }
-
-  return allItems.slice(first, last).map((value, localIndex) => {
-    const index = first + localIndex;
-    const { x, y } = getItemOffsetByIndex(index, resizeMeasurement);
-
-    return {
-      index,
-      value,
-      style: {
-        gridArea: '1/1',
-        transform: `translate(${x}px, ${y}px)`
-      }
-    };
-  });
 }
 
 /**
@@ -356,4 +282,34 @@ export function getContentSize(
   return flow === 'row'
     ? { height: itemHeightWithGap * Math.ceil(length / columns) - rowGap }
     : { width: itemWidthWithGap * Math.ceil(length / rows) - colGap };
+}
+
+/**
+ * Gets the necessary information to scroll the grid to a specific item
+ */
+export function getScrollToInfo(scrollParents: ScrollParents, rootEl: HTMLElement, resizeMeasurement: ResizeMeasurement, scrollTo: number) {
+  const computedStyle = window.getComputedStyle(rootEl);
+
+  const gridPaddingTop = Number(computedStyle.getPropertyValue('padding-top')) || 0;
+  const gridBoarderTop = Number(computedStyle.getPropertyValue('border-top')) || 0;
+  const gridPaddingLeft = Number(computedStyle.getPropertyValue('padding-left')) || 0;
+  const gridBoarderLeft = Number(computedStyle.getPropertyValue('border-left')) || 0;
+
+  const leftToGridContainer = rootEl instanceof HTMLElement
+    && scrollParents.horizontal instanceof HTMLElement
+    ? rootEl.offsetLeft - scrollParents.horizontal.offsetLeft
+    : 0;
+
+  const topToGridContainer = rootEl instanceof HTMLElement
+    && scrollParents.vertical instanceof HTMLElement
+    ? rootEl.offsetTop - scrollParents.vertical.offsetTop
+    : 0;
+
+  const { x, y } = getItemOffsetByIndex(scrollTo, resizeMeasurement);
+
+  return {
+    top: y + topToGridContainer + gridPaddingTop + gridBoarderTop,
+    left: x + leftToGridContainer + gridPaddingLeft + gridBoarderLeft,
+    target: isHorizontallyScrolled(resizeMeasurement) ? scrollParents.horizontal : scrollParents.vertical
+  };
 }

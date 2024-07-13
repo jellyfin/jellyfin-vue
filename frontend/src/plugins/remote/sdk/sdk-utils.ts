@@ -24,6 +24,7 @@ function ensureDeviceId(): string {
     const id = v4();
 
     window.localStorage.setItem(storageKey, id);
+
     return id;
   }
 

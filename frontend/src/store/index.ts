@@ -1,13 +1,26 @@
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
-import { computedAsync, useFps, useMediaControls, useMediaQuery, useNetwork, useNow, useScroll } from '@vueuse/core';
-import { shallowRef, computed } from 'vue';
+import { computedAsync, useMediaControls, useMediaQuery, useNetwork, useNow, useScroll } from '@vueuse/core';
+import { shallowRef } from 'vue';
 import { remote } from '@/plugins/remote';
 import { isNil } from '@/utils/validation';
+
 /**
  * This file contains global variables (specially VueUse refs) that are used multiple times across the client.
  * VueUse composables will set new event handlers, so it's more
  * efficient to reuse those, both in components and TS files.
  */
+
+/**
+ * == BLURHASH DEFAULTS ==
+ * By default, 20x20 pixels with a punch of 1 is returned.
+ * Although the default values recommended by Blurhash developers is 32x32,
+ * a size of 20x20 seems to be the sweet spot for us, improving the performance
+ * and reducing the memory usage, while retaining almost full blur quality.
+ * Lower values had more visible pixelation
+ */
+export const BLURHASH_DEFAULT_WIDTH = 20;
+export const BLURHASH_DEFAULT_HEIGHT = 20;
+export const BLURHASH_DEFAULT_PUNCH = 1;
 
 /**
  * Reactive Date.now() instance
@@ -52,11 +65,10 @@ export const hasTouch = useMediaQuery('(any-pointer:coarse)');
 export const hasHDRDisplay = useMediaQuery('(video-dynamic-range:high)');
 
 /**
- * Track performance
+ * Track severely underpowered devices:
+ * https://developer.mozilla.org/en-US/docs/Web/CSS/@media/update
  */
-const fps = useFps();
-const isLowRefreshRateScreen = useMediaQuery('(update:slow)');
-export const isSlow = computed(() => isLowRefreshRateScreen.value || fps.value <= 15);
+export const isSlow = useMediaQuery('(update:slow)');
 
 /**
  * Reactively tracks if the user is connected to the server

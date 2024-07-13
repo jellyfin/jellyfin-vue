@@ -28,7 +28,7 @@
             class="text-h6 font-weight-heavy"
             :class="{'text-center': !$vuetify.display.mdAndUp }">
             <RouterLink
-              class="link d-block font-weight-medium pa-0 mt-1 text-truncate"
+              class="link pa-0 text-truncate d-block font-weight-medium mt-1"
               :to="getItemDetailsLink(currentSeries)">
               {{ currentSeries.Name }}
             </RouterLink>
@@ -75,7 +75,7 @@
               <VCol
                 :cols="12"
                 :sm="2"
-                class="px-0 text-truncate">
+                class="text-truncate px-0">
                 <label class="text--secondary">{{ $t('genres') }}</label>
               </VCol>
               <VCol
@@ -103,7 +103,7 @@
               <VCol
                 :cols="12"
                 :sm="2"
-                class="mt-sm-3 py-sm-0 px-0 text-truncate">
+                class="px-0 text-truncate mt-sm-3 py-sm-0">
                 <label class="text--secondary">{{ $t('directing') }}</label>
               </VCol>
               <VCol
@@ -261,8 +261,10 @@
             <p
               v-if="item.Overview"
               class="item-overview">
-              <JSafeHtml :html="item.Overview" markdown />
-          </p>
+              <JSafeHtml
+                :html="item.Overview"
+                markdown />
+            </p>
           </div>
         </VCol>
       </VRow>
@@ -295,10 +297,9 @@
 </template>
 
 <script setup lang="ts">
-import {
-  ImageType,
-  type BaseItemPerson,
-  type MediaSourceInfo
+import type {
+  BaseItemPerson,
+  MediaSourceInfo
 } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
@@ -306,9 +307,10 @@ import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api'
 import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { getItemDetailsLink, getMediaStreams } from '@/utils/items';
-import { getBlurhash } from '@/utils/images';
 import { getItemizedSelect } from '@/utils/forms';
 import { useBaseItem } from '@/composables/apis';
+import { useItemBackdrop } from '@/composables/backdrop';
+import { useItemPageTitle } from '@/composables/page-title';
 
 const route = useRoute('/genre/[itemId]');
 
@@ -370,6 +372,6 @@ const currentSource = computed({
   }
 });
 
-route.meta.title = item.value.Name;
-route.meta.layout.backdrop.blurhash = getBlurhash(item.value, ImageType.Backdrop);
+useItemPageTitle(item);
+useItemBackdrop(item);
 </script>

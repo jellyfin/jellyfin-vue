@@ -1,5 +1,8 @@
 <template>
-  <SettingsPage page-title="users">
+  <SettingsPage>
+    <template #title>
+      {{ t('users') }}
+    </template>
     <template #actions>
       <VBtn
         variant="elevated"
@@ -130,7 +133,7 @@
                       hide-details
                       clearable />
                     <div
-                      class="text-subtitle-1 text-warning font-weight-medium">
+                      class="text-subtitle-1 font-weight-medium text-warning">
                       {{ $t('maxAllowedRatingSubtitle') }}
                     </div>
                   </VCol>
@@ -161,7 +164,7 @@
                   <VRow>
                     <VCol>
                       <div
-                        class="text-title font-weight-medium text-capitalize">
+                        class="font-weight-medium text-capitalize text-title">
                         {{ t('blockTags') }}
                       </div>
                     </VCol>

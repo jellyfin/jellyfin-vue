@@ -28,7 +28,7 @@
               </VAvatar>
             </template>
             <template #subtitle>
-              {{ getTotalEndsAtTime(playbackManager.queue).value }} -
+              {{ getTotalEndsAtTime(playbackManager.queue) }} -
               {{
                 $t('queueItems', {
                   items: playbackManager.queue.length

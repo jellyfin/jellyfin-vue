@@ -118,16 +118,14 @@ export function getBlurhash(
   index = 0,
   checkParent = true
 ): string | undefined {
-  if (item) {
-    const tag = getImageTag(item, type, index, checkParent);
+  const tag = getImageTag(item, type, index, checkParent);
 
-    if (
-      tag
-      && !excludedBlurhashTypes.has(type)
-      && item.ImageBlurHashes?.[type]?.[tag]
-    ) {
-      return item.ImageBlurHashes[type]?.[tag];
-    }
+  if (
+    tag
+    && !excludedBlurhashTypes.has(type)
+    && item.ImageBlurHashes?.[type]?.[tag]
+  ) {
+    return item.ImageBlurHashes[type][tag];
   }
 }
 
