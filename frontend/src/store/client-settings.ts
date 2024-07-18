@@ -8,19 +8,17 @@ import { remote } from '@/plugins/remote';
 import { vuetify } from '@/plugins/vuetify';
 import { sealed } from '@/utils/validation';
 import { SyncedStore } from '@/store/super/synced-store';
-import { FALLBACK_SUBTITLE_FONT, SUBTITLE_FONT_FAMILIES } from '@/utils/subtitles';
 
 /**
  * == INTERFACES AND TYPES ==
  * Casted typings for the CustomPrefs property of DisplayPreferencesDto
  */
 
-export type subtitleFontFamily = typeof SUBTITLE_FONT_FAMILIES[number];
 export interface ClientSettingsState {
   darkMode: 'auto' | boolean;
   locale: string;
   subtitleAppearance: {
-    fontFamily: subtitleFontFamily;
+    fontFamily: string;
     fontSize: number;
     positionFromBottom: number;
     backdrop: boolean;
@@ -92,7 +90,7 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState> {
       darkMode: 'auto',
       locale: 'auto',
       subtitleAppearance: {
-        fontFamily: SUBTITLE_FONT_FAMILIES[0],
+        fontFamily: 'FigTree Variable',
         fontSize: 1.5,
         positionFromBottom: 10,
         backdrop: true,
