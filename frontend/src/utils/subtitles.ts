@@ -17,22 +17,6 @@ export interface ParsedSubtitleTrack {
 
 type TagMap = Record<string, string>;
 
-export const SUBTITLE_FONT_FAMILIES = [
-  'Figtree Variable',
-  'Trebuchet MS',
-  'Verdana',
-  'Sans Serif MS',
-  'Arial',
-  'Courier New',
-  'Times New Roman',
-  'Old English Text MT',
-  'Century Gothic',
-  'Helvetica',
-  'Garamond'
-] as const;
-
-export const FALLBACK_SUBTITLE_FONT = 'sans-serif, system-ui';
-
 /**
  * Parse time string used in subtitle files to seconds
  */
