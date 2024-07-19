@@ -54,8 +54,6 @@ const fontPermission = usePermission('local-fonts');
 const fontAccess = computed(() => fontPermission.value == 'granted');
 const isQueryLocalFontsSupported = useSupported(() => 'queryLocalFonts' in window);
 
-console.log(navigator.permissions);
-
 watchEffect(async () => {
   if (isQueryLocalFontsSupported.value && fontAccess.value) {
     const localFonts = await window.queryLocalFonts();
