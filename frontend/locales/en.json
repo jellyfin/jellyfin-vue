@@ -281,7 +281,7 @@
   "pushToBottom": "Move to the end",
   "pushToTop": "Move to the beginning",
   "quality": "Quality",
-  "queryLocalFontsNotSupportedWarning": "Custom fonts are currently not supported by your browser.",
+  "queryLocalFontsNotSupportedWarning": "Local fonts are currently not supported by your browser.",
   "queue": "Queue",
   "queueItems": "{items} tracks",
   "rating": "Rating",
