@@ -8,6 +8,7 @@
     <br>
 
     <a
+      class="uno-font-bold"
       href="https://caniuse.com/mdn-api_window_querylocalfonts"
       target="_blank">
       {{ $t('learnMore') }}
@@ -22,7 +23,7 @@
     {{ $t('localFontsPermissionWarning') }}
     <br>
     <a
-      class="uno-cursor-pointer"
+      class="uno-font-bold"
       href="https://support.google.com/chrome/answer/114662?hl=en&co=GENIE.Platform=Desktop"
       target="_blank">
       {{ $t('enablePermission') }}
