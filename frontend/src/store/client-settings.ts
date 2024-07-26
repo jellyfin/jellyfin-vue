@@ -2,7 +2,7 @@ import {
   useNavigatorLanguage,
   usePreferredDark,
   watchImmediate } from '@vueuse/core';
-import { computed, watch, type CSSProperties } from 'vue';
+import { computed, watch } from 'vue';
 import { i18n } from '@/plugins/i18n';
 import { remote } from '@/plugins/remote';
 import { vuetify } from '@/plugins/vuetify';
@@ -38,6 +38,21 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState> {
     const cleanString = rawString.split('-');
 
     return cleanString[0];
+  });
+
+  private readonly _BODY_FONT = computed<string>(() => {
+    const body = document.querySelector('body');
+
+    if (body) {
+      const style = window.getComputedStyle(body);
+
+      /**
+       * Remove the fallback fonts and quotes around the font name
+       */
+      return style.fontFamily.split(', ')[0].slice(1, -1);
+    } else {
+      return 'fallback';
+    }
   });
 
   public set locale(newVal: string) {
@@ -85,12 +100,19 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState> {
     vuetify.locale.current.value = i18n.locale.value;
   };
 
+  private readonly _updateSubtitleFontFamily = (): void => {
+    this.subtitleAppearance.fontFamily
+      = this.subtitleAppearance.fontFamily === 'auto'
+        ? this._BODY_FONT.value
+        : this.subtitleAppearance.fontFamily;
+  };
+
   public constructor() {
     super('clientSettings', {
       darkMode: 'auto',
       locale: 'auto',
       subtitleAppearance: {
-        fontFamily: 'FigTree Variable',
+        fontFamily: 'auto',
         fontSize: 1.5,
         positionFromBottom: 10,
         backdrop: true,
@@ -108,6 +130,15 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState> {
       [this._BROWSER_LANGUAGE, (): typeof this.locale => this.locale],
       this._updateLocale
     );
+
+    /**
+     * Font family changes
+     *
+     * Wait for DOM content to load before querying for font/style information
+     */
+    document.addEventListener('DOMContentLoaded', () => {
+      watchImmediate(this._BODY_FONT, this._updateSubtitleFontFamily);
+    });
 
     /**
      * Vuetify theme change
