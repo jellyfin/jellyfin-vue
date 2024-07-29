@@ -24,10 +24,6 @@ export async function loginGuard(
 
   if (!isNil(remote.auth.currentServer) && !isNil(remote.auth.currentUser) && !isNil(remote.auth.currentUserToken) && routes.has(to.path)) {
     destinationRoute = { path: '/', replace: true };
-  } else if (to.path === serverAddUrl && remote.auth.servers.length > 0 || to.path === serverSelectUrl) {
-    if (!jsonConfig.allowServerSelection) {
-      destinationRoute = { path: serverLoginUrl, replace: true };
-    }
   }
 
   if (remote.auth.servers.length <= 0 && jsonConfig.defaultServerURLs.length <= 0) {
