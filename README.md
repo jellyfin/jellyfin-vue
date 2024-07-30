@@ -74,7 +74,7 @@
 
 Jellyfin Vue is an experimental, alternative browser-based web client for Jellyfin written using Vue.js.
 
-Note: Jellyfin Vue is not currently planned or targeted to replace [the main Jellyfin Web client](https://github.com/jellyfin/jellyfin-web), and is not feature-complete.
+Note: Jellyfin Vue is not planned or targeted to replace [the main Jellyfin Web client](https://github.com/jellyfin/jellyfin-web), and is not feature-complete.
 
 # Usage instructions for end users 👨‍👩‍👧‍👦
 
