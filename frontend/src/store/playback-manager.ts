@@ -291,7 +291,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
           srcLang: sub.Language ?? undefined,
           type: sub.DeliveryMethod ?? SubtitleDeliveryMethod.Drop,
           srcIndex: sub.srcIndex,
-          codec: sub.Codec === null ? undefined : sub.Codec
+          codec: sub.Codec === null ? undefined : sub.Codec?.toLowerCase()
         }));
     }
   }
@@ -299,7 +299,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   /**
    * Filters the native subtitles
    *
-   * As our profile requires either SSA or VTT, if it's not SSA it'll be VTT.
+   * As our profile requires either SSA, PGS or VTT, if it's not SSA or PGS it'll be VTT.
    * This is done this way as server sends as "Codec" the initial value of the track, so it can be webvtt, subrip, srt...
    * This is easier to filter out the SSA subs
    */
@@ -307,7 +307,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     return (
       this.currentItemParsedSubtitleTracks?.filter(
         (sub): sub is PlaybackExternalTrack =>
-          !!sub.codec && sub.codec !== 'ass' && sub.codec !== 'ssa' && !!sub.src
+          !!sub.codec && sub.codec !== 'ass' && sub.codec !== 'ssa' && sub.codec !== 'pgssub' && !!sub.src
       ) ?? []
     );
   }
@@ -318,6 +318,17 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
         (sub): sub is PlaybackExternalTrack =>
           !!sub.codec
           && (sub.codec === 'ass' || sub.codec === 'ssa')
+          && !!sub.src
+      ) ?? []
+    );
+  }
+
+  public get currentItemPgsParsedSubtitleTracks(): PlaybackExternalTrack[] {
+    return (
+      this.currentItemParsedSubtitleTracks?.filter(
+        (sub): sub is PlaybackExternalTrack =>
+          !!sub.codec
+          && (sub.codec === 'pgssub')
           && !!sub.src
       ) ?? []
     );
