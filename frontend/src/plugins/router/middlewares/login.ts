@@ -11,7 +11,17 @@ import { getJSONConfig } from '@/utils/external-config';
 const serverAddUrl = '/server/add';
 const serverSelectUrl = '/server/select';
 const serverLoginUrl = '/server/login';
-const routes = new Set([serverAddUrl, serverSelectUrl, serverLoginUrl]);
+const serverRoutes = new Set([serverAddUrl, serverSelectUrl]);
+const routes = new Set([...serverRoutes, serverLoginUrl]);
+
+/**
+ * Performs the login guard redirection ensuring no redirection loops happen
+ */
+function doRedir(dest: RouteLocationPathRaw, to: RouteLocationNormalized) {
+  return to.path === dest.path
+    ? true
+    : dest;
+}
 
 /**
  * Redirects to login page if there's no user logged in.
@@ -19,34 +29,34 @@ const routes = new Set([serverAddUrl, serverSelectUrl, serverLoginUrl]);
 export async function loginGuard(
   to: RouteLocationNormalized
 ): Promise<boolean | RouteLocationRaw> {
-  let destinationRoute: RouteLocationPathRaw | undefined;
   const jsonConfig = await getJSONConfig();
 
-  if (!isNil(remote.auth.currentServer) && !isNil(remote.auth.currentUser) && !isNil(remote.auth.currentUserToken) && routes.has(to.path)) {
-    destinationRoute = { path: '/', replace: true };
-  } else if (to.path === serverAddUrl && remote.auth.servers.length > 0 || to.path === serverSelectUrl) {
-    if (!jsonConfig.allowServerSelection) {
-      destinationRoute = { path: serverLoginUrl, replace: true };
-    }
+  if (jsonConfig.defaultServerURLs.length && isNil(remote.auth.currentServer)) {
+    await until(() => remote.auth.currentServer).toBeTruthy({ flush: 'pre' });
   }
 
-  if (remote.auth.servers.length <= 0 && jsonConfig.defaultServerURLs.length <= 0) {
-    destinationRoute = { path: serverAddUrl, replace: true };
-  } else if (!routes.has(to.path)) {
-    if (isNil(remote.auth.currentServer)) {
-      if (jsonConfig.allowServerSelection) {
-        destinationRoute = { path: serverSelectUrl, replace: true };
-      } else {
-        await until(() => remote.auth.currentServer).toBeTruthy({ flush: 'pre' });
-
-        return loginGuard(to);
-      }
-    } else if (isNil(remote.auth.currentUser)) {
-      destinationRoute = { path: serverLoginUrl, replace: true };
-    }
+  if (
+    (
+      !jsonConfig.allowServerSelection
+      && serverRoutes.has(to.path)
+    )
+    || (
+      !isNil(remote.auth.currentServer)
+      && !isNil(remote.auth.currentUser)
+      && !isNil(remote.auth.currentUserToken)
+      && routes.has(to.path)
+    )
+  ) {
+    return doRedir({ path: '/', replace: true }, to);
   }
 
-  return destinationRoute && to.path !== destinationRoute.path
-    ? destinationRoute
-    : true;
+  if (!remote.auth.servers.length) {
+    return doRedir({ path: serverAddUrl, replace: true }, to);
+  } else if (isNil(remote.auth.currentServer)) {
+    return doRedir({ path: serverSelectUrl, replace: true }, to);
+  } else if (isNil(remote.auth.currentUser)) {
+    return doRedir({ path: serverLoginUrl, replace: true }, to);
+  }
+
+  return true;
 }
