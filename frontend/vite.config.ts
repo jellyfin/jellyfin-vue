@@ -22,7 +22,7 @@ import virtualModules from './scripts/virtual-modules';
 export default defineConfig(({ mode }): UserConfig => {
   const config: UserConfig = {
     appType: 'spa',
-    base: './',
+    base: '/',
     cacheDir: '../node_modules/.cache/vite',
     plugins: [
       Virtual(virtualModules),
