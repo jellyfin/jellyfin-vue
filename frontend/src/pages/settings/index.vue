@@ -186,7 +186,7 @@ const userItems = computed<MenuOptions[]>(() => {
       icon: IMdiSubtitles,
       name: t('subtitles'),
       description: t('subtitlesSettingsDescription'),
-      link: undefined
+      link: '/settings/subtitles'
     }
   ];
 });

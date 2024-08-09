@@ -22,6 +22,8 @@
           :srclang="sub.srcLang"
           :src="sub.src">
       </Component>
+      <SubtitleTrack
+        v-if="mediaElementRef && playerElement.currentExternalSubtitleTrack?.parsed !== undefined"/>
     </Teleport>
   </template>
 </template>

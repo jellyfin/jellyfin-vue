@@ -17,6 +17,13 @@ import { SyncedStore } from '@/store/super/synced-store';
 export interface ClientSettingsState {
   darkMode: 'auto' | boolean;
   locale: string;
+  subtitleAppearance: {
+    fontFamily: string;
+    fontSize: number;
+    positionFromBottom: number;
+    backdrop: boolean;
+    stroke: boolean;
+  };
 }
 
 @sealed
@@ -31,6 +38,21 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState> {
     const cleanString = rawString.split('-');
 
     return cleanString[0];
+  });
+
+  private readonly _BODY_FONT = computed<string>(() => {
+    const body = document.querySelector('body');
+
+    if (body) {
+      const style = window.getComputedStyle(body);
+
+      /**
+       * Remove the fallback fonts and quotes around the font name
+       */
+      return style.fontFamily.split(', ')[0].slice(1, -1);
+    } else {
+      return 'fallback';
+    }
   });
 
   public set locale(newVal: string) {
@@ -52,6 +74,14 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState> {
     return this._state.darkMode;
   }
 
+  public set subtitleAppearance(newVal: ClientSettingsState['subtitleAppearance']) {
+    this._state.subtitleAppearance = newVal;
+  }
+
+  public get subtitleAppearance(): ClientSettingsState['subtitleAppearance'] {
+    return this._state.subtitleAppearance;
+  }
+
   public readonly currentTheme = computed(() => {
     const dark = 'dark';
     const light = 'light';
@@ -70,10 +100,24 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState> {
     vuetify.locale.current.value = i18n.locale.value;
   };
 
+  private readonly _updateSubtitleFontFamily = (): void => {
+    this.subtitleAppearance.fontFamily
+      = this.subtitleAppearance.fontFamily === 'auto'
+        ? this._BODY_FONT.value
+        : this.subtitleAppearance.fontFamily;
+  };
+
   public constructor() {
     super('clientSettings', {
       darkMode: 'auto',
-      locale: 'auto'
+      locale: 'auto',
+      subtitleAppearance: {
+        fontFamily: 'auto',
+        fontSize: 1.5,
+        positionFromBottom: 10,
+        backdrop: true,
+        stroke: false
+      }
     }, 'localStorage');
     /**
      * == WATCHERS ==
@@ -86,6 +130,15 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState> {
       [this._BROWSER_LANGUAGE, (): typeof this.locale => this.locale],
       this._updateLocale
     );
+
+    /**
+     * Font family changes
+     *
+     * Wait for DOM content to load before querying for font/style information
+     */
+    document.addEventListener('DOMContentLoaded', () => {
+      watchImmediate(this._BODY_FONT, this._updateSubtitleFontFamily);
+    });
 
     /**
      * Vuetify theme change
