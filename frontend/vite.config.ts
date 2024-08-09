@@ -24,6 +24,9 @@ export default defineConfig(({ mode }): UserConfig => {
     appType: 'spa',
     base: './',
     cacheDir: '../node_modules/.cache/vite',
+    define: {
+      __VUE_OPTIONS_API__: 'false'
+    },
     plugins: [
       Virtual(virtualModules),
       VueRouter({
