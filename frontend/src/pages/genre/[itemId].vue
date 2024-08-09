@@ -32,10 +32,11 @@
           <SkeletonCard
             v-for="n in 24"
             :key="n"
-            boilerplate
-            text />
+
+            text
+            boilerplate />
         </VCol>
-        <div class="empty-message text-center">
+        <div class="text-center empty-message">
           <h1 class="text-h5">
             {{ $t('libraryEmpty') }}
           </h1>

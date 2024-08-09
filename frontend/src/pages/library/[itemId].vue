@@ -17,8 +17,9 @@
         </template>
       </VChip>
       <VDivider
-        inset
+
         vertical
+        inset
         class="hidden-sm-and-down mx-2" />
       <TypeButton
         v-if="hasViewTypes"

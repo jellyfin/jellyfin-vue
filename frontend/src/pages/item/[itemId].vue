@@ -28,13 +28,13 @@
             class="text-h6 font-weight-heavy"
             :class="{'text-center': !$vuetify.display.mdAndUp }">
             <RouterLink
-              class="link pa-0 text-truncate d-block font-weight-medium mt-1"
+              class="link pa-0 text-truncate font-weight-medium d-block mt-1"
               :to="getItemDetailsLink(currentSeries)">
               {{ currentSeries.Name }}
             </RouterLink>
           </h3>
           <div
-            class="text-caption text-h4 font-weight-medium mt-2"
+            class="text-h4 font-weight-medium text-caption mt-2"
             :class="{ 'text-center': !$vuetify.display.mdAndUp }">
             <MediaInfo
               :item="item"
@@ -44,7 +44,7 @@
               ends-at />
           </div>
           <VRow
-            class="my-4 align-center"
+            class="align-center my-4"
             :class="{
               'justify-center': !$vuetify.display.mdAndUp,
               'ml-0': $vuetify.display.mdAndUp

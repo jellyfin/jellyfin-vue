@@ -17,7 +17,7 @@
 
       <VDivider />
       <VCardText
-        class="d-flex text-center align-center justify-center">
+        class="text-center d-flex align-center justify-center">
         <JSafeHtml :html="innerHtml" />
       </VCardText>
       <VCardActions class="align-center justify-center">

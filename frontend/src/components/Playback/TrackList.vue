@@ -90,7 +90,7 @@
                         :to="getItemDetailsLink(artist, 'MusicArtist')"
                         custom>
                         <span
-                          class="link text--secondary"
+                          class="text--secondary link"
                           @click="navigate">
                           {{ artist.Name }}
                         </span>
