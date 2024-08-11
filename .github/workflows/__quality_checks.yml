@@ -79,8 +79,8 @@ jobs:
       - name: Run typecheck 📖
         run: npm run typecheck
 
-  conventional_commits:
-    name: Conventional commits check 💬
+  commits_checks:
+    name: Commit linting 💬✅
     runs-on: ubuntu-latest
 
     steps:
@@ -92,3 +92,8 @@ jobs:
 
       - name: Check if all commits comply with the specification
         uses: webiny/action-conventional-commits@v1.3.0
+
+      - name: Check for merge commits
+        run: |
+          git log --merges --oneline | grep -q "^" && exit 1 || exit 0
+
