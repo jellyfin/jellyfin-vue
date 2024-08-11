@@ -1,0 +1,66 @@
+name: Push & Release 🌍
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'push' && github.ref }}
+  cancel-in-progress: true
+
+on:
+  release:
+    types:
+      - released
+      - prereleased
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - '**/*.md'
+
+jobs:
+  label:
+    name: Label conflicted PRs 🏷️⛔
+    if: ${{ always() && !cancelled() }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check all PRs for merge conflicts and label them ⛔
+        uses: eps1lon/actions-label-merge-conflict@v3.0.2
+        with:
+          dirtyLabel: "merge conflict"
+          repoToken: ${{ secrets.JF_BOT_TOKEN }}
+
+  main:
+    name: ${{ github.event_name == 'push' && 'Unstable 🚀⚠️' || 'Stable 🏷️✅' }}
+    uses: ./.github/workflows/__package.yml
+    secrets: inherit
+    # Needed for attestation publication
+    permissions:
+      id-token: write
+      attestations: write
+    with:
+      commit: ${{ github.event_name == 'push' && github.sha }}
+      is_prerelease: ${{ github.event_name == 'release' && github.event.action == 'prereleased' }}
+      tag_name: ${{ github.event_name == 'release' && github.event.release.tag_name }}
+      push: true
+
+  codeql:
+    name: GitHub CodeQL 🔬
+    uses: ./.github/workflows/__codeql.yml
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    with:
+      commit: ${{ github.sha }}
+
+  deploy:
+    name: Deploy 🚀
+    uses: ./.github/workflows/__deploy.yml
+    needs:
+      - main
+    permissions:
+      contents: read
+      deployments: write
+    secrets: inherit
+    with:
+      branch: ${{ github.ref_name }}
+      comment: false

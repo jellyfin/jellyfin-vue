@@ -4,7 +4,7 @@ on:
   workflow_call:
     inputs:
       commit:
-        required: true
+        required: false
         type: string
       tag_name:
         required: false
@@ -27,10 +27,6 @@ env:
   PRERELEASE_TAG: stable-rc
   COMMIT_TAG: unstable
   DOCKER_BUILD_RECORD_UPLOAD: false
-
-permissions:
-  id-token: write
-  attestations: write
 
 defaults:
   run:
@@ -60,6 +56,7 @@ jobs:
       - name: Checkout ⬇️
         uses: actions/checkout@v4.1.7
         with:
+          ref: ${{ inputs.commit || github.sha }}
           show-progress: false
 
       - name: Setup node environment ⚙️
@@ -169,6 +166,7 @@ jobs:
       - name: Checkout ⬇️
         uses: actions/checkout@v4.1.7
         with:
+          ref: ${{ inputs.commit || github.sha }}
           show-progress: false
 
       - name: Configure QEMU ⚙️
@@ -262,6 +260,7 @@ jobs:
       - name: Checkout ⬇️
         uses: actions/checkout@v4.1.7
         with:
+          ref: ${{ inputs.commit || github.sha }}
           show-progress: false
 
       - name: Configure QEMU ⚙️

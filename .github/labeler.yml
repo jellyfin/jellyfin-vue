@@ -1,25 +1,36 @@
 tests:
-  - '**/*.spec.js'
+- changed-files:
+  - any-glob-to-any-file:
+    - '**/*.spec.*'
 
-github_actions:
-  - '.github/workflows/*'
+ci:
+- changed-files:
+  - any-glob-to-any-file:
+    - '.github/workflows/**/**'
 
-pinia:
-  - 'frontend/store/**/*.ts'
+'frontend:store':
+- changed-files:
+  - any-glob-to-any-file:
+    - 'frontend/store/**/*.ts'
 
-plugins:
-  - 'frontend/plugins/**/*.ts'
+'frontend:plugins':
+- changed-files:
+  - any-glob-to-any-file:
+    - 'frontend/plugins/**/*.ts'
 
 vue:
-  - '**/*.vue'
+- changed-files:
+  - any-glob-to-any-file:
+    - '**/*.vue'
 
-docker:
-  - 'Dockerfile*'
+packaging:
+- changed-files:
+  - any-glob-to-any-file:
+    - 'packaging/**/**'
 
 ui:
-  - any:
-      [
-        'frontend/components/**/*.vue',
-        'frontend/layouts/**/*.vue',
-        'frontend/pages/**/*.vue'
-      ]
+- changed-files:
+  - any-glob-to-any-file:
+    - 'frontend/components/**/*.vue'
+    - 'frontend/layouts/**/*.vue'
+    - 'frontend/pages/**/*.vue'

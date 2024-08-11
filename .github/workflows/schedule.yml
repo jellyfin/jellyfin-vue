@@ -1,0 +1,17 @@
+name: Scheduled tasks 🕒
+
+on:
+  schedule:
+    - cron: 30 7 * * 6
+  workflow_dispatch:
+
+jobs:
+  codeql:
+    name: GitHub CodeQL 🔬
+    uses: ./.github/workflows/__codeql.yml
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    with:
+      commit: ${{ github.sha }}
