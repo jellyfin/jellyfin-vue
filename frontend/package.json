@@ -36,6 +36,7 @@
     "fast-equals": "5.0.1",
     "hls.js": "1.5.14",
     "jassub": "1.7.16",
+    "libpgs": "0.4.1",
     "lodash-es": "4.17.21",
     "marked": "14.0.0",
     "sortablejs": "1.15.2",
