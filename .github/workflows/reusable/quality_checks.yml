@@ -1,16 +1,11 @@
 name: Quality checks 👌🧪
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
-  cancel-in-progress: true
-
 on:
-  pull_request:
-    paths-ignore:
-      - '**/*.md'
-  merge_group:
-  schedule:
-    - cron: 30 7 * * 6
+  workflow_call:
+    inputs:
+      commit:
+        required: true
+        type: string
   workflow_dispatch:
 
 jobs:
@@ -21,6 +16,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4.1.7
         with:
+          ref: ${{ inputs.commit }}
           show-progress: false
 
       - name: Scan
@@ -42,6 +38,7 @@ jobs:
       - name: Checkout ⬇️
         uses: actions/checkout@v4.1.7
         with:
+          ref: ${{ inputs.commit }}
           show-progress: false
 
       - name: Setup node environment ⚙️
@@ -67,6 +64,7 @@ jobs:
       - name: Checkout ⬇️
         uses: actions/checkout@v4.1.7
         with:
+          ref: ${{ inputs.commit }}
           show-progress: false
 
       - name: Setup node environment ⚙️
@@ -81,21 +79,15 @@ jobs:
       - name: Run typecheck 📖
         run: npm run typecheck
 
-  build:
-    name: Build 🏗️
-    uses: ./.github/workflows/package.yml
-    with:
-      commit: ${{ github.sha }}
-
   conventional_commits:
     name: Conventional commits check 💬
-    if: ${{ github.event_name == 'pull_request' || github.event_name == 'merge_group' }}
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout ⬇️
         uses: actions/checkout@v4.1.7
         with:
+          ref: ${{ inputs.commit }}
           show-progress: false
 
       - name: Check if all commits comply with the specification
