@@ -12,29 +12,23 @@ on:
       preview_url:
         required: false
         type: string
-      build_workflow_run_id:
-        required: false
-        type: number
-      commenting_workflow_run_id:
-        required: true
-        type: string
       in_progress:
         required: true
         type: boolean
-    outputs:
-      msg:
-        description: The composed message
-        value: ${{ jobs.msg.outputs.msg }}
+      comment:
+        required: false
+        type: boolean
       marker:
         description: Hidden marker to detect PR comments composed by the bot
-        value: "CFPages-deployment"
+        required: false
+        type: string
+        default: "CFPages-deployment"
+
 
 jobs:
-  msg:
-    name: Deployment status
+  cf_pages_msg:
+    name: CloudFlare Pages deployment 📃🚀
     runs-on: ubuntu-latest
-    outputs:
-      msg: ${{ env.msg }}
 
     steps:
       - name: Compose message 📃
@@ -45,8 +39,7 @@ jobs:
           PREVIEW_URL: ${{ inputs.preview_url != '' && (inputs.branch != 'master' && inputs.preview_url || format('https://jf-vue.pages.dev ({0})', inputs.preview_url)) || 'Not available' }}
           DEPLOY_STATUS: ${{ inputs.in_progress && '🔄 Deploying...' || (inputs.preview_url != '' && '✅ Deployed!' || '❌ Failure. Check workflow logs for details') }}
           DEPLOYMENT_TYPE: ${{ inputs.branch != 'master' && '🔀 Preview' || '⚙️ Production' }}
-          BUILD_WORKFLOW_RUN: ${{ !inputs.in_progress && format('**[View build logs](https://github.com/{0}/actions/runs/{1})**', 'jellyfin/jellyfin-vue', inputs.build_workflow_run_id) || '' }}
-          COMMENTING_WORKFLOW_RUN: ${{ format('**[View bot logs](https://github.com/{0}/actions/runs/{1})**', 'jellyfin/jellyfin-vue', inputs.commenting_workflow_run_id) }}
+          WORKFLOW_RUN: ${{ !inputs.in_progress && format('**[View build logs](https://github.com/{0}/actions/runs/{1})**', github.repository, github.run_id) || '' }}
         # EOF is needed for multiline environment variables in a GitHub Actions context
         run: |
           echo "## Cloudflare Pages deployment" > $GITHUB_STEP_SUMMARY
@@ -57,9 +50,16 @@ jobs:
           echo "| **Preview URL**         	| $PREVIEW_URL                  |" >> $GITHUB_STEP_SUMMARY
           echo "| **Type**         	        | $DEPLOYMENT_TYPE              |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "$BUILD_WORKFLOW_RUN" >> $GITHUB_STEP_SUMMARY
-          echo "$COMMENTING_WORKFLOW_RUN" >> $GITHUB_STEP_SUMMARY
+          echo "$WORKFLOW_RUN" >> $GITHUB_STEP_SUMMARY
           COMPOSED_MSG=$(cat $GITHUB_STEP_SUMMARY)
           echo "msg<<EOF" >> $GITHUB_ENV
           echo "$COMPOSED_MSG" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
+
+      - name: Push comment to Pull Request 🔼
+        uses: thollander/actions-comment-pull-request@v2.5.0
+        if: ${{ inputs.comment && steps.compose.conclusion == 'success' }}
+        with:
+          GITHUB_TOKEN: ${{ secrets.JF_BOT_TOKEN }}
+          message: ${{ env.msg }}
+          comment_tag: ${{ inputs.marker }}
