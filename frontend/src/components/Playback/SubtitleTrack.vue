@@ -1,18 +1,18 @@
 <template>
-    <div
-        class="uno-absolute uno-text-center uno-w-full uno-bottom-0 uno-left-0"
-        :label="playerElement.currentExternalSubtitleTrack?.label"
-        :srclang="playerElement.currentExternalSubtitleTrack?.srcLang"
-        :src="playerElement.currentExternalSubtitleTrack?.src" >
-        <span
-          class="uno-inline-block"
-          :style="subtitleStyle">
-          <JSafeHtml
-          v-if="currentSubtitle !== undefined"
-          :html="currentSubtitle.text" />
-          {{ previewText }}
-        </span>
-    </div>
+  <div
+    class="uno-absolute uno-bottom-0 uno-left-0 uno-w-full uno-text-center"
+    :label="playerElement.currentExternalSubtitleTrack?.label"
+    :srclang="playerElement.currentExternalSubtitleTrack?.srcLang"
+    :src="playerElement.currentExternalSubtitleTrack?.src">
+    <span
+      class="uno-inline-block"
+      :style="subtitleStyle">
+      <JSafeHtml
+        v-if="currentSubtitle !== undefined"
+        :html="currentSubtitle.text" />
+      {{ previewText }}
+    </span>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -40,6 +40,7 @@ const findCurrentSubtitle = (data: ParsedSubtitleTrack, currentTime: number) => 
 
     if (subtitle.start < currentTime && subtitle.end > currentTime) {
       lastIndex = i; // Update the last found index
+
       return subtitle;
     } else if (subtitle.start > currentTime) {
       break;
@@ -50,6 +51,7 @@ const findCurrentSubtitle = (data: ParsedSubtitleTrack, currentTime: number) => 
   for (const [i, subtitle] of data.dialogue.entries()) {
     if (subtitle.start < currentTime && subtitle.end > currentTime) {
       lastIndex = i; // Update the last found index
+
       return subtitle;
     } else if (subtitle.start > currentTime) {
       break;

@@ -66,6 +66,7 @@ export async function parseVttFile(src: string) {
     const vttLines = vttText.split('\n');
 
     let i = 0;
+
     while (i < vttLines.length) {
       // Skip empty lines
       if (vttLines[i].trim() === '') {
@@ -76,7 +77,9 @@ export async function parseVttFile(src: string) {
       if (vttLines[i].includes('-->')) {
         const [start, end] = vttLines[i].split(' --> ');
         let text = '';
+
         i++;
+
         while (i < vttLines.length && !vttLines[i].includes('-->')) {
           text += vttLines[i] + '\n';
           i++;
@@ -163,8 +166,10 @@ const parseSsaDialogueLines = (lines: string[]) => {
   let index = 0;
   let dialogueFormat: string[] = [];
   const dialogue: Dialouge[] = [];
+
   while (index < lines.length) {
     const line = lines[index].trim();
+
     /**
      * Parse format fields and save to a variable
      * to index data from dialogue lines
@@ -184,11 +189,14 @@ const parseSsaDialogueLines = (lines: string[]) => {
       }
 
       const currentDialogue = parseSsaDialogue(line, dialogueFormat);
+
       // Handle consecutive dialogue lines with the same timestamp
       while (index + 1 < lines.length) {
         const nextLine = lines[index + 1].trim();
+
         if (nextLine.startsWith('Dialogue:')) {
           const nextDialogue = parseSsaDialogue(nextLine, dialogueFormat);
+
           if (nextDialogue.start === currentDialogue.start && nextDialogue.end === currentDialogue.end) {
             // Add a newline between consecutive dialogue lines with the same timestamp
             currentDialogue.text += '\n' + nextDialogue.text;
@@ -200,8 +208,10 @@ const parseSsaDialogueLines = (lines: string[]) => {
           break;
         }
       }
+
       dialogue.push(currentDialogue);
     }
+
     index++;
   }
 
@@ -227,12 +237,15 @@ export async function parseSsaFile(src: string): Promise<ParsedSubtitleTrack | u
 
     let styles: Record<string, string>[] | undefined = [];
     let dialogue: Dialouge[] = [];
+
     for (const section of sections) {
       if (section.startsWith('[V4 Styles]') || section.startsWith('[V4+ Styles]')) {
         const lines = section.split('\n').slice(1); // Remove the [V4 Styles] line
+
         styles = parseSsaStyles(lines);
       } else if (section.startsWith('[Events]')) {
         const lines = section.split('\n').slice(1); // Remove the [Events] line
+
         dialogue = parseSsaDialogueLines(lines);
       }
     }
