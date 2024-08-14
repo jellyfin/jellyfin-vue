@@ -209,6 +209,11 @@ const parseSsaDialogueLines = (lines: string[]) => {
         }
       }
 
+      // Handle cases where newlines are seperated with \N
+      const replacedNewlines = currentDialogue.text.replace(String.raw`\N`, '\n');
+
+      currentDialogue.text = replacedNewlines;
+
       dialogue.push(currentDialogue);
     }
 
