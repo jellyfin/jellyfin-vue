@@ -64,29 +64,26 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
   }
 
   private get _usingExternalVttSubtitles(): boolean {
-    return !isNil(playbackManager.currentSubtitleTrack)
-      && playbackManager.currentSubtitleTrack.DeliveryMethod === SubtitleDeliveryMethod.External
+    return !isNil(this.currentExternalSubtitleTrack)
       && (
-        playbackManager.currentSubtitleTrack.Codec === 'vtt'
-        || playbackManager.currentSubtitleTrack.Codec === 'srt'
-        || playbackManager.currentSubtitleTrack.Codec === 'subrip'
+        this.currentExternalSubtitleTrack.codec === 'vtt'
+        || this.currentExternalSubtitleTrack.codec === 'srt'
+        || this.currentExternalSubtitleTrack.codec === 'subrip'
       );
   }
 
   private get _usingExternalSsaSubtitles(): boolean {
-    return !isNil(playbackManager.currentSubtitleTrack)
-      && playbackManager.currentSubtitleTrack.DeliveryMethod === SubtitleDeliveryMethod.External
+    return !isNil(this.currentExternalSubtitleTrack)
       && (
-        playbackManager.currentSubtitleTrack.Codec === 'ssa'
-        || playbackManager.currentSubtitleTrack.Codec === 'ass'
+        this.currentExternalSubtitleTrack.codec === 'ssa'
+        || this.currentExternalSubtitleTrack.codec === 'ass'
       );
   }
 
   private get _usingExternalPgsSubtitles(): boolean {
-    return !isNil(playbackManager.currentSubtitleTrack)
-      && playbackManager.currentSubtitleTrack.DeliveryMethod === SubtitleDeliveryMethod.External
+    return !isNil(this.currentExternalSubtitleTrack)
       && (
-        playbackManager.currentSubtitleTrack.Codec === 'pgssub'
+        this.currentExternalSubtitleTrack.codec === 'pgssub'
       );
   }
 
@@ -193,93 +190,51 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
 
   /**
    * Applies PGS subtitles to the media element.
-   *
-   * This function searches for the PGS track associated with the
-   * currently selected subtitle.
    */
   private readonly _applyPgsSubtitles = (): void => {
-    if (!mediaElementRef.value) {
-      return;
-    }
+    if (
+      mediaElementRef.value
+      && this.currentExternalSubtitleTrack
+    ) {
+      const subtitleTrack = this.currentExternalSubtitleTrack;
 
-    /**
-     * Finding (if it exists) the pgs track associated to the newly picked subtitle
-     */
-    const pgs = playbackManager.currentItemPgsParsedSubtitleTracks.find(
-      sub => sub.srcIndex === playbackManager.currentSubtitleStreamIndex
-    );
-
-    /**
-     * If PGS found, applying it using libpgs to render
-     */
-    if (pgs?.src) {
-      this.currentExternalSubtitleTrack = pgs;
-
-      this._setPgsTrack(pgs.src);
+      this._setPgsTrack(subtitleTrack.src);
     }
   };
 
   /**
    * Applies VTT (WebVTT) subtitles to the media element.
-   *
-   * This function searches for the VTT track associated with the
-   * currently selected subtitle.
    */
   private readonly _applyVttSubtitles = async (): Promise<void> => {
-    if (!mediaElementRef.value) {
-      return;
-    }
-
-    /**
-     * Finding (if it exists) the VTT track associated to the newly picked subtitle
-     */
-    const vtt = playbackManager.currentItemVttParsedSubtitleTracks.find(
-      sub => sub.srcIndex === playbackManager.currentSubtitleStreamIndex
-    );
-
-    /**
-     * If VTT found, applying it
-     */
-    if (vtt?.src) {
-      this.currentExternalSubtitleTrack = vtt;
+    if (
+      mediaElementRef.value
+      && this.currentExternalSubtitleTrack
+    ) {
+      const subtitleTrack = this.currentExternalSubtitleTrack;
 
       /**
        * Check if client is able to display custom subtitle track
        * otherwise show default subtitle track
        */
       if (this._useCustomSubtitleTrack) {
-        const data = await parseVttFile(vtt.src);
+        const data = await parseVttFile(subtitleTrack.src);
 
         this.currentExternalSubtitleTrack.parsed = data;
       } else {
-        mediaElementRef.value.textTracks[vtt.srcIndex].mode = 'showing';
+        mediaElementRef.value.textTracks[subtitleTrack.srcIndex].mode = 'showing';
       }
     }
   };
 
   /**
    * Applies SSA (SubStation Alpha) subtitles to the media element.
-   *
-   * This function searches for the SSA track associated with the
-   * currently selected subtitle.
    */
   private readonly _applySsaSubtitles = async (): Promise<void> => {
-    if (!mediaElementRef.value) {
-      return;
-    }
-
-    /**
-     * Finding (if it exists) the ssa track associated to the newly picked subtitle
-     */
-    const ssa = playbackManager.currentItemAssParsedSubtitleTracks.find(
-      sub => sub.srcIndex === playbackManager.currentSubtitleStreamIndex
-    );
-
-    /**
-     * If SSA found, applying it
-     */
-    if (ssa?.src) {
-      this.currentExternalSubtitleTrack = ssa;
+    if (
+      mediaElementRef.value
+      && this.currentExternalSubtitleTrack
+    ) {
+      const subtitleTrack = this.currentExternalSubtitleTrack;
 
       /**
        * Check if client is able to display custom subtitle track
@@ -288,7 +243,7 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
       let applyJASSUB = !this._useCustomSubtitleTrack;
 
       if (this._useCustomSubtitleTrack) {
-        const data = await parseSsaFile(ssa.src);
+        const data = await parseSsaFile(subtitleTrack.src);
 
         /**
          * If style isn't basic (animations, custom typographics, etc.)
@@ -315,7 +270,7 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
           })
           .filter((a): a is string => a !== undefined) ?? [];
 
-        this._setSsaTrack(ssa.src, attachedFonts);
+        this._setSsaTrack(subtitleTrack.src, attachedFonts);
       }
     }
   };
@@ -347,15 +302,23 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
 
     await nextTick();
 
+    // Search for selected external subtitle track
+    this.currentExternalSubtitleTrack = playbackManager.currentItemExternalParsedSubtitleTracks.find(
+      sub => sub.srcIndex === playbackManager.currentSubtitleStreamIndex
+    );
+
     /**
-     * Check which subtitle codec is being used and apply
+     * If selected external track exists,
+     * check which subtitle codec is being used and apply
      */
-    if (this._usingExternalPgsSubtitles) {
-      this._applyPgsSubtitles();
-    } else if (this._usingExternalVttSubtitles) {
-      await this._applyVttSubtitles();
-    } else if (this._usingExternalSsaSubtitles) {
-      await this._applySsaSubtitles();
+    if (this.currentExternalSubtitleTrack) {
+      if (this._usingExternalPgsSubtitles) {
+        this._applyPgsSubtitles();
+      } else if (this._usingExternalVttSubtitles) {
+        await this._applyVttSubtitles();
+      } else if (this._usingExternalSsaSubtitles) {
+        await this._applySsaSubtitles();
+      }
     }
   };
 
