@@ -334,6 +334,16 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     );
   }
 
+  public get currentItemExternalParsedSubtitleTracks(): PlaybackExternalTrack[] {
+    return (
+      this.currentItemParsedSubtitleTracks?.filter(
+        (sub): sub is PlaybackExternalTrack =>
+          !isNil(sub.codec)
+          && !isNil(sub.src)
+      ) ?? []
+    );
+  }
+
   public get currentVideoTrack(): MediaStream | undefined {
     if (
       !isNil(this._state.currentMediaSource?.MediaStreams)
