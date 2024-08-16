@@ -42,11 +42,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router/auto';
 import { clientSettings } from '@/store/client-settings';
 
 const { t } = useI18n();
-const route = useRoute();
-
-route.meta.title = t('subtitles');
 </script>

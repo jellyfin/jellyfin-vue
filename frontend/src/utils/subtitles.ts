@@ -68,12 +68,6 @@ export async function parseVttFile(src: string) {
     let i = 0;
 
     while (i < vttLines.length) {
-      // Skip empty lines
-      if (vttLines[i].trim() === '') {
-        i++;
-        continue;
-      }
-
       if (vttLines[i].includes('-->')) {
         const [start, end] = vttLines[i].split(' --> ');
         let text = '';
@@ -147,7 +141,7 @@ const parseSsaStyles = (lines: string[]) => {
 /**
  * Parses dialogue line from SSA file.
  */
-const parseSsaDialogue = (line: string, formatFields: string[]) => {
+const parseSsaDialogue = (line: string, formatFields: string[]): Dialouge => {
   const dialogueData = parseFormattedLine(line, formatFields);
 
   const timeStart = dialogueData.Start;
@@ -162,13 +156,52 @@ const parseSsaDialogue = (line: string, formatFields: string[]) => {
   return { start: parseTime(timeStart), end: parseTime(timeEnd), text: formattedText.trim() };
 };
 
-const parseSsaDialogueLines = (lines: string[]) => {
+const parseSsaDialogueLines = (lines: string[]): Dialouge[] => {
   let index = 0;
   let dialogueFormat: string[] = [];
   const dialogue: Dialouge[] = [];
 
+  const parseLine = (line: string, index: number): [Dialouge | undefined, number] => {
+    line = line.trim();
+
+    // Format fields should be defined before dialogue lines begin
+    if (line.startsWith('Dialogue:') && dialogueFormat.length !== 0) {
+      let currentDialogue = parseSsaDialogue(line, dialogueFormat);
+
+      // Handle consecutive dialogue lines with the same timestamp
+      [currentDialogue, index] = parseConsecutiveLines(currentDialogue, index);
+
+      return [currentDialogue, index];
+    } else {
+      return [undefined, index];
+    }
+  };
+
+  const parseConsecutiveLines = (currentDialogue: Dialouge, index: number): [Dialouge, number] => {
+    while (index + 1 < lines.length) {
+      const nextLine = lines[index + 1].trim();
+
+      if (nextLine.startsWith('Dialogue:')) {
+        const nextDialogue = parseSsaDialogue(nextLine, dialogueFormat);
+
+        if (nextDialogue.start === currentDialogue.start && nextDialogue.end === currentDialogue.end) {
+          currentDialogue.text += '\n' + nextDialogue.text;
+          index++;
+        } else {
+          break;
+        }
+      } else {
+        break;
+      }
+    }
+
+    currentDialogue.text = currentDialogue.text.replace(String.raw`\N`, '\n');
+
+    return [currentDialogue, index];
+  };
+
   while (index < lines.length) {
-    const line = lines[index].trim();
+    const line = lines[index];
 
     /**
      * Parse format fields and save to a variable
@@ -182,42 +215,13 @@ const parseSsaDialogueLines = (lines: string[]) => {
      * Parse lines with dialouge
      * add consecutive lines at the same time together
      */
-    if (line.startsWith('Dialogue:')) {
-      // Format fields should be defined before dialogue lines begin
-      if (dialogueFormat.length === 0) {
-        break;
-      }
+    const [parsedDialogue, newIndex] = parseLine(line, index);
 
-      const currentDialogue = parseSsaDialogue(line, dialogueFormat);
-
-      // Handle consecutive dialogue lines with the same timestamp
-      while (index + 1 < lines.length) {
-        const nextLine = lines[index + 1].trim();
-
-        if (nextLine.startsWith('Dialogue:')) {
-          const nextDialogue = parseSsaDialogue(nextLine, dialogueFormat);
-
-          if (nextDialogue.start === currentDialogue.start && nextDialogue.end === currentDialogue.end) {
-            // Add a newline between consecutive dialogue lines with the same timestamp
-            currentDialogue.text += '\n' + nextDialogue.text;
-            index++;
-          } else {
-            break;
-          }
-        } else {
-          break;
-        }
-      }
-
-      // Handle cases where newlines are seperated with \N
-      const replacedNewlines = currentDialogue.text.replace(String.raw`\N`, '\n');
-
-      currentDialogue.text = replacedNewlines;
-
-      dialogue.push(currentDialogue);
+    if (parsedDialogue) {
+      dialogue.push(parsedDialogue);
     }
 
-    index++;
+    index = newIndex + 1;
   }
 
   return dialogue;
@@ -262,7 +266,7 @@ export async function parseSsaFile(src: string): Promise<ParsedSubtitleTrack | u
        * will have more than one style defined, if there's only one
        * we can assume it's basic
        */
-      isBasic: styles.length == 1
+      isBasic: styles.length === 1
     };
 
     return subtitles;

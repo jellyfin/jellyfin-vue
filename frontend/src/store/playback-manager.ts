@@ -297,50 +297,44 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   }
 
   /**
-   * Filters the native subtitles
-   *
-   * As our profile requires either SSA, PGS or VTT, if it's not SSA or PGS it'll be VTT.
-   * This is done this way as server sends as "Codec" the initial value of the track, so it can be webvtt, subrip, srt...
-   * This is easier to filter out the SSA subs
+   * Filters the external subtitle tracks
    */
-  public get currentItemVttParsedSubtitleTracks(): PlaybackExternalTrack[] {
+  public get currentItemExternalParsedSubtitleTracks(): PlaybackExternalTrack[] {
     return (
       this.currentItemParsedSubtitleTracks?.filter(
         (sub): sub is PlaybackExternalTrack =>
-          !!sub.codec && sub.codec !== 'ass' && sub.codec !== 'ssa' && sub.codec !== 'pgssub' && !!sub.src
+          sub.codec !== undefined
+          && sub.src !== undefined
       ) ?? []
+    );
+  }
+
+  public get currentItemVttParsedSubtitleTracks(): PlaybackExternalTrack[] {
+    return (
+      this.currentItemExternalParsedSubtitleTracks.filter(
+        sub =>
+          sub.codec === 'vtt'
+          || sub.codec === 'srt'
+          || sub.codec === 'subrip'
+      )
     );
   }
 
   public get currentItemAssParsedSubtitleTracks(): PlaybackExternalTrack[] {
     return (
-      this.currentItemParsedSubtitleTracks?.filter(
-        (sub): sub is PlaybackExternalTrack =>
-          !!sub.codec
-          && (sub.codec === 'ass' || sub.codec === 'ssa')
-          && !!sub.src
-      ) ?? []
+      this.currentItemExternalParsedSubtitleTracks.filter(
+        sub =>
+          sub.codec === 'ass'
+          || sub.codec === 'ssa'
+      )
     );
   }
 
   public get currentItemPgsParsedSubtitleTracks(): PlaybackExternalTrack[] {
     return (
-      this.currentItemParsedSubtitleTracks?.filter(
-        (sub): sub is PlaybackExternalTrack =>
-          !!sub.codec
-          && (sub.codec === 'pgssub')
-          && !!sub.src
-      ) ?? []
-    );
-  }
-
-  public get currentItemExternalParsedSubtitleTracks(): PlaybackExternalTrack[] {
-    return (
-      this.currentItemParsedSubtitleTracks?.filter(
-        (sub): sub is PlaybackExternalTrack =>
-          !isNil(sub.codec)
-          && !isNil(sub.src)
-      ) ?? []
+      this.currentItemExternalParsedSubtitleTracks.filter(
+        sub => sub.codec === 'pgssub'
+      )
     );
   }
 

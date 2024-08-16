@@ -17,7 +17,7 @@
   </VAlert>
 
   <VAlert
-    v-if="isQueryLocalFontsSupported && !fontAccess"
+    v-else-if="!fontAccess"
     class="uno-mb-5"
     color="warning"
     icon="$warning">
@@ -54,7 +54,7 @@ const model = defineModel<string | undefined>();
 const fontList = ref<string[]>([]);
 
 const fontPermission = usePermission('local-fonts');
-const fontAccess = computed(() => fontPermission.value == 'granted');
+const fontAccess = computed(() => fontPermission.value === 'granted');
 const isQueryLocalFontsSupported = useSupported(() => 'queryLocalFonts' in window);
 
 watchEffect(async () => {
