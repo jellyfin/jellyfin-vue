@@ -14,19 +14,15 @@ import { vuetify } from '@/plugins/vuetify';
 /**
  * - GLOBAL STYLES -
  */
-import '@fontsource-variable/figtree';
-/* eslint-disable-next-line import/no-extraneous-dependencies */
-import '@unocss/reset/tailwind-compat.css';
 import 'uno.css';
 import 'virtual:unocss-devtools';
-import '@/assets/styles/global.css';
+import '@/assets/styles/index.css';
 
 /**
  * - VUE PLUGINS, STORE AND DIRECTIVE -
  * The order of statements IS IMPORTANT
  */
 const remote = createRemote();
-
 const app = createApp(Root);
 
 /**
@@ -44,10 +40,13 @@ app.use(vuetify);
 app.directive('hide', hideDirective);
 
 /**
- * This ensures the transition plays: https://router.vuejs.org/guide/migration/#all-navigations-are-now-always-asynchronous
- * Also ensures Suspense component's content has loaded on first navigation (refer to RouterViewTransition component)
+ * Ensure everything is fully loaded before mounting the app
  */
-await router.isReady();
+await Promise.all([
+  router.isReady(),
+  ...[...document.fonts.keys()].map(font => font.load())
+]);
+await document.fonts.ready;
 
 /**
  * MOUNTING POINT
