@@ -17,3 +17,18 @@
     </VRow>
   </VContainer>
 </template>
+
+<script setup lang="ts">
+import { useSlots, computed } from 'vue';
+import { usePageTitle } from '@/composables/page-title';
+import { isStr } from '@/utils/validation';
+
+const slots = useSlots();
+const pageTitle = computed(() => {
+  const slot = slots.title?.()[0].children;
+
+  return isStr(slot) ? slot : undefined;
+});
+
+usePageTitle(pageTitle);
+</script>

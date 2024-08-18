@@ -1,5 +1,5 @@
-import { useTitle as _useTitle, watchImmediate } from '@vueuse/core';
-import { onBeforeUnmount, onMounted, shallowRef, toRef, toValue, type MaybeRefOrGetter } from 'vue';
+import { computed, onBeforeUnmount, onMounted, shallowRef, toRef, toValue } from 'vue';
+import { useTitle as _useTitle, watchImmediate, type ReadonlyRefOrGetter } from '@vueuse/core';
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { isNil } from '@/utils/validation';
 
@@ -8,8 +8,9 @@ import { isNil } from '@/utils/validation';
  */
 const DEFAULT_PAGE_TITLE = 'Jellyfin Vue';
 const _title = shallowRef<string>();
+const _fullTitle = computed(() => _title.value ? `${_title.value.trim()} | ${DEFAULT_PAGE_TITLE}` : DEFAULT_PAGE_TITLE);
 
-_useTitle(() => _title.value ? `${_title.value.trim()} | ${DEFAULT_PAGE_TITLE}` : DEFAULT_PAGE_TITLE);
+_useTitle(_fullTitle);
 
 /**
  * Reactively sets the page title with the following template: **`title` | Jellyfin Vue**. Can be used in 2 ways:
@@ -20,10 +21,10 @@ _useTitle(() => _title.value ? `${_title.value.trim()} | ${DEFAULT_PAGE_TITLE}` 
  *
  * Value will be set to default (undefined) when the component consuming this composable is unmounted.
  */
-export function usePageTitle(title?: MaybeRefOrGetter<string>) {
+export function usePageTitle(title?: ReadonlyRefOrGetter<Nullish<string>>) {
   onMounted(() => {
     if (!isNil(title)) {
-      watchImmediate(toRef(title), val => _title.value = val);
+      watchImmediate(toRef(title), val => _title.value = val ?? undefined);
     }
   });
 
@@ -35,6 +36,6 @@ export function usePageTitle(title?: MaybeRefOrGetter<string>) {
 /**
  * Same as useTitle, but is a shorthand for items only.
  */
-export function useItemPageTitle(item: MaybeRefOrGetter<Nullish<BaseItemDto>>) {
-  usePageTitle(() => toValue(item)?.Name ?? '');
+export function useItemPageTitle(item: ReadonlyRefOrGetter<Nullish<BaseItemDto>>) {
+  usePageTitle(() => toValue(item)?.Name);
 };
