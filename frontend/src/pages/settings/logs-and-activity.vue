@@ -112,12 +112,9 @@ import { useTheme } from 'vuetify';
 import { remote } from '@/plugins/remote';
 import { useDateFns } from '@/composables/use-datefns';
 import { useApi } from '@/composables/apis';
-import { usePageTitle } from '@/composables/page-title';
 
 const { t } = useI18n();
 const theme = useTheme();
-
-usePageTitle(() => t('logsAndActivity'));
 
 /**
  * Return a UI colour given log severity

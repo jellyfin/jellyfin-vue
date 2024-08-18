@@ -135,5 +135,4 @@ async function createUser(): Promise<void> {
     loading.value = false;
   }
 }
-
 </script>
