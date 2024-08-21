@@ -5,6 +5,7 @@
  */
 import { createApp } from 'vue';
 import { routes } from 'vue-router/auto-routes';
+import { getFontFaces } from '@/utils/data-manipulation';
 import Root from '@/App.vue';
 import { hideDirective } from '@/plugins/directives';
 import { vuePlugin as i18n } from '@/plugins/i18n';
@@ -44,7 +45,7 @@ app.directive('hide', hideDirective);
  */
 await Promise.all([
   router.isReady(),
-  ...[...document.fonts.keys()].map(font => font.load())
+  ...getFontFaces().map(font => font.load())
 ]);
 await document.fonts.ready;
 

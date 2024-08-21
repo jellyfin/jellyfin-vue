@@ -31,3 +31,25 @@ export function mergeExcludingUnknown<T extends object, K extends keyof T>(
 export function upperFirst<T extends string>(str: T): Capitalize<T> {
   return (str[0].toUpperCase() + str.slice(1)) as Capitalize<T>;
 }
+
+/**
+ * Get the font faces present in the document.
+ *
+ * Instead of using a normal iterable (like `...[...document.fonts.keys()]`),
+ * we need this for Firefox compatibility.
+ *
+ * See https://github.com/jellyfin/jellyfin-vue/issues/2432
+ */
+export function getFontFaces() {
+  const iterable = document.fonts.keys();
+  const results = [];
+  let iterator = iterable.next();
+
+  while (iterator.done === false) {
+    results.push(iterator.value);
+
+    iterator = iterable.next();
+  }
+
+  return results;
+}
