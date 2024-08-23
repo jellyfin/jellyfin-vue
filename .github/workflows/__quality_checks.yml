@@ -27,9 +27,16 @@ jobs:
           base-ref: ${{ github.event.pull_request.base.sha || 'master' }}
           head-ref: ${{ github.event.pull_request.head.sha || github.ref }}
 
-  lint:
-    name: Lint 🔬
+  quality:
+    name: Check ${{ matrix.command }} 🕵️‍♂️
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        command:
+          - lint
+          - typecheck
+          - analyze
     defaults:
       run:
         working-directory: frontend
@@ -50,34 +57,8 @@ jobs:
       - name: Install dependencies 📦
         run: npm ci --no-audit
 
-      - name: Run linter ✏️
-        run: npm run lint
-
-  typecheck:
-    name: Typecheck 🈯
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: frontend
-
-    steps:
-      - name: Checkout ⬇️
-        uses: actions/checkout@v4.1.7
-        with:
-          ref: ${{ inputs.commit }}
-          show-progress: false
-
-      - name: Setup node environment ⚙️
-        uses: actions/setup-node@v4.0.3
-        with:
-          node-version: 20
-          check-latest: true
-
-      - name: Install dependencies 📦
-        run: npm ci --no-audit
-
-      - name: Run typecheck 📖
-        run: npm run typecheck
+      - name: Run ${{ matrix.command }} ⚙️
+        run: npm run ${{ matrix.command }}
 
   commits_checks:
     name: Commit linting 💬✅
