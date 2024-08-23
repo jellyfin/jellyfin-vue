@@ -8,6 +8,7 @@ import { remote } from '@/plugins/remote';
 import { vuetify } from '@/plugins/vuetify';
 import { sealed } from '@/utils/validation';
 import { SyncedStore } from '@/store/super/synced-store';
+import { useFont } from '@/composables/use-font';
 
 /**
  * == INTERFACES AND TYPES ==
@@ -30,6 +31,7 @@ export interface ClientSettingsState {
 class ClientSettingsStore extends SyncedStore<ClientSettingsState> {
   private readonly _browserPrefersDark = usePreferredDark();
   private readonly _navigatorLanguage = useNavigatorLanguage();
+  private readonly _bodyFont = useFont();
   private readonly _BROWSER_LANGUAGE = computed<string>(() => {
     const rawString = this._navigatorLanguage.language.value ?? '';
     /**
@@ -40,20 +42,7 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState> {
     return cleanString[0];
   });
 
-  private readonly _BODY_FONT = computed<string>(() => {
-    const body = document.querySelector('body');
-
-    if (body) {
-      const style = window.getComputedStyle(body);
-
-      /**
-       * Remove the fallback fonts and quotes around the font name
-       */
-      return style.fontFamily.split(', ')[0].slice(1, -1);
-    } else {
-      return 'fallback';
-    }
-  });
+  private readonly _BODY_FONT = this._bodyFont.currentFont;
 
   public set locale(newVal: string) {
     this._state.locale
@@ -133,12 +122,8 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState> {
 
     /**
      * Font family changes
-     *
-     * Wait for DOM content to load before querying for font/style information
      */
-    document.addEventListener('DOMContentLoaded', () => {
-      watchImmediate(this._BODY_FONT, this._updateSubtitleFontFamily);
-    });
+    watchImmediate(this._BODY_FONT, this._updateSubtitleFontFamily);
 
     /**
      * Vuetify theme change
