@@ -9,29 +9,29 @@
         md="6"
         class="pt-0 pb-4">
         <FontSelector
-          v-model="clientSettings.subtitleAppearance.fontFamily"
+          v-model="subtitleSettings.subtitleAppearance.fontFamily"
           :label="$t('subtitleFont')" />
 
         <VSlider
-          v-model="clientSettings.subtitleAppearance.fontSize"
+          v-model="subtitleSettings.subtitleAppearance.fontSize"
           :label="$t('fontSize')"
           :min="1"
           :max="4.5"
           :step="0.1" />
 
         <VSlider
-          v-model="clientSettings.subtitleAppearance.positionFromBottom"
+          v-model="subtitleSettings.subtitleAppearance.positionFromBottom"
           :label="$t('positionFromBottom')"
           :min="0"
           :max="30"
           :step="1" />
 
         <VCheckbox
-          v-model="clientSettings.subtitleAppearance.backdrop"
+          v-model="subtitleSettings.subtitleAppearance.backdrop"
           :label="$t('backdrop')" />
 
         <VCheckbox
-          v-model="clientSettings.subtitleAppearance.stroke"
+          v-model="subtitleSettings.subtitleAppearance.stroke"
           :label="$t('stroke')" />
 
         <SubtitleTrack :preview-text="$t('subtitlePreviewText')" />
@@ -42,7 +42,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import { clientSettings } from '@/store/client-settings';
+import { subtitleSettings } from '@/store/client-settings';
 
 const { t } = useI18n();
 </script>

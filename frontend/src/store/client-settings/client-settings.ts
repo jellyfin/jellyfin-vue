@@ -8,7 +8,6 @@ import { remote } from '@/plugins/remote';
 import { vuetify } from '@/plugins/vuetify';
 import { sealed } from '@/utils/validation';
 import { SyncedStore } from '@/store/super/synced-store';
-import { useFont } from '@/composables/use-font';
 
 /**
  * == INTERFACES AND TYPES ==
@@ -18,20 +17,12 @@ import { useFont } from '@/composables/use-font';
 export interface ClientSettingsState {
   darkMode: 'auto' | boolean;
   locale: string;
-  subtitleAppearance: {
-    fontFamily: string;
-    fontSize: number;
-    positionFromBottom: number;
-    backdrop: boolean;
-    stroke: boolean;
-  };
 }
 
 @sealed
 class ClientSettingsStore extends SyncedStore<ClientSettingsState> {
   private readonly _browserPrefersDark = usePreferredDark();
   private readonly _navigatorLanguage = useNavigatorLanguage();
-  private readonly _bodyFont = useFont();
   private readonly _BROWSER_LANGUAGE = computed<string>(() => {
     const rawString = this._navigatorLanguage.language.value ?? '';
     /**
@@ -41,8 +32,6 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState> {
 
     return cleanString[0];
   });
-
-  private readonly _BODY_FONT = this._bodyFont.currentFont;
 
   public set locale(newVal: string) {
     this._state.locale
@@ -63,14 +52,6 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState> {
     return this._state.darkMode;
   }
 
-  public set subtitleAppearance(newVal: ClientSettingsState['subtitleAppearance']) {
-    this._state.subtitleAppearance = newVal;
-  }
-
-  public get subtitleAppearance(): ClientSettingsState['subtitleAppearance'] {
-    return this._state.subtitleAppearance;
-  }
-
   public readonly currentTheme = computed(() => {
     const dark = 'dark';
     const light = 'light';
@@ -89,24 +70,10 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState> {
     vuetify.locale.current.value = i18n.locale.value;
   };
 
-  private readonly _updateSubtitleFontFamily = (): void => {
-    this.subtitleAppearance.fontFamily
-      = this.subtitleAppearance.fontFamily === 'auto'
-        ? this._BODY_FONT.value
-        : this.subtitleAppearance.fontFamily;
-  };
-
   public constructor() {
     super('clientSettings', {
       darkMode: 'auto',
-      locale: 'auto',
-      subtitleAppearance: {
-        fontFamily: 'auto',
-        fontSize: 1.5,
-        positionFromBottom: 10,
-        backdrop: true,
-        stroke: false
-      }
+      locale: 'auto'
     }, 'localStorage');
     /**
      * == WATCHERS ==
@@ -119,11 +86,6 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState> {
       [this._BROWSER_LANGUAGE, (): typeof this.locale => this.locale],
       this._updateLocale
     );
-
-    /**
-     * Font family changes
-     */
-    watchImmediate(this._BODY_FONT, this._updateSubtitleFontFamily);
 
     /**
      * Vuetify theme change
@@ -146,4 +108,4 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState> {
   }
 }
 
-export const clientSettings = new ClientSettingsStore();
+export default new ClientSettingsStore();
