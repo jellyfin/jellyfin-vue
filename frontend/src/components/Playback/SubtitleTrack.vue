@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { clientSettings } from '@/store/client-settings';
+import { subtitleSettings } from '@/store/client-settings';
 import { mediaControls } from '@/store';
 import { playerElement } from '@/store/player-element';
 import { isNil } from '@/utils/validation';
@@ -72,7 +72,7 @@ const currentSubtitle = computed(() =>
  * reactive to client subtitle appearance settings
  */
 const subtitleStyle = computed(() => {
-  const subtitleAppearance = clientSettings.subtitleAppearance;
+  const subtitleAppearance = subtitleSettings.subtitleAppearance;
 
   return {
     fontFamily: `${subtitleAppearance.fontFamily} !important`,
