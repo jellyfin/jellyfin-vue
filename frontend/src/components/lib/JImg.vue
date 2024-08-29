@@ -13,8 +13,9 @@
       <img
         v-if="shown"
         class="j-img"
-        v-bind="mergeProps($props, $attrs)"
-        :alt="$props.alt">
+        loading="eager"
+        decoding="async"
+        v-bind="mergeProps($props, $attrs)">
       <template v-else>
         <slot
           v-if="$slots.placeholder"

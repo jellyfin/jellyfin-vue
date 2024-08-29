@@ -4,7 +4,9 @@
     :class="clientSettings.currentTheme.value">
     <img
       src="./icon.svg"
-      alt="Jellyfin Logo">
+      alt="Jellyfin Logo"
+      loading="eager"
+      decoding="async">
     <JTransition
       name="slide-y-reverse"
       appear>
