@@ -120,7 +120,6 @@ import {
   type BaseItemDto
 } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
-import { groupBy } from 'lodash-es';
 import { computed } from 'vue';
 import { useBaseItem } from '@/composables/apis';
 import { playbackManager } from '@/store/playback-manager';
@@ -137,9 +136,7 @@ const { data: tracks } = await useBaseItem(getItemsApi, 'getItems')(() => ({
   sortOrder: [SortOrder.Ascending]
 }));
 
-const tracksPerDisc = computed(() => {
-  return groupBy(tracks.value, 'ParentIndexNumber');
-});
+const tracksPerDisc = computed(() => Object.groupBy(tracks.value, ({ ParentIndexNumber }) => ParentIndexNumber!));
 
 /**
  * Check if a given BaseItemDto is playing

@@ -37,15 +37,12 @@
 
 <script setup lang="ts">
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { groupBy } from 'lodash-es';
-import { computed, ref } from 'vue';
+import { computed, shallowRef } from 'vue';
 
 const props = defineProps<{
   items: BaseItemDto[];
 }>();
 
-const currentTab = ref(0);
-const children = computed(() => {
-  return groupBy(props.items, 'Type');
-});
+const currentTab = shallowRef(0);
+const children = computed(() => Object.groupBy(props.items, ({ Type }) => Type!));
 </script>

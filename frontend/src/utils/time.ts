@@ -8,7 +8,6 @@ import {
   formatDuration,
   intervalToDuration
 } from 'date-fns';
-import { sumBy } from 'lodash-es';
 import { now } from '@/store';
 import { i18n } from '@/plugins/i18n';
 import { useDateFns } from '@/composables/use-datefns';
@@ -120,7 +119,7 @@ export function getRuntimeTime(ticks: number): string {
 export function getTotalEndsAtTime(
   items: BaseItemDto[]
 ): string {
-  const aggregatedTicks = sumBy(items, 'RunTimeTicks');
+  const aggregatedTicks = items.reduce((acc, item) => acc + (item.RunTimeTicks ?? 0), 0);
 
   return getEndsAtTime(aggregatedTicks);
 }
