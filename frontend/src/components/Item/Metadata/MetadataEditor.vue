@@ -72,7 +72,9 @@
             :value="dateCreated"
             :label="t('dateAdded')"
             @update:date="
-              (value) => formatAndAssignDate('DateCreated', value)
+              (value) => {
+                metadata!.DateCreated = formatISO(new Date(value))
+              }
             " />
           <VRow>
             <VCol
@@ -97,7 +99,9 @@
             :value="premiereDate"
             :label="t('releaseDate')"
             @update:date="
-              (value) => formatAndAssignDate('PremiereDate', value)
+              (value) => {
+                metadata!.PremiereDate = formatISO(new Date(value))
+              }
             " />
           <VTextField
             v-model="metadata.ProductionYear"
@@ -226,7 +230,6 @@ import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { AxiosError } from 'axios';
 import { format, formatISO } from 'date-fns';
-import { pick, set } from 'lodash-es';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { watchImmediate } from '@vueuse/core';
@@ -234,6 +237,7 @@ import { isArray } from '@/utils/validation';
 import { remote } from '@/plugins/remote';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { useDateFns } from '@/composables/use-datefns';
+import { pick } from '@/utils/data-manipulation';
 
 interface ContentOption {
   value: string;
@@ -475,18 +479,6 @@ async function saveMetadata(): Promise<void> {
   } finally {
     loading.value = false;
   }
-}
-
-/**
- * Formats and updates dates
- */
-function formatAndAssignDate(key: keyof BaseItemDto, date: string): void {
-  if (!metadata.value) {
-    return;
-  }
-
-  menu.value = false;
-  set(metadata.value, key, formatISO(new Date(date)));
 }
 
 /**

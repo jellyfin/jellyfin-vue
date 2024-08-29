@@ -7,12 +7,12 @@ import { defu } from 'defu';
  * @param defaultObject - Sample/default representation of the object that should be used to detect which keys
  * should/shouldn't exist in the target.
  */
-export function mergeExcludingUnknown<T extends object, K extends keyof T>(
+export function mergeExcludingUnknown<T extends object>(
   object: T,
   defaultObject: T
 ): T {
-  const defaultKeys = new Set(Object.keys(defaultObject) as K[]);
-  const missingKeys = (Object.keys(object) as K[]).filter(
+  const defaultKeys = new Set(Object.keys(defaultObject) as (keyof T)[]);
+  const missingKeys = (Object.keys(object) as (keyof T)[]).filter(
     key => !defaultKeys.has(key)
   );
 
@@ -52,4 +52,19 @@ export function getFontFaces() {
   }
 
   return results;
+}
+
+/**
+ * Picks certain keys from an object and returns a new object with only those keys.
+ */
+export function pick<T extends object>(object: T, keys: (keyof T)[]): Partial<T> {
+  const res = {} as Partial<T>;
+
+  for (const key of keys) {
+    if (key in object) {
+      res[key] = object[key];
+    }
+  }
+
+  return res;
 }
