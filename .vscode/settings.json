@@ -35,6 +35,7 @@
       "mode": "auto"
     }
   ],
+  "vue.server.hybridMode": true,
   "vue.autoInsert.dotValue": true,
   "vue.inlayHints.missingProps": true,
   "vue.complete.casing.props": "kebab",
@@ -43,7 +44,8 @@
   "vue.format.style.initialIndent": true,
   "vue.inlayHints.inlineHandlerLeading": true,
   "vue.inlayHints.vBindShorthand": true,
-  "vue.server.hybridMode": false,
+  "vue.inlayHints.optionsWrapper": true,
+  "vue.inlayHints.destructuredProps": true,
   "sonarlint.output.showAnalyzerLogs": true,
   "sonarlint.output.showVerboseLogs": true,
   "sonarlint.connectedMode.project": {
