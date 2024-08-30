@@ -2,31 +2,31 @@
   <component
     :is="props.group ? TransitionGroup : Transition"
     class="j-transition"
-    v-bind="mergeProps($props, $attrs)"
+    v-bind="$attrs"
     :name="prefersNoMotion || disabled || isSlow ? undefined : `j-transition-${props.name}`">
     <slot />
   </component>
 </template>
 
 <script setup lang="ts">
-import { Transition, TransitionGroup, type TransitionProps, mergeProps } from 'vue';
+import { Transition, TransitionGroup, type TransitionProps } from 'vue';
 import { prefersNoMotion, isSlow } from '@/store';
 
-export interface JTransitionProps extends BetterOmit<TransitionProps, 'name'> {
+interface Props {
   name?: 'fade' | 'rotated-zoom' | 'slide-y' | 'slide-y-reverse' | 'slide-x' | 'slide-x-reverse';
   /**
-   * Transition group props
-   */
-  tag?: string;
-  moveClass?: string;
-  /**
-   * JTransition custom props
+   * If the component needs to be rendered as a TransitionGroup
    */
   group?: boolean;
+  /**
+   * If the transition should be disabled
+   */
   disabled?: boolean;
 }
 
-const props = withDefaults(defineProps<JTransitionProps>(), { name: 'fade', group: undefined, disabled: undefined });
+export type JTransitionProps = TransitionProps & Props;
+
+const props = withDefaults(defineProps<Props>(), { name: 'fade' });
 </script>
 
 <!-- TODO: Set scoped and remove .j-transition* prefix after: https://github.com/vuejs/core/issues/5148 -->

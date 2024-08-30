@@ -12,10 +12,12 @@
       :disabled="!props.transitionProps">
       <img
         v-if="shown"
+        :src="src"
+        :alt="alt"
         class="j-img"
         loading="eager"
         decoding="async"
-        v-bind="mergeProps($props, $attrs)">
+        v-bind="$attrs">
       <template v-else>
         <slot
           v-if="$slots.placeholder"
@@ -42,20 +44,29 @@
 </template>
 
 <script setup lang="ts">
-import { computed, shallowRef, watch, type ImgHTMLAttributes, mergeProps } from 'vue';
-import { isObj } from '@/utils/validation';
-import JTransition, { type JTransitionProps } from '@/components/lib/JTransition.vue';
-
 /**
+ * @component
  * In this component, we use a link element for image preload.
  * The link element is the browser standard for resource prefetching and we can use it everytime, regardless the
  * underlying element type being used.
  *
  * Given the img at loading is v-show'ed to false (display: none), the load events doesn't trigger either
  */
+import { computed, shallowRef, watch } from 'vue';
+import { isObj } from '@/utils/validation';
+import JTransition, { type JTransitionProps } from '@/components/lib/JTransition.vue';
 
-interface Props extends BetterOmit<ImgHTMLAttributes, 'src'> {
-  src?: string | null;
+/**
+ * We don't want <link> to inherit any attributes and the component might not render any
+ * element at all, printing unnecessary warnings in development.
+ */
+defineOptions({
+  inheritAttrs: false
+});
+
+const props = withDefaults(defineProps<{
+  src?: string;
+  alt: string;
   /**
    * If this is true, the image won't follow the load procedures after a src change and the image will simply be
    * updated in place without showing any of the slots.
@@ -68,20 +79,10 @@ interface Props extends BetterOmit<ImgHTMLAttributes, 'src'> {
    * @default true
    */
   transitionProps?: JTransitionProps | boolean;
-}
+}>(), { transitionProps: true });
 
-/**
- * We don't want <link> to inherit any attributes and the component might not render any
- * element at all, printing unnecessary warnings in development.
- */
-defineOptions({
-  inheritAttrs: false
-});
-
-const props = withDefaults(defineProps<Props>(), { transitionProps: true });
 const loading = shallowRef(true);
 const error = shallowRef(false);
-
 const shown = computed(() => !loading.value && !error.value);
 
 /**

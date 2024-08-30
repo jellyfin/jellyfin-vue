@@ -2,6 +2,7 @@
   <VAvatar :size="size">
     <JImg
       :src="url"
+      :alt="$t('userImage')"
       :transition-props="{
         mode: 'out-in'
       }">

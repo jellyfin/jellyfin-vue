@@ -11,6 +11,7 @@
         <template #image>
           <JImg
             :src="item.ImageUrl"
+            :alt="item.Name ?? $t('imageSearchResult')"
             once>
             <VIcon>
               <IMdiImage />

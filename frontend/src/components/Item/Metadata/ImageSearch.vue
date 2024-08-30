@@ -69,6 +69,7 @@
           <VCard class="ma-2">
             <JImg
               v-if="item.Url"
+              :alt="$t('imageSearchResult')"
               :src="item.Url" />
             <div class="text-center text-truncate text-subtitle-1 mt-2">
               {{ item.ProviderName }}
