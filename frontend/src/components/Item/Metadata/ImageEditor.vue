@@ -14,7 +14,9 @@
       <VCard
         class="ma-2"
         variant="outlined">
-        <JImg :src="imageFormat(item)" />
+        <JImg
+          :alt="$t('imageSearchResult')"
+          :src="imageFormat(item)" />
         <div class="text-center text-subtitle-1">
           {{ item.ImageType }}
         </div>
@@ -60,7 +62,9 @@
         <VCard
           class="ma-2"
           variant="outlined">
-          <JImg :src="imageFormat(item)" />
+          <JImg
+            :alt="$t('imageSearchResult')"
+            :src="imageFormat(item)" />
           <div class="text-center text-subtitle-1">
             {{ item.ImageType }}
           </div>

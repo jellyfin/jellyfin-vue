@@ -156,6 +156,7 @@
                 <VAvatar>
                   <JImg
                     v-if="item.Id && item.PrimaryImageTag"
+                    :alt="$t('person')"
                     :src="
                       remote.sdk.api?.getItemImageUrl(
                         item.Id,

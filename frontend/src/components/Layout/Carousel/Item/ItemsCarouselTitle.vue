@@ -4,6 +4,7 @@
       v-if="logo && logoLink"
       :to="logoLink">
       <JImg
+        :alt="$t('logo')"
         class="mb-2"
         data-swiper-parallax="-300"
         :style="{

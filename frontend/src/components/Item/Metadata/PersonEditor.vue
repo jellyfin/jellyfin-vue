@@ -15,7 +15,8 @@
               <JImg
                 :src="
                   person?.Id && $remote.sdk.api?.getItemImageUrl(person.Id, ImageType.Primary)
-                ">
+                "
+                :alt="$t('person')">
                 <template #placeholder>
                   <VIcon
                     class="bg-grey-darken-3">
