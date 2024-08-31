@@ -21,18 +21,6 @@ jobs:
       in_progress: true
       comment: true
 
-  project:
-    name: Add to project board 📊
-    if: ${{ always() }}
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: alex-page/github-project-automation-plus@v0.9.0
-        with:
-          project: Ongoing development
-          column: In progress
-          repo-token: ${{ secrets.JF_BOT_TOKEN }}
-
   label:
     name: Labeling 🏷️
     if: ${{ always() }}
