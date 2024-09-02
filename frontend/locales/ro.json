@@ -92,7 +92,7 @@
   "series": "Serial",
   "server": "Server",
   "serverVersion": "Versiunea serverului",
-  "serverVersionTooLow": "Versiunea serverului trebuie să fie 10.7.0 sau mai mare",
+  "serverVersionTooLow": "Versiunea serverului trebuie să fie {version} sau mai mare",
   "shows": "Spectacole",
   "signIn": "Autentificare",
   "songs": "Melodii",

@@ -93,7 +93,7 @@
   "series": "സീരീസ്",
   "server": "സെർവർ",
   "serverVersion": "സെർവർ പതിപ്പ്",
-  "serverVersionTooLow": "സെർവർ പതിപ്പ് 10.7.0 അല്ലെങ്കിൽ ഉയർന്നതായിരിക്കണം",
+  "serverVersionTooLow": "സെർവർ പതിപ്പ് {version} അല്ലെങ്കിൽ ഉയർന്നതായിരിക്കണം",
   "shows": "ഷോകൾ",
   "signIn": "സൈൻ ഇൻ",
   "songs": "ഗാനങ്ങൾ",

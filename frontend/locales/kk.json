@@ -92,7 +92,7 @@
   "series": "Telehikaia",
   "server": "Server",
   "serverVersion": "Server nūsqasy",
-  "serverVersionTooLow": "Server nusqasy 10.7.0 ne odan joǵary qajet",
+  "serverVersionTooLow": "Server nusqasy {version} ne odan joǵary qajet",
   "shows": "Körsetımder",
   "signIn": "Kıru",
   "songs": "Äuender",

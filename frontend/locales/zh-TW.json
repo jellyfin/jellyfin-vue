@@ -125,7 +125,7 @@
   "seasonEpisodeAbbrev": "第 {seasonNumber} 季第 {episodeNumber} 章",
   "server": "伺服器",
   "serverVersion": "伺服器版本",
-  "serverVersionTooLow": "伺服器版本必須高於/等於 10.7.0",
+  "serverVersionTooLow": "伺服器版本必須高於/等於 {version}",
   "signIn": "登入",
   "status": "狀態",
   "studios": "工作室",

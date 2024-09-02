@@ -206,7 +206,7 @@
   "series": "Сериал",
   "server": "Сервер",
   "serverVersion": "Версия сервера",
-  "serverVersionTooLow": "Версия сервера должна быть 10.7.0 или выше",
+  "serverVersionTooLow": "Версия сервера должна быть {version} или выше",
   "shows": "Передачи",
   "signIn": "Вход",
   "songs": "Композиции",

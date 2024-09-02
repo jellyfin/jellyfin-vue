@@ -210,7 +210,7 @@
   "series": "Loạt Phim",
   "server": "Máy chủ",
   "serverVersion": "Phiên bản máy chủ",
-  "serverVersionTooLow": "Phiên bản máy chủ phải từ 10.7.0 trở lên",
+  "serverVersionTooLow": "Phiên bản máy chủ phải từ {version} trở lên",
   "settings": "Cài đặt",
   "shows": "Chương Trình",
   "signIn": "Đăng nhập",
