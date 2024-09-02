@@ -143,7 +143,7 @@
   "lastActive": "上次活动",
   "lastActivityDate": "上次观看{value}",
   "latestLibrary": "最新{libraryName}",
-  "lazyLoading": "正在显示{value}个项目。正在加载更多...",
+  "lazyLoading": "正在显示{value}个项目。正在加载更多…",
   "libraries": "媒体库",
   "librariesSettingsDescription": "管理媒体库及其元数据",
   "libraryAccess": "媒体库访问",

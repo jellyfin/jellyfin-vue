@@ -143,7 +143,7 @@
   "lastActive": "Τελευταίο ενεργό",
   "lastActivityDate": "Τελευταία εμφάνιση {value}",
   "latestLibrary": "Τελευταία {libraryName}",
-  "lazyLoading": "Εμφάνιση {value} στοιχείων. Φόρτωση περισσότερων...",
+  "lazyLoading": "Εμφάνιση {value} στοιχείων. Φόρτωση περισσότερων…",
   "libraries": "Βιβλιοθήκες",
   "librariesSettingsDescription": "Διαχειριστείτε τις βιβλιοθήκες και τα μεταδεδομένα τους",
   "libraryAccess": "Πρόσβαση βιβλιοθήκης",

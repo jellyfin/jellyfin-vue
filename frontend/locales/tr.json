@@ -143,7 +143,7 @@
   "lastActive": "Son aktif",
   "lastActivityDate": "Son görülme {value}",
   "latestLibrary": "En son {libraryName}",
-  "lazyLoading": "{value} öğe gösteriliyor. Daha fazlası yükleniyor...",
+  "lazyLoading": "{value} öğe gösteriliyor. Daha fazlası yükleniyor…",
   "libraries": "Kütüphaneler",
   "librariesSettingsDescription": "Kütüphaneleri ve meta verilerini yönetin",
   "libraryAccess": "Kütüphane erişimi",

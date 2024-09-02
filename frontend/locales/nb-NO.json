@@ -143,7 +143,7 @@
   "lastActive": "Sist aktiv",
   "lastActivityDate": "Sist sett {value}",
   "latestLibrary": "Nyeste i {libraryName}",
-  "lazyLoading": "Viser {value} elementer. Laster inn mer...",
+  "lazyLoading": "Viser {value} elementer. Laster inn mer…",
   "libraries": "Biblioteker",
   "librariesSettingsDescription": "Administrer bibliotekene og deres metadata",
   "libraryAccess": "Bibliotektilgang",

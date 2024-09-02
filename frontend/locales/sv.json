@@ -143,7 +143,7 @@
   "lastActive": "Senast aktiv",
   "lastActivityDate": "Sågs senast för {value}",
   "latestLibrary": "Senast {libraryName}",
-  "lazyLoading": "Visar{value} föremål. Laddar fler...",
+  "lazyLoading": "Visar{value} föremål. Laddar fler…",
   "libraries": "Bibliotek",
   "librariesSettingsDescription": "Hantera bibliotek och deras metadata",
   "libraryAccess": "Tillgång till bibliotek",

@@ -142,7 +142,7 @@
   "lastActive": "Ultima attività",
   "lastActivityDate": "Ultimo accesso {value}",
   "latestLibrary": "Aggiunti di recente a {libraryName}",
-  "lazyLoading": "Visualizzati {value} elementi. Caricandone altri...",
+  "lazyLoading": "Visualizzati {value} elementi. Caricandone altri…",
   "libraries": "Librerie",
   "librariesSettingsDescription": "Gestire le librerie e i relativi metadati",
   "libraryAccess": "Accesso alla libreria",

@@ -143,7 +143,7 @@
   "lastActive": "Naposledy aktivní",
   "lastActivityDate": "Naposledy online před {value}",
   "latestLibrary": "Nejnovější {libraryName}",
-  "lazyLoading": "Zobrazeno {value} položek. Načítají se další...",
+  "lazyLoading": "Zobrazeno {value} položek. Načítají se další…",
   "libraries": "Knihovny",
   "librariesSettingsDescription": "Spravovat knihovny a jejich metadata",
   "libraryAccess": "Přístup ke knihovnám",

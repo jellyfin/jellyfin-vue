@@ -140,7 +140,7 @@
   "lastActive": "Últim actiu",
   "lastActivityDate": "Vist per última vegada {value}",
   "latestLibrary": "L'últim a {libraryName}",
-  "lazyLoading": "Es mostren {value} elements. Carregant-ne més...",
+  "lazyLoading": "Es mostren {value} elements. Carregant-ne més…",
   "libraries": "Biblioteques",
   "librariesSettingsDescription": "Administra biblioteques i les seves metadades",
   "libraryAccess": "Accés a la biblioteca",

@@ -143,7 +143,7 @@
   "lastActive": "Laatst actief",
   "lastActivityDate": "Laatst gezien {value}",
   "latestLibrary": "Nieuwste {libraryName}",
-  "lazyLoading": "{value} items zichtbaar. Meer worden geladen...",
+  "lazyLoading": "{value} items zichtbaar. Meer worden geladen…",
   "libraries": "Bibliotheken",
   "librariesSettingsDescription": "Bibliotheken en hun metadata beheren",
   "libraryAccess": "Bibliotheek toegang",

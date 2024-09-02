@@ -143,7 +143,7 @@
   "lastActive": "Dernière activité",
   "lastActivityDate": "Vu pour la dernière fois {value}",
   "latestLibrary": "Récemment ajoutés à {libraryName}",
-  "lazyLoading": "Affichage de {value} éléments. Chargement en cours...",
+  "lazyLoading": "Affichage de {value} éléments. Chargement en cours…",
   "libraries": "Médiathèques",
   "librariesSettingsDescription": "Gérer les librairies et leurs informations",
   "libraryAccess": "Accès à la médiathèque",

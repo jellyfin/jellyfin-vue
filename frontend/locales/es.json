@@ -143,7 +143,7 @@
   "lastActive": "Último activo",
   "lastActivityDate": "Última vez visto {value}",
   "latestLibrary": "Lo último en {libraryName}",
-  "lazyLoading": "Mostrando {value} items. Cargando mas...",
+  "lazyLoading": "Mostrando {value} elementos. Cargando más…",
   "libraries": "Bibliotecas",
   "librariesSettingsDescription": "Administra librerías y sus metadatos",
   "libraryAccess": "Acceso a la librería",
