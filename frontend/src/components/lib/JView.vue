@@ -9,6 +9,9 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * TODO: Remove j-transition classes from this file once https://github.com/vuejs/core/issues/5148 is fixed
+ */
 import type { Component } from 'vue';
 
 defineProps<{

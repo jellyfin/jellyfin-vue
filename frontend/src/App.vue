@@ -36,9 +36,6 @@
 </template>
 
 <script setup lang="ts">
-/**
- * TODO: Remove j-transition classes from this file once https://github.com/vuejs/core/issues/5148 is fixed
- */
 import { shallowRef, type Component as VueComponent, onMounted } from 'vue';
 import type { RouteMeta } from 'vue-router';
 import DefaultLayout from '@/layouts/default.vue';
