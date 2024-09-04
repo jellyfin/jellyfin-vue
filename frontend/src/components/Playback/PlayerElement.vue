@@ -2,7 +2,8 @@
   <template v-if="mediaElementType">
     <Teleport
       :to="videoContainerRef"
-      :disabled="!videoContainerRef">
+      :disabled="!videoContainerRef"
+      defer>
       <Component
         :is="mediaElementType"
         v-show="mediaElementType === 'video' && videoContainerRef"
