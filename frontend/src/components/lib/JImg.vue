@@ -22,10 +22,16 @@
           name="placeholder" />
         <slot
           v-else-if="loading"
-          name="loading" />
+          name="loading">
+          <VProgressCircular indeterminate />
+        </slot>
         <slot
           v-else-if="error"
-          name="error" />
+          name="error">
+          <VIcon>
+            <IMdiImageBrokenVariant />
+          </VIcon>
+        </slot>
       </template>
     </JTransition>
   </template>

@@ -12,14 +12,6 @@
           <JImg
             :src="item.ImageUrl"
             once>
-            <template #loading>
-              <VProgressCircular indeterminate />
-            </template>
-            <template #error>
-              <VIcon>
-                <IMdiImageBrokenVariant />
-              </VIcon>
-            </template>
             <VIcon>
               <IMdiImage />
             </VIcon>
