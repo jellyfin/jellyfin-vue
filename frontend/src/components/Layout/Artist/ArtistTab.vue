@@ -12,8 +12,7 @@
             sm="1">
             <ItemCard
               :item="release"
-              overlay
-              link />
+              overlay />
           </VCol>
           <VCol class="py-2">
             <div class="text-subtitle-1 text--secondary font-weight-medium">
@@ -47,7 +46,7 @@
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getItemDetailsLink } from '@/utils/items';
 
-defineProps<{
+const { releases } = defineProps<{
   releases: BaseItemDto[];
 }>();
 </script>

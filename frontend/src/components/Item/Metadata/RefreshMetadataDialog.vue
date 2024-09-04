@@ -68,7 +68,7 @@ interface RefreshMethod {
   value: 'scan' | 'missing' | 'all';
 }
 
-const props = defineProps<{
+const { item } = defineProps<{
   item: BaseItemDto;
 }>();
 
@@ -120,7 +120,7 @@ const refreshMode = computed<MetadataRefreshMode>(() => {
 async function refreshMetadata(): Promise<void> {
   const replaceMetadata = selectedMethod.value.value === 'all';
 
-  if (!props.item.Id) {
+  if (!item.Id) {
     return;
   }
 
@@ -128,7 +128,7 @@ async function refreshMetadata(): Promise<void> {
     loading.value = true;
 
     await remote.sdk.newUserApi(getItemRefreshApi).refreshItem({
-      itemId: props.item.Id,
+      itemId: item.Id,
       metadataRefreshMode: refreshMode.value,
       imageRefreshMode: refreshMode.value,
       replaceAllMetadata: replaceMetadata,
@@ -137,8 +137,8 @@ async function refreshMetadata(): Promise<void> {
 
     taskManager.startTask({
       type: TaskType.LibraryRefresh,
-      id: props.item.Id || '',
-      data: props.item.Name ?? `ID ${props.item.Id}`,
+      id: item.Id || '',
+      data: item.Name ?? `ID ${item.Id}`,
       progress: 0
     });
 

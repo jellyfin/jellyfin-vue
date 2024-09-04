@@ -43,7 +43,7 @@
     <div
       v-if="$slots.title || ($slots.title && $slots.subtitle)"
       class="card-text">
-      <a class="d-block font-weight-medium pa-0 mt-1 text-truncate">
+      <a class="font-weight-medium pa-0 mt-1 text-truncate d-block">
         <slot name="title" />
       </a>
       <a class="v-card-subtitle">
@@ -60,7 +60,7 @@ import { isNil } from '@/utils/validation';
 import { hasFinePointer } from '@/store';
 import type { CardShapes } from '@/utils/items';
 
-interface Props {
+const { shape, progress, overlay, forceOverlay, to, margin } = defineProps<{
   shape: CardShapes;
   /**
    * Progress to show in the bottom of the image
@@ -83,9 +83,7 @@ interface Props {
    * Whether to apply a margin to the card
    */
   margin?: boolean;
-}
-
-defineProps<Props>();
+}>();
 
 const attrs = useAttrs();
 

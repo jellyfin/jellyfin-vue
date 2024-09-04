@@ -245,7 +245,7 @@ interface ContentOption {
   key: string;
 }
 
-const props = defineProps<{ itemId: string }>();
+const { itemId } = defineProps<{ itemId: string }>();
 
 const emit = defineEmits<{
   'save': [];
@@ -256,7 +256,6 @@ const emit = defineEmits<{
 const { t } = useI18n();
 
 const metadata = ref<BaseItemDto>();
-const menu = ref(false);
 const person = ref<BaseItemPerson>();
 const genres = ref<string[]>([]);
 const loading = ref(false);
@@ -321,13 +320,13 @@ async function getData(): Promise<void> {
   const itemInfo = (
     await remote.sdk.newUserApi(getUserLibraryApi).getItem({
       userId: remote.auth.currentUserId ?? '',
-      itemId: props.itemId
+      itemId: itemId
     })
   ).data;
 
   const options = (
     await remote.sdk.newUserApi(getItemUpdateApi).getMetadataEditorInfo({
-      itemId: props.itemId
+      itemId: itemId
     })
   ).data;
 
@@ -527,5 +526,5 @@ function onPersonDel(index: number): void {
   metadata.value.People.splice(index, 1);
 }
 
-watchImmediate(() => props.itemId, getData);
+watchImmediate(() => itemId, getData);
 </script>

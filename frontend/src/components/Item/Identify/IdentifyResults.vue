@@ -37,7 +37,7 @@ import type {
 import { computed } from 'vue';
 import { getShapeFromItemType } from '@/utils/items';
 
-const props = defineProps<{
+const { items, itemType } = defineProps<{
   items: RemoteSearchResult[];
   itemType?: BaseItemKind;
 }>();
@@ -46,7 +46,7 @@ defineEmits<{
   select: [item: RemoteSearchResult];
 }>();
 
-const shape = computed(() => getShapeFromItemType(props.itemType));
+const shape = computed(() => getShapeFromItemType(itemType));
 
 /**
  * Generate card's subtitles

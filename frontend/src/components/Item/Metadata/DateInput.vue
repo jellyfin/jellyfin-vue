@@ -14,9 +14,9 @@
   </VTextField>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
+import { shallowRef } from 'vue';
 
-defineProps<{
+const { value, label } = defineProps<{
   value: string;
   label: string;
 }>();
@@ -25,7 +25,7 @@ defineEmits<{
   'update:date': [value: string];
 }>();
 
-const menu = ref(false);
+const menu = shallowRef(false);
 
 /*
  * Const handleChange = (value: string): void => {

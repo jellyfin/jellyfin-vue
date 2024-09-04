@@ -26,7 +26,7 @@ import type { BaseItemDto, BaseItemKind } from '@jellyfin/sdk/lib/generated-clie
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-const props = defineProps<{
+const { type } = defineProps<{
   type: BaseItemDto['CollectionType'];
 }>();
 
@@ -36,7 +36,7 @@ const model = defineModel<BaseItemKind | undefined>({ required: true });
 const { t } = useI18n();
 
 const items = computed<{ title: string; value: BaseItemKind }[]>(() => {
-  switch (props.type) {
+  switch (type) {
     case 'movies': {
       return [
         { title: t('movies'), value: 'Movie' },

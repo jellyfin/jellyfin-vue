@@ -14,18 +14,11 @@
 <script setup lang="ts">
 import { CardShapes } from '@/utils/items';
 
-withDefaults(
-  defineProps<{
-    boilerplate?: boolean;
-    text?: boolean;
-    cardShape?: CardShapes;
-  }>(),
-  {
-    boilerplate: false,
-    text: false,
-    cardShape: CardShapes.Portrait
-  }
-);
+const { boilerplate, text, cardShape = CardShapes.Portrait } = defineProps<{
+  boilerplate?: boolean;
+  text?: boolean;
+  cardShape?: CardShapes;
+}>();
 </script>
 
 <style scoped>

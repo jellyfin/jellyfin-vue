@@ -1,9 +1,9 @@
 <template>
   <component
-    :is="props.group ? TransitionGroup : Transition"
+    :is="group ? TransitionGroup : Transition"
     class="j-transition"
     v-bind="$attrs"
-    :name="prefersNoMotion || disabled || isSlow ? undefined : `j-transition-${props.name}`"
+    :name="prefersNoMotion || disabled || isSlow ? undefined : `j-transition-${name}`"
     @before-leave="leaving = true"
     @after-leave="onNoLeave"
     @leave-cancelled="onNoLeave">
@@ -30,7 +30,7 @@ interface Props {
 
 export type JTransitionProps = TransitionProps & Props;
 
-const props = withDefaults(defineProps<Props>(), { name: 'fade' });
+const { name = 'fade', group, disabled } = defineProps<Props>();
 const leaving = shallowRef(false);
 const onNoLeave = () => leaving.value = false;
 

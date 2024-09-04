@@ -7,9 +7,9 @@ interface Props {
   markdown?: boolean;
 }
 
-const JSafeHtml = (props: Props) => h(
-  createVNode(Static, undefined, sanitizeHtml(props.html, Boolean(props.markdown))),
-  { key: `${props.markdown}-${props.html}` }
+const JSafeHtml = ({ html, markdown = false }: Props) => h(
+  createVNode(Static, undefined, sanitizeHtml(html, markdown)),
+  { key: `${html}_${markdown}` }
 );
 
 JSafeHtml.inheritAttrs = false;

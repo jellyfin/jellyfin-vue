@@ -50,7 +50,7 @@ export interface DrawerItem {
   to: keyof RouteNamedMap;
 }
 
-defineProps<{
+const { order, drawerItems } = defineProps<{
   order?: number;
   drawerItems: DrawerItem[];
 }>();

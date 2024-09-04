@@ -17,7 +17,7 @@
       </VListItem>
     </div>
     <div
-      v-for="index in skeletonLength"
+      v-for="index in skeletonLength ?? 0"
       v-else
       :key="index"
       class="d-flex align-center mt-5 mb-5">
@@ -32,11 +32,8 @@
 import type { BaseItemPerson } from '@jellyfin/sdk/lib/generated-client';
 import { getItemDetailsLink } from '@/utils/items';
 
-withDefaults(
-  defineProps<{
-    items: BaseItemPerson[];
-    skeletonLength?: number;
-  }>(),
-  { skeletonLength: 0 }
-);
+const { items, skeletonLength } = defineProps<{
+  items: BaseItemPerson[];
+  skeletonLength?: number;
+}>();
 </script>

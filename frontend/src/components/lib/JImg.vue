@@ -8,8 +8,8 @@
       @load="onLoad"
       @error="onError">
     <JTransition
-      v-bind="isObj(props.transitionProps) ? props.transitionProps : undefined"
-      :disabled="!props.transitionProps">
+      v-bind="isObj(transitionProps) ? transitionProps : undefined"
+      :disabled="!transitionProps">
       <img
         v-if="shown"
         :src="src"
@@ -64,7 +64,7 @@ defineOptions({
   inheritAttrs: false
 });
 
-const props = withDefaults(defineProps<{
+const { src, alt, once, transitionProps = true } = defineProps<{
   src?: string;
   alt: string;
   /**
@@ -79,7 +79,7 @@ const props = withDefaults(defineProps<{
    * @default true
    */
   transitionProps?: JTransitionProps | boolean;
-}>(), { transitionProps: true });
+}>();
 
 const loading = shallowRef(true);
 const error = shallowRef(false);
@@ -89,7 +89,7 @@ const shown = computed(() => !loading.value && !error.value);
  * Event handler for the loadstart event
  */
 function onLoadStart(): void {
-  if (!props.once) {
+  if (!once) {
     loading.value = true;
   }
 }
@@ -110,7 +110,7 @@ function onError(): void {
   error.value = true;
 }
 
-watch(() => props.src, onLoadStart);
+watch(() => src, onLoadStart);
 </script>
 
 <style scoped>

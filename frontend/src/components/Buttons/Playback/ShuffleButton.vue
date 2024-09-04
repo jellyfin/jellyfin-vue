@@ -1,10 +1,10 @@
 <template>
   <VBtn
+    v-bind="$attrs"
     icon
-    :size="size"
     :color="playbackManager.isShuffling ? 'primary' : undefined"
     @click="playbackManager.toggleShuffle">
-    <VIcon :size="size">
+    <VIcon v-bind="$attrs">
       <IMdiShuffle />
     </VIcon>
   </VBtn>
@@ -12,6 +12,4 @@
 
 <script setup lang="ts">
 import { playbackManager } from '@/store/playback-manager';
-
-defineProps<{ size?: string }>();
 </script>

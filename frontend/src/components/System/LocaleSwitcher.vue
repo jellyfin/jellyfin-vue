@@ -32,10 +32,9 @@ import { useI18n } from 'vue-i18n';
 import { clientSettings } from '@/store/client-settings';
 import { getLocaleNativeName } from '@/utils/i18n';
 
-defineProps<{
+const { bottom, large, elevated } = defineProps<{
   bottom?: boolean;
   large?: boolean;
-  top?: boolean;
   elevated?: boolean;
 }>();
 

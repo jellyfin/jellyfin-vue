@@ -126,12 +126,12 @@ import { playbackManager } from '@/store/playback-manager';
 import { getItemDetailsLink } from '@/utils/items';
 import { formatTicks } from '@/utils/time';
 
-const props = defineProps<{
+const { item } = defineProps<{
   item: BaseItemDto;
 }>();
 
 const { data: tracks } = await useBaseItem(getItemsApi, 'getItems')(() => ({
-  parentId: props.item.Id,
+  parentId: item.Id,
   sortBy: ['SortName'],
   sortOrder: [SortOrder.Ascending]
 }));
@@ -149,13 +149,11 @@ function isPlaying(track: BaseItemDto): boolean {
  * Play all the tracks from an item
  */
 async function playTracks(track: BaseItemDto): Promise<void> {
-  if (tracks.value) {
-    await playbackManager.play({
-      item: props.item,
-      startFromIndex: tracks.value.indexOf(track),
-      initiator: props.item
-    });
-  }
+  await playbackManager.play({
+    item: item,
+    startFromIndex: tracks.value.indexOf(track),
+    initiator: item
+  });
 }
 </script>
 

@@ -17,16 +17,16 @@ import IMdiHelp from 'virtual:icons/mdi/help';
 import { computed } from 'vue';
 import { isBool } from '@/utils/validation';
 
-const props = defineProps<{
+const { name, value } = defineProps<{
   name: string;
   value?: string | number | boolean;
 }>();
 
 const icon = computed(() => {
-  if (isBool(props.value)) {
-    return props.value ? IMdiCheck : IMdiClose;
+  if (isBool(value)) {
+    return value ? IMdiCheck : IMdiClose;
   }
 
-  return props.value === 'undefined' ? IMdiHelp : undefined;
+  return value === 'undefined' ? IMdiHelp : undefined;
 });
 </script>

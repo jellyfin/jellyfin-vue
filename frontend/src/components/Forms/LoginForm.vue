@@ -77,7 +77,7 @@ import { fetchIndexPage } from '@/utils/items';
 import { remote } from '@/plugins/remote';
 import { getJSONConfig } from '@/utils/external-config';
 
-const props = defineProps<{ user?: UserDto }>();
+const { user } = defineProps<{ user?: UserDto }>();
 
 defineEmits<{
   change: [];
@@ -100,11 +100,11 @@ const rules = [
  * Login the user into the client
  */
 async function userLogin(): Promise<void> {
-  if (props.user) {
+  if (user) {
     /**
      * If we have a user from the public user selector, set it as login
      */
-    login.value.username = props.user.Name || '';
+    login.value.username = user.Name ?? '';
   }
 
   loading.value = true;

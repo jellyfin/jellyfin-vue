@@ -113,7 +113,7 @@ import {
 } from '@/utils/images';
 import { remote } from '@/plugins/remote';
 
-const props = defineProps<{ metadata: BaseItemDto }>();
+const { metadata } = defineProps<{ metadata: BaseItemDto }>();
 
 const images = ref<ImageInfo[]>([]);
 const dialog = ref(false);
@@ -136,13 +136,13 @@ const backdropImages = computed<ImageInfo[]>(() =>
  * Fetches image information for the item
  */
 async function getItemImageInfos(): Promise<void> {
-  if (!props.metadata.Id) {
+  if (!metadata.Id) {
     return;
   }
 
   images.value = (
     await remote.sdk.newUserApi(getImageApi).getItemImageInfos({
-      itemId: props.metadata.Id
+      itemId: metadata.Id
     })
   ).data;
 }
@@ -152,7 +152,7 @@ async function getItemImageInfos(): Promise<void> {
  */
 function imageFormat(imageInfo: ImageInfo): string | undefined {
   if (imageInfo.ImageType && imageInfo.ImageTag) {
-    return getImageInfo(props.metadata, {
+    return getImageInfo(metadata, {
       preferThumb: imageInfo.ImageType === ImageType.Thumb,
       preferBanner: imageInfo.ImageType === ImageType.Banner,
       preferLogo: imageInfo.ImageType === ImageType.Logo,
@@ -173,12 +173,12 @@ function onSearch(): void {
  * Removes an image from an item
  */
 async function onDelete(item: ImageInfo): Promise<void> {
-  if (!props.metadata.Id || !item.ImageType) {
+  if (!metadata.Id || !item.ImageType) {
     return;
   }
 
   await remote.sdk.newUserApi(getImageApi).deleteItemImage({
-    itemId: props.metadata.Id,
+    itemId: metadata.Id,
     imageType: item.ImageType,
     imageIndex: item.ImageIndex ?? undefined
   });
@@ -186,5 +186,5 @@ async function onDelete(item: ImageInfo): Promise<void> {
   await getItemImageInfos();
 }
 
-watchImmediate(() => props.metadata, getItemImageInfos);
+watchImmediate(() => metadata, getItemImageInfos);
 </script>
