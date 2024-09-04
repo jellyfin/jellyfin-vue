@@ -43,12 +43,12 @@
 <script setup lang="ts">
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import Sortable from 'sortablejs';
-import { onBeforeUnmount, shallowRef, watch } from 'vue';
+import { onBeforeUnmount, watch, useTemplateRef } from 'vue';
 import { isNumber } from '@/utils/validation';
 import { playbackManager } from '@/store/playback-manager';
 
 let sortable: Sortable | undefined;
-const container = shallowRef<HTMLSpanElement>();
+const container = useTemplateRef<HTMLSpanElement>('container');
 
 /**
  * Destroys the sortable instance

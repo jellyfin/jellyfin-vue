@@ -37,7 +37,8 @@ import {
   onBeforeUnmount,
   shallowRef,
   watch,
-  type StyleValue
+  type StyleValue,
+  useTemplateRef
 } from 'vue';
 import { wrap } from 'comlink';
 import {
@@ -118,8 +119,8 @@ const props = withDefaults(
 /**
  * == TEMPLATE REFS ==
  */
-const rootRef = shallowRef<HTMLElement>();
-const probeRef = shallowRef<HTMLElement>();
+const rootRef = useTemplateRef<HTMLElement>('rootRef');
+const probeRef = useTemplateRef<HTMLElement>('probeRef');
 
 /**
  * == STATE REFS ==

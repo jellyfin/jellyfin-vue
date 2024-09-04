@@ -9,7 +9,7 @@
     </div>
   </VMain>
   <AudioControls />
-  <PiPVideoPlayer
+  <MiniVideoPlayer
     v-if="
       playbackManager.isVideo
     " />
