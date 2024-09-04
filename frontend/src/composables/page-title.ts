@@ -1,5 +1,5 @@
-import { computed, onBeforeUnmount, onMounted, shallowRef, toRef, toValue } from 'vue';
-import { useTitle as _useTitle, watchImmediate, type ReadonlyRefOrGetter } from '@vueuse/core';
+import { computed, onBeforeUnmount, onMounted, shallowRef, toRef, toValue, type MaybeRefOrGetter } from 'vue';
+import { useTitle as _useTitle, watchImmediate } from '@vueuse/core';
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { isNil } from '@/utils/validation';
 
@@ -21,7 +21,7 @@ _useTitle(_fullTitle);
  *
  * Value will be set to default (undefined) when the component consuming this composable is unmounted.
  */
-export function usePageTitle(title?: ReadonlyRefOrGetter<Nullish<string>>) {
+export function usePageTitle(title?: MaybeRefOrGetter<Nullish<string>>) {
   onMounted(() => {
     if (!isNil(title)) {
       watchImmediate(toRef(title), val => _title.value = val ?? undefined);
@@ -36,6 +36,6 @@ export function usePageTitle(title?: ReadonlyRefOrGetter<Nullish<string>>) {
 /**
  * Same as useTitle, but is a shorthand for items only.
  */
-export function useItemPageTitle(item: ReadonlyRefOrGetter<Nullish<BaseItemDto>>) {
+export function useItemPageTitle(item: MaybeRefOrGetter<Nullish<BaseItemDto>>) {
   usePageTitle(() => toValue(item)?.Name);
 };
