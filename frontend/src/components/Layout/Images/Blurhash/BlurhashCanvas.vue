@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import { transfer } from 'comlink';
-import { shallowRef, watch } from 'vue';
+import { shallowRef, watch, useTemplateRef } from 'vue';
 import { blurhashDecoder, canvasDrawer } from '@/plugins/workers';
 import { BLURHASH_DEFAULT_HEIGHT, BLURHASH_DEFAULT_WIDTH, BLURHASH_DEFAULT_PUNCH } from '@/store';
 
@@ -26,7 +26,7 @@ const props = withDefaults(
 );
 
 const error = shallowRef(false);
-const canvas = shallowRef<HTMLCanvasElement>();
+const canvas = useTemplateRef<HTMLCanvasElement>('canvas');
 let offscreen: OffscreenCanvas | undefined;
 
 watch([props, canvas], async () => {

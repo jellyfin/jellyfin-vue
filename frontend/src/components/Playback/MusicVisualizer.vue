@@ -3,12 +3,12 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, shallowRef, watch } from 'vue';
+import { onBeforeUnmount, useTemplateRef, watch } from 'vue';
 import AudioMotionAnalyzer from 'audiomotion-analyzer';
 import { mediaWebAudio } from '@/store';
 
 let visualizerInstance: AudioMotionAnalyzer | undefined;
-const visualizerElement = shallowRef<HTMLDivElement>();
+const visualizerElement = useTemplateRef<HTMLDivElement>('visualizerElement');
 
 /**
  * Destroy the visualizer instance.
