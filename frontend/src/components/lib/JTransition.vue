@@ -3,14 +3,18 @@
     :is="props.group ? TransitionGroup : Transition"
     class="j-transition"
     v-bind="$attrs"
-    :name="prefersNoMotion || disabled || isSlow ? undefined : `j-transition-${props.name}`">
+    :name="prefersNoMotion || disabled || isSlow ? undefined : `j-transition-${props.name}`"
+    @before-leave="leaving = true"
+    @after-leave="onNoLeave"
+    @leave-cancelled="onNoLeave">
     <slot />
   </component>
 </template>
 
 <script setup lang="ts">
-import { Transition, TransitionGroup, type TransitionProps } from 'vue';
+import { Transition, TransitionGroup, type TransitionProps, shallowRef } from 'vue';
 import { prefersNoMotion, isSlow } from '@/store';
+import { usePausableEffect } from '@/composables/use-pausable-effect';
 
 interface Props {
   name?: 'fade' | 'rotated-zoom' | 'slide-y' | 'slide-y-reverse' | 'slide-x' | 'slide-x-reverse';
@@ -27,6 +31,10 @@ interface Props {
 export type JTransitionProps = TransitionProps & Props;
 
 const props = withDefaults(defineProps<Props>(), { name: 'fade' });
+const leaving = shallowRef(false);
+const onNoLeave = () => leaving.value = false;
+
+usePausableEffect(leaving);
 </script>
 
 <!-- TODO: Set scoped and remove .j-transition* prefix after: https://github.com/vuejs/core/issues/5148 -->
