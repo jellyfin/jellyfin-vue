@@ -76,7 +76,7 @@ export default defineConfig(({ mode }): UserConfig => {
       /**
        * See main.ts for an explanation of this target
        */
-      target: 'es2022',
+      target: 'esnext',
       /**
        * Disable chunk size warnings
        */
