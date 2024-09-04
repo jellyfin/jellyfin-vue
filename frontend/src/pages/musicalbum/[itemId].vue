@@ -61,7 +61,7 @@
               <VCol
                 :cols="12"
                 :sm="2"
-                class="px-0 text-truncate">
+                class="text-truncate px-0">
                 <label class="text--secondary">{{ $t('genres') }}</label>
               </VCol>
               <VCol

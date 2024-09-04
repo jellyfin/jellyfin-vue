@@ -42,7 +42,7 @@
                       playbackManager.currentlyPlayingType ===
                         BaseItemKind.Episode
                     ">
-                    <span class="mt-1 text-subtitle-1 text-truncate">
+                    <span class="text-subtitle-1 text-truncate mt-1">
                       {{ playbackManager.currentItem?.Name }}
                     </span>
                     <span class="text--secondary text-truncate text-subtitle-2">

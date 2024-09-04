@@ -87,7 +87,7 @@
               <VCol
                 :cols="12"
                 :sm="2"
-                class="mt-sm-3 py-sm-0 px-0 text-truncate">
+                class="px-0 text-truncate mt-sm-3 py-sm-0">
                 <label class="text--secondary">{{ $t('directing') }}</label>
               </VCol>
               <VCol
