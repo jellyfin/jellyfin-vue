@@ -67,17 +67,14 @@ import { apiStore } from '@/store/api';
 import { getItemDetailsLink } from '@/utils/items';
 import { useItemBackdrop } from '@/composables/backdrop';
 
-const props = withDefaults(
-  defineProps<{
-    items: BaseItemDto[];
-    pageBackdrop?: boolean;
-  }>(),
-  { pageBackdrop: false }
-);
+const { items, pageBackdrop } = defineProps<{
+  items: BaseItemDto[];
+  pageBackdrop?: boolean;
+}>();
 
 const currentIndex = shallowRef(0);
 
-useItemBackdrop(() => props.pageBackdrop ? props.items[currentIndex.value] : undefined);
+useItemBackdrop(() => pageBackdrop ? items[currentIndex.value] : undefined);
 
 /**
  * Get the related item passed from the parent component

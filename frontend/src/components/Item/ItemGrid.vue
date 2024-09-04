@@ -59,16 +59,11 @@
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { useResponsiveClasses } from '@/composables/use-responsive-classes';
 
-withDefaults(
-  defineProps<{
-    items: BaseItemDto[];
-    large?: boolean;
-    noVirtual?: boolean;
-  }>(),
-  {
-    noVirtual: false
-  }
-);
+const { items, large, noVirtual } = defineProps<{
+  items: BaseItemDto[];
+  large?: boolean;
+  noVirtual?: boolean;
+}>();
 </script>
 
 <style scoped>

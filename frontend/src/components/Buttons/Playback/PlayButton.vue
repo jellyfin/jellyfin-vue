@@ -46,29 +46,27 @@ import { playbackManager } from '@/store/playback-manager';
 import { canPlay, canResume } from '@/utils/items';
 import { ticksToMs } from '@/utils/time';
 
-const props = withDefaults(
-  defineProps<{
-    item: BaseItemDto;
-    iconOnly?: boolean;
-    fab?: boolean;
-    shuffle?: boolean;
-    videoTrackIndex?: number;
-    audioTrackIndex?: number;
-    subtitleTrackIndex?: number;
-    mediaSourceIndex?: number;
-    disabled?: boolean;
-  }>(),
-  {
-    iconOnly: false,
-    fab: false,
-    shuffle: false,
-    disabled: false,
-    videoTrackIndex: undefined,
-    audioTrackIndex: undefined,
-    subtitleTrackIndex: undefined,
-    mediaSourceIndex: undefined
-  }
-);
+const {
+  item,
+  iconOnly,
+  fab,
+  shuffle,
+  videoTrackIndex,
+  audioTrackIndex,
+  subtitleTrackIndex,
+  mediaSourceIndex,
+  disabled
+} = defineProps<{
+  item: BaseItemDto;
+  iconOnly?: boolean;
+  fab?: boolean;
+  shuffle?: boolean;
+  videoTrackIndex?: number;
+  audioTrackIndex?: number;
+  subtitleTrackIndex?: number;
+  mediaSourceIndex?: number;
+  disabled?: boolean;
+}>();
 
 const loading = ref(false);
 
@@ -76,33 +74,33 @@ const loading = ref(false);
 async function playOrResume(): Promise<void> {
   loading.value = true;
 
-  if (props.item && canResume(props.item)) {
+  if (canResume(item)) {
     await playbackManager.play({
-      item: props.item,
-      audioTrackIndex: props.audioTrackIndex,
-      subtitleTrackIndex: props.subtitleTrackIndex,
-      videoTrackIndex: props.videoTrackIndex,
-      mediaSourceIndex: props.mediaSourceIndex,
+      item: item,
+      audioTrackIndex: audioTrackIndex,
+      subtitleTrackIndex: subtitleTrackIndex,
+      videoTrackIndex: videoTrackIndex,
+      mediaSourceIndex: mediaSourceIndex,
       startFromTime:
-        ticksToMs(props.item.UserData?.PlaybackPositionTicks) / 1000
+        ticksToMs(item.UserData?.PlaybackPositionTicks) / 1000
     });
-  } else if (props.shuffle) {
+  } else if (shuffle) {
     // We force playback from the start when shuffling, since you wouldn't resume AND shuffle at the same time
     await playbackManager.play({
-      item: props.item,
-      audioTrackIndex: props.audioTrackIndex,
-      subtitleTrackIndex: props.subtitleTrackIndex,
-      videoTrackIndex: props.videoTrackIndex,
-      mediaSourceIndex: props.mediaSourceIndex,
+      item: item,
+      audioTrackIndex: audioTrackIndex,
+      subtitleTrackIndex: subtitleTrackIndex,
+      videoTrackIndex: videoTrackIndex,
+      mediaSourceIndex: mediaSourceIndex,
       startShuffled: true
     });
   } else {
     await playbackManager.play({
-      item: props.item,
-      audioTrackIndex: props.audioTrackIndex,
-      subtitleTrackIndex: props.subtitleTrackIndex,
-      videoTrackIndex: props.videoTrackIndex,
-      mediaSourceIndex: props.mediaSourceIndex
+      item: item,
+      audioTrackIndex: audioTrackIndex,
+      subtitleTrackIndex: subtitleTrackIndex,
+      videoTrackIndex: videoTrackIndex,
+      mediaSourceIndex: mediaSourceIndex
     });
   }
 

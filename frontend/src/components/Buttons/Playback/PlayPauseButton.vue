@@ -1,11 +1,11 @@
 <template>
   <VBtn
+    v-bind="$attrs"
     icon
-    :size="size"
     :loading="playbackManager.isBuffering"
     @click="playbackManager.playPause">
     <VIcon
-      :size="size"
+      v-bind="$attrs"
       :icon="playPauseIcon" />
   </VBtn>
 </template>
@@ -16,8 +16,6 @@ import IMdiPauseCircleOutline from 'virtual:icons/mdi/pause-circle-outline';
 import IMdiPlayCircleOutline from 'virtual:icons/mdi/play-circle-outline';
 import { computed } from 'vue';
 import { PlaybackStatus, playbackManager } from '@/store/playback-manager';
-
-defineProps<{ size?: string }>();
 
 const playPauseIcon = computed(() => {
   if (playbackManager.isPaused) {

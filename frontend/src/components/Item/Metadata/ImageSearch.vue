@@ -125,7 +125,7 @@ import { useI18n } from 'vue-i18n';
 import { getLocaleName } from '@/utils/i18n';
 import { remote } from '@/plugins/remote';
 
-const props = defineProps<{
+const { metadata, dialog } = defineProps<{
   metadata: BaseItemDto;
   dialog: boolean;
 }>();
@@ -205,13 +205,13 @@ const sources = computed(() =>
  * Returns a list of image providers for the current item
  */
 async function getRemoteImageProviders(): Promise<void> {
-  if (!props.metadata.Id) {
+  if (!metadata.Id) {
     return;
   }
 
   providers.value = (
     await remote.sdk.newUserApi(getRemoteImageApi).getRemoteImageProviders({
-      itemId: props.metadata.Id
+      itemId: metadata.Id
     })
   ).data;
 }
@@ -220,7 +220,7 @@ async function getRemoteImageProviders(): Promise<void> {
  * Fetches the image information for the currently selected item given the filters
  */
 async function getImages(): Promise<void> {
-  if (!props.metadata.Id) {
+  if (!metadata.Id) {
     return;
   }
 
@@ -228,7 +228,7 @@ async function getImages(): Promise<void> {
   images.value
     = (
       await remote.sdk.newUserApi(getRemoteImageApi).getRemoteImages({
-        itemId: props.metadata.Id,
+        itemId: metadata.Id,
         type: type.value,
         providerName: source.value ?? undefined,
         includeAllLanguages: allLanguages.value
@@ -242,13 +242,13 @@ async function getImages(): Promise<void> {
  * Handles downloading an image given the image info
  */
 async function onDownload(item: RemoteImageInfo): Promise<void> {
-  if (!item.Type || !item.Url || !props.metadata.Id) {
+  if (!item.Type || !item.Url || !metadata.Id) {
     return;
   }
 
   loading.value = true;
   await remote.sdk.newUserApi(getRemoteImageApi).downloadRemoteImage({
-    itemId: props.metadata.Id,
+    itemId: metadata.Id,
     type: item.Type,
     imageUrl: item.Url
   });
@@ -271,7 +271,7 @@ function reset(): void {
 
 watch([type, source, allLanguages], getImages);
 watch(
-  () => props.dialog,
+  () => dialog,
   async (dialog) => {
     if (dialog) {
       await getRemoteImageProviders();

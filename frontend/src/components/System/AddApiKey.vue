@@ -39,7 +39,7 @@ import { useDisplay } from 'vuetify';
 import { remote } from '@/plugins/remote';
 import { useSnackbar } from '@/composables/use-snackbar';
 
-defineProps<{ addingNewKey: boolean }>();
+const { addingNewKey } = defineProps<{ addingNewKey: boolean }>();
 
 const emit = defineEmits<{
   keyAdded: [];

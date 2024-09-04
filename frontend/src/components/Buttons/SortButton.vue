@@ -1,10 +1,9 @@
 <template>
   <VBtn
     icon
-    v-bind="props"
     :disabled="disabled"
-    @click="emit('change', model[0], !props.ascending)">
-    <VIcon v-if="props.ascending">
+    @click="emit('change', model[0], !ascending)">
+    <VIcon v-if="ascending">
       <IMdiSortAscending />
     </VIcon>
     <VIcon v-else>
@@ -26,7 +25,7 @@
         v-model:selected="model"
         :items="items"
         class="filter-content"
-        @update:selected="emit('change', model[0], props.ascending)" />
+        @update:selected="emit('change', model[0], ascending)" />
     </VMenu>
   </VBtn>
 </template>
@@ -35,10 +34,7 @@
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-const props = withDefaults(
-  defineProps<{ ascending: boolean; disabled?: boolean }>(),
-  { disabled: false }
-);
+const { ascending, disabled } = defineProps<{ ascending: boolean; disabled?: boolean }>();
 const emit = defineEmits<{
   change: [sortBy: string, ascendingOrder: boolean];
 }>();

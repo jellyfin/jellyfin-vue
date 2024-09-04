@@ -78,19 +78,16 @@ import { useI18n } from 'vue-i18n';
 import { getTotalEndsAtTime } from '@/utils/time';
 import { InitMode, playbackManager } from '@/store/playback-manager';
 
-const props = withDefaults(
-  defineProps<{
-    size?: number;
-    closeOnClick?: boolean;
-  }>(),
-  { size: 40, closeOnClick: false }
-);
+const { size = 40, closeOnClick = false } = defineProps<{
+  size?: number;
+  closeOnClick?: boolean;
+}>();
 
 const { t } = useI18n();
 
 const menuModel = ref(false);
-const listWidth = computed(() => `${props.size}vw`);
-const listHeight = computed(() => `${props.size}vh`);
+const listWidth = computed(() => `${size}vw`);
+const listHeight = computed(() => `${size}vh`);
 
 const sourceText = computed(() => {
   /**

@@ -1,10 +1,10 @@
 <template>
   <VBtn
+    v-bind="$attrs"
     icon
-    :size="props.size"
     :disabled="!playbackManager.nextItem"
     @click="playbackManager.setNextItem">
-    <VIcon :size="size">
+    <VIcon v-bind="$attrs">
       <IMdiSkipNext />
     </VIcon>
   </VBtn>
@@ -12,6 +12,4 @@
 
 <script setup lang="ts">
 import { playbackManager } from '@/store/playback-manager';
-
-const props = defineProps<{ size?: string }>();
 </script>

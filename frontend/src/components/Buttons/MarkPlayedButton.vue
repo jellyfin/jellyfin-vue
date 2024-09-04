@@ -16,7 +16,7 @@ import { computed, ref } from 'vue';
 import { canMarkWatched } from '@/utils/items';
 import { useApi } from '@/composables/apis';
 
-const props = defineProps<{
+const { item } = defineProps<{
   item: BaseItemDto;
 }>();
 
@@ -29,12 +29,12 @@ const methodToExecute = ref<'markPlayedItem' | 'markUnplayedItem' | undefined>()
  * to do manual modification here
  */
 const { loading } = await useApi(getPlaystateApi, methodToExecute, { skipCache: { request: true }, globalLoading: false })(() => ({
-  itemId: props.item.Id ?? ''
+  itemId: item.Id ?? ''
 }));
 
 const isPlayed = computed({
   get() {
-    return props.item.UserData?.Played;
+    return item.UserData?.Played;
   },
   set(newValue) {
     methodToExecute.value = newValue ? 'markPlayedItem' : 'markUnplayedItem';

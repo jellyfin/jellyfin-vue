@@ -3,7 +3,7 @@
     <JImg
       class="absolute-cover"
       :src="imageUrl"
-      :alt="props.item.Name ?? $t('unknown')"
+      :alt="item.Name ?? $t('unknown')"
       v-bind="$attrs">
       <template #placeholder>
         <BlurhashCanvas
@@ -34,22 +34,19 @@ import {
 import { computed } from 'vue';
 import { getBlurhash, getImageInfo } from '@/utils/images';
 
-const props = withDefaults(
-  defineProps<{
-    item: BaseItemDto | BaseItemPerson;
-    width?: number;
-    height?: number;
-    punch?: number;
-    type?: ImageType;
-  }>(),
-  { type: ImageType.Primary }
-);
+const { item, width, height, punch, type = ImageType.Primary } = defineProps<{
+  item: BaseItemDto | BaseItemPerson;
+  width?: number;
+  height?: number;
+  punch?: number;
+  type?: ImageType;
+}>();
 
-const imageUrl = computed(() => getImageInfo(props.item, {
-  preferThumb: props.type === ImageType.Thumb,
-  preferBanner: props.type === ImageType.Banner,
-  preferLogo: props.type === ImageType.Logo,
-  preferBackdrop: props.type === ImageType.Backdrop
+const imageUrl = computed(() => getImageInfo(item, {
+  preferThumb: type === ImageType.Thumb,
+  preferBanner: type === ImageType.Banner,
+  preferLogo: type === ImageType.Logo,
+  preferBackdrop: type === ImageType.Backdrop
 }).url);
-const hash = computed(() => getBlurhash(props.item, props.type));
+const hash = computed(() => getBlurhash(item, type));
 </script>

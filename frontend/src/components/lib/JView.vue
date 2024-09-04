@@ -14,7 +14,7 @@
  */
 import type { Component } from 'vue';
 
-defineProps<{
+const { comp } = defineProps<{
   comp: Component;
 }>();
 </script>

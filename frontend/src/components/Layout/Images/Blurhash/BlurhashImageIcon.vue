@@ -19,7 +19,7 @@ import type {
 } from '@jellyfin/sdk/lib/generated-client';
 import { getItemIcon } from '@/utils/items';
 
-defineProps<{ item: BaseItemDto | BaseItemPerson }>();
+const { item } = defineProps<{ item: BaseItemDto | BaseItemPerson }>();
 </script>
 
 <style scoped>

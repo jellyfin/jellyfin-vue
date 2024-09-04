@@ -193,7 +193,7 @@ export interface Filters {
   years: number[];
 }
 
-const props = defineProps<{
+const { item, disabled } = defineProps<{
   item: BaseItemDto;
   disabled?: boolean;
 }>();
@@ -216,8 +216,8 @@ const yearFilters = ref<number[]>([]);
 
 const isMovieOrTvShow = computed(
   () =>
-    props.item.CollectionType === 'movies'
-    || props.item.CollectionType === 'tvshows'
+    item.CollectionType === 'movies'
+    || item.CollectionType === 'tvshows'
 );
 
 const statusFilters = computed<{ label: string; name: ItemFilter }[]>(() => [
@@ -279,7 +279,7 @@ const typeFilters: { label: string; name: TypeFilters }[] = [
  * applying filters and sorting
  */
 async function refreshItems(): Promise<void> {
-  if (!props.item.Id || !props.item.Type) {
+  if (!item.Id || !item.Type) {
     return;
   }
 
@@ -287,8 +287,8 @@ async function refreshItems(): Promise<void> {
     const response = (
       await remote.sdk.newUserApi(getFilterApi).getQueryFiltersLegacy({
         userId: remote.auth.currentUserId,
-        parentId: props.item.Id,
-        includeItemTypes: [props.item.Type]
+        parentId: item.Id,
+        includeItemTypes: [item.Type]
       })
     ).data;
 
@@ -320,7 +320,7 @@ function emitFilterChange(): void {
     years: selectedYearFilters.value
   });
 }
-watch(() => props.item, refreshItems);
+watch(() => item, refreshItems);
 </script>
 
 <style scoped>

@@ -1,8 +1,8 @@
 <template>
   <VSelect
     v-model="trackIndex"
-    :clearable="$props.type === 'Subtitle'"
-    :placeholder="$props.type === 'Subtitle' ? t('disabled') : undefined"
+    :clearable="type === 'Subtitle'"
+    :placeholder="type === 'Subtitle' ? t('disabled') : undefined"
     density="comfortable"
     hide-details
     single-line
@@ -35,14 +35,11 @@ import { watchImmediate } from '@vueuse/core';
 import { getLocaleName } from '@/utils/i18n';
 import { upperFirst } from '@/utils/data-manipulation';
 
-const props = withDefaults(
-  defineProps<{
-    mediaStreams: MediaStream[];
-    type: string;
-    defaultStreamIndex?: number;
-  }>(),
-  { defaultStreamIndex: undefined }
-);
+const { mediaStreams, type, defaultStreamIndex } = defineProps<{
+  mediaStreams: MediaStream[];
+  type: string;
+  defaultStreamIndex?: number;
+}>();
 const emit = defineEmits<{
   input: [newIndex?: number];
 }>();
@@ -79,7 +76,7 @@ function getSurroundIcon(layout: string): typeof IMdiSurroundSound {
 function getTrackIcon(
   track: MediaStream
 ): typeof IMdiSurroundSound | undefined {
-  if (props.type === 'Audio' && track.ChannelLayout) {
+  if (type === 'Audio' && track.ChannelLayout) {
     return getSurroundIcon(track.ChannelLayout);
   }
 }
@@ -89,12 +86,12 @@ function getTrackIcon(
  * @returns Optional subtitle to use for the track line in the v-select menu
  */
 function getTrackSubtitle(track: MediaStream): string | undefined {
-  if ((props.type === 'Audio' || props.type === 'Subtitle') && track.Language) {
+  if ((type === 'Audio' || type === 'Subtitle') && track.Language) {
     return upperFirst(
       getLocaleName(track.Language, locale.value)
       ?? `${t('unknown')} (${track.Language})`
     );
-  } else if (props.type === 'Audio' || props.type === 'Subtitle') {
+  } else if (type === 'Audio' || type === 'Subtitle') {
     return t('undefined');
   }
 }
@@ -105,7 +102,7 @@ function getTrackSubtitle(track: MediaStream): string | undefined {
  * @returns List of objects prepared for Vuetify v-select with the strings to display as "text" and index number as "value".
  */
 const selectItems = computed(() =>
-  props.mediaStreams.map(value => ({
+  mediaStreams.map(value => ({
     icon: getTrackIcon(value),
     selection: value.DisplayTitle ?? '',
     subtitle: getTrackSubtitle(value),
@@ -118,13 +115,13 @@ const selectItems = computed(() =>
  * Default index to use (null if none because of V-Select empty value)
  */
 // eslint-disable-next-line unicorn/no-null
-const trackIndex = ref<number | null>(props.defaultStreamIndex ?? props.mediaStreams.find(track => track.IsDefault)?.Index ?? null);
+const trackIndex = ref<number | null>(defaultStreamIndex ?? mediaStreams.find(track => track.IsDefault)?.Index ?? null);
 
 /**
  * Check if Type is Video or Audio and trackIndex is null then set trackIndex as this.selectItems[0].value
  */
 if (
-  (props.type === 'Video' || props.type === 'Audio')
+  (type === 'Video' || type === 'Audio')
   && trackIndex.value === null
   && selectItems.value[0] !== undefined
 ) {
@@ -140,7 +137,7 @@ watchImmediate(
 );
 
 watch(
-  () => props.defaultStreamIndex,
+  () => defaultStreamIndex,
   (newValue) => {
     if (newValue !== trackIndex.value) {
       // eslint-disable-next-line unicorn/no-null

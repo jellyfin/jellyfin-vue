@@ -58,7 +58,7 @@
 import { type BaseItemDto, ItemFields } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
-import { ref, watch } from 'vue';
+import { ref, shallowRef, watch } from 'vue';
 import { getItemDetailsLink } from '@/utils/items';
 import { remote } from '@/plugins/remote';
 
@@ -73,8 +73,8 @@ interface TvShowItem {
   seasonEpisodes: Record<string, BaseItemDto[]>;
 }
 
-const props = defineProps<{ item: BaseItemDto }>();
-const currentTab = ref(0);
+const { item } = defineProps<{ item: BaseItemDto }>();
+const currentTab = shallowRef(0);
 const seasons = ref<BaseItemDto[] | null | undefined>([]);
 const seasonEpisodes = ref<TvShowItem['seasonEpisodes']>({});
 
@@ -82,14 +82,14 @@ const seasonEpisodes = ref<TvShowItem['seasonEpisodes']>({});
  * Fetch component data
  */
 async function fetch(): Promise<void> {
-  if (!props.item.Id) {
+  if (!item.Id) {
     return;
   }
 
   seasons.value = (
     await remote.sdk.newUserApi(getTvShowsApi).getSeasons({
       userId: remote.auth.currentUserId,
-      seriesId: props.item.Id
+      seriesId: item.Id
     })
   ).data.Items;
 
@@ -113,7 +113,7 @@ async function fetch(): Promise<void> {
 }
 
 await fetch();
-watch(props, async () => {
+watch(() => item, async () => {
   await fetch();
 });
 </script>

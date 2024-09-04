@@ -49,7 +49,7 @@
       <RouterLink
         class="link"
         :to="cardTitleLink">
-        {{ cardTitle }}
+        {{ cardTitle ?? '' }}
       </RouterLink>
     </template>
     <template
@@ -86,24 +86,23 @@ import {
 } from '@/utils/items';
 import { taskManager } from '@/store/task-manager';
 
-const props = defineProps<{
+const { item, shape, overlay, text, margin } = defineProps<{
   item: BaseItemDto;
   shape?: CardShapes;
   overlay?: boolean;
   text?: boolean;
   margin?: boolean;
-  link?: boolean;
 }>();
 
 const { t } = useI18n();
 const isMenuOpen = shallowRef(false);
 
-const cardType = computed(() => getShapeFromItemType(props.item.Type));
+const cardType = computed(() => getShapeFromItemType(item.Type));
 
 const cardTitle = computed(() =>
-  props.item.Type === BaseItemKind.Episode
-    ? props.item.SeriesName || ''
-    : props.item.Name || ''
+  item.Type === BaseItemKind.Episode
+    ? item.SeriesName
+    : item.Name
 );
 
 /**
@@ -112,37 +111,37 @@ const cardTitle = computed(() =>
  * or the album artist
  */
 const cardSubtitle = computed(() => {
-  switch (props.item.Type) {
+  switch (item.Type) {
     case BaseItemKind.Episode: {
-      return !isNil(props.item.ParentIndexNumber) && !isNil(props.item.IndexNumber) && !isNil(props.item.Name)
+      return !isNil(item.ParentIndexNumber) && !isNil(item.IndexNumber) && !isNil(item.Name)
         ? `${t('seasonEpisodeAbbrev', {
-        seasonNumber: props.item.ParentIndexNumber,
-        episodeNumber: props.item.IndexNumber
-      })} - ${props.item.Name}`
+        seasonNumber: item.ParentIndexNumber,
+        episodeNumber: item.IndexNumber
+      })} - ${item.Name}`
         : undefined;
     }
     case BaseItemKind.MusicAlbum: {
-      return props.item.AlbumArtist;
+      return item.AlbumArtist;
     }
     case BaseItemKind.Series: {
-      if (props.item.Status === 'Continuing' && !isNil(props.item.ProductionYear)) {
-        return `${props.item.ProductionYear} - ${t('present')}`;
-      } else if (props.item.EndDate) {
-        const endYear = new Date(props.item.EndDate).toLocaleString('en-us', {
+      if (item.Status === 'Continuing' && !isNil(item.ProductionYear)) {
+        return `${item.ProductionYear} - ${t('present')}`;
+      } else if (item.EndDate) {
+        const endYear = new Date(item.EndDate).toLocaleString('en-us', {
           year: 'numeric'
         });
 
-        if (String(props.item.ProductionYear) === endYear) {
-          return String(props.item.ProductionYear);
+        if (String(item.ProductionYear) === endYear) {
+          return String(item.ProductionYear);
         }
 
-        return isNil(props.item.ProductionYear) ? undefined : `${props.item.ProductionYear} - ${endYear}`;
+        return isNil(item.ProductionYear) ? undefined : `${item.ProductionYear} - ${endYear}`;
       }
 
       break;
     }
     default: {
-      return props.item.ProductionYear;
+      return item.ProductionYear;
     }
   }
 });
@@ -153,11 +152,11 @@ const cardSubtitle = computed(() => {
  * @returns A router link to the item or a related item
  */
 const cardTitleLink = computed(() => {
-  if (props.item.Type === BaseItemKind.Episode && props.item.SeriesId) {
-    return getItemDetailsLink({ Id: props.item.SeriesId }, 'Series');
+  if (item.Type === BaseItemKind.Episode && item.SeriesId) {
+    return getItemDetailsLink({ Id: item.SeriesId }, 'Series');
   }
 
-  return getItemDetailsLink(props.item);
+  return getItemDetailsLink(item);
 });
 
 /**
@@ -167,17 +166,17 @@ const cardTitleLink = computed(() => {
  */
 const cardSubtitleLink = computed(() => {
   if (
-    props.item.Type === BaseItemKind.MusicAlbum
-    && props.item.AlbumArtists?.length
+    item.Type === BaseItemKind.MusicAlbum
+    && item.AlbumArtists?.length
   ) {
-    return getItemDetailsLink(props.item.AlbumArtists[0], 'MusicArtist');
-  } else if (props.item.Type === BaseItemKind.Episode) {
-    return getItemDetailsLink(props.item);
+    return getItemDetailsLink(item.AlbumArtists[0], 'MusicArtist');
+  } else if (item.Type === BaseItemKind.Episode) {
+    return getItemDetailsLink(item);
   }
 });
 
 const progress = computed(
-  () => props.item.UserData?.PlayedPercentage ?? undefined
+  () => item.UserData?.PlayedPercentage ?? undefined
 );
 
 const getImageType = computed(() =>
@@ -188,6 +187,6 @@ const getImageType = computed(() =>
  * Gets the library update progress
  */
 const refreshProgress = computed(
-  () => taskManager.getTask(props.item.Id || '')?.progress
+  () => taskManager.getTask(item.Id || '')?.progress
 );
 </script>

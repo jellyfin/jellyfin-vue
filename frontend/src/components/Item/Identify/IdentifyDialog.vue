@@ -108,7 +108,7 @@ interface IdentifyField {
   value?: string | null;
 }
 
-const props = defineProps<{ item: BaseItemDto }>();
+const { item } = defineProps<{ item: BaseItemDto }>();
 
 const emit = defineEmits<{
   close: [];
@@ -126,7 +126,7 @@ const { t } = useI18n();
 
 const availableProviders = (
   await remote.sdk.newUserApi(getItemLookupApi).getExternalIdInfos({
-    itemId: props.item.Id ?? ''
+    itemId: item.Id ?? ''
   })
 ).data;
 
@@ -141,27 +141,27 @@ const searchFields = computed<IdentifyField[]>(() => {
       key: 'search-name',
       title: t('name'),
       type: 'string',
-      value: props.item.Name ?? ''
+      value: item.Name ?? ''
     }
   ];
 
-  if (!['BoxSet', 'Person'].includes(props.item.Type || '')) {
+  if (!['BoxSet', 'Person'].includes(item.Type || '')) {
     result.push({
       key: 'search-year',
       title: t('year'),
       type: 'number',
-      value: props.item.ProductionYear ? String(props.item.ProductionYear) : ''
+      value: item.ProductionYear ? String(item.ProductionYear) : ''
     });
   }
 
   /**
    * Providers that the item already has
    */
-  if (props.item.ProviderIds) {
-    for (const key in props.item.ProviderIds) {
+  if (item.ProviderIds) {
+    for (const key in item.ProviderIds) {
       result.push({
         key,
-        value: props.item.ProviderIds[key],
+        value: item.ProviderIds[key],
         title: `${key} ID`,
         type: 'string'
       });
@@ -171,7 +171,7 @@ const searchFields = computed<IdentifyField[]>(() => {
   /**
    * Providers available for the item type, but not assigned to it
    */
-  const populatedKeys = Object.keys(props.item.ProviderIds ?? {});
+  const populatedKeys = Object.keys(item.ProviderIds ?? {});
   const missingProviders = availableProviders
     .filter(p => !populatedKeys.includes(p.Key ?? ''))
     .map(p => p.Key)
@@ -207,13 +207,7 @@ const progress = computed(() => {
     }
   }
 });
-const itemPath = computed<string | undefined>(() => {
-  if (!props.item) {
-    return;
-  }
-
-  return props.item.Path ?? undefined;
-});
+const itemPath = computed<string | undefined>(() => item.Path ?? undefined);
 
 /**
  * Get the remote search results for an item and search params.
@@ -369,7 +363,7 @@ async function performSearch(): Promise<void> {
   isLoading.value = true;
 
   try {
-    const results = await getItemRemoteSearch(props.item, fieldsInputs.value);
+    const results = await getItemRemoteSearch(item, fieldsInputs.value);
 
     searchResults.value = isArray(results) ? results : [];
   } catch (error) {
@@ -391,7 +385,7 @@ async function applySelectedSearch(result: RemoteSearchResult): Promise<void> {
 
       try {
         await remote.sdk.newUserApi(getItemLookupApi).applySearchCriteria({
-          itemId: props.item.Id ?? '',
+          itemId: item.Id ?? '',
           remoteSearchResult: result,
           replaceAllImages: replaceImage.value
         });
@@ -407,7 +401,7 @@ async function applySelectedSearch(result: RemoteSearchResult): Promise<void> {
     {
       title: '',
       text: t('identifyConfirmChanges', {
-        originalItem: props.item.Name,
+        originalItem: item.Name,
         newIdentifiedItem: result.Name
       }),
       confirmText: t('confirm')

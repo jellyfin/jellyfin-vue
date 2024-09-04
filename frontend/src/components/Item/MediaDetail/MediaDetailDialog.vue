@@ -151,7 +151,7 @@ import { getLocaleName } from '@/utils/i18n';
 import { formatBitRate, formatFileSize } from '@/utils/items';
 import { isArray, isNil, isNumber } from '@/utils/validation';
 
-const props = defineProps<{ item: BaseItemDto; mediaSourceIndex?: number }>();
+const { item, mediaSourceIndex } = defineProps<{ item: BaseItemDto; mediaSourceIndex?: number }>();
 
 const emit = defineEmits<{
   close: [];
@@ -159,7 +159,7 @@ const emit = defineEmits<{
 
 const { t, locale } = useI18n();
 
-const model = ref(true);
+const model = defineModel<boolean>({ default: true });
 const currentTab = ref<string>();
 
 /**
@@ -171,10 +171,10 @@ function close(): void {
 }
 
 const mediaSources = computed<MediaSourceInfo[]>(() => {
-  return props.item.MediaSources ?? [];
+  return item.MediaSources ?? [];
 });
 
-const selectedMediaSourceIndex = ref<number>(props.mediaSourceIndex ?? 0);
+const selectedMediaSourceIndex = ref<number>(mediaSourceIndex ?? 0);
 const selectedMediaSource = computed<MediaSourceInfo | undefined>(
   () => mediaSources.value[selectedMediaSourceIndex.value] ?? undefined
 );
@@ -200,8 +200,8 @@ const selectedMediaStreamsImage = computed<MediaStream[]>(() =>
 );
 
 const displayName = computed(() => {
-  if ((props.item.MediaSources?.length ?? 0) > 1) {
-    const parent = props.item.Name;
+  if ((item.MediaSources?.length ?? 0) > 1) {
+    const parent = item.Name;
 
     if (parent) {
       return `${parent} - ${selectedMediaSource.value?.Name ?? ''}`;

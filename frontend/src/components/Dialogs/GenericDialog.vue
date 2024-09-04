@@ -12,7 +12,7 @@
       <slot name="loader" />
       <VToolbar color="transparent">
         <template
-          v-if="slots.toolbarPrepend"
+          v-if="$slots.toolbarPrepend"
           #prepend>
           <slot name="toolbarPrepend" />
         </template>
@@ -38,9 +38,9 @@
 
       <slot />
 
-      <VDivider v-if="slots.actions" />
+      <VDivider v-if="$slots.actions" />
       <VCardActions
-        v-if="slots.actions"
+        v-if="$slots.actions"
         class="d-flex align-center pa-3"
         :class="{
           'justify-end': !$vuetify.display.mobile,
@@ -53,10 +53,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, useSlots } from 'vue';
-
-const props = defineProps<{
-  modelValue: boolean;
+const { title, subtitle, loading } = defineProps<{
   title: string;
   subtitle?: string;
   loading?: boolean;
@@ -66,6 +63,5 @@ const emit = defineEmits<{
   close: [];
 }>();
 
-const slots = useSlots();
-const model = ref(props.modelValue);
+const model = defineModel<boolean>();
 </script>

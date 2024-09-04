@@ -39,15 +39,10 @@ import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { useI18n } from 'vue-i18n';
 import { getItemDetailsLink } from '@/utils/items';
 
-withDefaults(
-  defineProps<{
-    relatedItems: BaseItemDto[];
-    vertical?: boolean;
-  }>(),
-  {
-    vertical: false
-  }
-);
+const { relatedItems, vertical } = defineProps<{
+  relatedItems: BaseItemDto[];
+  vertical?: boolean;
+}>();
 
 const { t } = useI18n();
 </script>

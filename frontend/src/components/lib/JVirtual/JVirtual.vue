@@ -52,7 +52,7 @@ import {
 import type { IJVirtualWorker } from './j-virtual.worker';
 import JVirtualWorker from './j-virtual.worker?worker';
 import { vuetify } from '@/plugins/vuetify';
-import { isUndef } from '@/utils/validation';
+import { isNil, isUndef } from '@/utils/validation';
 
 /**
  * SHARED STATE ACROSS ALL THE COMPONENT INSTANCES
@@ -76,45 +76,38 @@ const displayHeight = refDebounced(display.height, 250);
  * - Type support for the data that must be passed to the virtualized component's instances
  * - Improved documentation and comments
  */
-const props = withDefaults(
-  defineProps<{
-    items: T[];
-    /**
-     * Element to use as a container for the virtualized elements
-     * @default 'div'
-     */
-    tag?: string;
-    /**
-     * Element to use for probing the rest of the elements
-     * @default 'div'
-     */
-    probeTag?: string;
-    /**
-     * Items to buffer in the view. By default, the same amount of items that fit on the screen
-     * are buffered above and below the visible area.
-     * @default 1
-     */
-    bufferMultiplier?: number;
-    /**
-     * Item index to scroll to. It just scrolls to the item, it doesn't lock screen to it.
-     */
-    scrollTo?: number;
-    /**
-     * Whether to use a grid layout
-     */
-    grid?: boolean;
-    /**
-     * Updates the content by using the index as key. This is useful in case the inner content
-     * doesn't react properly to changes in the data.
-     */
-    indexAsKey?: boolean;
-  }>(),
-  {
-    tag: 'div',
-    probeTag: 'div',
-    bufferMultiplier: 1.2
-  }
-);
+const { items, tag = 'div', probeTag = 'div', bufferMultiplier = 1.2, scrollTo, grid, indexAsKey } = defineProps<{
+  items: T[];
+  /**
+   * Element to use as a container for the virtualized elements
+   * @default 'div'
+   */
+  tag?: string;
+  /**
+   * Element to use for probing the rest of the elements
+   * @default 'div'
+   */
+  probeTag?: string;
+  /**
+   * Items to buffer in the view. By default, the same amount of items that fit on the screen
+   * are buffered above and below the visible area.
+   * @default 1
+   */
+  bufferMultiplier?: number;
+  /**
+   * Item index to scroll to. It just scrolls to the item, it doesn't lock screen to it.
+   */
+  scrollTo?: number;
+  /**
+   * Whether to use a grid layout
+   */
+  grid?: boolean;
+  /**
+   * Updates the content by using the index as key. This is useful in case the inner content
+   * doesn't react properly to changes in the data.
+   */
+  indexAsKey?: boolean;
+}>();
 
 /**
  * == TEMPLATE REFS ==
@@ -143,14 +136,14 @@ const cache = new Map<number, InternalItem[]>();
  * Vue to track for changes. If we don't do this, Vue will not track the dependencies
  * correctly.
  */
-const gridClass = computed(() => props.grid ? 'j-virtual-grid-area' : undefined);
-const itemsLength = computed(() => props.items.length);
+const gridClass = computed(() => grid ? 'j-virtual-grid-area' : undefined);
+const itemsLength = computed(() => items.length);
 const resizeMeasurement = computed(() => {
   return rootRef.value
     && itemRect.value
     && !isUndef(displayWidth.value)
     && !isUndef(displayHeight.value)
-    && !isUndef(props.items)
+    && !isUndef(items)
     ? getResizeMeasurement(rootRef.value, itemRect.value)
     : undefined;
 });
@@ -158,7 +151,7 @@ const contentSize = computed(() => {
   return resizeMeasurement.value
     && !isUndef(displayWidth.value)
     && !isUndef(displayHeight.value)
-    && !isUndef(props.items)
+    && !isUndef(items)
     ? getContentSize(resizeMeasurement.value, itemsLength.value)
     : undefined;
 });
@@ -175,9 +168,9 @@ const boundingClientRect = computed(() => {
   if (
     !isUndef(displayWidth.value)
     && !isUndef(displayHeight.value)
-    && !isUndef(rootRef.value)
+    && !isNil(rootRef.value)
     && !isUndef(scrollEvents.value)
-    && !isUndef(props.items)
+    && !isUndef(items)
   ) {
     return rootRef.value.getBoundingClientRect();
   }
@@ -192,7 +185,7 @@ const bufferMeta = computed(() => {
         top: topSpaceAroundWindow.value
       },
       resizeMeasurement.value,
-      props.bufferMultiplier
+      bufferMultiplier
     );
   }
 });
@@ -338,14 +331,14 @@ watch(
 /**
  * Tracks if the scroll must be pointed at an specific element
  */
-watch(() => props.scrollTo, () => {
+watch(() => scrollTo, () => {
   if (!isUndef(rootRef.value)
-    && !isUndef(props.scrollTo)
+    && !isUndef(scrollTo)
     && !isUndef(resizeMeasurement.value)
     && !isUndef(scrollParents.value)
-    && props.scrollTo > 0
-    && props.scrollTo < itemsLength.value) {
-    const { target, top, left } = getScrollToInfo(scrollParents.value, rootRef.value, resizeMeasurement.value, props.scrollTo);
+    && scrollTo > 0
+    && scrollTo < itemsLength.value) {
+    const { target, top, left } = getScrollToInfo(scrollParents.value, rootRef.value, resizeMeasurement.value, scrollTo);
 
     target.scrollTo({ top, left, behavior: 'smooth' });
   }

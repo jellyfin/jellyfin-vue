@@ -17,19 +17,17 @@ import { computed } from 'vue';
 import { useDisplay } from 'vuetify';
 import { useResponsiveClasses } from '@/composables/use-responsive-classes';
 
-const props = withDefaults(
-  defineProps<{
-    pages: number;
-    currentIndex: number;
-    /**
-     * In milliseconds
-     */
-    duration: number;
-    paused: boolean;
-    hoverable?: boolean;
-  }>(),
-  { hoverable: false }
-);
+const { pages, currentIndex, duration, paused, hoverable } = defineProps<{
+  pages: number;
+  currentIndex: number;
+  /**
+   * In milliseconds
+   */
+  duration: number;
+  paused: boolean;
+  hoverable?: boolean;
+}>();
+
 const emit = defineEmits<{
   animationEnd: [];
   progressClicked: [index: number];
@@ -43,23 +41,23 @@ const defaultBarClasses = Object.freeze([
   'align-center',
   'justify-center'
 ]);
-const expand = computed(() => props.hoverable && !display.mobile.value);
-const animDuration = computed(() => (props.duration / 1000).toString() + 's');
+const expand = computed(() => hoverable && !display.mobile.value);
+const animDuration = computed(() => (duration / 1000).toString() + 's');
 const barClasses = computed(() =>
-  Array.from({ length: props.pages }).map((_, i) => {
+  Array.from({ length: pages }).map((_, i) => {
     const classes = [...defaultBarClasses];
 
     if (expand.value) {
       classes.push('expand');
     }
 
-    if (i === props.currentIndex) {
+    if (i === currentIndex) {
       classes.push('active');
 
-      if (props.paused) {
+      if (paused) {
         classes.push('paused');
       }
-    } else if (i < props.currentIndex) {
+    } else if (i < currentIndex) {
       classes.push('passed');
     }
 

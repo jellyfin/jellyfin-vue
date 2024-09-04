@@ -41,43 +41,43 @@ import { type BaseItemDto, BaseItemKind } from '@jellyfin/sdk/lib/generated-clie
 import { getLogo } from '@/utils/images';
 import { getItemDetailsLink } from '@/utils/items';
 
-const props = defineProps<{ item: BaseItemDto }>();
+const { item } = defineProps<{ item: BaseItemDto }>();
 
-const logo = computed(() => getLogo(props.item));
-const itemLink = computed(() => getItemDetailsLink(props.item));
+const logo = computed(() => getLogo(item));
+const itemLink = computed(() => getItemDetailsLink(item));
 const titleString = computed(() => {
-  if (props.item.Type === BaseItemKind.MusicAlbum && props.item.AlbumArtist) {
-    return props.item.AlbumArtist;
+  if (item.Type === BaseItemKind.MusicAlbum && item.AlbumArtist) {
+    return item.AlbumArtist;
   } else if (
-    props.item.Type === BaseItemKind.Episode
-    && props.item.SeriesName
+    item.Type === BaseItemKind.Episode
+    && item.SeriesName
   ) {
-    return props.item.SeriesName;
+    return item.SeriesName;
   } else {
-    return props.item.Name;
+    return item.Name;
   }
 });
 
 const logoLink = computed(() => {
   if (
-    props.item.Type === BaseItemKind.MusicAlbum
-    && props.item.AlbumArtists?.length
+    item.Type === BaseItemKind.MusicAlbum
+    && item.AlbumArtists?.length
   ) {
     return getItemDetailsLink(
-      props.item.AlbumArtists[0],
+      item.AlbumArtists[0],
       BaseItemKind.MusicArtist
     );
-  } else if (props.item.Type === BaseItemKind.Episode && props.item.SeriesId) {
-    return getItemDetailsLink({ Id: props.item.SeriesId }, BaseItemKind.Series);
+  } else if (item.Type === BaseItemKind.Episode && item.SeriesId) {
+    return getItemDetailsLink({ Id: item.SeriesId }, BaseItemKind.Series);
   }
 });
 
 const subtitle = computed(() => {
   if (
-    props.item.Type === BaseItemKind.MusicAlbum
-    || props.item.Type === BaseItemKind.Episode
+    item.Type === BaseItemKind.MusicAlbum
+    || item.Type === BaseItemKind.Episode
   ) {
-    return props.item.Name;
+    return item.Name;
   }
 });
 </script>
