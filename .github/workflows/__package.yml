@@ -78,7 +78,7 @@ jobs:
         run: npm run build
 
       - name: Create provenance attestation 🔏
-        uses: actions/attest-build-provenance@v1.4.2
+        uses: actions/attest-build-provenance@v1.4.3
         continue-on-error: true
         with:
           subject-path: ${{ env.ARTIFACTS_PATH }}
@@ -199,7 +199,7 @@ jobs:
           path: docker_image.tar
 
       - name: Create provenance attestation 🔏
-        uses: actions/attest-build-provenance@v1.4.2
+        uses: actions/attest-build-provenance@v1.4.3
         continue-on-error: true
         with:
           subject-path: docker_image.tar
@@ -230,7 +230,7 @@ jobs:
           docker cp $(docker create --name jf $(docker images --filter=reference='${{ env.REGISTRY_IMAGE }}' -q | head -n 1)):/usr/share/nginx/html/ ./dist
 
       - name: Create provenance attestation 🔏
-        uses: actions/attest-build-provenance@v1.4.2
+        uses: actions/attest-build-provenance@v1.4.3
         continue-on-error: true
         with:
           subject-path: dist
@@ -302,7 +302,7 @@ jobs:
             ${{ needs.docker_inputs.outputs.tags }}
 
       - name: Remove cache artifacts 🗑️
-        uses: geekyeggo/delete-artifact@v5.0.0
+        uses: geekyeggo/delete-artifact@v5.1.0
         with:
           name: |
             buildx-*
