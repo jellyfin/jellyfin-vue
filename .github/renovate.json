@@ -30,16 +30,11 @@
       "groupSlug": "ci-deps"
     },
     {
-      "matchManagers": [
-        "cargo"
-      ],
-      "matchUpdateTypes": [
-        "patch",
-        "minor",
-        "major"
-      ],
-      "groupName": "cargo dependencies",
-      "groupSlug": "cargo"
+      "description": "Group all Tauri dependencies",
+      "matchFileNames": ["packaging/tauri/**"],
+      "separateMajorMinor": false,
+      "groupName": "Tauri dependencies",
+      "groupSlug": "tauri"
     },
     {
       "matchUpdateTypes": [
