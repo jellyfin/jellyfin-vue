@@ -28,15 +28,15 @@ jobs:
           head-ref: ${{ github.event.pull_request.head.sha || github.ref }}
 
   quality:
-    name: Check ${{ matrix.command }} 🕵️‍♂️
+    name: Run ${{ matrix.command }} 🕵️‍♂️
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         command:
           - lint
-          - typecheck
-          - analyze
+          - check:types
+          - analyze:cycles
     defaults:
       run:
         working-directory: frontend
