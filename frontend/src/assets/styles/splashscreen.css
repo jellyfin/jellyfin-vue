@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background-color: var(--j-background-color);
+  background-color: var(--j-color-background);
 }
 
 .j-splash > img {

@@ -3,7 +3,7 @@
     :is="group ? TransitionGroup : Transition"
     class="j-transition"
     v-bind="$attrs"
-    :name="prefersNoMotion || disabled || isSlow ? undefined : `j-transition-${name}`"
+    :name="forcedDisable || disabled ? undefined : `j-transition-${name}`"
     @before-leave="leaving = true"
     @after-leave="onNoLeave"
     @leave-cancelled="onNoLeave">
@@ -11,8 +11,8 @@
   </component>
 </template>
 
-<script setup lang="ts">
-import { Transition, TransitionGroup, type TransitionProps, shallowRef } from 'vue';
+<script lang="ts">
+import { Transition, TransitionGroup, type TransitionProps, shallowRef, computed } from 'vue';
 import { prefersNoMotion, isSlow } from '@/store';
 import { usePausableEffect } from '@/composables/use-pausable-effect';
 
@@ -29,7 +29,10 @@ interface Props {
 }
 
 export type JTransitionProps = TransitionProps & Props;
+const forcedDisable = computed(() => prefersNoMotion.value || isSlow.value);
+</script>
 
+<script setup lang="ts">
 const { name = 'fade', group, disabled } = defineProps<Props>();
 const leaving = shallowRef(false);
 const onNoLeave = () => leaving.value = false;

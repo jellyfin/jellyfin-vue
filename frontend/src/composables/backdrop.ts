@@ -6,7 +6,7 @@ import { getBlurhash } from '@/utils/images';
 /**
  * Same as useBackdrop, but is a shorthand for items only.
  */
-export function useItemBackdrop(item: MaybeRefOrGetter<Nullish<BaseItemDto>>, ...args: ExcludeFromTuple<Parameters<typeof useBackdrop>, 0>) {
+export function useItemBackdrop(item: MaybeRefOrGetter<Nullish<BaseItemDto>>, ...args: Tail<Parameters<typeof useBackdrop>>) {
   useBackdrop(() => getBlurhash(toValue(item) ?? {}, ImageType.Primary), ...args);
 }
 
