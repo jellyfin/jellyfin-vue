@@ -31,7 +31,7 @@ export function isStr(value: unknown): value is string {
 /**
  * Check if the given value is a funcion
  */
-export function isFunc<T extends (...args: unknown[]) => unknown>(value: unknown): value is T {
+export function isFunc(value: unknown): value is (...args: unknown[]) => unknown {
   return typeof value === 'function';
 }
 
@@ -82,7 +82,7 @@ export function isArray(object: unknown): object is unknown[] {
  *
  * @type TypeScript Decorator
  */
-export function sealed<T extends new(...args: unknown[]) => unknown>(constructor: T): void {
+export function sealed(constructor: new (...args: never[]) => object): void {
   Object.seal(constructor);
   Object.seal(constructor.prototype);
 }

@@ -35,7 +35,7 @@ import playbackProfile from '@/utils/playback-profiles';
 import { msToTicks } from '@/utils/time';
 import { mediaControls, mediaElementRef } from '@/store';
 import { CommonStore } from '@/store/super/common-store';
-import { genericWorker } from '@/plugins/workers';
+import { shuffle } from '@/utils/data-manipulation';
 
 /**
  * == INTERFACES AND TYPES ==
@@ -173,7 +173,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    * Get reactive BaseItemDto's objects of the queue
    */
   public get queue(): BaseItemDto[] {
-    return apiStore.getItemsById(this._state.queue) as BaseItemDto[] ?? [];
+    return apiStore.getItemsById(this._state.queue) as BaseItemDto[];
   }
 
   /**
@@ -776,7 +776,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
         this._state.originalQueue = [];
         this._state.isShuffling = false;
       } else {
-        const queue = await genericWorker.shuffle(toRaw(this._state.queue));
+        const queue = await shuffle(this._state.queue);
 
         this._state.originalQueue = this._state.queue;
 
