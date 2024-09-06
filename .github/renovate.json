@@ -30,8 +30,9 @@
       "groupSlug": "ci-deps"
     },
     {
-      "description": "Group all Tauri dependencies",
-      "matchFileNames": ["packaging/tauri/**"],
+      "matchFileNames": [
+        "packaging/tauri/**"
+      ],
       "separateMajorMinor": false,
       "groupName": "Tauri dependencies",
       "groupSlug": "tauri"
@@ -47,7 +48,6 @@
   "dependencyDashboard": true,
   "prConcurrentLimit": 0,
   "prHourlyLimit": 0,
-  "transitiveRemediation": true,
   "osvVulnerabilityAlerts": true,
   "vulnerabilityAlerts": {
     "enabled": true,
@@ -73,11 +73,8 @@
   ],
   "rebaseWhen": "behind-base-branch",
   "rangeStrategy": "pin",
-  "lockFileMaintenance": {
-    "enabled": true,
-    "schedule": [
-      "every month"
-    ]
+    "lockFileMaintenance": {
+    "enabled": true
   },
   "assignees": [
     "ferferga",
@@ -86,5 +83,8 @@
   "reviewers": [
     "ferferga",
     "ThibaultNocchi"
+  ],
+  "extends": [
+    "mergeConfidence:age-confidence-badges"
   ]
 }
