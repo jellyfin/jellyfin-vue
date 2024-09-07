@@ -8,6 +8,7 @@ import { remote } from '@/plugins/remote';
 import { vuetify } from '@/plugins/vuetify';
 import { sealed } from '@/utils/validation';
 import { SyncedStore } from '@/store/super/synced-store';
+import type { TypographyChoices } from '@/store';
 
 /**
  * == INTERFACES AND TYPES ==
@@ -15,6 +16,7 @@ import { SyncedStore } from '@/store/super/synced-store';
  */
 
 export interface ClientSettingsState {
+  typography: TypographyChoices;
   darkMode: 'auto' | boolean;
   locale: string;
 }
@@ -42,6 +44,14 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState> {
 
   public get locale(): string {
     return this._state.locale;
+  }
+
+  public get typography() {
+    return this._state.typography;
+  }
+
+  public set typography(newVal: ClientSettingsState['typography']) {
+    this._state.typography = newVal;
   }
 
   public set darkMode(newVal: 'auto' | boolean) {
@@ -72,6 +82,7 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState> {
 
   public constructor() {
     super('clientSettings', {
+      typography: 'default',
       darkMode: 'auto',
       locale: 'auto'
     }, 'localStorage');

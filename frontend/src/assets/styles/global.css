@@ -1,5 +1,5 @@
 * {
-  font-family: 'Figtree Variable', sans-serif, system-ui !important;
+  font-family: var(--j-font-family), sans-serif, system-ui !important;
 }
 
 html {

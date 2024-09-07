@@ -110,21 +110,19 @@ export abstract class SyncedStore<T extends object> extends CommonStore<T> {
       try {
         const data = await this._fetchState();
 
-        if (data) {
-          for (const watcher of this._pausableWatchers) {
-            watcher.pause();
-          }
+        for (const watcher of this._pausableWatchers) {
+          watcher.pause();
+        }
 
-          const newState = {
-            ...toRaw(this._state),
-            ...data
-          };
+        const newState = {
+          ...toRaw(this._state),
+          ...data
+        };
 
-          Object.assign(this._state, newState);
+        Object.assign(this._state, newState);
 
-          for (const watcher of this._pausableWatchers) {
-            watcher.resume();
-          }
+        for (const watcher of this._pausableWatchers) {
+          watcher.resume();
         }
       } catch {
         useSnackbar(i18n.t('failedSyncingUserSettings'), 'error');
@@ -144,12 +142,12 @@ export abstract class SyncedStore<T extends object> extends CommonStore<T> {
     if (keys) {
       for (const key of keys) {
         this._pausableWatchers.push(
-          watchPausable(() => this._state[key], this._updateState)
+          watchPausable(() => this._state[key], this._updateState, { deep: true })
         );
       }
     } else {
       this._pausableWatchers.push(
-        watchPausable(this._state, this._updateState)
+        watchPausable(this._state, this._updateState, { deep: true })
       );
     }
 

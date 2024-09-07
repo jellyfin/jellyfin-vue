@@ -2,13 +2,22 @@ import { watch } from 'vue';
 import { remote } from '@/plugins/remote';
 import { sealed } from '@/utils/validation';
 import { SyncedStore } from '@/store/super/synced-store';
+import type { TypographyChoices } from '@/store';
 
 /**
  * == INTERFACES AND TYPES ==
  */
 
 export interface SubtitleSettingsState {
-  fontFamily: string;
+  /**
+   * default: Default application typography.
+   *
+   * system: System typography
+   *
+   * auto: Selects the current selected typography for the application
+   * @default: auto
+   */
+  fontFamily: 'auto' | TypographyChoices;
   fontSize: number;
   positionFromBottom: number;
   backdrop: boolean;
