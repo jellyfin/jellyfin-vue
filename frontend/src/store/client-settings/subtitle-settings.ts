@@ -10,6 +10,11 @@ import type { TypographyChoices } from '@/store';
 
 export interface SubtitleSettingsState {
   /**
+   * Whether the customization of the subtitles is enabled or not
+   * @default: false
+   */
+  enabled: boolean;
+  /**
    * default: Default application typography.
    *
    * system: System typography
@@ -30,6 +35,7 @@ class SubtitleSettingsStore extends SyncedStore<SubtitleSettingsState> {
 
   public constructor() {
     super('subtitleSettings', {
+      enabled: false,
       fontFamily: 'auto',
       fontSize: 1.5,
       positionFromBottom: 10,

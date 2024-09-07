@@ -1,9 +1,6 @@
 <template>
   <div
-    class="uno-absolute uno-bottom-0 uno-left-0 uno-w-full uno-text-center"
-    :label="playerElement.currentExternalSubtitleTrack?.label"
-    :srclang="playerElement.currentExternalSubtitleTrack?.srcLang"
-    :src="playerElement.currentExternalSubtitleTrack?.src">
+    class="uno-absolute uno-bottom-0 uno-left-0 uno-w-full uno-text-center">
     <span
       class="uno-inline-block uno-pb-10px uno-color-white"
       :class="{ 'stroked': subtitleSettings.state.stroke }"
