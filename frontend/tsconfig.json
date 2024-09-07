@@ -20,7 +20,6 @@
     "verbatimModuleSyntax": true,
     "incremental": true,
     "tsBuildInfoFile": "../node_modules/.cache/tsconfig.tsbuildinfo",
-    "allowImportingTsExtensions": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
