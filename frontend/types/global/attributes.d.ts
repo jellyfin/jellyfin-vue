@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/consistent-indexed-object-style */
 
-declare module '@vue/runtime-core' {
+declare module 'vue' {
   export interface AllowedComponentProps {
     [key: `data${string}`]: string;
   }
@@ -10,7 +10,7 @@ declare module '@vue/runtime-core' {
     [key: `data${string}`]: string;
   }
 }
-declare module '@vue/runtime-dom' {
+declare module 'vue' {
   export interface HTMLAttributes {
     // Allow any data-* attr on HTML elements
     [key: `data${string}`]: string;

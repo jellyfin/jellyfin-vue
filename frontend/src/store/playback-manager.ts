@@ -22,7 +22,7 @@ import { getPlaystateApi } from '@jellyfin/sdk/lib/utils/api/playstate-api';
 import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
 import { useEventListener, watchThrottled } from '@vueuse/core';
 import { v4 } from 'uuid';
-import { toRaw, watch, watchEffect } from 'vue';
+import { watch, watchEffect } from 'vue';
 import { isNil, sealed } from '@/utils/validation';
 import { useBaseItem } from '@/composables/apis';
 import { useSnackbar } from '@/composables/use-snackbar';
