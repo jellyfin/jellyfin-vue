@@ -5,26 +5,32 @@
     :srclang="playerElement.currentExternalSubtitleTrack?.srcLang"
     :src="playerElement.currentExternalSubtitleTrack?.src">
     <span
-      class="uno-inline-block"
+      class="uno-inline-block uno-pb-10px uno-color-white"
+      :class="{ 'stroked': subtitleSettings.state.stroke }"
       :style="subtitleStyle">
+      <template v-if="preview">
+        {{ $t('subtitlePreviewText') }}
+      </template>
       <JSafeHtml
-        v-if="currentSubtitle !== undefined"
+        v-else-if="currentSubtitle !== undefined"
         :html="currentSubtitle.text" />
-      {{ previewText }}
     </span>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import { subtitleSettings } from '@/store/client-settings';
-import { mediaControls } from '@/store';
+import { computed, type StyleValue } from 'vue';
+import { subtitleSettings } from '@/store/client-settings/subtitle-settings';
+import { DEFAULT_TYPOGRAPHY, mediaControls } from '@/store';
 import { playerElement } from '@/store/player-element';
 import { isNil } from '@/utils/validation';
 import type { ParsedSubtitleTrack } from '@/utils/subtitles';
 
-defineProps<{
-  previewText?: string;
+const { preview } = defineProps<{
+  /**
+   * Whether the subtitle track is in preview mode.
+   */
+  preview?: boolean;
 }>();
 
 /**
@@ -67,29 +73,43 @@ const currentSubtitle = computed(() =>
     ? findCurrentSubtitle(playerElement.currentExternalSubtitleTrack.parsed, mediaControls.currentTime.value)
     : undefined
 );
+
+const fontFamily = computed(() => {
+  if (subtitleSettings.state.fontFamily === 'default') {
+    return DEFAULT_TYPOGRAPHY;
+  } else if (subtitleSettings.state.fontFamily === 'system') {
+    return 'system-ui';
+  } else if (subtitleSettings.state.fontFamily !== 'auto') {
+    return subtitleSettings.state.fontFamily;
+  }
+});
+
 /**
  * Computed style for subtitle text element
  * reactive to client subtitle appearance settings
  */
-const subtitleStyle = computed(() => {
-  const subtitleAppearance = subtitleSettings.subtitleAppearance;
+const subtitleStyle = computed<StyleValue>(() => {
+  const subtitleAppearance = subtitleSettings.state;
 
   return {
-    fontFamily: `${subtitleAppearance.fontFamily} !important`,
     fontSize: `${subtitleAppearance.fontSize}em`,
     marginBottom: `${subtitleAppearance.positionFromBottom}vh`,
     backgroundColor: subtitleAppearance.backdrop ? 'rgba(0, 0, 0, 0.5)' : 'transparent',
-    padding: '10px',
-    color: 'white',
     /**
-     * Unwrap stroke style if stroke is enabled
+     * Unwrap font family and stroke style if stroke is enabled
      */
-    ...(subtitleAppearance.stroke && {
-      TextStrokeColor: 'black',
-      TextStrokeWidth: '7px',
-      textShadow: '2px 2px 15px black',
-      paintOrder: 'stroke fill'
+    ...(fontFamily.value && {
+      fontFamily: `${fontFamily.value} !important`
     })
   };
 });
 </script>
+
+<style scoped>
+.stroked {
+  --webkit-text-stroke-color: black;
+  --webkit-text-stroke-width: 7px;
+  text-shadow: 2px 2px 15px black;
+  paint-order: stroke fill;
+}
+</style>

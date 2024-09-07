@@ -1,48 +1,45 @@
 <template>
   <SettingsPage>
     <template #title>
-      {{ t('subtitles') }}
+      {{ $t('subtitles') }}
     </template>
 
     <template #content>
       <VCol
         md="6"
-        class="pt-0 pb-4">
+        class="uno-pb-4 uno-pt-0">
         <FontSelector
-          v-model="subtitleSettings.subtitleAppearance.fontFamily"
+          v-model="subtitleSettings.state.fontFamily"
           :label="$t('subtitleFont')" />
 
         <VSlider
-          v-model="subtitleSettings.subtitleAppearance.fontSize"
+          v-model="subtitleSettings.state.fontSize"
           :label="$t('fontSize')"
           :min="1"
           :max="4.5"
           :step="0.1" />
 
         <VSlider
-          v-model="subtitleSettings.subtitleAppearance.positionFromBottom"
+          v-model="subtitleSettings.state.positionFromBottom"
           :label="$t('positionFromBottom')"
           :min="0"
           :max="30"
           :step="1" />
 
         <VCheckbox
-          v-model="subtitleSettings.subtitleAppearance.backdrop"
+          v-model="subtitleSettings.state.backdrop"
           :label="$t('backdrop')" />
 
         <VCheckbox
-          v-model="subtitleSettings.subtitleAppearance.stroke"
+          v-model="subtitleSettings.state.stroke"
           :label="$t('stroke')" />
 
-        <SubtitleTrack :preview-text="$t('subtitlePreviewText')" />
+        <SubtitleTrack preview />
       </VCol>
     </template>
   </SettingsPage>
 </template>
 
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n';
-import { subtitleSettings } from '@/store/client-settings';
-
-const { t } = useI18n();
+import { subtitleSettings } from '@/store/client-settings/subtitle-settings';
 </script>

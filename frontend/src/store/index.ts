@@ -10,6 +10,16 @@ import { isNil } from '@/utils/validation';
  * efficient to reuse those, both in components and TS files.
  */
 
+export const DEFAULT_TYPOGRAPHY = 'Figtree Variable';
+/**
+ * Type for the different typography choices across the application
+ *
+ * default: Default application typography.
+ *
+ * system: System typography
+ */
+export type TypographyChoices = 'default' | 'system' | (string & {});
+
 /**
  * == BLURHASH DEFAULTS ==
  * By default, 20x20 pixels with a punch of 1 is returned.
