@@ -1,6 +1,6 @@
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 import Virtual from '@rollup/plugin-virtual';
-import VueMacros from 'unplugin-vue-macros/vite';
+import VueDevTools from 'vite-plugin-vue-devtools';
 import Vue from '@vitejs/plugin-vue';
 import browserslist from 'browserslist';
 import { browserslistToTargets } from 'lightningcss';
@@ -31,15 +31,11 @@ export default defineConfig({
       importMode: 'sync',
       routeBlockLang: 'yaml'
     }),
-    VueMacros({
-      plugins: {
-        vue: Vue({
-          template: {
-            transformAssetUrls: {
-              img: []
-            }
-          }
-        })
+    Vue({
+      template: {
+        transformAssetUrls: {
+          img: []
+        }
       }
     }),
     // This plugin allows to autoimport Vue components
@@ -70,7 +66,8 @@ export default defineConfig({
       forceStringify: true,
       include: localeFilesFolder
     }),
-    UnoCSS()
+    UnoCSS(),
+    VueDevTools()
   ],
   build: {
     /**

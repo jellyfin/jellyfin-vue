@@ -86,9 +86,9 @@
     "unocss": "0.62.3",
     "unplugin-icons": "0.19.3",
     "unplugin-vue-components": "0.27.4",
-    "unplugin-vue-macros": "2.11.8",
     "unplugin-vue-router": "0.10.7",
     "vite": "5.4.3",
+    "vite-plugin-vue-devtools": "7.4.4",
     "vue-eslint-parser": "9.4.3",
     "vue-tsc": "2.1.6"
   }
