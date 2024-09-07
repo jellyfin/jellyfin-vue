@@ -40,7 +40,7 @@
     v-model="_model"
     v-bind="$attrs"
     :items="selection"
-    :disabled="!isQueryLocalFontsSupported || !fontAccess" />
+    :disabled="!isQueryLocalFontsSupported || !fontAccess || disabled" />
 </template>
 
 <script setup lang="ts">
@@ -55,6 +55,7 @@ const { appWide } = defineProps<{
    * If this font selector is used for selecting the typography for the whole app
    */
   appWide?: boolean;
+  disabled?: boolean;
 }>();
 
 const model = defineModel<string | undefined>();

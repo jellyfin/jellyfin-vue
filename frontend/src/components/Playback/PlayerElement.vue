@@ -15,16 +15,17 @@
         :loop="playbackManager.isRepeatingOnce"
         :class="{ 'uno-object-fill': playerElement.isStretched.value }"
         @loadeddata="onLoadedData">
+        <SubtitleTrack
+          v-if="subtitleSettings.state.enabled && playerElement.currentExternalSubtitleTrack?.parsed !== undefined" />
         <track
           v-for="sub in playbackManager.currentItemVttParsedSubtitleTracks"
+          v-else
           :key="`${playbackManager.currentSourceUrl}-${sub.srcIndex}`"
           kind="subtitles"
           :label="sub.label"
           :srclang="sub.srcLang"
           :src="sub.src">
       </Component>
-      <SubtitleTrack
-        v-if="mediaElementRef && playerElement.currentExternalSubtitleTrack?.parsed !== undefined" />
     </Teleport>
   </template>
 </template>
@@ -43,6 +44,7 @@ import { playbackManager } from '@/store/playback-manager';
 import { playerElement, videoContainerRef } from '@/store/player-element';
 import { getImageInfo } from '@/utils/images';
 import { isNil } from '@/utils/validation';
+import { subtitleSettings } from '@/store/client-settings/subtitle-settings';
 
 const { t } = useI18n();
 let busyWebAudio = false;
