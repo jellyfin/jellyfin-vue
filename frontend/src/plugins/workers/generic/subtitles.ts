@@ -4,14 +4,14 @@
 
 import axios from 'axios';
 
-interface Dialouge {
+interface Dialogue {
   start: number;
   end: number;
   text: string;
 }
 
 export interface ParsedSubtitleTrack {
-  dialogue: Dialouge[];
+  dialogue: Dialogue[];
   isBasic?: boolean;
 }
 
@@ -62,7 +62,7 @@ export async function parseVttFile(src: string) {
       return;
     }
 
-    const dialogue: Dialouge[] = [];
+    const dialogue: Dialogue[] = [];
     const vttLines = vttText.split('\n');
 
     let i = 0;
@@ -104,11 +104,12 @@ export async function parseVttFile(src: string) {
   }
 }
 
-const parseFormatFields = (line: string) => {
-  return line.split('Format:')[1].split(',').map(field => field.trim());
-};
+const parseFormatFields = (line: string) => line.split('Format:')[1].split(',').map(field => field.trim());
 
-const parseFormattedLine = (line: string, formatFields: string[]) => {
+/**
+ * Extracts text from the SSA
+ */
+function parseFormattedLine(line: string, formatFields: string[]) {
   const lineParts = line.slice(line.indexOf(':') + 1, -1).split(',').map(field => field.trim());
   const lineData: Record<string, string> = {};
 
@@ -121,7 +122,10 @@ const parseFormattedLine = (line: string, formatFields: string[]) => {
   return lineData;
 };
 
-const parseSsaStyles = (lines: string[]) => {
+/**
+ * Extracts styles from the SSA file
+ */
+function parseSsaStyles(lines: string[]) {
   let formatFields: string[] = [];
   const styles = [];
 
@@ -141,7 +145,7 @@ const parseSsaStyles = (lines: string[]) => {
 /**
  * Parses dialogue line from SSA file.
  */
-const parseSsaDialogue = (line: string, formatFields: string[]): Dialouge => {
+function parseSsaDialogue(line: string, formatFields: string[]): Dialogue {
   const dialogueData = parseFormattedLine(line, formatFields);
 
   const timeStart = dialogueData.Start;
@@ -156,12 +160,15 @@ const parseSsaDialogue = (line: string, formatFields: string[]): Dialouge => {
   return { start: parseTime(timeStart), end: parseTime(timeEnd), text: formattedText.trim() };
 };
 
-const parseSsaDialogueLines = (lines: string[]): Dialouge[] => {
+/**
+ * Parses dialogue lines from SSA file.
+ */
+function parseSsaDialogueLines(lines: string[]): Dialogue[] {
   let index = 0;
   let dialogueFormat: string[] = [];
-  const dialogue: Dialouge[] = [];
+  const dialogue: Dialogue[] = [];
 
-  const parseLine = (line: string, index: number): [Dialouge | undefined, number] => {
+  const parseLine = (line: string, index: number): [Dialogue | undefined, number] => {
     line = line.trim();
 
     // Format fields should be defined before dialogue lines begin
@@ -177,7 +184,7 @@ const parseSsaDialogueLines = (lines: string[]): Dialouge[] => {
     }
   };
 
-  const parseConsecutiveLines = (currentDialogue: Dialouge, index: number): [Dialouge, number] => {
+  const parseConsecutiveLines = (currentDialogue: Dialogue, index: number): [Dialogue, number] => {
     while (index + 1 < lines.length) {
       const nextLine = lines[index + 1].trim();
 
@@ -212,7 +219,7 @@ const parseSsaDialogueLines = (lines: string[]): Dialouge[] => {
     }
 
     /**
-     * Parse lines with dialouge
+     * Parse lines with Dialogue
      * add consecutive lines at the same time together
      */
     const [parsedDialogue, newIndex] = parseLine(line, index);
@@ -245,7 +252,7 @@ export async function parseSsaFile(src: string): Promise<ParsedSubtitleTrack | u
     const sections = ssaText.split(/\r?\n\r?\n/); // Split into sections by empty lines
 
     let styles: Record<string, string>[] | undefined = [];
-    let dialogue: Dialouge[] = [];
+    let dialogue: Dialogue[] = [];
 
     for (const section of sections) {
       if (section.startsWith('[V4 Styles]') || section.startsWith('[V4+ Styles]')) {

@@ -1,4 +1,5 @@
 import { expose } from 'comlink';
+import { parseSsaFile, parseVttFile } from './generic/subtitles';
 import { sealed } from '@/utils/validation';
 
 /**
@@ -20,6 +21,12 @@ class GenericWorker {
 
     return array;
   };
+
+  /**
+   * Functions for parsing subtitles
+   */
+  public parseVttFile = parseVttFile;
+  public parseSsaFile = parseSsaFile;
 }
 
 const instance = new GenericWorker();

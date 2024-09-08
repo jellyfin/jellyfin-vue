@@ -14,11 +14,12 @@ import { SubtitleDeliveryMethod } from '@jellyfin/sdk/lib/generated-client/model
 import { useFullscreen } from '@vueuse/core';
 import { playbackManager, type PlaybackExternalTrack } from './playback-manager';
 import { isArray, isNil, sealed } from '@/utils/validation';
-import { mediaElementRef } from '@/store';
+import { DEFAULT_TYPOGRAPHY, mediaElementRef } from '@/store';
 import { CommonStore } from '@/store/super/common-store';
 import { router } from '@/plugins/router';
 import { remote } from '@/plugins/remote';
-import { parseSsaFile, parseVttFile, type ParsedSubtitleTrack } from '@/utils/subtitles';
+import type { ParsedSubtitleTrack } from '@/plugins/workers/generic/subtitles';
+import { genericWorker } from '@/plugins/workers';
 
 interface SubtitleExternalTrack extends PlaybackExternalTrack {
   parsed?: ParsedSubtitleTrack;
@@ -127,7 +128,7 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
         fonts: attachedFonts,
         workerUrl: jassubWorker,
         wasmUrl: jassubWasmUrl,
-        fallbackFont: 'InterVariable',
+        fallbackFont: DEFAULT_TYPOGRAPHY,
         // Both parameters needed for subs to work on iOS
         prescaleFactor: 0.8,
         onDemandRender: false,
@@ -217,7 +218,7 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
        * otherwise show default subtitle track
        */
       if (this._useCustomSubtitleTrack) {
-        const data = await parseVttFile(subtitleTrack.src);
+        const data = await genericWorker.parseVttFile(subtitleTrack.src);
 
         this.currentExternalSubtitleTrack.parsed = data;
       } else {
@@ -243,7 +244,7 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
       let applyJASSUB = !this._useCustomSubtitleTrack;
 
       if (this._useCustomSubtitleTrack) {
-        const data = await parseSsaFile(subtitleTrack.src);
+        const data = await genericWorker.parseSsaFile(subtitleTrack.src);
 
         /**
          * If style isn't basic (animations, custom typographics, etc.)

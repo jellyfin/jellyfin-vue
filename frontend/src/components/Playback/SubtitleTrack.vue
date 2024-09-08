@@ -21,7 +21,7 @@ import { subtitleSettings } from '@/store/client-settings/subtitle-settings';
 import { DEFAULT_TYPOGRAPHY, mediaControls } from '@/store';
 import { playerElement } from '@/store/player-element';
 import { isNil } from '@/utils/validation';
-import type { ParsedSubtitleTrack } from '@/utils/subtitles';
+import type { ParsedSubtitleTrack } from '@/plugins/workers/generic/subtitles';
 
 const { preview } = defineProps<{
   /**
