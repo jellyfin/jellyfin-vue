@@ -4,7 +4,7 @@
 
 import axios from 'axios';
 
-interface Dialogue {
+export interface Dialogue {
   start: number;
   end: number;
   text: string;

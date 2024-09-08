@@ -10,7 +10,7 @@
       </template>
       <JSafeHtml
         v-else-if="currentSubtitle !== undefined"
-        :html="currentSubtitle.text" />
+        :html="currentSubtitle.sub.text" />
     </span>
   </div>
 </template>
@@ -18,10 +18,11 @@
 <script setup lang="ts">
 import { computed, type StyleValue } from 'vue';
 import { subtitleSettings } from '@/store/client-settings/subtitle-settings';
-import { DEFAULT_TYPOGRAPHY, mediaControls } from '@/store';
+import { DEFAULT_TYPOGRAPHY } from '@/store';
 import { playerElement } from '@/store/player-element';
 import { isNil } from '@/utils/validation';
-import type { ParsedSubtitleTrack } from '@/plugins/workers/generic/subtitles';
+import type { ParsedSubtitleTrack, Dialogue } from '@/plugins/workers/generic/subtitles';
+import { playbackManager } from '@/store/playback-manager';
 
 const { preview } = defineProps<{
   /**
@@ -31,45 +32,32 @@ const { preview } = defineProps<{
 }>();
 
 /**
- * Function to find the current subtitle based on the current time.
- * It starts searching from the last found index to optimize the search.
- * If not found, it searches from the beginning of the list.
- */
-let lastIndex = 0; // Variable to store the last found index of the subtitle
-const findCurrentSubtitle = (data: ParsedSubtitleTrack, currentTime: number) => {
-  // Start searching from the last found index
-  for (let i = lastIndex; i < data.dialogue.length; i++) {
-    const subtitle = data.dialogue[i];
-
-    if (subtitle.start < currentTime && subtitle.end > currentTime) {
-      lastIndex = i; // Update the last found index
-
-      return subtitle;
-    } else if (subtitle.start > currentTime) {
-      break;
-    }
-  }
-
-  // Start searching from the beginning
-  for (const [i, subtitle] of data.dialogue.entries()) {
-    if (subtitle.start < currentTime && subtitle.end > currentTime) {
-      lastIndex = i; // Update the last found index
-
-      return subtitle;
-    } else if (subtitle.start > currentTime) {
-      break;
-    }
-  }
-};
-/**
  * Update the current subtitle based on the current time of the media element.
+ *
+ * Loops in the first run (we can't assume that the first run will appear at index 0,
+ * since the user can seek to any position) when 'previous' is undefined and then relies in previous
+ * to find the next one
  */
-const currentSubtitle = computed(() =>
-  !isNil(mediaControls.currentTime.value)
-  && !isNil(playerElement.currentExternalSubtitleTrack?.parsed)
-    ? findCurrentSubtitle(playerElement.currentExternalSubtitleTrack.parsed, mediaControls.currentTime.value)
-    : undefined
-);
+const predicate = (d: Dialogue) => d.start <= playbackManager.currentTime && d.end >= playbackManager.currentTime;
+const findSubtitle = (dialogue: ParsedSubtitleTrack['dialogue'], start = 0) =>
+  dialogue.slice(start).findIndex(d => predicate(d));
+
+const dialogue = computed(() => playerElement.currentExternalSubtitleTrack?.parsed?.dialogue);
+const currentSubtitle = computed<{ index: number; sub: Dialogue } | undefined>((previous) => {
+  if (!isNil(dialogue.value)) {
+    const hasPrevious = !isNil(previous);
+    const isNext = hasPrevious && predicate(dialogue.value[previous.index + 1]);
+    const isCurrent = hasPrevious && predicate(dialogue.value[previous.index]);
+
+    if (isCurrent) {
+      return previous;
+    } else {
+      const newIndex = isNext ? previous.index + 1 : findSubtitle(dialogue.value);
+
+      return { index: newIndex, sub: dialogue.value[newIndex] };
+    }
+  }
+});
 
 const fontFamily = computed(() => {
   if (subtitleSettings.state.fontFamily === 'default') {
