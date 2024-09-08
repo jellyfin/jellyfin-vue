@@ -61,13 +61,13 @@
 <script setup lang="ts">
 import { computed, inject, type Ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { windowScroll, isConnectedToServer } from '@/store';
+import { windowScroll, isConnectedToServer, prefersNoTransparency } from '@/store';
 import { clientSettings } from '@/store/client-settings';
 import { remote } from '@/plugins/remote';
 
 const route = useRoute();
 const { y } = windowScroll;
-const transparentAppBar = computed(() => route.meta.layout.transparent && y.value < 10);
+const transparentAppBar = computed(() => !prefersNoTransparency.value && route.meta.layout.transparent && y.value < 10);
 
 /**
  * Cycle between the different color schemas

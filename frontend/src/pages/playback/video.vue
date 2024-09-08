@@ -13,7 +13,7 @@
         width="100%"
         height="100%">
         <div
-          class="d-flex flex-column justify-space-between align-center player-overlay">
+          class="d-flex flex-column align-center justify-space-between player-overlay">
           <div class="osd-top pt-s pl-s pr-s">
             <div class="d-flex align-center py-2 px-4">
               <div class="d-flex">
@@ -214,22 +214,22 @@ watch(staticOverlay, (val) => {
   padding-bottom: 5em;
   background: linear-gradient(
     to bottom,
-    rgb(var(--v-theme-background), 0.75) 0%,
-    rgb(var(--v-theme-background), 0.74) 8.1%,
-    rgb(var(--v-theme-background), 0.714) 15.5%,
-    rgb(var(--v-theme-background), 0.672) 22.5%,
-    rgb(var(--v-theme-background), 0.618) 29%,
-    rgb(var(--v-theme-background), 0.556) 35.3%,
-    rgb(var(--v-theme-background), 0.486) 41.2%,
-    rgb(var(--v-theme-background), 0.412) 47.1%,
-    rgb(var(--v-theme-background), 0.338) 52.9%,
-    rgb(var(--v-theme-background), 0.264) 58.8%,
-    rgb(var(--v-theme-background), 0.194) 64.7%,
-    rgb(var(--v-theme-background), 0.132) 71%,
-    rgb(var(--v-theme-background), 0.078) 77.5%,
-    rgb(var(--v-theme-background), 0.036) 84.5%,
-    rgb(var(--v-theme-background), 0.01) 91.9%,
-    rgb(var(--v-theme-background), 0) 100%
+    rgb(var(--j-color-background), 0.75) 0%,
+    rgb(var(--j-color-background), 0.74) 8.1%,
+    rgb(var(--j-color-background), 0.714) 15.5%,
+    rgb(var(--j-color-background), 0.672) 22.5%,
+    rgb(var(--j-color-background), 0.618) 29%,
+    rgb(var(--j-color-background), 0.556) 35.3%,
+    rgb(var(--j-color-background), 0.486) 41.2%,
+    rgb(var(--j-color-background), 0.412) 47.1%,
+    rgb(var(--j-color-background), 0.338) 52.9%,
+    rgb(var(--j-color-background), 0.264) 58.8%,
+    rgb(var(--j-color-background), 0.194) 64.7%,
+    rgb(var(--j-color-background), 0.132) 71%,
+    rgb(var(--j-color-background), 0.078) 77.5%,
+    rgb(var(--j-color-background), 0.036) 84.5%,
+    rgb(var(--j-color-background), 0.01) 91.9%,
+    rgb(var(--j-color-background), 0) 100%
   );
 }
 
@@ -237,22 +237,22 @@ watch(staticOverlay, (val) => {
   padding-top: 6em;
   background: linear-gradient(
     to top,
-    rgb(var(--v-theme-background), 0.75) 0%,
-    rgb(var(--v-theme-background), 0.74) 8.1%,
-    rgb(var(--v-theme-background), 0.714) 15.5%,
-    rgb(var(--v-theme-background), 0.672) 22.5%,
-    rgb(var(--v-theme-background), 0.618) 29%,
-    rgb(var(--v-theme-background), 0.556) 35.3%,
-    rgb(var(--v-theme-background), 0.486) 41.2%,
-    rgb(var(--v-theme-background), 0.412) 47.1%,
-    rgb(var(--v-theme-background), 0.338) 52.9%,
-    rgb(var(--v-theme-background), 0.264) 58.8%,
-    rgb(var(--v-theme-background), 0.194) 64.7%,
-    rgb(var(--v-theme-background), 0.132) 71%,
-    rgb(var(--v-theme-background), 0.078) 77.5%,
-    rgb(var(--v-theme-background), 0.036) 84.5%,
-    rgb(var(--v-theme-background), 0.01) 91.9%,
-    rgb(var(--v-theme-background), 0) 100%
+    rgb(var(--j-color-background), 0.75) 0%,
+    rgb(var(--j-color-background), 0.74) 8.1%,
+    rgb(var(--j-color-background), 0.714) 15.5%,
+    rgb(var(--j-color-background), 0.672) 22.5%,
+    rgb(var(--j-color-background), 0.618) 29%,
+    rgb(var(--j-color-background), 0.556) 35.3%,
+    rgb(var(--j-color-background), 0.486) 41.2%,
+    rgb(var(--j-color-background), 0.412) 47.1%,
+    rgb(var(--j-color-background), 0.338) 52.9%,
+    rgb(var(--j-color-background), 0.264) 58.8%,
+    rgb(var(--j-color-background), 0.194) 64.7%,
+    rgb(var(--j-color-background), 0.132) 71%,
+    rgb(var(--j-color-background), 0.078) 77.5%,
+    rgb(var(--j-color-background), 0.036) 84.5%,
+    rgb(var(--j-color-background), 0.01) 91.9%,
+    rgb(var(--j-color-background), 0) 100%
   );
 }
 

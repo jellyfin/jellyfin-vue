@@ -2,8 +2,8 @@
   <JTransition>
     <div
       v-if="blurhash"
-      :key="`backdrop-${blurhash}`"
-      class="backdrop sizing"
+      :key="blurhash"
+      class="uno-fixed uno-left-0 uno-top-0 uno-h-screen uno-w-screen uno-bg-cover uno-color-background"
       :style="{
         opacity,
       }">
@@ -11,19 +11,21 @@
         :hash="blurhash"
         :width="32"
         :height="32"
-        class="sizing" />
+        class="uno-fixed uno-left-0 uno-top-0 uno-h-screen uno-w-screen uno-bg-cover" />
     </div>
   </JTransition>
 </template>
 
 <script lang="ts">
-import { toRef, type MaybeRefOrGetter, shallowRef, onMounted, onBeforeUnmount } from 'vue';
+import { toRef, type MaybeRefOrGetter, shallowRef, onMounted, onBeforeUnmount, computed } from 'vue';
 import { watchImmediate } from '@vueuse/core';
 import { isNil } from '@/utils/validation';
+import { prefersNoTransparency } from '@/store';
 
 const DEFAULT_OPACITY = 0.25;
+const requested_opacity = shallowRef(DEFAULT_OPACITY);
 const _blurhash = shallowRef<string>();
-const _opacity = shallowRef(DEFAULT_OPACITY);
+const _opacity = computed(() => prefersNoTransparency.value ? 0 : requested_opacity.value);
 
 /**
  * Reactively sets the backdrop properties. Can be used in 2 ways:
@@ -40,14 +42,12 @@ export function useBackdrop(hash?: MaybeRefOrGetter<string | undefined>, opacity
     }
 
     if (!isNil(opacity)) {
-      watchImmediate(toRef(opacity), val => _opacity.value = val ?? DEFAULT_OPACITY);
+      watchImmediate(toRef(opacity), val => requested_opacity.value = val ?? DEFAULT_OPACITY);
     }
   });
 
   onBeforeUnmount(() => _blurhash.value = undefined);
-  onBeforeUnmount(() => _opacity.value = DEFAULT_OPACITY);
-
-  return { backdrop: _blurhash, opacity: _opacity.value };
+  onBeforeUnmount(() => requested_opacity.value = DEFAULT_OPACITY);
 }
 </script>
 
@@ -55,18 +55,3 @@ export function useBackdrop(hash?: MaybeRefOrGetter<string | undefined>, opacity
 const blurhash = _blurhash;
 const opacity = _opacity;
 </script>
-
-<style scoped>
-.backdrop {
-  background-color: rgb(var(--v-theme-background));
-}
-
-.sizing {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-size: cover;
-}
-</style>

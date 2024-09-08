@@ -43,6 +43,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import type { RouteNamedMap } from 'vue-router/auto-routes';
 import type { getLibraryIcon } from '@/utils/items';
+import { prefersNoTransparency } from '@/store';
 
 export interface DrawerItem {
   icon: ReturnType<typeof getLibraryIcon>;
@@ -59,7 +60,7 @@ const route = useRoute();
 const { t } = useI18n();
 
 const drawer = inject<Ref<boolean>>('NavigationDrawer');
-const transparentLayout = computed(() => route.meta.layout.transparent);
+const transparentLayout = computed(() => !prefersNoTransparency.value && route.meta.layout.transparent);
 
 const items = [
   {

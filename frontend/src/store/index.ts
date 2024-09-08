@@ -49,8 +49,12 @@ export const mediaWebAudio = {
 /**
  * Reactively tracks if the user wants animations (false) or not (true).
  */
-export const prefersNoMotion = useMediaQuery('(prefers-reduced-motion)');
+export const prefersNoMotion = useMediaQuery('(prefers-reduced-motion:reduce)');
 
+/**
+ * Reactively tracks if the user wants transparency effects (true) or not (false).
+ */
+export const prefersNoTransparency = useMediaQuery('(prefers-reduced-transparency:reduce)');
 /**
  * IWhether the user is using a pointer with high precision (like a mouse)
  */

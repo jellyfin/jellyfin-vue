@@ -16,13 +16,9 @@ type Mutable<T> = {
 };
 
 /**
- * Omits an specific element from a tuple.
+ * Gets the last item of a tuple
  */
-type ExcludeFromTuple<T, K extends number, I extends unknown[] = []> = T extends [infer F, ...infer R]
-  ? I['length'] extends K
-    ? [...ExcludeFromTuple<R, K, [F, ...I]>]
-    : [F, ...ExcludeFromTuple<R, K, [F, ...I]>]
-  : [];
+type Tail<L> = L extends readonly [] ? L : L extends readonly [unknown?, ...infer LTail] ? LTail : L;
 
 /**
  * Sets a type as nullish

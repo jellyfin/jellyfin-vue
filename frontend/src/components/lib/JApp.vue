@@ -10,7 +10,7 @@
       <template v-if="isLoading">
         cursor: wait;
       </template>
-      --j-background-color: rgb(var(--v-theme-background));
+      --j-color-background: rgb(var(--v-theme-background));
       }
     </component>
     <!-- eslint-enable @intlify/vue-i18n/no-raw-text vue/require-component-is -->

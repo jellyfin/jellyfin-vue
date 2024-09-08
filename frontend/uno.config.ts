@@ -6,5 +6,10 @@ export default defineConfig({
       prefix: 'uno-',
       preflight: false
     })
-  ]
+  ],
+  theme: {
+    colors: {
+      background: 'rgb(var(--j-color-background))'
+    }
+  }
 });

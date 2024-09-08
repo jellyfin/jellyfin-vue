@@ -27,4 +27,4 @@ if ('darkMode' in parsedStore) {
   }
 }
 
-document.body.style.setProperty('--j-background-color', colorToApply);
+document.body.style.setProperty('--j-color-background', colorToApply);
