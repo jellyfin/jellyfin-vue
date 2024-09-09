@@ -10,10 +10,10 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <title>Jellyfin Vue</title>
-    <script type="module" src="src/splashscreen.ts"></script>
+    <script type="module" src="src/splashscreen.ts" fetchpriority="high"></script>
     <script type="module" src="src/main.ts"></script>
   </head>
   <body class="j-splash">
-    <img src="./icon.svg" alt="Jellyfin Logo" loading="eager" decoding="async">
+    <img src="./icon.svg" alt="Jellyfin Logo" loading="eager" decoding="sync">
   </body>
 </html>
