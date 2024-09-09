@@ -282,7 +282,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.JF_BOT_TOKEN }}
 
-      - name: Create multiplatform image ${{ inputs.push && 'and push 🛠️⬆️' || '🛠️' }} 
+      - name: Create multiplatform image and push 🛠️⬆️
         uses: docker/build-push-action@v6.7.0
         id: image
         with:
@@ -306,3 +306,17 @@ jobs:
         with:
           name: |
             buildx-*
+
+      - name: Create provenance attestation (ghcr.io) 🔏
+        uses: actions/attest-build-provenance@v1.4.3
+        with:
+          subject-name: ghcr.io/${{ env.REGISTRY_IMAGE }}
+          subject-digest: ${{ steps.image.outputs.digest }}
+          push-to-registry: true
+
+      - name: Create provenance attestation (docker.io) 🔏
+        uses: actions/attest-build-provenance@v1.4.3
+        with:
+          subject-name: docker.io/${{ env.REGISTRY_IMAGE }}
+          subject-digest: ${{ steps.image.outputs.digest }}
+          push-to-registry: true
