@@ -190,7 +190,6 @@ watch(mediaElementRef, async () => {
       hls.on(Events.ERROR, onHlsEror);
     }
 
-    console.log('attach called');
     await attachWebAudio(mediaElementRef.value);
   }
 });

@@ -34,7 +34,7 @@
             </RouterLink>
           </h3>
           <div
-            class="text-h4 font-weight-medium text-caption mt-2"
+            class="text-h4 font-weight-medium mt-2 text-caption"
             :class="{ 'text-center': !$vuetify.display.mdAndUp }">
             <MediaInfo
               :item="item"

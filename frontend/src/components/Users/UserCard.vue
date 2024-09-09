@@ -14,7 +14,7 @@
           rounded
           :size="128" />
       </VBtn>
-      <a class="text-subtitle-1 text-center link mt-2">
+      <a class="text-center link text-subtitle-1 mt-2">
         {{ user.Name }}
       </a>
     </div>

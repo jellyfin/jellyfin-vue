@@ -115,9 +115,9 @@ const cardSubtitle = computed(() => {
     case BaseItemKind.Episode: {
       return !isNil(item.ParentIndexNumber) && !isNil(item.IndexNumber) && !isNil(item.Name)
         ? `${t('seasonEpisodeAbbrev', {
-        seasonNumber: item.ParentIndexNumber,
-        episodeNumber: item.IndexNumber
-      })} - ${item.Name}`
+          seasonNumber: item.ParentIndexNumber,
+          episodeNumber: item.IndexNumber
+        })} - ${item.Name}`
         : undefined;
     }
     case BaseItemKind.MusicAlbum: {
