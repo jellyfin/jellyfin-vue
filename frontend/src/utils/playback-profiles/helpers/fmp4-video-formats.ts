@@ -33,11 +33,11 @@ export function getSupportedFmp4VideoCodecs(
   if (
     hasH264Support(videoTestElement)
     && (isChrome()
-    || isFirefox()
-    || isApple()
-    || isEdge()
-    || isTizen()
-    || isWebOS())
+      || isFirefox()
+      || isApple()
+      || isEdge()
+      || isTizen()
+      || isWebOS())
   ) {
     codecs.push('h264');
   }

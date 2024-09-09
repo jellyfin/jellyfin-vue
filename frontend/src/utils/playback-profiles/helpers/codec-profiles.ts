@@ -185,10 +185,10 @@ export function getCodecProfiles(
 
   if (
     (isTizen()
-    || videoTestElement
-      .canPlayType('video/mp4; codecs="avc1.6e0033"')
-      .replace(/no/, '')) // TODO: These tests are passing in Safari, but playback is failing
-      && (!isApple() || !isWebOS() || !(isEdge() && !isChromiumBased()))
+      || videoTestElement
+        .canPlayType('video/mp4; codecs="avc1.6e0033"')
+        .replace(/no/, '')) // TODO: These tests are passing in Safari, but playback is failing
+        && (!isApple() || !isWebOS() || !(isEdge() && !isChromiumBased()))
   ) {
     h264Profiles += '|high 10';
   }

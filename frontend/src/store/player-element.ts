@@ -103,8 +103,8 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
       !isNil(mimeType)
       && mimeType.startsWith('font/')
       && (mimeType.includes('ttf')
-      || mimeType.includes('otf')
-      || mimeType.includes('woff'))
+        || mimeType.includes('otf')
+        || mimeType.includes('woff'))
     );
   };
 

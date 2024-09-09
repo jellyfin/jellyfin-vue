@@ -204,8 +204,8 @@ watch(
     if (
       mediaElementRef.value
       && (!newUrl
-      || playbackManager.currentMediaSource?.SupportsDirectPlay
-      || !hls)
+        || playbackManager.currentMediaSource?.SupportsDirectPlay
+        || !hls)
     ) {
       /**
        * For the video case, Safari iOS doesn't support hls.js but supports native HLS.

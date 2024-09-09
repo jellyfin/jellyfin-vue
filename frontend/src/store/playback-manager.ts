@@ -280,7 +280,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
           sub =>
             sub.Type === MediaStreamType.Subtitle
             && (sub.DeliveryMethod === SubtitleDeliveryMethod.Encode
-            || sub.DeliveryMethod === SubtitleDeliveryMethod.External)
+              || sub.DeliveryMethod === SubtitleDeliveryMethod.External)
         )
         .map(sub => ({
           label: sub.DisplayTitle ?? 'Undefined',
@@ -1217,9 +1217,9 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
           oldVal.currentSubtitleStreamIndex
           !== newVal.currentSubtitleStreamIndex
           && (oldVal.currentSubtitleTrack?.DeliveryMethod
-          === SubtitleDeliveryMethod.Encode
-          || newVal.currentSubtitleTrack?.DeliveryMethod
-          === SubtitleDeliveryMethod.Encode)
+            === SubtitleDeliveryMethod.Encode
+            || newVal.currentSubtitleTrack?.DeliveryMethod
+            === SubtitleDeliveryMethod.Encode)
         ) {
           /**
            * We need to set a new media source when:
