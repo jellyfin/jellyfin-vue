@@ -6,7 +6,7 @@
       src="./icon.svg"
       alt="Jellyfin Logo"
       loading="eager"
-      decoding="async">
+      decoding="sync">
     <JTransition
       name="slide-y-reverse"
       appear>
