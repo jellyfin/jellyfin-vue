@@ -41,7 +41,13 @@ class SubtitleSettingsStore extends SyncedStore<SubtitleSettingsState> {
       positionFromBottom: 10,
       backdrop: true,
       stroke: false
-    }, 'localStorage');
+    }, 'localStorage', [
+      'enabled',
+      'fontSize',
+      'positionFromBottom',
+      'backdrop',
+      'stroke'
+    ]);
 
     /**
      * == WATCHERS ==
