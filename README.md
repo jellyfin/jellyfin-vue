@@ -85,24 +85,17 @@ There are no stable releases yet.*
 
 ## [Hosted instance 🌍](https://jf-vue.pages.dev/)
 
+Built from the latest commit in the default branch. Just input your server address when prompted.
+
+⚠️ **This only works for Jellyfin servers that [are behind a reverse proxy and have HTTPS set up correctly](https://jellyfin.org/docs/general/networking/#running-jellyfin-behind-a-reverse-proxy)**. If your server runs over HTTP, you must host it yourself.
+
 Hosted by Cloudflare Pages.
 
-⚠️ **This only works for Jellyfin servers that [are behind a reverse proxy and have HTTPS set up correctly](https://jellyfin.org/docs/general/networking/#running-jellyfin-behind-a-reverse-proxy)**. If your server runs over HTTP, you must use another deployment type.
+## Host it yourself 💽
 
-## Docker Container 📦
-
-You can run the Docker container with the following command, replacing 8080 with the port of your choice:
-
-```bash
-docker run -d -p 8080:80 ghcr.io/jellyfin/jellyfin-vue:unstable
-```
+Check [our wiki page](https://github.com/jellyfin/jellyfin-vue/wiki/Deployment) for the most up to date information.
 
 You can check [GitHub Packages (GHCR)](https://github.com/jellyfin/jellyfin-vue/pkgs/container/jellyfin-vue) (recommended) or [DockerHub](https://hub.docker.com/r/jellyfin/jellyfin-vue) for all the tagged images.
-
-## Other means 💽
-
-There are more ways to host Jellyfin Vue yourself.
-Check [our wiki page](https://github.com/jellyfin/jellyfin-vue/wiki/Deployment-methods) for the most up to date information.
 
 ## Privacy disclaimer 🕵🏻
 
