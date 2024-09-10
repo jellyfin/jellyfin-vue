@@ -9,7 +9,7 @@
         {{ $t('subtitlePreviewText') }}
       </template>
       <JSafeHtml
-        v-else-if="currentSubtitle !== undefined"
+        v-else-if="!isNil(currentSubtitle?.sub)"
         :html="currentSubtitle.sub.text" />
     </span>
   </div>
@@ -39,22 +39,30 @@ const { preview } = defineProps<{
  * to find the next one
  */
 const predicate = (d: Dialogue) => d.start <= playbackManager.currentTime && d.end >= playbackManager.currentTime;
-const findSubtitle = (dialogue: ParsedSubtitleTrack['dialogue'], start = 0) =>
-  dialogue.slice(start).findIndex(d => predicate(d));
+const findSubtitle = (dialogue: ParsedSubtitleTrack['dialogue'], start = 0) => {
+  const index = dialogue.slice(start).findIndex(d => predicate(d));
+
+  return index === -1 ? undefined : index;
+};
 
 const dialogue = computed(() => playerElement.currentExternalSubtitleTrack?.parsed?.dialogue);
-const currentSubtitle = computed<{ index: number; sub: Dialogue } | undefined>((previous) => {
+const currentSubtitle = computed<{ index: number; sub?: Dialogue | undefined } | undefined>((previous) => {
   if (!isNil(dialogue.value)) {
     const hasPrevious = !isNil(previous);
-    const isNext = hasPrevious && predicate(dialogue.value[previous.index + 1]);
+    const nextIndex = hasPrevious ? previous.index + 1 : 0;
+    const isNext = hasPrevious && predicate(dialogue.value[nextIndex]);
     const isCurrent = hasPrevious && predicate(dialogue.value[previous.index]);
 
     if (isCurrent) {
       return previous;
     } else {
-      const newIndex = isNext ? previous.index + 1 : findSubtitle(dialogue.value);
+      const newIndex = isNext ? nextIndex : findSubtitle(dialogue.value, nextIndex);
 
-      return { index: newIndex, sub: dialogue.value[newIndex] };
+      if (!isNil(newIndex)) {
+        return { index: newIndex, sub: dialogue.value[newIndex] };
+      } else if (hasPrevious) {
+        return { index: previous.index };
+      }
     }
   }
 });
@@ -92,8 +100,7 @@ const subtitleStyle = computed<StyleValue>(() => {
 
 <style scoped>
 .stroked {
-  --webkit-text-stroke-color: black;
-  --webkit-text-stroke-width: 7px;
+  -webkit-text-stroke: 7px black;
   text-shadow: 2px 2px 15px black;
   paint-order: stroke fill;
 }
