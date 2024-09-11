@@ -20,6 +20,7 @@ import { router } from '@/plugins/router';
 import { remote } from '@/plugins/remote';
 import type { ParsedSubtitleTrack } from '@/plugins/workers/generic/subtitles';
 import { genericWorker } from '@/plugins/workers';
+import { subtitleSettings } from '@/store/client-settings/subtitle-settings';
 
 interface SubtitleExternalTrack extends PlaybackExternalTrack {
   parsed?: ParsedSubtitleTrack;
@@ -96,6 +97,7 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
    */
   private get _useCustomSubtitleTrack(): boolean {
     return !isNil(playbackManager.currentSubtitleTrack)
+      && subtitleSettings.state.enabled
       && playbackManager.currentSubtitleTrack.DeliveryMethod === SubtitleDeliveryMethod.External
       /**
        * If useFullscreen isn't supported we can assume the media player is Safari iOS
