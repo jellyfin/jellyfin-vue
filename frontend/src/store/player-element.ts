@@ -124,13 +124,21 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
       && mediaElementRef.value
       && mediaElementRef.value instanceof HTMLVideoElement
     ) {
+      const hasAttachedFonts = !isNil(attachedFonts) && attachedFonts.length !== 0;
+
       this._jassub = new JASSUB({
         video: mediaElementRef.value,
         subUrl: trackSrc,
-        fonts: attachedFonts,
+        ...(hasAttachedFonts
+          ? {
+              fonts: attachedFonts
+            }
+          : {
+              useLocalFonts: true
+            }),
+        fallbackFont: DEFAULT_TYPOGRAPHY,
         workerUrl: jassubWorker,
         wasmUrl: jassubWasmUrl,
-        fallbackFont: DEFAULT_TYPOGRAPHY,
         // Both parameters needed for subs to work on iOS
         prescaleFactor: 0.8,
         onDemandRender: false,

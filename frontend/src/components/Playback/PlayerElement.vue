@@ -4,27 +4,29 @@
       :to="videoContainerRef"
       :disabled="!videoContainerRef"
       defer>
-      <Component
-        :is="mediaElementType"
-        v-show="mediaElementType === 'video' && videoContainerRef"
-        ref="mediaElementRef"
-        :poster="String(posterUrl)"
-        autoplay
-        crossorigin
-        playsinline
-        :loop="playbackManager.isRepeatingOnce"
-        :class="{ 'uno-object-fill': playerElement.isStretched.value }"
-        @loadeddata="onLoadedData">
-        <track
-          v-for="sub in playbackManager.currentItemVttParsedSubtitleTracks"
-          :key="`${playbackManager.currentSourceUrl}-${sub.srcIndex}`"
-          kind="subtitles"
-          :label="sub.label"
-          :srclang="sub.srcLang"
-          :src="sub.src">
-      </Component>
-      <SubtitleTrack
-        v-if="subtitleSettings.state.enabled && playerElement.currentExternalSubtitleTrack?.parsed !== undefined" />
+      <div class="uno-my-auto">
+        <Component
+          :is="mediaElementType"
+          v-show="mediaElementType === 'video' && videoContainerRef"
+          ref="mediaElementRef"
+          :poster="String(posterUrl)"
+          autoplay
+          crossorigin
+          playsinline
+          :loop="playbackManager.isRepeatingOnce"
+          :class="{ 'uno-object-fill': playerElement.isStretched.value, 'uno-max-h-100vh': true}"
+          @loadeddata="onLoadedData">
+          <track
+            v-for="sub in playbackManager.currentItemVttParsedSubtitleTracks"
+            :key="`${playbackManager.currentSourceUrl}-${sub.srcIndex}`"
+            kind="subtitles"
+            :label="sub.label"
+            :srclang="sub.srcLang"
+            :src="sub.src">
+        </Component>
+        <SubtitleTrack
+          v-if="subtitleSettings.state.enabled && playerElement.currentExternalSubtitleTrack?.parsed !== undefined" />
+      </div>
     </Teleport>
   </template>
 </template>
