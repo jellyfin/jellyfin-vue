@@ -126,7 +126,7 @@ async function resolveAndAdd<T extends Record<K, (...args: any[]) => any>, K ext
   loading: Ref<boolean | undefined> | undefined,
   stringifiedArgs: string,
   ops: Required<ComposableOps>,
-  ...args: Parameters<T[K]>): Promise<ExtractItems<Awaited<ReturnType<T[K]>['data']>> | void> {
+  ...args: Parameters<T[K]>): Promise<ExtractItems<Awaited<ReturnType<T[K]>['data']>> | undefined> {
   /**
    * We add all BaseItemDto's fields for consistency in what we can expect from the store.
    * toValue normalizes the getters.

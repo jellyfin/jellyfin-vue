@@ -88,7 +88,7 @@ export async function useConfirmDialog<T>(
   func: () => T | Promise<T>,
   params: ConfirmDialogState,
   raiseError = false
-): Promise<T | void> {
+): Promise<T | undefined> {
   state.title = params.title || '';
   state.subtitle = params.subtitle;
   state.text = params.text || '';
