@@ -9,7 +9,6 @@ import vueScopedCSS from 'eslint-plugin-vue-scoped-css';
 import css from 'eslint-plugin-css';
 import vue from 'eslint-plugin-vue';
 import i18n from '@intlify/eslint-plugin-vue-i18n';
-import { FlatCompat } from '@eslint/eslintrc';
 import gitignore from 'eslint-config-flat-gitignore';
 import stylistic from '@stylistic/eslint-plugin';
 import sonarjs from 'eslint-plugin-sonarjs';
@@ -27,11 +26,7 @@ const jsoncRecommended = jsonc.configs['flat/recommended-with-json'];
 
 /**
  * Util functions
- * TODO: Can be removed once all ESLint plugins are updated to support Flat config
  */
-const compat = new FlatCompat({
-  baseDirectory: import.meta.dirname
-});
 const flatArrayOfObjects = obj => Object.assign({}, ...obj);
 
 export default tseslint.config(
@@ -165,11 +160,6 @@ export default tseslint.config(
     files: vueAndTsFiles
   },
   {
-    ...flatArrayOfObjects(compat.extends('plugin:you-dont-need-lodash-underscore/all')),
-    name: '(you-dont-need-lodash) Extended config from plugin',
-    files: vueAndTsFiles
-  },
-  {
     ...promise.configs['flat/recommended'],
     name: '(promise) Extended config from plugin',
     files: vueAndTsFiles
@@ -184,7 +174,7 @@ export default tseslint.config(
   },
   {
     name: '(import) Custom config',
-    // TODO: Remove after: https://github.com/eslint/eslint/pull/18134
+    // TODO: Remove .js after: https://github.com/eslint/eslint/pull/18134
     files: [...vueAndTsFiles, '**/*.js'],
     plugins: {
       'import-x': eslintImportX

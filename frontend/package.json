@@ -49,7 +49,6 @@
   },
   "devDependencies": {
     "@eslint/config-inspector": "0.5.4",
-    "@eslint/eslintrc": "3.1.0",
     "@eslint/js": "9.10.0",
     "@iconify/json": "2.2.246",
     "@intlify/eslint-plugin-vue-i18n": "3.0.0",
@@ -77,7 +76,6 @@
     "eslint-plugin-unicorn": "55.0.0",
     "eslint-plugin-vue": "9.28.0",
     "eslint-plugin-vue-scoped-css": "2.8.1",
-    "eslint-plugin-you-dont-need-lodash-underscore": "6.14.0",
     "globals": "15.9.0",
     "lightningcss": "1.26.0",
     "rollup-plugin-visualizer": "5.12.0",
