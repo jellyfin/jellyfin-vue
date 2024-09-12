@@ -42,7 +42,7 @@ const predicate = (d: Dialogue) => d.start <= playbackManager.currentTime && d.e
 const findSubtitle = (dialogue: ParsedSubtitleTrack['dialogue'], start = 0) => {
   const index = dialogue.slice(start).findIndex(d => predicate(d));
 
-  return index === -1 ? undefined : index;
+  return index === -1 ? undefined : index + start;
 };
 
 const dialogue = computed(() => playerElement.currentExternalSubtitleTrack?.parsed?.dialogue);
