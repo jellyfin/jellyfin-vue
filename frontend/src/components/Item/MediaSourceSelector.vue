@@ -3,7 +3,7 @@
     v-model="currentSource"
     :items="selectSources"
     :label="label"
-    :single-line="label == undefined"
+    :single-line="label === undefined"
     hide-details
     class="text-truncate">
     <template #selection="{ item: i }">

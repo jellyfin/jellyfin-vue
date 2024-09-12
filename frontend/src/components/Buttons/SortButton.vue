@@ -15,10 +15,10 @@
     <VIcon :end="!$vuetify.display.smAndDown">
       <IMdiMenuDown v-if="!$vuetify.display.smAndDown" />
       <IMdiSortAlphabeticalVariant
-        v-else-if="model.length === 0 || model[0] == items[0].value" />
+        v-else-if="model.length === 0 || model[0] === items[0].value" />
       <IMdiNumeric9PlusBoxOutline
-        v-else-if="model[0] == items[1].value" />
-      <IMdiCalendarRange v-else-if="model[0] == items[2].value" />
+        v-else-if="model[0] === items[1].value" />
+      <IMdiCalendarRange v-else-if="model[0] === items[2].value" />
     </VIcon>
     <VMenu :disabled="disabled">
       <VList

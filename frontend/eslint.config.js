@@ -23,6 +23,7 @@ const vueFiles = ['*.vue', '**/*.vue'];
 const vueAndTsFiles = [...vueFiles, ...tsFiles];
 const CI_environment = process.env.CI ? 0 : 1;
 const jsoncRecommended = jsonc.configs['flat/recommended-with-json'];
+const eqeqeqConfig = ['error', 'always', { null: 'ignore' }];
 
 /**
  * Util functions
@@ -73,6 +74,7 @@ export default tseslint.config(
       'prefer-arrow-callback': 'error',
       'multiline-comment-style': 'error',
       'unicode-bom': ['error', 'never'],
+      'eqeqeq': eqeqeqConfig,
       '@stylistic/quotes': ['error', 'single', { avoidEscape: true }],
       '@stylistic/linebreak-style': ['error', 'unix'],
       'unicorn/import-style': 'off',
@@ -211,6 +213,7 @@ export default tseslint.config(
       '@typescript-eslint/no-redundant-type-constituents': 'off',
       '@typescript-eslint/restrict-template-expressions': 'off',
       '@typescript-eslint/no-non-null-assertion': 'off',
+      '@typescript-eslint/no-dynamic-delete': 'off',
       '@typescript-eslint/no-import-type-side-effects': 'error',
       '@typescript-eslint/consistent-type-exports': 'error',
       '@typescript-eslint/explicit-member-accessibility': 'error',
@@ -219,7 +222,8 @@ export default tseslint.config(
         fixStyle: 'inline-type-imports'
       }],
       '@typescript-eslint/no-confusing-void-expression': ['error', { ignoreArrowShorthand: true }],
-      '@typescript-eslint/no-empty-object-type': ['error', { allowInterfaces: 'with-single-extends' }]
+      '@typescript-eslint/no-empty-object-type': ['error', { allowInterfaces: 'with-single-extends' }],
+      'vue/return-in-computed-property': 'off'
     }
   },
   {
@@ -276,7 +280,7 @@ export default tseslint.config(
       }],
       'vue/multi-word-component-names': 'off',
       'vue/require-default-prop': 'off',
-      'vue/return-in-computed-property': 'off'
+      'vue/eqeqeq': eqeqeqConfig
     }
   },
   {
