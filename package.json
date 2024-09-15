@@ -1,6 +1,7 @@
 {
   "name": "@jellyfin-vue",
   "private": true,
+  "type": "module",
   "homepage": "https://jellyfin.org/",
   "bugs": {
     "url": "https://github.com/jellyfin/jellyfin-vue/issues"
@@ -13,11 +14,16 @@
   "author": "jellyfin-vue Contributors (https://github.com/jellyfin/jellyfin-vue/graphs/contributors)",
   "workspaces": [
     "frontend",
-    "packaging/tauri"
+    "packaging/tauri",
+    "packages/*"
   ],
   "engines": {
     "node": ">=20.8.1 <21.0.0",
     "npm": ">=10.1.0",
     "yarn": "Yarn is not supported. Please use NPM."
+  },
+  "devDependencies": {
+    "eslint": "9.10.0",
+    "typescript": "5.6.2"
   }
 }
