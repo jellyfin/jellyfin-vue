@@ -1,0 +1,9 @@
+{
+  "name": "@jellyfin-vue/configs",
+  "version": "0.0.1",
+  "exports": {
+    "./tsconfig.json": "./tsconfig.json",
+    "./index.js": "./index.js"
+  },
+  "type": "module"
+}
