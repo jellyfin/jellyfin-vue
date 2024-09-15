@@ -52,6 +52,7 @@
     "@iconify/json": "2.2.246",
     "@intlify/eslint-plugin-vue-i18n": "3.0.0",
     "@intlify/unplugin-vue-i18n": "4.0.0",
+    "@jellyfin-vue/configs": "*",
     "@jellyfin-vue/vite-plugins": "*",
     "@rollup/plugin-virtual": "3.0.2",
     "@stylistic/eslint-plugin": "2.8.0",
