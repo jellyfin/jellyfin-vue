@@ -15,10 +15,13 @@ import Components from 'unplugin-vue-components/vite';
 import UnoCSS from 'unocss/vite';
 import VueRouter from 'unplugin-vue-router/vite';
 import { defineConfig } from 'vite';
+/**
+ * TODO: Replace with @jellyfin-vue/vite-plugins after https://github.com/vitejs/vite/issues/5370
+ * is fixed
+ */
+import { JellyfinVueAnalysis, JellyfinVueChunking } from '../packages/vite-plugins';
 import { entrypoints, localeFilesFolder, srcRoot } from './scripts/paths';
 import virtualModules from './scripts/virtual-modules';
-import { JellyfinVueAnalysis } from './scripts/plugins/analysis';
-import { JellyfinVueChunking } from './scripts/plugins/chunking';
 
 export default defineConfig({
   appType: 'spa',
