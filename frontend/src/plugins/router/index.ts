@@ -50,7 +50,13 @@ router.back = () => {
     leave: route.value.meta.layout.transition.leave ?? backTransition
   };
 
-  window.history.back();
+  const historyState = router.options.history.state;
+
+  if (historyState && isStr(historyState.back)) {
+    router.go(-1);
+  } else {
+    router.replace('/');
+  }
 };
 
 /**
