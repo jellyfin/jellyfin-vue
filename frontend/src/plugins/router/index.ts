@@ -42,23 +42,15 @@ router.beforeEach(metaGuard);
  */
 const backTransition = 'slide-x';
 
-router.back = (): ReturnType<typeof router.back> => {
+router.back = () => {
   const route = router.currentRoute;
 
-  /**
-   * Play the default page transition but reversed, to play a different effect when going
-   * to the previous page.
-   */
   route.value.meta.layout.transition = {
     enter: 'slide-x-reverse',
     leave: route.value.meta.layout.transition.leave ?? backTransition
   };
 
-  void router.replace(
-    isStr(router.options.history.state.back)
-      ? router.options.history.state.back
-      : '/'
-  );
+  window.history.back();
 };
 
 /**
