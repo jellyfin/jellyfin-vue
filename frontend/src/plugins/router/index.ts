@@ -42,7 +42,7 @@ router.beforeEach(metaGuard);
  */
 const backTransition = 'slide-x';
 
-router.back = (): ReturnType<typeof router.back> => {
+router.back = () => {
   const route = router.currentRoute;
 
   /**
@@ -54,11 +54,13 @@ router.back = (): ReturnType<typeof router.back> => {
     leave: route.value.meta.layout.transition.leave ?? backTransition
   };
 
-  void router.replace(
-    isStr(router.options.history.state.back)
-      ? router.options.history.state.back
-      : '/'
-  );
+  const historyState = router.options.history.state;
+
+  if (historyState && isStr(historyState.back)) {
+    router.go(-1);
+  } else {
+    router.replace('/');
+  }
 };
 
 /**
