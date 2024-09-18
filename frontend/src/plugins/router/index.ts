@@ -45,11 +45,10 @@ const backTransition = 'slide-x';
 router.back = () => {
   const route = router.currentRoute;
 
-    /**
+  /**
    * Play the default page transition but reversed, to play a different effect when going
    * to the previous page.
    */
-
   route.value.meta.layout.transition = {
     enter: 'slide-x-reverse',
     leave: route.value.meta.layout.transition.leave ?? backTransition
