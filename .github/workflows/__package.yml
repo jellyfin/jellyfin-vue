@@ -64,6 +64,7 @@ jobs:
         with:
           node-version: 20
           check-latest: true
+          cache: 'npm'
 
       - name: Install npm dependencies 📦
         run: npm ci --no-audit
@@ -182,8 +183,11 @@ jobs:
           context: .
           file: packaging/docker/Dockerfile
           platforms: ${{ format('linux/{0}', matrix.platform) }}
-          no-cache: true
-          cache-to: type=local,mode=min,dest=/tmp/${{ env.REGISTRY_IMAGE }}/cache/${{ matrix.platform }}
+          cache-from: |
+            type=gha,scope=buildx-${{ matrix.platform }}
+          cache-to: |
+            type=local,mode=min,dest=/tmp/${{ env.REGISTRY_IMAGE }}/cache/${{ matrix.platform }}
+            type=gha,mode=min,ignore-error=true,scope=buildx-${{ matrix.platform }}
           outputs: type=docker,dest=docker_image.tar
           build-args: |
             ${{ inputs.commit == '' && 'IS_STABLE=1' || '' }}

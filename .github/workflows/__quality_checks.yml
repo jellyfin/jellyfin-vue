@@ -53,6 +53,7 @@ jobs:
         with:
           node-version: 20
           check-latest: true
+          cache: 'npm'
 
       - name: Install dependencies 📦
         run: npm ci --no-audit
