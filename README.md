@@ -26,7 +26,7 @@
 <a href="https://opencollective.com/jellyfin">
 <img alt="Donate" src="https://img.shields.io/opencollective/all/jellyfin.svg?label=backers"/>
 </a>
-<a href="https://features.jellyfin.org">
+<a href="https://features.jellyfin.org/?tags=vue">
 <img alt="Feature Requests" src="https://img.shields.io/badge/fider-vote%20on%20features-success.svg"/>
 </a>
 <a href="https://matrix.to/#/#jellyfin-vue:matrix.org">
