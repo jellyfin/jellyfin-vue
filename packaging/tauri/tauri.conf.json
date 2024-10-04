@@ -6,11 +6,11 @@
       "msi",
       "app"
     ],
-    "longDescription": "",
-    "shortDescription": "",
+    "icon": [
+      "icons/**/*"
+    ],
     "resources": [],
     "externalBin": [],
-    "copyright": "",
     "category": "Entertainment",
     "linux": {
       "appimage": {
