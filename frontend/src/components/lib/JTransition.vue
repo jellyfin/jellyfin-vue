@@ -5,6 +5,7 @@
     v-bind="$attrs"
     :name="forcedDisable || disabled ? undefined : `j-transition-${name}`"
     @before-leave="leaving = true"
+    @enter="useViewTransition"
     @after-leave="onNoLeave"
     @leave-cancelled="onNoLeave">
     <slot />
@@ -12,6 +13,7 @@
 </template>
 
 <script lang="ts">
+import { until } from '@vueuse/core';
 import { Transition, TransitionGroup, type TransitionProps, shallowRef, computed } from 'vue';
 import { prefersNoMotion, isSlow } from '@/store';
 import { usePausableEffect } from '@/composables/use-pausable-effect';
@@ -26,10 +28,12 @@ interface Props {
    * If the transition should be disabled
    */
   disabled?: boolean;
+  root?: boolean;
 }
 
 export type JTransitionProps = TransitionProps & Props;
 const forcedDisable = computed(() => prefersNoMotion.value || isSlow.value);
+const hasViewTransitions = 'startViewTransition' in document;
 </script>
 
 <script setup lang="ts">
@@ -37,7 +41,19 @@ const { name = 'fade', group, disabled } = defineProps<Props>();
 const leaving = shallowRef(false);
 const onNoLeave = () => leaving.value = false;
 
-usePausableEffect(leaving);
+if (!hasViewTransitions) {
+  usePausableEffect(leaving);
+}
+
+/**
+ * Starts a view transition if it's supported, pausing the effects of the tree
+ * if it isn't
+ */
+function useViewTransition() {
+  if (hasViewTransitions) {
+    document.startViewTransition(() => until(leaving).toBe(false));
+  }
+}
 </script>
 
 <!-- TODO: Set scoped and remove .j-transition* prefix after: https://github.com/vuejs/core/issues/5148 -->
