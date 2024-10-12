@@ -4,7 +4,7 @@
     "targets": [
       "appimage",
       "msi",
-      "app"
+      "dmg"
     ],
     "icon": [
       "icons/**/*"

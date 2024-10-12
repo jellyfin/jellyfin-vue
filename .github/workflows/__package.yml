@@ -44,12 +44,14 @@ jobs:
           - Windows
     defaults:
       run:
-        working-directory: packaging/tauri
+        working-directory: ${{ env.WORKING_DIR }}
+
     env:
-      ARTIFACTS_PATH: |
-        ${{ matrix.platform == 'ubuntu' && 'packaging/tauri/target/release/bundle/appimage_deb' || '' }}
-        ${{ matrix.platform == 'macos' && 'packaging/tauri/target/release/bundle/macos' || '' }}
-        ${{ matrix.platform == 'windows' && 'packaging/tauri/target/release/jellyfin-vue-tauri.exe' || '' }}
+      WORKING_DIR: packaging/tauri
+      ARTIFACTS_PATH: ${{
+          format('target/release/{0}', matrix.platform == 'windows' && 'jellyfin-vue-tauri.exe' ||
+          format('bundle/*/*.{0}', matrix.platform == 'macos' && 'dmg' || 'AppImage'))
+        }}
 
     runs-on: ${{ matrix.platform }}-latest
     steps:
@@ -65,6 +67,12 @@ jobs:
           node-version: 20
           check-latest: true
           cache: 'npm'
+
+      - name: Setup Rust Toolchain and cache 🦀
+        uses: actions-rust-lang/setup-rust-toolchain@v1.10.1
+        with:
+          cache-key: tauri-${{ runner.os }}
+          cache-workspaces: ${{ env.WORKING_DIR }}
 
       - name: Install npm dependencies 📦
         run: npm ci --no-audit
@@ -82,14 +90,14 @@ jobs:
         uses: actions/attest-build-provenance@v1.4.3
         continue-on-error: true
         with:
-          subject-path: ${{ env.ARTIFACTS_PATH }}
+          subject-path: ${{ env.WORKING_DIR }}/${{ env.ARTIFACTS_PATH }}
 
       - name: Upload built application artifact ⬆️🐧🍎🪟
         uses: actions/upload-artifact@v4.4.0
         with:
           compression-level: 0
-          name: jellyfin-vue_${{ matrix.platform }}
-          path: ${{ env.ARTIFACTS_PATH }}
+          name: jellyfin-vue_${{ runner.os }}
+          path: ${{ env.WORKING_DIR }}/${{ env.ARTIFACTS_PATH }}
 
   docker_inputs:
     name: Prepare Docker build variables 🏷️🐳
