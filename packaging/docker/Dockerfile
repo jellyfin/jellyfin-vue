@@ -12,6 +12,7 @@ ENV COMMIT_HASH=$COMMIT_HASH
 
 COPY package.json package-lock.json .npmrc /app/
 COPY frontend /app/frontend
+COPY packages /app/packages
 WORKDIR /app/frontend
 
 # Build client

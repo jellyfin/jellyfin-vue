@@ -1,5 +1,5 @@
 {
-  "extends": "@jellyfin-vue/configs/tsconfig.json",
+  "extends": "@jellyfin-vue/configs/typescript/base.json",
   "compilerOptions": {
     "types": [
       "axios",

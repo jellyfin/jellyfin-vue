@@ -22,7 +22,7 @@ env:
 
 jobs:
   cf-pages:
-    name: CloudFlare Pages 📃
+    name: Cloudflare Pages 📃
     runs-on: ubuntu-latest
     environment: 
       name: ${{ inputs.branch == 'master' && 'Production' || 'Preview' }}
