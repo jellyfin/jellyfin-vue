@@ -56,13 +56,13 @@ jobs:
     runs-on: ${{ matrix.platform }}-latest
     steps:
       - name: Checkout ⬇️
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.1
         with:
           ref: ${{ inputs.commit || github.sha }}
           show-progress: false
 
       - name: Setup node environment ⚙️
-        uses: actions/setup-node@v4.0.3
+        uses: actions/setup-node@v4.0.4
         with:
           node-version: 20
           check-latest: true
@@ -93,7 +93,7 @@ jobs:
           subject-path: ${{ env.WORKING_DIR }}/${{ env.ARTIFACTS_PATH }}
 
       - name: Upload built application artifact ⬆️🐧🍎🪟
-        uses: actions/upload-artifact@v4.4.0
+        uses: actions/upload-artifact@v4.4.3
         with:
           compression-level: 0
           name: jellyfin-vue_${{ runner.os }}
@@ -173,7 +173,7 @@ jobs:
 
     steps:
       - name: Checkout ⬇️
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.1
         with:
           ref: ${{ inputs.commit || github.sha }}
           show-progress: false
@@ -182,10 +182,10 @@ jobs:
         uses: docker/setup-qemu-action@v3.2.0
 
       - name: Configure Docker Buildx ⚙️
-        uses: docker/setup-buildx-action@v3.6.1
+        uses: docker/setup-buildx-action@v3.7.1
 
       - name: Build images 🛠️
-        uses: docker/build-push-action@v6.7.0
+        uses: docker/build-push-action@v6.9.0
         id: image
         with:
           context: .
@@ -204,7 +204,7 @@ jobs:
             ${{ needs.docker_inputs.outputs.tags }}
 
       - name: Upload Docker image as artifact ⬆️📦
-        uses: actions/upload-artifact@v4.4.0
+        uses: actions/upload-artifact@v4.4.3
         with:
           compression-level: 0
           name: docker_image-linux_${{ matrix.platform }}
@@ -217,7 +217,7 @@ jobs:
           subject-path: docker_image.tar
 
       - name: Upload cache artifact ⬆️⚙️
-        uses: actions/upload-artifact@v4.4.0
+        uses: actions/upload-artifact@v4.4.3
         if: ${{ inputs.push }}
         with:
           compression-level: 0
@@ -248,7 +248,7 @@ jobs:
           subject-path: dist
 
       - name: Upload client artifact ⬆️💻
-        uses: actions/upload-artifact@v4.4.0
+        uses: actions/upload-artifact@v4.4.3
         with:
           compression-level: 0
           name: frontend
@@ -270,7 +270,7 @@ jobs:
           path: /tmp/${{ env.REGISTRY_IMAGE }}/cache/
   
       - name: Checkout ⬇️
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.1
         with:
           ref: ${{ inputs.commit || github.sha }}
           show-progress: false
@@ -279,7 +279,7 @@ jobs:
         uses: docker/setup-qemu-action@v3.2.0
 
       - name: Configure Docker Buildx ⚙️
-        uses: docker/setup-buildx-action@v3.6.1
+        uses: docker/setup-buildx-action@v3.7.1
 
       - name: Login to Docker Hub 🔑
         uses: docker/login-action@v3.3.0
@@ -295,7 +295,7 @@ jobs:
           password: ${{ secrets.JF_BOT_TOKEN }}
 
       - name: Create multiplatform image ${{ inputs.push && 'and push 🛠️⬆️' || '🛠️' }} 
-        uses: docker/build-push-action@v6.7.0
+        uses: docker/build-push-action@v6.9.0
         id: image
         with:
           context: .
