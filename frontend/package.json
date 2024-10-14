@@ -47,7 +47,7 @@
     "vuetify": "3.7.1"
   },
   "devDependencies": {
-    "@iconify/json": "2.2.246",
+    "@iconify/json": "2.2.260",
     "@intlify/unplugin-vue-i18n": "4.0.0",
     "@jellyfin-vue/configs": "*",
     "@jellyfin-vue/vite-plugins": "*",
@@ -55,14 +55,14 @@
     "@types/dompurify": "3.0.5",
     "@types/sortablejs": "1.15.8",
     "@types/uuid": "10.0.0",
-    "@vitejs/plugin-vue": "5.1.3",
-    "browserslist": "4.23.3",
-    "lightningcss": "1.26.0",
-    "unocss": "0.62.3",
+    "@vitejs/plugin-vue": "5.1.4",
+    "browserslist": "4.24.0",
+    "lightningcss": "1.27.0",
+    "unocss": "0.63.4",
     "unplugin-icons": "0.19.3",
     "unplugin-vue-components": "0.27.4",
     "unplugin-vue-router": "0.10.8",
-    "vite": "5.4.6",
-    "vite-plugin-vue-devtools": "7.4.4"
+    "vite": "5.4.9",
+    "vite-plugin-vue-devtools": "7.4.6"
   }
 }
