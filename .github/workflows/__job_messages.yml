@@ -62,6 +62,6 @@ jobs:
         uses: thollander/actions-comment-pull-request@v3.0.0
         if: ${{ inputs.comment && steps.compose.conclusion == 'success' }}
         with:
-          GITHUB_TOKEN: ${{ secrets.JF_BOT_TOKEN }}
+          github-token: ${{ secrets.JF_BOT_TOKEN }}
           message: ${{ env.msg }}
-          comment_tag: ${{ inputs.marker }}
+          comment-tag: ${{ inputs.marker }}
