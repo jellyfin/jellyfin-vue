@@ -1,0 +1,231 @@
+import type { Linter } from 'eslint';
+import tseslint from 'typescript-eslint';
+import sonarjs from 'eslint-plugin-sonarjs';
+import regexp from 'eslint-plugin-regexp';
+import jsdoc from 'eslint-plugin-jsdoc';
+import eslintImportX from 'eslint-plugin-import-x';
+// @ts-expect-error - No types available
+import vueScopedCSS from 'eslint-plugin-vue-scoped-css';
+import css from 'eslint-plugin-css';
+// @ts-expect-error - No types available
+import vue from 'eslint-plugin-vue';
+// @ts-expect-error - No types available
+import promise from 'eslint-plugin-promise';
+import globals from 'globals';
+import vueParser from 'vue-eslint-parser';
+import { eqeqeqConfig, vueAndTsFiles, vueFiles, tsFiles } from '../shared';
+
+/**
+ * Util functions
+ */
+const flatArrayOfObjects = (obj: unknown[]) => Object.assign({}, ...obj);
+
+/** Common TypeScript and Vue rules */
+const common = [
+  {
+    ...flatArrayOfObjects(tseslint.configs.strictTypeChecked),
+    name: '(@jellyfin-vue/configs/eslint/typescript-vue - typescript-eslint) Extended config from plugin (strict type checking)'
+  },
+  {
+    ...flatArrayOfObjects(tseslint.configs.stylisticTypeChecked),
+    name: '(@jellyfin-vue/configs/eslint/typescript-vue - typescript-eslint) Extended config from plugin (stylistic type checking)'
+  },
+  {
+    ...tseslint.configs.eslintRecommended,
+    name: '(@jellyfin-vue/configs/eslint/typescript-vue - typescript-eslint) Extended config from plugin (ESLint rules with type checking)'
+  },
+  {
+    ...regexp.configs['flat/recommended'],
+    name: '(@jellyfin-vue/configs/eslint/typescript-vue - regexp) Extended config from plugin'
+  },
+  {
+    ...promise.configs['flat/recommended'],
+    name: '(@jellyfin-vue/configs/eslint/typescript-vue - promise) Extended config from plugin'
+  },
+  {
+    name: '(@jellyfin-vue/configs/eslint/typescript-vue - promise) Custom config',
+    rules: {
+      'promise/prefer-await-to-callbacks': 'error',
+      'promise/prefer-await-to-then': 'error'
+    }
+  },
+  {
+    name: '(@jellyfin-vue/configs/eslint/typescript-vue - import) Custom config',
+    plugins: {
+      'import-x': eslintImportX
+    },
+    rules: {
+      'import-x/no-extraneous-dependencies': 'error',
+      'import-x/order': 'error',
+      'import-x/no-cycle': 'error',
+      'import-x/no-nodejs-modules': 'error',
+      'import-x/no-duplicates': ['error', { 'prefer-inline': true, 'considerQueryString': true }],
+      // From the recommended preset
+      'import-x/named': 'error',
+      'import-x/export': 'error'
+    }
+  },
+  {
+    name: '(@jellyfin-vue/configs/eslint/typescript-vue - JSDoc) Custom config',
+    plugins: {
+      jsdoc
+    },
+    rules: {
+      'jsdoc/require-hyphen-before-param-description': 'error',
+      'jsdoc/require-description': 'error',
+      'jsdoc/no-types': 'error',
+      'jsdoc/require-jsdoc': 'error',
+      'jsdoc/informative-docs': 'error'
+    }
+  },
+  {
+    name: '(@jellyfin-vue/configs/eslint/typescript-vue - TypeScript & Vue) Custom config',
+    rules: {
+      '@typescript-eslint/no-redundant-type-constituents': 'off',
+      '@typescript-eslint/restrict-template-expressions': 'off',
+      '@typescript-eslint/no-non-null-assertion': 'off',
+      '@typescript-eslint/no-dynamic-delete': 'off',
+      '@typescript-eslint/no-import-type-side-effects': 'error',
+      '@typescript-eslint/consistent-type-exports': 'error',
+      '@typescript-eslint/explicit-member-accessibility': 'error',
+      '@typescript-eslint/consistent-type-imports': ['error', {
+        prefer: 'type-imports',
+        fixStyle: 'inline-type-imports'
+      }],
+      '@typescript-eslint/no-confusing-void-expression': ['error', { ignoreArrowShorthand: true }],
+      '@typescript-eslint/no-empty-object-type': ['error', { allowInterfaces: 'with-single-extends' }],
+      'vue/return-in-computed-property': 'off'
+    }
+  },
+  {
+    ...sonarjs.configs.recommended,
+    name: '(@jellyfin-vue/configs/eslint/typescript-vue - sonarcloud) Extended config from plugin'
+  }
+] satisfies Linter.Config[];
+
+/** Vue SFC only rules */
+const vue_config = [
+  ...vue.configs['flat/recommended'].map((config) => {
+    /**
+     * Specified above, unnecessary to overwrite
+     */
+    delete config.languageOptions?.globals;
+    /**
+     * DEPRECATED: See https://eslint.vuejs.org/rules/component-tags-order.html#vue-component-tags-order
+     * TODO: Remove when it's removed from the recommended rules
+     */
+    delete config.rules?.['vue/component-tags-order'];
+    config.name = `(@jellyfin-vue/configs/eslint/typescript-vue - ${config.name}) - Extended config from plugin`;
+
+    return config;
+  }),
+  {
+    ...flatArrayOfObjects(vueScopedCSS.configs['flat/recommended']),
+    name: '(@jellyfin-vue/configs/eslint/typescript-vue - Vue Scoped CSS) Extended config from plugin',
+    files: vueFiles
+  },
+  {
+    ...css.configs['flat/recommended'],
+    name: '(@jellyfin-vue/configs/eslint/typescript-vue - Vue CSS) Extended config from plugin',
+    files: vueFiles
+  },
+  {
+    name: '(Vue) Custom config',
+    files: vueFiles,
+    rules: {
+      'vue/component-name-in-template-casing': [
+        'error',
+        'PascalCase',
+        {
+          registeredComponentsOnly: false
+        }
+      ],
+      'vue/define-macros-order': ['error', {
+        order: ['defineOptions', 'defineProps', 'defineEmits', 'defineSlots']
+      }],
+      'vue/html-closing-bracket-newline': ['error', { multiline: 'never' }],
+      'vue/block-order': ['error', {
+        order: ['template', 'script:not([setup])', 'script[setup]']
+      }],
+      'vue/multi-word-component-names': 'off',
+      'vue/require-default-prop': 'off',
+      'vue/eqeqeq': eqeqeqConfig,
+      'vue/block-lang': ['error',
+        {
+          script: {
+            lang: 'ts'
+          }
+        }
+      ]
+
+    }
+  }
+] satisfies Linter.Config[];
+
+/**
+ * Gets the base configuration for TypeScript files only or both Vue and TypeScript
+ *
+ * @param enableVue - Whether to apply the base config for Vue files
+ * @returns
+ */
+export function getTSVueConfig(enableVue = true, tsconfigRootDir = import.meta.dirname): Linter.Config[] {
+  const result = [
+    ...(enableVue ? vue_config : []),
+    ...common.map(conf => ({
+      ...conf, files: enableVue ? vueAndTsFiles : tsFiles
+    }))] satisfies Linter.Config[];
+
+  const langOptions = {
+    ecmaVersion: 2024,
+    sourceType: 'module',
+    globals: {
+      ...globals.browser
+    }
+  };
+
+  const sharedParserOptions = {
+    projectService: true,
+    tsconfigRootDir,
+    warnOnUnsupportedTypeScriptVersion: false
+  };
+
+  // Extracted from https://github.com/vuejs/eslint-config-typescript
+  const base_vue_parser = {
+    name: '(@jellyfin-vue/configs/eslint/typescript-vue - Vue) Extra parser configuration for typed linting',
+    files: vueFiles,
+    languageOptions: {
+      ...langOptions,
+      parser: vueParser,
+      parserOptions: {
+        parser: tseslint.parser,
+        ...sharedParserOptions
+      }
+    }
+  };
+
+  const base_ts_parser = {
+    name: enableVue
+      ? '(@jellyfin-vue/configs/eslint/typescript-vue - TypeScript & Vue) Parser extra config'
+      : '(@jellyfin-vue/configs/eslint/typescript-vue - TypeScript) Parser extra config',
+    files: enableVue ? vueAndTsFiles : tsFiles,
+    languageOptions: {
+      ...langOptions,
+      parserOptions: {
+        ...sharedParserOptions,
+        ...(enableVue
+          ? {
+              extraFileExtensions: ['.vue']
+            }
+          : {})
+      }
+    }
+  };
+
+  result.push(base_ts_parser);
+
+  if (enableVue) {
+    result.push(base_vue_parser);
+  }
+
+  return result;
+}

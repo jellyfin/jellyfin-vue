@@ -36,10 +36,9 @@ jobs:
         command:
           - lint
           - check:types
-          - analyze:cycles
-    defaults:
-      run:
-        working-directory: frontend
+        include:
+          - workspace: frontend
+            command: analyze:cycles
 
     steps:
       - name: Checkout ⬇️
@@ -59,7 +58,7 @@ jobs:
         run: npm ci --no-audit
 
       - name: Run ${{ matrix.command }} ⚙️
-        run: npm run ${{ matrix.command }}
+        run: npm run ${{ matrix.command }} ${{ matrix.workspace && format('-w {0}', matrix.workspace) || '' }}
 
   commits_checks:
     name: Commit linting 💬✅

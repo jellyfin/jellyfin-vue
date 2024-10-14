@@ -1,10 +1,9 @@
 {
-  "extends": "./typescript/base.json",
+  "extends": "@jellyfin-vue/configs/typescript/base.json",
   "compilerOptions": {
     "baseUrl": "."
   },
   "include": [
-    "eslint/**/*.ts",
     "*.ts"
   ]
 }

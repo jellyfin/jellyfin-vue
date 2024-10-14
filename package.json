@@ -1,5 +1,4 @@
 {
-  "name": "@jellyfin-vue",
   "private": true,
   "type": "module",
   "homepage": "https://jellyfin.org/",
@@ -22,8 +21,17 @@
     "npm": ">=10.1.0",
     "yarn": "Yarn is not supported. Please use NPM."
   },
+  "scripts": {
+    "lint": "npm run lint --workspaces",
+    "lint:fix": "npm run lint:fix --workspaces",
+    "check:types": "npm run check:types --workspaces"
+  },
   "devDependencies": {
-    "eslint": "9.10.0",
-    "typescript": "5.6.2"
+    "@eslint/config-inspector": "0.5.4",
+    "@types/node": "22.5.4",
+    "eslint": "9.12.0",
+    "jiti": "2.3.3",
+    "typescript": "5.6.2",
+    "vue-tsc": "2.1.6"
   }
 }

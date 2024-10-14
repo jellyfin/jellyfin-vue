@@ -1,9 +1,40 @@
 {
   "name": "@jellyfin-vue/configs",
   "version": "0.0.1",
+  "type": "module",
   "exports": {
-    "./tsconfig.json": "./tsconfig.json",
-    "./index.js": "./index.js"
+    "./typescript/base.json": "./typescript/base.json",
+    "./eslint": "./eslint/index.ts",
+    "./unocss": "./unocss.ts"
   },
-  "type": "module"
+  "scripts": {
+    "lint": "eslint . --max-warnings=0 --flag unstable_ts_config",
+    "lint:fix": "eslint . --fix --max-warnings=0 --flag unstable_ts_config",
+    "lint:inspect": "eslint-config-inspector",
+    "check:types": "vue-tsc"
+  },
+  "dependencies": {
+    "@eslint/js": "9.12.0",
+    "@intlify/eslint-plugin-vue-i18n": "3.0.0",
+    "@stylistic/eslint-plugin": "2.8.0",
+    "@unocss/eslint-config": "0.62.3",
+    "eslint-config-flat-gitignore": "0.3.0",
+    "eslint-plugin-css": "0.11.0",
+    "eslint-plugin-depend": "0.11.0",
+    "eslint-plugin-file-progress": "1.5.0",
+    "eslint-plugin-import-x": "4.2.1",
+    "eslint-plugin-jsdoc": "50.2.2",
+    "eslint-plugin-jsonc": "2.16.0",
+    "eslint-plugin-promise": "7.1.0",
+    "eslint-plugin-regexp": "2.6.0",
+    "eslint-plugin-sonarjs": "1.0.4",
+    "eslint-plugin-unicorn": "55.0.0",
+    "eslint-plugin-vue": "9.28.0",
+    "eslint-plugin-vue-scoped-css": "2.8.1",
+    "find-up-simple": "1.0.0",
+    "globals": "15.9.0",
+    "typescript-eslint": "8.5.0",
+    "unocss": "0.62.3",
+    "vue-eslint-parser": "9.4.3"
+  }
 }

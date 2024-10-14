@@ -6,7 +6,10 @@
     "start": "npm run gen-icon && tauri dev",
     "gen-icon": "tauri icon ../../frontend/public/icon.svg",
     "build": "npm run gen-icon && tauri build",
-    "clean": "git clean -fxd"
+    "clean": "git clean -fxd",
+    "lint": "true",
+    "lint:fix": "true",
+    "check:types": "true"
   },
   "dependencies": {
     "@jellyfin-vue/frontend": "*"
