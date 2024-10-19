@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "@iconify/json": "2.2.260",
-    "@intlify/unplugin-vue-i18n": "4.0.0",
+    "@intlify/unplugin-vue-i18n": "5.2.0",
     "@jellyfin-vue/configs": "*",
     "@jellyfin-vue/vite-plugins": "*",
     "@rollup/plugin-virtual": "3.0.2",
