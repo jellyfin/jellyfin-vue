@@ -1,8 +1,9 @@
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
 import { computedAsync, useMediaControls, useMediaQuery, useNetwork, useNow, useScroll } from '@vueuse/core';
-import { shallowRef } from 'vue';
+import { computed, shallowRef } from 'vue';
 import { remote } from '@/plugins/remote';
 import { isNil } from '@/utils/validation';
+import { router } from '@/plugins/router';
 
 /**
  * This file contains global variables (specially VueUse refs) that are used multiple times across the client.
@@ -84,6 +85,11 @@ export const hasHDRDisplay = useMediaQuery('(video-dynamic-range:high)');
  * https://developer.mozilla.org/en-US/docs/Web/CSS/@media/update
  */
 export const isSlow = useMediaQuery('(update:slow)');
+
+/**
+ * Whether the layout must use transparency effects
+ */
+export const transparencyEffects = computed(() => !prefersNoTransparency.value && router.currentRoute.value.meta.layout.transparent);
 
 /**
  * Reactively tracks if the user is connected to the server

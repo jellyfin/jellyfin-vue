@@ -4,9 +4,18 @@
     class="j-transition"
     v-bind="$attrs"
     :name="forcedDisable || disabled ? undefined : `j-transition-${name}`"
-    @before-leave="leaving = true"
-    @after-leave="onNoLeave"
-    @leave-cancelled="onNoLeave">
+    @before-leave="() => {
+      leaving = true;
+      $attrs.onBeforeLeave?.();
+    }"
+    @after-leave="() => {
+      onNoLeave();
+      $attrs.onAfterLeave?.();
+    }"
+    @leave-cancelled="() => {
+      onNoLeave();
+      $attrs.onLeaveCancelled?.();
+    }">
     <slot />
   </component>
 </template>
@@ -26,6 +35,10 @@ interface Props {
    * If the transition should be disabled
    */
   disabled?: boolean;
+  /**
+   * Don't stop patching the DOM while transitioning
+   */
+  skipPausing?: boolean;
 }
 
 export type JTransitionProps = TransitionProps & Props;
@@ -33,14 +46,16 @@ const forcedDisable = computed(() => prefersNoMotion.value || isSlow.value);
 </script>
 
 <script setup lang="ts">
-const { name = 'fade', group, disabled } = defineProps<Props>();
+const { name = 'fade', group, disabled, skipPausing } = defineProps<Props>();
 const leaving = shallowRef(false);
 const onNoLeave = () => leaving.value = false;
 
-usePausableEffect(leaving);
+if (!skipPausing) {
+  usePausableEffect(leaving);
+}
 </script>
 
-<!-- TODO: Set scoped and remove .j-transition* prefix after: https://github.com/vuejs/core/issues/5148 -->
+<!-- TODO: Set scoped and remove .j-transition* prefix after: https://github.com/vuejs/core/issues/5148#issuecomment-2041118368 -->
 
 <style>
 .j-transition {
