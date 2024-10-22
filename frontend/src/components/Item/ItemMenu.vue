@@ -56,7 +56,6 @@
 <script lang="ts">
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { useClipboard, useEventListener } from '@vueuse/core';
-import { v4 } from 'uuid';
 import IMdiArrowExpandDown from 'virtual:icons/mdi/arrow-expand-down';
 import IMdiArrowExpandUp from 'virtual:icons/mdi/arrow-expand-up';
 import IMdiCloudSearch from 'virtual:icons/mdi/cloud-search-outline';
@@ -71,7 +70,7 @@ import IMdiPlaylistPlus from 'virtual:icons/mdi/playlist-plus';
 import IMdiRefresh from 'virtual:icons/mdi/refresh';
 import IMdiReplay from 'virtual:icons/mdi/replay';
 import IMdiShuffle from 'virtual:icons/mdi/shuffle';
-import { computed, getCurrentInstance, onMounted, shallowRef, watch } from 'vue';
+import { computed, getCurrentInstance, onMounted, shallowRef, useId, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import { isStr } from '@/utils/validation';
@@ -120,7 +119,7 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
-const instanceId = v4();
+const instanceId = useId();
 const router = useRouter();
 const route = useRoute();
 
