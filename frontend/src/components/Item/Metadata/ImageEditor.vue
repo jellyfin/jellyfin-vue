@@ -22,7 +22,7 @@
         </div>
         <div
           v-if="item.Width && item.Height"
-          class="text-center text--secondary text-body-2">
+          class="text-center text-body-2 text--secondary">
           {{ t('dimensions', { width: item.Width, height: item.Height }) }}
         </div>
         <VCardActions class="justify-center">

@@ -10,10 +10,10 @@
         :class="useResponsiveClasses('card-grid-container')">
         <ItemCard
           :item="item"
-          text
           margin
-          overlay
-          link />
+          link
+          text
+          overlay />
       </JVirtual>
       <div
         v-else
