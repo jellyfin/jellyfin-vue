@@ -66,8 +66,7 @@ import 'swiper/css/free-mode';
 import 'swiper/css/virtual';
 import { A11y, FreeMode, Navigation, Virtual } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import { v4 } from 'uuid';
-import { computed } from 'vue';
+import { computed, useId } from 'vue';
 import { useDisplay, useTheme } from 'vuetify';
 import { CardShapes } from '@/utils/items';
 
@@ -77,7 +76,7 @@ const { title, items, shape } = defineProps<{
   shape?: CardShapes;
 }>();
 
-const uuid = v4();
+const uuid = useId();
 const display = useDisplay();
 const theme = useTheme();
 
