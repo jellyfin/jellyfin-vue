@@ -1,4 +1,4 @@
-import { watchSyncEffect } from 'vue';
+import { watch } from 'vue';
 import {
   createRouter,
   createWebHashHistory,
@@ -54,19 +54,21 @@ router.back = () => {
     leave: route.value.meta.layout.transition.leave ?? backTransition
   };
 
-  const historyState = router.options.history.state;
-
-  if (historyState && isStr(historyState.back)) {
+  if (isStr(router.options.history.state.back)) {
     router.go(-1);
   } else {
-    router.replace('/');
+    void router.replace('/');
   }
 };
 
 /**
  * Re-run the middleware pipeline when the user logs out or state is cleared
  */
-watchSyncEffect(() => {
+watch([
+  () => remote.auth.currentUser,
+  () => remote.auth.servers,
+  () => remote.auth.currentServer
+], () => {
   if (!remote.auth.currentUser && remote.auth.servers.length <= 0) {
     /**
      * We run the redirect to /server/add as it's the first page in the login flow
@@ -91,5 +93,4 @@ watchSyncEffect(() => {
   ) {
     void router.replace('/server/select');
   }
-}
-);
+}, { flush: 'sync' });
