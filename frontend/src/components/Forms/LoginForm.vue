@@ -2,7 +2,7 @@
   <div>
     <VForm
       v-model="valid"
-      :disabled="loading"
+      :disabled="loading || disabled"
       @submit.prevent="userLogin">
       <VTextField
         v-if="!user"
@@ -51,7 +51,7 @@
         </VCol>
         <VCol class="mr-2">
           <VBtn
-            :disabled="!valid"
+            :disabled="!valid || disabled"
             :loading="loading"
             block
             size="large"
@@ -75,15 +75,14 @@ import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { fetchIndexPage } from '@/utils/items';
 import { remote } from '@/plugins/remote';
-import { getJSONConfig } from '@/utils/external-config';
+import { jsonConfig } from '@/utils/external-config';
 
-const { user } = defineProps<{ user?: UserDto }>();
+const { user, disabled } = defineProps<{ user?: UserDto; disabled?: boolean }>();
 
 defineEmits<{
   change: [];
 }>();
 
-const jsonConfig = await getJSONConfig();
 const { t } = useI18n();
 
 const router = useRouter();
@@ -121,9 +120,7 @@ async function userLogin(): Promise<void> {
      * loading spinner active until we redirect the user.
      */
     await fetchIndexPage();
-
-    await router.replace('/');
-  } finally {
+  } catch {
     loading.value = false;
   }
 }

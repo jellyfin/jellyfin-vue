@@ -48,9 +48,8 @@ import { shallowRef, unref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { remote } from '@/plugins/remote';
-import { getJSONConfig } from '@/utils/external-config';
+import { jsonConfig } from '@/utils/external-config';
 
-const jsonConfig = await getJSONConfig();
 const router = useRouter();
 const i18n = useI18n();
 const valid = shallowRef(false);
@@ -63,17 +62,16 @@ const rules = [
 ];
 
 /**
- * Attempts a connection to the given server
+ * Attempts a connection to the given server.
+ * If the connection is successful, the user will be redirected to the login page
+ * at the middleware level
  */
 async function connectToServer(): Promise<void> {
   loading.value = true;
 
   try {
     await remote.auth.connectServer(serverUrl.value);
-
-    await (previousServerLength === 0
-      ? router.push('/server/login')
-      : router.push('/server/select'));
+    await router.push('/server/login');
   } finally {
     loading.value = false;
   }

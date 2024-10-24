@@ -1,8 +1,8 @@
 import { defu } from 'defu';
 import { ref, toRaw } from 'vue';
 import type {
+  NavigationGuardReturn,
   RouteLocationNormalized,
-  RouteLocationRaw,
   RouteMeta
 } from 'vue-router';
 
@@ -40,7 +40,7 @@ const reactiveMeta = ref(structuredClone(defaultMeta));
 export function metaGuard(
   to: RouteLocationNormalized,
   from: RouteLocationNormalized
-): boolean | RouteLocationRaw {
+): NavigationGuardReturn {
   reactiveMeta.value = defu(to.meta, structuredClone(defaultMeta));
   /**
    * This is needed to ensure all the meta matches the expected data
@@ -51,6 +51,4 @@ export function metaGuard(
   if (from.meta.layout.transition.leave) {
     to.meta.layout.transition.enter = from.meta.layout.transition.leave;
   }
-
-  return true;
 }
