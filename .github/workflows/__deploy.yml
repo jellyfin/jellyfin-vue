@@ -29,6 +29,7 @@ jobs:
       url: ${{ steps.cf.outputs.deployment-url }}
     outputs:
       url: ${{ steps.cf.outputs.deployment-url }}
+      alias-url: ${{ steps.cf.outputs.deployment-alias-url }}
 
     steps:
       - name: Download workflow artifact ⬇️
@@ -58,5 +59,6 @@ jobs:
       branch: ${{ inputs.branch }}
       commit: ${{ inputs.commit }}
       preview_url: ${{ needs.cf-pages.outputs.url }}
+      preview_alias: ${{ needs.cf-pages.outputs.alias-url }}
       in_progress: false
       comment: ${{ inputs.comment }}
