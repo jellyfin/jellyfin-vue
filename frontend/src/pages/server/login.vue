@@ -79,6 +79,7 @@
         </h5>
         <LoginForm
           :user="currentUser"
+          :disabled="!isConnectedToServer"
           @change="resetCurrentUser" />
         <p
           v-if="disclaimer"
@@ -98,26 +99,19 @@ meta:
 
 <script setup lang="ts">
 import type { UserDto } from '@jellyfin/sdk/lib/generated-client';
-import { ref, shallowRef, computed } from 'vue';
+import { ref, shallowRef, computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
-import { watchImmediate } from '@vueuse/core';
 import { remote } from '@/plugins/remote';
-import { getJSONConfig } from '@/utils/external-config';
-import { isConnectedToServer } from '@/store';
+import { jsonConfig } from '@/utils/external-config';
 import { usePageTitle } from '@/composables/page-title';
+import { useSnackbar } from '@/composables/use-snackbar';
+import { isConnectedToServer } from '@/store';
 
-const jsonConfig = await getJSONConfig();
 const { t } = useI18n();
 const router = useRouter();
 
 usePageTitle(() => t('login'));
-
-watchImmediate(isConnectedToServer, async () => {
-  if (!isConnectedToServer.value) {
-    await router.replace('/server/select');
-  }
-});
 
 const disclaimer = computed(() => remote.auth.currentServer?.BrandingOptions.LoginDisclaimer);
 const publicUsers = computed(() => remote.auth.currentServer?.PublicUsers ?? []);
@@ -132,7 +126,6 @@ async function setCurrentUser(user: UserDto): Promise<void> {
   if (!user.HasPassword && user.Name) {
     // If the user doesn't have a password, avoid showing the password form
     await remote.auth.loginUser(user.Name, '');
-    await router.replace('/');
   } else {
     currentUser.value = user;
   }
@@ -145,4 +138,10 @@ function resetCurrentUser(): void {
   currentUser.value = undefined;
   loginAsOther.value = false;
 }
+
+watch(isConnectedToServer, () => {
+  if (!isConnectedToServer.value) {
+    useSnackbar(t('noServerConnection'), 'error');
+  }
+});
 </script>

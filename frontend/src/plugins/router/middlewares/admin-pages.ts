@@ -1,4 +1,4 @@
-import type { RouteLocationNormalized, RouteLocationRaw } from 'vue-router';
+import type { NavigationGuardReturn, RouteLocationNormalized } from 'vue-router';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { i18n } from '@/plugins/i18n';
 import { remote } from '@/plugins/remote';
@@ -9,12 +9,10 @@ import { remote } from '@/plugins/remote';
  */
 export function adminGuard(
   to: RouteLocationNormalized
-): boolean | RouteLocationRaw {
+): NavigationGuardReturn {
   if (to.meta.admin && !remote.auth.currentUser?.Policy?.IsAdministrator) {
     useSnackbar(i18n.t('unauthorized'), 'error');
 
-    return { path: '/', replace: true };
+    return false;
   }
-
-  return true;
 }
