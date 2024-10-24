@@ -36,25 +36,21 @@ export async function loginGuard(
   }
 
   if (
-    (
-      !jsonConfig.allowServerSelection
-      && serverRoutes.has(to.path)
-    )
-    || (
-      !isNil(remote.auth.currentServer)
-      && !isNil(remote.auth.currentUser)
-      && !isNil(remote.auth.currentUserToken)
-      && routes.has(to.path)
-    )
+    !isNil(remote.auth.currentServer)
+    && !isNil(remote.auth.currentUser)
+    && !isNil(remote.auth.currentUserToken)
+    && routes.has(to.path)
   ) {
     return doRedir({ path: '/', replace: true }, to);
   }
 
-  if (!remote.auth.servers.length) {
-    return doRedir({ path: serverAddUrl, replace: true }, to);
-  } else if (isNil(remote.auth.currentServer)) {
-    return doRedir({ path: serverSelectUrl, replace: true }, to);
-  } else if (isNil(remote.auth.currentUser)) {
+  if (jsonConfig.allowServerSelection) {
+    if (!remote.auth.servers.length) {
+      return doRedir({ path: serverAddUrl, replace: true }, to);
+    } else if (isNil(remote.auth.currentServer)) {
+      return doRedir({ path: serverSelectUrl, replace: true }, to);
+    }
+  } else {
     return doRedir({ path: serverLoginUrl, replace: true }, to);
   }
 
