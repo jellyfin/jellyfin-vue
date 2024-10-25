@@ -1,7 +1,7 @@
 ## This dockerfile builds the client entirely in a Docker context
 
 # slim image can't be used since we need git to fetch the commit hash
-FROM node:20-slim AS build
+FROM node:lts-slim AS build
 
 # Set build arguments
 ARG IS_STABLE=0

@@ -64,7 +64,7 @@ jobs:
       - name: Setup node environment ⚙️
         uses: actions/setup-node@v4.0.4
         with:
-          node-version: 20
+          node-version: lts/*
           check-latest: true
           cache: 'npm'
 

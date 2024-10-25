@@ -31,7 +31,10 @@ done
 rm -rf /var/lib/apt/lists/{*,.*} /var/cache/apt/archives/{*,.*}
 EOF
 
-# Set permissions and install node
+# Set permissions, purge outdated packages and install node
 RUN chmod 0755 /usr/sbin/install_packages && \
+  apt update -qq && \
+  apt upgrade -y && \
+  apt autoremove --purge -y && \
   curl -fsSL https://deb.nodesource.com/setup_lts.x | bash && \
   install_packages nodejs
