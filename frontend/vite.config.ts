@@ -19,7 +19,7 @@ import { defineConfig } from 'vite';
  * TODO: Replace with @jellyfin-vue/vite-plugins after https://github.com/vitejs/vite/issues/5370
  * is fixed
  */
-import { JellyfinVueAnalysis, JellyfinVueChunking } from '../packages/vite-plugins';
+import { BundleAnalysis, BundleChunking, BundleSizeReport } from '../packages/vite-plugins';
 import { entrypoints, localeFilesFolder, srcRoot } from './scripts/paths';
 import virtualModules from './scripts/virtual-modules';
 
@@ -28,8 +28,9 @@ export default defineConfig({
   base: './',
   cacheDir: '../node_modules/.cache/vite',
   plugins: [
-    JellyfinVueAnalysis(),
-    JellyfinVueChunking(),
+    BundleAnalysis(),
+    BundleChunking(),
+    BundleSizeReport(),
     Virtual(virtualModules),
     VueRouter({
       dts: './types/global/routes.d.ts',
