@@ -89,7 +89,7 @@ jobs:
   deploy:
     name: Deploy 🚀
     uses: ./.github/workflows/__deploy.yml
-    if: ${{ always() && !cancelled() && needs.build.result == 'success' && github.repository == 'jellyfin/jellyfin-vue' }}
+    if: ${{ always() && !cancelled() && github.repository == 'jellyfin/jellyfin-vue' }}
     needs:
       - push-comment
       - build
