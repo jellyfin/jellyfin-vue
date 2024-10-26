@@ -7,5 +7,12 @@ export default [
   ...getTSVueConfig(true, import.meta.dirname),
   ...unocss,
   ...getNodeFiles(),
-  ...getWorkerFiles()
+  ...getWorkerFiles(),
+  {
+    name: '(@jellyfin-vue/frontend) Ignored files',
+    ignores: [
+      'types/global/routes.d.ts',
+      'types/global/components.d.ts'
+    ]
+  }
 ] satisfies Linter.Config[];

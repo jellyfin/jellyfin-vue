@@ -1,8 +1,8 @@
 import type { Linter } from 'eslint';
-import { getBaseConfig } from './eslint/rules/base';
-import { getTSVueConfig } from './eslint/rules/typescript-vue';
+import { getBaseConfig, getTSVueConfig, getNodeFiles, tsFiles } from './eslint/';
 
 export default [
   ...getBaseConfig('@jellyfin-vue/configs'),
-  ...getTSVueConfig(false, import.meta.dirname)
+  ...getTSVueConfig(false, import.meta.dirname),
+  ...getNodeFiles(tsFiles)
 ] satisfies Linter.Config[];
