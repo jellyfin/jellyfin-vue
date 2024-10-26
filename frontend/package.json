@@ -8,8 +8,8 @@
   "scripts": {
     "analyze:bundle": "vite build --mode analyze:bundle",
     "analyze:cycles": "vite build --mode analyze:cycles",
-    "lint": "eslint . --max-warnings=0 --flag unstable_ts_config",
-    "lint:fix": "eslint . --fix --max-warnings=0 --flag unstable_ts_config",
+    "lint": "eslint . --flag unstable_ts_config",
+    "lint:fix": "eslint . --fix --flag unstable_ts_config",
     "lint:inspect": "eslint-config-inspector",
     "build": "vite build",
     "check": "npm run lint && npm run check:types",

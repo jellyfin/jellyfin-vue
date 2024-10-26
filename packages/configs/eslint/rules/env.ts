@@ -22,7 +22,8 @@ export function getNodeFiles(files = ['*.config.*', 'scripts/**/*.ts']): Linter.
           devDependencies: true
         }
       ],
-      'import-x/no-nodejs-modules': 'off'
+      'import-x/no-nodejs-modules': 'off',
+      'unicorn/no-process-exit': 'off'
     }
   }
   ];

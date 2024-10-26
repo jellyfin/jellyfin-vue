@@ -1,8 +1,7 @@
+import { join, basename } from 'node:path';
+import { spawnSync } from 'node:child_process';
 import type { Linter } from 'eslint';
-/*
- * import { join } from 'node:path';
- * import { findUpSync } from 'find-up-simple';
- */
+import { findUpSync } from 'find-up-simple';
 import unicorn from 'eslint-plugin-unicorn';
 // @ts-expect-error - No types available
 import js from '@eslint/js';
@@ -13,22 +12,57 @@ import gitignore from 'eslint-config-flat-gitignore';
 import fileProgress from 'eslint-plugin-file-progress';
 import { eqeqeqConfig } from '../shared';
 
-const CI_environment = process.env.CI ? 0 : 1;
+const CI_environment = Boolean(process.env.CI);
 
 /**
  * Gets ESLint's minimal configuration for the monorepo
  *
  * @param packageName - The name of the current package
+ * @param forceCache - Whether to enable ESLint caching for this run (default `true`)
+ * @param warningAsErrors - All warnings are treated as errors (default `true`)
  */
-export function getBaseConfig(packageName: string): Linter.Config[] {
+export function getBaseConfig(packageName: string, forceCache = !CI_environment, warningAsErrors = true): Linter.Config[] {
+  const cliOverrides = forceCache || warningAsErrors;
+
+  /**
+   * Workaround for implementing https://github.com/eslint/eslint/issues/19015
+   * Stops the current process if the necessary flags are provided, and spawn a new one with the appropiate flags
+   * inheriting it.
+   *
+   * This is necessary to have predictable ESLint runs across the board, without having to worry about specifying the
+   * correct flags for each monorepo package.
+   * We check for eslint directly to avoid messing up with other packages reading this file, like @eslint/config-inspector.
+   */
+  if (cliOverrides && basename(process.argv[1]) === 'eslint') {
+    const newArgs = process.argv.slice(1);
+
+    if (forceCache && !(newArgs.includes('--cache') && newArgs.includes('--cache-location'))) {
+      const cacheLocation = join(findUpSync('node_modules', { type: 'directory' }) ?? '', '.cache/eslint', packageName.replace('/', '_'));
+
+      newArgs.push('--cache', '--cache-location', cacheLocation);
+      console.log('[@jellyfin-vue/configs/eslint] Force enabling caching for this run');
+    }
+
+    if (warningAsErrors && !newArgs.some(arg => arg.includes('--max-warnings'))) {
+      newArgs.push('--max-warnings=0');
+      console.log('[@jellyfin-vue/configs/eslint] Force enabling warnings for this run');
+    }
+
+    const argsHaveChanged = new Set(newArgs).difference(new Set(process.argv.slice(1))).size > 0;
+
+    if (argsHaveChanged) {
+      console.log();
+
+      const result = spawnSync(process.argv[0], newArgs, {
+        stdio: 'inherit',
+        maxBuffer: Number.MAX_SAFE_INTEGER
+      });
+
+      process.exit(result.status ?? 0);
+    }
+  }
+
   return [
-    /*
-     * TODO: Wait for https://github.com/eslint/eslint/issues/19015
-     * {
-     *   cache: true,
-     *   cacheLocation: join(findUpSync('node_modules', { type: 'directory' }) ?? '', '.cache/eslint', packageName.replace('/', '_')),
-     * },
-     */
     { ...js.configs.recommended,
       name: '(@jellyfin-vue/configs/eslint/base - eslint) Extended config from plugin'
     },
@@ -140,7 +174,7 @@ export function getBaseConfig(packageName: string): Linter.Config[] {
         'file-progress': fileProgress
       },
       rules: {
-        'file-progress/activate': CI_environment
+        'file-progress/activate': CI_environment ? 0 : 1
       }
     }
   ];
