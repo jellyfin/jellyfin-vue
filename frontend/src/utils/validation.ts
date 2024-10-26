@@ -64,6 +64,17 @@ export function isObj(value: unknown): value is object {
 }
 
 /**
+ * Check if an object is empty
+ */
+export function isEmpty(value: object): boolean {
+  for (const _ in value) {
+    return false;
+  }
+
+  return true;
+}
+
+/**
  * TypeScript type guard for AxiosError
  */
 export function isAxiosError(object: unknown): object is AxiosError {

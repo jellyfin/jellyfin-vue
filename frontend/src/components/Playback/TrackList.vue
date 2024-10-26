@@ -32,7 +32,7 @@
     <tbody>
       <template v-for="(tracksOnDisc, discNumber) in tracksPerDisc">
         <tr
-          v-if="Object.keys(tracksPerDisc).length > 1"
+          v-if="hasMultipleDiscs"
           :key="discNumber"
           class="disc-header">
           <td
@@ -125,6 +125,7 @@ import { useBaseItem } from '@/composables/apis';
 import { playbackManager } from '@/store/playback-manager';
 import { getItemDetailsLink } from '@/utils/items';
 import { formatTicks } from '@/utils/time';
+import { isEmpty } from '@/utils/validation';
 
 const { item } = defineProps<{
   item: BaseItemDto;
@@ -137,6 +138,7 @@ const { data: tracks } = await useBaseItem(getItemsApi, 'getItems')(() => ({
 }));
 
 const tracksPerDisc = computed(() => Object.groupBy(tracks.value, ({ ParentIndexNumber }) => ParentIndexNumber!));
+const hasMultipleDiscs = computed(() => !isEmpty(tracksPerDisc.value));
 
 /**
  * Check if a given BaseItemDto is playing

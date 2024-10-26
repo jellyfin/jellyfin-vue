@@ -1133,12 +1133,12 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
             }
           };
 
-          for (const [action, handler] of Object.entries(actionHandlers)) {
+          for (const action in actionHandlers) {
             try {
               window.navigator.mediaSession.setActionHandler(
                 action as MediaSessionAction,
                 /* eslint-disable-next-line unicorn/no-null */
-                add ? handler : null
+                add ? actionHandlers[action as keyof typeof actionHandlers] ?? null : null
               );
             } catch {
               console.error(
