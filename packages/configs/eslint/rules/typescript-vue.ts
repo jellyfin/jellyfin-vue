@@ -7,7 +7,6 @@ import eslintImportX from 'eslint-plugin-import-x';
 // @ts-expect-error - No types available
 import vueScopedCSS from 'eslint-plugin-vue-scoped-css';
 import css from 'eslint-plugin-css';
-// @ts-expect-error - No types available
 import vue from 'eslint-plugin-vue';
 // @ts-expect-error - No types available
 import promise from 'eslint-plugin-promise';
@@ -94,6 +93,18 @@ const common = [
       }],
       '@typescript-eslint/no-confusing-void-expression': ['error', { ignoreArrowShorthand: true }],
       '@typescript-eslint/no-empty-object-type': ['error', { allowInterfaces: 'with-single-extends' }],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          args: 'all',
+          argsIgnorePattern: '^_',
+          caughtErrors: 'all',
+          caughtErrorsIgnorePattern: '^_',
+          destructuredArrayIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          ignoreRestSiblings: true
+        }
+      ],
       'vue/return-in-computed-property': 'off'
     }
   },

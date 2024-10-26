@@ -35,12 +35,12 @@ function replaceTags(input: string, tagMap: TagMap) {
   let formattedText = input;
 
   // Iterate through tag mappings
-  for (const [htmlTag, markdownTag] of Object.entries(tagMap)) {
+  for (const htmlTag in tagMap) {
     const escapedHtmlTag = htmlTag.replaceAll('\\', '\\\\');
     const regex = new RegExp(escapedHtmlTag, 'gi');
 
     formattedText = formattedText.replace(regex, (_, p1: string) => {
-      return markdownTag.replace('$1', p1.trim());
+      return tagMap[htmlTag].replace('$1', p1.trim());
     });
   }
 
