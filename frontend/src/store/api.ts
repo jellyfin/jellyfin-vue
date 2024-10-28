@@ -39,10 +39,6 @@ class ApiStore {
   /**
    * == STATE SECTION ==
    */
-  /**
-   * Maps can be cleared (see this._clear), so no need to perform an structuredClone
-   * of the defaultState here
-   */
   private readonly _items = reactive(new Map<BaseItemDto['Id'], BaseItemDto>());
   private readonly _requests = reactive(new Map<string, Map<string, CachedResponse>>());
   public readonly apiEnums = Object.freeze({

@@ -6,13 +6,13 @@ import type {
   RouteMeta
 } from 'vue-router';
 
-const defaultMeta: RouteMeta = {
+const defaultMeta = (): RouteMeta => ({
   layout: {
     transition: {}
   }
-};
+});
 
-const reactiveMeta = ref(structuredClone(defaultMeta));
+const reactiveMeta = ref(defaultMeta());
 
 /**
  * This middleware handles the meta property between routes
@@ -41,11 +41,11 @@ export function metaGuard(
   to: RouteLocationNormalized,
   from: RouteLocationNormalized
 ): NavigationGuardReturn {
-  reactiveMeta.value = defu(to.meta, structuredClone(defaultMeta));
+  reactiveMeta.value = defu(to.meta, defaultMeta());
   /**
    * This is needed to ensure all the meta matches the expected data
    */
-  from.meta = defu(toRaw(from.meta), structuredClone(defaultMeta));
+  from.meta = defu(toRaw(from.meta), defaultMeta());
   to.meta = reactiveMeta.value;
 
   if (from.meta.layout.transition.leave) {
