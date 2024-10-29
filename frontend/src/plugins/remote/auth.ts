@@ -333,14 +333,14 @@ class RemotePluginAuth extends CommonStore<AuthState> {
   };
 
   public constructor() {
-    super('auth', {
+    super('auth', () => ({
       servers: [],
       currentServerIndex: -1,
       currentUserIndex: -1,
       users: [],
       rememberMe: true,
       accessTokens: {}
-    }, 'localStorage');
+    }), 'localStorage');
     void this.refreshCurrentUserInfo();
     void this._refreshServers();
   }

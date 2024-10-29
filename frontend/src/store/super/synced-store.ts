@@ -12,7 +12,7 @@ import { i18n } from '@/plugins/i18n';
 
 export abstract class SyncedStore<T extends object> extends CommonStore<T> {
   private readonly _clientSyncName = 'vue';
-  private readonly _syncedKeys: (keyof T)[] = [];
+  private readonly _syncedKeys: Set<(keyof T)>;
   private readonly _effectScope = new EffectScope();
   /**
    * Serializes custom pref values for storage as string
@@ -130,27 +130,19 @@ export abstract class SyncedStore<T extends object> extends CommonStore<T> {
    *
    * @param keys - The keys to be synced with the server. If not provided, all keys will be synced
    */
-  protected constructor(storeKey: string, defaultState: T, persistence?: Persistence, keys?: (keyof T)[]) {
+  protected constructor(storeKey: string, defaultState: () => T, persistence?: Persistence, keys?: Set<(keyof T)>) {
     super(storeKey, defaultState, persistence);
-    this._syncedKeys = keys ?? [];
+    this._syncedKeys = keys ?? new Set(Object.keys(defaultState()) as (keyof T)[]);
 
-    if (!this._syncedKeys.length) {
-      for (const key in defaultState) {
-        this._syncedKeys.push(key);
-      }
-    }
-
-    if (keys?.length) {
-      for (const key of keys) {
-        this._effectScope.run(() => {
+    this._effectScope.run(() => {
+      if (keys?.size) {
+        for (const key of keys) {
           watchDeep(() => this._state[key], this._updateState);
-        });
-      }
-    } else {
-      this._effectScope.run(() => {
+        }
+      } else {
         watchDeep(() => this._state, this._updateState);
-      });
-    }
+      }
+    });
 
     /**
      * Trigger sync when the user logs in

@@ -1013,7 +1013,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   };
 
   public constructor() {
-    super('playbackManager', {
+    super('playbackManager', () => ({
       status: PlaybackStatus.Stopped,
       currentSourceUrl: undefined,
       currentItemIndex: undefined,
@@ -1034,7 +1034,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       playbackInitiator: undefined,
       playbackInitMode: InitMode.Unknown,
       playbackSpeed: 1
-    });
+    }));
     /**
      * Logic is divided by concerns and scope. Watchers for callbacks
      * that rely on the same variables might not be together. Categories:
