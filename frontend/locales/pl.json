@@ -317,7 +317,7 @@
   "revokeFailure": "Błąd podczas wycofywania klucza API",
   "revokeSuccess": "Pomyślnie wycofano klucz API",
   "role": "Rola",
-  "routeValidationError": "Podane routeId w parametrach ścieżki nie jest poprawne",
+  "routeValidationError": "Podane parametry dostępu do tej strony są nieprawidłowe",
   "runningTasks": "Aktualne zadania",
   "runtime": "Czas trwania",
   "save": "Zapisz",

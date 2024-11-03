@@ -317,7 +317,7 @@
   "revokeFailure": "Помилка при відкликанні API-ключа",
   "revokeSuccess": "Успішно відкликано API-ключ",
   "role": "Роль",
-  "routeValidationError": "Неправильно вказано routeId у параметрах маршруту",
+  "routeValidationError": "Вказані параметри для доступу до цієї сторінки є некоректними",
   "runningTasks": "Запущені завдання",
   "runtime": "Тривалість",
   "save": "Зберегти",
