@@ -52,9 +52,9 @@ export function getImageTag(
       case ImageType.Primary: {
         return (
           item.AlbumPrimaryImageTag
-          || item.ChannelPrimaryImageTag
-          || item.ParentPrimaryImageTag
-          || undefined
+          ?? item.ChannelPrimaryImageTag
+          ?? item.ParentPrimaryImageTag
+          ?? undefined
         );
       }
       case ImageType.Art: {

@@ -57,7 +57,7 @@ const vuetifyExports = localeNames
  * Get commit hash
  */
 const commit_available = !Number(process.env.IS_STABLE) && Boolean(process.env.COMMIT_HASH);
-const commit_hash = commit_available && `'${process.env.COMMIT_HASH}'` || undefined;
+const commit_hash = (commit_available && `'${process.env.COMMIT_HASH}'`) || undefined;
 
 /**
  * Date-fns exports all english locales with variants, so we need to add the match manually
