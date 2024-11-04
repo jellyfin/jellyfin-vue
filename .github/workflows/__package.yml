@@ -56,13 +56,13 @@ jobs:
     runs-on: ${{ matrix.platform }}-latest
     steps:
       - name: Checkout ⬇️
-        uses: actions/checkout@v4.2.1
+        uses: actions/checkout@v4.2.2
         with:
           ref: ${{ inputs.commit || github.sha }}
           show-progress: false
 
       - name: Setup node environment ⚙️
-        uses: actions/setup-node@v4.0.4
+        uses: actions/setup-node@v4.1.0
         with:
           node-version: lts/*
           check-latest: true
@@ -173,7 +173,7 @@ jobs:
 
     steps:
       - name: Checkout ⬇️
-        uses: actions/checkout@v4.2.1
+        uses: actions/checkout@v4.2.2
         with:
           ref: ${{ inputs.commit || github.sha }}
           show-progress: false
@@ -270,7 +270,7 @@ jobs:
           path: /tmp/${{ env.REGISTRY_IMAGE }}/cache/
   
       - name: Checkout ⬇️
-        uses: actions/checkout@v4.2.1
+        uses: actions/checkout@v4.2.2
         with:
           ref: ${{ inputs.commit || github.sha }}
           show-progress: false
