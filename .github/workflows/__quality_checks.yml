@@ -22,8 +22,6 @@ jobs:
       - name: Scan
         uses: actions/dependency-review-action@v4.4.0
         with:
-          ## Workaround from https://github.com/actions/dependency-review-action/issues/456
-          ## TODO: Remove when necessary
           base-ref: ${{ github.event.pull_request.base.sha || 'master' }}
           head-ref: ${{ github.event.pull_request.head.sha || github.ref }}
 
