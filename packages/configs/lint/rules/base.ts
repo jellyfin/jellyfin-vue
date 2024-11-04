@@ -40,12 +40,12 @@ export function getBaseConfig(packageName: string, forceCache = !CI_environment,
       const cacheLocation = join(findUpSync('node_modules', { type: 'directory' }) ?? '', '.cache/eslint', packageName.replace('/', '_'));
 
       newArgs.push('--cache', '--cache-location', cacheLocation);
-      console.log('[@jellyfin-vue/configs/eslint] Force enabling caching for this run');
+      console.log('[@jellyfin-vue/configs/lint] Force enabling caching for this run');
     }
 
     if (warningAsErrors && !newArgs.some(arg => arg.includes('--max-warnings'))) {
       newArgs.push('--max-warnings=0');
-      console.log('[@jellyfin-vue/configs/eslint] Force enabling warnings for this run');
+      console.log('[@jellyfin-vue/configs/lint] Force enabling warnings for this run');
     }
 
     const argsHaveChanged = new Set(newArgs).difference(new Set(process.argv.slice(1))).size > 0;
@@ -64,15 +64,15 @@ export function getBaseConfig(packageName: string, forceCache = !CI_environment,
 
   return [
     { ...js.configs.recommended,
-      name: '(@jellyfin-vue/configs/eslint/base - eslint) Extended config from plugin'
+      name: '(@jellyfin-vue/configs/lint/base - eslint) Extended config from plugin'
     },
     {
       ...unicorn.configs['flat/recommended'],
-      name: '(@jellyfin-vue/configs/eslint/base - unicorn) Extended config from plugin'
+      name: '(@jellyfin-vue/configs/lint/base - unicorn) Extended config from plugin'
     },
     {
       ...dependConfigs['flat/recommended'],
-      name: '(@jellyfin-vue/configs/eslint/base - depend) Extended config from plugin'
+      name: '(@jellyfin-vue/configs/lint/base - depend) Extended config from plugin'
     },
     {
       ...stylistic.configs.customize({
@@ -83,10 +83,10 @@ export function getBaseConfig(packageName: string, forceCache = !CI_environment,
         arrowParens: false,
         blockSpacing: true
       }),
-      name: '(@jellyfin-vue/configs/eslint/base - @stylistic) Extended config from plugin'
+      name: '(@jellyfin-vue/configs/lint/base - @stylistic) Extended config from plugin'
     },
     {
-      name: '(@jellyfin-vue/configs/eslint/base) Common settings',
+      name: '(@jellyfin-vue/configs/lint/base) Common settings',
       rules: {
         'no-empty': ['error', { allowEmptyCatch: true }],
         'no-extend-native': 'error',
@@ -150,13 +150,13 @@ export function getBaseConfig(packageName: string, forceCache = !CI_environment,
     },
     {
       ...stylistic.configs['disable-legacy'],
-      name: '(@jellyfin-vue/configs/eslint/base) Disable stylistic legacy rules'
+      name: '(@jellyfin-vue/configs/lint/base) Disable stylistic legacy rules'
     },
     /**
      * Extra files to include and ignores that should override all the others
      */
     {
-      name: '(@jellyfin-vue/configs/eslint/base) Ignored files',
+      name: '(@jellyfin-vue/configs/lint/base) Ignored files',
       ignores: [
         '**/.git',
         ...gitignore().ignores
@@ -164,7 +164,7 @@ export function getBaseConfig(packageName: string, forceCache = !CI_environment,
     },
     /** File progress plugin */
     {
-      name: '(@jellyfin-vue/configs/eslint/base) Linting progress report',
+      name: '(@jellyfin-vue/configs/lint/base) Linting progress report',
       settings: {
         progress: {
           successMessage: 'Linting done!'

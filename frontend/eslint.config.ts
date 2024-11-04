@@ -1,5 +1,5 @@
 import type { Linter } from 'eslint';
-import { getBaseConfig, getTSVueConfig, getNodeFiles, unocss, getWorkerFiles } from '@jellyfin-vue/configs/eslint';
+import { getBaseConfig, getTSVueConfig, getNodeFiles, unocss, getWorkerFiles } from '@jellyfin-vue/configs/lint';
 
 // TODO: Add missing rules for i18n and json
 export default [

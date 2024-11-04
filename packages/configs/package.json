@@ -4,7 +4,7 @@
   "type": "module",
   "exports": {
     "./typescript/base.json": "./typescript/base.json",
-    "./eslint": "./eslint/index.ts",
+    "./lint": "./lint/index.ts",
     "./unocss": "./unocss.ts"
   },
   "scripts": {
