@@ -7,7 +7,7 @@ import globals from 'globals';
  */
 export function getNodeFiles(files = ['*.config.*', 'scripts/**/*.ts']): Linter.Config[] {
   return [{
-    name: '(@jellyfin-vue/configs/eslint/env) Node.js and development-related files',
+    name: '(@jellyfin-vue/configs/lint/env) Node.js and development-related files',
     files,
     languageOptions: {
       globals: {
@@ -35,7 +35,7 @@ export function getNodeFiles(files = ['*.config.*', 'scripts/**/*.ts']): Linter.
  */
 export function getWorkerFiles(files = ['**/*.worker.ts']): Linter.Config[] {
   return [{
-    name: '(@jellyfin-vue/configs/eslint/env) WebWorkers',
+    name: '(@jellyfin-vue/configs/lint/env) WebWorkers',
     files,
     languageOptions: {
       globals: {

@@ -8,7 +8,7 @@ export const json = [
     /* First index is just the plugin definition */
     ...jsoncRecommended.at(0),
     ...jsoncRecommended.at(1),
-    name: '(@jellyfin-vue/configs/eslint/json) - Custom config',
+    name: '(@jellyfin-vue/configs/lint/json) - Custom config',
     rules: {
       ...jsoncRecommended.at(1).rules,
       ...jsoncRecommended.at(2).rules,

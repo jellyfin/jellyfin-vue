@@ -1,5 +1,5 @@
 import type { Linter } from 'eslint';
-import { getBaseConfig, getTSVueConfig, getNodeFiles, tsFiles } from './eslint/';
+import { getBaseConfig, getTSVueConfig, getNodeFiles, tsFiles } from './lint/';
 
 export default [
   ...getBaseConfig('@jellyfin-vue/configs'),
