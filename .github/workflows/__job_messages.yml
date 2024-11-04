@@ -64,7 +64,7 @@ jobs:
           echo "EOF" >> $GITHUB_ENV
 
       - name: Push comment to Pull Request 🔼
-        uses: thollander/actions-comment-pull-request@v3.0.0
+        uses: thollander/actions-comment-pull-request@v3.0.1
         if: ${{ inputs.comment && steps.compose.conclusion == 'success' }}
         with:
           github-token: ${{ secrets.JF_BOT_TOKEN }}
