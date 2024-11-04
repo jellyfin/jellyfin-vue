@@ -13,7 +13,7 @@ import { apiStore } from '@/store/api';
 import { isArray, isNil } from '@/utils/validation';
 import { JView_isRouting } from '@/store/keys';
 
-/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 type OmittedKeys = 'fields' | 'userId' | 'enableImages' | 'enableTotalRecordCount' | 'enableImageTypes';
 type ParametersAsGetters<T extends (...args: any[]) => any> = T extends (...args: infer P) => any
   ? { [K in keyof P]: () => BetterOmit<Mutable<P[K]>, OmittedKeys> }
@@ -470,4 +470,4 @@ export function methodsAsObject<T extends Record<K, (...args: any[]) => any>, K 
   };
 }
 
-/* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-return */
+/* eslint-enable @typescript-eslint/no-explicit-any */

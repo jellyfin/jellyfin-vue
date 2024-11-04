@@ -248,8 +248,8 @@ export function canPlay(item: BaseItemDto | undefined): boolean {
       'Series',
       'Trailer',
       'Video'
-    ].includes(item.Type || '')
-    || ['Video', 'Audio'].includes(item.MediaType || '')
+    ].includes(item.Type ?? '')
+    || ['Video', 'Audio'].includes(item.MediaType ?? '')
     || item.IsFolder
   );
 }
@@ -285,7 +285,7 @@ export function canMarkWatched(item: BaseItemDto): boolean {
  */
 export function canInstantMix(item: BaseItemDto): boolean {
   return ['Audio', 'MusicAlbum', 'MusicArtist', 'MusicGenre'].includes(
-    item.Type || ''
+    item.Type ?? ''
   );
 }
 
@@ -328,7 +328,7 @@ export function getItemDetailsLink(
   if (!isPerson(item) && isLibrary(item)) {
     routeName = '/library/[itemId]';
   } else {
-    const type = overrideType || item.Type;
+    const type = overrideType ?? item.Type;
 
     switch (type) {
       case 'Series': {

@@ -18,7 +18,7 @@
       <VDivider />
       <VCardText
         class="text-center d-flex align-center justify-center">
-        <JSafeHtml :html="innerHtml" />
+        <JSafeHtml :html="state.text" />
       </VCardText>
       <VCardActions class="align-center justify-center">
         <VBtn
@@ -33,7 +33,7 @@
           variant="elevated"
           :color="state.confirmColor ?? 'error'"
           @click="confirm">
-          {{ state.confirmText }}
+          {{ state.confirmText ?? t('accept') }}
         </VBtn>
       </VCardActions>
     </VCard>
@@ -89,9 +89,9 @@ export async function useConfirmDialog<T>(
   params: ConfirmDialogState,
   raiseError = false
 ): Promise<T | undefined> {
-  state.title = params.title || '';
+  state.title = params.title;
+  state.text = params.text;
   state.subtitle = params.subtitle;
-  state.text = params.text || '';
   state.confirmText = params.confirmText;
   state.confirmColor = params.confirmColor;
 
@@ -109,6 +109,4 @@ export async function useConfirmDialog<T>(
 
 <script setup lang="ts">
 const { t } = useI18n();
-
-const innerHtml = computed(() => state.text ?? t('accept'));
 </script>

@@ -838,10 +838,6 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       itemId
     }));
 
-    if (!items.value) {
-      throw new Error('No items found');
-    }
-
     for (const item of items.value) {
       await this.addToQueue(item);
     }
