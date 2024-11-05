@@ -158,7 +158,7 @@
                     v-if="item.Id && item.PrimaryImageTag"
                     :alt="$t('person')"
                     :src="
-                      remote.sdk.api?.getItemImageUrl(
+                      getItemImageUrl(
                         item.Id,
                         ImageType.Primary
                       )
@@ -234,6 +234,7 @@ import { format, formatISO } from 'date-fns';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { watchImmediate } from '@vueuse/core';
+import { getItemImageUrl } from '@/utils/images';
 import { isArray } from '@/utils/validation';
 import { remote } from '@/plugins/remote';
 import { useSnackbar } from '@/composables/use-snackbar';
