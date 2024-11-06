@@ -239,7 +239,9 @@ jobs:
       - name: Extract built client from Docker image 🗜️
         run: |
           docker load < docker_image.tar
-          docker cp $(docker create --name jf $(docker images --filter=reference='${{ env.REGISTRY_IMAGE }}' -q | head -n 1)):/usr/share/nginx/html/ ./dist
+          IMAGE_SHA=$(docker images --filter=reference='${{ env.REGISTRY_IMAGE }}' -q | head -n 1)
+          ASSETS=$(docker inspect $IMAGE_SHA --format='{{range .Config.Env}}{{println .}}{{end}}' | grep ^ASSETS= | cut -d '=' -f2-)
+          docker cp $(docker create --name jf $IMAGE_SHA):$ASSETS/ ./dist
 
       - name: Create provenance attestation 🔏
         uses: actions/attest-build-provenance@v1.4.4
