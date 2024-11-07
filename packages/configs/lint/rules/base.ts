@@ -3,7 +3,6 @@ import { spawnSync } from 'node:child_process';
 import type { Linter } from 'eslint';
 import { findUpSync } from 'find-up-simple';
 import unicorn from 'eslint-plugin-unicorn';
-// @ts-expect-error - No types available
 import js from '@eslint/js';
 import stylistic from '@stylistic/eslint-plugin';
 import { configs as dependConfigs } from 'eslint-plugin-depend';
