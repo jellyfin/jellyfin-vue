@@ -317,7 +317,7 @@
   "revokeFailure": "Fehler beim Widerruf des API-Schlüssels",
   "revokeSuccess": "API-Schlüssel erfolgreich widerrufen",
   "role": "Rolle",
-  "routeValidationError": "Die spezifizierte routeId in den Routenparametern is nicht korrekt",
+  "routeValidationError": "Die angegebenen Parameter für den Zugriff auf diese Seite sind nicht korrekt",
   "runningTasks": "Laufende Aufgaben",
   "runtime": "Länge",
   "save": "Speichern",
