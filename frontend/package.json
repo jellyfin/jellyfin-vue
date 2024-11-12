@@ -47,21 +47,21 @@
     "vuetify": "3.7.4"
   },
   "devDependencies": {
-    "@iconify/json": "2.2.268",
+    "@iconify/json": "2.2.271",
     "@intlify/unplugin-vue-i18n": "4.0.0",
     "@jellyfin-vue/configs": "*",
     "@jellyfin-vue/vite-plugins": "*",
     "@rollup/plugin-virtual": "3.0.2",
     "@types/dompurify": "3.0.5",
     "@types/sortablejs": "1.15.8",
-    "@vitejs/plugin-vue": "5.1.4",
+    "@vitejs/plugin-vue": "5.1.5",
     "browserslist": "4.24.2",
     "lightningcss": "1.28.1",
     "unocss": "0.64.0",
-    "unplugin-icons": "0.20.0",
+    "unplugin-icons": "0.20.1",
     "unplugin-vue-components": "0.27.4",
     "unplugin-vue-router": "0.10.8",
-    "vite": "5.4.10",
-    "vite-plugin-vue-devtools": "7.6.3"
+    "vite": "5.4.11",
+    "vite-plugin-vue-devtools": "7.6.4"
   }
 }
