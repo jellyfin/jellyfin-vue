@@ -74,7 +74,7 @@
   "createKeySuccess": "La nouvelle clé API a bien été créée",
   "crew": "Équipe",
   "criticRating": "Note des critiques",
-  "currentAppTypography": "Typographie de l'application actuelle",
+  "currentAppTypography": "Typographie de l'application actuelle ({valeur})",
   "currentPassword": "Mot de passe actuel",
   "customRating": "Note personnalisée",
   "dateAdded": "Date d'ajout",

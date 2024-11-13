@@ -317,7 +317,7 @@
   "revokeFailure": "Při rušení platnosti klíče k API došlo k chybě",
   "revokeSuccess": "Platnost klíče k API byla úspěšně zrušena",
   "role": "Role",
-  "routeValidationError": "Zadané routeId v parametrech cesty není správné",
+  "routeValidationError": "Zadané parametry pro přístup k této stránce nejsou správné",
   "runningTasks": "Běžící úlohy",
   "runtime": "Délka",
   "save": "Uložit",
