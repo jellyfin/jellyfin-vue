@@ -1,7 +1,7 @@
 import { basename } from 'node:path';
 import { glob, lstat } from 'node:fs/promises';
 import prettyBytes from 'pretty-bytes';
-import { visualizer } from 'rollup-plugin-visualizer';
+import { SondaRollupPlugin } from 'sonda';
 import { normalizePath, type Plugin } from 'vite';
 import type { RollupLog } from 'rollup';
 
@@ -18,11 +18,15 @@ export function BundleAnalysis(): Plugin {
       if (env.mode === 'analyze:bundle') {
         return {
           build: {
+            sourcemap: true,
             rollupOptions: {
               plugins: [
-                visualizer({
-                  open: true,
-                  filename: 'dist/stats.html'
+                SondaRollupPlugin({
+                  filename: 'dist/bundle-report.html',
+                  detailed: true,
+                  sources: true,
+                  gzip: false,
+                  brotli: false
                 })
               ]
             }
