@@ -85,6 +85,19 @@
                 hide-details />
             </VCol>
           </VRow>
+          <VRow align="center">
+            <VCol :cols="4">
+              <label>{{ $t('preciseSubtitle') }}</label>
+            </VCol>
+            <VCol
+              :cols="8"
+              class="text-right">
+              <VSwitch
+                v-model="playerElement.usePreciseSubtitles.value"
+                color="primary"
+                hide-details />
+            </VCol>
+          </VRow>
         </VCardText>
       </VCard>
     </VMenu>

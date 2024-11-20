@@ -25,6 +25,7 @@
     "@skirtle/vue-vnode-utils": "0.2.0",
     "@vueuse/components": "11.3.0",
     "@vueuse/core": "11.3.0",
+    "assjs": "^0.1.3",
     "audiomotion-analyzer": "4.5.0",
     "axios": "1.7.8",
     "blurhash": "2.0.5",
