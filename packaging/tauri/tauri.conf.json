@@ -1,47 +1,47 @@
 {
-	"bundle": {
-		"active": true,
-		"targets": ["appimage", "msi", "dmg"],
-		"icon": ["icons/**/*"],
-		"resources": [],
-		"externalBin": [],
-		"category": "Entertainment",
-		"linux": {
-			"appimage": {
-				"bundleMediaFramework": true
-			}
-		}
-	},
-	"build": {
-		"beforeBuildCommand": "npm run build -w @jellyfin-vue/frontend",
-		"frontendDist": "../../frontend/dist",
-		"beforeDevCommand": "npm start -w @jellyfin-vue/frontend",
-		"devUrl": "http://127.0.0.1:3000"
-	},
-	"productName": "jellyfin-vue",
-	"version": "../../frontend/package.json",
-	"identifier": "org.jellyfin.vue.tauri",
-	"plugins": {},
-	"app": {
-		"security": {
-			"csp": null,
-			"capabilities": [
-				{
-					"identifier": "all windows",
-					"description": "application capability used for all windows",
-					"windows": ["*"],
-					"permissions": ["core:window:allow-set-fullscreen", "core:window:default", "core:webview:allow-internal-toggle-devtools", "core:webview:default"]
-				}
-			]
-		},
-		"windows": [
-			{
-				"title": "Jellyfin Vue",
-				"width": 1152,
-				"height": 720,
-				"resizable": true,
-				"fullscreen": false
-			}
-		]
-	}
+  "bundle": {
+    "active": true,
+    "targets": ["appimage", "msi", "dmg"],
+    "icon": ["icons/**/*"],
+    "resources": [],
+    "externalBin": [],
+    "category": "Entertainment",
+    "linux": {
+      "appimage": {
+        "bundleMediaFramework": true
+      }
+    }
+  },
+  "build": {
+    "beforeBuildCommand": "npm run build -w @jellyfin-vue/frontend",
+    "frontendDist": "../../frontend/dist",
+    "beforeDevCommand": "npm start -w @jellyfin-vue/frontend",
+    "devUrl": "http://127.0.0.1:3000"
+  },
+  "productName": "jellyfin-vue",
+  "version": "../../frontend/package.json",
+  "identifier": "org.jellyfin.vue.tauri",
+  "plugins": {},
+  "app": {
+    "security": {
+      "csp": null,
+      "capabilities": [
+        {
+          "identifier": "all windows",
+          "description": "application capability used for all windows",
+          "windows": ["*"],
+          "permissions": ["core:window:allow-set-fullscreen", "core:window:default", "core:webview:allow-internal-toggle-devtools", "core:webview:default"]
+        }
+      ]
+    },
+    "windows": [
+      {
+        "title": "Jellyfin Vue",
+        "width": 1152,
+        "height": 720,
+        "resizable": true,
+        "fullscreen": false
+      }
+    ]
+  }
 }
