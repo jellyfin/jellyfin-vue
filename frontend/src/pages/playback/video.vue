@@ -140,7 +140,7 @@ import { playerElement, videoContainerRef } from '@/store/player-element';
 import { getEndsAtTime, msToTicks } from '@/utils/time';
 import { usePlayback } from '@/composables/use-playback';
 import { getCurrentWindow } from '@tauri-apps/api/window';
-
+import { isNil } from '@/utils/validation';
 
 defineOptions({
   beforeRouteEnter: playbackGuard
@@ -180,8 +180,12 @@ async function toggleFullscreen() {
 
   // Tauri implementation
   const window = await getCurrentWindow();
-  const isFullscreen = await window.isFullscreen();
-  await window.setFullscreen(!isFullscreen);
+
+  if (!isNil(window)) {
+    const isFullscreen = await window.isFullscreen();
+    
+    await window.setFullscreen(!isFullscreen);
+  }
 }
 
 watch(staticOverlay, (val) => {
