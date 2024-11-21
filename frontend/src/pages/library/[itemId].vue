@@ -8,7 +8,7 @@
       </span>
       <VChip
         size="small"
-        class="ma-2 hidden-sm-and-down">
+        class="hidden-sm-and-down ma-2">
         <template v-if="loading && items.length === lazyLoadLimit && initialId === route.params.itemId">
           {{ t('lazyLoading', { value: items.length }) }}
         </template>

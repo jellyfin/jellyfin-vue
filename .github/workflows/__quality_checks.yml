@@ -14,16 +14,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.2
         with:
           ref: ${{ inputs.commit }}
           show-progress: false
 
       - name: Scan
-        uses: actions/dependency-review-action@v4.3.4
+        uses: actions/dependency-review-action@v4.4.0
         with:
-          ## Workaround from https://github.com/actions/dependency-review-action/issues/456
-          ## TODO: Remove when necessary
           base-ref: ${{ github.event.pull_request.base.sha || 'master' }}
           head-ref: ${{ github.event.pull_request.head.sha || github.ref }}
 
@@ -36,29 +34,29 @@ jobs:
         command:
           - lint
           - check:types
-          - analyze:cycles
-    defaults:
-      run:
-        working-directory: frontend
+        include:
+          - workspace: frontend
+            command: analyze:cycles
 
     steps:
       - name: Checkout ⬇️
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.2
         with:
           ref: ${{ inputs.commit }}
           show-progress: false
 
       - name: Setup node environment ⚙️
-        uses: actions/setup-node@v4.0.3
+        uses: actions/setup-node@v4.1.0
         with:
-          node-version: 20
+          node-version: lts/*
           check-latest: true
+          cache: 'npm'
 
       - name: Install dependencies 📦
         run: npm ci --no-audit
 
       - name: Run ${{ matrix.command }} ⚙️
-        run: npm run ${{ matrix.command }}
+        run: npm run ${{ matrix.command }} ${{ matrix.workspace && format('-w {0}', matrix.workspace) || '' }}
 
   commits_checks:
     name: Commit linting 💬✅
@@ -66,7 +64,7 @@ jobs:
 
     steps:
       - name: Checkout ⬇️
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.2
         with:
           ref: ${{ inputs.commit }}
           show-progress: false

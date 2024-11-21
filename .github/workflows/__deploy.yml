@@ -17,15 +17,19 @@ on:
         type: string
         default: frontend
 
+env:
+  CF_PROJECT_NAME: jf-vue
+
 jobs:
   cf-pages:
-    name: CloudFlare Pages 📃
+    name: Cloudflare Pages 📃
     runs-on: ubuntu-latest
     environment: 
       name: ${{ inputs.branch == 'master' && 'Production' || 'Preview' }}
       url: ${{ steps.cf.outputs.deployment-url }}
     outputs:
       url: ${{ steps.cf.outputs.deployment-url }}
+      alias-url: ${{ steps.cf.outputs.deployment-alias-url }}
 
     steps:
       - name: Download workflow artifact ⬇️
@@ -35,12 +39,12 @@ jobs:
           path: dist
 
       - name: Publish to Cloudflare Pages 📃
-        uses: cloudflare/wrangler-action@v3.7.0
+        uses: cloudflare/wrangler-action@v3.12.1
         id: cf
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy dist --project-name=jf-vue --branch=${{ inputs.branch }}
+          command: pages deploy dist --project-name=${{ env.CF_PROJECT_NAME }} --branch=${{ inputs.branch }}
 
   compose-comment:
     name: Compose and push comment 📝
@@ -55,5 +59,6 @@ jobs:
       branch: ${{ inputs.branch }}
       commit: ${{ inputs.commit }}
       preview_url: ${{ needs.cf-pages.outputs.url }}
+      preview_alias: ${{ needs.cf-pages.outputs.alias-url }}
       in_progress: false
       comment: ${{ inputs.comment }}

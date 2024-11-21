@@ -6,9 +6,10 @@ concurrency:
 
 on:
   pull_request_target:
-    paths-ignore:
-      - '**/*.md'
   merge_group:
+
+permissions:
+  pull-requests: read
 
 jobs:
   push-comment:
@@ -23,13 +24,29 @@ jobs:
 
   automation:
     name: Automation 🎛️
-    if: ${{ github.repository == 'jellyfin/jellyfin-vue' }}
+    if: ${{ always() && !cancelled() && github.repository == 'jellyfin/jellyfin-vue' }}
     uses: ./.github/workflows/__automation.yml
     secrets: inherit
 
+  semantic-commits:
+    if: ${{ always() && !cancelled() && github.repository == 'jellyfin/jellyfin-vue' }}
+    runs-on: ubuntu-latest
+    name: Semantic Pull Request 📚
+    steps:
+      - name: Validate PR title 👌
+        uses: amannn/action-semantic-pull-request@v5.5.3
+        env:
+          GITHUB_TOKEN: ${{ secrets.JF_BOT_TOKEN }}
+        with:
+          subjectPattern: ^(?![A-Z]).+$
+          subjectPatternError: |
+            The subject "{subject}" found in the pull request title "{title}"
+            didn't match the configured pattern. Please ensure that the subject
+            doesn't start with an uppercase character.
+
   label:
     name: Labeling 🏷️
-    if: ${{ always() && github.repository == 'jellyfin/jellyfin-vue'}}
+    if: ${{ always() && !cancelled() && github.repository == 'jellyfin/jellyfin-vue'}}
     runs-on: ubuntu-latest
 
     steps:
@@ -56,7 +73,7 @@ jobs:
     uses: ./.github/workflows/__quality_checks.yml
     permissions: {}
     with:
-      commit: ${{ github.event.pull_request.head.ref }}
+      commit: ${{ github.event.pull_request.head.sha }}
 
   codeql:
     name: GitHub CodeQL 🔬
@@ -72,7 +89,7 @@ jobs:
   deploy:
     name: Deploy 🚀
     uses: ./.github/workflows/__deploy.yml
-    if: ${{ always() && !cancelled() && needs.build.result == 'success' && github.repository == 'jellyfin/jellyfin-vue' }}
+    if: ${{ always() && !cancelled() && github.repository == 'jellyfin/jellyfin-vue' }}
     needs:
       - push-comment
       - build

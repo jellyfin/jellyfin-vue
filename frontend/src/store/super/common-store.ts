@@ -7,7 +7,7 @@ export type Persistence = 'localStorage' | 'sessionStorage';
 
 export abstract class CommonStore<T extends object> {
   protected readonly _storeKey: string;
-  private readonly _defaultState: T;
+  private readonly _defaultState: () => T;
   private readonly _internalState: T | RemovableRef<T>;
 
   protected get _state(): T {
@@ -15,10 +15,10 @@ export abstract class CommonStore<T extends object> {
   }
 
   protected readonly _reset = (): void => {
-    Object.assign(this._state, this._defaultState);
+    Object.assign(this._state, this._defaultState());
   };
 
-  protected constructor(storeKey: string, defaultState: T, persistence?: Persistence) {
+  protected constructor(storeKey: string, defaultState: () => T, persistence?: Persistence) {
     this._storeKey = storeKey;
     this._defaultState = defaultState;
 
@@ -31,8 +31,8 @@ export abstract class CommonStore<T extends object> {
     }
 
     this._internalState = isNil(storage)
-      ? reactive(structuredClone(defaultState)) as T
-      : useStorage(storeKey, structuredClone(defaultState), storage, {
+      ? reactive(this._defaultState()) as T
+      : useStorage(storeKey, this._defaultState(), storage, {
         mergeDefaults: (storageValue, defaults) =>
           mergeExcludingUnknown(storageValue, defaults)
       });

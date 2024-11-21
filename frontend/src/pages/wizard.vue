@@ -8,7 +8,7 @@
         sm="12"
         md="12"
         xl="8">
-        <h1 class="text-h4 mb-6 text-center">
+        <h1 class="mb-6 text-h4 text-center">
           {{ heading }}
         </h1>
         <!-- TODO: Wait for Vuetify 3 implementation (https://github.com/vuetifyjs/vuetify/issues/13509) -->

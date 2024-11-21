@@ -1,6 +1,7 @@
 {
-  "name": "@jellyfin-vue",
+  "name": "jellyfin-vue",
   "private": true,
+  "type": "module",
   "homepage": "https://jellyfin.org/",
   "bugs": {
     "url": "https://github.com/jellyfin/jellyfin-vue/issues"
@@ -13,11 +14,25 @@
   "author": "jellyfin-vue Contributors (https://github.com/jellyfin/jellyfin-vue/graphs/contributors)",
   "workspaces": [
     "frontend",
-    "packaging/tauri"
+    "packaging/tauri",
+    "packages/*"
   ],
   "engines": {
-    "node": ">=20.8.1 <21.0.0",
-    "npm": ">=10.1.0",
-    "yarn": "Yarn is not supported. Please use NPM."
+    "node": ">=22.11.0 <23.0.0",
+    "npm": ">=10.9.0",
+    "yarn": "yarn is not supported. Please use npm"
+  },
+  "scripts": {
+    "lint": "npm run lint --workspaces",
+    "lint:fix": "npm run lint:fix --workspaces",
+    "check:types": "npm run check:types --workspaces"
+  },
+  "devDependencies": {
+    "@eslint/config-inspector": "0.5.6",
+    "@types/node": "22.9.1",
+    "eslint": "9.15.0",
+    "jiti": "2.4.0",
+    "typescript": "5.6.3",
+    "vue-tsc": "2.1.10"
   }
 }

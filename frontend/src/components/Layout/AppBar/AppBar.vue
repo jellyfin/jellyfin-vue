@@ -60,14 +60,14 @@
 
 <script setup lang="ts">
 import { computed, inject, type Ref } from 'vue';
-import { useRoute } from 'vue-router';
-import { windowScroll, isConnectedToServer, prefersNoTransparency } from '@/store';
+import { windowScroll, isConnectedToServer, transparencyEffects } from '@/store';
 import { clientSettings } from '@/store/client-settings';
 import { remote } from '@/plugins/remote';
+import { JView_isRouting } from '@/store/keys';
 
-const route = useRoute();
 const { y } = windowScroll;
-const transparentAppBar = computed(() => !prefersNoTransparency.value && route.meta.layout.transparent && y.value < 10);
+const isRouting = inject(JView_isRouting);
+const transparentAppBar = computed(previous => isRouting?.value ? previous : transparencyEffects.value && y.value < 10);
 
 /**
  * Cycle between the different color schemas

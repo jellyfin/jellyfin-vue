@@ -188,6 +188,9 @@ const searchFields = computed<IdentifyField[]>(() => {
 
   return result;
 });
+/**
+ * TODO: Refactor to remove this use of structuredClone
+ */
 const fieldsInputs = ref<IdentifyField[]>(
   structuredClone(toRaw(searchFields.value))
 );

@@ -34,20 +34,20 @@ class SubtitleSettingsStore extends SyncedStore<SubtitleSettingsState> {
   public state = this._state;
 
   public constructor() {
-    super('subtitleSettings', {
+    super('subtitleSettings', () => ({
       enabled: false,
       fontFamily: 'auto',
       fontSize: 1.5,
       positionFromBottom: 10,
       backdrop: true,
       stroke: false
-    }, 'localStorage', [
+    }), 'localStorage', new Set([
       'enabled',
       'fontSize',
       'positionFromBottom',
       'backdrop',
       'stroke'
-    ]);
+    ]));
 
     /**
      * == WATCHERS ==

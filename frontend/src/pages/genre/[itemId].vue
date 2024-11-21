@@ -65,7 +65,7 @@ const route = useRoute('/genre/[itemId]');
 const { itemId } = route.params;
 
 const includeItemTypes = computed<BaseItemKind[]>(() => {
-  const typesQuery = route.query.type as BaseItemKind ?? [];
+  const typesQuery = route.query.type ?? [] as BaseItemKind;
 
   return isStr(typesQuery)
     ? [typesQuery]

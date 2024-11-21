@@ -334,10 +334,10 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
   };
 
   public constructor() {
-    super('playerElement', {
+    super('playerElement', () => ({
       isStretched: false,
       currentExternalSubtitleTrack: undefined
-    });
+    }));
 
     /**
      * * Move user to the fullscreen page when starting video playback by default

@@ -12,6 +12,9 @@ on:
       preview_url:
         required: false
         type: string
+      preview_alias:
+        required: false
+        type: string
       in_progress:
         required: true
         type: boolean
@@ -24,10 +27,12 @@ on:
         type: string
         default: "CFPages-deployment"
 
+env:
+  CF_PAGES_DEPLOYMENT_URL: https://jf-vue.pages.dev
 
 jobs:
   cf_pages_msg:
-    name: CloudFlare Pages deployment 📃🚀
+    name: Cloudflare Pages deployment 📃🚀
     runs-on: ubuntu-latest
 
     steps:
@@ -36,7 +41,8 @@ jobs:
         id: compose
         env:
           COMMIT: ${{ inputs.commit }}
-          PREVIEW_URL: ${{ inputs.preview_url != '' && (inputs.branch != 'master' && inputs.preview_url || format('https://jf-vue.pages.dev ({0})', inputs.preview_url)) || 'Not available' }}
+          PREVIEW_URL: ${{ inputs.preview_url != '' && (inputs.branch != 'master' && inputs.preview_url || format('{0} ({1})', env.CF_PAGES_DEPLOYMENT_URL, inputs.preview_url)) || '❓ Not available' }}
+          PREVIEW_ALIAS: ${{ inputs.preview_alias || '❓ Not available' }}
           DEPLOY_STATUS: ${{ inputs.in_progress && '🔄 Deploying...' || (inputs.preview_url != '' && '✅ Deployed!' || '❌ Failure. Check workflow logs for details') }}
           DEPLOYMENT_TYPE: ${{ inputs.branch != 'master' && '🔀 Preview' || '⚙️ Production' }}
           WORKFLOW_RUN: ${{ !inputs.in_progress && format('**[View build logs](https://github.com/{0}/actions/runs/{1})**', github.repository, github.run_id) || '' }}
@@ -48,6 +54,7 @@ jobs:
           echo "|-------------------------	|:----------------------------:	|" >> $GITHUB_STEP_SUMMARY
           echo "| **Status**              	| $DEPLOY_STATUS                |" >> $GITHUB_STEP_SUMMARY
           echo "| **Preview URL**         	| $PREVIEW_URL                  |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Preview alias**         | $PREVIEW_ALIAS                |" >> $GITHUB_STEP_SUMMARY
           echo "| **Type**         	        | $DEPLOYMENT_TYPE              |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "$WORKFLOW_RUN" >> $GITHUB_STEP_SUMMARY
@@ -57,9 +64,9 @@ jobs:
           echo "EOF" >> $GITHUB_ENV
 
       - name: Push comment to Pull Request 🔼
-        uses: thollander/actions-comment-pull-request@v2.5.0
+        uses: thollander/actions-comment-pull-request@v3.0.1
         if: ${{ inputs.comment && steps.compose.conclusion == 'success' }}
         with:
-          GITHUB_TOKEN: ${{ secrets.JF_BOT_TOKEN }}
+          github-token: ${{ secrets.JF_BOT_TOKEN }}
           message: ${{ env.msg }}
-          comment_tag: ${{ inputs.marker }}
+          comment-tag: ${{ inputs.marker }}

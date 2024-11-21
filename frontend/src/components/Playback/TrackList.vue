@@ -32,7 +32,7 @@
     <tbody>
       <template v-for="(tracksOnDisc, discNumber) in tracksPerDisc">
         <tr
-          v-if="Object.keys(tracksPerDisc).length > 1"
+          v-if="hasMultipleDiscs"
           :key="discNumber"
           class="disc-header">
           <td
@@ -137,6 +137,19 @@ const { data: tracks } = await useBaseItem(getItemsApi, 'getItems')(() => ({
 }));
 
 const tracksPerDisc = computed(() => Object.groupBy(tracks.value, ({ ParentIndexNumber }) => ParentIndexNumber!));
+const hasMultipleDiscs = computed(() => {
+  let loops = 0;
+
+  for (const _ in tracksPerDisc.value) {
+    loops++;
+
+    if (loops > 1) {
+      return true;
+    }
+  }
+
+  return false;
+});
 
 /**
  * Check if a given BaseItemDto is playing

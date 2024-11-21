@@ -7,8 +7,8 @@
     app
     color="transparent">
     <LocaleSwitcher
-      top
-      elevated />
+      elevated
+      top />
   </VFooter>
 </template>
 

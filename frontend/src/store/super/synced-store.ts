@@ -1,8 +1,8 @@
 import type { DisplayPreferencesDto } from '@jellyfin/sdk/lib/generated-client';
 import { getDisplayPreferencesApi } from '@jellyfin/sdk/lib/utils/api/display-preferences-api';
 import destr from 'destr';
-import { toRaw } from 'vue';
-import { watchImmediate, watchPausable, type WatchPausableReturn } from '@vueuse/core';
+import { EffectScope, toRaw } from 'vue';
+import { watchDeep, watchImmediate } from '@vueuse/core';
 import { taskManager } from '../task-manager';
 import { remote } from '@/plugins/remote';
 import { CommonStore, type Persistence } from '@/store/super/common-store';
@@ -12,8 +12,8 @@ import { i18n } from '@/plugins/i18n';
 
 export abstract class SyncedStore<T extends object> extends CommonStore<T> {
   private readonly _clientSyncName = 'vue';
-  private readonly _syncedKeys: (keyof T)[] = [];
-  private readonly _pausableWatchers: WatchPausableReturn[] = [];
+  private readonly _syncedKeys: Set<(keyof T)>;
+  private readonly _effectScope = new EffectScope();
   /**
    * Serializes custom pref values for storage as string
    */
@@ -65,11 +65,11 @@ export abstract class SyncedStore<T extends object> extends CommonStore<T> {
 
     const newState = {} as Partial<T>;
 
-    for (const key of this._syncedKeys.length ? this._syncedKeys : Object.keys(toRaw(this._state))) {
+    for (const key of this._syncedKeys) {
       const obj = displayPreferences.CustomPrefs?.[String(key)];
 
       if (!isNil(obj)) {
-        newState[key as keyof T] = this._deserializeCustomPref(obj) as T[keyof T];
+        newState[key] = this._deserializeCustomPref(obj) as T[keyof T];
       }
     }
 
@@ -89,8 +89,8 @@ export abstract class SyncedStore<T extends object> extends CommonStore<T> {
       try {
         const newPrefs: DisplayPreferencesDto['CustomPrefs'] = {};
 
-        for (const key of this._syncedKeys.length ? this._syncedKeys : Object.keys(toRaw(this._state))) {
-          newPrefs[String(key)] = this._serializeCustomPref(this._state[key as keyof T]);
+        for (const key of this._syncedKeys) {
+          newPrefs[String(key)] = this._serializeCustomPref(this._state[key]);
         }
 
         const displayPreferences = await this._fetchDisplayPreferences();
@@ -110,9 +110,7 @@ export abstract class SyncedStore<T extends object> extends CommonStore<T> {
       try {
         const data = await this._fetchState();
 
-        for (const watcher of this._pausableWatchers) {
-          watcher.pause();
-        }
+        this._effectScope.pause();
 
         const newState = {
           ...toRaw(this._state),
@@ -120,10 +118,7 @@ export abstract class SyncedStore<T extends object> extends CommonStore<T> {
         };
 
         Object.assign(this._state, newState);
-
-        for (const watcher of this._pausableWatchers) {
-          watcher.resume();
-        }
+        this._effectScope.resume();
       } catch {
         useSnackbar(i18n.t('failedSyncingUserSettings'), 'error');
       }
@@ -135,21 +130,19 @@ export abstract class SyncedStore<T extends object> extends CommonStore<T> {
    *
    * @param keys - The keys to be synced with the server. If not provided, all keys will be synced
    */
-  protected constructor(storeKey: string, defaultState: T, persistence?: Persistence, keys?: (keyof T)[]) {
+  protected constructor(storeKey: string, defaultState: () => T, persistence?: Persistence, keys?: Set<(keyof T)>) {
     super(storeKey, defaultState, persistence);
-    this._syncedKeys = keys ?? [];
+    this._syncedKeys = keys ?? new Set(Object.keys(defaultState()) as (keyof T)[]);
 
-    if (keys) {
-      for (const key of keys) {
-        this._pausableWatchers.push(
-          watchPausable(() => this._state[key], this._updateState, { deep: true })
-        );
+    this._effectScope.run(() => {
+      if (keys?.size) {
+        for (const key of keys) {
+          watchDeep(() => this._state[key], this._updateState);
+        }
+      } else {
+        watchDeep(() => this._state, this._updateState);
       }
-    } else {
-      this._pausableWatchers.push(
-        watchPausable(this._state, this._updateState, { deep: true })
-      );
-    }
+    });
 
     /**
      * Trigger sync when the user logs in

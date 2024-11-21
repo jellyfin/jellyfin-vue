@@ -1,4 +1,4 @@
-import { watchSyncEffect } from 'vue';
+import { watch } from 'vue';
 import {
   createRouter,
   createWebHashHistory,
@@ -10,11 +10,11 @@ import { loginGuard } from './middlewares/login';
 import { metaGuard } from './middlewares/meta';
 import { validateGuard } from './middlewares/validate';
 import { isStr } from '@/utils/validation';
-import { getJSONConfig } from '@/utils/external-config';
+import { jsonConfig } from '@/utils/external-config';
 
 export const router = createRouter({
   history:
-    (await getJSONConfig()).routerMode === 'history'
+    jsonConfig.routerMode === 'history'
       ? createWebHistory()
       : createWebHashHistory(),
   routes: [],
@@ -42,7 +42,7 @@ router.beforeEach(metaGuard);
  */
 const backTransition = 'slide-x';
 
-router.back = (): ReturnType<typeof router.back> => {
+router.back = () => {
   const route = router.currentRoute;
 
   /**
@@ -54,40 +54,23 @@ router.back = (): ReturnType<typeof router.back> => {
     leave: route.value.meta.layout.transition.leave ?? backTransition
   };
 
-  void router.replace(
-    isStr(router.options.history.state.back)
-      ? router.options.history.state.back
-      : '/'
-  );
+  if (isStr(router.options.history.state.back)) {
+    router.go(-1);
+  } else {
+    void router.replace('/');
+  }
 };
 
 /**
- * Re-run the middleware pipeline when the user logs out or state is cleared
+ * Re-run the middleware pipeline when the user logs out or state is cleared,
+ * no additional logic is here so we can keep the the login middleware
+ * is the only source of truth.
  */
-watchSyncEffect(() => {
-  if (!remote.auth.currentUser && remote.auth.servers.length <= 0) {
-    /**
-     * We run the redirect to /server/add as it's the first page in the login flow
-     *
-     * In case the whole localStorage is gone at runtime, if we're at the login
-     * page, redirecting to /server/login wouldn't work, as we're in that same page.
-     * /server/add doesn't depend on the state of localStorage, so it's always safe to
-     * redirect there and leave the middleware take care of the final destination
-     * (when servers are already available, for example)
-     */
-    void router.replace('/server/add');
-  } else if (
-    !remote.auth.currentUser
-    && remote.auth.servers.length > 0
-    && remote.auth.currentServer
-  ) {
-    void (remote.auth.currentServer.StartupWizardCompleted ? router.replace('/server/login') : router.replace('/wizard'));
-  } else if (
-    !remote.auth.currentUser
-    && remote.auth.servers.length > 0
-    && !remote.auth.currentServer
-  ) {
-    void router.replace('/server/select');
-  }
-}
-);
+watch([
+  () => remote.auth.currentUser,
+  () => remote.auth.currentServer
+], () => {
+  void router.replace({
+    force: true
+  });
+}, { flush: 'sync' });

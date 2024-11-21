@@ -1,0 +1,6 @@
+{
+  "extends": "@jellyfin-vue/configs/typescript/base.json",
+  "include": [
+    "*.ts"
+  ]
+}

@@ -320,21 +320,27 @@ class RemotePluginAuth extends CommonStore<AuthState> {
       }
     }
 
+    const serverIndex = this._state.servers.indexOf(server);
+
     this._state.servers.splice(
-      this._state.servers.indexOf(server),
+      serverIndex,
       1
     );
+
+    if (this._state.currentServerIndex === serverIndex) {
+      this._state.currentServerIndex = -1;
+    }
   };
 
   public constructor() {
-    super('auth', {
+    super('auth', () => ({
       servers: [],
       currentServerIndex: -1,
       currentUserIndex: -1,
       users: [],
       rememberMe: true,
       accessTokens: {}
-    }, 'localStorage');
+    }), 'localStorage');
     void this.refreshCurrentUserInfo();
     void this._refreshServers();
   }

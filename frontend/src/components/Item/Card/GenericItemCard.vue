@@ -9,7 +9,7 @@
           :class="shape"
           class="elevation-2">
           <div
-            class="d-flex justify-center align-center absolute-cover card-content">
+            class="d-flex align-center justify-center absolute-cover card-content">
             <JSlot class="card-image">
               <slot
                 name="image" />

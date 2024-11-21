@@ -2,7 +2,7 @@ import * as datefnslocales from 'virtual:locales/date-fns';
 import { i18n } from '@/plugins/i18n';
 import { isObj } from '@/utils/validation';
 
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 /**
  * Use any date fns function with proper localization, based on the current locale.
@@ -35,4 +35,4 @@ export function useDateFns<T extends (...a: any[]) => any>(
   return func(...params);
 }
 
-/* eslint-enable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
+/* eslint-enable @typescript-eslint/no-explicit-any */

@@ -123,7 +123,7 @@ const trackIndex = ref<number | null>(defaultStreamIndex ?? mediaStreams.find(tr
 if (
   (type === 'Video' || type === 'Audio')
   && trackIndex.value === null
-  && selectItems.value[0] !== undefined
+  && selectItems.value[0]
 ) {
   // eslint-disable-next-line unicorn/no-null
   trackIndex.value = selectItems.value[0].value ?? null;

@@ -1,29 +1,6 @@
 {
+  "extends": "@jellyfin-vue/configs/typescript/base.json",
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "Preserve",
-    "moduleResolution": "Bundler",
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "sourceMap": true,
-    "strict": true,
-    "skipLibCheck": true,
-    "noEmit": true,
-    "isolatedModules": true,
-    "moduleDetection": "force",
-    "useDefineForClassFields": true,
-    "noImplicitThis": true,
-    "noImplicitAny": true,
-    "noErrorTruncation": true,
-    "experimentalDecorators": true,
-    "removeComments": true,
-    "verbatimModuleSyntax": true,
-    "incremental": true,
-    "tsBuildInfoFile": "../node_modules/.cache/tsconfig.tsbuildinfo",
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"]
-    },
     "types": [
       "axios",
       "@intlify/unplugin-vue-i18n/messages",
@@ -32,12 +9,8 @@
       "vite/client",
       "vuetify",
       "vue"
-    ]
-  },
-  "vueCompilerOptions": {
-    "strictTemplates": true,
-    "htmlAttributes": ["aria-*", "data-*"],
-    "fallthroughAttributes": true
+    ],
+    "baseUrl": "."
   },
   "include": [
     "src/**/*.ts",
@@ -46,6 +19,5 @@
     "**/**/*.json",
     "types/**/*.d.ts",
     "*.config.*"
-  ],
-  "exclude": ["node_modules"]
+  ]
 }

@@ -106,10 +106,10 @@ class TaskManagerStore extends CommonStore<TaskManagerState> {
   };
 
   public constructor() {
-    super('taskManager', {
+    super('taskManager', () => ({
       tasks: [],
       finishedTasksTimeout: 5000
-    }, 'sessionStorage');
+    }), 'sessionStorage');
 
     /**
      * Handle refresh progress update for library items

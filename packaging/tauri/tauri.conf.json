@@ -4,13 +4,13 @@
     "targets": [
       "appimage",
       "msi",
-      "app"
+      "dmg"
     ],
-    "longDescription": "",
-    "shortDescription": "",
+    "icon": [
+      "icons/**/*"
+    ],
     "resources": [],
     "externalBin": [],
-    "copyright": "",
     "category": "Entertainment",
     "linux": {
       "appimage": {

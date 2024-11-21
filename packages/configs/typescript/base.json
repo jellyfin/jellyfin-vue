@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "Preserve",
+    "moduleResolution": "Bundler",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "useDefineForClassFields": true,
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "noErrorTruncation": true,
+    "experimentalDecorators": true,
+    "removeComments": true,
+    "verbatimModuleSyntax": true,
+    "incremental": true,
+    "tsBuildInfoFile": "../../../node_modules/.cache/tsconfig.tsbuildinfo",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+  },
+  "vueCompilerOptions": {
+    "strictTemplates": true,
+    "htmlAttributes": ["aria-*", "data-*"],
+    "fallthroughAttributes": true
+  },
+  "exclude": ["node_modules"]
+}

@@ -40,10 +40,10 @@
 import IMdiHome from 'virtual:icons/mdi/home';
 import { computed, inject, type Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
 import type { RouteNamedMap } from 'vue-router/auto-routes';
 import type { getLibraryIcon } from '@/utils/items';
-import { prefersNoTransparency } from '@/store';
+import { transparencyEffects } from '@/store';
+import { JView_isRouting } from '@/store/keys';
 
 export interface DrawerItem {
   icon: ReturnType<typeof getLibraryIcon>;
@@ -56,11 +56,11 @@ const { order, drawerItems } = defineProps<{
   drawerItems: DrawerItem[];
 }>();
 
-const route = useRoute();
 const { t } = useI18n();
 
 const drawer = inject<Ref<boolean>>('NavigationDrawer');
-const transparentLayout = computed(() => !prefersNoTransparency.value && route.meta.layout.transparent);
+const isRouting = inject(JView_isRouting);
+const transparentLayout = computed(previous => isRouting?.value ? previous : transparencyEffects.value);
 
 const items = [
   {

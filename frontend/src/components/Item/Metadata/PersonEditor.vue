@@ -14,7 +14,7 @@
               class="ml-2">
               <JImg
                 :src="
-                  person?.Id && $remote.sdk.api?.getItemImageUrl(person.Id, ImageType.Primary)
+                  person?.Id && getItemImageUrl(person.Id, ImageType.Primary)
                 "
                 :alt="$t('person')">
                 <template #placeholder>
@@ -82,6 +82,7 @@ import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { type BaseItemPerson, ImageType } from '@jellyfin/sdk/lib/generated-client';
 import { watchImmediate } from '@vueuse/core';
+import { getItemImageUrl } from '@/utils/images';
 
 const { person } = defineProps<{ person: BaseItemPerson | undefined }>();
 

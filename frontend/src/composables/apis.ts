@@ -2,8 +2,8 @@ import type { Api } from '@jellyfin/sdk';
 import type { BaseItemDto, BaseItemDtoQueryResult } from '@jellyfin/sdk/lib/generated-client';
 import type { AxiosResponse } from 'axios';
 import { deepEqual } from 'fast-equals';
-import { computed, effectScope, getCurrentScope, isRef, shallowRef, toValue, unref, watch, type ComputedRef, type Ref } from 'vue';
-import { until } from '@vueuse/core';
+import { computed, effectScope, getCurrentScope, inject, isRef, shallowRef, toValue, unref, watch, type ComputedRef, type Ref } from 'vue';
+import { until, whenever } from '@vueuse/core';
 import { useLoading } from '@/composables/use-loading';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { i18n } from '@/plugins/i18n';
@@ -11,9 +11,9 @@ import { remote } from '@/plugins/remote';
 import { isConnectedToServer } from '@/store';
 import { apiStore } from '@/store/api';
 import { isArray, isNil } from '@/utils/validation';
-import { router } from '@/plugins/router';
+import { JView_isRouting } from '@/store/keys';
 
-/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 type OmittedKeys = 'fields' | 'userId' | 'enableImages' | 'enableTotalRecordCount' | 'enableImageTypes';
 type ParametersAsGetters<T extends (...args: any[]) => any> = T extends (...args: infer P) => any
   ? { [K in keyof P]: () => BetterOmit<Mutable<P[K]>, OmittedKeys> }
@@ -126,7 +126,7 @@ async function resolveAndAdd<T extends Record<K, (...args: any[]) => any>, K ext
   loading: Ref<boolean | undefined> | undefined,
   stringifiedArgs: string,
   ops: Required<ComposableOps>,
-  ...args: Parameters<T[K]>): Promise<ExtractItems<Awaited<ReturnType<T[K]>['data']>> | void> {
+  ...args: Parameters<T[K]>): Promise<ExtractItems<Awaited<ReturnType<T[K]>['data']>> | undefined> {
   /**
    * We add all BaseItemDto's fields for consistency in what we can expect from the store.
    * toValue normalizes the getters.
@@ -306,9 +306,17 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
         }
       });
 
-      watch(() => router.currentRoute.value.name, () => scope.stop(),
-        { once: true, flush: 'sync' }
-      );
+      /**
+       * If we're routing, the effects of this composable are no longer useful, so we stop them
+       * to avoid accidental data fetching (e.g due to route param changes)
+       */
+      const isRouting = inject(JView_isRouting);
+
+      if (!isNil(isRouting)) {
+        whenever(isRouting, () => scope.stop(),
+          { once: true, flush: 'sync' }
+        );
+      }
     }
 
     /**
@@ -462,4 +470,4 @@ export function methodsAsObject<T extends Record<K, (...args: any[]) => any>, K 
   };
 }
 
-/* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-return */
+/* eslint-enable @typescript-eslint/no-explicit-any */

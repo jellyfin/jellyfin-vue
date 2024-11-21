@@ -2,7 +2,7 @@
   <VContainer>
     <VRow v-if="$slots.title">
       <VCol>
-        <VRow class="mt-4 mx-0 mb-2 justify-space-between">
+        <VRow class="mt-4 mb-2 mx-0 justify-space-between">
           <h2 class="text-h4">
             <slot name="title" />
           </h2>

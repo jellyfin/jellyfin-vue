@@ -838,10 +838,6 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       itemId
     }));
 
-    if (!items.value) {
-      throw new Error('No items found');
-    }
-
     for (const item of items.value) {
       await this.addToQueue(item);
     }
@@ -1013,7 +1009,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   };
 
   public constructor() {
-    super('playbackManager', {
+    super('playbackManager', () => ({
       status: PlaybackStatus.Stopped,
       currentSourceUrl: undefined,
       currentItemIndex: undefined,
@@ -1034,7 +1030,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       playbackInitiator: undefined,
       playbackInitMode: InitMode.Unknown,
       playbackSpeed: 1
-    });
+    }));
     /**
      * Logic is divided by concerns and scope. Watchers for callbacks
      * that rely on the same variables might not be together. Categories:
@@ -1133,12 +1129,12 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
             }
           };
 
-          for (const [action, handler] of Object.entries(actionHandlers)) {
+          for (const action in actionHandlers) {
             try {
               window.navigator.mediaSession.setActionHandler(
                 action as MediaSessionAction,
                 /* eslint-disable-next-line unicorn/no-null */
-                add ? handler : null
+                add ? actionHandlers[action as keyof typeof actionHandlers] ?? null : null
               );
             } catch {
               console.error(

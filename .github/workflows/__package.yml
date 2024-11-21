@@ -44,26 +44,35 @@ jobs:
           - Windows
     defaults:
       run:
-        working-directory: packaging/tauri
+        working-directory: ${{ env.WORKING_DIR }}
+
     env:
-      ARTIFACTS_PATH: |
-        ${{ matrix.platform == 'ubuntu' && 'packaging/tauri/target/release/bundle/appimage_deb' || '' }}
-        ${{ matrix.platform == 'macos' && 'packaging/tauri/target/release/bundle/macos' || '' }}
-        ${{ matrix.platform == 'windows' && 'packaging/tauri/target/release/jellyfin-vue-tauri.exe' || '' }}
+      WORKING_DIR: packaging/tauri
+      ARTIFACTS_PATH: ${{
+          format('target/release/{0}', matrix.platform == 'windows' && 'jellyfin-vue-tauri.exe' ||
+          format('bundle/*/*.{0}', matrix.platform == 'macos' && 'dmg' || 'AppImage'))
+        }}
 
     runs-on: ${{ matrix.platform }}-latest
     steps:
       - name: Checkout ⬇️
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.2
         with:
           ref: ${{ inputs.commit || github.sha }}
           show-progress: false
 
       - name: Setup node environment ⚙️
-        uses: actions/setup-node@v4.0.3
+        uses: actions/setup-node@v4.1.0
         with:
-          node-version: 20
+          node-version: lts/*
           check-latest: true
+          cache: 'npm'
+
+      - name: Setup Rust Toolchain and cache 🦀
+        uses: actions-rust-lang/setup-rust-toolchain@v1.10.1
+        with:
+          cache-key: tauri-${{ runner.os }}
+          cache-workspaces: ${{ env.WORKING_DIR }}
 
       - name: Install npm dependencies 📦
         run: npm ci --no-audit
@@ -78,17 +87,17 @@ jobs:
         run: npm run build
 
       - name: Create provenance attestation 🔏
-        uses: actions/attest-build-provenance@v1.4.3
+        uses: actions/attest-build-provenance@v1.4.4
         continue-on-error: true
         with:
-          subject-path: ${{ env.ARTIFACTS_PATH }}
+          subject-path: ${{ env.WORKING_DIR }}/${{ env.ARTIFACTS_PATH }}
 
       - name: Upload built application artifact ⬆️🐧🍎🪟
-        uses: actions/upload-artifact@v4.4.0
+        uses: actions/upload-artifact@v4.4.3
         with:
           compression-level: 0
-          name: jellyfin-vue_${{ matrix.platform }}
-          path: ${{ env.ARTIFACTS_PATH }}
+          name: jellyfin-vue_${{ runner.os }}
+          path: ${{ env.WORKING_DIR }}/${{ env.ARTIFACTS_PATH }}
 
   docker_inputs:
     name: Prepare Docker build variables 🏷️🐳
@@ -164,7 +173,7 @@ jobs:
 
     steps:
       - name: Checkout ⬇️
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.2
         with:
           ref: ${{ inputs.commit || github.sha }}
           show-progress: false
@@ -173,17 +182,20 @@ jobs:
         uses: docker/setup-qemu-action@v3.2.0
 
       - name: Configure Docker Buildx ⚙️
-        uses: docker/setup-buildx-action@v3.6.1
+        uses: docker/setup-buildx-action@v3.7.1
 
       - name: Build images 🛠️
-        uses: docker/build-push-action@v6.7.0
+        uses: docker/build-push-action@v6.9.0
         id: image
         with:
           context: .
           file: packaging/docker/Dockerfile
           platforms: ${{ format('linux/{0}', matrix.platform) }}
-          no-cache: true
-          cache-to: type=local,mode=min,dest=/tmp/${{ env.REGISTRY_IMAGE }}/cache/${{ matrix.platform }}
+          cache-from: |
+            type=gha,scope=buildx-${{ matrix.platform }}
+          cache-to: |
+            type=local,mode=min,dest=/tmp/${{ env.REGISTRY_IMAGE }}/cache/${{ matrix.platform }}
+            type=gha,mode=min,ignore-error=true,scope=buildx-${{ matrix.platform }}
           outputs: type=docker,dest=docker_image.tar
           build-args: |
             ${{ inputs.commit == '' && 'IS_STABLE=1' || '' }}
@@ -192,20 +204,20 @@ jobs:
             ${{ needs.docker_inputs.outputs.tags }}
 
       - name: Upload Docker image as artifact ⬆️📦
-        uses: actions/upload-artifact@v4.4.0
+        uses: actions/upload-artifact@v4.4.3
         with:
           compression-level: 0
           name: docker_image-linux_${{ matrix.platform }}
           path: docker_image.tar
 
       - name: Create provenance attestation 🔏
-        uses: actions/attest-build-provenance@v1.4.3
+        uses: actions/attest-build-provenance@v1.4.4
         continue-on-error: true
         with:
           subject-path: docker_image.tar
 
       - name: Upload cache artifact ⬆️⚙️
-        uses: actions/upload-artifact@v4.4.0
+        uses: actions/upload-artifact@v4.4.3
         if: ${{ inputs.push }}
         with:
           compression-level: 0
@@ -227,16 +239,18 @@ jobs:
       - name: Extract built client from Docker image 🗜️
         run: |
           docker load < docker_image.tar
-          docker cp $(docker create --name jf $(docker images --filter=reference='${{ env.REGISTRY_IMAGE }}' -q | head -n 1)):/usr/share/nginx/html/ ./dist
+          IMAGE_SHA=$(docker images --filter=reference='${{ env.REGISTRY_IMAGE }}' -q | head -n 1)
+          ASSETS=$(docker inspect $IMAGE_SHA --format='{{range .Config.Env}}{{println .}}{{end}}' | grep ^ASSETS= | cut -d '=' -f2-)
+          docker cp $(docker create --name jf $IMAGE_SHA):$ASSETS/ ./dist
 
       - name: Create provenance attestation 🔏
-        uses: actions/attest-build-provenance@v1.4.3
+        uses: actions/attest-build-provenance@v1.4.4
         continue-on-error: true
         with:
           subject-path: dist
 
       - name: Upload client artifact ⬆️💻
-        uses: actions/upload-artifact@v4.4.0
+        uses: actions/upload-artifact@v4.4.3
         with:
           compression-level: 0
           name: frontend
@@ -258,7 +272,7 @@ jobs:
           path: /tmp/${{ env.REGISTRY_IMAGE }}/cache/
   
       - name: Checkout ⬇️
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.2
         with:
           ref: ${{ inputs.commit || github.sha }}
           show-progress: false
@@ -267,7 +281,7 @@ jobs:
         uses: docker/setup-qemu-action@v3.2.0
 
       - name: Configure Docker Buildx ⚙️
-        uses: docker/setup-buildx-action@v3.6.1
+        uses: docker/setup-buildx-action@v3.7.1
 
       - name: Login to Docker Hub 🔑
         uses: docker/login-action@v3.3.0
@@ -283,7 +297,7 @@ jobs:
           password: ${{ secrets.JF_BOT_TOKEN }}
 
       - name: Create multiplatform image ${{ inputs.push && 'and push 🛠️⬆️' || '🛠️' }} 
-        uses: docker/build-push-action@v6.7.0
+        uses: docker/build-push-action@v6.9.0
         id: image
         with:
           context: .

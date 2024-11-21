@@ -28,6 +28,9 @@
     "javascript",
     "typescript"
   ],
+  "eslint.options": { 
+    "flags": ["unstable_ts_config"] 
+  },
   "eslint.format.enable": true,
   "eslint.useFlatConfig": true,
   "eslint.workingDirectories": [

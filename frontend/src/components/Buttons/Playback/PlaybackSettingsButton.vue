@@ -139,7 +139,7 @@ const validationRules = [
      * Chromium ranges:
      * https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/core/html/media/html_media_element.cc
      */
-    return num_val >= 0.0625 && num_val <= 16 || t('mustBeInRange', { min: 0.0625, max: 16 });
+    return (num_val >= 0.0625 && num_val <= 16) || t('mustBeInRange', { min: 0.0625, max: 16 });
   }
 ];
 
