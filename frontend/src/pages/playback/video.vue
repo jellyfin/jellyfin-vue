@@ -97,7 +97,7 @@
                     v-if="fullscreen.isSupported"
                     class="align-self-center"
                     icon
-                    @click="fullscreen.toggle">
+                    @click="toggleFullscreen">
                     <VIcon>
                       <IMdiFullscreen v-if="fullscreen.isFullscreen" />
                       <IMdiFullscreenExit v-else />
@@ -139,6 +139,8 @@ import { playbackManager } from '@/store/playback-manager';
 import { playerElement, videoContainerRef } from '@/store/player-element';
 import { getEndsAtTime, msToTicks } from '@/utils/time';
 import { usePlayback } from '@/composables/use-playback';
+import { getCurrentWindow } from '@tauri-apps/api/window';
+
 
 defineOptions({
   beforeRouteEnter: playbackGuard
@@ -171,6 +173,15 @@ const timeout = useTimeoutFn(() => {
 function handleMouseMove(): void {
   overlay.value = true;
   timeout.start();
+}
+
+async function toggleFullscreen() {
+  fullscreen.toggle();
+
+  // Tauri implementation
+  const window = await getCurrentWindow();
+  const isFullscreen = await window.isFullscreen();
+  await window.setFullscreen(!isFullscreen);
 }
 
 watch(staticOverlay, (val) => {
