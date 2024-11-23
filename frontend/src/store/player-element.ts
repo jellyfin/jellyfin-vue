@@ -12,8 +12,8 @@ import { computed, nextTick, shallowRef, watch } from 'vue';
 import { SubtitleDeliveryMethod } from '@jellyfin/sdk/lib/generated-client/models/subtitle-delivery-method';
 import { useFullscreen } from '@vueuse/core';
 import { playbackManager, type PlaybackExternalTrack } from './playback-manager';
-import { isArray, isNil, sealed } from '@/utils/validation';
-import { DEFAULT_TYPOGRAPHY, mediaElementRef } from '@/store';
+import { isNil, sealed } from '@/utils/validation';
+import { mediaElementRef } from '@/store';
 import { CommonStore } from '@/store/super/common-store';
 import { router } from '@/plugins/router';
 import { remote } from '@/plugins/remote';
@@ -127,7 +127,9 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
 
   private readonly _fetchSSATrack = async (trackSrc: string) => {
     const ax = remote.sdk.api?.axiosInstance
-    if (!ax) return 
+    if (!ax) {
+      return
+    }
 
     /** 
      * Before doing anything let's free the current assjs renderer (if any)
@@ -145,8 +147,13 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
   };
 
   private readonly _setSsaTrack = (trackSrc: string): void => {
-    if (!mediaElementRef.value || !(mediaElementRef.value instanceof HTMLVideoElement)) return
-    if (this._asssub) this._freeSSATrack()
+    if (!mediaElementRef.value || !(mediaElementRef.value instanceof HTMLVideoElement)) {
+      return;
+    };
+
+    if (this._asssub) { 
+      this._freeSSATrack();
+    };
 
     this._fetchSSATrack(trackSrc);
   };
@@ -176,7 +183,9 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
 
   private readonly _freeSSATrack = (): void => {
     // Function was called but the assjs class was already destroyed
-    if (!this._asssub) return 
+    if (!this._asssub) {
+      return
+    };
 
     this._asssub.destroy();
     this._asssub = undefined;
@@ -223,7 +232,9 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
    * Applies SSA (SubStation Alpha) subtitles to the media element.
    */
   private readonly _applySsaSubtitles = async (): Promise<void> => {
-     if (!this.currentExternalSubtitleTrack || !mediaElementRef) return;
+     if (!this.currentExternalSubtitleTrack || !mediaElementRef) {
+      return;
+     };
 
      const subtitleTrack = this.currentExternalSubtitleTrack; 
       
@@ -239,8 +250,8 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
         if (data?.isBasic) {
           this.currentExternalSubtitleTrack.parsed = data;
           return;
-        }
-      }
+        };
+      };
 
      this._setSsaTrack(subtitleTrack.src);
   };
@@ -255,7 +266,7 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
   public readonly applyCurrentSubtitle = async (): Promise<void> => {
     if (!mediaElementRef.value) {
       return;
-    }
+    };
 
     /**
      * Clear VTT and SSA subs first
@@ -320,7 +331,9 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
      * and whether or not it is rendered on client or transcoded/burned in on the server.
      */
     watch(() => this.usePreciseSubtitles, async (newValue) => {
-      if (!videoContainerRef.value) return
+      if (!videoContainerRef.value) {
+        return;
+      };
 
 
     });
