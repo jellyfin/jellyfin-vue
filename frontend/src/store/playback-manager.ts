@@ -97,6 +97,7 @@ interface PlaybackManagerState {
   playbackInitiator: BaseItemDto | undefined;
   playbackInitMode: InitMode;
   playbackSpeed: number;
+  subtitleLoading: boolean;
 }
 
 /**
@@ -296,6 +297,13 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     }
   }
 
+  public get subtitleLoading(): boolean {
+    return this._state.subtitleLoading;
+  }
+
+  public set subtitleLoading(loading: boolean) {
+    this._state.subtitleLoading = loading;
+  }
   /**
    * Filters the external subtitle tracks
    */
@@ -1028,7 +1036,8 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       playSessionId: undefined,
       playbackInitiator: undefined,
       playbackInitMode: InitMode.Unknown,
-      playbackSpeed: 1
+      playbackSpeed: 1,
+      subtitleLoading: false,
     }));
     /**
      * Logic is divided by concerns and scope. Watchers for callbacks

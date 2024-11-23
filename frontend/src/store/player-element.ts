@@ -125,28 +125,31 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
     }
   };
 
-  private _fetchSSATrack = async (trackSrc: string) => {
-    fetch(trackSrc).then((body) => body.text()).then((text) => {
-      this._asssub = new ASSSUB(text, mediaElementRef.value as (HTMLVideoElement), { resampling: 'video_width' });
-    });
+  private readonly _fetchSSATrack = async (trackSrc: string) => {
+    const ax = remote.sdk.api?.axiosInstance
+    if (!ax) return 
+
+    /** 
+     * Before doing anything let's free the current assjs renderer (if any)
+     * and make sure the user cannot keep switching subtitles when one is already trying to load.
+     */
+    this._freeSSATrack();
+    playbackManager.subtitleLoading = true;
+
+    /**
+     * Let's fetch the subtitle track from the server, we assume the data returned will always be a string.
+     */
+    const subtitleTrackText = await (await ax.get(trackSrc)).data as string;
+    this._asssub = new ASSSUB(subtitleTrackText, mediaElementRef.value as (HTMLVideoElement), { /** TODO: Make this a player setting/config option */ resampling: 'video_height' });
+    playbackManager.subtitleLoading = false;
   };
 
   private readonly _setSsaTrack = (trackSrc: string): void => {
-    if (
-      !this._asssub
-      && mediaElementRef.value
-      && mediaElementRef.value instanceof HTMLVideoElement
-    ) {
+    if (!mediaElementRef.value || !(mediaElementRef.value instanceof HTMLVideoElement)) return
+    if (this._asssub) this._freeSSATrack()
 
-      // AssJS require sub contents in advance, we can not just give it a URL
-      this._fetchSSATrack(trackSrc);
-    } else {
-      // Destroy ASS subtitle player if it already exists
-      this._asssub?.destroy();
-
-      this._fetchSSATrack(trackSrc);
-    }
-  }
+    this._fetchSSATrack(trackSrc);
+  };
 
   private readonly _setPgsTrack = (trackSrc: string): void => {
     if (
@@ -171,6 +174,13 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
     this._pgssub = undefined;
   };
 
+  private readonly _freeSSATrack = (): void => {
+    // Function was called but the assjs class was already destroyed
+    if (!this._asssub) return 
+
+    this._asssub.destroy();
+    this._asssub = undefined;
+  };
   /**
    * Applies PGS subtitles to the media element.
    */
@@ -213,36 +223,26 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
    * Applies SSA (SubStation Alpha) subtitles to the media element.
    */
   private readonly _applySsaSubtitles = async (): Promise<void> => {
-    if (
-      mediaElementRef.value
-      && this.currentExternalSubtitleTrack
-    ) {
-      const subtitleTrack = this.currentExternalSubtitleTrack;
+     if (!this.currentExternalSubtitleTrack || !mediaElementRef) return;
 
+     const subtitleTrack = this.currentExternalSubtitleTrack; 
+      
       /**
-       * Check if client is able to display custom subtitle track
-       * otherwise use ASSUB to render subtitles
-       */
-      let applyASSUB = !this._useCustomSubtitleTrack;
-
+      * Check if client is able to display custom subtitle track
+      */
       if (this._useCustomSubtitleTrack) {
         const data = await genericWorker.parseSsaFile(subtitleTrack.src);
 
         /**
-         * If style isn't basic (animations, custom typographics, etc.)
-         * fallback to rendering subtitles with ASSUB
+         * Check if worker returned that the sub data is 'basic', when true use basic renderer method
          */
         if (data?.isBasic) {
           this.currentExternalSubtitleTrack.parsed = data;
-        } else {
-          applyASSUB = true;
+          return;
         }
       }
 
-      if (applyASSUB) {
-        this._setSsaTrack(subtitleTrack.src);
-      }
-    }
+     this._setSsaTrack(subtitleTrack.src);
   };
 
   /**
@@ -266,6 +266,7 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
       }
     }
 
+    this._freeSSATrack();
     this._freePgsTrack();
     this.currentExternalSubtitleTrack = undefined;
 
@@ -329,6 +330,7 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
      */
     watch(videoContainerRef, () => {
       if (!videoContainerRef.value) {
+        this._freeSSATrack();
         this._freePgsTrack();
       }
     }, { flush: 'sync' });
