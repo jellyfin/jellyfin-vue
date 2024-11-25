@@ -4,7 +4,7 @@
       :to="videoContainerRef"
       :disabled="!videoContainerRef"
       defer>
-      <div ref="mediaContainer" class="uno-relative">
+      <div class="uno-relative">
         <Component
           :is="mediaElementType"
           v-show="mediaElementType === 'video' && videoContainerRef"
@@ -14,7 +14,11 @@
           crossorigin
           playsinline
           :loop="playbackManager.isRepeatingOnce"
-          :class="{ 'uno-object-fill': playerElement.isStretched.value, 'uno-w-screen': playerElement.isStretched.value, 'uno-h-full': true, 'uno-max-h-100vh': true}"
+          class="uno-h-full uno-max-h-100vh"
+          :class="{
+            'uno-object-fill': playerElement.isStretched.value,
+            'uno-w-screen': playerElement.isStretched.value
+          }"
           @loadeddata="onLoadedData">
           <track
             v-for="sub in playbackManager.currentItemVttParsedSubtitleTracks"

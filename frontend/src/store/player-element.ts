@@ -4,8 +4,7 @@
  * In the other part, playbackManager is suited to handle the playback state in
  * an agnostic way, regardless of where the media is being played (remotely or locally)
  */
-import type IASSSUB from 'assjs'
-import ASSSUB from 'assjs';
+import ASSSUB, { type IASSSUB } from 'assjs';
 import { PgsRenderer } from 'libpgs';
 import pgssubWorker from 'libpgs/dist/libpgs.worker.js?url';
 import { computed, nextTick, shallowRef, watch } from 'vue';
@@ -21,6 +20,11 @@ import type { ParsedSubtitleTrack } from '@/plugins/workers/generic/subtitles';
 import { genericWorker } from '@/plugins/workers';
 import { subtitleSettings } from '@/store/client-settings/subtitle-settings';
 
+/**
+ * TODO: Provide option for the user to select if subtitles should be rendered by the browser or transcoded in server
+ * That option must take into account if transcoding is enabled in server (and user has permission to use it as well)
+ */
+
 interface SubtitleExternalTrack extends PlaybackExternalTrack {
   parsed?: ParsedSubtitleTrack;
 }
@@ -30,7 +34,6 @@ interface SubtitleExternalTrack extends PlaybackExternalTrack {
  */
 interface PlayerElementState {
   isStretched: boolean;
-  usePreciseSubtitles: boolean;
   currentExternalSubtitleTrack?: SubtitleExternalTrack;
 }
 
@@ -46,6 +49,7 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
    * Reactive state is defined in the super() constructor
    */
   private readonly _fullscreenVideoRoute = '/playback/video';
+  private readonly _cleanups = new Set<() => void>();
   private _asssub: IASSSUB | undefined;
   private _pgssub: PgsRenderer | undefined;
   protected _storeKey = 'playerElement';
@@ -56,13 +60,6 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
       this._state.isStretched = newVal;
     }
   });
-
-  public readonly usePreciseSubtitles = computed({
-    get: () => this._state.usePreciseSubtitles,
-    set: (newVal: boolean) => {
-      this._state.usePreciseSubtitles = newVal;
-    }
-  })
 
   public get currentExternalSubtitleTrack(): PlayerElementState['currentExternalSubtitleTrack'] {
     return this._state.currentExternalSubtitleTrack;
@@ -125,82 +122,59 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
     }
   };
 
-  private readonly _fetchSSATrack = async (trackSrc: string) => {
-    const ax = remote.sdk.api?.axiosInstance
-    if (!ax) {
-      return
-    }
+  private readonly _fetchSubtitleTrack = async (trackSrc: string) => {
+    const axios = remote.sdk.api?.axiosInstance;
 
-    /** 
-     * Before doing anything let's free the current assjs renderer (if any)
-     * and make sure the user cannot keep switching subtitles when one is already trying to load.
-     */
-    this._freeSSATrack();
-    playbackManager.subtitleLoading = true;
-
-    /**
-     * Let's fetch the subtitle track from the server, we assume the data returned will always be a string.
-     */
-    const subtitleTrackText = await (await ax.get(trackSrc)).data as string;
-    this._asssub = new ASSSUB(subtitleTrackText, mediaElementRef.value as (HTMLVideoElement), { /** TODO: Make this a player setting/config option */ resampling: 'video_height' });
-    playbackManager.subtitleLoading = false;
+    return {
+      [trackSrc]: (await axios!.get(trackSrc)).data as string
+    };
   };
 
-  private readonly _setSsaTrack = (trackSrc: string): void => {
+  private readonly _setSsaTrack = async (trackSrc: string): Promise<void> => {
     if (!mediaElementRef.value || !(mediaElementRef.value instanceof HTMLVideoElement)) {
       return;
-    };
+    }
 
-    if (this._asssub) { 
-      this._freeSSATrack();
-    };
+    this._clear();
 
-    this._fetchSSATrack(trackSrc);
-  };
+    const subtitleTrackPayload = await this._fetchSubtitleTrack(trackSrc);
 
-  private readonly _setPgsTrack = (trackSrc: string): void => {
-    if (
-      !this._pgssub
-      && mediaElementRef.value instanceof HTMLVideoElement
-    ) {
-      this._pgssub = new PgsRenderer({
-        video: mediaElementRef.value,
-        subUrl: trackSrc,
-        workerUrl: pgssubWorker
+    if (this.currentExternalSubtitleTrack && subtitleTrackPayload[this.currentExternalSubtitleTrack.src]) {
+      this._asssub = new ASSSUB(
+        subtitleTrackPayload[this.currentExternalSubtitleTrack.src],
+        mediaElementRef.value,
+        { resampling: 'video_height' }
+      );
+
+      this._cleanups.add(() => {
+        this._asssub?.destroy();
+        this._asssub = undefined;
       });
-    } else if (this._pgssub) {
-      this._pgssub.loadFromUrl(trackSrc);
     }
   };
 
-  private readonly _freePgsTrack = (): void => {
-    if (this._pgssub) {
-      this._pgssub.dispose();
-    }
-
-    this._pgssub = undefined;
-  };
-
-  private readonly _freeSSATrack = (): void => {
-    // Function was called but the assjs class was already destroyed
-    if (!this._asssub) {
-      return
-    };
-
-    this._asssub.destroy();
-    this._asssub = undefined;
-  };
-  /**
-   * Applies PGS subtitles to the media element.
-   */
   private readonly _applyPgsSubtitles = (): void => {
-    if (
-      mediaElementRef.value
-      && this.currentExternalSubtitleTrack
-    ) {
-      const subtitleTrack = this.currentExternalSubtitleTrack;
+    const trackSrc = this.currentExternalSubtitleTrack?.src;
 
-      this._setPgsTrack(subtitleTrack.src);
+    if (trackSrc) {
+      if (
+        !this._pgssub
+        && mediaElementRef.value instanceof HTMLVideoElement
+        && this.currentExternalSubtitleTrack
+      ) {
+        this._pgssub = new PgsRenderer({
+          video: mediaElementRef.value,
+          subUrl: trackSrc,
+          workerUrl: pgssubWorker
+        });
+
+        this._cleanups.add(() => {
+          this._pgssub?.dispose();
+          this._pgssub = undefined;
+        });
+      } else if (this._pgssub) {
+        this._pgssub.loadFromUrl(trackSrc);
+      }
     }
   };
 
@@ -232,28 +206,29 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
    * Applies SSA (SubStation Alpha) subtitles to the media element.
    */
   private readonly _applySsaSubtitles = async (): Promise<void> => {
-     if (!this.currentExternalSubtitleTrack || !mediaElementRef) {
+    if (!this.currentExternalSubtitleTrack || !mediaElementRef) {
       return;
-     };
+    }
 
-     const subtitleTrack = this.currentExternalSubtitleTrack; 
-      
+    const subtitleTrack = this.currentExternalSubtitleTrack;
+
+    /**
+     * Check if client is able to display custom subtitle track
+     */
+    if (this._useCustomSubtitleTrack) {
+      const data = await genericWorker.parseSsaFile(subtitleTrack.src);
+
       /**
-      * Check if client is able to display custom subtitle track
-      */
-      if (this._useCustomSubtitleTrack) {
-        const data = await genericWorker.parseSsaFile(subtitleTrack.src);
+       * Check if worker returned that the sub data is 'basic', when true use basic renderer method
+       */
+      if (data?.isBasic) {
+        this.currentExternalSubtitleTrack.parsed = data;
 
-        /**
-         * Check if worker returned that the sub data is 'basic', when true use basic renderer method
-         */
-        if (data?.isBasic) {
-          this.currentExternalSubtitleTrack.parsed = data;
-          return;
-        };
-      };
+        return;
+      }
+    }
 
-     this._setSsaTrack(subtitleTrack.src);
+    this._setSsaTrack(subtitleTrack.src);
   };
 
   /**
@@ -266,7 +241,7 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
   public readonly applyCurrentSubtitle = async (): Promise<void> => {
     if (!mediaElementRef.value) {
       return;
-    };
+    }
 
     /**
      * Clear VTT and SSA subs first
@@ -277,8 +252,7 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
       }
     }
 
-    this._freeSSATrack();
-    this._freePgsTrack();
+    this._clear();
     this.currentExternalSubtitleTrack = undefined;
 
     await nextTick();
@@ -303,11 +277,21 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
     }
   };
 
+  /**
+   * Disposes all the subtitle resources
+   */
+  private readonly _clear = () => {
+    for (const func of this._cleanups) {
+      func();
+    }
+
+    this._cleanups.clear();
+  };
+
   public constructor() {
     super('playerElement', () => ({
       isStretched: false,
-      currentExternalSubtitleTrack: undefined,
-      usePreciseSubtitles: false,
+      currentExternalSubtitleTrack: undefined
     }));
 
     /**
@@ -327,24 +311,11 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
     );
 
     /**
-     * TODO: This should be where the subtitle track is changed, 
-     * and whether or not it is rendered on client or transcoded/burned in on the server.
-     */
-    watch(() => this.usePreciseSubtitles, async (newValue) => {
-      if (!videoContainerRef.value) {
-        return;
-      };
-
-
-    });
-
-    /**
      * We need to destroy JASSUB so the canvas can be recreated in the other view
      */
     watch(videoContainerRef, () => {
       if (!videoContainerRef.value) {
-        this._freeSSATrack();
-        this._freePgsTrack();
+        this._clear();
       }
     }, { flush: 'sync' });
 

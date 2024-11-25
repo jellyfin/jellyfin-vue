@@ -18,7 +18,7 @@
       :close-on-content-click="false"
       transition="slide-y-transition"
       location="top">
-      <VList class="uno-overflow-hidden" :disabled="loading">
+      <VList class="uno-overflow-hidden">
         <VListItem
           v-for="track of tracks"
           :key="track.srcIndex"
@@ -59,6 +59,4 @@ const tracks = computed(() => {
     ...(subs ?? [])
   ];
 });
-
-const loading = computed(() => playbackManager.subtitleLoading as boolean);
 </script>
