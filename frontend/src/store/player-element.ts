@@ -140,10 +140,13 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
     const subtitleTrackPayload = await this._fetchSubtitleTrack(trackSrc);
 
     if (this.currentExternalSubtitleTrack && subtitleTrackPayload[this.currentExternalSubtitleTrack.src]) {
+      /**
+       * video_width works better with ultrawide monitors
+       */
       this._asssub = new ASSSUB(
         subtitleTrackPayload[this.currentExternalSubtitleTrack.src],
         mediaElementRef.value,
-        { resampling: 'video_height' }
+        { resampling: 'video_width' }
       );
 
       this._cleanups.add(() => {
