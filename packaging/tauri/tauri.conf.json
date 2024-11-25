@@ -1,14 +1,8 @@
 {
   "bundle": {
     "active": true,
-    "targets": [
-      "appimage",
-      "msi",
-      "dmg"
-    ],
-    "icon": [
-      "icons/**/*"
-    ],
+    "targets": ["appimage", "msi", "dmg"],
+    "icon": ["icons/**/*"],
     "resources": [],
     "externalBin": [],
     "category": "Entertainment",
@@ -30,13 +24,21 @@
   "plugins": {},
   "app": {
     "security": {
-      "csp": null
+      "csp": null,
+      "capabilities": [
+        {
+          "identifier": "all windows",
+          "description": "application capability used for all windows",
+          "windows": ["*"],
+          "permissions": ["core:window:allow-set-fullscreen", "core:window:default", "core:webview:allow-internal-toggle-devtools", "core:webview:default"]
+        }
+      ]
     },
     "windows": [
       {
         "title": "Jellyfin Vue",
-        "width": 800,
-        "height": 600,
+        "width": 1152,
+        "height": 720,
         "resizable": true,
         "fullscreen": false
       }
