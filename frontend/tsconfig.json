@@ -2,7 +2,7 @@
   "extends": "@jellyfin-vue/configs/typescript",
   "compilerOptions": {
     "lib": [
-      "ESNext",
+      "ES2024",
       "DOM",
       "WebWorker"
     ],
