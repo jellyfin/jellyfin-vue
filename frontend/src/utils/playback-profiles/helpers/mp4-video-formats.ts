@@ -89,7 +89,7 @@ export function hasHevcSupport(videoTestElement: HTMLVideoElement): boolean {
 export function hasAv1Support(videoTestElement: HTMLVideoElement): boolean {
   if (
     (isTizen() && isTizen55())
-    || (isWebOS5() && window.outerHeight >= 2160)
+    || (isWebOS5() && globalThis.outerHeight >= 2160)
   ) {
     return true;
   }

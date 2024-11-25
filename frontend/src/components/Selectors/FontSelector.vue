@@ -63,9 +63,9 @@ const { t } = useI18n();
 
 const { query: permissionQuery, isSupported, state: fontPermission } = usePermission('local-fonts', { controls: true });
 const fontAccess = computed(() => fontPermission.value === 'granted');
-const isQueryLocalFontsSupported = useSupported(() => isSupported.value && 'queryLocalFonts' in window);
+const isQueryLocalFontsSupported = useSupported(() => isSupported.value && 'queryLocalFonts' in globalThis);
 const askForPermission = async () => isQueryLocalFontsSupported.value
-  ? Promise.all([permissionQuery, window.queryLocalFonts])
+  ? Promise.all([permissionQuery, globalThis.queryLocalFonts])
   : undefined;
 
 /**
@@ -76,7 +76,7 @@ const fontList = computedAsync(async () => {
   const res: string[] = [];
 
   if (fontAccess.value || isQueryLocalFontsSupported.value) {
-    const set = new Set<string>((await window.queryLocalFonts()).map((font: FontFace) => font.family));
+    const set = new Set<string>((await globalThis.queryLocalFonts()).map((font: FontFace) => font.family));
 
     /**
      * Removes the current selected tpography (in case it's not the default one)

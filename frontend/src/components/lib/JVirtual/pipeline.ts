@@ -58,7 +58,7 @@ export function getScrollParents(
   element: HTMLElement,
   includeHidden = false
 ): ScrollParents {
-  const style = window.getComputedStyle(element);
+  const style = globalThis.getComputedStyle(element);
 
   if (style.position === 'fixed') {
     return {
@@ -76,7 +76,7 @@ export function getScrollParents(
   let parent: HTMLElement | null = element;
 
   while (parent && !vertical && !horizontal) {
-    const parentStyle = window.getComputedStyle(parent);
+    const parentStyle = globalThis.getComputedStyle(parent);
 
     horizontal
       = overflowRegex.test(parentStyle.overflowX)
@@ -106,7 +106,7 @@ export function getScrollParents(
  * Gets the gap and spacing between grid elements, alongside the flow of the grid
  */
 export function getGridMeasurement(rootEl: Element): GridMeasurement {
-  const computedStyle = window.getComputedStyle(rootEl);
+  const computedStyle = globalThis.getComputedStyle(rootEl);
 
   return {
     rowGap: Number(computedStyle.getPropertyValue('row-gap')) || 0,
@@ -288,7 +288,7 @@ export function getContentSize(
  * Gets the necessary information to scroll the grid to a specific item
  */
 export function getScrollToInfo(scrollParents: ScrollParents, rootEl: HTMLElement, resizeMeasurement: ResizeMeasurement, scrollTo: number) {
-  const computedStyle = window.getComputedStyle(rootEl);
+  const computedStyle = globalThis.getComputedStyle(rootEl);
 
   const gridPaddingTop = Number(computedStyle.getPropertyValue('padding-top')) || 0;
   const gridBoarderTop = Number(computedStyle.getPropertyValue('border-top')) || 0;

@@ -25,9 +25,9 @@ export abstract class CommonStore<T extends object> {
     let storage;
 
     if (persistence === 'localStorage') {
-      storage = window.localStorage;
+      storage = globalThis.localStorage;
     } else if (persistence === 'sessionStorage') {
-      storage = window.sessionStorage;
+      storage = globalThis.sessionStorage;
     }
 
     this._internalState = isNil(storage)

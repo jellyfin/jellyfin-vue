@@ -40,7 +40,7 @@ export const now = useNow();
 /**
  * Reactive window scroll
  */
-export const windowScroll = useScroll(window);
+export const windowScroll = useScroll(globalThis);
 /**
  * Ref to the local media player
  */

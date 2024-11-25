@@ -95,7 +95,7 @@ async function detachWebAudio(): Promise<void> {
         mediaWebAudio.gainNode.gain.setValueAtTime(mediaWebAudio.gainNode.gain.value, mediaWebAudio.context.currentTime);
         mediaWebAudio.gainNode.gain.exponentialRampToValueAtTime(0.0001, mediaWebAudio.context.currentTime + 1.5);
         await nextTick();
-        await new Promise(resolve => window.setTimeout(resolve));
+        await new Promise(resolve => globalThis.setTimeout(resolve));
         mediaWebAudio.gainNode.disconnect();
         mediaWebAudio.gainNode = undefined;
       }

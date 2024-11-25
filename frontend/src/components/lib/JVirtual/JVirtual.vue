@@ -214,7 +214,7 @@ const scrollTargets = computed(() => {
     return (
       vertical === horizontal ? [vertical] : [vertical, horizontal]
     ).map(parent =>
-      (parent === document.documentElement ? window : parent)
+      (parent === document.documentElement ? globalThis : parent)
     );
   }
 });
@@ -264,7 +264,7 @@ async function setCache(offset: number): Promise<void> {
    * If the WebWorker operation was running in the middle of a cache clear,
    * old data might be pushed instead, so we avoid it here.
    */
-  window.requestAnimationFrame(() => {
+  globalThis.requestAnimationFrame(() => {
     if (cache.size !== 0) {
       cache.set(offset, values);
       workerUpdates.value++;
@@ -316,7 +316,7 @@ watch(
     if (!isUndef(scrollTargets.value)) {
       for (const parent of scrollTargets.value) {
         const cleanup = useEventListener(parent, 'scroll', () => {
-          window.requestAnimationFrame(() => scrollEvents.value++);
+          globalThis.requestAnimationFrame(() => scrollEvents.value++);
         }, {
           passive: true,
           capture: true

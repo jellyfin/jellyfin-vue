@@ -36,7 +36,7 @@ const searchQuery = computed({
  * Handle page redirects depending on the focus state of the component
  */
 async function onFocus(focused: boolean): Promise<void> {
-  if (!searchQuery.value && !focused && window.history.length) {
+  if (!searchQuery.value && !focused && globalThis.history.length) {
     router.back();
   } else if (focused && !searchQuery.value) {
     await router.push({ path: '/search' });

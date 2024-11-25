@@ -87,7 +87,7 @@ class TaskManagerStore extends CommonStore<TaskManagerState> {
     if (task) {
       if (this._state.finishedTasksTimeout > 0) {
         task.progress = 100;
-        window.setTimeout(clearTask, this._state.finishedTasksTimeout);
+        globalThis.setTimeout(clearTask, this._state.finishedTasksTimeout);
       } else {
         clearTask();
       }

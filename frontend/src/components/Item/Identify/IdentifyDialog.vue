@@ -53,7 +53,7 @@
           <VCheckbox
             v-if="searchResults"
             v-model="replaceImage"
-            class="d-flex mt-2"
+            class="mt-2 d-flex"
             color="primary">
             <template #append>
               {{ $t('replaceExistingImages') }}

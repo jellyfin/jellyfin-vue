@@ -12,7 +12,7 @@ import '@/assets/styles/splashscreen.css';
 
 const store = localStorage.getItem('clientSettings') ?? '{}';
 const parsedStore = destr<ClientSettingsState>(store);
-const matchedDarkColorScheme = window.matchMedia(
+const matchedDarkColorScheme = globalThis.matchMedia(
   '(prefers-color-scheme: dark)'
 ).matches;
 const darkColor = '#111827';

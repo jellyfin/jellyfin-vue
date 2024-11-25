@@ -212,8 +212,8 @@ class ApiStore {
     watch(
       () => remote.auth.currentUser,
       () => {
-        window.requestAnimationFrame(() => {
-          window.setTimeout(() => {
+        globalThis.requestAnimationFrame(() => {
+          globalThis.setTimeout(() => {
             if (!remote.auth.currentUser) {
               this._clear();
             }
