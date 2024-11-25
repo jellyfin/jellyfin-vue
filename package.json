@@ -29,10 +29,10 @@
   },
   "devDependencies": {
     "@eslint/config-inspector": "0.5.6",
-    "@types/node": "22.9.1",
+    "@types/node": "22.9.3",
     "eslint": "9.15.0",
     "jiti": "2.4.0",
-    "typescript": "5.6.3",
+    "typescript": "5.7.2",
     "vue-tsc": "2.1.10"
   }
 }
