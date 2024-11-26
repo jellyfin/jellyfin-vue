@@ -4,23 +4,26 @@
  * In the other part, playbackManager is suited to handle the playback state in
  * an agnostic way, regardless of where the media is being played (remotely or locally)
  */
-import JASSUB from 'jassub';
-import jassubWorker from 'jassub/dist/jassub-worker.js?url';
-import jassubWasmUrl from 'jassub/dist/jassub-worker.wasm?url';
+import ASSSUB, { type IASSSUB } from 'assjs';
 import { PgsRenderer } from 'libpgs';
 import pgssubWorker from 'libpgs/dist/libpgs.worker.js?url';
 import { computed, nextTick, shallowRef, watch } from 'vue';
 import { SubtitleDeliveryMethod } from '@jellyfin/sdk/lib/generated-client/models/subtitle-delivery-method';
 import { useFullscreen } from '@vueuse/core';
 import { playbackManager, type PlaybackExternalTrack } from './playback-manager';
-import { isArray, isNil, sealed } from '@/utils/validation';
-import { DEFAULT_TYPOGRAPHY, mediaElementRef } from '@/store';
+import { isNil, sealed } from '@/utils/validation';
+import { mediaElementRef } from '@/store';
 import { CommonStore } from '@/store/super/common-store';
 import { router } from '@/plugins/router';
 import { remote } from '@/plugins/remote';
 import type { ParsedSubtitleTrack } from '@/plugins/workers/generic/subtitles';
 import { genericWorker } from '@/plugins/workers';
 import { subtitleSettings } from '@/store/client-settings/subtitle-settings';
+
+/**
+ * TODO: Provide option for the user to select if subtitles should be rendered by the browser or transcoded in server
+ * That option must take into account if transcoding is enabled in server (and user has permission to use it as well)
+ */
 
 interface SubtitleExternalTrack extends PlaybackExternalTrack {
   parsed?: ParsedSubtitleTrack;
@@ -46,7 +49,8 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
    * Reactive state is defined in the super() constructor
    */
   private readonly _fullscreenVideoRoute = '/playback/video';
-  private _jassub: JASSUB | undefined;
+  private readonly _cleanups = new Set<() => void>();
+  private _asssub: IASSSUB | undefined;
   private _pgssub: PgsRenderer | undefined;
   protected _storeKey = 'playerElement';
 
@@ -118,98 +122,62 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
     }
   };
 
-  private readonly _setSsaTrack = (trackSrc: string, attachedFonts?: string[]): void => {
-    if (
-      !this._jassub
-      && mediaElementRef.value
-      && mediaElementRef.value instanceof HTMLVideoElement
-    ) {
-      const hasAttachedFonts = !isNil(attachedFonts) && attachedFonts.length !== 0;
+  private readonly _fetchSubtitleTrack = async (trackSrc: string) => {
+    const axios = remote.sdk.api?.axiosInstance;
 
-      this._jassub = new JASSUB({
-        video: mediaElementRef.value,
-        subUrl: trackSrc,
-        ...(hasAttachedFonts
-          ? {
-              fonts: attachedFonts
-            }
-          : {
-              useLocalFonts: true
-            }),
-        fallbackFont: DEFAULT_TYPOGRAPHY,
-        workerUrl: jassubWorker,
-        wasmUrl: jassubWasmUrl,
-        // Both parameters needed for subs to work on iOS
-        prescaleFactor: 0.8,
-        onDemandRender: false,
-        // OffscreenCanvas doesn't work perfectly on Workers: https://github.com/ThaUnknown/jassub/issues/33
-        offscreenRender: false
+    return {
+      [trackSrc]: (await axios!.get(trackSrc)).data as string
+    };
+  };
+
+  private readonly _setSsaTrack = async (trackSrc: string): Promise<void> => {
+    if (!mediaElementRef.value || !(mediaElementRef.value instanceof HTMLVideoElement)) {
+      return;
+    }
+
+    this._clear();
+
+    const subtitleTrackPayload = await this._fetchSubtitleTrack(trackSrc);
+
+    if (this.currentExternalSubtitleTrack && subtitleTrackPayload[this.currentExternalSubtitleTrack.src]) {
+      /**
+       * video_width works better with ultrawide monitors
+       */
+      this._asssub = new ASSSUB(
+        subtitleTrackPayload[this.currentExternalSubtitleTrack.src],
+        mediaElementRef.value,
+        { resampling: 'video_width' }
+      );
+
+      this._cleanups.add(() => {
+        this._asssub?.destroy();
+        this._asssub = undefined;
       });
-    } else if (this._jassub) {
-      if (isArray(attachedFonts)) {
-        for (const font of attachedFonts) {
-          this._jassub.addFont(font);
-        }
-      }
-
-      this._jassub.setTrackByUrl(trackSrc);
     }
   };
 
-  private readonly _freeSsaTrack = (): void => {
-    if (this._jassub) {
-      try {
-        this._jassub.destroy();
-      } catch {}
-
-      this._jassub = undefined;
-    }
-  };
-
-  private readonly _isSupportedFont = (mimeType: string | undefined | null): boolean => {
-    return (
-      !isNil(mimeType)
-      && mimeType.startsWith('font/')
-      && (mimeType.includes('ttf')
-        || mimeType.includes('otf')
-        || mimeType.includes('woff'))
-    );
-  };
-
-  private readonly _setPgsTrack = (trackSrc: string): void => {
-    if (
-      !this._pgssub
-      && mediaElementRef.value instanceof HTMLVideoElement
-    ) {
-      this._pgssub = new PgsRenderer({
-        video: mediaElementRef.value,
-        subUrl: trackSrc,
-        workerUrl: pgssubWorker
-      });
-    } else if (this._pgssub) {
-      this._pgssub.loadFromUrl(trackSrc);
-    }
-  };
-
-  private readonly _freePgsTrack = (): void => {
-    if (this._pgssub) {
-      this._pgssub.dispose();
-    }
-
-    this._pgssub = undefined;
-  };
-
-  /**
-   * Applies PGS subtitles to the media element.
-   */
   private readonly _applyPgsSubtitles = (): void => {
-    if (
-      mediaElementRef.value
-      && this.currentExternalSubtitleTrack
-    ) {
-      const subtitleTrack = this.currentExternalSubtitleTrack;
+    const trackSrc = this.currentExternalSubtitleTrack?.src;
 
-      this._setPgsTrack(subtitleTrack.src);
+    if (trackSrc) {
+      if (
+        !this._pgssub
+        && mediaElementRef.value instanceof HTMLVideoElement
+        && this.currentExternalSubtitleTrack
+      ) {
+        this._pgssub = new PgsRenderer({
+          video: mediaElementRef.value,
+          subUrl: trackSrc,
+          workerUrl: pgssubWorker
+        });
+
+        this._cleanups.add(() => {
+          this._pgssub?.dispose();
+          this._pgssub = undefined;
+        });
+      } else if (this._pgssub) {
+        this._pgssub.loadFromUrl(trackSrc);
+      }
     }
   };
 
@@ -241,49 +209,29 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
    * Applies SSA (SubStation Alpha) subtitles to the media element.
    */
   private readonly _applySsaSubtitles = async (): Promise<void> => {
-    if (
-      mediaElementRef.value
-      && this.currentExternalSubtitleTrack
-    ) {
-      const subtitleTrack = this.currentExternalSubtitleTrack;
+    if (!this.currentExternalSubtitleTrack || !mediaElementRef) {
+      return;
+    }
+
+    const subtitleTrack = this.currentExternalSubtitleTrack;
+
+    /**
+     * Check if client is able to display custom subtitle track
+     */
+    if (this._useCustomSubtitleTrack) {
+      const data = await genericWorker.parseSsaFile(subtitleTrack.src);
 
       /**
-       * Check if client is able to display custom subtitle track
-       * otherwise use JASSUB to render subtitles
+       * Check if worker returned that the sub data is 'basic', when true use basic renderer method
        */
-      let applyJASSUB = !this._useCustomSubtitleTrack;
+      if (data?.isBasic) {
+        this.currentExternalSubtitleTrack.parsed = data;
 
-      if (this._useCustomSubtitleTrack) {
-        const data = await genericWorker.parseSsaFile(subtitleTrack.src);
-
-        /**
-         * If style isn't basic (animations, custom typographics, etc.)
-         * fallback to rendering subtitles with JASSUB
-         */
-        if (data?.isBasic) {
-          this.currentExternalSubtitleTrack.parsed = data;
-        } else {
-          applyJASSUB = true;
-        }
-      }
-
-      if (applyJASSUB) {
-        const serverAddress = remote.sdk.api?.basePath;
-
-        const attachedFonts
-        = playbackManager.currentMediaSource?.MediaAttachments?.filter(a =>
-          this._isSupportedFont(a.MimeType)
-        )
-          .map((a) => {
-            if (a.DeliveryUrl && serverAddress) {
-              return `${serverAddress}${a.DeliveryUrl}`;
-            }
-          })
-          .filter((a): a is string => a !== undefined) ?? [];
-
-        this._setSsaTrack(subtitleTrack.src, attachedFonts);
+        return;
       }
     }
+
+    this._setSsaTrack(subtitleTrack.src);
   };
 
   /**
@@ -307,8 +255,7 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
       }
     }
 
-    this._freeSsaTrack();
-    this._freePgsTrack();
+    this._clear();
     this.currentExternalSubtitleTrack = undefined;
 
     await nextTick();
@@ -331,6 +278,17 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
         await this._applySsaSubtitles();
       }
     }
+  };
+
+  /**
+   * Disposes all the subtitle resources
+   */
+  private readonly _clear = () => {
+    for (const func of this._cleanups) {
+      func();
+    }
+
+    this._cleanups.clear();
   };
 
   public constructor() {
@@ -360,8 +318,7 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
      */
     watch(videoContainerRef, () => {
       if (!videoContainerRef.value) {
-        this._freeSsaTrack();
-        this._freePgsTrack();
+        this._clear();
       }
     }, { flush: 'sync' });
 
