@@ -38,11 +38,11 @@
     "hls.js": "1.5.17",
     "libpgs": "0.8.1",
     "marked": "15.0.2",
-    "sortablejs": "1.15.4",
+    "sortablejs": "1.15.5",
     "swiper": "11.1.15",
     "uuid": "11.0.3",
     "vue": "3.5.13",
-    "vue-i18n": "9.14.1",
+    "vue-i18n": "9.14.2",
     "vue-router": "4.5.0",
     "vuetify": "3.7.4"
   },
