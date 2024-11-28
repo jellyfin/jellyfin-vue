@@ -4,7 +4,7 @@
  * In the other part, playbackManager is suited to handle the playback state in
  * an agnostic way, regardless of where the media is being played (remotely or locally)
  */
-import ASSSUB, { type IASSSUB } from 'assjs';
+import ASSSUB from 'assjs';
 import { PgsRenderer } from 'libpgs';
 import pgssubWorker from 'libpgs/dist/libpgs.worker.js?url';
 import { computed, nextTick, shallowRef, watch } from 'vue';
@@ -50,7 +50,7 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
    */
   private readonly _fullscreenVideoRoute = '/playback/video';
   private readonly _cleanups = new Set<() => void>();
-  private _asssub: IASSSUB | undefined;
+  private _asssub: ASSSUB | undefined;
   private _pgssub: PgsRenderer | undefined;
   protected _storeKey = 'playerElement';
 
@@ -209,7 +209,7 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
    * Applies SSA (SubStation Alpha) subtitles to the media element.
    */
   private readonly _applySsaSubtitles = async (): Promise<void> => {
-    if (!this.currentExternalSubtitleTrack || !mediaElementRef) {
+    if (!this.currentExternalSubtitleTrack || !mediaElementRef.value) {
       return;
     }
 
@@ -231,7 +231,7 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
       }
     }
 
-    this._setSsaTrack(subtitleTrack.src);
+    await this._setSsaTrack(subtitleTrack.src);
   };
 
   /**
