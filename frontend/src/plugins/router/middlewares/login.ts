@@ -42,10 +42,10 @@ export const loginGuard = async (
   const toServerPages = serverPages.has(to.name);
 
   /**
-   * Do not allow the server selection pages if allowServerSelection=false,
+   * Do not allow the server selection pages if `allowServerSelection` is false in config.json,
    * but do allow the login page.
    */
-  if (!jsonConfig.allowServerSelection && toServerPages && to.name != '/server/login') {
+  if (!jsonConfig.allowServerSelection && (toServerPages && to.name !== serverLoginUrl)) {
     return false;
   }
 
