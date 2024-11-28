@@ -41,7 +41,11 @@ export const loginGuard = async (
 ): Promise<Exclude<NavigationGuardReturn, Error>> => {
   const toServerPages = serverPages.has(to.name);
 
-  if (!jsonConfig.allowServerSelection && toServerPages) {
+  /**
+   * Do not allow the server selection pages if `allowServerSelection` is false in config.json,
+   * but do allow the login page.
+   */
+  if (!jsonConfig.allowServerSelection && (toServerPages && to.name !== serverLoginUrl)) {
     return false;
   }
 
