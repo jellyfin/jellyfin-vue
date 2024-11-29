@@ -7,6 +7,7 @@
       :scrim="false"
       scroll-strategy="none"
       content-class="minimized-overlay"
+      :close-on-back="false"
       :width="$vuetify.display.mobile ? '60vw' : '25vw'">
       <div
         ref="videoContainerRef"
@@ -14,6 +15,7 @@
       <VOverlay
         :model-value="isHovering"
         contained
+        :close-on-back="false"
         height="100%"
         width="100%">
         <div class="d-flex flex-column">

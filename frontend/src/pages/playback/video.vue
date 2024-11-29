@@ -10,6 +10,7 @@
         v-model="overlay"
         contained
         scrim="transparent"
+        :close-on-back="false"
         width="100%"
         height="100%">
         <div
