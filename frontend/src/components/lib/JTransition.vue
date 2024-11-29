@@ -16,7 +16,11 @@
       onNoLeave();
       $attrs.onLeaveCancelled?.();
     }">
-    <slot />
+    <!-- Transition only supports a single child, so we handle a possible misuse here wrapping if necessary -->
+    <span v-if="$slots.default().length > 1 && !group">
+      <slot />
+    </span>
+    <slot v-else />
   </component>
 </template>
 
