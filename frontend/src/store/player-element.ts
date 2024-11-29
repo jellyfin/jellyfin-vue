@@ -130,29 +130,35 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
     };
   };
 
-  private readonly _setSsaTrack = async (trackSrc: string): Promise<void> => {
-    if (!mediaElementRef.value || !(mediaElementRef.value instanceof HTMLVideoElement)) {
-      return;
-    }
+  /**
+   * Applies SSA (SubStation Alpha) subtitles to the media element.
+   */
+  private readonly _applySsaSubtitles = async (): Promise<void> => {
+    if (
+      mediaElementRef.value
+      && this.currentExternalSubtitleTrack
+      && (mediaElementRef.value instanceof HTMLVideoElement)
+    ) {
+      this._clear();
 
-    this._clear();
+      const trackSrc = this.currentExternalSubtitleTrack.src;
+      const subtitleTrackPayload = await this._fetchSubtitleTrack(trackSrc);
 
-    const subtitleTrackPayload = await this._fetchSubtitleTrack(trackSrc);
+      if (subtitleTrackPayload[trackSrc]) {
+        /**
+         * video_width works better with ultrawide monitors
+         */
+        this._asssub = new ASSSUB(
+          subtitleTrackPayload[trackSrc],
+          mediaElementRef.value,
+          { resampling: 'video_width' }
+        );
 
-    if (this.currentExternalSubtitleTrack && subtitleTrackPayload[this.currentExternalSubtitleTrack.src]) {
-      /**
-       * video_width works better with ultrawide monitors
-       */
-      this._asssub = new ASSSUB(
-        subtitleTrackPayload[this.currentExternalSubtitleTrack.src],
-        mediaElementRef.value,
-        { resampling: 'video_width' }
-      );
-
-      this._cleanups.add(() => {
-        this._asssub?.destroy();
-        this._asssub = undefined;
-      });
+        this._cleanups.add(() => {
+          this._asssub?.destroy();
+          this._asssub = undefined;
+        });
+      }
     }
   };
 
@@ -203,35 +209,6 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
         mediaElementRef.value.textTracks[subtitleTrack.srcIndex].mode = 'showing';
       }
     }
-  };
-
-  /**
-   * Applies SSA (SubStation Alpha) subtitles to the media element.
-   */
-  private readonly _applySsaSubtitles = async (): Promise<void> => {
-    if (!this.currentExternalSubtitleTrack || !mediaElementRef) {
-      return;
-    }
-
-    const subtitleTrack = this.currentExternalSubtitleTrack;
-
-    /**
-     * Check if client is able to display custom subtitle track
-     */
-    if (this._useCustomSubtitleTrack) {
-      const data = await genericWorker.parseSsaFile(subtitleTrack.src);
-
-      /**
-       * Check if worker returned that the sub data is 'basic', when true use basic renderer method
-       */
-      if (data?.isBasic) {
-        this.currentExternalSubtitleTrack.parsed = data;
-
-        return;
-      }
-    }
-
-    this._setSsaTrack(subtitleTrack.src);
   };
 
   /**
