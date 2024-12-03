@@ -14,6 +14,7 @@ class GenericWorker {
    */
   public shuffle<T>(array: T[]) {
     for (let i = array.length - 1; i > 0; i--) {
+      // eslint-disable-next-line sonarjs/pseudo-random
       const j = Math.floor(Math.random() * (i + 1));
 
       [array[i], array[j]] = [array[j], array[i]];

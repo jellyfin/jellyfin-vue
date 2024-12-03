@@ -40,7 +40,7 @@ import {
   type StyleValue,
   useTemplateRef
 } from 'vue';
-import { wrap } from 'comlink';
+import { releaseProxy, wrap } from 'comlink';
 import {
   getBufferMeta,
   getContentSize,
@@ -356,8 +356,10 @@ watch([bufferLength, resizeMeasurement, itemsLength, bufferOffset], (val, oldVal
 });
 
 onBeforeUnmount(destroyEventListeners);
-onBeforeUnmount(() => workerInstance.terminate());
-onBeforeUnmount(() => cache.clear());
+onBeforeUnmount(() => {
+  worker[releaseProxy]();
+  workerInstance.terminate();
+});
 </script>
 
 <style scoped>
