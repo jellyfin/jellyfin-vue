@@ -49,11 +49,5 @@
   "vue.inlayHints.vBindShorthand": true,
   "vue.inlayHints.optionsWrapper": true,
   "vue.inlayHints.destructuredProps": true,
-  "sonarlint.output.showAnalyzerLogs": true,
-  "sonarlint.output.showVerboseLogs": true,
-  "sonarlint.connectedMode.project": {
-    "connectionId": "jellyfin-vue",
-    "projectKey": "jellyfin_jellyfin-vue"
-  },
-  "typescript.tsserver.experimental.enableProjectDiagnostics": true
+  "typescript.tsserver.experimental.enableProjectDiagnostics": false
 }
