@@ -3,6 +3,7 @@ import {
   usePreferredDark,
   watchImmediate } from '@vueuse/core';
 import { computed, watch } from 'vue';
+import type { LiteralUnion } from 'type-fest';
 import { i18n } from '@/plugins/i18n';
 import { remote } from '@/plugins/remote';
 import { vuetify } from '@/plugins/vuetify';
@@ -18,7 +19,7 @@ import type { TypographyChoices } from '@/store';
 export interface ClientSettingsState {
   typography: TypographyChoices;
   darkMode: 'auto' | boolean;
-  locale: string;
+  locale: LiteralUnion<'auto', string>;
 }
 
 @sealed
@@ -42,7 +43,7 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState> {
         : 'auto';
   }
 
-  public get locale(): string {
+  public get locale() {
     return this._state.locale;
   }
 

@@ -3,6 +3,7 @@ import { getDisplayPreferencesApi } from '@jellyfin/sdk/lib/utils/api/display-pr
 import destr from 'destr';
 import { EffectScope, toRaw } from 'vue';
 import { watchDeep, watchImmediate } from '@vueuse/core';
+import type { UnknownRecord } from 'type-fest';
 import { taskManager } from '../task-manager';
 import { remote } from '@/plugins/remote';
 import { CommonStore, type Persistence } from '@/store/super/common-store';
@@ -10,7 +11,7 @@ import { isNil, isStr } from '@/utils/validation';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { i18n } from '@/plugins/i18n';
 
-export abstract class SyncedStore<T extends object> extends CommonStore<T> {
+export abstract class SyncedStore<T extends UnknownRecord> extends CommonStore<T> {
   private readonly _clientSyncName = 'vue';
   private readonly _syncedKeys: Set<(keyof T)>;
   private readonly _effectScope = new EffectScope();

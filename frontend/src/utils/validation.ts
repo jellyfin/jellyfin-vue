@@ -1,4 +1,5 @@
 import type { AxiosError } from 'axios';
+import type { Class } from 'type-fest';
 
 /**
  * Validator to which enforces that a select component has at least one value selected
@@ -82,7 +83,7 @@ export function isArray(object: unknown): object is unknown[] {
  *
  * @type TypeScript Decorator
  */
-export function sealed(constructor: new (...args: never[]) => object): void {
+export function sealed(constructor: Class): void {
   Object.seal(constructor);
   Object.seal(constructor.prototype);
 }

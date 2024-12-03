@@ -4,6 +4,7 @@ import type { AxiosResponse } from 'axios';
 import { deepEqual } from 'fast-equals';
 import { computed, effectScope, getCurrentScope, inject, isRef, shallowRef, toValue, unref, watch, type ComputedRef, type Ref } from 'vue';
 import { until, whenever } from '@vueuse/core';
+import type { Exact, Writable } from 'type-fest';
 import { useLoading } from '@/composables/use-loading';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { i18n } from '@/plugins/i18n';
@@ -16,12 +17,11 @@ import { JView_isRouting } from '@/store/keys';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type OmittedKeys = 'fields' | 'userId' | 'enableImages' | 'enableTotalRecordCount' | 'enableImageTypes';
 type ParametersAsGetters<T extends (...args: any[]) => any> = T extends (...args: infer P) => any
-  ? { [K in keyof P]: () => BetterOmit<Mutable<P[K]>, OmittedKeys> }
+  ? { [K in keyof P]: () => BetterOmit<Writable<P[K]>, OmittedKeys> }
   : never;
 type ExtractResponseDataType<T> = Awaited<T> extends AxiosResponse<infer U> ? U : undefined;
-type Validate<T, U> = T extends U ? U : never;
 type ComposableParams<T extends Record<K, (...args: any[]) => any>, K extends keyof T, U extends ParametersAsGetters<T[K]>> =
-  Validate<ParametersAsGetters<T[K]>, U>;
+  Exact<ParametersAsGetters<T[K]>, U>;
 /**
  * If the response contains an Items (usually the *QueryResult ones) property, we return the value of Items instead of the whole response,
  * so we return the appropiate type for it. We also remove null and undefined since we already check for that
