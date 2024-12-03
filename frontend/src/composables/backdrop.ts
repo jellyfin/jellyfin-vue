@@ -1,12 +1,13 @@
 import { ImageType, type BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { toValue, type MaybeRefOrGetter } from 'vue';
+import type { ArrayTail } from 'type-fest';
 import { useBackdrop } from '@/components/Layout/Backdrop.vue';
 import { getBlurhash } from '@/utils/images';
 
 /**
  * Same as useBackdrop, but is a shorthand for items only.
  */
-export function useItemBackdrop(item: MaybeRefOrGetter<Nullish<BaseItemDto>>, ...args: Tail<Parameters<typeof useBackdrop>>) {
+export function useItemBackdrop(item: MaybeRefOrGetter<Nullish<BaseItemDto>>, ...args: ArrayTail<Parameters<typeof useBackdrop>>) {
   useBackdrop(() => getBlurhash(toValue(item) ?? {}, ImageType.Primary), ...args);
 }
 

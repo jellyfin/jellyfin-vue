@@ -1,11 +1,12 @@
 import { useStorage, type RemovableRef } from '@vueuse/core';
 import { reactive, toValue } from 'vue';
+import type { UnknownRecord } from 'type-fest';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
 import { isNil } from '@/utils/validation';
 
 export type Persistence = 'localStorage' | 'sessionStorage';
 
-export abstract class CommonStore<T extends object> {
+export abstract class CommonStore<T extends UnknownRecord> {
   protected readonly _storeKey: string;
   private readonly _defaultState: () => T;
   private readonly _internalState: T | RemovableRef<T>;
