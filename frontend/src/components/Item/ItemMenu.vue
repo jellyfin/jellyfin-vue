@@ -401,7 +401,7 @@ function getQueueOptions(): MenuOption[] {
     }
 
     if (
-      playbackManager.nextItem.value.Id !== item.Id
+      playbackManager.nextItem.value?.Id !== item.Id
       && playbackManager.currentItem.value?.Id !== item.Id
     ) {
       queueOptions.push(playNextAction);
@@ -427,7 +427,7 @@ function getPlaybackOptions(): MenuOption[] {
 
   if (playbackManager.currentItem.value) {
     if (
-      playbackManager.nextItem.value.Id !== item.Id
+      playbackManager.nextItem.value?.Id !== item.Id
       && playbackManager.currentItem.value.Id !== item.Id
       && !queue
     ) {
@@ -450,7 +450,7 @@ function getPlaybackOptions(): MenuOption[] {
 function getCopyOptions(): MenuOption[] {
   const copyActions: MenuOption[] = [];
 
-  if (remote.auth.currentUser.value.Policy?.EnableContentDownloading) {
+  if (remote.auth.currentUser.value?.Policy?.EnableContentDownloading) {
     copyActions.push(copyDownloadURLAction);
   }
 
@@ -471,7 +471,7 @@ function getLibraryOptions(): MenuOption[] {
     libraryOptions.push(refreshAction);
   }
 
-  if (remote.auth.currentUser.value.Policy?.IsAdministrator) {
+  if (remote.auth.currentUser.value?.Policy?.IsAdministrator) {
     libraryOptions.push(editMetadataAction);
 
     if (canIdentify(item)) {
@@ -480,8 +480,8 @@ function getLibraryOptions(): MenuOption[] {
   }
 
   if (
-    remote.auth.currentUser.value.Policy?.EnableContentDeletion
-    || remote.auth.currentUser.value.Policy?.EnableContentDeletionFromFolders
+    remote.auth.currentUser.value?.Policy?.EnableContentDeletion
+    || remote.auth.currentUser.value?.Policy?.EnableContentDeletionFromFolders
   ) {
     libraryOptions.push(deleteItemAction);
   }

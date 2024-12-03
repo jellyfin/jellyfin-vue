@@ -14,9 +14,9 @@
         v-if="shown"
         :src="src"
         :alt="alt"
-        class="j-img"
+        class="uno-w-full uno-h-full uno-object-cover"
         decoding="sync"
-        v-bind="$attrs">
+        v-bind="getBaseProps($attrs)">
       <template v-else>
         <slot
           v-if="$slots.placeholder"
@@ -24,14 +24,12 @@
         <slot
           v-else-if="loading"
           name="loading">
-          <VProgressCircular indeterminate />
+          <JProgressCircular indeterminate />
         </slot>
         <slot
           v-else-if="error"
           name="error">
-          <VIcon>
-            <IMdiImageBrokenVariant />
-          </VIcon>
+          <JIcon class="i-mdi:image-broken-variant" />
         </slot>
       </template>
     </JTransition>
@@ -53,7 +51,10 @@
  */
 import { computed, shallowRef, watch } from 'vue';
 import { isObj } from '@jellyfin-vue/shared/validation';
-import JTransition, { type JTransitionProps } from '#/components/lib/JTransition.vue';
+import JIcon from './JIcon.vue';
+import JProgressCircular from './JProgressCircular.vue';
+import JTransition, { type JTransitionProps } from './JTransition.vue';
+import { getBaseProps } from '#/util/props';
 
 /**
  * We don't want <link> to inherit any attributes and the component might not render any
@@ -111,11 +112,3 @@ function onError(): void {
 
 watch(() => src, onLoadStart);
 </script>
-
-<style scoped>
-.j-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-</style>

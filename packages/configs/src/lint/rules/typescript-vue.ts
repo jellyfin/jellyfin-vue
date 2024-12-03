@@ -129,6 +129,12 @@ const common = [
   {
     ...sonarjs.configs.recommended,
     name: '(@jellyfin-vue/configs/lint/typescript-vue - sonarcloud) Extended config from plugin'
+  },
+  {
+    name: '(@jellyfin-vue/configs/lint/typescript-vue - sonarcloud) Custom config',
+    rules: {
+      'sonarjs/function/return-type': 'off'
+    }
   }
 ] satisfies Linter.Config[];
 

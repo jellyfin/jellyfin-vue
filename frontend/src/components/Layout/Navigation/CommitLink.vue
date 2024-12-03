@@ -11,7 +11,7 @@
 <script setup lang="ts">
 import IMdiGithub from 'virtual:icons/mdi/github';
 import { commit_hash } from 'virtual:commit';
-import { sanitizeHtml } from '#/utils/html';
+import { sanitizeHtml } from '@jellyfin-vue/shared/html';
 
 const link = commit_hash ? sanitizeHtml(`https://github.com/jellyfin/jellyfin-vue/commit/${commit_hash}`) : undefined;
 </script>

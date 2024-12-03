@@ -1,3 +1,4 @@
+import { isStr } from '@jellyfin-vue/shared/validation';
 import { upperFirst } from '#/utils/data-manipulation';
 
 /**

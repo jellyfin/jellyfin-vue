@@ -12,11 +12,10 @@
         <template v-if="loading && items.length === lazyLoadLimit && initialId === route.params.itemId">
           {{ t('lazyLoading', { value: items.length }) }}
         </template>
-        <VProgressCircular
+        <JProgressCircular
           v-else-if="loading"
           indeterminate
-          width="2"
-          size="16" />
+          class="uno-h-4 uno-w-4" />
         <template v-else>
           {{ items.length ?? 0 }}
         </template>
