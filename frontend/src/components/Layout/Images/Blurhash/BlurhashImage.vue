@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <JOverlay>
     <JImg
-      class="absolute-cover"
+      class="uno-h-full uno-w-full"
       :src="imageUrl"
       :alt="item.Name ?? $t('unknown')"
       v-bind="$attrs">
@@ -12,7 +12,7 @@
           :width="width"
           :height="height"
           :punch="punch"
-          class="absolute-cover">
+          class="uno-h-full uno-w-full">
           <BlurhashImageIcon
             :item="item"
             class="uno-z--1" />
@@ -22,7 +22,7 @@
           :item="item" />
       </template>
     </JImg>
-  </div>
+  </JOverlay>
 </template>
 
 <script setup lang="ts">

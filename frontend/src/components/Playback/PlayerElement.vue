@@ -14,10 +14,10 @@
           crossorigin
           playsinline
           :loop="playbackManager.isRepeatingOnce"
-          class="uno-h-full uno-max-h-100vh"
+          class="uno-h-full uno-w-full"
           :class="{
             'uno-object-fill': playerElement.isStretched.value,
-            'uno-w-screen': playerElement.isStretched.value
+            '!uno-w-screen': playerElement.isStretched.value
           }"
           @loadeddata="onLoadedData">
           <track

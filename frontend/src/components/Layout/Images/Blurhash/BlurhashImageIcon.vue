@@ -1,16 +1,18 @@
 <template>
-  <VAvatar
-    v-if="getItemIcon(item)"
-    :rounded="false"
-    size="100%"
-    class="absolute-cover d-flex justify-center align-center align-self-center">
-    <VIcon
-      class="text--disabled placeholder"
-      size="50%"
-      :icon="getItemIcon(item)">
-      <component :is="getItemIcon(item)" />
-    </VIcon>
-  </VAvatar>
+  <JOverlay>
+    <VAvatar
+      v-if="getItemIcon(item)"
+      :rounded="false"
+      size="100%"
+      class="d-flex justify-center align-center align-self-center uno-h-full uno-w-full">
+      <VIcon
+        class="text--disabled placeholder"
+        size="50%"
+        :icon="getItemIcon(item)">
+        <component :is="getItemIcon(item)" />
+      </VIcon>
+    </VAvatar>
+  </JOverlay>
 </template>
 
 <script setup lang="ts">

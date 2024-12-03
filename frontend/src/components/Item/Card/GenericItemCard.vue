@@ -8,15 +8,15 @@
         <div
           :class="shape"
           class="elevation-2">
-          <div
-            class="d-flex align-center justify-center absolute-cover card-content">
+          <JOverlay
+            class="d-flex align-center justify-center card-content">
             <JSlot class="card-image">
               <slot
                 name="image" />
             </JSlot>
-          </div>
-          <div
-            class="absolute-cover d-flex justify-center align-center card-overlay"
+          </JOverlay>
+          <JOverlay
+            class="d-flex justify-center align-center card-overlay"
             :class="{ 'card-overlay-hover': overlay && hasFinePointer }">
             <div class="d-flex justify-center align-center card-upper-content">
               <slot name="upper-content" />
@@ -36,7 +36,7 @@
               :model-value="progress"
               absolute
               location="bottom" />
-          </div>
+          </JOverlay>
         </div>
       </JHover>
     </Component>
@@ -59,6 +59,7 @@ import { useAttrs, computed } from 'vue';
 import { isNil } from '@/utils/validation';
 import { hasFinePointer } from '@/store';
 import type { CardShapes } from '@/utils/items';
+import JOverlay from '@/components/lib/JOverlay.vue';
 
 const { shape, progress, overlay, forceOverlay, to, margin } = defineProps<{
   shape: CardShapes;

@@ -100,6 +100,7 @@ declare module 'vue' {
     JApp: typeof import('./../../src/components/lib/JApp.vue')['default']
     JHover: typeof import('./../../src/components/lib/JHover.vue')['default']
     JImg: typeof import('./../../src/components/lib/JImg.vue')['default']
+    JOverlay: typeof import('./../../src/components/lib/JOverlay.vue')['default']
     JSafeHtml: typeof import('./../../src/components/lib/JSafeHtml.vue')['default']
     JSlot: typeof import('./../../src/components/lib/JSlot.vue')['default']
     JSplashscreen: typeof import('./../../src/components/lib/JSplashscreen.vue')['default']
