@@ -6,13 +6,7 @@
       :class="{ 'uno-cursor-none': !overlay }"
       @mousemove="handleMouseMove"
       @touchend="handleMouseMove">
-      <VOverlay
-        v-model="overlay"
-        contained
-        scrim="transparent"
-        :close-on-back="false"
-        width="100%"
-        height="100%">
+      <JOverlay v-show="overlay">
         <div
           class="d-flex flex-column align-center justify-space-between player-overlay">
           <div class="osd-top pt-s pl-s pr-s">
@@ -112,7 +106,7 @@
             </div>
           </div>
         </div>
-      </VOverlay>
+      </JOverlay>
     </div>
   </VMain>
 </template>
