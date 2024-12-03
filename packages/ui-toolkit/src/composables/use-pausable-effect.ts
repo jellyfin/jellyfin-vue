@@ -1,4 +1,5 @@
-import { getCurrentScope, toRef, watch, type MaybeRefOrGetter } from 'vue';
+import { watchImmediate } from '@vueuse/core';
+import { getCurrentScope, toRef, type MaybeRefOrGetter } from 'vue';
 
 /**
  * When the passed argument is truthy, the effect scope of the current component will be paused
@@ -10,6 +11,6 @@ export function usePausableEffect(signal: MaybeRefOrGetter<boolean>) {
   const scope = getCurrentScope();
 
   if (scope) {
-    watch(toRef(signal), val => val ? scope.pause() : scope.resume(), { immediate: true, flush: 'sync' });
+    watchImmediate(toRef(signal), val => val ? scope.pause() : scope.resume(), { flush: 'sync' });
   }
 }

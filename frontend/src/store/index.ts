@@ -15,12 +15,6 @@ import { remote } from '#/plugins/remote';
 import { router } from '#/plugins/router';
 import type { SubtitleTypographyChoices } from '#/store/client-settings/subtitle-settings';
 
-/**
- * This file contains global variables (specially VueUse refs) that are used multiple times across the client.
- * VueUse composables will set new event handlers, so it's more
- * efficient to reuse those, both in components and TS files.
- */
-
 export const DEFAULT_TYPOGRAPHY = 'Figtree Variable';
 /**
  * Type for the different typography choices across the application
@@ -72,10 +66,6 @@ export const mediaWebAudio = {
   sourceNode: undefined as undefined | MediaElementAudioSourceNode,
   gainNode: undefined as undefined | GainNode
 };
-/**
- * Reactively tracks if the user wants animations (false) or not (true).
- */
-export const prefersNoMotion = useMediaQuery('(prefers-reduced-motion:reduce)');
 
 /**
  * Reactively tracks if the user wants transparency effects (true) or not (false).
@@ -94,12 +84,6 @@ export const hasTouch = useMediaQuery('(any-pointer:coarse)');
  * Track if there's HDR support in the screen
  */
 export const hasHDRDisplay = useMediaQuery('(video-dynamic-range:high)');
-
-/**
- * Track severely underpowered devices:
- * https://developer.mozilla.org/en-US/docs/Web/CSS/@media/update
- */
-export const isSlow = useMediaQuery('(update:slow)');
 
 /**
  * Whether the layout must use transparency effects

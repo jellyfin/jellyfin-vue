@@ -3,7 +3,8 @@
   "type": "module",
   "description": "Shared code between Jellyfin Vue packages",
   "exports": {
-    "./validation": "./src/validation.ts"
+    "./validation": "./src/validation.ts",
+    "./html": "./src/html.ts"
   },
   "scripts": {
     "lint": "eslint . --flag unstable_ts_config",
@@ -13,5 +14,9 @@
   },
   "devDependencies": {
     "@jellyfin-vue/configs": "*"
+  },
+  "dependencies": {
+    "dompurify": "3.2.3",
+    "marked": "15.0.6"
   }
 }

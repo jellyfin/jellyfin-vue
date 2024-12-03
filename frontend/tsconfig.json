@@ -1,6 +1,7 @@
 {
   "extends": "@jellyfin-vue/configs/typescript",
   "compilerOptions": {
+    "baseUrl": ".",
     "lib": [
       "ESNext",
       "DOM",

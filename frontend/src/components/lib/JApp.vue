@@ -10,8 +10,12 @@
       <template v-if="isLoading">
         cursor: wait;
       </template>
-      --j-color-background: var(--v-theme-background);
+      --j-theme-transition-duration: 0.3s;
+      --j-theme-color-background: var(--v-theme-background);
+      --j-theme-color-menu: var(--v-theme-menu);
       --j-font-family: '{{ typography }}';
+      --j-border-opacity: 0.12;
+      --j-border-color: 255, 255, 255;
       }
     </component>
     <!-- eslint-enable @intlify/vue-i18n/no-raw-text vue/require-component-is -->

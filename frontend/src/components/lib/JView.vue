@@ -9,7 +9,7 @@
       @resolve=" resolved = true">
       <div
         :key="root ? route.meta.layout.name ?? 'default' : route.name"
-        class="j-transition uno-h-full">
+        class="uno-h-full">
         <Component
           :is="root ? getLayoutComponent(route.meta.layout.name) : comp">
           <JView
@@ -21,22 +21,20 @@
       <template
         v-if="!apploaded && root"
         #fallback>
-        <JSplashscreen />
+        <Splashscreen />
       </template>
     </Suspense>
   </JTransition>
 </template>
 
-<!-- TODO: Remove j-transition classes from this file once https://github.com/vuejs/core/issues/5148#issuecomment-2041118368 is fixed -->
-
 <script lang="ts">
 import { onErrorCaptured, shallowRef, type Component, watch, computed, provide, useId, ref, type WatchOptions, inject } from 'vue';
 import type { RouteLocationNormalizedGeneric, RouteMeta } from 'vue-router';
 import { isNil } from '@jellyfin-vue/shared/validation';
+import { usePausableEffect } from '@jellyfin-vue/ui-toolkit/composables/use-pausable-effect.ts';
 import DefaultLayout from '#/layouts/default.vue';
 import FullPageLayout from '#/layouts/fullpage.vue';
 import ServerLayout from '#/layouts/server.vue';
-import { usePausableEffect } from '#/composables/use-pausable-effect';
 import { JView_isRouting } from '#/store/keys';
 import { router } from '#/plugins/router';
 
