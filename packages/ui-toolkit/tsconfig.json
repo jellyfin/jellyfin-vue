@@ -1,7 +1,11 @@
 {
   "extends": "@jellyfin-vue/configs/typescript",
   "compilerOptions": {
-    "baseUrl": "."
+    "baseUrl": ".",
+    "types": [
+      "vite/client",
+      "vue"
+    ]
   },
   "exclude": [
     "dist",

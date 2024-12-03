@@ -25,4 +25,4 @@ if (isBool(storeDarkMode)) {
   colorToApply = storeDarkMode ? darkColor : lightColor;
 }
 
-document.body.style.setProperty('--j-color-background', colorToApply);
+document.body.style.setProperty('--j-theme-color-background', colorToApply);

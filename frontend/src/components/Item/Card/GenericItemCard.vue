@@ -1,49 +1,49 @@
 <template>
-  <div :class="{ 'card-margin': margin }">
+  <div
+    :class="{
+      'uno-m-2': margin
+    }">
     <Component
       :is="to ? 'router-link' : 'div'"
       :to="to"
-      :class="{ 'card-box': to, 'uno-cursor-pointer': hasClick }">
-      <JHover v-slot="{ isHovering }">
-        <div
-          :class="shape"
-          class="elevation-2">
-          <div
-            class="d-flex align-center justify-center absolute-cover card-content">
-            <JSlot class="card-image">
-              <slot
-                name="image" />
-            </JSlot>
-          </div>
-          <div
-            class="absolute-cover d-flex justify-center align-center card-overlay"
-            :class="{ 'card-overlay-hover': overlay && hasFinePointer }">
-            <div class="d-flex justify-center align-center card-upper-content">
-              <slot name="upper-content" />
-            </div>
-            <div
-              v-if="(isHovering && overlay && hasFinePointer) || forceOverlay"
-              class="card-overlay-hover-hidden">
-              <slot name="center-content" />
-              <div class="d-flex justify-center align-center card-lower-content">
-                <slot name="bottom-content" />
-              </div>
-            </div>
-            <VProgressLinear
-              v-if="
-                !isNil(progress) && progress > 0
-              "
-              :model-value="progress"
-              absolute
-              location="bottom" />
-          </div>
-        </div>
-      </JHover>
+      :class="{
+        'uno-color-unset uno-decoration-none': to,
+        'uno-cursor-pointer': hasClick
+      }">
+      <div
+        :class="shape"
+        class="elevation-2 uno-bg-menu">
+        <JSlot class="align-center card-content uno-h-full uno-w-full uno-flex uno-justify-center !uno-m-0">
+          <slot name="image" />
+        </JSlot>
+        <JSlot class="align-center card-upper-content uno-flex uno-justify-center">
+          <slot name="upper-content" />
+        </JSlot>
+        <JOverlay
+          v-if="overlay && hasFinePointer"
+          hover
+          scrim
+          class="uno-flex uno-justify-center">
+          <span class="uno-self-center">
+            <slot name="center-content" />
+          </span>
+          <span class="uno-absolute uno-bottom-0 uno-right-0 uno-m-2">
+            <slot name="bottom-content" />
+          </span>
+        </JOverlay>
+        <VProgressLinear
+          v-if="
+            !isNil(progress) && progress > 0
+          "
+          :model-value="progress"
+          absolute
+          location="bottom" />
+      </div>
     </Component>
     <div
       v-if="$slots.title || ($slots.title && $slots.subtitle)"
-      class="card-text">
-      <a class="font-weight-medium pa-0 mt-1 text-truncate d-block">
+      class="uno-mt-2 uno-overflow-hidden uno-text-ellipsis uno-px-1 uno-text-center uno-text-nowrap">
+      <a class="font-weight-medium text-truncate uno-block">
         <slot name="title" />
       </a>
       <a class="v-card-subtitle">
@@ -60,7 +60,7 @@ import { isNil } from '@jellyfin-vue/shared/validation';
 import { hasFinePointer } from '#/store';
 import type { CardShapes } from '#/utils/items';
 
-const { shape, progress, overlay, forceOverlay, to, margin } = defineProps<{
+const { shape, progress, overlay, to, margin } = defineProps<{
   shape: CardShapes;
   /**
    * Progress to show in the bottom of the image
@@ -112,11 +112,6 @@ const hasClick = computed(() => !!attrs.onClick);
   border-radius: 0.3em;
 }
 
-.card-image {
-  width: 100%;
-  height: 100%;
-}
-
 .card-upper-content {
   position: absolute;
   right: 0.5em;
@@ -124,21 +119,8 @@ const hasClick = computed(() => !!attrs.onClick);
   gap: 0.3em;
 }
 
-.card-lower-content {
-  position: absolute;
-  right: 0.5em;
-  bottom: 0.5em;
-  gap: 0.3em;
-}
-
-.card-margin {
-  margin: 0.6em;
-}
-
 .card-content {
-  background-color: rgb(var(--v-theme-menu));
   overflow: hidden;
-  margin: 0 !important;
   contain: strict;
   background-size: cover;
   background-repeat: no-repeat;
@@ -147,41 +129,8 @@ const hasClick = computed(() => !!attrs.onClick);
   -webkit-tap-highlight-color: transparent;
 }
 
-.card-overlay {
-  transition: all 0.2s;
-}
-
-.overlay-hover {
-  transition: opacity 0.2s;
-}
-
-.card-overlay-hover-hidden {
-  transition: inherit;
-  opacity: 0;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .card-box:hover .card-overlay-hover {
-    background: rgb(var(--j-color-background), 0.5);
-  }
-  .card-box:hover .card-overlay-hover .card-overlay-hover-hidden {
-    opacity: 1;
-  }
-}
-
-.card-text {
-  text-align: center;
-  padding: 0 0.25em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .card-box {
   text-decoration: none;
   color: unset;
-}
-.absolute {
-  position: absolute;
 }
 </style>

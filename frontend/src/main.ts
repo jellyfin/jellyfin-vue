@@ -16,7 +16,6 @@ import { vuetify } from '#/plugins/vuetify';
  * - GLOBAL STYLES -
  */
 import 'uno.css';
-import 'virtual:unocss-devtools';
 import '#/assets/styles/index.css';
 
 /**

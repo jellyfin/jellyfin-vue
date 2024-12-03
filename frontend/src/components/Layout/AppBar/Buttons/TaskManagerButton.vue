@@ -3,10 +3,10 @@
     v-if="showButton"
     :color="buttonColor">
     <template #icon>
-      <VProgressCircular
+      <JProgressCircular
         v-if="!buttonColor"
-        indeterminate
-        size="24" />
+        class="uno-h-6 uno-w-6"
+        indeterminate />
       <VIcon v-else>
         <IMdiCheck />
       </VIcon>

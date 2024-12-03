@@ -1,18 +1,15 @@
 <template>
   <JTransition>
-    <div
+    <BlurhashCanvas
       v-if="blurhash"
       :key="blurhash"
-      class="uno-fixed uno-left-0 uno-top-0 uno-h-screen uno-w-screen uno-bg-cover uno-color-background"
+      :hash="blurhash"
+      :width="32"
+      :height="32"
       :style="{
         opacity,
-      }">
-      <BlurhashCanvas
-        :hash="blurhash"
-        :width="32"
-        :height="32"
-        class="uno-fixed uno-left-0 uno-top-0 uno-h-screen uno-w-screen uno-bg-cover" />
-    </div>
+      }"
+      class="uno-fixed uno-h-screen uno-w-screen" />
   </JTransition>
 </template>
 

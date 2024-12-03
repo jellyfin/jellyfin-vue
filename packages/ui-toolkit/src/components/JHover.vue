@@ -9,6 +9,7 @@
 
 <script setup lang="ts">
 import { shallowRef } from 'vue';
+import JSlot from '#/components/JSlot.vue';
 
 const isHovering = shallowRef(false);
 </script>

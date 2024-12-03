@@ -138,7 +138,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   public readonly currentItem = computed<BaseItemDto | undefined>((previous) => {
     const newItem = this.queue.value[this.currentItemIndex.value ?? -1];
 
-    return newItem.Id === previous?.Id ? previous : newItem;
+    return newItem?.Id === previous?.Id ? previous : newItem;
   });
 
   public readonly currentMediaSourceIndex = computed(() => this._state.value.mediaSourceIndexes.source);
@@ -274,15 +274,12 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   public readonly nextItem = computed(() => this.queue.value[this._nextItemIndex.value ?? -1]);
 
   /**
-   * Get the type of the currently playing item
+   * Get the types of the currently playing item
    */
-  public readonly currentlyPlayingType = computed(() =>
-    apiStore.getItemById(this.currentItemId.value)
-      ?.MediaType
-  );
-
-  public readonly isVideo = computed(() => this.currentlyPlayingType.value === 'Video');
-  public readonly isAudio = computed(() => this.currentlyPlayingType.value === 'Audio');
+  public readonly currentlyPlayingMediaType = computed(() => this.currentItem.value?.MediaType);
+  public readonly currentlyPlayingType = computed(() => this.currentItem.value?.Type);
+  public readonly isVideo = computed(() => this.currentlyPlayingMediaType.value === 'Video');
+  public readonly isAudio = computed(() => this.currentlyPlayingMediaType.value === 'Audio');
 
   /**
    * Get the media type of the currently playing item
@@ -690,7 +687,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       request = response.value;
     } else if (
       item.Type === BaseItemKind.Episode
-      && remote.auth.currentUser.value.Configuration?.EnableNextEpisodeAutoPlay
+      && remote.auth.currentUser.value?.Configuration?.EnableNextEpisodeAutoPlay
       && item.SeriesId
     ) {
       /**

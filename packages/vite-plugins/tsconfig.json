@@ -1,5 +1,8 @@
 {
   "extends": "@jellyfin-vue/configs/typescript",
+  "compilerOptions": {
+    "baseUrl": "."
+  },
   "exclude": [
     "dist",
     "node_modules",
