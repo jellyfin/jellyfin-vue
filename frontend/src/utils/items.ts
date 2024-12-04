@@ -450,7 +450,13 @@ export function getMediaStreams(
   mediaStreams: MediaStream[],
   streamType: string
 ): MediaStream[] {
-  return mediaStreams.filter(mediaStream => mediaStream.Type === streamType);
+  return mediaStreams.filter(mediaStream => mediaStream.Type === streamType)
+    .map(
+      (stream, index) => ({
+        ...stream,
+        Index: index
+      })
+    )
 }
 
 /**
