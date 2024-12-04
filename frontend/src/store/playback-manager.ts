@@ -270,17 +270,17 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
 
   public get currentItemParsedSubtitleTracks(): PlaybackTrack[] | undefined {
     if (!isNil(this._state.currentMediaSource)) {
-      return this._state.currentMediaSource.MediaStreams?.map(
-        (stream, index) => ({
-          srcIndex: index,
-          ...stream
-        })
-      )
-        .filter(
+      return this._state.currentMediaSource.MediaStreams?.filter(
           sub =>
             sub.Type === MediaStreamType.Subtitle
             && (sub.DeliveryMethod === SubtitleDeliveryMethod.Encode
               || sub.DeliveryMethod === SubtitleDeliveryMethod.External)
+        )
+        .map(
+          (stream, index) => ({
+            srcIndex: index,
+            ...stream
+          })
         )
         .map(sub => ({
           label: sub.DisplayTitle ?? 'Undefined',
