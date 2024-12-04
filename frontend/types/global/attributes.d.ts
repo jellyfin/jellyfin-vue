@@ -9,11 +9,16 @@ declare module 'vue' {
     // Allow any data-* attr on Vue components
     [key: `data${string}`]: string;
   }
-}
-declare module 'vue' {
+
   export interface HTMLAttributes {
     // Allow any data-* attr on HTML elements
     [key: `data${string}`]: string;
+  }
+
+  import type { hideDirective } from '@/plugins/directives';
+
+  export interface GlobalDirectives {
+    vHide: hideDirective;
   }
 }
 

@@ -7,12 +7,12 @@
     "dbaeumer.vscode-eslint",
     "lokalise.i18n-ally",
     "ryanluker.vscode-coverage-gutters",
-    "yoavbls.pretty-ts-errors",
-    "SonarSource.sonarlint-vscode"
+    "yoavbls.pretty-ts-errors"
   ],
   "unwantedRecommendations": [
     "octref.vetur",
     "esbenp.prettier-vscode",
-    "vue.vscode-typescript-vue-plugin"
+    "vue.vscode-typescript-vue-plugin",
+    "SonarSource.sonarlint-vscode"
   ]
 }

@@ -1,5 +1,13 @@
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
-import { computedAsync, useMediaControls, useMediaQuery, useNetwork, useNow, useScroll } from '@vueuse/core';
+import {
+  computedAsync,
+  useMediaControls,
+  useMediaQuery,
+  useNetwork,
+  useNow,
+  useDocumentVisibility,
+  useWindowScroll
+} from '@vueuse/core';
 import { computed, shallowRef } from 'vue';
 import { remote } from '@/plugins/remote';
 import { isNil } from '@/utils/validation';
@@ -40,7 +48,12 @@ export const now = useNow();
 /**
  * Reactive window scroll
  */
-export const windowScroll = useScroll(globalThis);
+export const windowScroll = useWindowScroll();
+/**
+ * Reactive document visibility
+ */
+const documentVisibility = useDocumentVisibility();
+export const isDocumentVisible = computed(() => documentVisibility.value === 'visible');
 /**
  * Ref to the local media player
  */
