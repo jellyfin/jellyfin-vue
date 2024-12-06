@@ -1,6 +1,5 @@
 {
   "name": "@jellyfin-vue/vite-plugins",
-  "version": "0.0.1",
   "exports": "./index.ts",
   "type": "module",
   "scripts": {

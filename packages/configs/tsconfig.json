@@ -1,7 +1,7 @@
 {
   "extends": "./typescript/base.json",
   "include": [
-    "eslint/**/*.ts",
+    "lint/**/*.ts",
     "*.ts"
   ]
 }

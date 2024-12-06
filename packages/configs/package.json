@@ -1,9 +1,8 @@
 {
   "name": "@jellyfin-vue/configs",
-  "version": "0.0.1",
   "type": "module",
   "exports": {
-    "./typescript/base.json": "./typescript/base.json",
+    "./typescript": "./typescript/base.json",
     "./lint": "./lint/index.ts",
     "./unocss": "./unocss.ts"
   },

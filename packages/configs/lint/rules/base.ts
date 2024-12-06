@@ -7,7 +7,6 @@ import js from '@eslint/js';
 import stylistic from '@stylistic/eslint-plugin';
 import { configs as dependConfigs } from 'eslint-plugin-depend';
 import gitignore from 'eslint-config-flat-gitignore';
-// @ts-expect-error - No types available
 import fileProgress from 'eslint-plugin-file-progress';
 import { eqeqeqConfig } from '../shared';
 
@@ -20,7 +19,7 @@ const CI_environment = Boolean(process.env.CI);
  * @param forceCache - Whether to enable ESLint caching for this run (default `true`)
  * @param warningAsErrors - All warnings are treated as errors (default `true`)
  */
-export function getBaseConfig(packageName: string, forceCache = !CI_environment, warningAsErrors = true): Linter.Config[] {
+export function getBaseConfig(packageName: string, forceCache = !CI_environment, warningAsErrors = true) {
   const cliOverrides = forceCache || warningAsErrors;
 
   /**
@@ -176,5 +175,5 @@ export function getBaseConfig(packageName: string, forceCache = !CI_environment,
         'file-progress/activate': CI_environment ? 0 : 1
       }
     }
-  ];
+  ] satisfies Linter.Config[];
 };
