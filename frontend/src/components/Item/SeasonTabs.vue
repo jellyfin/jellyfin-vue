@@ -79,6 +79,23 @@ const seasons = ref<BaseItemDto[] | null | undefined>([]);
 const seasonEpisodes = ref<TvShowItem['seasonEpisodes']>({});
 
 /**
+ * Fetch episodes in one season
+ */
+async function fetch_season(season: BaseItemDto): Promise<void> {
+  const episodes = (
+    await remote.sdk.newUserApi(getItemsApi).getItems({
+      userId: remote.auth.currentUserId,
+      parentId: season.Id,
+      fields: [ItemFields.Overview, ItemFields.PrimaryImageAspectRatio]
+    })
+  ).data;
+
+  if (episodes.Items) {
+    seasonEpisodes.value[season.Id] = episodes.Items;
+  }
+}
+
+/**
  * Fetch component data
  */
 async function fetch(): Promise<void> {
@@ -93,23 +110,15 @@ async function fetch(): Promise<void> {
     })
   ).data.Items;
 
+  let promises: Array<Promise> = [];
   if (seasons.value) {
     for (const season of seasons.value) {
       if (season.Id) {
-        const episodes = (
-          await remote.sdk.newUserApi(getItemsApi).getItems({
-            userId: remote.auth.currentUserId,
-            parentId: season.Id,
-            fields: [ItemFields.Overview, ItemFields.PrimaryImageAspectRatio]
-          })
-        ).data;
-
-        if (episodes.Items) {
-          seasonEpisodes.value[season.Id] = episodes.Items;
-        }
+        promises.push(fetch_season(season));
       }
     }
   }
+  await Promise.all(promises);
 }
 
 await fetch();
