@@ -1,19 +1,21 @@
 <template>
   <JTransition>
-    <div
+    <span
       v-bind="$attrs"
-      class="absolute-cover uno-z-100 uno-h-full uno-w-full">
+      aria-hidden
+      class="uno-fixed uno-inset-0 uno-z-100"
+      :class="{ 'scrim': scrim }">
       <slot />
-    </div>
+    </span>
   </JTransition>
 </template>
 
+<script setup lang="ts">
+const { scrim } = defineProps<{ scrim?: boolean }>();
+</script>
+
 <style scoped>
-.absolute-cover {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+.scrim {
+  background: rgba(var(--j-color-background), 0.75);
 }
 </style>

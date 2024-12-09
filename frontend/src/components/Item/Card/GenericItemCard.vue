@@ -7,28 +7,25 @@
       <JHover v-slot="{ isHovering }">
         <div
           :class="shape"
-          class="elevation-2">
-          <JOverlay
-            class="d-flex align-center justify-center card-content">
-            <JSlot class="card-image">
-              <slot
-                name="image" />
-            </JSlot>
-          </JOverlay>
+          class="elevation-2 uno-bg-background">
+          <JSlot class="align-center justify-center card-content uno-h-full uno-w-full uno-flex">
+            <slot
+              name="image" />
+          </JSlot>
           <JOverlay
             class="d-flex justify-center align-center card-overlay"
             :class="{ 'card-overlay-hover': overlay && hasFinePointer }">
             <div class="d-flex justify-center align-center card-upper-content">
               <slot name="upper-content" />
             </div>
-            <div
-              v-if="(isHovering && overlay && hasFinePointer) || forceOverlay"
+            <JOverlay
+              v-show="(isHovering && overlay && hasFinePointer) || forceOverlay"
               class="card-overlay-hover-hidden">
               <slot name="center-content" />
               <div class="d-flex justify-center align-center card-lower-content">
                 <slot name="bottom-content" />
               </div>
-            </div>
+            </JOverlay>
             <VProgressLinear
               v-if="
                 !isNil(progress) && progress > 0
@@ -111,11 +108,6 @@ const hasClick = computed(() => !!attrs.onClick);
   padding-bottom: 100%;
   contain: strict;
   border-radius: 0.3em;
-}
-
-.card-image {
-  width: 100%;
-  height: 100%;
 }
 
 .card-upper-content {
