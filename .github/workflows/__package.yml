@@ -87,7 +87,7 @@ jobs:
         run: npm run build
 
       - name: Create provenance attestation 🔏
-        uses: actions/attest-build-provenance@v2.0.0
+        uses: actions/attest-build-provenance@v2.1.0
         continue-on-error: true
         with:
           subject-path: ${{ env.WORKING_DIR }}/${{ env.ARTIFACTS_PATH }}
@@ -211,7 +211,7 @@ jobs:
           path: docker_image.tar
 
       - name: Create provenance attestation 🔏
-        uses: actions/attest-build-provenance@v2.0.0
+        uses: actions/attest-build-provenance@v2.1.0
         continue-on-error: true
         with:
           subject-path: docker_image.tar
@@ -244,7 +244,7 @@ jobs:
           docker cp $(docker create --name jf $IMAGE_SHA):$ASSETS/ ./dist
 
       - name: Create provenance attestation 🔏
-        uses: actions/attest-build-provenance@v2.0.0
+        uses: actions/attest-build-provenance@v2.1.0
         continue-on-error: true
         with:
           subject-path: dist
