@@ -17,7 +17,7 @@ import { CommonStore } from '@/store/super/common-store';
 import { router } from '@/plugins/router';
 import { remote } from '@/plugins/remote';
 import type { ParsedSubtitleTrack } from '@/plugins/workers/generic/subtitles';
-import { genericWorker } from '@/plugins/workers';
+import { runGenericWorkerFunc } from '@/plugins/workers';
 import { subtitleSettings } from '@/store/client-settings/subtitle-settings';
 
 /**
@@ -202,7 +202,7 @@ class PlayerElementStore extends CommonStore<PlayerElementState> {
        * otherwise show default subtitle track
        */
       if (this._useCustomSubtitleTrack) {
-        const data = await genericWorker.parseVttFile(subtitleTrack.src);
+        const data = await runGenericWorkerFunc('parseVttFile')(subtitleTrack.src);
 
         this.currentExternalSubtitleTrack.parsed = data;
       } else {
