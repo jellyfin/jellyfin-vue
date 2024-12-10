@@ -47,7 +47,7 @@
     "vuetify": "3.7.4"
   },
   "devDependencies": {
-    "@iconify/json": "2.2.279",
+    "@iconify/json": "2.2.281",
     "@intlify/unplugin-vue-i18n": "4.0.0",
     "@jellyfin-vue/configs": "*",
     "@jellyfin-vue/vite-plugins": "*",
@@ -56,10 +56,10 @@
     "@vitejs/plugin-vue": "5.2.1",
     "browserslist": "4.24.2",
     "lightningcss": "1.28.2",
-    "unocss": "0.65.0",
+    "unocss": "0.65.1",
     "unplugin-icons": "0.21.0",
     "unplugin-vue-components": "0.27.5",
-    "unplugin-vue-router": "0.10.8",
+    "unplugin-vue-router": "0.10.9",
     "vite": "6.0.2",
     "vite-plugin-vue-devtools": "7.6.7"
   }

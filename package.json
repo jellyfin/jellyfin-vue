@@ -28,7 +28,7 @@
     "check:types": "npm run check:types --workspaces"
   },
   "devDependencies": {
-    "@eslint/config-inspector": "0.5.6",
+    "@eslint/config-inspector": "0.6.0",
     "@types/node": "22.10.1",
     "eslint": "9.16.0",
     "jiti": "2.4.1",
