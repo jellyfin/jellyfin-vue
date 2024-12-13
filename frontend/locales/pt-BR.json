@@ -317,7 +317,7 @@
   "revokeFailure": "Erro ao revogar chave de API",
   "revokeSuccess": "A chave de API foi revogada",
   "role": "Papel",
-  "routeValidationError": "O routeId especificado nos parâmetros de rota não está correto",
+  "routeValidationError": "Os parâmetros especificados para acessar esta página não estão corretos",
   "runningTasks": "Executando tarefas",
   "runtime": "Duração",
   "save": "Salvar",
