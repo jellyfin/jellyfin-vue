@@ -5,7 +5,6 @@
     <img
       src="./icon.svg"
       alt="Jellyfin Logo"
-      loading="eager"
       decoding="sync">
     <JTransition
       name="slide-y-reverse"

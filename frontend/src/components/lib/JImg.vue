@@ -15,8 +15,7 @@
         :src="src"
         :alt="alt"
         class="j-img"
-        loading="eager"
-        decoding="async"
+        decoding="sync"
         v-bind="$attrs">
       <template v-else>
         <slot
