@@ -11,6 +11,13 @@ html.no-forced-scrollbar {
   overflow-y: unset !important;
 }
 
+:root {
+  /**
+    * Sourced from https://codepen.io/devongovett/pen/QwLbRrW and https://x.com/devongovett/status/1863733091409461256
+    */
+  color: lch(from var(--j-color-background) calc((49.44 - l) * infinity) 0 0);
+}
+
 /* Custom utility classes */
 
 .absolute-cover {
