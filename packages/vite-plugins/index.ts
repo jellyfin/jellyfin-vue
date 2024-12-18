@@ -1,20 +1,31 @@
-import { basename } from 'node:path';
-import { glob, lstat } from 'node:fs/promises';
+import type { RollupLog } from 'rollup';
+import type { LiteralUnion } from 'type-fest';
+
+import { basename, join } from 'node:path';
+import { glob, lstat, rename } from 'node:fs/promises';
 import prettyBytes from 'pretty-bytes';
 import { SondaRollupPlugin } from 'sonda';
-import { normalizePath, type Plugin } from 'vite';
-import type { RollupLog } from 'rollup';
+import { normalizePath, preview, type Plugin, } from 'vite';
+
+const default_output_dir = normalizePath(mergeConfig({}, {}, true).build.outDir);
 
 /**
  * This plugin extracts the logic for the analyze commands, so the main Vite config is cleaner.
  */
-export function BundleAnalysis(): Plugin {
+export async function BundleAnalysis(): Promise<Plugin> {
+  let mode: LiteralUnion<'analyze:bundle' | 'analyze:cycles', string>;
+  let outDir = default_output_dir;
+  console.log('out_dir', out_dir);
+  const report_filename = () => join(out_dir, 'bundle-report.html');
   const warnings: RollupLog[] = [];
 
   return {
     name: 'Jellyfin_Vue:bundle_analysis',
     enforce: 'post',
-    config: (_, env) => {
+    config: (conf, env) => {
+      out_dir = conf.build.outDir;
+      console.log(JSON.stringify(conf));
+      mode = env.mode;
       if (env.mode === 'analyze:bundle') {
         return {
           build: {
@@ -22,7 +33,8 @@ export function BundleAnalysis(): Plugin {
             rollupOptions: {
               plugins: [
                 SondaRollupPlugin({
-                  filename: 'dist/bundle-report.html',
+                  open: false,
+                  filename: report_filename(),
                   detailed: true,
                   sources: true,
                   gzip: false,
@@ -46,13 +58,29 @@ export function BundleAnalysis(): Plugin {
         };
       }
     },
-    closeBundle: () => {
-      if (warnings.length > 0) {
-        for (const warning of warnings) {
-          console.warn(warning);
+    closeBundle: async () => {
+      if (mode === 'analyze:cycles') {
+        if (warnings.length > 0) {
+          for (const warning of warnings) {
+            console.warn(warning);
+          }
+  
+          throw new Error('There are circular dependencies');
+        }
+      } else if (mode === 'analyze:bundle') {
+        await rename(report_filename(), join(out_dir, 'index.html'));
+
+        for await (const file of glob(join(out_dir, '**/*'))) {
+          console.log(file);
         }
 
-        throw new Error('There are circular dependencies');
+        const server = await preview({
+          preview: {
+            index: filename
+          }
+        });
+        console.log();
+        server.printUrls();
       }
     }
   };
