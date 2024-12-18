@@ -10,7 +10,7 @@
       <template v-if="isLoading">
         cursor: wait;
       </template>
-      --j-color-background: rgb(var(--v-theme-background));
+      --j-color-background: var(--v-theme-background);
       --j-font-family: '{{ typography }}';
       }
     </component>

@@ -162,7 +162,7 @@ const hasClick = computed(() => !!attrs.onClick);
 
 @media (hover: hover) and (pointer: fine) {
   .card-box:hover .card-overlay-hover {
-    background: rgba(var(--j-color-background), 0.5);
+    background: rgb(var(--j-color-background), 0.5);
   }
   .card-box:hover .card-overlay-hover .card-overlay-hover-hidden {
     opacity: 1;
