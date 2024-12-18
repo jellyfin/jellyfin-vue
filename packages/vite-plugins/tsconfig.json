@@ -1,5 +1,5 @@
 {
-  "extends": "@jellyfin-vue/configs/typescript/base.json",
+  "extends": "@jellyfin-vue/configs/typescript",
   "include": [
     "*.ts"
   ]
