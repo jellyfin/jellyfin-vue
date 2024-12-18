@@ -34,8 +34,8 @@ export abstract class CommonStore<T extends UnknownRecord> {
     this._internalState = isNil(storage)
       ? reactive(this._defaultState()) as T
       : useStorage(storeKey, this._defaultState(), storage, {
-        mergeDefaults: (storageValue, defaults) =>
-          mergeExcludingUnknown(storageValue, defaults)
-      });
+          mergeDefaults: (storageValue, defaults) =>
+            mergeExcludingUnknown(storageValue, defaults)
+        });
   }
 }

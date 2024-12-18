@@ -104,8 +104,8 @@ const sourceText = computed(() => {
       return playbackManager.currentItem?.AlbumId
         === playbackManager.initiator?.Id
         ? t('playingFrom', {
-          item: playbackManager.initiator?.Name
-        })
+            item: playbackManager.initiator?.Name
+          })
         : unknownSource;
     }
     case InitMode.Shuffle: {
@@ -115,8 +115,8 @@ const sourceText = computed(() => {
       return playbackManager.currentItem?.AlbumId
         === playbackManager.initiator?.Id
         ? t('playingItemInShuffle', {
-          item: playbackManager.initiator?.Name
-        })
+            item: playbackManager.initiator?.Name
+          })
         : unknownSource;
     }
     default: {

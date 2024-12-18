@@ -270,14 +270,16 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
 
   public get currentItemParsedSubtitleTracks(): PlaybackTrack[] | undefined {
     if (!isNil(this._state.currentMediaSource)) {
-      // TODO: There is currently a bug in Jellyfin server when adding external subtitles may play the incorrect subtitle
-      // https://github.com/jellyfin/jellyfin/issues/13198
+      /*
+       * TODO: There is currently a bug in Jellyfin server when adding external subtitles may play the incorrect subtitle
+       * https://github.com/jellyfin/jellyfin/issues/13198
+       */
       return this._state.currentMediaSource.MediaStreams?.filter(
-          sub =>
-            sub.Type === MediaStreamType.Subtitle
-            && (sub.DeliveryMethod === SubtitleDeliveryMethod.Encode
-              || sub.DeliveryMethod === SubtitleDeliveryMethod.External)
-        )
+        sub =>
+          sub.Type === MediaStreamType.Subtitle
+          && (sub.DeliveryMethod === SubtitleDeliveryMethod.Encode
+            || sub.DeliveryMethod === SubtitleDeliveryMethod.External)
+      )
         .map(
           (stream, index) => ({
             srcIndex: index,

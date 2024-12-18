@@ -456,7 +456,7 @@ export function getMediaStreams(
         ...stream,
         Index: index
       })
-    )
+    );
 }
 
 /**

@@ -367,10 +367,10 @@ const copyDownloadURLAction = {
         await (isStr(streamUrls)
           ? copyAction(text)
           : useConfirmDialog(async () => { await copyAction(text); }, {
-            title: t('copyPrompt'),
-            text: text,
-            confirmText: t('accept')
-          }));
+              title: t('copyPrompt'),
+              text: text,
+              confirmText: t('accept')
+            }));
       } else {
         useSnackbar(errorMessage, 'error');
       }

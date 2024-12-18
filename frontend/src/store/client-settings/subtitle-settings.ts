@@ -20,7 +20,7 @@ export interface SubtitleSettingsState {
    * system: System typography
    *
    * auto: Selects the current selected typography for the application
-   * @default: auto
+   * @default auto
    */
   fontFamily: 'auto' | TypographyChoices;
   fontSize: number;
