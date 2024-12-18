@@ -6,18 +6,13 @@
       no-click-animation
       :scrim="false"
       scroll-strategy="none"
-      content-class="minimized-overlay"
+      content-class="uno-absolute uno-right-8 uno-bottom-8"
       :close-on-back="false"
       :width="$vuetify.display.mobile ? '60vw' : '25vw'">
       <div
         ref="videoContainerRef"
         class="minimized-video-container" />
-      <VOverlay
-        :model-value="isHovering"
-        contained
-        :close-on-back="false"
-        height="100%"
-        width="100%">
+      <JOverlay v-show="isHovering">
         <div class="d-flex flex-column">
           <div class="d-flex flex-row">
             <VBtn
@@ -66,7 +61,7 @@
             </VBtn>
           </div>
         </div>
-      </VOverlay>
+      </JOverlay>
     </VOverlay>
   </JHover>
 </template>
@@ -75,16 +70,3 @@
 import { playbackManager } from '@/store/playback-manager';
 import { playerElement, videoContainerRef } from '@/store/player-element';
 </script>
-
-<style scoped>
-:deep(.minimized-overlay) {
-  position: absolute;
-  right: 2em;
-  bottom: 2em;
-}
-
-:deep(.minimized-video-container video) {
-  max-width: 100%;
-  max-height: 100%;
-}
-</style>
