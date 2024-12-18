@@ -35,7 +35,7 @@ import playbackProfile from '@/utils/playback-profiles';
 import { msToTicks } from '@/utils/time';
 import { mediaControls, mediaElementRef } from '@/store';
 import { CommonStore } from '@/store/super/common-store';
-import { shuffle } from '@/utils/data-manipulation';
+import { runGenericWorkerFunc } from '@/plugins/workers';
 
 /**
  * == INTERFACES AND TYPES ==
@@ -618,7 +618,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       this._state.currentItemIndex = startFromIndex;
 
       if (startShuffled) {
-        void this.toggleShuffle(false);
+        await this.toggleShuffle(false);
       }
 
       this.currentTime = startFromTime;
@@ -783,7 +783,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
         this._state.originalQueue = [];
         this._state.isShuffling = false;
       } else {
-        const queue = await shuffle(this._state.queue);
+        const queue = await runGenericWorkerFunc('shuffle')(this._state.queue) ?? this._state.originalQueue;
 
         this._state.originalQueue = this._state.queue;
 
