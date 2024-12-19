@@ -1,8 +1,7 @@
 {
-  "name": "@jellyfin-vue/vite-plugins",
-  "description": "Vite plugins for Jellyfin Vue packages",
+  "name": "@jellyfin-vue/ui-toolkit",
   "type": "module",
-  "exports": "./src/index.ts",
+  "description": "Base components and UI toolkit for Jellyfin Vue",
   "scripts": {
     "lint": "eslint . --flag unstable_ts_config",
     "lint:fix": "eslint . --fix --flag unstable_ts_config",
@@ -10,9 +9,6 @@
     "check:types": "vue-tsc"
   },
   "devDependencies": {
-    "@jellyfin-vue/configs": "*",
-    "pretty-bytes": "6.1.1",
-    "sonda": "0.7.1",
-    "vite": "6.0.7"
+    "@jellyfin-vue/configs": "*"
   }
 }
