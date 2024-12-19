@@ -1,6 +1,14 @@
 {
   "extends": "@jellyfin-vue/configs/typescript",
+  "exclude": [
+    "dist",
+    "node_modules",
+    "coverage"
+  ],
   "include": [
-    "*.ts"
+    "**/*.ts",
+    "**/*.vue",
+    "**/*d.ts",
+    "**/*.json"
   ]
 }
