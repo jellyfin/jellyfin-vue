@@ -4,10 +4,10 @@
 import axios, {
   type AxiosError
 } from 'axios';
+import { sealed } from '@jellyfin-vue/shared/validation';
 import auth from './auth';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { i18n } from '@/plugins/i18n';
-import { sealed } from '@/utils/validation';
 
 @sealed
 class RemotePluginAxios {

@@ -1,6 +1,6 @@
 import { expose } from 'comlink';
+import { sealed } from '@jellyfin-vue/shared/validation';
 import { getItemOffsetByIndex, type ResizeMeasurement, type BufferMeta, type InternalItem } from './pipeline';
-import { sealed } from '@/utils/validation';
 
 @sealed
 class JVirtualWorker {
@@ -43,13 +43,12 @@ class JVirtualWorker {
 
     for (let index = first; index < last; index++) {
       const { x, y } = getItemOffsetByIndex(index, resizeMeasurement);
-      const translateX = `translateX(${x}px)`;
-      const translateY = `translateY(${y}px)`;
 
       res.push({
         index,
         style: {
-          transform: `${translateX} ${translateY}`
+          '--j-translate-x': `${x}px`,
+          '--j-translate-y': `${y}px`
         }
       });
     }

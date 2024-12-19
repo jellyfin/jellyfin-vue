@@ -7,8 +7,8 @@ import type { UserDto, PublicSystemInfo, BrandingOptions } from '@jellyfin/sdk/l
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
 import { getBrandingApi } from '@jellyfin/sdk/lib/utils/api/branding-api';
 import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
+import { isAxiosError, isNil, sealed } from '@jellyfin-vue/shared/validation';
 import SDK, { useOneTimeAPI } from './sdk/sdk-utils';
-import { isAxiosError, isNil, sealed } from '@/utils/validation';
 import { i18n } from '@/plugins/i18n';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { CommonStore } from '@/store/super/common-store';

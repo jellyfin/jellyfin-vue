@@ -15,6 +15,7 @@
       <JSlot
         v-for="internal_item in visibleItems"
         :key="indexAsKey ? internal_item.index : undefined"
+        class="uno-transform-gpu"
         :class="gridClass"
         :style="internal_item.style">
         <slot
@@ -41,6 +42,7 @@ import {
   useTemplateRef
 } from 'vue';
 import { wrap } from 'comlink';
+import { isNil, isUndef } from '@jellyfin-vue/shared/validation';
 import {
   getBufferMeta,
   getContentSize,
@@ -52,7 +54,6 @@ import {
 import type { IJVirtualWorker } from './j-virtual.worker';
 import JVirtualWorker from './j-virtual.worker?worker';
 import { vuetify } from '@/plugins/vuetify';
-import { isNil, isUndef } from '@/utils/validation';
 
 /**
  * SHARED STATE ACROSS ALL THE COMPONENT INSTANCES

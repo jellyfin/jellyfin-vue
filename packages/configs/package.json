@@ -1,10 +1,11 @@
 {
   "name": "@jellyfin-vue/configs",
   "type": "module",
+  "description": "Configuration files for Jellyfin Vue packages",
   "exports": {
-    "./typescript": "./typescript/base.json",
-    "./lint": "./lint/index.ts",
-    "./unocss": "./unocss.ts"
+    "./typescript": "./src/typescript.json",
+    "./lint": "./src/lint/index.ts",
+    "./uno": "./src/uno.ts"
   },
   "scripts": {
     "lint": "eslint . --flag unstable_ts_config",

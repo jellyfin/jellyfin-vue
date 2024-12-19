@@ -1,7 +1,17 @@
 {
-  "extends": "./typescript/base.json",
+  "extends": "./src/typescript.json",
+  "compilerOptions": {
+    "baseUrl": "."
+  },
+  "exclude": [
+    "dist",
+    "node_modules",
+    "coverage"
+  ],
   "include": [
-    "lint/**/*.ts",
-    "*.ts"
+    "**/*.ts",
+    "**/*.vue",
+    "**/*d.ts",
+    "**/*.json"
   ]
 }
