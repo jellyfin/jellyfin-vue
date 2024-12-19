@@ -2,6 +2,7 @@ import { resolve } from 'node:path';
 
 export const localeFilesFolder = resolve('locales/**');
 export const srcRoot = `${resolve('src')}/`;
+export const uiToolkit = `${resolve('../packages/ui-toolkit/src')}`;
 export const entrypoints = {
   index: resolve('index.html'),
   main: `${srcRoot}/main.ts`,

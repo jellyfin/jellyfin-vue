@@ -15,7 +15,7 @@ import Components from 'unplugin-vue-components/vite';
 import UnoCSS from 'unocss/vite';
 import VueRouter from 'unplugin-vue-router/vite';
 import { defineConfig } from 'vite';
-import { entrypoints, localeFilesFolder, srcRoot } from './scripts/paths';
+import { entrypoints, localeFilesFolder, srcRoot, uiToolkit } from './scripts/paths';
 import virtualModules from './scripts/virtual-modules';
 /**
  * TODO: Replace with @jellyfin-vue/vite-plugins after https://github.com/vitejs/vite/issues/5370
@@ -121,7 +121,12 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@/': srcRoot
+      '@/': srcRoot,
+      /**
+       * TODO: Remove this alias after Vite has complete mono-repo support for non
+       * compiled files in node_modules
+       */
+      '@jellyfin-vue/ui-toolkit': uiToolkit
     }
   },
   worker: {
