@@ -7,7 +7,7 @@ import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { reactive, watch } from 'vue';
 import type { LiteralUnion, Arrayable } from 'type-fest';
-import { isArray, isObj, isStr, sealed } from '@/utils/validation';
+import { isArray, isObj, isStr, sealed } from '@jellyfin-vue/shared/validation';
 import { remote } from '@/plugins/remote';
 
 /**
