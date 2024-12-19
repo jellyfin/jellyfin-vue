@@ -1,6 +1,6 @@
 import { decode } from 'blurhash';
 import { expose } from 'comlink';
-import { sealed } from '@/utils/validation';
+import { sealed } from '@jellyfin-vue/shared/validation';
 
 /**
  * Decodes blurhash strings into pixels

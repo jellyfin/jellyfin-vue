@@ -1,5 +1,5 @@
+import { isStr } from '@jellyfin-vue/shared/validation';
 import { upperFirst } from '@/utils/data-manipulation';
-import { isStr } from '@/utils/validation';
 
 /**
  * Given a locale code, return the language name of another locale

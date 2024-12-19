@@ -7,10 +7,10 @@
  * - WebSocket ($remote.socket)
  */
 import type { App } from 'vue';
+import { isNil, sealed } from '@jellyfin-vue/shared/validation';
 import RemotePluginAuthInstance from './auth';
 import RemotePluginSDKInstance from './sdk';
 import RemotePluginSocketInstance from './socket';
-import { isNil, sealed } from '@/utils/validation';
 import { jsonConfig } from '@/utils/external-config';
 
 @sealed

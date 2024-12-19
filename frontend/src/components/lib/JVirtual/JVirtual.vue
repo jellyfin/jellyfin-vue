@@ -41,6 +41,7 @@ import {
   useTemplateRef
 } from 'vue';
 import { releaseProxy, wrap } from 'comlink';
+import { isNil, isUndef } from '@jellyfin-vue/shared/validation';
 import {
   getBufferMeta,
   getContentSize,
@@ -52,7 +53,6 @@ import {
 import type { IJVirtualWorker } from './j-virtual.worker';
 import JVirtualWorker from './j-virtual.worker?worker';
 import { vuetify } from '@/plugins/vuetify';
-import { isNil, isUndef } from '@/utils/validation';
 
 /**
  * SHARED STATE ACROSS ALL THE COMPONENT INSTANCES

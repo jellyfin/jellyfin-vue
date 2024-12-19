@@ -15,7 +15,7 @@ import IMdiCheck from 'virtual:icons/mdi/check';
 import IMdiClose from 'virtual:icons/mdi/close';
 import IMdiHelp from 'virtual:icons/mdi/help';
 import { computed } from 'vue';
-import { isBool } from '@/utils/validation';
+import { isBool } from '@jellyfin-vue/shared/validation';
 
 const { name, value } = defineProps<{
   name: string;

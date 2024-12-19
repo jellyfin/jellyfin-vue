@@ -1,5 +1,5 @@
 import type { KeysOfUnion, LiteralUnion } from 'type-fest';
-import { sealed } from '@/utils/validation';
+import { sealed } from '@jellyfin-vue/shared/validation';
 import { SyncedStore } from '@/store/super/synced-store';
 
 /**

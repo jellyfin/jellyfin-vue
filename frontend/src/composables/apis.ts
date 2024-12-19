@@ -5,13 +5,13 @@ import { deepEqual } from 'fast-equals';
 import { computed, effectScope, getCurrentScope, inject, isRef, shallowRef, toValue, unref, watch, type ComputedRef, type Ref } from 'vue';
 import { until, whenever } from '@vueuse/core';
 import type { Exact, Writable } from 'type-fest';
+import { isArray, isNil } from '@jellyfin-vue/shared/validation';
 import { useLoading } from '@/composables/use-loading';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { i18n } from '@/plugins/i18n';
 import { remote } from '@/plugins/remote';
 import { isConnectedToServer } from '@/store';
 import { apiStore } from '@/store/api';
-import { isArray, isNil } from '@/utils/validation';
 import { JView_isRouting } from '@/store/keys';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */

@@ -77,7 +77,7 @@ import {
 } from '@jellyfin/sdk/lib/generated-client';
 import { computed, shallowRef } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { isNil } from '@/utils/validation';
+import { isNil } from '@jellyfin-vue/shared/validation';
 import {
   CardShapes,
   canPlay,

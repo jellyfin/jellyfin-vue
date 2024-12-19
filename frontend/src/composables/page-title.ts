@@ -1,7 +1,7 @@
 import { computed, onBeforeUnmount, onMounted, shallowRef, toRef, toValue, type MaybeRefOrGetter } from 'vue';
 import { useTitle as _useTitle, watchImmediate } from '@vueuse/core';
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { isNil } from '@/utils/validation';
+import { isNil } from '@jellyfin-vue/shared/validation';
 
 /**
  * This composable handles the page title of the application.

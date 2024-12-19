@@ -40,7 +40,7 @@ meta:
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { isNil } from '@/utils/validation';
+import { isNil } from '@jellyfin-vue/shared/validation';
 import { CardShapes, fetchIndexPage, getShapeFromCollectionType } from '@/utils/items';
 import { usePageTitle } from '@/composables/page-title';
 
