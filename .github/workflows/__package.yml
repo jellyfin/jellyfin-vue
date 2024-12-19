@@ -48,6 +48,7 @@ jobs:
 
     env:
       WORKING_DIR: packaging/tauri
+      ARTIFACT_NAME: jellyfin-vue_${{ matrix.platform }}
       ARTIFACTS_PATH: ${{
           format('target/release/{0}', matrix.platform == 'windows' && 'jellyfin-vue-tauri.exe' ||
           format('bundle/*/*.{0}', matrix.platform == 'macos' && 'dmg' || 'AppImage'))
@@ -86,18 +87,20 @@ jobs:
       - name: Build application 🛠️
         run: npm run build
 
+      - name: Upload built application artifact ⬆️🐧🍎🪟
+        uses: actions/upload-artifact@v4.5.0
+        id: artifact
+        with:
+          compression-level: 0
+          name: ${{ env.ARTIFACT_NAME }}
+          path: ${{ env.WORKING_DIR }}/${{ env.ARTIFACTS_PATH }}
+
       - name: Create provenance attestation 🔏
         uses: actions/attest-build-provenance@v2.1.0
         continue-on-error: true
         with:
-          subject-path: ${{ env.WORKING_DIR }}/${{ env.ARTIFACTS_PATH }}
-
-      - name: Upload built application artifact ⬆️🐧🍎🪟
-        uses: actions/upload-artifact@v4.5.0
-        with:
-          compression-level: 0
-          name: jellyfin-vue_${{ runner.os }}
-          path: ${{ env.WORKING_DIR }}/${{ env.ARTIFACTS_PATH }}
+          subject-name: ${{ env.ARTIFACT_NAME }}
+          subject-digest: sha256:${{ steps.artifact.outputs.artifact-digest }}
 
   docker_inputs:
     name: Prepare Docker build variables 🏷️🐳
@@ -171,6 +174,9 @@ jobs:
       matrix:
         platform: ${{ fromJson(inputs.architectures) }}
 
+    env:
+      ARTIFACT_NAME: docker_image-linux_${{ matrix.platform }}
+
     steps:
       - name: Checkout ⬇️
         uses: actions/checkout@v4.2.2
@@ -205,16 +211,18 @@ jobs:
 
       - name: Upload Docker image as artifact ⬆️📦
         uses: actions/upload-artifact@v4.5.0
+        id: artifact
         with:
           compression-level: 0
-          name: docker_image-linux_${{ matrix.platform }}
+          name: ${{ env.ARTIFACT_NAME }}
           path: docker_image.tar
 
       - name: Create provenance attestation 🔏
         uses: actions/attest-build-provenance@v2.1.0
         continue-on-error: true
         with:
-          subject-path: docker_image.tar
+          subject-name: ${{ env.ARTIFACT_NAME }}
+          subject-digest: sha256:${{ steps.artifact.outputs.artifact-digest }}            
 
       - name: Upload cache artifact ⬆️⚙️
         uses: actions/upload-artifact@v4.5.0
@@ -230,6 +238,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: docker
 
+    env:
+      ARTIFACT_NAME: frontend
+
     steps:         
       - name: Download Docker image artifact 📦⬇️
         uses: actions/download-artifact@v4.1.8
@@ -243,18 +254,20 @@ jobs:
           ASSETS=$(docker inspect $IMAGE_SHA --format='{{range .Config.Env}}{{println .}}{{end}}' | grep ^ASSETS= | cut -d '=' -f2-)
           docker cp $(docker create --name jf $IMAGE_SHA):$ASSETS/ ./dist
 
+      - name: Upload client artifact ⬆️💻
+        uses: actions/upload-artifact@v4.5.0
+        id: artifact
+        with:
+          compression-level: 0
+          name: ${{ env.ARTIFACT_NAME }}
+          path: dist
+
       - name: Create provenance attestation 🔏
         uses: actions/attest-build-provenance@v2.1.0
         continue-on-error: true
         with:
-          subject-path: dist
-
-      - name: Upload client artifact ⬆️💻
-        uses: actions/upload-artifact@v4.5.0
-        with:
-          compression-level: 0
-          name: frontend
-          path: dist
+          subject-name: ${{ env.ARTIFACT_NAME }}
+          subject-digest: sha256:${{ steps.artifact.outputs.artifact-digest }}
 
   docker_merge:
     name: Merge Docker images 💿🐳
@@ -317,6 +330,7 @@ jobs:
 
       - name: Remove cache artifacts 🗑️
         uses: geekyeggo/delete-artifact@v5.1.0
+        continue-on-error: true
         with:
           name: |
             buildx-*
