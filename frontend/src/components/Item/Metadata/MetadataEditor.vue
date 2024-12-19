@@ -234,8 +234,8 @@ import { format, formatISO } from 'date-fns';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { watchImmediate } from '@vueuse/core';
+import { isArray, isNil } from '@jellyfin-vue/shared/validation';
 import { getItemImageUrl } from '@/utils/images';
-import { isArray, isNil } from '@/utils/validation';
 import { remote } from '@/plugins/remote';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { useDateFns } from '@/composables/use-datefns';
@@ -345,7 +345,7 @@ async function getData(): Promise<void> {
   contentOption.value
     = contentOptions.value.find(r => r.value === options.ContentType)
     ?? contentOptions.value[0];
-  contentType.value = options.ContentType ?? contentOption.value?.value;
+  contentType.value = options.ContentType ?? contentOption.value.value;
 
   metadata.value = itemInfo;
 

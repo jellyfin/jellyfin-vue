@@ -15,7 +15,7 @@
           <VCol
             cols="9"
             md="3"
-            class="d-flex pa-0 flex-row">
+            class="pa-0 d-flex flex-row">
             <RouterLink :to="'/playback/music'">
               <div class="img uno-h-20 uno-w-20">
                 <BlurhashImage :item="playbackManager.currentItem.value" />
@@ -28,7 +28,7 @@
                   :to="getItemDetailsLink(playbackManager.currentItem.value)"
                   custom>
                   <span
-                    class="link text-truncate uno-h-fit"
+                    class="text-truncate link uno-h-fit"
                     @click="navigate">
                     {{ playbackManager.currentItem.value?.Name }}
                   </span>
@@ -109,7 +109,7 @@
 </template>
 
 <script setup lang="ts">
-import { isNil } from '@/utils/validation';
+import { isNil } from '@jellyfin-vue/shared/validation';
 import { playbackManager } from '@/store/playback-manager';
 import { getItemDetailsLink } from '@/utils/items';
 </script>

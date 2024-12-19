@@ -1,6 +1,6 @@
 import { expose } from 'comlink';
+import { sealed } from '@jellyfin-vue/shared/validation';
 import { getItemOffsetByIndex, type ResizeMeasurement, type BufferMeta, type InternalItem } from './pipeline';
-import { sealed } from '@/utils/validation';
 
 @sealed
 class JVirtualWorker {

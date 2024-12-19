@@ -96,10 +96,10 @@ import type {
 import { getItemLookupApi } from '@jellyfin/sdk/lib/utils/api/item-lookup-api';
 import { computed, ref, shallowRef, toRaw } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { isArray, isNil, isStr } from '@jellyfin-vue/shared/validation';
 import { useConfirmDialog } from '@/composables/use-confirm-dialog';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { remote } from '@/plugins/remote';
-import { isArray, isNil, isStr } from '@/utils/validation';
 
 interface IdentifyField {
   key: string;
