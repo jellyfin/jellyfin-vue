@@ -1,5 +1,5 @@
 {
-  "extends": "./src/typescript.json",
+  "extends": "@jellyfin-vue/configs/typescript",
   "compilerOptions": {
     "baseUrl": "."
   },

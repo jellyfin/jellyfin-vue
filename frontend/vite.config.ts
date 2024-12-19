@@ -15,7 +15,7 @@ import { defineConfig } from 'vite';
  * TODO: Replace with @jellyfin-vue/vite-plugins after https://github.com/vitejs/vite/issues/5370
  * is fixed
  */
-import { BundleAnalysis, BundleChunking, BundleSizeReport } from '../packages/vite-plugins';
+import { BundleAnalysis, BundleChunking, BundleSizeReport } from '../packages/vite-plugins/src';
 import { entrypoints, localeFilesFolder, srcRoot } from './scripts/paths';
 import virtualModules from './scripts/virtual-modules';
 

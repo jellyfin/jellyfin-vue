@@ -17,12 +17,15 @@
     ],
     "baseUrl": "."
   },
+  "exclude": [
+    "dist",
+    "node_modules",
+    "coverage"
+  ],
   "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.vue",
-    "**/**/*.json",
-    "types/**/*.d.ts",
-    "*.config.*"
+    "**/*.ts",
+    "**/*.vue",
+    "**/*d.ts",
+    "**/*.json"
   ]
 }
