@@ -29,6 +29,5 @@
     "strictTemplates": true,
     "htmlAttributes": ["aria-*", "data-*"],
     "fallthroughAttributes": true
-  },
-  "exclude": ["node_modules"]
+  }
 }

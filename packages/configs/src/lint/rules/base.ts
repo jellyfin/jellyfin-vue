@@ -38,12 +38,12 @@ export function getBaseConfig(packageName: string, forceCache = !CI_environment,
       const cacheLocation = join(findUpSync('node_modules', { type: 'directory' }) ?? '', '.cache/eslint', packageName.replace('/', '_'));
 
       newArgs.push('--cache', '--cache-location', cacheLocation);
-      console.log('[@jellyfin-vue/configs/lint] Force enabling caching for this run');
+      console.log(`[@jellyfin-vue/configs/lint] (${packageName}) Force enabling caching for this run`);
     }
 
     if (warningAsErrors && !newArgs.some(arg => arg.includes('--max-warnings'))) {
       newArgs.push('--max-warnings=0');
-      console.log('[@jellyfin-vue/configs/lint] Force enabling warnings for this run');
+      console.log(`[@jellyfin-vue/configs/lint] (${packageName}) Force enabling warnings for this run`);
     }
 
     const argsHaveChanged = new Set(newArgs).difference(new Set(process.argv.slice(1))).size > 0;
