@@ -15,13 +15,14 @@ import Components from 'unplugin-vue-components/vite';
 import UnoCSS from 'unocss/vite';
 import VueRouter from 'unplugin-vue-router/vite';
 import { defineConfig } from 'vite';
+import { entrypoints, localeFilesFolder, srcRoot } from './scripts/paths';
+import virtualModules from './scripts/virtual-modules';
 /**
  * TODO: Replace with @jellyfin-vue/vite-plugins after https://github.com/vitejs/vite/issues/5370
  * is fixed
  */
 import { BundleAnalysis, BundleChunking, BundleSizeReport } from '../packages/vite-plugins/src';
-import { entrypoints, localeFilesFolder, srcRoot } from './scripts/paths';
-import virtualModules from './scripts/virtual-modules';
+import { JellyfinVueUIToolkit } from '../packages/ui-toolkit/src/resolver';
 
 export default defineConfig({
   appType: 'spa',
@@ -55,7 +56,8 @@ export default defineConfig({
         IconsResolver(),
         VueUseComponentsResolver(),
         Vuetify3Resolver(),
-        VueUseDirectiveResolver()
+        VueUseDirectiveResolver(),
+        JellyfinVueUIToolkit()
       ]
     }),
     /**
