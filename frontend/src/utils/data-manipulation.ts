@@ -1,6 +1,4 @@
 import { defu } from 'defu';
-import { toRaw } from 'vue';
-import { genericWorker } from '@/plugins/workers';
 
 /**
  * Merge 2 objects, excluding the keys from the destination that are not present in source
@@ -69,14 +67,4 @@ export function pick<T extends object>(object: T, keys: (keyof T)[]): Partial<T>
   }
 
   return res;
-}
-
-/**
- * Shuffles an array in a WebWorker using the Durstenfeld shuffle algorithm, an
- * optimized version of Fisher-Yates shuffle.
- *
- * It's also prepared for the case when the array is reactive thorugh Vue's `ref` or `reactive`.
- */
-export async function shuffle<T>(array: T[]): Promise<T[]> {
-  return await genericWorker.shuffle(toRaw(array)) as T[];
 }
