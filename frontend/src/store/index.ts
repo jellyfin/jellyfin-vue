@@ -15,12 +15,6 @@ import { remote } from '#/plugins/remote';
 import { router } from '#/plugins/router';
 import type { SubtitleTypographyChoices } from '#/store/client-settings/subtitle-settings';
 
-/**
- * This file contains global variables (specially VueUse refs) that are used multiple times across the client.
- * VueUse composables will set new event handlers, so it's more
- * efficient to reuse those, both in components and TS files.
- */
-
 export const DEFAULT_TYPOGRAPHY = 'Figtree Variable';
 /**
  * Type for the different typography choices across the application

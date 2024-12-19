@@ -2,8 +2,13 @@
   "name": "@jellyfin-vue/ui-toolkit",
   "type": "module",
   "description": "Base components and UI toolkit for Jellyfin Vue",
+  "imports": {
+    "#/*": "./src/*"
+  },
   "exports": {
-    "./components": "./src/components"
+    "./components": "./src/components/index.ts",
+    "./store": "./src/store.ts",
+    "./resolver": "./src/resolver.ts"
   },
   "scripts": {
     "lint": "eslint . --flag unstable_ts_config",
@@ -14,5 +19,11 @@
   "devDependencies": {
     "@jellyfin-vue/configs": "*",
     "unplugin-vue-components": "0.28.0"
+  },
+  "dependencies": {
+    "@skirtle/vue-vnode-utils": "0.2.0",
+    "@vueuse/core": "12.2.0",
+    "comlink": "4.4.2",
+    "vue": "3.5.13"
   }
 }
