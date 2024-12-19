@@ -4,10 +4,10 @@ import destr from 'destr';
 import { EffectScope, toRaw } from 'vue';
 import { watchDeep, watchImmediate } from '@vueuse/core';
 import type { UnknownRecord } from 'type-fest';
+import { isNil, isStr } from '@jellyfin-vue/shared/validation';
 import { taskManager } from '../task-manager';
 import { remote } from '@/plugins/remote';
 import { CommonStore, type Persistence } from '@/store/super/common-store';
-import { isNil, isStr } from '@/utils/validation';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { i18n } from '@/plugins/i18n';
 
