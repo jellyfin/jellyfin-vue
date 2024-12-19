@@ -3,6 +3,7 @@ import type { Class } from 'type-fest';
 
 /**
  * Validator to which enforces that a select component has at least one value selected
+ * @deprecated - Remove/Refactor when @jellyfin-vue/ui-toolkit is completed.
  */
 export const SomeItemSelectedRule = [
   (v: unknown[]): boolean | string => v.length !== 0

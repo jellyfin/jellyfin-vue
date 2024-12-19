@@ -1,9 +1,9 @@
 import { v4 } from 'uuid';
 import { watch } from 'vue';
+import { isArray, isNil, isObj, isStr, sealed } from '@jellyfin-vue/shared/validation';
 import { CommonStore } from '@/store/super/common-store';
 import { remote } from '@/plugins/remote';
 import { apiStore } from '@/store/api';
-import { isArray, isNil, isObj, isStr, sealed } from '@/utils/validation';
 
 /**
  * == INTERFACES AND TYPES ==

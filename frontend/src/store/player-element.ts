@@ -11,8 +11,8 @@ import { computed, nextTick, shallowRef, watch } from 'vue';
 import { SubtitleDeliveryMethod } from '@jellyfin/sdk/lib/generated-client/models/subtitle-delivery-method';
 import { computedAsync, useFullscreen } from '@vueuse/core';
 import { MediaStreamType } from '@jellyfin/sdk/lib/generated-client';
+import { isNil, sealed } from '@jellyfin-vue/shared/validation';
 import { playbackManager } from './playback-manager';
-import { isNil, sealed } from '@/utils/validation';
 import { mediaElementRef } from '@/store';
 import { CommonStore } from '@/store/super/common-store';
 import { router } from '@/plugins/router';
@@ -264,7 +264,7 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched' |
        * otherwise show default subtitle track
        */
       if (!this._useCustomSubtitleTrack.value && !isNil(mediaElementRef.value.textTracks[subtitleTrack.srcIndex])) {
-        mediaElementRef.value.textTracks[subtitleTrack.srcIndex]!.mode = 'showing';
+        mediaElementRef.value.textTracks[subtitleTrack.srcIndex].mode = 'showing';
       }
     }
   };

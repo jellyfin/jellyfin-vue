@@ -8,7 +8,6 @@
         v-if="!user"
         v-model="login.username"
         variant="outlined"
-
         hide-details
         autofocus
         :label="$t('username')"

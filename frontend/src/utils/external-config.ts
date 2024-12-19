@@ -1,4 +1,4 @@
-import { isArray, isBool, isNil, isObj, isStr } from '@/utils/validation';
+import { isArray, isBool, isNil, isObj, isStr } from '@jellyfin-vue/shared/validation';
 
 interface ExternalJSONConfig {
   defaultServerURLs: string[];

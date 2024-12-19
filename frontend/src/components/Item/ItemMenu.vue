@@ -73,7 +73,7 @@ import IMdiShuffle from 'virtual:icons/mdi/shuffle';
 import { computed, getCurrentInstance, onMounted, shallowRef, useId, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
-import { isNil, isStr } from '@/utils/validation';
+import { isNil, isStr } from '@jellyfin-vue/shared/validation';
 import {
   canIdentify,
   canInstantMix,
@@ -366,11 +366,14 @@ const copyDownloadURLAction = {
       if (text) {
         await (isStr(streamUrls)
           ? copyAction(text)
-          : useConfirmDialog(async () => { await copyAction(text); }, {
-              title: t('copyPrompt'),
-              text: text,
-              confirmText: t('accept')
-            }));
+          : useConfirmDialog(async () => await copyAction(text),
+              {
+                title: t('copyPrompt'),
+                text: text,
+                confirmText: t('accept')
+              }
+            )
+        );
       } else {
         useSnackbar(errorMessage, 'error');
       }
@@ -398,7 +401,7 @@ function getQueueOptions(): MenuOption[] {
     }
 
     if (
-      playbackManager.nextItem.value?.Id !== item.Id
+      playbackManager.nextItem.value.Id !== item.Id
       && playbackManager.currentItem.value?.Id !== item.Id
     ) {
       queueOptions.push(playNextAction);
@@ -424,7 +427,7 @@ function getPlaybackOptions(): MenuOption[] {
 
   if (playbackManager.currentItem.value) {
     if (
-      playbackManager.nextItem.value?.Id !== item.Id
+      playbackManager.nextItem.value.Id !== item.Id
       && playbackManager.currentItem.value.Id !== item.Id
       && !queue
     ) {
@@ -447,7 +450,7 @@ function getPlaybackOptions(): MenuOption[] {
 function getCopyOptions(): MenuOption[] {
   const copyActions: MenuOption[] = [];
 
-  if (remote.auth.currentUser.value?.Policy?.EnableContentDownloading) {
+  if (remote.auth.currentUser.value.Policy?.EnableContentDownloading) {
     copyActions.push(copyDownloadURLAction);
   }
 
@@ -468,7 +471,7 @@ function getLibraryOptions(): MenuOption[] {
     libraryOptions.push(refreshAction);
   }
 
-  if (remote.auth.currentUser.value?.Policy?.IsAdministrator) {
+  if (remote.auth.currentUser.value.Policy?.IsAdministrator) {
     libraryOptions.push(editMetadataAction);
 
     if (canIdentify(item)) {
@@ -477,8 +480,8 @@ function getLibraryOptions(): MenuOption[] {
   }
 
   if (
-    remote.auth.currentUser.value?.Policy?.EnableContentDeletion
-    || remote.auth.currentUser.value?.Policy?.EnableContentDeletionFromFolders
+    remote.auth.currentUser.value.Policy?.EnableContentDeletion
+    || remote.auth.currentUser.value.Policy?.EnableContentDeletionFromFolders
   ) {
     libraryOptions.push(deleteItemAction);
   }
