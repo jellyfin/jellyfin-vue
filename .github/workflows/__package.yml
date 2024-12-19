@@ -93,7 +93,7 @@ jobs:
           subject-path: ${{ env.WORKING_DIR }}/${{ env.ARTIFACTS_PATH }}
 
       - name: Upload built application artifact ⬆️🐧🍎🪟
-        uses: actions/upload-artifact@v4.4.3
+        uses: actions/upload-artifact@v4.5.0
         with:
           compression-level: 0
           name: jellyfin-vue_${{ runner.os }}
@@ -204,7 +204,7 @@ jobs:
             ${{ needs.docker_inputs.outputs.tags }}
 
       - name: Upload Docker image as artifact ⬆️📦
-        uses: actions/upload-artifact@v4.4.3
+        uses: actions/upload-artifact@v4.5.0
         with:
           compression-level: 0
           name: docker_image-linux_${{ matrix.platform }}
@@ -217,7 +217,7 @@ jobs:
           subject-path: docker_image.tar
 
       - name: Upload cache artifact ⬆️⚙️
-        uses: actions/upload-artifact@v4.4.3
+        uses: actions/upload-artifact@v4.5.0
         if: ${{ inputs.push }}
         with:
           compression-level: 0
@@ -250,7 +250,7 @@ jobs:
           subject-path: dist
 
       - name: Upload client artifact ⬆️💻
-        uses: actions/upload-artifact@v4.4.3
+        uses: actions/upload-artifact@v4.5.0
         with:
           compression-level: 0
           name: frontend
