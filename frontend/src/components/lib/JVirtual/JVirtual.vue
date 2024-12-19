@@ -15,6 +15,7 @@
       <JSlot
         v-for="internal_item in visibleItems"
         :key="indexAsKey ? internal_item.index : undefined"
+        class="uno-transform-gpu"
         :class="gridClass"
         :style="internal_item.style">
         <slot
