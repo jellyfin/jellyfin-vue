@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "@iconify/json": "2.2.286",
-    "@intlify/unplugin-vue-i18n": "4.0.0",
+    "@intlify/unplugin-vue-i18n": "6.0.2",
     "@jellyfin-vue/configs": "*",
     "@jellyfin-vue/vite-plugins": "*",
     "@rollup/plugin-virtual": "3.0.2",
@@ -60,7 +60,7 @@
     "unplugin-icons": "0.22.0",
     "unplugin-vue-components": "0.28.0",
     "unplugin-vue-router": "0.10.9",
-    "vite": "6.0.2",
+    "vite": "6.0.5",
     "vite-plugin-vue-devtools": "7.6.8"
   }
 }
