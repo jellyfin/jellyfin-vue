@@ -1,8 +1,8 @@
 import { useStorage, type RemovableRef } from '@vueuse/core';
 import { reactive, toValue } from 'vue';
 import type { UnknownRecord } from 'type-fest';
+import { isNil } from '@jellyfin-vue/shared/validation';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
-import { isNil } from '@/utils/validation';
 
 export type Persistence = 'localStorage' | 'sessionStorage';
 
@@ -34,8 +34,8 @@ export abstract class CommonStore<T extends UnknownRecord> {
     this._internalState = isNil(storage)
       ? reactive(this._defaultState()) as T
       : useStorage(storeKey, this._defaultState(), storage, {
-          mergeDefaults: (storageValue, defaults) =>
-            mergeExcludingUnknown(storageValue, defaults)
-        });
+        mergeDefaults: (storageValue, defaults) =>
+          mergeExcludingUnknown(storageValue, defaults)
+      });
   }
 }

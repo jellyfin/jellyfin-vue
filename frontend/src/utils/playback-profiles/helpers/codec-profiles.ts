@@ -9,6 +9,7 @@ import {
   type CodecProfile,
   type ProfileCondition
 } from '@jellyfin/sdk/lib/generated-client';
+import { isFunc, isObj } from '@jellyfin-vue/shared/validation';
 import {
   isApple,
   isChromiumBased,
@@ -21,7 +22,6 @@ import {
   isXbox,
   safariVersion
 } from '@/utils/browser-detection';
-import { isFunc, isObj } from '@/utils/validation';
 
 /**
  * Gets the max video bitrate

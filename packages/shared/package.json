@@ -1,0 +1,17 @@
+{
+  "name": "@jellyfin-vue/shared",
+  "type": "module",
+  "description": "Shared code between Jellyfin Vue packages",
+  "exports": {
+    "./validation": "./src/validation.ts"
+  },
+  "scripts": {
+    "lint": "eslint . --flag unstable_ts_config",
+    "lint:fix": "eslint . --fix --flag unstable_ts_config",
+    "lint:inspect": "eslint-config-inspector",
+    "check:types": "vue-tsc"
+  },
+  "devDependencies": {
+    "@jellyfin-vue/configs": "*"
+  }
+}

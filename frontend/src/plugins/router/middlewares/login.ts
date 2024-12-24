@@ -4,8 +4,8 @@ import type {
 } from 'vue-router';
 import type { RouteNamedMap } from 'vue-router/auto-routes';
 import { until } from '@vueuse/core';
+import { isNil } from '@jellyfin-vue/shared/validation';
 import { remote } from '@/plugins/remote';
-import { isNil } from '@/utils/validation';
 import { jsonConfig } from '@/utils/external-config';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { i18n } from '@/plugins/i18n';

@@ -1,6 +1,6 @@
 import { watch } from 'vue';
+import { sealed } from '@jellyfin-vue/shared/validation';
 import { remote } from '@/plugins/remote';
-import { sealed } from '@/utils/validation';
 import { SyncedStore } from '@/store/super/synced-store';
 import type { TypographyChoices } from '@/store';
 
