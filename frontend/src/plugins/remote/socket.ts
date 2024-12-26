@@ -40,7 +40,7 @@ class RemotePluginSocket {
    * Formats the message to be sent to the socket
    */
   private readonly _webSocket = useWebSocket(this._socketUrl, {
-    autoReconnect: { retries: () => true },
+    autoReconnect: true,
     onConnected: () => {
       this.sendToSocket('ScheduledTasksInfoStart', this._updateInterval);
       this.sendToSocket('ActivityLogEntryStart', this._updateInterval);
