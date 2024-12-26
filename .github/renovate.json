@@ -2,6 +2,11 @@
   "timezone": "Europe/Madrid",
   "packageRules": [
     {
+      "matchPackageNames": ["vue-i18n", "@intlify/unplugin-vue-i18n"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
+    {
       "matchManagers": [
         "npm"
       ],
