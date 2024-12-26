@@ -12,6 +12,6 @@
     "@jellyfin-vue/configs": "*",
     "pretty-bytes": "6.1.1",
     "sonda": "0.6.2",
-    "vite": "6.0.2"
+    "vite": "6.0.6"
   }
 }

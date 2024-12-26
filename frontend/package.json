@@ -60,7 +60,7 @@
     "unplugin-icons": "0.22.0",
     "unplugin-vue-components": "0.28.0",
     "unplugin-vue-router": "0.10.9",
-    "vite": "6.0.2",
+    "vite": "6.0.6",
     "vite-plugin-vue-devtools": "7.6.8"
   }
 }
