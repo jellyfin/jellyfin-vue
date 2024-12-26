@@ -47,7 +47,7 @@
     "vuetify": "3.7.4"
   },
   "devDependencies": {
-    "@iconify/json": "2.2.286",
+    "@iconify/json": "2.2.289",
     "@intlify/unplugin-vue-i18n": "4.0.0",
     "@jellyfin-vue/configs": "*",
     "@jellyfin-vue/vite-plugins": "*",
@@ -56,7 +56,7 @@
     "@vitejs/plugin-vue": "5.2.1",
     "browserslist": "4.24.3",
     "lightningcss": "1.28.2",
-    "unocss": "0.65.2",
+    "unocss": "0.65.3",
     "unplugin-icons": "0.22.0",
     "unplugin-vue-components": "0.28.0",
     "unplugin-vue-router": "0.10.9",
