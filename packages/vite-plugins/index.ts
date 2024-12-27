@@ -1,20 +1,32 @@
-import { basename } from 'node:path';
-import { glob, lstat } from 'node:fs/promises';
+import { basename, join } from 'node:path';
+import { globSync } from 'node:fs';
+import { lstat, rename, rm } from 'node:fs/promises';
+import type { LiteralUnion } from 'type-fest';
+import type { RollupLog } from 'rollup';
 import prettyBytes from 'pretty-bytes';
 import { SondaRollupPlugin } from 'sonda';
-import { normalizePath, type Plugin } from 'vite';
-import type { RollupLog } from 'rollup';
+import { normalizePath, preview, type Plugin } from 'vite';
+
+/**
+ * TODO: Track https://github.com/vitejs/vite/pull/19005 so we can pull Vite's default config instead
+ * of hardcoding it here.
+ */
+const defaultConfig = { build: { outDir: 'dist' } };
 
 /**
  * This plugin extracts the logic for the analyze commands, so the main Vite config is cleaner.
  */
 export function BundleAnalysis(): Plugin {
+  let mode: LiteralUnion<'analyze:bundle' | 'analyze:cycles', string>;
+  const report_filename = () => join(defaultConfig.build.outDir, 'bundle-report.html');
   const warnings: RollupLog[] = [];
 
   return {
     name: 'Jellyfin_Vue:bundle_analysis',
-    enforce: 'post',
+    enforce: 'pre',
     config: (_, env) => {
+      mode = env.mode;
+
       if (env.mode === 'analyze:bundle') {
         return {
           build: {
@@ -22,7 +34,8 @@ export function BundleAnalysis(): Plugin {
             rollupOptions: {
               plugins: [
                 SondaRollupPlugin({
-                  filename: 'dist/bundle-report.html',
+                  open: false,
+                  filename: report_filename(),
                   detailed: true,
                   sources: true,
                   gzip: false,
@@ -46,13 +59,28 @@ export function BundleAnalysis(): Plugin {
         };
       }
     },
-    closeBundle: () => {
-      if (warnings.length > 0) {
-        for (const warning of warnings) {
-          console.warn(warning);
+    closeBundle: async () => {
+      if (mode === 'analyze:cycles') {
+        if (warnings.length > 0) {
+          for (const warning of warnings) {
+            console.warn(warning);
+          }
+
+          throw new Error('There are circular dependencies');
+        }
+      } else if (mode === 'analyze:bundle') {
+        await rename(report_filename(), join(defaultConfig.build.outDir, 'index.html'));
+
+        for (const file of globSync(join(defaultConfig.build.outDir, '**/*'))) {
+          if (!file.endsWith('index.html')) {
+            await rm(file, { force: true, recursive: true });
+          }
         }
 
-        throw new Error('There are circular dependencies');
+        const server = await preview();
+
+        console.log();
+        server.printUrls();
       }
     }
   };
@@ -64,6 +92,7 @@ export function BundleAnalysis(): Plugin {
 export function BundleChunking(): Plugin {
   return {
     name: 'Jellyfin_Vue:bundle_chunking',
+    enforce: 'pre',
     config: () => ({
       build: {
         rollupOptions: {
@@ -113,9 +142,11 @@ export function BundleSizeReport(): Plugin {
 
   return {
     name: 'Jellyfin_Vue:bundle_size_report',
-    apply: 'build',
+    enforce: 'pre',
+    // Only run on normal production builds, not analyze:bundle or analyze:cycles
+    apply: (_, env) => env.mode === 'production',
     closeBundle: async () => {
-      for await (const file of glob(`${outDir}/**/**`)) {
+      for (const file of globSync(`${outDir}/**/**`)) {
         const stat = await lstat(file);
 
         if (stat.isFile()) {

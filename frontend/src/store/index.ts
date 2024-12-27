@@ -9,6 +9,7 @@ import {
   useWindowScroll
 } from '@vueuse/core';
 import { computed, shallowRef } from 'vue';
+import type { LiteralUnion } from 'type-fest';
 import { remote } from '@/plugins/remote';
 import { isNil } from '@/utils/validation';
 import { router } from '@/plugins/router';
@@ -27,7 +28,7 @@ export const DEFAULT_TYPOGRAPHY = 'Figtree Variable';
  *
  * system: System typography
  */
-export type TypographyChoices = 'default' | 'system' | (string & {});
+export type TypographyChoices = LiteralUnion<'default' | 'system', string>;
 
 /**
  * == BLURHASH DEFAULTS ==
