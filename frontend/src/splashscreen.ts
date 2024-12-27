@@ -19,12 +19,10 @@ const darkColor = '#111827';
 const lightColor = '#f2f2f2';
 let colorToApply: typeof darkColor | typeof lightColor = matchedDarkColorScheme ? darkColor : lightColor;
 
-if ('darkMode' in parsedStore) {
-  const storeDarkMode = parsedStore.darkMode;
+const storeDarkMode = parsedStore.darkMode;
 
-  if (isBool(storeDarkMode)) {
-    colorToApply = parsedStore.darkMode === true ? darkColor : lightColor;
-  }
+if (isBool(storeDarkMode)) {
+  colorToApply = storeDarkMode ? darkColor : lightColor;
 }
 
 document.body.style.setProperty('--j-color-background', colorToApply);

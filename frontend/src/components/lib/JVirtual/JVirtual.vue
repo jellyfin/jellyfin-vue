@@ -332,10 +332,10 @@ watch(
  * Tracks if the scroll must be pointed at an specific element
  */
 watch(() => scrollTo, () => {
-  if (!isUndef(rootRef.value)
+  if (!isNil(rootRef.value)
     && !isUndef(scrollTo)
     && !isUndef(resizeMeasurement.value)
-    && !isUndef(scrollParents.value)
+    && !isNil(scrollParents.value)
     && scrollTo > 0
     && scrollTo < itemsLength.value) {
     const { target, top, left } = getScrollToInfo(scrollParents.value, rootRef.value, resizeMeasurement.value, scrollTo);

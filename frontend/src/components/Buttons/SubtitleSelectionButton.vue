@@ -3,11 +3,11 @@
     icon
     class="align-self-center"
     :disabled="
-      !playbackManager.currentItemParsedSubtitleTracks ||
-        playbackManager.currentItemParsedSubtitleTracks.length === 0
+      !playerElement.currentItemParsedSubtitleTracks.value ||
+        playerElement.currentItemParsedSubtitleTracks.value.length === 0
     ">
     <VIcon>
-      <IMdiClosedCaption v-if="playbackManager.currentSubtitleTrack" />
+      <IMdiClosedCaption v-if="playbackManager.currentSubtitleTrack.value" />
       <IMdiClosedCaptionOutline v-else />
     </VIcon>
     <VTooltip
@@ -23,13 +23,13 @@
           v-for="track of tracks"
           :key="track.srcIndex"
           :append-icon="
-            track.srcIndex === playbackManager.currentSubtitleStreamIndex
+            track.srcIndex === playbackManager.currentSubtitleTrack.value?.Index
               ? IMdiCheck
               : undefined
           "
           :title="track.label"
           @click="
-            playbackManager.currentSubtitleStreamIndex = track.srcIndex
+            playbackManager.currentSubtitleTrack.value = track.srcIndex
           " />
       </VList>
     </VMenu>
@@ -42,18 +42,19 @@ import IMdiCheck from 'virtual:icons/mdi/check';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { playbackManager } from '@/store/playback-manager';
+import { playerElement } from '@/store/player-element';
 
 const menuModel = defineModel<boolean>();
 
 const { t } = useI18n();
 
 const tracks = computed(() => {
-  const subs = playbackManager.currentItemParsedSubtitleTracks;
+  const subs = playerElement.currentItemParsedSubtitleTracks.value;
 
   return [
     {
       label: t('disabled'),
-      srcIndex: undefined,
+      srcIndex: -1,
       type: SubtitleDeliveryMethod.External
     },
     ...(subs ?? [])

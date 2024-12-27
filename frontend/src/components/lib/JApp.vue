@@ -31,12 +31,12 @@ import { clientSettings } from '@/store/client-settings';
 const { isLoading } = useLoading();
 
 const typography = computed(() => {
-  if (clientSettings.typography === 'system') {
+  if (clientSettings.state.value.typography === 'system') {
     return 'system-ui';
-  } else if (clientSettings.typography === 'default') {
+  } else if (clientSettings.state.value.typography === 'default') {
     return DEFAULT_TYPOGRAPHY;
   } else {
-    return clientSettings.typography;
+    return clientSettings.state.value.typography;
   }
 });
 </script>

@@ -45,7 +45,7 @@ export function createPlugin(): {
        */
       const missingServers = defaultServers
         .filter((serverUrl) => {
-          const server = auth.servers.find(
+          const server = auth.servers.value.find(
             lsServer => lsServer.PublicAddress === serverUrl
           );
 

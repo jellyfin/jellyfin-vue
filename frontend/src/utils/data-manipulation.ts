@@ -57,8 +57,8 @@ export function getFontFaces() {
 /**
  * Picks certain keys from an object and returns a new object with only those keys.
  */
-export function pick<T extends object>(object: T, keys: (keyof T)[]): Partial<T> {
-  const res = {} as Partial<T>;
+export function pick<T extends object, K extends keyof T>(object: T, keys: K[] | Set<K>): Pick<T, K> {
+  const res = {} as Pick<T, K>;
 
   for (const key of keys) {
     if (key in object) {

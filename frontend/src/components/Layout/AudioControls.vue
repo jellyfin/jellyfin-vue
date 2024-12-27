@@ -4,9 +4,9 @@
     mode="out-in">
     <VFooter
       v-if="
-        playbackManager.isPlaying &&
-          playbackManager.isAudio &&
-          !isNil(playbackManager.currentItem)
+        playbackManager.isPlaying.value &&
+          playbackManager.isAudio.value &&
+          !isNil(playbackManager.currentItem.value)
       "
       app
       class="pa-0 uno-select-none">
@@ -18,27 +18,27 @@
             class="d-flex pa-0 flex-row">
             <RouterLink :to="'/playback/music'">
               <div class="img uno-h-20 uno-w-20">
-                <BlurhashImage :item="playbackManager.currentItem" />
+                <BlurhashImage :item="playbackManager.currentItem.value" />
               </div>
             </RouterLink>
             <VCol class="d-flex flex-column justify-center ml-4">
               <VRow class="align-end">
                 <RouterLink
                   v-slot="{ navigate }"
-                  :to="getItemDetailsLink(playbackManager.currentItem)"
+                  :to="getItemDetailsLink(playbackManager.currentItem.value)"
                   custom>
                   <span
                     class="link text-truncate uno-h-fit"
                     @click="navigate">
-                    {{ playbackManager.currentItem.Name }}
+                    {{ playbackManager.currentItem.value?.Name }}
                   </span>
                 </RouterLink>
               </VRow>
               <VRow
-                v-if="playbackManager.currentItem.ArtistItems"
+                v-if="playbackManager.currentItem.value?.ArtistItems"
                 class="align-start">
                 <span
-                  v-for="artist in playbackManager.currentItem.ArtistItems"
+                  v-for="artist in playbackManager.currentItem.value?.ArtistItems"
                   :key="`artist-${artist.Id}`">
                   <p class="mr-2 mb-0">
                     <RouterLink
@@ -73,14 +73,14 @@
           <VCol
             cols="3"
             class="d-none align-center d-md-flex justify-end">
-            <LikeButton :item="playbackManager.currentItem" />
+            <LikeButton :item="playbackManager.currentItem.value" />
             <QueueButton />
             <div class="hidden-lg-and-down">
               <VolumeSlider />
             </div>
             <ItemMenu
-              :item="playbackManager.currentItem"
-              :media-source-index="playbackManager.currentMediaSourceIndex"
+              :item="playbackManager.currentItem.value"
+              :media-source-index="playbackManager.currentMediaSourceIndex.value"
               :z-index="99999" />
             <VBtn
               icon

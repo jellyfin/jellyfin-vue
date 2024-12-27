@@ -8,7 +8,7 @@ import { i18n } from '@/plugins/i18n';
  * Validates that no playback is happening when accesing a route
  */
 export function playbackGuard(): NavigationGuardReturn {
-  if (isNil(playbackManager.currentItem)) {
+  if (isNil(playbackManager.currentItem.value)) {
     useSnackbar(i18n.t('routeValidationError'), 'error');
 
     return false;

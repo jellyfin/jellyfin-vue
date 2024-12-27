@@ -83,7 +83,7 @@ export function isArray(object: unknown): object is unknown[] {
  *
  * @type TypeScript Decorator
  */
-export function sealed(constructor: Class): void {
+export function sealed(constructor: Class<unknown, unknown[]>): void {
   Object.seal(constructor);
   Object.seal(constructor.prototype);
 }

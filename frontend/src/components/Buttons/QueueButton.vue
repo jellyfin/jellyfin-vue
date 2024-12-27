@@ -20,18 +20,18 @@
             <template #prepend>
               <VAvatar>
                 <BlurhashImage
-                  v-if="playbackManager.initiator"
-                  :item="playbackManager.initiator" />
+                  v-if="playbackManager.initiator.value"
+                  :item="playbackManager.initiator.value" />
                 <VIcon
                   v-else
                   :icon="modeIcon" />
               </VAvatar>
             </template>
             <template #subtitle>
-              {{ getTotalEndsAtTime(playbackManager.queue) }} -
+              {{ getTotalEndsAtTime(playbackManager.queue.value) }} -
               {{
                 $t('queueItems', {
-                  items: playbackManager.queue.length
+                  items: playbackManager.queueLength.value
                 })
               }}
             </template>
@@ -95,38 +95,34 @@ const sourceText = computed(() => {
    * https://github.com/jellyfin/jellyfin-vue/pull/609
    */
   const unknownSource = t('unknown');
+  const isFromAlbum = playbackManager.currentItem.value?.AlbumId
+    === playbackManager.initiator.value?.Id;
+  const substitution = {
+    item: playbackManager.initiator.value?.Name
+  };
 
-  switch (playbackManager.playbackInitMode) {
+  switch (playbackManager.playbackInitMode.value) {
     case InitMode.Unknown: {
       return unknownSource;
     }
     case InitMode.Item: {
-      return playbackManager.currentItem?.AlbumId
-        === playbackManager.initiator?.Id
-        ? t('playingFrom', {
-            item: playbackManager.initiator?.Name
-          })
+      return isFromAlbum
+        ? t('playingFrom', substitution)
         : unknownSource;
     }
     case InitMode.Shuffle: {
       return t('playinginShuffle');
     }
     case InitMode.ShuffleItem: {
-      return playbackManager.currentItem?.AlbumId
-        === playbackManager.initiator?.Id
-        ? t('playingItemInShuffle', {
-            item: playbackManager.initiator?.Name
-          })
+      return isFromAlbum
+        ? t('playingItemInShuffle', substitution)
         : unknownSource;
-    }
-    default: {
-      return '';
     }
   }
 });
 
 const modeIcon = computed(() =>
-  playbackManager.playbackInitMode === InitMode.Shuffle
+  playbackManager.playbackInitMode.value === InitMode.Shuffle
     ? IMdiShuffle
     : IMdiPlaylistMusic
 );

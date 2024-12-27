@@ -1,7 +1,7 @@
 <template>
   <span ref="container">
     <template
-      v-for="(item, index) of playbackManager.queue"
+      v-for="(item, index) of playbackManager.queue.value"
       :key="item.Id">
       <JHover v-slot="{ isHovering }">
         <VListItem
@@ -9,7 +9,7 @@
           :subtitle="getArtists(item)"
           class="grab-cursor"
           :class="{ 'text-primary font-weight-bold': isPlaying(index) }"
-          @click="playbackManager.currentItemIndex = index">
+          @click="playbackManager.currentItemIndex.value = index">
           <template #prepend>
             <VListItemAction
               :key="index"
@@ -64,7 +64,7 @@ function destroy(): void {
  * Checks if the item in the current position is playing
  */
 function isPlaying(index: number): boolean {
-  return index === playbackManager.currentItemIndex;
+  return index === playbackManager.currentItemIndex.value;
 }
 
 /**
@@ -86,9 +86,9 @@ watch(container, () => {
         const oldIndex = e.oldIndex;
 
         if (isNumber(oldIndex)) {
-          const item = playbackManager.queue[oldIndex];
+          const item = playbackManager.queue.value[oldIndex];
 
-          if (item.Id && isNumber(e.newIndex)) {
+          if (item?.Id && isNumber(e.newIndex)) {
             playbackManager.changeItemPosition(item.Id, e.newIndex);
           }
         }

@@ -2,7 +2,7 @@
   <VBtn
     v-bind="$attrs"
     icon
-    :loading="playbackManager.isBuffering"
+    :loading="playbackManager.isBuffering.value"
     @click="playbackManager.playPause">
     <VIcon
       v-bind="$attrs"
@@ -18,9 +18,9 @@ import { computed } from 'vue';
 import { PlaybackStatus, playbackManager } from '@/store/playback-manager';
 
 const playPauseIcon = computed(() => {
-  if (playbackManager.isPaused) {
+  if (playbackManager.isPaused.value) {
     return IMdiPlayCircleOutline;
-  } else if (playbackManager.status === PlaybackStatus.Error) {
+  } else if (playbackManager.status.value === PlaybackStatus.Error) {
     return IMdiExclamation;
   }
 

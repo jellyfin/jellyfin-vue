@@ -63,7 +63,7 @@ async function fetchChildItems(node: ITreeNode): Promise<void> {
   const libraryItems
     = (
       await remote.sdk.newUserApi(getItemsApi).getItems({
-        userId: remote.auth.currentUserId ?? '',
+        userId: remote.auth.currentUserId.value,
         parentId: node.id,
         sortBy: ['SortName']
       })

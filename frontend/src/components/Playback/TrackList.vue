@@ -155,7 +155,7 @@ const hasMultipleDiscs = computed(() => {
  * Check if a given BaseItemDto is playing
  */
 function isPlaying(track: BaseItemDto): boolean {
-  return track.Id === playbackManager.currentItem?.Id;
+  return track.Id === playbackManager.currentItem.value?.Id;
 }
 
 /**

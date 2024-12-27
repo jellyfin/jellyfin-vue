@@ -3,7 +3,7 @@
     class="uno-absolute uno-bottom-0 uno-left-0 uno-w-full uno-text-center">
     <span
       class="uno-inline-block uno-pb-10px uno-color-white"
-      :class="{ 'stroked': subtitleSettings.state.stroke }"
+      :class="{ 'stroked': subtitleSettings.state.value.stroke }"
       :style="subtitleStyle">
       <template v-if="preview">
         {{ $t('subtitlePreviewText') }}
@@ -38,15 +38,15 @@ const { preview } = defineProps<{
  * since the user can seek to any position) when 'previous' is undefined and then relies in previous
  * to find the next one
  */
-const predicate = (d: Dialogue) => d.start <= playbackManager.currentTime && d.end >= playbackManager.currentTime;
+const predicate = (d?: Dialogue) => d && d.start <= playbackManager.currentTime.value && d.end >= playbackManager.currentTime.value;
 const findSubtitle = (dialogue: ParsedSubtitleTrack['dialogue'], start = 0) => {
   const index = dialogue.slice(start).findIndex(d => predicate(d));
 
   return index === -1 ? undefined : index + start;
 };
 
-const dialogue = computed(() => playerElement.currentExternalSubtitleTrack?.parsed?.dialogue);
-const currentSubtitle = computed<{ index: number; sub?: Dialogue | undefined } | undefined>((previous) => {
+const dialogue = computed(() => playerElement.currentExternalSubtitleTrack.value?.parsed?.dialogue);
+const currentSubtitle = computed<{ index: number; sub?: Dialogue } | undefined>((previous) => {
   if (!isNil(dialogue.value)) {
     const hasPrevious = !isNil(previous);
     const nextIndex = hasPrevious ? previous.index + 1 : 0;
@@ -68,12 +68,12 @@ const currentSubtitle = computed<{ index: number; sub?: Dialogue | undefined } |
 });
 
 const fontFamily = computed(() => {
-  if (subtitleSettings.state.fontFamily === 'default') {
+  if (subtitleSettings.state.value.fontFamily === 'default') {
     return DEFAULT_TYPOGRAPHY;
-  } else if (subtitleSettings.state.fontFamily === 'system') {
+  } else if (subtitleSettings.state.value.fontFamily === 'system') {
     return 'system-ui';
-  } else if (subtitleSettings.state.fontFamily !== 'auto') {
-    return subtitleSettings.state.fontFamily;
+  } else if (subtitleSettings.state.value.fontFamily !== 'auto') {
+    return subtitleSettings.state.value.fontFamily;
   }
 });
 
@@ -82,12 +82,10 @@ const fontFamily = computed(() => {
  * reactive to client subtitle appearance settings
  */
 const subtitleStyle = computed<StyleValue>(() => {
-  const subtitleAppearance = subtitleSettings.state;
-
   return {
-    fontSize: `${subtitleAppearance.fontSize}em`,
-    marginBottom: `${subtitleAppearance.positionFromBottom}vh`,
-    backgroundColor: subtitleAppearance.backdrop ? 'rgba(0, 0, 0, 0.5)' : 'transparent',
+    fontSize: `${subtitleSettings.state.value.fontSize}em`,
+    marginBottom: `${subtitleSettings.state.value.positionFromBottom}vh`,
+    backgroundColor: subtitleSettings.state.value.backdrop ? 'rgba(0, 0, 0, 0.5)' : 'transparent',
     /**
      * Unwrap font family and stroke style if stroke is enabled
      */

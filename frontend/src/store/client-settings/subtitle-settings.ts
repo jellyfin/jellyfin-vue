@@ -1,13 +1,11 @@
-import { watch } from 'vue';
-import { remote } from '@/plugins/remote';
+import type { KeysOfUnion, LiteralUnion } from 'type-fest';
 import { sealed } from '@/utils/validation';
 import { SyncedStore } from '@/store/super/synced-store';
-import type { TypographyChoices } from '@/store';
 
 /**
  * == INTERFACES AND TYPES ==
  */
-
+export type SubtitleTypographyChoices = 'default' | 'system' | 'auto';
 export interface SubtitleSettingsState {
   /**
    * Whether the customization of the subtitles is enabled or not
@@ -22,7 +20,7 @@ export interface SubtitleSettingsState {
    * auto: Selects the current selected typography for the application
    * @default auto
    */
-  fontFamily: 'auto' | TypographyChoices;
+  fontFamily: LiteralUnion<SubtitleTypographyChoices, string>;
   fontSize: number;
   positionFromBottom: number;
   backdrop: boolean;
@@ -30,36 +28,27 @@ export interface SubtitleSettingsState {
 }
 
 @sealed
-class SubtitleSettingsStore extends SyncedStore<SubtitleSettingsState> {
-  public state = this._state;
-
+class SubtitleSettingsStore extends SyncedStore<SubtitleSettingsState, KeysOfUnion<SubtitleSettingsState>> {
   public constructor() {
-    super('subtitleSettings', () => ({
-      enabled: false,
-      fontFamily: 'auto',
-      fontSize: 1.5,
-      positionFromBottom: 10,
-      backdrop: true,
-      stroke: false
-    }), 'localStorage', new Set([
+    super({
+      storeKey: 'subtitleSettings',
+      defaultState: () => ({
+        enabled: false,
+        fontFamily: 'auto',
+        fontSize: 1.5,
+        positionFromBottom: 10,
+        backdrop: true,
+        stroke: false
+      }),
+      persistenceType: 'localStorage',
+      resetOnLogout: true
+    }, new Set([
       'enabled',
       'fontSize',
       'positionFromBottom',
       'backdrop',
       'stroke'
     ]));
-
-    /**
-     * == WATCHERS ==
-     */
-    watch(
-      () => remote.auth.currentUser,
-      () => {
-        if (!remote.auth.currentUser) {
-          this._reset();
-        }
-      }, { flush: 'post' }
-    );
   }
 }
 

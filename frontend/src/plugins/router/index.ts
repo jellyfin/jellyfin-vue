@@ -67,8 +67,8 @@ router.back = () => {
  * is the only source of truth.
  */
 watch([
-  () => remote.auth.currentUser,
-  () => remote.auth.currentServer
+  remote.auth.currentUser,
+  remote.auth.currentServer
 ], () => {
   void router.replace({
     force: true

@@ -145,7 +145,7 @@ const searchFields = computed<IdentifyField[]>(() => {
     }
   ];
 
-  if (!['BoxSet', 'Person'].includes(item.Type || '')) {
+  if (!['BoxSet', 'Person'].includes(item.Type ?? '')) {
     result.push({
       key: 'search-year',
       title: t('year'),

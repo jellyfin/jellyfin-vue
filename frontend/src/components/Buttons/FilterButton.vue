@@ -286,7 +286,7 @@ async function refreshItems(): Promise<void> {
   try {
     const response = (
       await remote.sdk.newUserApi(getFilterApi).getQueryFiltersLegacy({
-        userId: remote.auth.currentUserId,
+        userId: remote.auth.currentUserId.value,
         parentId: item.Id,
         includeItemTypes: [item.Type]
       })

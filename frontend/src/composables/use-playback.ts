@@ -13,7 +13,7 @@ interface PlaybackComposableReturn {
  */
 export function usePlayback(): PlaybackComposableReturn {
   watch(() => playbackManager.currentItem, () => {
-    if (!playbackManager.currentItem) {
+    if (!playbackManager.currentItem.value) {
       router.back();
     }
   });

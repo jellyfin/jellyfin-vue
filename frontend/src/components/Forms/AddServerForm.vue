@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import { shallowRef, unref } from 'vue';
+import { shallowRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { remote } from '@/plugins/remote';
@@ -53,7 +53,7 @@ import { jsonConfig } from '@/utils/external-config';
 const router = useRouter();
 const i18n = useI18n();
 const valid = shallowRef(false);
-const previousServerLength = unref(remote.auth.servers.length);
+const previousServerLength = remote.auth.addedServers.value;
 const serverUrl = shallowRef('');
 const loading = shallowRef(false);
 

@@ -81,7 +81,7 @@ const fontList = computedAsync(async () => {
     /**
      * Removes the current selected tpography (in case it's not the default one)
      */
-    set.delete(clientSettings.typography);
+    set.delete(clientSettings.state.value.typography);
     res.push(...set);
   }
 
@@ -102,13 +102,13 @@ const selection = computed(() => {
       value: f
     }))];
 
-  if (!appWide && !['system', 'default'].includes(clientSettings.typography)) {
+  if (!appWide && !['system', 'default'].includes(clientSettings.state.value.typography)) {
     res.unshift(
       {
         title: t('currentAppTypography', {
-          value: clientSettings.typography
+          value: clientSettings.state.value.typography
         }),
-        value: clientSettings.typography
+        value: clientSettings.state.value.typography
       }
     );
   }
@@ -119,14 +119,14 @@ const selection = computed(() => {
 const _model = computed({
   get() {
     if (appWide) {
-      return clientSettings.typography;
+      return clientSettings.state.value.typography;
     }
 
     return model.value;
   },
   set(newVal) {
     if (appWide && newVal) {
-      clientSettings.typography = newVal;
+      clientSettings.state.value.typography = newVal;
     }
 
     model.value = newVal;

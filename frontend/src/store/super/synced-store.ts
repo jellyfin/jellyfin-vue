@@ -1,17 +1,22 @@
 import type { DisplayPreferencesDto } from '@jellyfin/sdk/lib/generated-client';
 import { getDisplayPreferencesApi } from '@jellyfin/sdk/lib/utils/api/display-preferences-api';
 import destr from 'destr';
-import { EffectScope, toRaw } from 'vue';
-import { watchDeep, watchImmediate } from '@vueuse/core';
+import { deepEqual } from 'fast-equals';
+import { computed, EffectScope, watch } from 'vue';
+import { watchDeep } from '@vueuse/core';
 import type { UnknownRecord } from 'type-fest';
 import { taskManager } from '../task-manager';
 import { remote } from '@/plugins/remote';
-import { CommonStore, type Persistence } from '@/store/super/common-store';
+import { CommonStore, type CommonStoreParams } from '@/store/super/common-store';
 import { isNil, isStr } from '@/utils/validation';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { i18n } from '@/plugins/i18n';
+import { pick } from '@/utils/data-manipulation';
 
-export abstract class SyncedStore<T extends UnknownRecord> extends CommonStore<T> {
+export abstract class SyncedStore<
+  T extends object = UnknownRecord,
+  K extends keyof T = never
+> extends CommonStore<T, K> {
   private readonly _clientSyncName = 'vue';
   private readonly _syncedKeys: Set<(keyof T)>;
   private readonly _effectScope = new EffectScope();
@@ -25,7 +30,7 @@ export abstract class SyncedStore<T extends UnknownRecord> extends CommonStore<T
   /**
    * De-serializes custom pref values from string to a value
    */
-  private readonly _deserializeCustomPref = (value: string): unknown => {
+  private readonly _deserializeCustomPref = (value: Nullish<string>): unknown => {
     return destr(value);
   };
 
@@ -37,7 +42,7 @@ export abstract class SyncedStore<T extends UnknownRecord> extends CommonStore<T
       .newUserApi(getDisplayPreferencesApi)
       .getDisplayPreferences({
         displayPreferencesId: this._storeKey,
-        userId: remote.auth.currentUserId!,
+        userId: remote.auth.currentUserId.value,
         client: this._clientSyncName
       });
 
@@ -49,21 +54,19 @@ export abstract class SyncedStore<T extends UnknownRecord> extends CommonStore<T
       .newUserApi(getDisplayPreferencesApi)
       .updateDisplayPreferences({
         displayPreferencesId: this._storeKey,
-        userId: remote.auth.currentUserId!,
+        userId: remote.auth.currentUserId.value,
         client: this._clientSyncName,
         displayPreferencesDto: newDisplayPreferences
       });
   };
 
   /**
-   * Uses the keys on `defaults` to extract values from the Server's CustomPrefs
-   * and de-serializes them to a value.
-   * All keys needed for default should exist on the defaults parameter.
+   * Fetch keys from server and deserializes them to primitives.
+   *
    * Warning: No runtime checking is performed and de-serialized data could vary in shape from what is expected.
    */
   private readonly _fetchState = async (): Promise<Partial<T>> => {
     const displayPreferences = await this._fetchDisplayPreferences();
-
     const newState = {} as Partial<T>;
 
     for (const key of this._syncedKeys) {
@@ -81,7 +84,7 @@ export abstract class SyncedStore<T extends UnknownRecord> extends CommonStore<T
    * Updates CustomPrefs by merging passed in value with existing custom prefs
    */
   private readonly _updateState = async (): Promise<void> => {
-    if (remote.auth.currentUser) {
+    if (remote.auth.currentUser.value) {
       /**
        * Creates a config syncing task, so UI can show that there's a syncing in progress
        */
@@ -91,7 +94,7 @@ export abstract class SyncedStore<T extends UnknownRecord> extends CommonStore<T
         const newPrefs: DisplayPreferencesDto['CustomPrefs'] = {};
 
         for (const key of this._syncedKeys) {
-          newPrefs[String(key)] = this._serializeCustomPref(this._state[key]);
+          newPrefs[String(key)] = this._serializeCustomPref(this._state.value[key]);
         }
 
         const displayPreferences = await this._fetchDisplayPreferences();
@@ -107,18 +110,18 @@ export abstract class SyncedStore<T extends UnknownRecord> extends CommonStore<T
   };
 
   private readonly _triggerSync = async (): Promise<void> => {
-    if (remote.auth.currentUser) {
+    if (remote.auth.currentUser.value) {
       try {
         const data = await this._fetchState();
 
         this._effectScope.pause();
 
         const newState = {
-          ...toRaw(this._state),
+          ...this._state.value,
           ...data
         };
 
-        Object.assign(this._state, newState);
+        this._state.value = newState;
         this._effectScope.resume();
       } catch {
         useSnackbar(i18n.t('failedSyncingUserSettings'), 'error');
@@ -131,23 +134,23 @@ export abstract class SyncedStore<T extends UnknownRecord> extends CommonStore<T
    *
    * @param keys - The keys to be synced with the server. If not provided, all keys will be synced
    */
-  protected constructor(storeKey: string, defaultState: () => T, persistence?: Persistence, keys?: Set<(keyof T)>) {
-    super(storeKey, defaultState, persistence);
-    this._syncedKeys = keys ?? new Set(Object.keys(defaultState()) as (keyof T)[]);
+  protected constructor(
+    commonStoreParams: CommonStoreParams<T>,
+    syncedKeys?: Set<(keyof T)>
+  ) {
+    super(commonStoreParams);
+    this._syncedKeys = syncedKeys ?? new Set(Object.keys(commonStoreParams.defaultState()) as (keyof T)[]);
 
-    this._effectScope.run(() => {
-      if (keys?.size) {
-        for (const key of keys) {
-          watchDeep(() => this._state[key], this._updateState);
-        }
-      } else {
-        watchDeep(() => this._state, this._updateState);
-      }
+    const synced_object = computed<Pick<T, keyof T>>((previous) => {
+      const picked = pick(this._state.value, this._syncedKeys);
+
+      return previous && deepEqual(previous, picked) ? previous : picked;
     });
 
-    /**
-     * Trigger sync when the user logs in
-     */
-    watchImmediate(() => remote.auth.currentUser, this._triggerSync);
+    this._effectScope.run(() => {
+      watchDeep(synced_object, this._updateState);
+    });
+
+    watch(remote.auth.currentUser, this._triggerSync);
   }
 }

@@ -7,6 +7,7 @@ import type { UserDto, PublicSystemInfo, BrandingOptions } from '@jellyfin/sdk/l
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
 import { getBrandingApi } from '@jellyfin/sdk/lib/utils/api/branding-api';
 import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
+import { computed } from 'vue';
 import SDK, { useOneTimeAPI } from './sdk/sdk-utils';
 import { isAxiosError, isNil, sealed } from '@/utils/validation';
 import { i18n } from '@/plugins/i18n';
@@ -34,45 +35,29 @@ interface AuthState {
 
 @sealed
 class RemotePluginAuth extends CommonStore<AuthState> {
-  /**
-   * Getters
-   */
-  public get servers(): ServerInfo[] {
-    return this._state.servers;
-  }
-
-  public get currentServer(): ServerInfo | undefined {
-    return this._state.servers[this._state.currentServerIndex];
-  }
-
-  public get currentUser(): UserDto | undefined {
-    return this._state.users[this._state.currentUserIndex];
-  }
-
-  public get currentUserId(): string | undefined {
-    return this.currentUser?.Id;
-  }
-
-  public get currentUserToken(): string | undefined {
-    return this._getUserAccessToken(this.currentUser);
-  }
+  public readonly servers = computed(() => this._state.value.servers);
+  public readonly currentServer = computed(() => this._state.value.servers[this._state.value.currentServerIndex]);
+  public readonly currentUser = computed(() => this._state.value.users[this._state.value.currentUserIndex]);
+  public readonly currentUserId = computed(() => this.currentUser.value?.Id);
+  public readonly currentUserToken = computed(() => this._getUserAccessToken(this.currentUser.value));
+  public readonly addedServers = computed(() => this._state.value.servers.length);
 
   private readonly _getUserAccessToken = (
     user: UserDto | undefined
   ): string | undefined => {
-    return user?.Id ? this._state.accessTokens[user.Id] : undefined;
+    return user?.Id ? this._state.value.accessTokens[user.Id] : undefined;
   };
 
   public readonly getServerById = (
     serverId: string | undefined | null
   ): ServerInfo | undefined => {
-    return this._state.servers.find(server => server.Id === serverId);
+    return this._state.value.servers.find(server => server.Id === serverId);
   };
 
   public readonly getUsersFromServer = (
     server: ServerInfo | undefined
   ): UserDto[] | undefined => {
-    return this._state.users.filter(
+    return this._state.value.users.filter(
       user => user.ServerId === server?.Id
     );
   };
@@ -90,13 +75,13 @@ class RemotePluginAuth extends CommonStore<AuthState> {
     const oldServer = this.getServerById(server.Id);
 
     if (isNil(oldServer)) {
-      this._state.servers.push(server);
+      this._state.value.servers.push(server);
 
-      return this.servers.indexOf(this.getServerById(server.Id)!);
+      return this._state.value.servers.indexOf(this.getServerById(server.Id)!);
     } else {
-      const servIndex = this.servers.indexOf(oldServer);
+      const servIndex = this._state.value.servers.indexOf(oldServer);
 
-      this.servers[servIndex] = server;
+      this._state.value.servers[servIndex] = server;
 
       return servIndex;
     }
@@ -158,7 +143,7 @@ class RemotePluginAuth extends CommonStore<AuthState> {
       try {
         const serv = await this._fetchServerData(best.address, isDefault);
 
-        this._state.currentServerIndex = this._addOrRefreshServer(serv);
+        this._state.value.currentServerIndex = this._addOrRefreshServer(serv);
       } catch (error) {
         useSnackbar(t('anErrorHappened'), 'error');
         console.error(error);
@@ -181,22 +166,22 @@ class RemotePluginAuth extends CommonStore<AuthState> {
     password: string,
     rememberMe = true
   ): Promise<void> => {
-    if (!this.currentServer) {
+    if (!this.currentServer.value) {
       throw new Error('There is no server in use');
     }
 
     try {
       const { data } = await useOneTimeAPI(
-        this.currentServer.PublicAddress
+        this.currentServer.value.PublicAddress
       ).authenticateUserByName(username, password);
 
-      this._state.rememberMe = rememberMe;
+      this._state.value.rememberMe = rememberMe;
 
       if (data.User?.Id && data.AccessToken) {
-        this._state.accessTokens[data.User.Id] = data.AccessToken;
+        this._state.value.accessTokens[data.User.Id] = data.AccessToken;
 
-        this._state.users.push(data.User);
-        this._state.currentUserIndex = this._state.users.indexOf(
+        this._state.value.users.push(data.User);
+        this._state.value.currentUserIndex = this._state.value.users.indexOf(
           data.User
         );
       }
@@ -226,20 +211,20 @@ class RemotePluginAuth extends CommonStore<AuthState> {
    * Refreshes the current user infos, to fetch a new picture for instance
    */
   public readonly refreshCurrentUserInfo = async (): Promise<void> => {
-    if (!isNil(this.currentUser) && !isNil(this.currentServer)) {
+    if (!isNil(this.currentUser.value) && !isNil(this.currentServer.value)) {
       const api = useOneTimeAPI(
-        this.currentServer.PublicAddress,
-        this.currentUserToken
+        this.currentServer.value.PublicAddress,
+        this.currentUserToken.value
       );
 
-      this._state.users[this._state.currentUserIndex] = (
+      this._state.value.users[this._state.value.currentUserIndex] = (
         await getUserApi(api).getCurrentUser()
       ).data;
     }
   };
 
   private readonly _refreshServers = async (): Promise<void> => {
-    for (const server of this.servers) {
+    for (const server of this._state.value.servers) {
       try {
         const info = await this._fetchServerData(server.PublicAddress, server.isDefault);
 
@@ -254,10 +239,10 @@ class RemotePluginAuth extends CommonStore<AuthState> {
    * @param skipRequest - Skips the request and directly removes the user from the store
    */
   public readonly logoutCurrentUser = async (skipRequest = false): Promise<void> => {
-    if (!isNil(this.currentUser) && !isNil(this.currentServer)) {
-      await this.logoutUser(this.currentUser, this.currentServer, skipRequest);
+    if (!isNil(this.currentUser.value) && !isNil(this.currentServer.value)) {
+      await this.logoutUser(this.currentUser.value, this.currentServer.value, skipRequest);
 
-      this._state.currentUserIndex = -1;
+      this._state.value.currentUserIndex = -1;
     }
   };
 
@@ -284,17 +269,17 @@ class RemotePluginAuth extends CommonStore<AuthState> {
       console.error(error);
     }
 
-    const storeUser = this._state.users.find(u => u.Id === user.Id);
+    const storeUser = this._state.value.users.find(u => u.Id === user.Id);
 
     if (!isNil(storeUser)) {
-      this._state.users.splice(
-        this._state.users.indexOf(storeUser),
+      this._state.value.users.splice(
+        this._state.value.users.indexOf(storeUser),
         1
       );
     }
 
     if (!isNil(user.Id)) {
-      delete this._state.accessTokens[user.Id];
+      delete this._state.value.accessTokens[user.Id];
     }
   };
 
@@ -304,7 +289,7 @@ class RemotePluginAuth extends CommonStore<AuthState> {
    * @param serverUrl
    */
   public readonly deleteServer = async (serverUrl: string): Promise<void> => {
-    const server = this._state.servers.find(
+    const server = this._state.value.servers.find(
       s => s.PublicAddress === serverUrl
     );
 
@@ -320,27 +305,32 @@ class RemotePluginAuth extends CommonStore<AuthState> {
       }
     }
 
-    const serverIndex = this._state.servers.indexOf(server);
+    const serverIndex = this._state.value.servers.indexOf(server);
 
-    this._state.servers.splice(
+    this._state.value.servers.splice(
       serverIndex,
       1
     );
 
-    if (this._state.currentServerIndex === serverIndex) {
-      this._state.currentServerIndex = -1;
+    if (this._state.value.currentServerIndex === serverIndex) {
+      this._state.value.currentServerIndex = -1;
     }
   };
 
   public constructor() {
-    super('auth', () => ({
-      servers: [],
-      currentServerIndex: -1,
-      currentUserIndex: -1,
-      users: [],
-      rememberMe: true,
-      accessTokens: {}
-    }), 'localStorage');
+    super({
+      storeKey: 'auth',
+      defaultState: () => ({
+        servers: [],
+        currentServerIndex: -1,
+        currentUserIndex: -1,
+        users: [],
+        rememberMe: true,
+        accessTokens: {}
+      }),
+      persistenceType: 'localStorage'
+    });
+
     void this.refreshCurrentUserInfo();
     void this._refreshServers();
   }

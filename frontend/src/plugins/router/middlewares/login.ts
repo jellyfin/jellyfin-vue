@@ -22,15 +22,15 @@ const serverPages = new Set<keyof RouteNamedMap>([serverAddUrl, serverSelectUrl,
  * in the loginGuard
  */
 async function _getBestServerPage(): Promise<Nullish<keyof RouteNamedMap>> {
-  if (jsonConfig.defaultServerURLs.length && isNil(remote.auth.currentServer)) {
-    await until(() => remote.auth.currentServer).toBeTruthy({ flush: 'pre' });
+  if (jsonConfig.defaultServerURLs.length && isNil(remote.auth.currentServer.value)) {
+    await until(remote.auth.currentServer).toBeTruthy({ flush: 'pre' });
   }
 
-  if (!remote.auth.servers.length) {
+  if (!remote.auth.addedServers.value) {
     return serverAddUrl;
-  } else if (isNil(remote.auth.currentServer)) {
+  } else if (isNil(remote.auth.currentServer.value)) {
     return serverSelectUrl;
-  } else if (!remote.auth.currentServer.StartupWizardCompleted) {
+  } else if (!remote.auth.currentServer.value.StartupWizardCompleted) {
     return serverWizard;
   }
 }
@@ -52,7 +52,7 @@ export const loginGuard = async (
   const fromServerPages = serverPages.has(from.name);
   const res = await _getBestServerPage();
 
-  const loggedIn = !isNil(remote.auth.currentUser);
+  const loggedIn = !isNil(remote.auth.currentUser.value);
   const shouldBlockToServer = loggedIn && toServerPages;
   const shouldBlockToApp = !loggedIn && !toServerPages;
   const shouldBlock = shouldBlockToServer || shouldBlockToApp;

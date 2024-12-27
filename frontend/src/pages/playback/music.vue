@@ -34,7 +34,7 @@
           @swiper="(swiper) => swiperInstance = swiper"
           @slide-change="onSlideChange">
           <SwiperSlide
-            v-for="(item, index) in playbackManager.queue"
+            v-for="(item, index) in playbackManager.queue.value"
             :key="`${item.Id}-${index}`"
             :virtual-index="`${item.Id}-${index}`"
             class="d-flex justify-center">
@@ -53,7 +53,7 @@
             <VCol>
               <VRow>
                 <h1 class="text-h4">
-                  {{ playbackManager.currentItem?.Name }}
+                  {{ playbackManager.currentItem.value?.Name }}
                 </h1>
               </VRow>
               <VRow>
@@ -65,8 +65,8 @@
             <!-- TODO: Fix alignment with the end time of TimeSlider -->
             <VCol class="d-flex justify-end">
               <LikeButton
-                v-if="playbackManager.currentItem"
-                :item="playbackManager?.currentItem"
+                v-if="playbackManager.currentItem.value"
+                :item="playbackManager?.currentItem.value"
                 size="x-large" />
             </VCol>
           </VRow>
@@ -129,17 +129,17 @@ const coverflowEffect = {
 
 const isVisualizing = shallowRef(false);
 const artistString = computed(() =>
-  playbackManager.currentItem?.Artists?.join(', ')
+  playbackManager.currentItem.value?.Artists?.join(', ')
 );
 
 const swiperInstance = shallowRef<SwiperType>();
 
-useItemBackdrop(() => playbackManager.currentItem, 0.75);
-useItemPageTitle(() => playbackManager.currentItem);
+useItemBackdrop(playbackManager.currentItem, 0.75);
+useItemPageTitle(playbackManager.currentItem);
 
 watchEffect(() => {
-  if (swiperInstance.value && !isNil(playbackManager.currentItemIndex)) {
-    swiperInstance.value.slideTo(playbackManager.currentItemIndex);
+  if (swiperInstance.value && !isNil(playbackManager.currentItemIndex.value)) {
+    swiperInstance.value.slideTo(playbackManager.currentItemIndex.value);
   }
 }
 );
@@ -150,7 +150,7 @@ watchEffect(() => {
 function onSlideChange(): void {
   const index = swiperInstance.value?.activeIndex ?? 0;
 
-  playbackManager.currentItemIndex = index;
+  playbackManager.currentItemIndex.value = index;
 }
 </script>
 

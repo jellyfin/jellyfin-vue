@@ -268,7 +268,7 @@ export function canResume(item: BaseItemDto): boolean {
 export function canMarkWatched(item: BaseItemDto): boolean {
   if (
     ['Series', 'Season', 'BoxSet', 'AudioPodcast', 'AudioBook'].includes(
-      item.Type || ''
+      item.Type ?? ''
     )
   ) {
     return true;
@@ -302,7 +302,7 @@ export function canRefreshMetadata(item: BaseItemDto): boolean {
   const incompleteRecording
     = item.Type === BaseItemKind.Recording && item.Status !== 'Completed';
   const IsAdministrator
-    = remote.auth.currentUser?.Policy?.IsAdministrator ?? false;
+    = remote.auth.currentUser.value?.Policy?.IsAdministrator ?? false;
 
   return (
     IsAdministrator
@@ -508,7 +508,7 @@ export async function getItemSeasonDownloadMap(
   const episodes
     = (
       await remote.sdk.newUserApi(getItemsApi).getItems({
-        userId: remote.auth.currentUserId,
+        userId: remote.auth.currentUserId.value,
         parentId: seasonId,
         fields: [ItemFields.Overview, ItemFields.CanDownload, ItemFields.Path]
       })
@@ -540,7 +540,7 @@ export async function getItemSeriesDownloadMap(
   const seasons
     = (
       await remote.sdk.newUserApi(getTvShowsApi).getSeasons({
-        userId: remote.auth.currentUserId,
+        userId: remote.auth.currentUserId.value,
         seriesId: seriesId
       })
     ).data.Items ?? [];

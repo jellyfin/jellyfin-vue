@@ -2,7 +2,7 @@
   <VBtn
     v-bind="$attrs"
     icon
-    :color="playbackManager.isShuffling ? 'primary' : undefined"
+    :color="playbackManager.isShuffling.value ? 'primary' : undefined"
     @click="playbackManager.toggleShuffle">
     <VIcon v-bind="$attrs">
       <IMdiShuffle />
