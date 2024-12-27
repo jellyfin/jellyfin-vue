@@ -4,7 +4,7 @@ import { lstat, rename, rm } from 'node:fs/promises';
 import type { LiteralUnion } from 'type-fest';
 import type { RollupLog } from 'rollup';
 import prettyBytes from 'pretty-bytes';
-import { SondaRollupPlugin } from 'sonda';
+import Sonda from 'sonda/rollup';
 import { normalizePath, preview, type Plugin } from 'vite';
 
 /**
@@ -33,7 +33,7 @@ export function BundleAnalysis(): Plugin {
             sourcemap: true,
             rollupOptions: {
               plugins: [
-                SondaRollupPlugin({
+                Sonda({
                   open: false,
                   filename: report_filename(),
                   detailed: true,
