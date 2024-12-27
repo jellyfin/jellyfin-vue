@@ -51,14 +51,14 @@
               size="x-large"
               @click="playbackManager.playPause">
               <VIcon size="48">
-                <IMdiPlay v-if="playbackManager.isPaused" />
+                <IMdiPlay v-if="playbackManager.isPaused.value" />
                 <IMdiPause v-else />
               </VIcon>
             </VBtn>
             <VBtn
               icon
               size="large"
-              :disabled="!playbackManager.nextItem"
+              :disabled="!playbackManager.nextItem.value"
               @click="playbackManager.setNextItem">
               <VIcon size="32">
                 <IMdiSkipNext />

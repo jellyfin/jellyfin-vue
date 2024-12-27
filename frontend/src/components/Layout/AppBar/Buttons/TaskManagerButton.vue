@@ -62,7 +62,7 @@ const completedTaskList = ref<TaskInfo[]>([]);
 const { t } = useI18n();
 
 const mappedTaskList = computed<TaskInfo[]>(() => {
-  return taskManager.tasks.map((tsk) => {
+  return taskManager.state.value.tasks.map((tsk) => {
     switch (tsk.type) {
       case TaskType.ConfigSync: {
         return {

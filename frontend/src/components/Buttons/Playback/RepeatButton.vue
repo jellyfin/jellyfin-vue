@@ -2,7 +2,7 @@
   <VBtn
     v-bind="$attrs"
     icon
-    :color="playbackManager.isRepeating ? 'primary' : undefined"
+    :color="playbackManager.isRepeating.value ? 'primary' : undefined"
     @click="playbackManager.toggleRepeatMode">
     <VIcon
       v-bind="$attrs"
@@ -17,7 +17,7 @@ import { computed } from 'vue';
 import { RepeatMode, playbackManager } from '@/store/playback-manager';
 
 const repeatIcon = computed(() =>
-  playbackManager.repeatMode === RepeatMode.RepeatOne
+  playbackManager.repeatMode.value === RepeatMode.RepeatOne
     ? IMdiRepeatOnce
     : IMdiRepeat
 );

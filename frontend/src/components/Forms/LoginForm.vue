@@ -8,8 +8,9 @@
         v-if="!user"
         v-model="login.username"
         variant="outlined"
-        autofocus
+
         hide-details
+        autofocus
         :label="$t('username')"
         :rules="rules" />
       <VTextField
@@ -41,7 +42,7 @@
             {{ $t('changeServer') }}
           </VBtn>
           <VBtn
-            v-else-if="remote.auth.currentServer?.PublicUsers.length"
+            v-else-if="remote.auth.currentServer.value?.PublicUsers.length"
             block
             size="large"
             variant="elevated"

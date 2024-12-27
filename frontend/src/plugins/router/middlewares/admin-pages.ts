@@ -10,7 +10,7 @@ import { remote } from '@/plugins/remote';
 export function adminGuard(
   to: RouteLocationNormalized
 ): NavigationGuardReturn {
-  if (to.meta.admin && !remote.auth.currentUser?.Policy?.IsAdministrator) {
+  if (to.meta.admin && !remote.auth.currentUser.value?.Policy?.IsAdministrator) {
     useSnackbar(i18n.t('unauthorized'), 'error');
 
     return false;

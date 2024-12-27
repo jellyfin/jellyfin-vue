@@ -1,6 +1,6 @@
 <template>
   <VContainer
-    v-if="visible && playbackManager.currentItem && playbackManager.nextItem"
+    v-if="visible && playbackManager.currentItem.value && playbackManager.nextItem.value"
     class="up-next-dialog pa-lg-6 uno-pointer-events-none">
     <VRow>
       <VCol
@@ -21,29 +21,29 @@
             </span>
           </VCardTitle>
           <VCardSubtitle class="text-truncate text-subtitle-1">
-            <span v-if="playbackManager.currentItem.Type === 'Episode'">
-              {{ playbackManager.nextItem.SeriesName }} -
+            <span v-if="playbackManager.currentItem.value?.Type === 'Episode'">
+              {{ playbackManager.nextItem.value?.SeriesName }} -
               {{
                 $t('seasonEpisodeAbbrev', {
-                  seasonNumber: playbackManager.nextItem.ParentIndexNumber,
-                  episodeNumber: playbackManager.nextItem.IndexNumber
+                  seasonNumber: playbackManager.nextItem.value?.ParentIndexNumber,
+                  episodeNumber: playbackManager.nextItem.value?.IndexNumber
                 })
               }}
               <span v-if="$vuetify.display.smAndUp"> - </span>
               <br v-else>
-              {{ playbackManager.nextItem.Name }}
+              {{ playbackManager.nextItem.value?.Name }}
             </span>
-            <span v-if="playbackManager.currentItem.Type === 'Movie'">
-              {{ playbackManager.nextItem.Name }}
+            <span v-if="playbackManager.currentItem.value?.Type === 'Movie'">
+              {{ playbackManager.nextItem.value?.Name }}
             </span>
           </VCardSubtitle>
-          <VCardText v-if="playbackManager.nextItem?.RunTimeTicks">
+          <VCardText v-if="playbackManager.nextItem.value?.RunTimeTicks">
             <span>
-              {{ getRuntimeTime(playbackManager.nextItem.RunTimeTicks) }}
+              {{ getRuntimeTime(playbackManager.nextItem.value.RunTimeTicks) }}
               <span class="pl-4">
                 {{
                   $t('endsAt', {
-                    time: getEndsAtTime(playbackManager.nextItem.RunTimeTicks)
+                    time: getEndsAtTime(playbackManager.nextItem.value.RunTimeTicks)
                   })
                 }}
               </span>
@@ -79,10 +79,10 @@ const emit = defineEmits<{
 const isHiddenByUser = ref(false);
 
 const currentItemDuration = computed(
-  () => playbackManager.currentItemRuntime / 1000
+  () => playbackManager.currentItemRuntime.value / 1000
 );
 const currentItemTimeLeft = computed(() =>
-  Math.round(currentItemDuration.value - (playbackManager.currentTime || 0))
+  Math.round(currentItemDuration.value - (playbackManager.currentTime.value || 0))
 );
 const nextUpDuration = computed(() => {
   /**
@@ -103,7 +103,7 @@ const nextUpDuration = computed(() => {
 const visible = computed(
   () =>
     !isHiddenByUser.value
-    && playbackManager.isVideo
+    && playbackManager.isVideo.value
     && currentItemTimeLeft.value <= nextUpDuration.value
 );
 

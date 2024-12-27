@@ -187,6 +187,6 @@ const getImageType = computed(() =>
  * Gets the library update progress
  */
 const refreshProgress = computed(
-  () => taskManager.getTask(item.Id || '')?.progress
+  () => taskManager.getTask(item.Id ?? '')?.progress
 );
 </script>

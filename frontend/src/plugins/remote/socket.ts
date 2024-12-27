@@ -17,13 +17,13 @@ class RemotePluginSocket {
    */
   private readonly _socketUrl = computed(() => {
     if (
-      auth.currentUserToken
-      && auth.currentServer
+      auth.currentUserToken.value
+      && auth.currentServer.value
       && sdk.deviceInfo.id
       && sdk.api?.basePath
     ) {
       const socketParameters = new URLSearchParams({
-        api_key: auth.currentUserToken,
+        api_key: auth.currentUserToken.value,
         deviceId: sdk.deviceInfo.id
       }).toString();
 

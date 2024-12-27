@@ -9,8 +9,8 @@
         class="py-4">
         <div
           v-if="
-            remote.auth.currentServer &&
-              $remote.auth.currentUser?.Policy?.IsAdministrator
+            remote.auth.currentServer.value &&
+              $remote.auth.currentUser?.value?.Policy?.IsAdministrator
           ">
           <JImg
             class="logo"
@@ -20,11 +20,11 @@
             <tbody>
               <tr>
                 <td>{{ $t('server') }}</td>
-                <td>{{ remote.auth.currentServer.ServerName }}</td>
+                <td>{{ remote.auth.currentServer.value?.ServerName }}</td>
               </tr>
               <tr>
                 <td>{{ $t('serverVersion') }}</td>
-                <td>{{ remote.auth.currentServer.Version }}</td>
+                <td>{{ remote.auth.currentServer.value?.Version }}</td>
               </tr>
               <tr>
                 <td>{{ $t('vueClientVersion') }}</td>
@@ -77,7 +77,7 @@
           </VItemGroup>
         </VList>
         <!-- Administrator settings -->
-        <div v-if="$remote.auth.currentUser?.Policy?.IsAdministrator">
+        <div v-if="$remote.auth.currentUser.value?.Policy?.IsAdministrator">
           <VList
             v-for="(adminSection, index) in adminSections"
             :key="`admin-section-${index}`"

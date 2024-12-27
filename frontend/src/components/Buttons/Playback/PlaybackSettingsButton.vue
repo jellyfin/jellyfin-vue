@@ -32,11 +32,11 @@
             </VCol>
             <VCol :cols="8">
               <MediaStreamSelector
-                v-if="playbackManager.currentItemAudioTracks"
-                :media-streams="playbackManager.currentItemAudioTracks"
+                v-if="playbackManager.currentItemAudioTracks.value"
+                :media-streams="playbackManager.currentItemAudioTracks.value"
                 type="Audio"
-                :default-stream-index="playbackManager.currentAudioStreamIndex"
-                @input="playbackManager.currentAudioStreamIndex = $event" />
+                :default-stream-index="playbackManager.currentAudioTrack.value?.Index"
+                @input="playbackManager.currentAudioTrack.value = $event ?? -1" />
             </VCol>
           </VRow>
           <VRow
@@ -47,13 +47,13 @@
             </VCol>
             <VCol :cols="8">
               <MediaStreamSelector
-                v-if="playbackManager.currentItemSubtitleTracks"
-                :media-streams="playbackManager.currentItemSubtitleTracks"
+                v-if="playbackManager.currentItemSubtitleTracks.value"
+                :media-streams="playbackManager.currentItemSubtitleTracks.value"
                 type="Subtitle"
                 :default-stream-index="
-                  playbackManager.currentSubtitleStreamIndex
+                  playbackManager.currentSubtitleTrack.value?.Index
                 "
-                @input="playbackManager.currentSubtitleStreamIndex = $event" />
+                @input="playbackManager.currentSubtitleTrack.value = $event ?? -1" />
             </VCol>
           </VRow>
           <VRow align="center">
@@ -80,7 +80,7 @@
               :cols="8"
               class="text-right">
               <VSwitch
-                v-model="playerElement.isStretched.value"
+                v-model="playerElement.state.value.isStretched"
                 color="primary"
                 hide-details />
             </VCol>
@@ -111,10 +111,10 @@ type PlaybackSpeedValue = string | typeof playbackItems.value[number] | null;
 const _playbackSpeed = shallowRef<PlaybackSpeedValue>();
 const playbackSpeed = computed({
   get: () => {
-    const playbackSpeedIndex = defaultPlaybackSpeeds.indexOf(playbackManager.playbackSpeed);
+    const playbackSpeedIndex = defaultPlaybackSpeeds.indexOf(playbackManager.playbackSpeed.value);
 
     if (isUndef(_playbackSpeed.value)) {
-      return playbackSpeedIndex === -1 ? String(playbackManager.playbackSpeed) : playbackItems.value[playbackSpeedIndex];
+      return playbackSpeedIndex === -1 ? String(playbackManager.playbackSpeed.value) : playbackItems.value[playbackSpeedIndex];
     } else {
       return _playbackSpeed.value;
     }
@@ -123,7 +123,7 @@ const playbackSpeed = computed({
     _playbackSpeed.value = val;
 
     if (validationRules.every(rule => rule(val) === true)) {
-      playbackManager.playbackSpeed = isObj(val) ? val.speed : Number(val);
+      playbackManager.playbackSpeed.value = isObj(val) ? val.speed : Number(val);
     }
   }
 });
@@ -148,7 +148,7 @@ const validationRules = [
  */
 function onFocus(e: boolean): void {
   if (!e) {
-    const playbackSpeedIndex = defaultPlaybackSpeeds.indexOf(playbackManager.playbackSpeed);
+    const playbackSpeedIndex = defaultPlaybackSpeeds.indexOf(playbackManager.playbackSpeed.value);
 
     if (playbackSpeedIndex !== -1) {
       _playbackSpeed.value = playbackItems.value[playbackSpeedIndex];

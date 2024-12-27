@@ -2,7 +2,7 @@
   <VBtn
     v-bind="$attrs"
     icon
-    :disabled="!playbackManager.nextItem"
+    :disabled="!playbackManager.nextItem.value"
     @click="playbackManager.setNextItem">
     <VIcon v-bind="$attrs">
       <IMdiSkipNext />

@@ -65,7 +65,7 @@ const loading = ref(false);
 
 onMounted(async () => {
   const api = remote.sdk.oneTimeSetup(
-    remote.auth.currentServer?.PublicAddress ?? ''
+    remote.auth.currentServer.value?.PublicAddress ?? ''
   );
 
   initialConfig.value = (
@@ -86,7 +86,7 @@ async function setMetadata(): Promise<void> {
   loading.value = true;
 
   const api = remote.sdk.oneTimeSetup(
-    remote.auth.currentServer?.PublicAddress ?? ''
+    remote.auth.currentServer.value?.PublicAddress ?? ''
   );
 
   try {

@@ -34,20 +34,20 @@
     <AppBarButtonLayout @click="switchColorTheme">
       <template #icon>
         <VIcon>
-          <IMdiBrightnessAuto v-if="clientSettings.darkMode === 'auto'" />
-          <IMdiWeatherSunny v-else-if="clientSettings.darkMode" />
+          <IMdiBrightnessAuto v-if="clientSettings.isAutoTheme.value" />
+          <IMdiWeatherSunny v-else-if="clientSettings.currentThemeIsDark.value" />
           <IMdiWeatherNight v-else />
         </VIcon>
       </template>
       <template #tooltip>
-        <span v-if="clientSettings.darkMode === 'auto'">
-          {{ $t('switchToDarkMode') }}
-        </span>
-        <span v-else-if="clientSettings.darkMode">
+        <span v-if="clientSettings.isAutoTheme.value">
           {{ $t('switchToLightMode') }}
         </span>
-        <span v-else>
+        <span v-else-if="clientSettings.currentThemeIsDark.value">
           {{ $t('followSystemTheme') }}
+        </span>
+        <span v-else>
+          {{ $t('switchToDarkMode') }}
         </span>
       </template>
     </AppBarButtonLayout>
@@ -73,12 +73,17 @@ const transparentAppBar = computed(previous => isRouting?.value ? previous : tra
  * Cycle between the different color schemas
  */
 function switchColorTheme(): void {
-  if (clientSettings.darkMode === 'auto') {
-    clientSettings.darkMode = true;
-  } else if (clientSettings.darkMode) {
-    clientSettings.darkMode = false;
+  /**
+   * 1. If auto, we go to light
+   * 2. If dark, we go to auto
+   * 3. If light, we go to dark
+   */
+  if (clientSettings.isAutoTheme.value) {
+    clientSettings.currentTheme.value = false;
+  } else if (clientSettings.currentThemeIsDark.value) {
+    clientSettings.currentTheme.value = undefined;
   } else {
-    clientSettings.darkMode = 'auto';
+    clientSettings.currentTheme.value = true;
   }
 }
 

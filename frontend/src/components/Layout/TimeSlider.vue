@@ -8,7 +8,7 @@
     @start="clicked = true"
     @end="onRelease">
     <template #prepend>
-      {{ formatTime(playbackManager.currentTime) }}
+      {{ formatTime(playbackManager.currentTime.value) }}
     </template>
     <template #thumb-label>
       {{ formatTime(sliderValue) }}
@@ -26,10 +26,10 @@ import { formatTime } from '@/utils/time';
 
 const currentInput = ref(0);
 const clicked = ref(false);
-const runtime = computed(() => playbackManager.currentItemRuntime / 1000);
+const runtime = computed(() => playbackManager.currentItemRuntime.value / 1000);
 const sliderValue = computed({
   get() {
-    return clicked.value ? currentInput.value : playbackManager.currentTime;
+    return clicked.value ? currentInput.value : playbackManager.currentTime.value;
   },
   set(newValue) {
     currentInput.value = newValue;
@@ -41,7 +41,7 @@ const sliderValue = computed({
  * input value was provided by the user
  */
 function onRelease(): void {
-  playbackManager.currentTime = currentInput.value;
+  playbackManager.currentTime.value = currentInput.value;
   clicked.value = false;
 }
 </script>

@@ -51,7 +51,7 @@ onMounted(async () => {
   loading.value = true;
 
   const api = remote.sdk.oneTimeSetup(
-    remote.auth.currentServer?.PublicAddress ?? ''
+    remote.auth.currentServer.value?.PublicAddress ?? ''
   );
 
   try {
@@ -78,7 +78,7 @@ async function setLanguage(): Promise<void> {
   loading.value = true;
 
   const api = remote.sdk.oneTimeSetup(
-    remote.auth.currentServer?.PublicAddress ?? ''
+    remote.auth.currentServer.value?.PublicAddress ?? ''
   );
 
   try {

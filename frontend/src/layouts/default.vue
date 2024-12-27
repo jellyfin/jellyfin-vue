@@ -11,7 +11,7 @@
   <AudioControls />
   <MiniVideoPlayer
     v-if="
-      playbackManager.isVideo
+      playbackManager.isVideo.value
     " />
 </template>
 

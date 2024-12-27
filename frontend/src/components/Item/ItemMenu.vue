@@ -151,9 +151,9 @@ const mediaInfoDialog = shallowRef(false);
 
 const isActive = computed(() => show.value || metadataDialog.value || refreshDialog.value || identifyItemDialog.value || mediaInfoDialog.value);
 
-watch(isActive, (newVal) => {
-  newVal ? emit('active') : emit('inactive');
-});
+watch(isActive, newVal =>
+  emit(newVal ? 'active' : 'inactive')
+);
 
 const errorMessage = t('anErrorHappened');
 const isItemRefreshing = computed(
@@ -201,7 +201,7 @@ const removeFromQueueAction = {
   title: t('removeFromQueue'),
   icon: IMdiPlaylistMinus,
   action: (): void => {
-    playbackManager.removeFromQueue(item.Id || '');
+    playbackManager.removeFromQueue(item.Id ?? '');
   }
 };
 const pushToBottomOfQueueAction = {
@@ -210,7 +210,7 @@ const pushToBottomOfQueueAction = {
   action: (): void => {
     playbackManager.changeItemPosition(
       item.Id,
-      playbackManager.queue.length - 1
+      playbackManager.queueLength.value - 1
     );
   }
 };
@@ -389,17 +389,17 @@ function getQueueOptions(): MenuOption[] {
 
   if (
     queue
-    && playbackManager.queueIds.includes(item.Id || '')
+    && playbackManager.queueHasItem(item.Id ?? '')
   ) {
     queueOptions.push(pushToTopOfQueueAction);
 
-    if (playbackManager.currentItem?.Id !== item.Id) {
+    if (playbackManager.currentItem.value?.Id !== item.Id) {
       queueOptions.push(removeFromQueueAction);
     }
 
     if (
-      playbackManager.nextItem?.Id !== item.Id
-      && playbackManager.currentItem?.Id !== item.Id
+      playbackManager.nextItem.value?.Id !== item.Id
+      && playbackManager.currentItem.value?.Id !== item.Id
     ) {
       queueOptions.push(playNextAction);
     }
@@ -422,10 +422,10 @@ function getPlaybackOptions(): MenuOption[] {
 
   playbackOptions.push(shuffleAction);
 
-  if (playbackManager.currentItem) {
+  if (playbackManager.currentItem.value) {
     if (
-      playbackManager.nextItem?.Id !== item.Id
-      && playbackManager.currentItem.Id !== item.Id
+      playbackManager.nextItem.value?.Id !== item.Id
+      && playbackManager.currentItem.value.Id !== item.Id
       && !queue
     ) {
       playbackOptions.push(playNextAction);
@@ -434,7 +434,7 @@ function getPlaybackOptions(): MenuOption[] {
     playbackOptions.push(addToQueueAction);
   }
 
-  if (canInstantMix(item) && playbackManager.currentItem) {
+  if (canInstantMix(item) && playbackManager.currentItem.value) {
     playbackOptions.push(instantMixAction);
   }
 
@@ -447,7 +447,7 @@ function getPlaybackOptions(): MenuOption[] {
 function getCopyOptions(): MenuOption[] {
   const copyActions: MenuOption[] = [];
 
-  if (remote.auth.currentUser?.Policy?.EnableContentDownloading) {
+  if (remote.auth.currentUser.value?.Policy?.EnableContentDownloading) {
     copyActions.push(copyDownloadURLAction);
   }
 
@@ -468,7 +468,7 @@ function getLibraryOptions(): MenuOption[] {
     libraryOptions.push(refreshAction);
   }
 
-  if (remote.auth.currentUser?.Policy?.IsAdministrator) {
+  if (remote.auth.currentUser.value?.Policy?.IsAdministrator) {
     libraryOptions.push(editMetadataAction);
 
     if (canIdentify(item)) {
@@ -477,8 +477,8 @@ function getLibraryOptions(): MenuOption[] {
   }
 
   if (
-    remote.auth.currentUser?.Policy?.EnableContentDeletion
-    || remote.auth.currentUser?.Policy?.EnableContentDeletionFromFolders
+    remote.auth.currentUser.value?.Policy?.EnableContentDeletion
+    || remote.auth.currentUser.value?.Policy?.EnableContentDeletionFromFolders
   ) {
     libraryOptions.push(deleteItemAction);
   }

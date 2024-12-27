@@ -1,8 +1,8 @@
 <template>
-  <AppBarButtonLayout v-if="auth.currentUser">
+  <AppBarButtonLayout v-if="auth.currentUser.value">
     <template #icon>
       <UserImage
-        :user="auth.currentUser"
+        :user="auth.currentUser.value"
         :size="40"
         rounded />
       <VMenu location="bottom">
@@ -12,17 +12,17 @@
           <VListItem>
             <template #prepend>
               <UserImage
-                :user="auth.currentUser"
+                :user="auth.currentUser.value"
                 :size="40"
                 rounded />
             </template>
             <template #title>
               <VListItemTitle class="text-body-1">
-                {{ auth.currentUser.Name }}
+                {{ auth.currentUser.value.Name }}
               </VListItemTitle>
             </template>
             <template
-              v-if="auth.currentUser?.Policy?.IsAdministrator"
+              v-if="auth.currentUser.value.Policy?.IsAdministrator"
               #subtitle>
               <VListItemSubtitle>
                 {{ $t('administrator') }}
@@ -67,7 +67,7 @@ const { t } = useI18n();
 const menuItems = computed<MenuItem[]>(() => {
   const menuItems = [];
 
-  if (auth.currentUser?.Policy?.IsAdministrator) {
+  if (auth.currentUser.value?.Policy?.IsAdministrator) {
     menuItems.push({
       title: t('metadataEditor'),
       icon: IMdiPencil,

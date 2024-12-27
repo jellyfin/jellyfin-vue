@@ -320,7 +320,7 @@ const tagLine = computed({
 async function getData(): Promise<void> {
   const itemInfo = (
     await remote.sdk.newUserApi(getUserLibraryApi).getItem({
-      userId: remote.auth.currentUserId ?? '',
+      userId: remote.auth.currentUserId.value,
       itemId: itemId
     })
   ).data;
@@ -345,7 +345,7 @@ async function getData(): Promise<void> {
   contentOption.value
     = contentOptions.value.find(r => r.value === options.ContentType)
     ?? contentOptions.value[0];
-  contentType.value = options.ContentType ?? contentOption.value.value;
+  contentType.value = options.ContentType ?? contentOption.value?.value;
 
   metadata.value = itemInfo;
 
@@ -354,7 +354,7 @@ async function getData(): Promise<void> {
   }
 
   const ancestors = await remote.sdk.newUserApi(getLibraryApi).getAncestors({
-    userId: remote.auth.currentUserId ?? '',
+    userId: remote.auth.currentUserId.value,
     itemId: metadata.value.Id
   });
   const libraryInfo = ancestors.data.find(

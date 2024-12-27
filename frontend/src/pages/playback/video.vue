@@ -40,33 +40,33 @@
                   class="d-flex flex-column justify-center align-start mr-auto video-title">
                   <template
                     v-if="
-                      playbackManager.currentlyPlayingType ===
+                      playbackManager.currentlyPlayingType.value ===
                         BaseItemKind.Episode
                     ">
                     <span class="text-subtitle-1 text-truncate mt-1">
-                      {{ playbackManager.currentItem?.Name }}
+                      {{ playbackManager.currentItem.value?.Name }}
                     </span>
                     <span class="text--secondary text-truncate text-subtitle-2">
-                      {{ playbackManager.currentItem?.SeriesName }}
+                      {{ playbackManager.currentItem.value?.SeriesName }}
                     </span>
                     <span class="text-subtitle-2 text--secondary text-truncate">
                       {{
                         $t('seasonEpisode', {
                           seasonNumber:
-                            playbackManager.currentItem?.ParentIndexNumber,
-                          episodeNumber: playbackManager.currentItem?.IndexNumber
+                            playbackManager.currentItem.value?.ParentIndexNumber,
+                          episodeNumber: playbackManager.currentItem.value?.IndexNumber
                         })
                       }}
                     </span>
                   </template>
                   <template v-else>
-                    <span>{{ playbackManager.currentItem?.Name }}</span>
+                    <span>{{ playbackManager.currentItem.value?.Name }}</span>
                   </template>
                   <br>
                   <span
-                    v-if="playbackManager.currentItem?.RunTimeTicks"
+                    v-if="playbackManager.currentItem.value?.RunTimeTicks"
                     class="text-subtitle-2 text--secondary text-truncate">
-                    {{ getEndsAtTime((playbackManager.currentItem?.RunTimeTicks ?? 0) - msToTicks(playbackManager.currentTime * 1000)) }}
+                    {{ getEndsAtTime((playbackManager.currentItem.value?.RunTimeTicks ?? 0) - msToTicks(playbackManager.currentTime.value * 1000)) }}
                   </span>
                 </div>
                 <div
@@ -152,7 +152,7 @@ const subtitleSelectionButtonOpened = shallowRef(false);
 const playbackSettingsButtonOpened = shallowRef(false);
 const staticOverlay = computed(
   () =>
-    playbackManager.isPaused
+    playbackManager.isPaused.value
     || subtitleSelectionButtonOpened.value
     || playbackSettingsButtonOpened.value
 );

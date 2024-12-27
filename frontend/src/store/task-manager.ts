@@ -34,29 +34,23 @@ export interface RunningTask {
 
 export interface TaskManagerState {
   tasks: RunningTask[];
-  /**
-   * The number of seconds to keep a finished task in the task list
-   */
-  finishedTasksTimeout: number;
 }
 
 /**
  * == CLASS CONSTRUCTOR ==
  */
 @sealed
-class TaskManagerStore extends CommonStore<TaskManagerState> {
+class TaskManagerStore extends CommonStore<TaskManagerState, 'tasks'> {
   /**
+   * == NON REACTIVE STATE AND UTILITY VARIABLES ==
    * Reactive state is defined in the super() constructor
    */
+  private readonly _finishedTasksTimeout = 5000;
   /**
    * == GETTERS AND SETTERS ==
    */
-  public get tasks(): typeof this._state.tasks {
-    return this._state.tasks;
-  }
-
   public readonly getTask = (id: string): RunningTask | undefined =>
-    this._state.tasks.find(payload => payload.id === id);
+    this._state.value.tasks.find(payload => payload.id === id);
 
   /**
    * == ACTIONS ==
@@ -69,28 +63,24 @@ class TaskManagerStore extends CommonStore<TaskManagerState> {
     }
 
     if (this.getTask(task.id) === undefined) {
-      this._state.tasks.push(task);
+      this._state.value.tasks.push(task);
     }
   };
 
   public readonly finishTask = (id: string): void => {
     const clearTask = (): void => {
-      const taskIndex = this._state.tasks.findIndex(
+      const taskIndex = this._state.value.tasks.findIndex(
         task => task.id === id
       );
 
-      this._state.tasks.splice(taskIndex, 1);
+      this._state.value.tasks.splice(taskIndex, 1);
     };
 
     const task = this.getTask(id);
 
     if (task) {
-      if (this._state.finishedTasksTimeout > 0) {
-        task.progress = 100;
-        globalThis.setTimeout(clearTask, this._state.finishedTasksTimeout);
-      } else {
-        clearTask();
-      }
+      task.progress = 100;
+      globalThis.setTimeout(clearTask, this._finishedTasksTimeout);
     }
   };
 
@@ -106,10 +96,14 @@ class TaskManagerStore extends CommonStore<TaskManagerState> {
   };
 
   public constructor() {
-    super('taskManager', () => ({
-      tasks: [],
-      finishedTasksTimeout: 5000
-    }), 'sessionStorage');
+    super({
+      defaultState: () => ({
+        tasks: []
+      }),
+      storeKey: 'taskManager',
+      persistenceType: 'sessionStorage',
+      resetOnLogout: true
+    });
 
     /**
      * Handle refresh progress update for library items
@@ -181,15 +175,6 @@ class TaskManagerStore extends CommonStore<TaskManagerState> {
         refreshProgressAction(MessageType, Data);
         libraryChangedAction(MessageType, Data);
       }
-    );
-
-    watch(
-      () => remote.auth.currentUser,
-      () => {
-        if (!remote.auth.currentUser) {
-          this._reset();
-        }
-      }, { flush: 'post' }
     );
   }
 }

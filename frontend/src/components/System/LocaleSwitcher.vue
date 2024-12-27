@@ -14,14 +14,14 @@
       <VList class="overflow-y-auto list">
         <VListItem
           :title="$t('auto')"
-          @click="clientSettings.locale = 'auto'" />
+          @click="clientSettings.locale.value = undefined" />
         <VDivider />
         <VListItem
           v-for="(item, index) in i18n.availableLocales"
           :key="index"
           :value="item === i18n.locale.value"
           :title="getLocaleNativeName(item) ?? `${$t('unknown')} (${item})`"
-          @click="clientSettings.locale = item" />
+          @click="clientSettings.locale.value = item" />
       </VList>
     </VMenu>
   </VBtn>

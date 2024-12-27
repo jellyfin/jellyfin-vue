@@ -59,7 +59,7 @@
         v-else-if="
           currentUser ||
             loginAsOther ||
-            (publicUsers.length === 0 && $remote.auth.currentServer?.ServerName)
+            (publicUsers.length === 0 && $remote.auth.currentServer.value?.ServerName)
         "
         sm="6"
         md="6"
@@ -75,7 +75,7 @@
           {{ $t('login') }}
         </h1>
         <h5 class="text-center mb-3 text--disabled">
-          {{ $remote.auth.currentServer?.ServerName }}
+          {{ $remote.auth.currentServer.value?.ServerName }}
         </h5>
         <LoginForm
           :user="currentUser"
@@ -111,8 +111,8 @@ const { t } = useI18n();
 
 usePageTitle(() => t('login'));
 
-const disclaimer = computed(() => remote.auth.currentServer?.BrandingOptions.LoginDisclaimer);
-const publicUsers = computed(() => remote.auth.currentServer?.PublicUsers ?? []);
+const disclaimer = computed(() => remote.auth.currentServer.value?.BrandingOptions.LoginDisclaimer);
+const publicUsers = computed(() => remote.auth.currentServer.value?.PublicUsers ?? []);
 
 const loginAsOther = shallowRef(false);
 const currentUser = ref<UserDto>();

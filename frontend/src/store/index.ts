@@ -13,6 +13,7 @@ import type { LiteralUnion } from 'type-fest';
 import { remote } from '@/plugins/remote';
 import { isNil } from '@/utils/validation';
 import { router } from '@/plugins/router';
+import type { SubtitleTypographyChoices } from '@/store/client-settings/subtitle-settings';
 
 /**
  * This file contains global variables (specially VueUse refs) that are used multiple times across the client.
@@ -28,7 +29,7 @@ export const DEFAULT_TYPOGRAPHY = 'Figtree Variable';
  *
  * system: System typography
  */
-export type TypographyChoices = LiteralUnion<'default' | 'system', string>;
+export type TypographyChoices = LiteralUnion<BetterOmit<SubtitleTypographyChoices, 'auto'>, string>;
 
 /**
  * == BLURHASH DEFAULTS ==
@@ -119,7 +120,7 @@ export const isConnectedToServer = computedAsync(async () => {
   const socket = remote.socket.isConnected.value;
   const networkAPI = network.isOnline.value;
 
-  if (!isNil(remote.auth.currentServer) || !socket || !networkAPI) {
+  if (!isNil(remote.auth.currentServer.value) || !socket || !networkAPI) {
     try {
       await remote.sdk.newUserApi(getSystemApi).getPingSystem();
 

@@ -12,7 +12,7 @@
         </h1>
         <div>
           <ServerCard
-            v-for="server in $remote.auth.servers"
+            v-for="server in $remote.auth.servers.value"
             :key="server.Id || useId()"
             class="mt-2"
             :server-info="server" />
