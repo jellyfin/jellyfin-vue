@@ -1,6 +1,11 @@
 {
   "extends": "@jellyfin-vue/configs/typescript",
   "compilerOptions": {
+    "lib": [
+      "ESNext",
+      "DOM",
+      "WebWorker"
+    ],
     "types": [
       "axios",
       "@intlify/unplugin-vue-i18n/messages",
