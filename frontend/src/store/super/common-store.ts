@@ -1,17 +1,18 @@
-import { useStorage } from '@vueuse/core';
-import { ref, watch, type Ref } from 'vue';
+/**
+ * CommonStore is a base class for all stores. It extends from BaseState,
+ * providing also a way to reset the state on logout automatically.
+ *
+ * This class is intended to be used by stores. It
+ * should not be used by plugins (check BaseState for that)
+ * since it has a dependency on the auth plugin.
+ */
 import type { UnknownRecord } from 'type-fest';
-import { mergeExcludingUnknown } from '@/utils/data-manipulation';
-import { isFunc, isNil } from '@/utils/validation';
+import { isBool } from '@/utils/validation';
+import { remote } from '@/plugins/remote';
+import { BaseState, type BaseStateParams } from '@/store/super/base-state';
 
-export interface CommonStoreParams<T> {
-  defaultState: () => T;
-  /**
-   * Key to be used as an identifier
-   */
-  storeKey: string;
-  persistenceType?: 'localStorage' | 'sessionStorage';
-  resetOnLogout?: boolean | (() => void);
+export interface CommonStoreParams<T> extends BaseStateParams<T> {
+  resetOnLogout?: boolean | MaybePromise<T>;
 }
 
 export abstract class CommonStore<
@@ -23,20 +24,7 @@ export abstract class CommonStore<
    * Exposed properties are also writable.
    */
   K extends keyof T = never
-> {
-  private readonly _defaultState;
-  protected readonly _storeKey;
-  protected readonly _state: Ref<T>;
-  /**
-   * Same as _state, but we use the type system to define which properties
-   * we want to have accessible to consumers of the extended class.
-   */
-  public readonly state: Ref<Pick<T, K>>;
-
-  protected readonly _reset = (): void => {
-    Object.assign(this._state.value, this._defaultState());
-  };
-
+> extends BaseState<T, K> {
   protected constructor({
     defaultState,
     storeKey,
@@ -44,32 +32,10 @@ export abstract class CommonStore<
     resetOnLogout
   }: CommonStoreParams<T>
   ) {
-    this._storeKey = storeKey;
-    this._defaultState = defaultState;
-
-    this._state = isNil(persistenceType) || isNil(storeKey)
-      ? ref(this._defaultState()) as Ref<T>
-      : useStorage(storeKey, this._defaultState(), globalThis[persistenceType], {
-          mergeDefaults: (storageValue, defaults) =>
-            mergeExcludingUnknown(storageValue, defaults)
-        });
-    this.state = this._state;
+    super({ defaultState, storeKey, persistenceType });
 
     if (resetOnLogout) {
-      // eslint-disable-next-line sonarjs/no-async-constructor
-      void (async () => {
-        const { remote } = await import('@/plugins/remote');
-
-        watch(remote.auth.currentUser,
-          () => {
-            if (!remote.auth.currentUser.value) {
-              const funcToRun = isFunc(resetOnLogout) ? resetOnLogout : this._reset;
-
-              funcToRun();
-            }
-          }, { flush: 'post' }
-        );
-      })();
+      remote.auth.onAfterLogout(isBool(resetOnLogout) ? this._reset : resetOnLogout);
     }
   }
 }
