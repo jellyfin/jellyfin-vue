@@ -12,3 +12,5 @@ type BetterOmit<T, K extends keyof never> = T extends Record<never, never>
  * Sets a type as nullish
  */
 type Nullish<T> = T | null | undefined;
+
+type MaybePromise<T> = (() => Promise<T>) | (() => T);

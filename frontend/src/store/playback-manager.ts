@@ -340,7 +340,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    * Report playback stopped to the server. Used by the "Now playing" statistics in other clients.
    */
   private readonly _reportPlaybackStopped = async (
-    itemId: string,
+    itemId = this.currentItemId.value,
     sessionId = this._state.value.playSessionId,
     currentTime = this.currentTime.value
   ): Promise<void> => {
@@ -989,14 +989,13 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     });
 
     /**
-     * Dispose on logout
+     * Report playback stop before logging out
      */
-    watch(remote.auth.currentUser,
-      () => {
-        if (isNil(remote.auth.currentUser.value)) {
-          this.stop();
-        }
-      }, { flush: 'post' }
+    remote.auth.onBeforeLogout(
+      async () => {
+        await this._reportPlaybackStopped(this.currentItemId.value);
+        this._reset();
+      }
     );
   }
 }

@@ -12,7 +12,7 @@ import SDK, { useOneTimeAPI } from './sdk/sdk-utils';
 import { isAxiosError, isNil, sealed } from '@/utils/validation';
 import { i18n } from '@/plugins/i18n';
 import { useSnackbar } from '@/composables/use-snackbar';
-import { CommonStore } from '@/store/super/common-store';
+import { BaseState } from '@/store/super/base-state';
 
 export interface ServerInfo extends BetterOmit<PublicSystemInfo, 'LocalAddress'> {
   PublicAddress: string;
@@ -34,7 +34,12 @@ interface AuthState {
 }
 
 @sealed
-class RemotePluginAuth extends CommonStore<AuthState> {
+class RemotePluginAuth extends BaseState<AuthState> {
+  private readonly _callbacks = {
+    beforeLogout: [] as MaybePromise<void>[],
+    afterLogout: [] as MaybePromise<void>[]
+  };
+
   public readonly servers = computed(() => this._state.value.servers);
   public readonly currentServer = computed(() => this._state.value.servers[this._state.value.currentServerIndex]);
   public readonly currentUser = computed(() => this._state.value.users[this._state.value.currentUserIndex]);
@@ -103,6 +108,18 @@ class RemotePluginAuth extends CommonStore<AuthState> {
       PublicUsers
     };
   };
+
+  private readonly _runCallbacks = async (callbacks: MaybePromise<void>[]) =>
+    await Promise.allSettled(callbacks.map(fn => fn()));
+
+  /**
+   * Runs the passed function before logging out the user
+   */
+  public readonly onBeforeLogout = (fn: MaybePromise<void>) =>
+    this._callbacks.beforeLogout.push(fn);
+
+  public readonly onAfterLogout = (fn: MaybePromise<void>) =>
+    this._callbacks.afterLogout.push(fn);
 
   /**
    * Connects to a server
@@ -240,9 +257,17 @@ class RemotePluginAuth extends CommonStore<AuthState> {
    */
   public readonly logoutCurrentUser = async (skipRequest = false): Promise<void> => {
     if (!isNil(this.currentUser.value) && !isNil(this.currentServer.value)) {
+      await this._runCallbacks(this._callbacks.beforeLogout);
       await this.logoutUser(this.currentUser.value, this.currentServer.value, skipRequest);
 
       this._state.value.currentUserIndex = -1;
+      /**
+       * We need this so the callbacks are run after all the dependencies are updated
+       * (i.e the page component is routed to index).
+       */
+      globalThis.requestAnimationFrame(() =>
+        globalThis.setTimeout(() => void this._runCallbacks(this._callbacks.afterLogout))
+      );
     }
   };
 

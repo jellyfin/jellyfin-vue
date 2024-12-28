@@ -210,17 +210,7 @@ class ApiStore {
       }
     );
 
-    watch(remote.auth.currentUser,
-      () => {
-        globalThis.requestAnimationFrame(() => {
-          globalThis.setTimeout(() => {
-            if (!remote.auth.currentUser.value) {
-              this._clear();
-            }
-          });
-        });
-      }, { flush: 'post' }
-    );
+    remote.auth.onAfterLogout(this._clear);
   }
 }
 
