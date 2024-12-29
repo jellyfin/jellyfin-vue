@@ -115,28 +115,20 @@
 </template>
 
 <script setup lang="ts">
-import {
-  SortOrder,
-  type BaseItemDto
+import type {
+  BaseItemDto
 } from '@jellyfin/sdk/lib/generated-client';
-import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { computed } from 'vue';
-import { useBaseItem } from '@/composables/apis';
 import { playbackManager } from '@/store/playback-manager';
 import { getItemDetailsLink } from '@/utils/items';
 import { formatTicks } from '@/utils/time';
 
-const { item } = defineProps<{
+const { item, tracks } = defineProps<{
   item: BaseItemDto;
+  tracks: BaseItemDto[];
 }>();
 
-const { data: tracks } = await useBaseItem(getItemsApi, 'getItems')(() => ({
-  parentId: item.Id,
-  sortBy: ['SortName'],
-  sortOrder: [SortOrder.Ascending]
-}));
-
-const tracksPerDisc = computed(() => Object.groupBy(tracks.value, ({ ParentIndexNumber }) => ParentIndexNumber!));
+const tracksPerDisc = computed(() => Object.groupBy(tracks, ({ ParentIndexNumber }) => ParentIndexNumber!));
 const hasMultipleDiscs = computed(() => {
   let loops = 0;
 
@@ -164,7 +156,7 @@ function isPlaying(track: BaseItemDto): boolean {
 async function playTracks(track: BaseItemDto): Promise<void> {
   await playbackManager.play({
     item: item,
-    startFromIndex: tracks.value.indexOf(track),
+    startFromIndex: tracks.indexOf(track),
     initiator: item
   });
 }

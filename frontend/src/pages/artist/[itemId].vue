@@ -75,16 +75,24 @@
             v-model="activeTab"
             class="bg-transparent">
             <VWindowItem :value="0">
-              <ArtistTab :releases="discography" />
+              <ArtistTab
+                :tracks
+                :releases="discography" />
             </VWindowItem>
             <VWindowItem :value="1">
-              <ArtistTab :releases="albums" />
+              <ArtistTab
+                :tracks
+                :releases="albums" />
             </VWindowItem>
             <VWindowItem :value="2">
-              <ArtistTab :releases="eps" />
+              <ArtistTab
+                :tracks
+                :releases="eps" />
             </VWindowItem>
             <VWindowItem :value="3">
-              <ArtistTab :releases="singles" />
+              <ArtistTab
+                :tracks
+                :releases="singles" />
             </VWindowItem>
             <VWindowItem :value="4">
               <VContainer>
@@ -167,35 +175,49 @@ const route = useRoute('/artist/[itemId]');
 
 const activeTab = ref(0);
 
-const { data: item } = await useBaseItem(getUserLibraryApi, 'getItem')(() => ({
-  itemId: route.params.itemId
-}));
-const { data: relatedItems } = await useBaseItem(getLibraryApi, 'getSimilarItems')(() => ({
-  itemId: route.params.itemId,
-  limit: 5
-}));
-const { data: discography } = await useBaseItem(getItemsApi, 'getItems')(() => ({
-  albumArtistIds: [route.params.itemId],
-  sortBy,
-  sortOrder: [SortOrder.Descending],
-  recursive: true,
-  includeItemTypes: [BaseItemKind.MusicAlbum]
-}));
-const { data: appearances } = await useBaseItem(getItemsApi, 'getItems')(() => ({
-  contributingArtistIds: [route.params.itemId],
-  excludeItemIds: [route.params.itemId],
-  sortBy,
-  sortOrder: [SortOrder.Descending],
-  recursive: true,
-  includeItemTypes: [BaseItemKind.MusicAlbum]
-}));
-const { data: musicVideos } = await useBaseItem(getItemsApi, 'getItems')(() => ({
-  artistIds: [route.params.itemId],
-  sortBy,
-  sortOrder: [SortOrder.Descending],
-  recursive: true,
-  includeItemTypes: [BaseItemKind.MusicVideo]
-}));
+const [
+  { data: item },
+  { data: relatedItems },
+  { data: discography },
+  { data: appearances },
+  { data: musicVideos },
+  { data: tracks }
+] = await Promise.all([
+  useBaseItem(getUserLibraryApi, 'getItem')(() => ({
+    itemId: route.params.itemId
+  })),
+  useBaseItem(getLibraryApi, 'getSimilarItems')(() => ({
+    itemId: route.params.itemId,
+    limit: 5
+  })),
+  useBaseItem(getItemsApi, 'getItems')(() => ({
+    albumArtistIds: [route.params.itemId],
+    sortBy,
+    sortOrder: [SortOrder.Descending],
+    recursive: true,
+    includeItemTypes: [BaseItemKind.MusicAlbum]
+  })),
+  useBaseItem(getItemsApi, 'getItems')(() => ({
+    contributingArtistIds: [route.params.itemId],
+    excludeItemIds: [route.params.itemId],
+    sortBy,
+    sortOrder: [SortOrder.Descending],
+    recursive: true,
+    includeItemTypes: [BaseItemKind.MusicAlbum]
+  })),
+  useBaseItem(getItemsApi, 'getItems')(() => ({
+    artistIds: [route.params.itemId],
+    sortBy,
+    sortOrder: [SortOrder.Descending],
+    recursive: true,
+    includeItemTypes: [BaseItemKind.MusicVideo]
+  })),
+  useBaseItem(getItemsApi, 'getItems')(() => ({
+    parentId: route.params.itemId,
+    sortBy: ['SortName'],
+    sortOrder: [SortOrder.Ascending]
+  }))
+]);
 
 const singles = computed<BaseItemDto[]>(() =>
   discography.value.filter(

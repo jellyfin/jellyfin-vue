@@ -65,24 +65,25 @@ const route = useRoute('/genre/[itemId]');
 const { itemId } = route.params;
 
 const includeItemTypes = computed<BaseItemKind[]>(() => {
-  const typesQuery = route.query.type ?? [] as BaseItemKind;
+  const typesQuery = (route.query.type ?? []) as BaseItemKind[];
 
   return isStr(typesQuery)
-    ? [typesQuery]
+    ? [typesQuery] as BaseItemKind[]
     : typesQuery;
 });
 
-const { data: genre } = await useBaseItem(getUserLibraryApi, 'getItem')(() => ({
-  itemId
-}));
-
-const { data: genres } = await useBaseItem(getItemsApi, 'getItems')(() => ({
-  genreIds: [itemId],
-  includeItemTypes: includeItemTypes.value,
-  recursive: true,
-  sortBy: ['SortName'],
-  sortOrder: [SortOrder.Ascending]
-}));
+const [{ data: genre }, { data: genres }] = await Promise.all([
+  useBaseItem(getUserLibraryApi, 'getItem')(() => ({
+    itemId
+  })),
+  useBaseItem(getItemsApi, 'getItems')(() => ({
+    genreIds: [itemId],
+    includeItemTypes: includeItemTypes.value,
+    recursive: true,
+    sortBy: ['SortName'],
+    sortOrder: [SortOrder.Ascending]
+  }))
+]);
 
 useItemPageTitle(genre);
 </script>

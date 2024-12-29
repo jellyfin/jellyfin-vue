@@ -198,6 +198,8 @@ function getLogFileLink(name: string): string | undefined {
     : undefined;
 }
 
-const { data: logs } = await useApi(getSystemApi, 'getServerLogs')();
-const { data: activityList } = await useApi(getActivityLogApi, 'getLogEntries')();
+const [{ data: logs }, { data: activityList }] = await Promise.all([
+  useApi(getSystemApi, 'getServerLogs')(),
+  useApi(getActivityLogApi, 'getLogEntries')()
+]);
 </script>
