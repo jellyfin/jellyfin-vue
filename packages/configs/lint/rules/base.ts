@@ -10,7 +10,7 @@ import gitignore from 'eslint-config-flat-gitignore';
 import fileProgress from 'eslint-plugin-file-progress';
 import { eqeqeqConfig } from '../shared';
 
-const CI_environment = Boolean(process.env.CI);
+const CI_environment = !!process.env.CI;
 
 /**
  * Gets ESLint's minimal configuration for the monorepo

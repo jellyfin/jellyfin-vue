@@ -68,7 +68,7 @@
       </VCol>
       <VDialog
         width="auto"
-        :model-value="confirmDelete !== undefined"
+        :model-value="!isNil(confirmDelete)"
         @update:model-value="confirmDelete = undefined">
         <VCard>
           <VCardText>
@@ -107,6 +107,7 @@ import { useI18n } from 'vue-i18n';
 import { remote } from '@/plugins/remote';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { useDateFns } from '@/composables/use-datefns';
+import { isNil } from '@/utils/validation';
 
 const { t } = useI18n();
 

@@ -235,7 +235,7 @@ import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { watchImmediate } from '@vueuse/core';
 import { getItemImageUrl } from '@/utils/images';
-import { isArray } from '@/utils/validation';
+import { isArray, isNil } from '@/utils/validation';
 import { remote } from '@/plugins/remote';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { useDateFns } from '@/composables/use-datefns';
@@ -266,7 +266,7 @@ const contentOption = ref<ContentOption>();
 const contentType = ref<string>();
 const genresModel = computed({
   get() {
-    return metadata.value?.Genres === null ? undefined : metadata.value?.Genres;
+    return metadata.value?.Genres ?? undefined;
   },
   set(newVal) {
     if (isArray(newVal) && metadata.value) {
@@ -276,7 +276,7 @@ const genresModel = computed({
 });
 const tagsModel = computed({
   get() {
-    return metadata.value?.Tags === null ? undefined : metadata.value?.Tags;
+    return metadata.value?.Tags ?? undefined;
   },
   set(newVal) {
     if (isArray(newVal) && metadata.value) {
@@ -341,7 +341,7 @@ async function getData(): Promise<void> {
           value: r.Value ?? ''
         };
       }
-    }).filter((r): r is ContentOption => r !== undefined) ?? [];
+    }).filter((r): r is ContentOption => !isNil(r)) ?? [];
   contentOption.value
     = contentOptions.value.find(r => r.value === options.ContentType)
     ?? contentOptions.value[0];

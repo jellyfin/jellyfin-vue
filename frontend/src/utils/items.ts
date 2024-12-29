@@ -228,7 +228,7 @@ export function canIdentify(item: BaseItemDto): boolean {
  * @returns Whether the item can be played on this client or not
  */
 export function canPlay(item: BaseItemDto | undefined): boolean {
-  if (item === undefined) {
+  if (isNil(item)) {
     return false;
   }
 
@@ -257,7 +257,7 @@ export function canPlay(item: BaseItemDto | undefined): boolean {
  * Check if an item can be resumed
  */
 export function canResume(item: BaseItemDto): boolean {
-  return Boolean(item.UserData?.PlaybackPositionTicks && item.UserData.PlaybackPositionTicks > 0);
+  return !!(item.UserData?.PlaybackPositionTicks && item.UserData.PlaybackPositionTicks > 0);
 }
 /**
  * Determine if an item can be mark as played
@@ -470,7 +470,7 @@ export function getItemIdFromSourceIndex(
   item: BaseItemDto,
   sourceIndex?: number
 ): string {
-  if (sourceIndex === undefined) {
+  if (isNil(sourceIndex)) {
     return item.Id ?? '';
   }
 

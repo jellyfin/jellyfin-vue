@@ -26,9 +26,7 @@
               <template #append>
                 <VProgressCircular
                   v-if="task.progress !== 100"
-                  :indeterminate="
-                    task.progress === undefined || task.progress === 0
-                  "
+                  :indeterminate="!!task.progress"
                   :model-value="task.progress"
                   size="24" />
                 <VIcon v-else>

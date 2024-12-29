@@ -3,7 +3,7 @@ import { watch } from 'vue';
 import { CommonStore } from '@/store/super/common-store';
 import { remote } from '@/plugins/remote';
 import { apiStore } from '@/store/api';
-import { isArray, isObj, isStr, sealed } from '@/utils/validation';
+import { isArray, isNil, isObj, isStr, sealed } from '@/utils/validation';
 
 /**
  * == INTERFACES AND TYPES ==
@@ -62,7 +62,7 @@ class TaskManagerStore extends CommonStore<TaskManagerState, 'tasks'> {
       );
     }
 
-    if (this.getTask(task.id) === undefined) {
+    if (isNil(this.getTask(task.id))) {
       this._state.value.tasks.push(task);
     }
   };
@@ -124,7 +124,7 @@ class TaskManagerStore extends CommonStore<TaskManagerState, 'tasks'> {
          * Start task if update its received and it doesn't exist in the store.
          * Usually when a running task is started somewhere else and the client is accssed later
          */
-        if (taskPayload === undefined) {
+        if (isNil(taskPayload)) {
           const item = apiStore.getItemById(data.ItemId);
 
           if (item?.Id && item.Name) {

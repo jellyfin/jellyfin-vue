@@ -1,7 +1,7 @@
 <template>
   <VDialog
     max-width="30%"
-    :model-value="person !== undefined"
+    :model-value="!isNil(person)"
     @update:model-value="emit('close')">
     <VCard>
       <VCardTitle>{{ t('editPerson') }}</VCardTitle>
@@ -83,6 +83,7 @@ import { useI18n } from 'vue-i18n';
 import { type BaseItemPerson, ImageType } from '@jellyfin/sdk/lib/generated-client';
 import { watchImmediate } from '@vueuse/core';
 import { getItemImageUrl } from '@/utils/images';
+import { isNil } from '@/utils/validation';
 
 const { person } = defineProps<{ person: BaseItemPerson | undefined }>();
 

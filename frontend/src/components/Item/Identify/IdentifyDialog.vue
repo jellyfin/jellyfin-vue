@@ -99,7 +99,7 @@ import { useI18n } from 'vue-i18n';
 import { useConfirmDialog } from '@/composables/use-confirm-dialog';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { remote } from '@/plugins/remote';
-import { isArray, isStr } from '@/utils/validation';
+import { isArray, isNil, isStr } from '@/utils/validation';
 
 interface IdentifyField {
   key: string;
@@ -175,7 +175,7 @@ const searchFields = computed<IdentifyField[]>(() => {
   const missingProviders = availableProviders
     .filter(p => !populatedKeys.includes(p.Key ?? ''))
     .map(p => p.Key)
-    .filter((p): p is string => p !== undefined);
+    .filter((p): p is string => !isNil(p));
 
   for (const key of missingProviders) {
     result.push({
@@ -195,7 +195,7 @@ const fieldsInputs = ref<IdentifyField[]>(
   structuredClone(toRaw(searchFields.value))
 );
 const tabName = computed(() =>
-  searchResults.value === undefined ? 'searchMenu' : 'resultsMenu'
+  isNil(searchResults.value) ? 'searchMenu' : 'resultsMenu'
 );
 const progress = computed(() => {
   switch (tabName.value) {
@@ -232,7 +232,7 @@ async function getItemRemoteSearch(
   const searcher = remote.sdk.newUserApi(getItemLookupApi);
   const itemId = item.Id;
 
-  if (itemId === undefined) {
+  if (isNil(itemId)) {
     return;
   }
 

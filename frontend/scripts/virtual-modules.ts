@@ -56,7 +56,7 @@ const vuetifyExports = localeNames
 /**
  * Get commit hash
  */
-const commit_available = !Number(process.env.IS_STABLE) && Boolean(process.env.COMMIT_HASH);
+const commit_available = !Number(process.env.IS_STABLE) && !!process.env.COMMIT_HASH;
 const commit_hash = (commit_available && `'${process.env.COMMIT_HASH}'`) || undefined;
 
 /**

@@ -73,7 +73,7 @@ import IMdiShuffle from 'virtual:icons/mdi/shuffle';
 import { computed, getCurrentInstance, onMounted, shallowRef, useId, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
-import { isStr } from '@/utils/validation';
+import { isNil, isStr } from '@/utils/validation';
 import {
   canIdentify,
   canInstantMix,
@@ -157,7 +157,7 @@ watch(isActive, newVal =>
 
 const errorMessage = t('anErrorHappened');
 const isItemRefreshing = computed(
-  () => taskManager.getTask(item.Id ?? '') !== undefined
+  () => !isNil(taskManager.getTask(item.Id ?? ''))
 );
 const itemDeletionName = computed(() => {
   const parentName = item.Name ?? undefined;

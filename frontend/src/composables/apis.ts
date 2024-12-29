@@ -183,7 +183,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
   ops: Required<ComposableOps>
 ): (this: any, ...args: ComposableParams<T, K, U>) => Promise<ReturnPayload<T, K, typeof ofBaseItem>> | ReturnPayload<T, K, typeof ofBaseItem> {
   const offlineParams: OfflineParams<T, K>[] = [];
-  const isFuncDefined = (): boolean => unref(api) !== undefined && unref(methodName) !== undefined;
+  const isFuncDefined = (): boolean => !isNil(unref(api)) && !isNil(unref(methodName));
 
   const loading = shallowRef<boolean | undefined>(false);
   const argsRef = shallowRef<Parameters<T[K]>>();
@@ -205,7 +205,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
 
     return currentCachedRequest;
   });
-  const isCached = computed(() => Boolean(cachedData.value));
+  const isCached = computed(() => !!cachedData.value);
   const data = computed<ReturnData<T, K, typeof ofBaseItem>>(() => {
     if (ops.skipCache.request && result.value) {
       if (ofBaseItem) {
@@ -276,7 +276,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
 
     argsRef.value = normalizeArgs();
 
-    if (getCurrentScope() !== undefined) {
+    if (!isNil(getCurrentScope())) {
       const handleArgsChange = async (_: typeof args, old: typeof args | undefined): Promise<void> => {
         const normalizedArgs = normalizeArgs();
 

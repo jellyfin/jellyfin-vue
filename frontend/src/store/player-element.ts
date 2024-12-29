@@ -111,7 +111,7 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched' |
         srcLang: sub.Language ?? undefined,
         type: sub.DeliveryMethod ?? SubtitleDeliveryMethod.Drop,
         srcIndex: sub.srcIndex,
-        codec: sub.Codec === null ? undefined : sub.Codec?.toLowerCase()
+        codec: sub.Codec?.toLowerCase()
       }))
   );
 
@@ -134,7 +134,7 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched' |
    */
   public readonly currentItemExternalParsedSubtitleTracks = computed(() =>
     this.currentItemParsedSubtitleTracks.value?.filter(
-      sub => sub.codec !== undefined && sub.src !== undefined
+      sub => !isNil(sub.codec) && !isNil(sub.src)
     )
   );
 

@@ -40,7 +40,13 @@ export function isFunc(value: unknown): value is (...args: unknown[]) => unknown
  * Check if the value is undefined
  */
 export function isUndef(value: unknown): value is undefined {
-  return value === undefined;
+  /**
+   * typeof val === 'undefined' will never throw an error, even if the variable is not declared,
+   * while val === undefined will.
+   * It's also faster than val === undefined and handles better the void operator
+   */
+  // eslint-disable-next-line unicorn/no-typeof-undefined
+  return typeof value === 'undefined';
 }
 
 /**

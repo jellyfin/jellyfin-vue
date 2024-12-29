@@ -34,6 +34,7 @@ import IMdiSurroundSound from 'virtual:icons/mdi/surround-sound';
 import { watchImmediate } from '@vueuse/core';
 import { getLocaleName } from '@/utils/i18n';
 import { upperFirst } from '@/utils/data-manipulation';
+import { isNil } from '@/utils/validation';
 
 const { mediaStreams, type, defaultStreamIndex } = defineProps<{
   mediaStreams: MediaStream[];
@@ -122,7 +123,7 @@ const trackIndex = ref<number | null>(defaultStreamIndex ?? mediaStreams.find(tr
  */
 if (
   (type === 'Video' || type === 'Audio')
-  && trackIndex.value === null
+  && isNil(trackIndex.value)
   && selectItems.value[0]
 ) {
   // eslint-disable-next-line unicorn/no-null

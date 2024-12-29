@@ -13,7 +13,7 @@
     </template>
     <template #upper-content>
       <VProgressCircular
-        v-if="refreshProgress !== undefined"
+        v-if="!isNil(refreshProgress)"
         :model-value="refreshProgress"
         :indeterminate="refreshProgress === 0"
         size="24" />

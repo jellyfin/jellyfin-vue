@@ -76,7 +76,7 @@
         " />
       <VDialog
         width="auto"
-        :model-value="confirmRevoke !== undefined"
+        :model-value="!isNil(confirmRevoke)"
         @update:model-value="confirmRevoke = undefined">
         <VCard>
           <VCardText>
@@ -115,6 +115,7 @@ import { useI18n } from 'vue-i18n';
 import { remote } from '@/plugins/remote';
 import { useSnackbar } from '@/composables/use-snackbar';
 import { useDateFns } from '@/composables/use-datefns';
+import { isNil } from '@/utils/validation';
 
 const { t } = useI18n();
 
