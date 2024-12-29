@@ -21,7 +21,7 @@
     </template>
 
     <VCardText
-      class="pa-0 px-2 flex-grow-1"
+      class="pa-0 flex-grow-1 px-2"
       :class="{
         'd-flex': !$vuetify.display.mobile,
         'flex-row': !$vuetify.display.mobile
@@ -47,7 +47,7 @@
         </VWindowItem>
         <VWindowItem value="resultsMenu">
           <h3>{{ $t('results') }}</h3>
-          <div class="mt-2 text-subtitle-1">
+          <div class="text-subtitle-1 mt-2">
             {{ $t('identifyInstructResult') }}
           </div>
           <VCheckbox
@@ -97,9 +97,9 @@ import { getItemLookupApi } from '@jellyfin/sdk/lib/utils/api/item-lookup-api';
 import { computed, ref, shallowRef, toRaw } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { isArray, isNil, isStr } from '@jellyfin-vue/shared/validation';
-import { useConfirmDialog } from '@/composables/use-confirm-dialog';
-import { useSnackbar } from '@/composables/use-snackbar';
-import { remote } from '@/plugins/remote';
+import { useConfirmDialog } from '#/composables/use-confirm-dialog';
+import { useSnackbar } from '#/composables/use-snackbar';
+import { remote } from '#/plugins/remote';
 
 interface IdentifyField {
   key: string;

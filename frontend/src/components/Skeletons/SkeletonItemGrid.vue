@@ -15,8 +15,8 @@
 <script setup lang="ts">
 import { BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
 import { computed } from 'vue';
-import { useResponsiveClasses } from '@/composables/use-responsive-classes';
-import { getShapeFromItemType } from '@/utils/items';
+import { useResponsiveClasses } from '#/composables/use-responsive-classes';
+import { getShapeFromItemType } from '#/utils/items';
 
 const { viewType = BaseItemKind.Movie } = defineProps<{ viewType?: BaseItemKind }>();
 

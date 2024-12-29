@@ -15,7 +15,7 @@ declare module 'vue' {
     [key: `data${string}`]: string;
   }
 
-  import type { hideDirective } from '@/plugins/directives';
+  import type { hideDirective } from '#/plugins/directives';
 
   export interface GlobalDirectives {
     vHide: hideDirective;

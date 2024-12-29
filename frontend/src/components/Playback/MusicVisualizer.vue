@@ -5,7 +5,7 @@
 <script setup lang="ts">
 import { onBeforeUnmount, useTemplateRef, watch } from 'vue';
 import AudioMotionAnalyzer from 'audiomotion-analyzer';
-import { mediaWebAudio } from '@/store';
+import { mediaWebAudio } from '#/store';
 
 let visualizerInstance: AudioMotionAnalyzer | undefined;
 const visualizerElement = useTemplateRef<HTMLDivElement>('visualizerElement');

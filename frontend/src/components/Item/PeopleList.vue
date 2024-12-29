@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
 import type { BaseItemPerson } from '@jellyfin/sdk/lib/generated-client';
-import { getItemDetailsLink } from '@/utils/items';
+import { getItemDetailsLink } from '#/utils/items';
 
 const { items, skeletonLength } = defineProps<{
   items: BaseItemPerson[];

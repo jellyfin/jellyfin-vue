@@ -132,14 +132,14 @@ import { useTimeoutFn } from '@vueuse/core';
 import IMdiChevronDown from 'virtual:icons/mdi/chevron-down';
 import IMdiClose from 'virtual:icons/mdi/close';
 import { computed, shallowRef, watch } from 'vue';
-import { playbackGuard } from '@/plugins/router/middlewares/playback';
+import { playbackGuard } from '#/plugins/router/middlewares/playback';
 import {
   mediaControls
-} from '@/store';
-import { playbackManager } from '@/store/playback-manager';
-import { playerElement, videoContainerRef } from '@/store/player-element';
-import { getEndsAtTime, msToTicks } from '@/utils/time';
-import { usePlayback } from '@/composables/use-playback';
+} from '#/store';
+import { playbackManager } from '#/store/playback-manager';
+import { playerElement, videoContainerRef } from '#/store/player-element';
+import { getEndsAtTime, msToTicks } from '#/utils/time';
+import { usePlayback } from '#/composables/use-playback';
 
 defineOptions({
   beforeRouteEnter: playbackGuard

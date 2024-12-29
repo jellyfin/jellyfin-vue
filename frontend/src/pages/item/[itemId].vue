@@ -306,11 +306,11 @@ import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { getItemDetailsLink, getMediaStreams } from '@/utils/items';
-import { getItemizedSelect } from '@/utils/forms';
-import { useBaseItem } from '@/composables/apis';
-import { useItemBackdrop } from '@/composables/backdrop';
-import { useItemPageTitle } from '@/composables/page-title';
+import { getItemDetailsLink, getMediaStreams } from '#/utils/items';
+import { getItemizedSelect } from '#/utils/forms';
+import { useBaseItem } from '#/composables/apis';
+import { useItemBackdrop } from '#/composables/backdrop';
+import { useItemPageTitle } from '#/composables/page-title';
 
 const route = useRoute('/genre/[itemId]');
 

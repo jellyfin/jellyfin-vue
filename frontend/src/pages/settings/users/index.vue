@@ -64,8 +64,8 @@ meta:
 import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
 import { formatDistanceToNow } from 'date-fns';
 import { useI18n } from 'vue-i18n';
-import { useDateFns } from '@/composables/use-datefns';
-import { useApi } from '@/composables/apis';
+import { useDateFns } from '#/composables/use-datefns';
+import { useApi } from '#/composables/apis';
 
 const { t } = useI18n();
 

@@ -7,8 +7,8 @@
  */
 import { destr } from 'destr';
 import { isBool } from '@jellyfin-vue/shared/validation';
-import type { ClientSettingsState } from '@/store/client-settings';
-import '@/assets/styles/splashscreen.css';
+import type { ClientSettingsState } from '#/store/client-settings';
+import '#/assets/styles/splashscreen.css';
 
 const store = localStorage.getItem('clientSettings') ?? '{}';
 const parsedStore = destr<ClientSettingsState>(store);

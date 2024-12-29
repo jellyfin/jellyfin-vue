@@ -110,8 +110,8 @@
 
 <script setup lang="ts">
 import { isNil } from '@jellyfin-vue/shared/validation';
-import { playbackManager } from '@/store/playback-manager';
-import { getItemDetailsLink } from '@/utils/items';
+import { playbackManager } from '#/store/playback-manager';
+import { getItemDetailsLink } from '#/utils/items';
 </script>
 
 <style scoped>

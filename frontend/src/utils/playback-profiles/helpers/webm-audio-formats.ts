@@ -1,8 +1,8 @@
 /**
- * @deprecated - Check @/utils/playback-profiles/index
+ * @deprecated - Check #/utils/playback-profiles/index
  */
 
-import { isWebOS } from '@/utils/browser-detection';
+import { isWebOS } from '#/utils/browser-detection';
 
 /**
  * Get an array of supported codecs

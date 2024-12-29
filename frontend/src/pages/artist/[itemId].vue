@@ -162,11 +162,11 @@ import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { msToTicks } from '@/utils/time';
-import { defaultSortOrder as sortBy } from '@/utils/items';
-import { useBaseItem } from '@/composables/apis';
-import { useItemBackdrop } from '@/composables/backdrop';
-import { useItemPageTitle } from '@/composables/page-title';
+import { msToTicks } from '#/utils/time';
+import { defaultSortOrder as sortBy } from '#/utils/items';
+import { useBaseItem } from '#/composables/apis';
+import { useItemBackdrop } from '#/composables/backdrop';
+import { useItemPageTitle } from '#/composables/page-title';
 
 const SINGLE_MAX_LENGTH_MS = 600_000;
 const EP_MAX_LENGTH_MS = 1_800_000;

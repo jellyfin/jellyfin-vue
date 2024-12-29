@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { windowScroll } from '@/store';
+import { windowScroll } from '#/store';
 
 const { y } = windowScroll;
 

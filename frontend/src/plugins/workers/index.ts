@@ -6,7 +6,7 @@ import type { ICanvasDrawer } from './canvas-drawer.worker';
 import CanvasDrawer from './canvas-drawer.worker?worker';
 import type { IGenericWorker } from './generic.worker';
 import GenericWorker from './generic.worker?worker';
-import { remote } from '@/plugins/remote';
+import { remote } from '#/plugins/remote';
 
 /**
  * A worker for decoding blurhash strings into pixels

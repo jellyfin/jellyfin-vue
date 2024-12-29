@@ -35,7 +35,7 @@ import type {
   RemoteSearchResult
 } from '@jellyfin/sdk/lib/generated-client';
 import { computed } from 'vue';
-import { getShapeFromItemType } from '@/utils/items';
+import { getShapeFromItemType } from '#/utils/items';
 
 const { items, itemType } = defineProps<{
   items: RemoteSearchResult[];

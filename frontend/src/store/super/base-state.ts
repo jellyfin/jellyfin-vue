@@ -10,7 +10,7 @@ import { useStorage } from '@vueuse/core';
 import { ref, type Ref } from 'vue';
 import type { UnknownRecord } from 'type-fest';
 import { isNil } from '@jellyfin-vue/shared/validation';
-import { mergeExcludingUnknown } from '@/utils/data-manipulation';
+import { mergeExcludingUnknown } from '#/utils/data-manipulation';
 
 export interface BaseStateParams<T> {
   defaultState: () => T;

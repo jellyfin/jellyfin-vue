@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { useLoading } from '@/composables/use-loading';
+import { useLoading } from '#/composables/use-loading';
 
 const { isLoading } = useLoading();
 </script>

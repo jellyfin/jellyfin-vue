@@ -75,8 +75,8 @@ import IMdiPlaylistMusic from 'virtual:icons/mdi/playlist-music';
 import IMdiShuffle from 'virtual:icons/mdi/shuffle';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { getTotalEndsAtTime } from '@/utils/time';
-import { InitMode, playbackManager } from '@/store/playback-manager';
+import { getTotalEndsAtTime } from '#/utils/time';
+import { InitMode, playbackManager } from '#/store/playback-manager';
 
 const { size = 40, closeOnClick = false } = defineProps<{
   size?: number;

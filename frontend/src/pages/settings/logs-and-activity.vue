@@ -109,9 +109,9 @@ import IMdiPlay from 'virtual:icons/mdi/play';
 import IMdiStop from 'virtual:icons/mdi/stop';
 import { useI18n } from 'vue-i18n';
 import { useTheme } from 'vuetify';
-import { remote } from '@/plugins/remote';
-import { useDateFns } from '@/composables/use-datefns';
-import { useApi } from '@/composables/apis';
+import { remote } from '#/plugins/remote';
+import { useDateFns } from '#/composables/use-datefns';
+import { useApi } from '#/composables/apis';
 
 const { t } = useI18n();
 const theme = useTheme();

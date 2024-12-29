@@ -47,8 +47,8 @@
 import { computedAsync, usePermission, useSupported } from '@vueuse/core';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { clientSettings } from '@/store/client-settings';
-import { DEFAULT_TYPOGRAPHY } from '@/store';
+import { clientSettings } from '#/store/client-settings';
+import { DEFAULT_TYPOGRAPHY } from '#/store';
 
 const { appWide } = defineProps<{
   /**

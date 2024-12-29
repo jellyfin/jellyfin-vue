@@ -33,12 +33,12 @@
 import { onErrorCaptured, shallowRef, type Component, watch, computed, provide, useId, ref, type WatchOptions, inject } from 'vue';
 import type { RouteLocationNormalizedGeneric, RouteMeta } from 'vue-router';
 import { isNil } from '@jellyfin-vue/shared/validation';
-import DefaultLayout from '@/layouts/default.vue';
-import FullPageLayout from '@/layouts/fullpage.vue';
-import ServerLayout from '@/layouts/server.vue';
-import { usePausableEffect } from '@/composables/use-pausable-effect';
-import { JView_isRouting } from '@/store/keys';
-import { router } from '@/plugins/router';
+import DefaultLayout from '#/layouts/default.vue';
+import FullPageLayout from '#/layouts/fullpage.vue';
+import ServerLayout from '#/layouts/server.vue';
+import { usePausableEffect } from '#/composables/use-pausable-effect';
+import { JView_isRouting } from '#/store/keys';
+import { router } from '#/plugins/router';
 
 /**
  * Return the appropiate layout component according to the route's meta.layout property

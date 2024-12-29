@@ -41,9 +41,9 @@ import IMdiHome from 'virtual:icons/mdi/home';
 import { computed, inject, type Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import type { RouteNamedMap } from 'vue-router/auto-routes';
-import type { getLibraryIcon } from '@/utils/items';
-import { transparencyEffects } from '@/store';
-import { JView_isRouting } from '@/store/keys';
+import type { getLibraryIcon } from '#/utils/items';
+import { transparencyEffects } from '#/store';
+import { JView_isRouting } from '#/store/keys';
 
 export interface DrawerItem {
   icon: ReturnType<typeof getLibraryIcon>;

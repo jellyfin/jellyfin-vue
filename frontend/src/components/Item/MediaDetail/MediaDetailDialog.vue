@@ -29,7 +29,7 @@
 
     <VCardText
       v-if="selectedMediaSource"
-      class="d-flex flex-column flex-grow-1 pa-3">
+      class="d-flex flex-grow-1 flex-column pa-3">
       <template v-if="(selectedMediaSource.MediaStreams?.length ?? 0) > 0">
         <VTabs
           v-model="currentTab"
@@ -148,8 +148,8 @@ import type {
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { isArray, isNil, isNumber } from '@jellyfin-vue/shared/validation';
-import { getLocaleName } from '@/utils/i18n';
-import { formatBitRate, formatFileSize } from '@/utils/items';
+import { getLocaleName } from '#/utils/i18n';
+import { formatBitRate, formatFileSize } from '#/utils/items';
 
 const { item, mediaSourceIndex } = defineProps<{ item: BaseItemDto; mediaSourceIndex?: number }>();
 

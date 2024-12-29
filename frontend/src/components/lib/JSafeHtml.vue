@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Static, createVNode, h } from 'vue';
-import { sanitizeHtml } from '@/utils/html';
+import { sanitizeHtml } from '#/utils/html';
 
 interface Props {
   html: string;

@@ -26,9 +26,10 @@
     "noImplicitOverride": true,
     "noFallthroughCasesInSwitch": true,
     "incremental": true,
+    "allowImportingTsExtensions": true,
     "tsBuildInfoFile": "../../../node_modules/.cache/tsconfig.tsbuildinfo",
     "paths": {
-      "@/*": ["./src/*"]
+      "#/*": ["./src/*"]
     },
   },
   "vueCompilerOptions": {

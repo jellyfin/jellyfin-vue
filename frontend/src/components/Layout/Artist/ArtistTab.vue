@@ -46,7 +46,7 @@
 
 <script setup lang="ts">
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { getItemDetailsLink } from '@/utils/items';
+import { getItemDetailsLink } from '#/utils/items';
 
 const { releases, tracksByRelease } = defineProps<{
   tracksByRelease: Map<BaseItemDto['Id'], BaseItemDto[]>;
