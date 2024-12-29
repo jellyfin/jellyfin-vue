@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import type { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { computed } from 'vue';
-import { remote } from '@/plugins/remote';
+import { remote } from '#/plugins/remote';
 
 /**
  * TODO: In reality, rounded is unnecessary since it can be passed as fallthrough,

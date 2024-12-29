@@ -1,3 +1,4 @@
+import { join } from 'node:path';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 import Virtual from '@rollup/plugin-virtual';
 import VueDevTools from 'vite-plugin-vue-devtools';
@@ -11,14 +12,14 @@ import Components from 'unplugin-vue-components/vite';
 import UnoCSS from 'unocss/vite';
 import VueRouter from 'unplugin-vue-router/vite';
 import { defineConfig } from 'vite';
-import { BundleAnalysis, BundleChunking, BundleSizeReport } from '../packages/vite-plugins/src';
-import { JellyfinVueUIToolkit } from '../packages/ui-toolkit/src/resolver';
-import { entrypoints, localeFilesFolder, srcRoot } from './scripts/paths';
-import virtualModules from './scripts/virtual-modules';
 /**
  * TODO: Replace with @jellyfin-vue/vite-plugins after https://github.com/vitejs/vite/issues/5370
  * is fixed
  */
+import { BundleAnalysis, BundleChunking, BundleSizeReport } from '../packages/vite-plugins/src';
+import { JellyfinVueUIToolkit } from '../packages/ui-toolkit/src/resolver';
+import virtualModules from './scripts/virtual-modules';
+import { localeFilesFolder } from './scripts/paths';
 
 export default defineConfig({
   appType: 'spa',
@@ -86,9 +87,9 @@ export default defineConfig({
     reportCompressedSize: false,
     rollupOptions: {
       input: {
-        splashscreen: entrypoints.splashscreen,
-        main: entrypoints.main,
-        index: entrypoints.index
+        splashscreen: join(import.meta.dirname, 'src/splashscreen.ts'),
+        main: join(import.meta.dirname, 'src/main.ts'),
+        index: join(import.meta.dirname, 'index.html')
       },
       output: {
         validate: true
@@ -112,11 +113,6 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 3000
-  },
-  resolve: {
-    alias: {
-      '@/': srcRoot
-    }
   },
   worker: {
     format: 'es'

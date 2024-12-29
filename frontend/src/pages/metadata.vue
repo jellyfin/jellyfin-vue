@@ -26,7 +26,7 @@
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { ref } from 'vue';
-import { remote } from '@/plugins/remote';
+import { remote } from '#/plugins/remote';
 
 interface ITreeNode {
   id: string;

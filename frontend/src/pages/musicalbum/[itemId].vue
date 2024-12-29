@@ -109,10 +109,10 @@ import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api'
 import { useRoute } from 'vue-router';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { SortOrder } from '@jellyfin/sdk/lib/generated-client';
-import { getItemDetailsLink } from '@/utils/items';
-import { useBaseItem } from '@/composables/apis';
-import { useItemBackdrop } from '@/composables/backdrop';
-import { useItemPageTitle } from '@/composables/page-title';
+import { getItemDetailsLink } from '#/utils/items';
+import { useBaseItem } from '#/composables/apis';
+import { useItemBackdrop } from '#/composables/backdrop';
+import { useItemPageTitle } from '#/composables/page-title';
 
 const route = useRoute('/musicalbum/[itemId]');
 

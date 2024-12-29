@@ -13,13 +13,13 @@ import { computedAsync, useFullscreen } from '@vueuse/core';
 import { MediaStreamType } from '@jellyfin/sdk/lib/generated-client';
 import { isNil, sealed } from '@jellyfin-vue/shared/validation';
 import { playbackManager } from './playback-manager';
-import { mediaElementRef } from '@/store';
-import { CommonStore } from '@/store/super/common-store';
-import { router } from '@/plugins/router';
-import { remote } from '@/plugins/remote';
-import type { ParsedSubtitleTrack } from '@/plugins/workers/generic/subtitles';
-import { runGenericWorkerFunc } from '@/plugins/workers';
-import { subtitleSettings } from '@/store/client-settings/subtitle-settings';
+import { mediaElementRef } from '#/store';
+import { CommonStore } from '#/store/super/common-store';
+import { router } from '#/plugins/router';
+import { remote } from '#/plugins/remote';
+import type { ParsedSubtitleTrack } from '#/plugins/workers/generic/subtitles';
+import { runGenericWorkerFunc } from '#/plugins/workers';
+import { subtitleSettings } from '#/store/client-settings/subtitle-settings';
 
 /**
  * == INTERFACES AND TYPES ==

@@ -40,15 +40,15 @@ import HlsWorkerUrl from 'hls.js/dist/hls.worker.js?url';
 import { computed, nextTick, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { isNil } from '@jellyfin-vue/shared/validation';
-import { useSnackbar } from '@/composables/use-snackbar';
+import { useSnackbar } from '#/composables/use-snackbar';
 import {
   mediaElementRef,
   mediaWebAudio
-} from '@/store';
-import { playbackManager } from '@/store/playback-manager';
-import { playerElement, videoContainerRef } from '@/store/player-element';
-import { getImageInfo } from '@/utils/images';
-import { subtitleSettings } from '@/store/client-settings/subtitle-settings';
+} from '#/store';
+import { playbackManager } from '#/store/playback-manager';
+import { playerElement, videoContainerRef } from '#/store/player-element';
+import { getImageInfo } from '#/utils/images';
+import { subtitleSettings } from '#/store/client-settings/subtitle-settings';
 
 const { t } = useI18n();
 let busyWebAudio = false;

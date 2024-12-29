@@ -84,9 +84,9 @@ import { getPersonsApi } from '@jellyfin/sdk/lib/utils/api/persons-api';
 import { refDebounced } from '@vueuse/core';
 import { computed, shallowRef } from 'vue';
 import { useRoute } from 'vue-router';
-import { apiStore } from '@/store/api';
-import { useResponsiveClasses } from '@/composables/use-responsive-classes';
-import { useBaseItem } from '@/composables/apis';
+import { apiStore } from '#/store/api';
+import { useResponsiveClasses } from '#/composables/use-responsive-classes';
+import { useBaseItem } from '#/composables/apis';
 
 const route = useRoute();
 

@@ -29,8 +29,8 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import { clientSettings } from '@/store/client-settings';
-import { getLocaleNativeName } from '@/utils/i18n';
+import { clientSettings } from '#/store/client-settings';
+import { getLocaleNativeName } from '#/utils/i18n';
 
 const { bottom, large, elevated } = defineProps<{
   bottom?: boolean;

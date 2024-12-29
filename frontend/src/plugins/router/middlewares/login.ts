@@ -5,10 +5,10 @@ import type {
 import type { RouteNamedMap } from 'vue-router/auto-routes';
 import { until } from '@vueuse/core';
 import { isNil } from '@jellyfin-vue/shared/validation';
-import { remote } from '@/plugins/remote';
-import { jsonConfig } from '@/utils/external-config';
-import { useSnackbar } from '@/composables/use-snackbar';
-import { i18n } from '@/plugins/i18n';
+import { remote } from '#/plugins/remote';
+import { jsonConfig } from '#/utils/external-config';
+import { useSnackbar } from '#/composables/use-snackbar';
+import { i18n } from '#/plugins/i18n';
 
 const serverAddUrl = '/server/add';
 const serverSelectUrl = '/server/select';

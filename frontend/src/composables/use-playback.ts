@@ -1,8 +1,8 @@
 import { useFullscreen, useMagicKeys, whenever } from '@vueuse/core';
 import { watch } from 'vue';
-import { router } from '@/plugins/router';
-import { mediaElementRef } from '@/store';
-import { playbackManager } from '@/store/playback-manager';
+import { router } from '#/plugins/router';
+import { mediaElementRef } from '#/store';
+import { playbackManager } from '#/store/playback-manager';
 
 interface PlaybackComposableReturn {
   fullscreen: ReturnType<typeof useFullscreen>;

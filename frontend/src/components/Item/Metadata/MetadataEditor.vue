@@ -235,11 +235,11 @@ import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { watchImmediate } from '@vueuse/core';
 import { isArray, isNil } from '@jellyfin-vue/shared/validation';
-import { getItemImageUrl } from '@/utils/images';
-import { remote } from '@/plugins/remote';
-import { useSnackbar } from '@/composables/use-snackbar';
-import { useDateFns } from '@/composables/use-datefns';
-import { pick } from '@/utils/data-manipulation';
+import { getItemImageUrl } from '#/utils/images';
+import { remote } from '#/plugins/remote';
+import { useSnackbar } from '#/composables/use-snackbar';
+import { useDateFns } from '#/composables/use-datefns';
+import { pick } from '#/utils/data-manipulation';
 
 interface ContentOption {
   value: string;

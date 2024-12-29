@@ -18,11 +18,11 @@
 <script setup lang="ts">
 import { computed, type StyleValue } from 'vue';
 import { isNil } from '@jellyfin-vue/shared/validation';
-import { subtitleSettings } from '@/store/client-settings/subtitle-settings';
-import { DEFAULT_TYPOGRAPHY } from '@/store';
-import { playerElement } from '@/store/player-element';
-import type { ParsedSubtitleTrack, Dialogue } from '@/plugins/workers/generic/subtitles';
-import { playbackManager } from '@/store/playback-manager';
+import { subtitleSettings } from '#/store/client-settings/subtitle-settings';
+import { DEFAULT_TYPOGRAPHY } from '#/store';
+import { playerElement } from '#/store/player-element';
+import type { ParsedSubtitleTrack, Dialogue } from '#/plugins/workers/generic/subtitles';
+import { playbackManager } from '#/store/playback-manager';
 
 const { preview } = defineProps<{
   /**

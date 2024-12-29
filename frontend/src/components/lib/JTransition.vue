@@ -26,8 +26,8 @@
 
 <script lang="ts">
 import { Transition, TransitionGroup, type TransitionProps, shallowRef, computed } from 'vue';
-import { prefersNoMotion, isSlow } from '@/store';
-import { usePausableEffect } from '@/composables/use-pausable-effect';
+import { prefersNoMotion, isSlow } from '#/store';
+import { usePausableEffect } from '#/composables/use-pausable-effect';
 
 interface Props {
   name?: 'fade' | 'rotated-zoom' | 'slide-y' | 'slide-y-reverse' | 'slide-x' | 'slide-x-reverse';

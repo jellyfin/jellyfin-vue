@@ -7,4 +7,4 @@
  * We could re-define it here, but we would lose access to the
  * JSDoc of the original: that's why we just re-export it again.
  */
-export { useSnackbar } from '@/components/System/Snackbar.vue';
+export { useSnackbar } from '#/components/System/Snackbar.vue';

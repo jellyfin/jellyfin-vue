@@ -8,8 +8,8 @@
  */
 import type { UnknownRecord } from 'type-fest';
 import { isBool } from '@jellyfin-vue/shared/validation';
-import { remote } from '@/plugins/remote';
-import { BaseState, type BaseStateParams } from '@/store/super/base-state';
+import { remote } from '#/plugins/remote';
+import { BaseState, type BaseStateParams } from '#/store/super/base-state';
 
 export interface CommonStoreParams<T> extends BaseStateParams<T> {
   resetOnLogout?: boolean | MaybePromise<T>;
