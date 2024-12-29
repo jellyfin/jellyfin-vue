@@ -32,7 +32,7 @@ import {
   ImageType
 } from '@jellyfin/sdk/lib/generated-client';
 import { computed } from 'vue';
-import { getBlurhash, getImageInfo } from '@/utils/images';
+import { getBlurhash, getImageInfo } from '#/utils/images';
 
 const { item, width, height, punch, type = ImageType.Primary } = defineProps<{
   item: BaseItemDto | BaseItemPerson;

@@ -82,8 +82,8 @@ import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { type BaseItemPerson, ImageType } from '@jellyfin/sdk/lib/generated-client';
 import { watchImmediate } from '@vueuse/core';
-import { getItemImageUrl } from '@/utils/images';
-import { isNil } from '@/utils/validation';
+import { isNil } from '@jellyfin-vue/shared/validation';
+import { getItemImageUrl } from '#/utils/images';
 
 const { person } = defineProps<{ person: BaseItemPerson | undefined }>();
 

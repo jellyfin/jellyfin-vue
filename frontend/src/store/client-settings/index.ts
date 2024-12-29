@@ -5,10 +5,10 @@ import {
 } from '@vueuse/core';
 import { computed } from 'vue';
 import { isNil, sealed } from '@jellyfin-vue/shared/validation';
-import { i18n } from '@/plugins/i18n';
-import { vuetify } from '@/plugins/vuetify';
-import { SyncedStore } from '@/store/super/synced-store';
-import type { TypographyChoices } from '@/store';
+import { i18n } from '#/plugins/i18n';
+import { vuetify } from '#/plugins/vuetify';
+import { SyncedStore } from '#/store/super/synced-store';
+import type { TypographyChoices } from '#/store';
 
 /**
  * == INTERFACES AND TYPES ==

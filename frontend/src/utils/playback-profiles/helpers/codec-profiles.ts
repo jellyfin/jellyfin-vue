@@ -1,5 +1,5 @@
 /**
- * @deprecated - Check @/utils/playback-profiles/index
+ * @deprecated - Check #/utils/playback-profiles/index
  */
 
 import {
@@ -21,7 +21,7 @@ import {
   isWebOS,
   isXbox,
   safariVersion
-} from '@/utils/browser-detection';
+} from '#/utils/browser-detection';
 
 /**
  * Gets the max video bitrate

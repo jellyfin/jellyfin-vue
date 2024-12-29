@@ -53,7 +53,7 @@
  */
 import { computed, shallowRef, watch } from 'vue';
 import { isObj } from '@jellyfin-vue/shared/validation';
-import JTransition, { type JTransitionProps } from '@/components/lib/JTransition.vue';
+import JTransition, { type JTransitionProps } from '#/components/lib/JTransition.vue';
 
 /**
  * We don't want <link> to inherit any attributes and the component might not render any

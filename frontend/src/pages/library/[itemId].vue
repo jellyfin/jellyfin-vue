@@ -79,9 +79,9 @@ import { getStudiosApi } from '@jellyfin/sdk/lib/utils/api/studios-api';
 import { computed, onBeforeMount, ref, shallowRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
-import { methodsAsObject, useBaseItem } from '@/composables/apis';
-import type { Filters } from '@/components/Buttons/FilterButton.vue';
-import { useItemPageTitle } from '@/composables/page-title';
+import { methodsAsObject, useBaseItem } from '#/composables/apis';
+import type { Filters } from '#/components/Buttons/FilterButton.vue';
+import { useItemPageTitle } from '#/composables/page-title';
 
 const { t } = useI18n();
 const route = useRoute('/library/[itemId]');

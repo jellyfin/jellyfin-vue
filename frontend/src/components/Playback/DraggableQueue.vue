@@ -45,7 +45,7 @@ import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import Sortable from 'sortablejs';
 import { onBeforeUnmount, watch, useTemplateRef } from 'vue';
 import { isNumber } from '@jellyfin-vue/shared/validation';
-import { playbackManager } from '@/store/playback-manager';
+import { playbackManager } from '#/store/playback-manager';
 
 let sortable: Sortable | undefined;
 const container = useTemplateRef<HTMLSpanElement>('container');

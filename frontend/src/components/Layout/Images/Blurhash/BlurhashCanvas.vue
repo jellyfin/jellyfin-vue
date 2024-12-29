@@ -13,8 +13,8 @@
 import { transfer } from 'comlink';
 import { shallowRef, watch, useTemplateRef } from 'vue';
 import { computedAsync } from '@vueuse/core';
-import { blurhashDecoder, canvasDrawer } from '@/plugins/workers';
-import { BLURHASH_DEFAULT_HEIGHT, BLURHASH_DEFAULT_WIDTH, BLURHASH_DEFAULT_PUNCH, isDocumentVisible } from '@/store';
+import { blurhashDecoder, canvasDrawer } from '#/plugins/workers';
+import { BLURHASH_DEFAULT_HEIGHT, BLURHASH_DEFAULT_WIDTH, BLURHASH_DEFAULT_PUNCH, isDocumentVisible } from '#/store';
 
 /**
  * Browsers stop canvases when the page is out of view (for example, minimised or in a background tab).

@@ -11,5 +11,5 @@
 </template>
 
 <script setup lang="ts">
-import { playbackManager } from '@/store/playback-manager';
+import { playbackManager } from '#/store/playback-manager';
 </script>

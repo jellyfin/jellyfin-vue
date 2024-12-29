@@ -22,6 +22,6 @@
 </template>
 
 <script setup lang="ts">
-import { remote } from '@/plugins/remote';
-import { clientSettings } from '@/store/client-settings';
+import { remote } from '#/plugins/remote';
+import { clientSettings } from '#/store/client-settings';
 </script>

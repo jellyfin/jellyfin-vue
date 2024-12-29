@@ -49,9 +49,8 @@
 <script setup lang="ts">
 import { useAttrs, computed } from 'vue';
 import { isNil } from '@jellyfin-vue/shared/validation';
-import { hasFinePointer } from '@/store';
-import type { CardShapes } from '@/utils/items';
-import JOverlay from '@/components/lib/JOverlay.vue';
+import { hasFinePointer } from '#/store';
+import type { CardShapes } from '#/utils/items';
 
 const { shape, progress, overlay, forceOverlay, to, margin } = defineProps<{
   shape: CardShapes;

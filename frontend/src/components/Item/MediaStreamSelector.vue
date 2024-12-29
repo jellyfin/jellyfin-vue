@@ -32,9 +32,9 @@ import IMdiSurroundSound51 from 'virtual:icons/mdi/surround-sound-5-1';
 import IMdiSurroundSound71 from 'virtual:icons/mdi/surround-sound-7-1';
 import IMdiSurroundSound from 'virtual:icons/mdi/surround-sound';
 import { watchImmediate } from '@vueuse/core';
-import { getLocaleName } from '@/utils/i18n';
-import { upperFirst } from '@/utils/data-manipulation';
-import { isNil } from '@/utils/validation';
+import { isNil } from '@jellyfin-vue/shared/validation';
+import { getLocaleName } from '#/utils/i18n';
+import { upperFirst } from '#/utils/data-manipulation';
 
 const { mediaStreams, type, defaultStreamIndex } = defineProps<{
   mediaStreams: MediaStream[];

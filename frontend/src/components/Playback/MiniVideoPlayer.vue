@@ -67,6 +67,6 @@
 </template>
 
 <script setup lang="ts">
-import { playbackManager } from '@/store/playback-manager';
-import { playerElement, videoContainerRef } from '@/store/player-element';
+import { playbackManager } from '#/store/playback-manager';
+import { playerElement, videoContainerRef } from '#/store/player-element';
 </script>

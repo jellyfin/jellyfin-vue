@@ -14,8 +14,7 @@
       "vite/client",
       "vuetify",
       "vue"
-    ],
-    "baseUrl": "."
+    ]
   },
   "exclude": [
     "dist",

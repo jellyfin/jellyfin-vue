@@ -1,5 +1,5 @@
 /**
- * @deprecated - Check @/utils/playback-profiles/index
+ * @deprecated - Check #/utils/playback-profiles/index
  */
 
 import { hasVp8Support } from './mp4-video-formats';
@@ -11,7 +11,7 @@ import {
   isTizen55,
   isTv,
   isWebOS
-} from '@/utils/browser-detection';
+} from '#/utils/browser-detection';
 
 /**
  * Checks if the client can play the AC3 codec

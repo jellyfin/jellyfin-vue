@@ -11,7 +11,7 @@ import { isNil, sealed } from '@jellyfin-vue/shared/validation';
 import RemotePluginAuthInstance from './auth';
 import RemotePluginSDKInstance from './sdk';
 import RemotePluginSocketInstance from './socket';
-import { jsonConfig } from '@/utils/external-config';
+import { jsonConfig } from '#/utils/external-config';
 
 @sealed
 class RemotePlugin {

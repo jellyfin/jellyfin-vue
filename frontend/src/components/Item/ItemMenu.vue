@@ -83,13 +83,13 @@ import {
   getItemIdFromSourceIndex,
   getItemSeasonDownloadMap,
   getItemSeriesDownloadMap
-} from '@/utils/items';
-import { taskManager } from '@/store/task-manager';
-import { playbackManager } from '@/store/playback-manager';
-import { apiStore } from '@/store/api';
-import { remote } from '@/plugins/remote';
-import { useSnackbar } from '@/composables/use-snackbar';
-import { useConfirmDialog } from '@/composables/use-confirm-dialog';
+} from '#/utils/items';
+import { taskManager } from '#/store/task-manager';
+import { playbackManager } from '#/store/playback-manager';
+import { apiStore } from '#/store/api';
+import { remote } from '#/plugins/remote';
+import { useSnackbar } from '#/composables/use-snackbar';
+import { useConfirmDialog } from '#/composables/use-confirm-dialog';
 
 interface MenuOption {
   title: string;

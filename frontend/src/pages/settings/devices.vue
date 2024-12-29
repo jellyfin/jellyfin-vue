@@ -104,10 +104,10 @@ import { getDevicesApi } from '@jellyfin/sdk/lib/utils/api/devices-api';
 import { formatRelative, parseJSON } from 'date-fns';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { remote } from '@/plugins/remote';
-import { useSnackbar } from '@/composables/use-snackbar';
-import { useDateFns } from '@/composables/use-datefns';
-import { isNil } from '@/utils/validation';
+import { isNil } from '@jellyfin-vue/shared/validation';
+import { remote } from '#/plugins/remote';
+import { useSnackbar } from '#/composables/use-snackbar';
+import { useDateFns } from '#/composables/use-datefns';
 
 const { t } = useI18n();
 

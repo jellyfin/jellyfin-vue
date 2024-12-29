@@ -5,6 +5,9 @@
   "browserslist": [
     "defaults and supports es6-module"
   ],
+  "imports": {
+    "#/*": "./src/*"
+  },
   "scripts": {
     "analyze:bundle": "vite build --mode analyze:bundle",
     "analyze:cycles": "vite build --mode analyze:cycles",

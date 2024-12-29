@@ -56,9 +56,9 @@ import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api'
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { isStr } from '@jellyfin-vue/shared/validation';
-import { useResponsiveClasses } from '@/composables/use-responsive-classes';
-import { useBaseItem } from '@/composables/apis';
-import { useItemPageTitle } from '@/composables/page-title';
+import { useResponsiveClasses } from '#/composables/use-responsive-classes';
+import { useBaseItem } from '#/composables/apis';
+import { useItemPageTitle } from '#/composables/page-title';
 
 const route = useRoute('/genre/[itemId]');
 

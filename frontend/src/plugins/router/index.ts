@@ -10,7 +10,7 @@ import { adminGuard } from './middlewares/admin-pages';
 import { loginGuard } from './middlewares/login';
 import { metaGuard } from './middlewares/meta';
 import { validateGuard } from './middlewares/validate';
-import { jsonConfig } from '@/utils/external-config';
+import { jsonConfig } from '#/utils/external-config';
 
 export const router = createRouter({
   history:

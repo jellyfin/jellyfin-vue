@@ -106,11 +106,11 @@ import { A11y, EffectCoverflow, Virtual } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { computed, shallowRef, watchEffect } from 'vue';
 import { isNil } from '@jellyfin-vue/shared/validation';
-import { playbackGuard } from '@/plugins/router/middlewares/playback';
-import { playbackManager } from '@/store/playback-manager';
-import { usePlayback } from '@/composables/use-playback';
-import { useItemBackdrop } from '@/composables/backdrop';
-import { useItemPageTitle } from '@/composables/page-title';
+import { playbackGuard } from '#/plugins/router/middlewares/playback';
+import { playbackManager } from '#/store/playback-manager';
+import { usePlayback } from '#/composables/use-playback';
+import { useItemBackdrop } from '#/composables/backdrop';
+import { useItemPageTitle } from '#/composables/page-title';
 
 defineOptions({
   beforeRouteEnter: playbackGuard
