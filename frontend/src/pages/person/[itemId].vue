@@ -174,7 +174,7 @@ import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { format } from 'date-fns';
-import { computed, ref } from 'vue';
+import { computed, shallowRef } from 'vue';
 import { useRoute } from 'vue-router';
 import { defaultSortOrder as sortBy } from '@/utils/items';
 import { useDateFns } from '@/composables/use-datefns';
@@ -184,43 +184,52 @@ import { useItemPageTitle } from '@/composables/page-title';
 
 const route = useRoute('/person/[itemId]');
 
-const activeTab = ref(4);
+const activeTab = shallowRef(4);
 
-const { data: item } = await useBaseItem(getUserLibraryApi, 'getItem')(() => ({
-  itemId: route.params.itemId
-}));
-const { data: relatedItems } = await useBaseItem(getLibraryApi, 'getSimilarItems')(() => ({
-  itemId: route.params.itemId,
-  limit: 5
-}));
-const { data: movies } = await useBaseItem(getItemsApi, 'getItems')(() => ({
-  personIds: [route.params.itemId],
-  sortBy,
-  sortOrder: [SortOrder.Descending],
-  recursive: true,
-  includeItemTypes: [BaseItemKind.Movie]
-}));
-const { data: series } = await useBaseItem(getItemsApi, 'getItems')(() => ({
-  personIds: [route.params.itemId],
-  sortBy,
-  sortOrder: [SortOrder.Descending],
-  recursive: true,
-  includeItemTypes: [BaseItemKind.Series]
-}));
-const { data: books } = await useBaseItem(getItemsApi, 'getItems')(() => ({
-  personIds: [route.params.itemId],
-  sortBy,
-  sortOrder: [SortOrder.Descending],
-  recursive: true,
-  includeItemTypes: [BaseItemKind.Book]
-}));
-const { data: photos } = await useBaseItem(getItemsApi, 'getItems')(() => ({
-  personIds: [route.params.itemId],
-  sortBy,
-  sortOrder: [SortOrder.Descending],
-  recursive: true,
-  includeItemTypes: [BaseItemKind.Photo]
-}));
+const [
+  { data: item },
+  { data: relatedItems },
+  { data: movies },
+  { data: series },
+  { data: books },
+  { data: photos }
+] = await Promise.all([
+  useBaseItem(getUserLibraryApi, 'getItem')(() => ({
+    itemId: route.params.itemId
+  })),
+  useBaseItem(getLibraryApi, 'getSimilarItems')(() => ({
+    itemId: route.params.itemId,
+    limit: 5
+  })),
+  useBaseItem(getItemsApi, 'getItems')(() => ({
+    personIds: [route.params.itemId],
+    sortBy,
+    sortOrder: [SortOrder.Descending],
+    recursive: true,
+    includeItemTypes: [BaseItemKind.Movie]
+  })),
+  useBaseItem(getItemsApi, 'getItems')(() => ({
+    personIds: [route.params.itemId],
+    sortBy,
+    sortOrder: [SortOrder.Descending],
+    recursive: true,
+    includeItemTypes: [BaseItemKind.Series]
+  })),
+  useBaseItem(getItemsApi, 'getItems')(() => ({
+    personIds: [route.params.itemId],
+    sortBy,
+    sortOrder: [SortOrder.Descending],
+    recursive: true,
+    includeItemTypes: [BaseItemKind.Book]
+  })),
+  useBaseItem(getItemsApi, 'getItems')(() => ({
+    personIds: [route.params.itemId],
+    sortBy,
+    sortOrder: [SortOrder.Descending],
+    recursive: true,
+    includeItemTypes: [BaseItemKind.Photo]
+  }))
+]);
 
 const birthDate = computed(() =>
   item.value.PremiereDate

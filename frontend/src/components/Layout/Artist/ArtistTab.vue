@@ -34,7 +34,9 @@
           v-if="$vuetify.display.mdAndUp"
           class="my-2">
           <VCol>
-            <TrackList :item="release" />
+            <TrackList
+              :tracks
+              :item="release" />
           </VCol>
         </VRow>
       </div>
@@ -47,6 +49,7 @@ import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getItemDetailsLink } from '@/utils/items';
 
 const { releases } = defineProps<{
+  tracks: BaseItemDto[];
   releases: BaseItemDto[];
 }>();
 </script>
