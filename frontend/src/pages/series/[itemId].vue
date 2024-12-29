@@ -156,7 +156,8 @@
         <VCol cols="12">
           <SeasonTabs
             v-if="item.Type === 'Series'"
-            :item="item" />
+            :seasons
+            :season-episodes />
         </VCol>
       </VRow>
     </template>
@@ -182,12 +183,15 @@
 
 <script setup lang="ts">
 import type {
+  BaseItemDto,
   BaseItemPerson
 } from '@jellyfin/sdk/lib/generated-client';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
+import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
+import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getItemDetailsLink } from '@/utils/items';
 import { useBaseItem } from '@/composables/apis';
 import { useItemBackdrop } from '@/composables/backdrop';
@@ -195,13 +199,34 @@ import { useItemPageTitle } from '@/composables/page-title';
 
 const route = useRoute('/series/[itemId]');
 
-const { data: item } = await useBaseItem(getUserLibraryApi, 'getItem')(() => ({
-  itemId: route.params.itemId
-}));
-const { data: relatedItems } = await useBaseItem(getLibraryApi, 'getSimilarItems')(() => ({
-  itemId: route.params.itemId,
-  limit: 5
-}));
+const [{ data: item }, { data: relatedItems }, { data: seasons }] = await Promise.all([
+  useBaseItem(getUserLibraryApi, 'getItem')(() => ({
+    itemId: route.params.itemId
+  })),
+  useBaseItem(getLibraryApi, 'getSimilarItems')(() => ({
+    itemId: route.params.itemId,
+    limit: 5
+  })),
+  useBaseItem(getTvShowsApi, 'getSeasons')(() => ({
+    seriesId: route.params.itemId
+  }))
+]);
+
+const seasonsData = await Promise.all(seasons.value.map(s =>
+  useBaseItem(getItemsApi, 'getItems')(() => ({
+    parentId: s.Id
+  }))
+));
+
+const seasonEpisodes = computed(() => {
+  const map = new Map<BaseItemDto['Id'], BaseItemDto[]>();
+
+  for (const [index, season] of seasons.value.entries()) {
+    map.set(season.Id, seasonsData[index]!.data.value);
+  }
+
+  return map;
+});
 
 const crew = computed<BaseItemPerson[]>(() =>
   (item.value.People ?? []).filter(person =>

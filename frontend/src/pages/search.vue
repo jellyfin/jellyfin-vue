@@ -96,27 +96,28 @@ const searchQuery = computed(() => route.query.q?.toString() ?? '');
 const searchDebounced = refDebounced(searchQuery, 400);
 const itemSearchMethod = computed(() => searchDebounced.value ? 'getItems' : undefined);
 const peopleSearchMethod = computed(() => searchDebounced.value ? 'getPersons' : undefined);
-const { loading: itemLoading, data: itemSearch } = await useBaseItem(getItemsApi, itemSearchMethod, {
-  skipCache: { request: true }
-})(() => ({
-  searchTerm: searchDebounced.value,
-  includeItemTypes: [
-    BaseItemKind.Movie,
-    BaseItemKind.Series,
-    BaseItemKind.Audio,
-    BaseItemKind.MusicAlbum,
-    BaseItemKind.Book,
-    BaseItemKind.MusicArtist,
-    BaseItemKind.Person
-  ],
-  recursive: true
-}));
-
-const { loading: peopleLoading, data: peopleSearch } = await useBaseItem(getPersonsApi, peopleSearchMethod, {
-  skipCache: { request: true }
-})(() => ({
-  searchTerm: searchDebounced.value
-}));
+const [{ loading: itemLoading, data: itemSearch }, { loading: peopleLoading, data: peopleSearch }] = await Promise.all([
+  useBaseItem(getItemsApi, itemSearchMethod, {
+    skipCache: { request: true }
+  })(() => ({
+    searchTerm: searchDebounced.value,
+    includeItemTypes: [
+      BaseItemKind.Movie,
+      BaseItemKind.Series,
+      BaseItemKind.Audio,
+      BaseItemKind.MusicAlbum,
+      BaseItemKind.Book,
+      BaseItemKind.MusicArtist,
+      BaseItemKind.Person
+    ],
+    recursive: true
+  })),
+  useBaseItem(getPersonsApi, peopleSearchMethod, {
+    skipCache: { request: true }
+  })(() => ({
+    searchTerm: searchDebounced.value
+  }))
+]);
 
 const serverSearchIds = computed(() => {
   if (!peopleLoading.value && !itemLoading.value) {

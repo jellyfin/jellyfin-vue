@@ -314,18 +314,25 @@ import { useItemPageTitle } from '@/composables/page-title';
 
 const route = useRoute('/genre/[itemId]');
 
-const { data: item } = await useBaseItem(getUserLibraryApi, 'getItem')(() => ({
-  itemId: route.params.itemId
-}));
-const { data: relatedItems } = await useBaseItem(getLibraryApi, 'getSimilarItems')(() => ({
-  itemId: route.params.itemId,
-  limit: 12
-}));
+const [
+  { data: item },
+  { data: relatedItems },
+  { data: childItems }
+] = await Promise.all([
+  useBaseItem(getUserLibraryApi, 'getItem')(() => ({
+    itemId: route.params.itemId
+  })),
+  useBaseItem(getLibraryApi, 'getSimilarItems')(() => ({
+    itemId: route.params.itemId,
+    limit: 12
+  })),
+  useBaseItem(getItemsApi, 'getItems')(() => ({
+    parentId: route.params.itemId
+  }))
+]);
+
 const { data: currentSeries } = await useBaseItem(getUserLibraryApi, 'getItem')(() => ({
   itemId: item.value.SeriesId ?? ''
-}));
-const { data: childItems } = await useBaseItem(getItemsApi, 'getItems')(() => ({
-  parentId: item.value.Id
 }));
 
 const selectedSource = ref<MediaSourceInfo>();

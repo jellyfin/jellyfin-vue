@@ -90,7 +90,8 @@
         <VCol cols="12">
           <TrackList
             v-if="item.Type === 'MusicAlbum'"
-            :item="item" />
+            :item="item"
+            :tracks />
         </VCol>
       </VRow>
     </template>
@@ -106,6 +107,8 @@
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { useRoute } from 'vue-router';
+import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
+import { SortOrder } from '@jellyfin/sdk/lib/generated-client';
 import { getItemDetailsLink } from '@/utils/items';
 import { useBaseItem } from '@/composables/apis';
 import { useItemBackdrop } from '@/composables/backdrop';
@@ -113,13 +116,20 @@ import { useItemPageTitle } from '@/composables/page-title';
 
 const route = useRoute('/musicalbum/[itemId]');
 
-const { data: item } = await useBaseItem(getUserLibraryApi, 'getItem')(() => ({
-  itemId: route.params.itemId
-}));
-const { data: relatedItems } = await useBaseItem(getLibraryApi, 'getSimilarItems')(() => ({
-  itemId: route.params.itemId,
-  limit: 5
-}));
+const [{ data: item }, { data: relatedItems }, { data: tracks }] = await Promise.all([
+  useBaseItem(getUserLibraryApi, 'getItem')(() => ({
+    itemId: route.params.itemId
+  })),
+  useBaseItem(getLibraryApi, 'getSimilarItems')(() => ({
+    itemId: route.params.itemId,
+    limit: 5
+  })),
+  useBaseItem(getItemsApi, 'getItems')(() => ({
+    parentId: route.params.itemId,
+    sortBy: ['SortName'],
+    sortOrder: [SortOrder.Ascending]
+  }))
+]);
 
 useItemPageTitle(item);
 useItemBackdrop(item);
