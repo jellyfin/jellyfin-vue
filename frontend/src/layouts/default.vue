@@ -19,9 +19,9 @@
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { computed, onBeforeMount, onUnmounted, provide, ref, watch } from 'vue';
 import { useDisplay } from 'vuetify';
-import type { DrawerItem } from '@/components/Layout/Navigation/NavigationDrawer.vue';
-import { playbackManager } from '@/store/playback-manager';
-import { fetchIndexPage, getLibraryIcon } from '@/utils/items';
+import type { DrawerItem } from '#/components/Layout/Navigation/NavigationDrawer.vue';
+import { playbackManager } from '#/store/playback-manager';
+import { fetchIndexPage, getLibraryIcon } from '#/utils/items';
 
 const display = useDisplay();
 const navDrawer = ref(!display.mobile.value);

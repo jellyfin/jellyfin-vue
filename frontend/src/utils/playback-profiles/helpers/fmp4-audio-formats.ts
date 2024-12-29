@@ -1,5 +1,5 @@
 /**
- * @deprecated - Check @/utils/playback-profiles/index
+ * @deprecated - Check #/utils/playback-profiles/index
  */
 
 import { getSupportedAudioCodecs } from './audio-formats';
@@ -10,7 +10,7 @@ import {
   hasEac3Support,
   hasMp3AudioSupport
 } from './mp4-audio-formats';
-import { isEdge } from '@/utils/browser-detection';
+import { isEdge } from '#/utils/browser-detection';
 
 /**
  * Gets an array with the supported fmp4 codecs

@@ -8,7 +8,7 @@ import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { reactive, watch } from 'vue';
 import type { LiteralUnion, Arrayable } from 'type-fest';
 import { isArray, isObj, isStr, sealed } from '@jellyfin-vue/shared/validation';
-import { remote } from '@/plugins/remote';
+import { remote } from '#/plugins/remote';
 
 /**
  * Class that we can use to transform to BaseItem when necessary

@@ -51,8 +51,8 @@ import IconEye from 'virtual:icons/mdi/eye';
 import IconEyeOff from 'virtual:icons/mdi/eye-off';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { remote } from '@/plugins/remote';
-import { useSnackbar } from '@/composables/use-snackbar';
+import { remote } from '#/plugins/remote';
+import { useSnackbar } from '#/composables/use-snackbar';
 
 const emit = defineEmits<{
   'previous-step': [];

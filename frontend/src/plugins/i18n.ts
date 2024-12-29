@@ -2,7 +2,7 @@ import { createI18n } from 'vue-i18n';
 import messages from '@intlify/unplugin-vue-i18n/messages';
 
 /**
- * See @/store/clientSettings to check where the current user language is initialised
+ * See #/store/clientSettings to check where the current user language is initialised
  */
 
 const DEFAULT_LANGUAGE = 'en';

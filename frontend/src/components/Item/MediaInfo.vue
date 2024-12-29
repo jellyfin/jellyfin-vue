@@ -32,7 +32,7 @@
 
 <script setup lang="ts">
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { getEndsAtTime, getRuntimeTime } from '@/utils/time';
+import { getEndsAtTime, getRuntimeTime } from '#/utils/time';
 
 const { item, year, rating, runtime, tracks, endsAt } = defineProps<{
   item: BaseItemDto;

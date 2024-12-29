@@ -176,11 +176,11 @@ import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api'
 import { format } from 'date-fns';
 import { computed, shallowRef } from 'vue';
 import { useRoute } from 'vue-router';
-import { defaultSortOrder as sortBy } from '@/utils/items';
-import { useDateFns } from '@/composables/use-datefns';
-import { useBaseItem } from '@/composables/apis';
-import { useItemBackdrop } from '@/composables/backdrop';
-import { useItemPageTitle } from '@/composables/page-title';
+import { defaultSortOrder as sortBy } from '#/utils/items';
+import { useDateFns } from '#/composables/use-datefns';
+import { useBaseItem } from '#/composables/apis';
+import { useItemBackdrop } from '#/composables/backdrop';
+import { useItemPageTitle } from '#/composables/page-title';
 
 const route = useRoute('/person/[itemId]');
 

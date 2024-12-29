@@ -141,9 +141,9 @@ import IMdiTextBox from 'virtual:icons/mdi/text-box';
 import { computed, type Component } from 'vue';
 import { useI18n } from 'vue-i18n';
 import type { RouteLocationRaw } from 'vue-router';
-import { remote } from '@/plugins/remote';
-import { version as clientVersion } from '@/../package.json';
-import { usePageTitle } from '@/composables/page-title';
+import { remote } from '#/plugins/remote';
+import { version as clientVersion } from '#/../package.json';
+import { usePageTitle } from '#/composables/page-title';
 
 const { t } = useI18n();
 

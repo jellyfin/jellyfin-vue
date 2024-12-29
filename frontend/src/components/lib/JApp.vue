@@ -24,9 +24,9 @@
  * TODO: Investigate or propose an RFC to allow style tags inside SFCs
  */
 import { computed } from 'vue';
-import { useLoading } from '@/composables/use-loading';
-import { DEFAULT_TYPOGRAPHY } from '@/store';
-import { clientSettings } from '@/store/client-settings';
+import { useLoading } from '#/composables/use-loading';
+import { DEFAULT_TYPOGRAPHY } from '#/store';
+import { clientSettings } from '#/store/client-settings';
 
 const { isLoading } = useLoading();
 

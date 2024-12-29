@@ -69,8 +69,8 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { playbackManager } from '@/store/playback-manager';
-import { getEndsAtTime, getRuntimeTime } from '@/utils/time';
+import { playbackManager } from '#/store/playback-manager';
+import { getEndsAtTime, getRuntimeTime } from '#/utils/time';
 
 const emit = defineEmits<{
   change: [isVisible: boolean];

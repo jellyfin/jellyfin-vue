@@ -57,7 +57,7 @@
 <script setup lang="ts">
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { shallowRef } from 'vue';
-import { getItemDetailsLink } from '@/utils/items';
+import { getItemDetailsLink } from '#/utils/items';
 
 interface Props {
   /**

@@ -83,8 +83,8 @@ import {
   canPlay,
   getItemDetailsLink,
   getShapeFromItemType
-} from '@/utils/items';
-import { taskManager } from '@/store/task-manager';
+} from '#/utils/items';
+import { taskManager } from '#/store/task-manager';
 
 const { item, shape, overlay, text, margin } = defineProps<{
   item: BaseItemDto;

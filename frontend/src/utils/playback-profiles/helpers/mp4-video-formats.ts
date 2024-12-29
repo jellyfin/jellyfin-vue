@@ -1,5 +1,5 @@
 /**
- * @deprecated - Check @/utils/playback-profiles/index
+ * @deprecated - Check #/utils/playback-profiles/index
  */
 
 import {
@@ -8,7 +8,7 @@ import {
   isTizen55,
   isTv,
   isWebOS5
-} from '@/utils/browser-detection';
+} from '#/utils/browser-detection';
 
 /**
  * Checks if the client has support for the H264 codec

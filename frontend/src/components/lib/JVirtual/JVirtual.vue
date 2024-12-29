@@ -52,7 +52,7 @@ import {
 } from './pipeline';
 import type { IJVirtualWorker } from './j-virtual.worker';
 import JVirtualWorker from './j-virtual.worker?worker';
-import { vuetify } from '@/plugins/vuetify';
+import { vuetify } from '#/plugins/vuetify';
 
 /**
  * SHARED STATE ACROSS ALL THE COMPONENT INSTANCES

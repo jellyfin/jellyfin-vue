@@ -10,8 +10,8 @@ import {
 } from '@jellyfin/sdk/lib/generated-client';
 import { getImageApi } from '@jellyfin/sdk/lib/utils/api/image-api';
 import type { ImageUrlsApi } from '@jellyfin/sdk/lib/utils/api/image-urls-api';
-import { remote } from '@/plugins/remote';
-import { CardShapes, getShapeFromItemType, isPerson } from '@/utils/items';
+import { remote } from '#/plugins/remote';
+import { CardShapes, getShapeFromItemType, isPerson } from '#/utils/items';
 
 export interface ImageUrlInfo {
   url?: string;
