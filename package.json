@@ -23,9 +23,11 @@
     "yarn": "yarn is not supported. Please use npm"
   },
   "scripts": {
-    "lint": "npm run lint --workspaces",
-    "lint:fix": "npm run lint:fix --workspaces",
-    "check:types": "npm run check:types --workspaces"
+    "lint": "npm run lint -ws --if-present",
+    "lint:fix": "npm run lint:fix -ws --if-present",
+    "check:types": "npm run check:types -ws --if-present",
+    "analyze:cycles": "npm run analyze:cycles -ws --if-present",
+    "test": "npm run test -ws --if-present"
   },
   "devDependencies": {
     "@eslint/config-inspector": "0.6.0",
