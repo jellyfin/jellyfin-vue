@@ -203,10 +203,15 @@ watch(mediaElementRef, async () => {
 });
 
 watch(playbackManager.currentSourceUrl,
-  (newUrl) => {
+  async (newUrl) => {
     if (hls) {
       hls.stopLoad();
     }
+
+    /**
+     * Ensure element is mounted before setting the source.
+     */
+    await nextTick();
 
     if (
       mediaElementRef.value
