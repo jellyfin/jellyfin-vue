@@ -221,8 +221,8 @@ const seasonsData = await Promise.all(seasons.value.map(s =>
 const seasonEpisodes = computed(() => {
   const map = new Map<BaseItemDto['Id'], BaseItemDto[]>();
 
-  for (const [index, season] of seasons.value.entries()) {
-    map.set(season.Id, seasonsData[index]!.data.value);
+  for (let i = 0; i < seasons.value.length; i++) {
+    map.set(seasons.value[i]!.Id, seasonsData[i]!.data.value);
   }
 
   return map;

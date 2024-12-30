@@ -76,22 +76,22 @@
             class="bg-transparent">
             <VWindowItem :value="0">
               <ArtistTab
-                :tracks
+                :tracks-by-release
                 :releases="discography" />
             </VWindowItem>
             <VWindowItem :value="1">
               <ArtistTab
-                :tracks
+                :tracks-by-release
                 :releases="albums" />
             </VWindowItem>
             <VWindowItem :value="2">
               <ArtistTab
-                :tracks
+                :tracks-by-release
                 :releases="eps" />
             </VWindowItem>
             <VWindowItem :value="3">
               <ArtistTab
-                :tracks
+                :tracks-by-release
                 :releases="singles" />
             </VWindowItem>
             <VWindowItem :value="4">
@@ -180,8 +180,7 @@ const [
   { data: relatedItems },
   { data: discography },
   { data: appearances },
-  { data: musicVideos },
-  { data: tracks }
+  { data: musicVideos }
 ] = await Promise.all([
   useBaseItem(getUserLibraryApi, 'getItem')(() => ({
     itemId: route.params.itemId
@@ -211,13 +210,26 @@ const [
     sortOrder: [SortOrder.Descending],
     recursive: true,
     includeItemTypes: [BaseItemKind.MusicVideo]
-  })),
-  useBaseItem(getItemsApi, 'getItems')(() => ({
-    parentId: route.params.itemId,
-    sortBy: ['SortName'],
-    sortOrder: [SortOrder.Ascending]
   }))
 ]);
+
+const all_tracks = await Promise.all(discography.value.map(album =>
+  useBaseItem(getItemsApi, 'getItems')(() => ({
+    parentId: album.Id,
+    sortBy: ['SortName'],
+    sortOrder: [SortOrder.Ascending]
+  })))
+);
+
+const tracksByRelease = computed(() => {
+  const map = new Map<BaseItemDto['Id'], BaseItemDto[]>();
+
+  for (let i = 0; i < discography.value.length; i++) {
+    map.set(discography.value[i]!.Id, all_tracks[i]!.data.value);
+  }
+
+  return map;
+});
 
 const singles = computed<BaseItemDto[]>(() =>
   discography.value.filter(

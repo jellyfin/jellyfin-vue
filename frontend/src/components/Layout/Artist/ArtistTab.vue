@@ -35,7 +35,7 @@
           class="my-2">
           <VCol>
             <TrackList
-              :tracks
+              :tracks="tracksByRelease.get(release.Id) ?? []"
               :item="release" />
           </VCol>
         </VRow>
@@ -48,8 +48,8 @@
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getItemDetailsLink } from '@/utils/items';
 
-const { releases } = defineProps<{
-  tracks: BaseItemDto[];
+const { releases, tracksByRelease } = defineProps<{
+  tracksByRelease: Map<BaseItemDto['Id'], BaseItemDto[]>;
   releases: BaseItemDto[];
 }>();
 </script>
