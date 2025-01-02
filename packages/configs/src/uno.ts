@@ -1,11 +1,15 @@
-import { defineConfig, presetUno } from 'unocss';
+import { defineConfig, presetUno, transformerVariantGroup } from 'unocss';
 
 export const defaultConfig = defineConfig({
   presets: [
     presetUno({
       prefix: 'uno-',
-      preflight: false
+      variablePrefix: 'j-',
+      preflight: 'on-demand'
     })
+  ],
+  transformers: [
+    transformerVariantGroup()
   ],
   theme: {
     colors: {

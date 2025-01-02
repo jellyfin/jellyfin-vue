@@ -1,7 +1,8 @@
 {
   "name": "@jellyfin-vue/vite-plugins",
-  "exports": "./index.ts",
+  "description": "Vite plugins for Jellyfin Vue packages",
   "type": "module",
+  "exports": "./src/index.ts",
   "scripts": {
     "lint": "eslint . --flag unstable_ts_config",
     "lint:fix": "eslint . --fix --flag unstable_ts_config",

@@ -10,16 +10,10 @@ import {
 } from '@vueuse/core';
 import { computed, shallowRef } from 'vue';
 import type { LiteralUnion } from 'type-fest';
-import { remote } from '@/plugins/remote';
-import { isNil } from '@/utils/validation';
-import { router } from '@/plugins/router';
-import type { SubtitleTypographyChoices } from '@/store/client-settings/subtitle-settings';
-
-/**
- * This file contains global variables (specially VueUse refs) that are used multiple times across the client.
- * VueUse composables will set new event handlers, so it's more
- * efficient to reuse those, both in components and TS files.
- */
+import { isNil } from '@jellyfin-vue/shared/validation';
+import { remote } from '#/plugins/remote';
+import { router } from '#/plugins/router';
+import type { SubtitleTypographyChoices } from '#/store/client-settings/subtitle-settings';
 
 export const DEFAULT_TYPOGRAPHY = 'Figtree Variable';
 /**

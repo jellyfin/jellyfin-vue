@@ -1,5 +1,5 @@
 /**
- * @deprecated - Check @/utils/playback-profiles/index
+ * @deprecated - Check #/utils/playback-profiles/index
  */
 
 import {
@@ -7,7 +7,7 @@ import {
   isTizen,
   isTv,
   supportsMediaSource
-} from '@/utils/browser-detection';
+} from '#/utils/browser-detection';
 
 /**
  * Checks if the client can play native HLS

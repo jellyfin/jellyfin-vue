@@ -1,5 +1,4 @@
-import { upperFirst } from '@/utils/data-manipulation';
-import { isStr } from '@/utils/validation';
+import { upperFirst } from '#/utils/data-manipulation';
 
 /**
  * Given a locale code, return the language name of another locale

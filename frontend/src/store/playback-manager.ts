@@ -18,19 +18,19 @@ import { getPlaystateApi } from '@jellyfin/sdk/lib/utils/api/playstate-api';
 import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
 import { computedAsync, watchThrottled } from '@vueuse/core';
 import { computed, watch, watchEffect } from 'vue';
-import { isNil, sealed } from '@/utils/validation';
-import { useBaseItem } from '@/composables/apis';
-import { useSnackbar } from '@/composables/use-snackbar';
-import { i18n } from '@/plugins/i18n';
-import { remote } from '@/plugins/remote';
-import { apiStore } from '@/store/api';
-import { getImageInfo } from '@/utils/images';
-import { getItemRuntime } from '@/utils/items';
-import playbackProfile from '@/utils/playback-profiles';
-import { msToTicks } from '@/utils/time';
-import { mediaControls, mediaElementRef } from '@/store';
-import { CommonStore } from '@/store/super/common-store';
-import { runGenericWorkerFunc } from '@/plugins/workers';
+import { isNil, sealed } from '@jellyfin-vue/shared/validation';
+import { useBaseItem } from '#/composables/apis';
+import { useSnackbar } from '#/composables/use-snackbar';
+import { i18n } from '#/plugins/i18n';
+import { remote } from '#/plugins/remote';
+import { apiStore } from '#/store/api';
+import { getImageInfo } from '#/utils/images';
+import { getItemRuntime } from '#/utils/items';
+import playbackProfile from '#/utils/playback-profiles';
+import { msToTicks } from '#/utils/time';
+import { mediaControls, mediaElementRef } from '#/store';
+import { CommonStore } from '#/store/super/common-store';
+import { runGenericWorkerFunc } from '#/plugins/workers';
 
 /**
  * == INTERFACES AND TYPES ==
@@ -138,7 +138,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   public readonly currentItem = computed<BaseItemDto | undefined>((previous) => {
     const newItem = this.queue.value[this.currentItemIndex.value ?? -1];
 
-    return newItem?.Id === previous?.Id ? previous : newItem;
+    return newItem.Id === previous?.Id ? previous : newItem;
   });
 
   public readonly currentMediaSourceIndex = computed(() => this._state.value.mediaSourceIndexes.source);
@@ -690,7 +690,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       request = response.value;
     } else if (
       item.Type === BaseItemKind.Episode
-      && remote.auth.currentUser.value?.Configuration?.EnableNextEpisodeAutoPlay
+      && remote.auth.currentUser.value.Configuration?.EnableNextEpisodeAutoPlay
       && item.SeriesId
     ) {
       /**

@@ -52,8 +52,8 @@
  * Given the img at loading is v-show'ed to false (display: none), the load events doesn't trigger either
  */
 import { computed, shallowRef, watch } from 'vue';
-import { isObj } from '@/utils/validation';
-import JTransition, { type JTransitionProps } from '@/components/lib/JTransition.vue';
+import { isObj } from '@jellyfin-vue/shared/validation';
+import JTransition, { type JTransitionProps } from '#/components/lib/JTransition.vue';
 
 /**
  * We don't want <link> to inherit any attributes and the component might not render any

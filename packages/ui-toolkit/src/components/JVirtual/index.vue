@@ -15,6 +15,7 @@
       <JSlot
         v-for="internal_item in visibleItems"
         :key="indexAsKey ? internal_item.index : undefined"
+        class="uno-transform-gpu"
         :class="gridClass"
         :style="internal_item.style">
         <slot
@@ -41,6 +42,7 @@ import {
   useTemplateRef
 } from 'vue';
 import { releaseProxy, wrap } from 'comlink';
+import { isNil, isUndef } from '@jellyfin-vue/shared/validation';
 import {
   getBufferMeta,
   getContentSize,
@@ -51,15 +53,14 @@ import {
 } from './pipeline';
 import type { IJVirtualWorker } from './j-virtual.worker';
 import JVirtualWorker from './j-virtual.worker?worker';
-import { vuetify } from '@/plugins/vuetify';
-import { isNil, isUndef } from '@/utils/validation';
+import { windowSize } from '#/store.ts';
 
 /**
  * SHARED STATE ACROSS ALL THE COMPONENT INSTANCES
  */
-const display = vuetify.display;
-const displayWidth = refDebounced(display.width, 250);
-const displayHeight = refDebounced(display.height, 250);
+
+const displayWidth = refDebounced(windowSize.width, 250);
+const displayHeight = refDebounced(windowSize.height, 250);
 </script>
 
 <script setup lang="ts" generic="T">

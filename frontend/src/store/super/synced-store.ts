@@ -5,13 +5,13 @@ import { deepEqual } from 'fast-equals';
 import { computed, EffectScope, watch } from 'vue';
 import { watchDeep } from '@vueuse/core';
 import type { UnknownRecord } from 'type-fest';
+import { isNil, isStr } from '@jellyfin-vue/shared/validation';
 import { taskManager } from '../task-manager';
-import { remote } from '@/plugins/remote';
-import { CommonStore, type CommonStoreParams } from '@/store/super/common-store';
-import { isNil, isStr } from '@/utils/validation';
-import { useSnackbar } from '@/composables/use-snackbar';
-import { i18n } from '@/plugins/i18n';
-import { pick } from '@/utils/data-manipulation';
+import { remote } from '#/plugins/remote';
+import { CommonStore, type CommonStoreParams } from '#/store/super/common-store';
+import { useSnackbar } from '#/composables/use-snackbar';
+import { i18n } from '#/plugins/i18n';
+import { pick } from '#/utils/data-manipulation';
 
 export abstract class SyncedStore<
   T extends object = UnknownRecord,

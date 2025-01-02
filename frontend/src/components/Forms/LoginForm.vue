@@ -8,7 +8,6 @@
         v-if="!user"
         v-model="login.username"
         variant="outlined"
-
         hide-details
         autofocus
         :label="$t('username')"
@@ -73,9 +72,9 @@ import IconEye from 'virtual:icons/mdi/eye';
 import IconEyeOff from 'virtual:icons/mdi/eye-off';
 import { ref, shallowRef } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { fetchIndexPage } from '@/utils/items';
-import { remote } from '@/plugins/remote';
-import { jsonConfig } from '@/utils/external-config';
+import { fetchIndexPage } from '#/utils/items';
+import { remote } from '#/plugins/remote';
+import { jsonConfig } from '#/utils/external-config';
 
 const { user, disabled } = defineProps<{ user?: UserDto; disabled?: boolean }>();
 

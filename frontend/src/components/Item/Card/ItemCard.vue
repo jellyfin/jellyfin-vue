@@ -77,14 +77,14 @@ import {
 } from '@jellyfin/sdk/lib/generated-client';
 import { computed, shallowRef } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { isNil } from '@/utils/validation';
+import { isNil } from '@jellyfin-vue/shared/validation';
 import {
   CardShapes,
   canPlay,
   getItemDetailsLink,
   getShapeFromItemType
-} from '@/utils/items';
-import { taskManager } from '@/store/task-manager';
+} from '#/utils/items';
+import { taskManager } from '#/store/task-manager';
 
 const { item, shape, overlay, text, margin } = defineProps<{
   item: BaseItemDto;

@@ -119,9 +119,9 @@ import type {
   BaseItemDto
 } from '@jellyfin/sdk/lib/generated-client';
 import { computed } from 'vue';
-import { playbackManager } from '@/store/playback-manager';
-import { getItemDetailsLink } from '@/utils/items';
-import { formatTicks } from '@/utils/time';
+import { playbackManager } from '#/store/playback-manager';
+import { getItemDetailsLink } from '#/utils/items';
+import { formatTicks } from '#/utils/time';
 
 const { item, tracks } = defineProps<{
   item: BaseItemDto;

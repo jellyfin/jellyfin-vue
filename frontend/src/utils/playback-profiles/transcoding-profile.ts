@@ -1,5 +1,5 @@
 /**
- * @deprecated - Check @/utils/playback-profiles/index
+ * @deprecated - Check #/utils/playback-profiles/index
  */
 
 import {
@@ -27,7 +27,7 @@ import {
   isChromiumBased,
   isAndroid,
   isTizen
-} from '@/utils/browser-detection';
+} from '#/utils/browser-detection';
 
 /**
  * Returns a valid TranscodingProfile for the current platform.

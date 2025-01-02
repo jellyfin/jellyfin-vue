@@ -6,9 +6,9 @@
  * is displayed instead.
  */
 import { destr } from 'destr';
-import type { ClientSettingsState } from '@/store/client-settings';
-import { isBool } from '@/utils/validation';
-import '@/assets/styles/splashscreen.css';
+import { isBool } from '@jellyfin-vue/shared/validation';
+import type { ClientSettingsState } from '#/store/client-settings';
+import '#/assets/styles/splashscreen.css';
 
 const store = localStorage.getItem('clientSettings') ?? '{}';
 const parsedStore = destr<ClientSettingsState>(store);

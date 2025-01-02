@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { CardShapes } from '@/utils/items';
+import { CardShapes } from '#/utils/items';
 
 const { boilerplate, text, cardShape = CardShapes.Portrait } = defineProps<{
   boilerplate?: boolean;

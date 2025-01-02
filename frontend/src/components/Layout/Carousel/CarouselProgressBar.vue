@@ -15,7 +15,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useDisplay } from 'vuetify';
-import { useResponsiveClasses } from '@/composables/use-responsive-classes';
+import { useResponsiveClasses } from '#/composables/use-responsive-classes';
 
 const { pages, currentIndex, duration, paused, hoverable } = defineProps<{
   pages: number;

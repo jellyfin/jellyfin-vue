@@ -1,5 +1,5 @@
 /**
- * @deprecated - Check @/utils/playback-profiles/index
+ * @deprecated - Check #/utils/playback-profiles/index
  */
 
 import {
@@ -9,6 +9,7 @@ import {
   type CodecProfile,
   type ProfileCondition
 } from '@jellyfin/sdk/lib/generated-client';
+import { isFunc, isObj } from '@jellyfin-vue/shared/validation';
 import {
   isApple,
   isChromiumBased,
@@ -20,8 +21,7 @@ import {
   isWebOS,
   isXbox,
   safariVersion
-} from '@/utils/browser-detection';
-import { isFunc, isObj } from '@/utils/validation';
+} from '#/utils/browser-detection';
 
 /**
  * Gets the max video bitrate

@@ -55,7 +55,7 @@
                       :value="library.Id" />
                   </VCol>
                 </VRow>
-                <div class="text-warning ml-2">
+                <div class="ml-2 text-warning">
                   {{ t('libraryAccessNote') }}
                 </div>
               </VCard>
@@ -90,7 +90,7 @@ import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
-import { remote } from '@/plugins/remote';
+import { remote } from '#/plugins/remote';
 
 const { t } = useI18n();
 const router = useRouter();
