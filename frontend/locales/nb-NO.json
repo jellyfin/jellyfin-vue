@@ -317,7 +317,7 @@
   "revokeFailure": "Feil ved tilbakekalling av API-nøkkel",
   "revokeSuccess": "Vellykket tilbakekalt API-nøkkel",
   "role": "Rolle",
-  "routeValidationError": "Den angitte rute-IDen i ruteparametere er ikke riktig",
+  "routeValidationError": "Den angitte parameterene for å nå denne siden er ikke riktig satt opp",
   "runningTasks": "Kjøreoppgaver",
   "runtime": "Lengde",
   "save": "Lagre",
