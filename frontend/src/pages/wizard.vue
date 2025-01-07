@@ -8,74 +8,78 @@
         sm="12"
         md="12"
         xl="8">
-        <h1 class="text-center mb-6 text-h4">
-          {{ heading }}
-        </h1>
-        <!-- TODO: Wait for Vuetify 3 implementation (https://github.com/vuetifyjs/vuetify/issues/13509) -->
-        <!-- <v-stepper v-model="wizardStage" class="transparent-background">
+        <v-stepper v-model="wizardStage" class="transparent-background">
           <v-stepper-header>
-            <v-stepper-step
+            <v-stepper-item
               :complete="wizardStage > 1"
-              step="1"
+              value="1"
               :editable="maxWizardStage > 0">
-              {{ t('wizard.languageLocale') }}
-            </v-stepper-step>
+              {{ t('languageLocale') }}
+            </v-stepper-item>
 
             <v-divider />
 
-            <v-stepper-step
+            <v-stepper-item
               :complete="wizardStage > 2"
-              step="2"
+              value="2"
               :editable="maxWizardStage > 1">
-              {{ t('wizard.administratorAccount') }}
-            </v-stepper-step>
+              {{ t('administratorAccount') }}
+            </v-stepper-item>
 
             <v-divider />
 
-            <v-stepper-step
+            <v-stepper-item
               :complete="wizardStage > 3"
-              step="3"
+              value="3"
               :editable="maxWizardStage > 2">
-              {{ t('wizard.preferredMetadataLanguage') }}
-            </v-stepper-step>
+              {{ t('preferredMetadataLanguage') }}
+            </v-stepper-item>
 
             <v-divider />
 
-            <v-stepper-step
+            <v-stepper-item
               :complete="wizardStage > 4"
-              step="4"
+              value="4"
               :editable="maxWizardStage > 3">
-              {{ t('wizard.remoteAccess') }}
-            </v-stepper-step>
+              {{ t('remoteAccess') }}
+            </v-stepper-item>
           </v-stepper-header>
 
-          <v-stepper-items>
-            <v-stepper-content step="1">
+          <v-stepper-window>
+            <v-stepper-window-item 
+              key="1-content"
+              value="1">
               <wizard-language class="pt-4" @step-complete="nextStep" />
-            </v-stepper-content>
+            </v-stepper-window-item>
 
-            <v-stepper-content step="2">
+            <v-stepper-window-item 
+              key="2-content"
+              value="2">
               <wizard-admin-account
                 class="pt-4"
                 @step-complete="nextStep"
                 @previous-step="previousStep" />
-            </v-stepper-content>
+            </v-stepper-window-item>
 
-            <v-stepper-content step="3">
+            <v-stepper-window-item 
+              key="3-content"
+              value="3">
               <wizard-metadata
                 class="pt-4"
                 @step-complete="nextStep"
                 @previous-step="previousStep" />
-            </v-stepper-content>
+            </v-stepper-window-item>
 
-            <v-stepper-content step="4">
+            <v-stepper-window-item 
+              key="4-content"
+              value="4">
               <wizard-remote-access
                 class="pt-4"
                 @step-complete="nextStep"
                 @previous-step="previousStep" />
-            </v-stepper-content>
-          </v-stepper-items>
-        </v-stepper> -->
+            </v-stepper-window-item>
+          </v-stepper-window>
+        </v-stepper>
       </VCol>
     </VRow>
   </VContainer>
