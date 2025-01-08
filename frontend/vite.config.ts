@@ -6,11 +6,7 @@ import browserslist from 'browserslist';
 import { browserslistToTargets } from 'lightningcss';
 import IconsResolver from 'unplugin-icons/resolver';
 import Icons from 'unplugin-icons/vite';
-import {
-  Vuetify3Resolver,
-  VueUseComponentsResolver,
-  VueUseDirectiveResolver
-} from 'unplugin-vue-components/resolvers';
+import { Vuetify3Resolver } from 'unplugin-vue-components/resolvers';
 import Components from 'unplugin-vue-components/vite';
 import UnoCSS from 'unocss/vite';
 import VueRouter from 'unplugin-vue-router/vite';
@@ -53,9 +49,7 @@ export default defineConfig({
        */
       resolvers: [
         IconsResolver(),
-        VueUseComponentsResolver(),
-        Vuetify3Resolver(),
-        VueUseDirectiveResolver()
+        Vuetify3Resolver()
       ]
     }),
     /**
