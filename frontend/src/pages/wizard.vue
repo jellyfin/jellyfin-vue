@@ -8,74 +8,82 @@
         sm="12"
         md="12"
         xl="8">
-        <h1 class="text-center mb-6 text-h4">
-          {{ heading }}
-        </h1>
-        <!-- TODO: Wait for Vuetify 3 implementation (https://github.com/vuetifyjs/vuetify/issues/13509) -->
-        <!-- <v-stepper v-model="wizardStage" class="transparent-background">
-          <v-stepper-header>
-            <v-stepper-step
+        <VStepper
+          v-model="wizardStage"
+          class="transparent-background">
+          <VStepperHeader>
+            <VStepperItem
               :complete="wizardStage > 1"
-              step="1"
+              value="1"
               :editable="maxWizardStage > 0">
-              {{ t('wizard.languageLocale') }}
-            </v-stepper-step>
+              {{ t('languageLocale') }}
+            </VStepperItem>
 
-            <v-divider />
+            <VDivider />
 
-            <v-stepper-step
+            <VStepperItem
               :complete="wizardStage > 2"
-              step="2"
+              value="2"
               :editable="maxWizardStage > 1">
-              {{ t('wizard.administratorAccount') }}
-            </v-stepper-step>
+              {{ t('administratorAccount') }}
+            </VStepperItem>
 
-            <v-divider />
+            <VDivider />
 
-            <v-stepper-step
+            <VStepperItem
               :complete="wizardStage > 3"
-              step="3"
+              value="3"
               :editable="maxWizardStage > 2">
-              {{ t('wizard.preferredMetadataLanguage') }}
-            </v-stepper-step>
+              {{ t('preferredMetadataLanguage') }}
+            </VStepperItem>
 
-            <v-divider />
+            <VDivider />
 
-            <v-stepper-step
+            <VStepperItem
               :complete="wizardStage > 4"
-              step="4"
+              value="4"
               :editable="maxWizardStage > 3">
-              {{ t('wizard.remoteAccess') }}
-            </v-stepper-step>
-          </v-stepper-header>
+              {{ t('remoteAccess') }}
+            </VStepperItem>
+          </VStepperHeader>
 
-          <v-stepper-items>
-            <v-stepper-content step="1">
-              <wizard-language class="pt-4" @step-complete="nextStep" />
-            </v-stepper-content>
+          <VStepperWindow>
+            <VStepperWindowItem
+              key="1-content"
+              value="1">
+              <WizardLanguage
+                class="pt-4"
+                @step-complete="nextStep" />
+            </VStepperWindowItem>
 
-            <v-stepper-content step="2">
-              <wizard-admin-account
+            <VStepperWindowItem
+              key="2-content"
+              value="2">
+              <WizardAdminAccount
                 class="pt-4"
                 @step-complete="nextStep"
                 @previous-step="previousStep" />
-            </v-stepper-content>
+            </VStepperWindowItem>
 
-            <v-stepper-content step="3">
-              <wizard-metadata
+            <VStepperWindowItem
+              key="3-content"
+              value="3">
+              <WizardMetadata
                 class="pt-4"
                 @step-complete="nextStep"
                 @previous-step="previousStep" />
-            </v-stepper-content>
+            </VStepperWindowItem>
 
-            <v-stepper-content step="4">
-              <wizard-remote-access
+            <VStepperWindowItem
+              key="4-content"
+              value="4">
+              <WizardRemoteAccess
                 class="pt-4"
                 @step-complete="nextStep"
                 @previous-step="previousStep" />
-            </v-stepper-content>
-          </v-stepper-items>
-        </v-stepper> -->
+            </VStepperWindowItem>
+          </VStepperWindow>
+        </VStepper>
       </VCol>
     </VRow>
   </VContainer>
@@ -89,7 +97,7 @@ meta:
 
 <script setup lang="ts">
 import { getStartupApi } from '@jellyfin/sdk/lib/utils/api/startup-api';
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { useSnackbar } from '@/composables/use-snackbar';
@@ -100,25 +108,6 @@ const router = useRouter();
 
 const wizardStage = ref(1);
 const maxWizardStage = ref(1);
-
-const heading = computed(() => {
-  switch (wizardStage.value) {
-    case 1: {
-      return t('languageLocale');
-    }
-    case 2: {
-      return t('administratorAccount');
-    }
-    case 3: {
-      return t('preferredMetadataLanguage');
-    }
-    case 4: {
-      return t('remoteAccess');
-    }
-  }
-
-  return '';
-});
 
 /**
  * Completes server setup
