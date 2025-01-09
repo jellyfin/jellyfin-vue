@@ -8,6 +8,10 @@
   "imports": {
     "#/*": "./src/*"
   },
+  "exports": {
+    ".": "./src/main.ts",
+    "./vite-config": "./vite.config.ts"
+  },
   "scripts": {
     "analyze:bundle": "vite build --mode analyze:bundle",
     "analyze:cycles": "vite build --mode analyze:cycles",

@@ -1,0 +1,26 @@
+{
+  "name": "@jellyfin-vue/tauri-runtime",
+  "type": "module",
+  "description": "The frontend including tauri-specific runtime code",
+  "scripts": {
+    "analyze:bundle": "vite build --mode analyze:bundle",
+    "analyze:cycles": "vite build --mode analyze:cycles",
+    "lint": "eslint . --flag unstable_ts_config",
+    "lint:fix": "eslint . --fix --flag unstable_ts_config",
+    "lint:inspect": "eslint-config-inspector",
+    "build": "vite build",
+    "check": "npm run lint && npm run check:types",
+    "check:types": "vue-tsc",
+    "start": "vite",
+    "serve": "vite preview",
+    "prod": "npm run build && npm run serve",
+    "clean": "git clean -fxd"
+  },
+  "devDependencies": {
+    "@jellyfin-vue/configs": "*",
+    "vite": "6.0.7"
+  },
+  "dependencies": {
+    "@jellyfin-vue/frontend": "*"
+  }
+}

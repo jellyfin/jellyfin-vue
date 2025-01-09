@@ -19,9 +19,9 @@
     }
   },
   "build": {
-    "beforeBuildCommand": "npm run build -w @jellyfin-vue/frontend",
-    "frontendDist": "../../frontend/dist",
-    "beforeDevCommand": "npm start -w @jellyfin-vue/frontend",
+    "beforeBuildCommand": "npm run build -w @jellyfin-vue/tauri-runtime",
+    "frontendDist": "../../packages/tauri-runtime/dist",
+    "beforeDevCommand": "npm start -w @jellyfin-vue/tauri-runtime",
     "devUrl": "http://127.0.0.1:3000"
   },
   "productName": "jellyfin-vue",
