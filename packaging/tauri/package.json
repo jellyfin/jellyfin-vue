@@ -7,10 +7,11 @@
     "build": "npm run gen-icon && tauri build",
     "clean": "git clean -fxd"
   },
-  "dependencies": {
-    "@jellyfin-vue/frontend": "*"
-  },
   "devDependencies": {
-    "@tauri-apps/cli": "2.2.2"
+    "@tauri-apps/cli": "2.2.2",
+    "vite": "6.0.7"
+  },
+  "dependencies": {
+    "@jellyfin-vue/tauri-runtime": "*"
   }
 }

@@ -7,6 +7,14 @@
       "enabled": false
     },
     {
+      "matchFileNames": [
+        "packaging/tauri/**",
+        "packages/tauri-runtime/**"
+      ],
+      "separateMajorMinor": false,
+      "groupName": "tauri"
+    },
+    {
       "matchManagers": [
         "npm"
       ],
@@ -30,13 +38,6 @@
       ],
       "separateMajorMinor": false,
       "groupName": "ci"
-    },
-    {
-      "matchFileNames": [
-        "packaging/tauri/**"
-      ],
-      "separateMajorMinor": false,
-      "groupName": "tauri"
     },
     {
       "matchUpdateTypes": [
