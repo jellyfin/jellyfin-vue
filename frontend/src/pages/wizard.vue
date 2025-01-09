@@ -14,7 +14,7 @@
           <VStepperHeader>
             <VStepperItem
               :complete="wizardStage > 1"
-              value="1"
+              :value="1"
               :editable="maxWizardStage > 0">
               {{ t('languageLocale') }}
             </VStepperItem>
@@ -23,7 +23,7 @@
 
             <VStepperItem
               :complete="wizardStage > 2"
-              value="2"
+              :value="2"
               :editable="maxWizardStage > 1">
               {{ t('administratorAccount') }}
             </VStepperItem>
@@ -32,7 +32,7 @@
 
             <VStepperItem
               :complete="wizardStage > 3"
-              value="3"
+              :value="3"
               :editable="maxWizardStage > 2">
               {{ t('preferredMetadataLanguage') }}
             </VStepperItem>
@@ -41,7 +41,7 @@
 
             <VStepperItem
               :complete="wizardStage > 4"
-              value="4"
+              :value="4"
               :editable="maxWizardStage > 3">
               {{ t('remoteAccess') }}
             </VStepperItem>
@@ -50,7 +50,7 @@
           <VStepperWindow>
             <VStepperWindowItem
               key="1-content"
-              value="1">
+              :value="1">
               <WizardLanguage
                 class="pt-4"
                 @step-complete="nextStep" />
@@ -58,7 +58,7 @@
 
             <VStepperWindowItem
               key="2-content"
-              value="2">
+              :value="2">
               <WizardAdminAccount
                 class="pt-4"
                 @step-complete="nextStep"
@@ -67,7 +67,7 @@
 
             <VStepperWindowItem
               key="3-content"
-              value="3">
+              :value="3">
               <WizardMetadata
                 class="pt-4"
                 @step-complete="nextStep"
@@ -76,7 +76,7 @@
 
             <VStepperWindowItem
               key="4-content"
-              value="4">
+              :value="4">
               <WizardRemoteAccess
                 class="pt-4"
                 @step-complete="nextStep"
