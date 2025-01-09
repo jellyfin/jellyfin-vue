@@ -1,3 +1,5 @@
+/// <reference lib="WebWorker" />
+
 import { expose } from 'comlink';
 import { sealed } from '@jellyfin-vue/shared/validation';
 

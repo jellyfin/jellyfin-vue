@@ -31,7 +31,7 @@ export function getBaseConfig(packageName: string, forceCache = !CI_environment,
    * correct flags for each monorepo package.
    * We check for eslint directly to avoid messing up with other packages reading this file, like @eslint/config-inspector.
    */
-  if (cliOverrides && basename(process.argv[1]) === 'eslint') {
+  if (cliOverrides && process.argv[1] && basename(process.argv[1]) === 'eslint') {
     const newArgs = process.argv.slice(1);
 
     if (forceCache && !(newArgs.includes('--cache') && newArgs.includes('--cache-location'))) {
@@ -48,7 +48,7 @@ export function getBaseConfig(packageName: string, forceCache = !CI_environment,
 
     const argsHaveChanged = new Set(newArgs).difference(new Set(process.argv.slice(1))).size > 0;
 
-    if (argsHaveChanged) {
+    if (argsHaveChanged && process.argv[0]) {
       console.log();
 
       const result = spawnSync(process.argv[0], newArgs, {

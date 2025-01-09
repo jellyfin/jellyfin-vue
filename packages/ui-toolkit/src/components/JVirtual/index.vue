@@ -226,7 +226,7 @@ const scrollTargets = computed(() => {
  * == VIRTUAL SCROLLING LOGIC ==
  */
 useResizeObserver(probeRef, (entries) => {
-  itemRect.value = entries[0].contentRect;
+  itemRect.value = entries[0]?.contentRect;
 });
 
 const populateCache = (() => {
