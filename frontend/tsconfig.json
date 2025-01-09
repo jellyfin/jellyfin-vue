@@ -3,9 +3,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "lib": [
-      "ESNext",
-      "DOM",
-      "WebWorker"
+      "ES2024",
+      "DOM"
     ],
     "types": [
       "axios",

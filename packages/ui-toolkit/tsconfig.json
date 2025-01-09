@@ -2,6 +2,10 @@
   "extends": "@jellyfin-vue/configs/typescript",
   "compilerOptions": {
     "baseUrl": ".",
+    "lib": [
+      "ES2024",
+      "DOM"
+    ],
     "types": [
       "vite/client",
       "vue"
