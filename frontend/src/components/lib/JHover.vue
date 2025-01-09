@@ -1,7 +1,7 @@
 <template>
   <JSlot
-    @pointerenter="isHovering = true"
-    @pointerleave="isHovering = false">
+    @pointerenter.passive="isHovering = true"
+    @pointerleave.passive="isHovering = false">
     <slot
       :is-hovering="isHovering" />
   </JSlot>

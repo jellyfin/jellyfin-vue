@@ -5,8 +5,8 @@
       rel="preload"
       as="image"
       :href="src"
-      @load="onLoad"
-      @error="onError">
+      @load.passive="onLoad"
+      @error.passive="onError">
     <JTransition
       v-bind="isObj(transitionProps) ? transitionProps : undefined"
       :disabled="!transitionProps">
