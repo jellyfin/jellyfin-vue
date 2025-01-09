@@ -1,4 +1,4 @@
-import { join } from 'node:path';
+import { resolve } from 'node:path';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 import Virtual from '@rollup/plugin-virtual';
 import VueDevTools from 'vite-plugin-vue-devtools';
@@ -16,7 +16,7 @@ import { defineConfig } from 'vite';
  * TODO: Replace with @jellyfin-vue/vite-plugins after https://github.com/vitejs/vite/issues/5370
  * is fixed
  */
-import { BundleAnalysis, BundleChunking, BundleSizeReport } from '../packages/vite-plugins/src';
+import { JBundle, JMonorepo } from '../packages/vite-plugins/src';
 import { JellyfinVueUIToolkit } from '../packages/ui-toolkit/src/resolver';
 import virtualModules from './scripts/virtual-modules';
 import { localeFilesFolder } from './scripts/paths';
@@ -24,16 +24,23 @@ import { localeFilesFolder } from './scripts/paths';
 export default defineConfig({
   appType: 'spa',
   base: './',
-  cacheDir: '../node_modules/.cache/vite',
   plugins: [
-    BundleAnalysis(),
-    BundleChunking(),
-    BundleSizeReport(),
+    ...JBundle,
+    JMonorepo(import.meta.dirname, {
+      splashscreen: {
+        'fetch-priority': 'high'
+      }
+    }),
     Virtual(virtualModules),
     VueRouter({
-      dts: './types/global/routes.d.ts',
+      dts: resolve(import.meta.dirname, 'types/global/routes.d.ts'),
       importMode: 'sync',
-      routeBlockLang: 'yaml'
+      routeBlockLang: 'yaml',
+      routesFolder: [
+        {
+          src: resolve(import.meta.dirname, 'src/pages')
+        }
+      ]
     }),
     Vue({
       template: {
@@ -44,7 +51,8 @@ export default defineConfig({
     }),
     // This plugin allows to autoimport Vue components
     Components({
-      dts: './types/global/components.d.ts',
+      dirs: [resolve(import.meta.dirname, 'src/components')],
+      dts: resolve(import.meta.dirname, 'types/global/components.d.ts'),
       /**
        * The icons resolver finds icons components from 'unplugin-icons' using this convenction:
        * {prefix}-{collection}-{icon} e.g. <i-mdi-thumb-up />
@@ -78,18 +86,15 @@ export default defineConfig({
      * See main.ts for an explanation of this target
      */
     target: 'esnext',
-    /**
-     * Disable chunk size warnings
-     */
     cssCodeSplit: true,
     cssMinify: 'lightningcss',
     modulePreload: false,
     reportCompressedSize: false,
     rollupOptions: {
       input: {
-        splashscreen: join(import.meta.dirname, 'src/splashscreen.ts'),
-        main: join(import.meta.dirname, 'src/main.ts'),
-        index: join(import.meta.dirname, 'index.html')
+        splashscreen: resolve(import.meta.dirname, 'src/splashscreen.ts'),
+        main: resolve(import.meta.dirname, 'src/main.ts'),
+        index: resolve(import.meta.dirname, 'index.html')
       },
       output: {
         validate: true

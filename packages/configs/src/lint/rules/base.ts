@@ -1,4 +1,4 @@
-import { join, basename } from 'node:path';
+import { basename, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import type { Linter } from 'eslint';
 import { findUpSync } from 'find-up-simple';
@@ -35,7 +35,7 @@ export function getBaseConfig(packageName: string, forceCache = !CI_environment,
     const newArgs = process.argv.slice(1);
 
     if (forceCache && !(newArgs.includes('--cache') && newArgs.includes('--cache-location'))) {
-      const cacheLocation = join(findUpSync('node_modules', { type: 'directory' }) ?? '', '.cache/eslint', packageName.replace('/', '_'));
+      const cacheLocation = resolve(findUpSync('node_modules', { type: 'directory' }) ?? '', '.cache/eslint', packageName.replace('/', '_'));
 
       newArgs.push('--cache', '--cache-location', cacheLocation);
       console.log(`[@jellyfin-vue/configs/lint] (${packageName}) Force enabling caching for this run`);
