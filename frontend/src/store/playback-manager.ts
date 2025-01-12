@@ -278,7 +278,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    */
   public readonly currentlyPlayingType = computed(() =>
     apiStore.getItemById(this.currentItemId.value)
-      ?.Type
+      ?.MediaType
   );
 
   public readonly isVideo = computed(() => this.currentlyPlayingType.value === 'Video');
