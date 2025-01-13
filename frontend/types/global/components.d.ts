@@ -199,6 +199,7 @@ declare module 'vue' {
     VResponsive: typeof import('vuetify/components')['VResponsive']
     VRow: typeof import('vuetify/components')['VRow']
     VSelect: typeof import('vuetify/components')['VSelect']
+    VSkeletonLoader: typeof import('vuetify/components')['VSkeletonLoader']
     VSlideGroup: typeof import('vuetify/components')['VSlideGroup']
     VSlideGroupItem: typeof import('vuetify/components')['VSlideGroupItem']
     VSlider: typeof import('vuetify/components')['VSlider']
