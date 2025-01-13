@@ -10,7 +10,9 @@
       <template v-if="isLoading">
         cursor: wait;
       </template>
-      --j-color-background: var(--v-theme-background);
+      --j-theme-transition-duration: .3s;
+      --j-theme-color-background: var(--v-theme-background);
+      --j-theme-color-menu: var(--v-theme-menu);
       --j-font-family: '{{ typography }}';
       }
     </component>
@@ -24,9 +26,9 @@
  * TODO: Investigate or propose an RFC to allow style tags inside SFCs
  */
 import { computed } from 'vue';
-import { useLoading } from '@/composables/use-loading';
-import { DEFAULT_TYPOGRAPHY } from '@/store';
-import { clientSettings } from '@/store/client-settings';
+import { useLoading } from '#/composables/use-loading';
+import { DEFAULT_TYPOGRAPHY } from '#/store';
+import { clientSettings } from '#/store/client-settings';
 
 const { isLoading } = useLoading();
 

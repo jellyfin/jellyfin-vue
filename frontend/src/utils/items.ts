@@ -32,11 +32,11 @@ import IMdiYoutube from 'virtual:icons/mdi/youtube';
 import IMdiYoutubeTV from 'virtual:icons/mdi/youtube-tv';
 import type { ComputedRef } from 'vue';
 import type { RouteNamedMap } from 'vue-router/auto-routes';
+import { isNil } from '@jellyfin-vue/shared/validation';
 import { ticksToMs } from './time';
-import { isNil } from '@/utils/validation';
-import { router } from '@/plugins/router';
-import { remote } from '@/plugins/remote';
-import { useBaseItem } from '@/composables/apis';
+import { router } from '#/plugins/router';
+import { remote } from '#/plugins/remote';
+import { useBaseItem } from '#/composables/apis';
 
 /**
  * A list of valid collections that should be treated as folders.

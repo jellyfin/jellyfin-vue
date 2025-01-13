@@ -5,19 +5,18 @@
  */
 import { createApp } from 'vue';
 import { routes } from 'vue-router/auto-routes';
-import { getFontFaces } from '@/utils/data-manipulation';
-import Root from '@/App.vue';
-import { hideDirective } from '@/plugins/directives';
-import { vuePlugin as i18n } from '@/plugins/i18n';
-import { createPlugin as createRemote } from '@/plugins/remote';
-import { router } from '@/plugins/router';
-import { vuetify } from '@/plugins/vuetify';
+import { getFontFaces } from '#/utils/data-manipulation';
+import Root from '#/App.vue';
+import { hideDirective } from '#/plugins/directives';
+import { vuePlugin as i18n } from '#/plugins/i18n';
+import { createPlugin as createRemote } from '#/plugins/remote';
+import { router } from '#/plugins/router';
+import { vuetify } from '#/plugins/vuetify';
 /**
  * - GLOBAL STYLES -
  */
 import 'uno.css';
-import 'virtual:unocss-devtools';
-import '@/assets/styles/index.css';
+import '#/assets/styles/index.css';
 
 /**
  * - VUE PLUGINS, STORE AND DIRECTIVE -

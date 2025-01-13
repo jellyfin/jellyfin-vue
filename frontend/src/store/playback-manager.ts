@@ -18,19 +18,19 @@ import { getPlaystateApi } from '@jellyfin/sdk/lib/utils/api/playstate-api';
 import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
 import { computedAsync, watchThrottled } from '@vueuse/core';
 import { computed, watch, watchEffect } from 'vue';
-import { isNil, sealed } from '@/utils/validation';
-import { useBaseItem } from '@/composables/apis';
-import { useSnackbar } from '@/composables/use-snackbar';
-import { i18n } from '@/plugins/i18n';
-import { remote } from '@/plugins/remote';
-import { apiStore } from '@/store/api';
-import { getImageInfo } from '@/utils/images';
-import { getItemRuntime } from '@/utils/items';
-import playbackProfile from '@/utils/playback-profiles';
-import { msToTicks } from '@/utils/time';
-import { mediaControls, mediaElementRef } from '@/store';
-import { CommonStore } from '@/store/super/common-store';
-import { runGenericWorkerFunc } from '@/plugins/workers';
+import { isNil, sealed } from '@jellyfin-vue/shared/validation';
+import { useBaseItem } from '#/composables/apis';
+import { useSnackbar } from '#/composables/use-snackbar';
+import { i18n } from '#/plugins/i18n';
+import { remote } from '#/plugins/remote';
+import { apiStore } from '#/store/api';
+import { getImageInfo } from '#/utils/images';
+import { getItemRuntime } from '#/utils/items';
+import playbackProfile from '#/utils/playback-profiles';
+import { msToTicks } from '#/utils/time';
+import { mediaControls, mediaElementRef } from '#/store';
+import { CommonStore } from '#/store/super/common-store';
+import { runGenericWorkerFunc } from '#/plugins/workers';
 
 /**
  * == INTERFACES AND TYPES ==
@@ -274,15 +274,12 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   public readonly nextItem = computed(() => this.queue.value[this._nextItemIndex.value ?? -1]);
 
   /**
-   * Get the type of the currently playing item
+   * Get the types of the currently playing item
    */
-  public readonly currentlyPlayingType = computed(() =>
-    apiStore.getItemById(this.currentItemId.value)
-      ?.MediaType
-  );
-
-  public readonly isVideo = computed(() => this.currentlyPlayingType.value === 'Video');
-  public readonly isAudio = computed(() => this.currentlyPlayingType.value === 'Audio');
+  public readonly currentlyPlayingMediaType = computed(() => this.currentItem.value?.MediaType);
+  public readonly currentlyPlayingType = computed(() => this.currentItem.value?.Type);
+  public readonly isVideo = computed(() => this.currentlyPlayingMediaType.value === 'Video');
+  public readonly isAudio = computed(() => this.currentlyPlayingMediaType.value === 'Audio');
 
   /**
    * Get the media type of the currently playing item

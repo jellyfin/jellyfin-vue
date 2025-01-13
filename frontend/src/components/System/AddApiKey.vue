@@ -36,8 +36,8 @@ import { getApiKeyApi } from '@jellyfin/sdk/lib/utils/api/api-key-api';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useDisplay } from 'vuetify';
-import { remote } from '@/plugins/remote';
-import { useSnackbar } from '@/composables/use-snackbar';
+import { remote } from '#/plugins/remote';
+import { useSnackbar } from '#/composables/use-snackbar';
 
 const { addingNewKey } = defineProps<{ addingNewKey: boolean }>();
 

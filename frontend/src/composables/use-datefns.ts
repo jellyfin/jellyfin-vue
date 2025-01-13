@@ -1,6 +1,6 @@
 import * as datefnslocales from 'virtual:locales/date-fns';
-import { i18n } from '@/plugins/i18n';
-import { isObj } from '@/utils/validation';
+import { isObj } from '@jellyfin-vue/shared/validation';
+import { i18n } from '#/plugins/i18n';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 

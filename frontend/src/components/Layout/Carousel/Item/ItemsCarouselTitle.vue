@@ -16,7 +16,7 @@
     <RouterLink
       v-else-if="itemLink && titleString"
       data-swiper-parallax="-300"
-      class="link d-block text-truncate text-h4 text-sm-h3 text-sm-h2"
+      class="link text-truncate text-h4 d-block text-sm-h3 text-sm-h2"
       :to="itemLink">
       {{ titleString }}
     </RouterLink>
@@ -38,8 +38,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { type BaseItemDto, BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
-import { getLogo } from '@/utils/images';
-import { getItemDetailsLink } from '@/utils/items';
+import { getLogo } from '#/utils/images';
+import { getItemDetailsLink } from '#/utils/items';
 
 const { item } = defineProps<{ item: BaseItemDto }>();
 

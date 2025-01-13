@@ -8,9 +8,9 @@ import {
   formatDuration,
   intervalToDuration
 } from 'date-fns';
-import { now } from '@/store';
-import { i18n } from '@/plugins/i18n';
-import { useDateFns } from '@/composables/use-datefns';
+import { now } from '#/store';
+import { i18n } from '#/plugins/i18n';
+import { useDateFns } from '#/composables/use-datefns';
 
 /**
  * Formats Time

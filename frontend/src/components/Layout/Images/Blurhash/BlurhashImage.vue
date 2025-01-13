@@ -1,28 +1,30 @@
 <template>
-  <div>
+  <JOverlay>
     <JImg
-      class="absolute-cover"
+      class="uno-h-full uno-w-full"
       :src="imageUrl"
       :alt="item.Name ?? $t('unknown')"
       v-bind="$attrs">
       <template #placeholder>
-        <BlurhashCanvas
-          v-if="hash"
-          :hash="hash"
-          :width="width"
-          :height="height"
-          :punch="punch"
-          class="absolute-cover">
+        <JOverlay>
+          <BlurhashCanvas
+            v-if="hash"
+            :hash="hash"
+            :width="width"
+            :height="height"
+            :punch="punch"
+            class="uno-h-full uno-w-full">
+            <BlurhashImageIcon
+              :item="item"
+              class="uno-z--1" />
+          </BlurhashCanvas>
           <BlurhashImageIcon
-            :item="item"
-            class="uno-z--1" />
-        </BlurhashCanvas>
-        <BlurhashImageIcon
-          v-else
-          :item="item" />
+            v-else
+            :item="item" />
+        </JOverlay>
       </template>
     </JImg>
-  </div>
+  </JOverlay>
 </template>
 
 <script setup lang="ts">
@@ -32,7 +34,7 @@ import {
   ImageType
 } from '@jellyfin/sdk/lib/generated-client';
 import { computed } from 'vue';
-import { getBlurhash, getImageInfo } from '@/utils/images';
+import { getBlurhash, getImageInfo } from '#/utils/images';
 
 const { item, width, height, punch, type = ImageType.Primary } = defineProps<{
   item: BaseItemDto | BaseItemPerson;

@@ -192,10 +192,10 @@ import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
-import { getItemDetailsLink } from '@/utils/items';
-import { useBaseItem } from '@/composables/apis';
-import { useItemBackdrop } from '@/composables/backdrop';
-import { useItemPageTitle } from '@/composables/page-title';
+import { getItemDetailsLink } from '#/utils/items';
+import { useBaseItem } from '#/composables/apis';
+import { useItemBackdrop } from '#/composables/backdrop';
+import { useItemPageTitle } from '#/composables/page-title';
 
 const route = useRoute('/series/[itemId]');
 

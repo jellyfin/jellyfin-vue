@@ -1,5 +1,5 @@
 /**
- * @deprecated - Check @/utils/playback-profiles/index
+ * @deprecated - Check #/utils/playback-profiles/index
  */
 
 import { hasH264Support, hasHevcSupport } from './mp4-video-formats';
@@ -10,7 +10,7 @@ import {
   isFirefox,
   isTizen,
   isWebOS
-} from '@/utils/browser-detection';
+} from '#/utils/browser-detection';
 
 /**
  * Gets an array of supported fmp4 video codecs

@@ -1,3 +1,5 @@
+/// <reference lib="WebWorker" />
+
 /**
  * Helper for subtitle manipulation and subtitle-related utility functions
  */

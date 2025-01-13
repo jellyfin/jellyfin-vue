@@ -1,5 +1,7 @@
+/// <reference lib="WebWorker" />
+
 import { expose } from 'comlink';
-import { sealed } from '@/utils/validation';
+import { sealed } from '@jellyfin-vue/shared/validation';
 
 /**
  * Draws canvases offscreen

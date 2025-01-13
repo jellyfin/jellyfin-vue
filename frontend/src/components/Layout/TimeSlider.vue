@@ -21,8 +21,8 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { playbackManager } from '@/store/playback-manager';
-import { formatTime } from '@/utils/time';
+import { playbackManager } from '#/store/playback-manager';
+import { formatTime } from '#/utils/time';
 
 const currentInput = ref(0);
 const clicked = ref(false);

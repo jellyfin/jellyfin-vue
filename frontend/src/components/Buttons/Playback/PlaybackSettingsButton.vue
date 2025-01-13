@@ -22,8 +22,9 @@
             <VCol :cols="8">
               <VSelect
                 density="comfortable"
-                hide-details
-                disabled />
+
+                disabled
+                hide-details />
             </VCol>
           </VRow>
           <VRow align="center">
@@ -94,9 +95,9 @@
 <script setup lang="ts">
 import { computed, shallowRef } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { playbackManager } from '@/store/playback-manager';
-import { playerElement } from '@/store/player-element';
-import { isObj, isStr, isUndef } from '@/utils/validation';
+import { isObj, isStr, isUndef } from '@jellyfin-vue/shared/validation';
+import { playbackManager } from '#/store/playback-manager';
+import { playerElement } from '#/store/player-element';
 
 const menuModel = defineModel<boolean>();
 const { t } = useI18n();

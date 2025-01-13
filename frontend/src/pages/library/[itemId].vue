@@ -12,11 +12,10 @@
         <template v-if="loading && items.length === lazyLoadLimit && initialId === route.params.itemId">
           {{ t('lazyLoading', { value: items.length }) }}
         </template>
-        <VProgressCircular
+        <JProgressCircular
           v-else-if="loading"
           indeterminate
-          width="2"
-          size="16" />
+          class="uno-h-4 uno-w-4" />
         <template v-else>
           {{ items.length ?? 0 }}
         </template>
@@ -79,9 +78,9 @@ import { getStudiosApi } from '@jellyfin/sdk/lib/utils/api/studios-api';
 import { computed, onBeforeMount, ref, shallowRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
-import { methodsAsObject, useBaseItem } from '@/composables/apis';
-import type { Filters } from '@/components/Buttons/FilterButton.vue';
-import { useItemPageTitle } from '@/composables/page-title';
+import { methodsAsObject, useBaseItem } from '#/composables/apis';
+import type { Filters } from '#/components/Buttons/FilterButton.vue';
+import { useItemPageTitle } from '#/composables/page-title';
 
 const { t } = useI18n();
 const route = useRoute('/library/[itemId]');

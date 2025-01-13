@@ -5,6 +5,13 @@
   "browserslist": [
     "defaults and supports es6-module"
   ],
+  "imports": {
+    "#/*": "./src/*"
+  },
+  "exports": {
+    ".": "./src/main.ts",
+    "./vite-config": "./vite.config.ts"
+  },
   "scripts": {
     "analyze:bundle": "vite build --mode analyze:bundle",
     "analyze:cycles": "vite build --mode analyze:cycles",
@@ -21,6 +28,8 @@
   },
   "dependencies": {
     "@fontsource-variable/figtree": "5.1.2",
+    "@jellyfin-vue/shared": "*",
+    "@jellyfin-vue/ui-toolkit": "*",
     "@jellyfin/sdk": "0.11.0",
     "@skirtle/vue-vnode-utils": "0.2.0",
     "@vueuse/core": "12.3.0",
@@ -32,11 +41,9 @@
     "date-fns": "4.1.0",
     "defu": "6.1.4",
     "destr": "2.0.3",
-    "dompurify": "3.2.3",
     "fast-equals": "5.2.2",
     "hls.js": "1.5.18",
     "libpgs": "0.8.1",
-    "marked": "15.0.6",
     "sortablejs": "1.15.6",
     "swiper": "11.2.0",
     "uuid": "11.0.4",

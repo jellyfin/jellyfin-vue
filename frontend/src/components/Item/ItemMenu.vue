@@ -73,7 +73,7 @@ import IMdiShuffle from 'virtual:icons/mdi/shuffle';
 import { computed, getCurrentInstance, onMounted, shallowRef, useId, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
-import { isNil, isStr } from '@/utils/validation';
+import { isNil, isStr } from '@jellyfin-vue/shared/validation';
 import {
   canIdentify,
   canInstantMix,
@@ -83,13 +83,13 @@ import {
   getItemIdFromSourceIndex,
   getItemSeasonDownloadMap,
   getItemSeriesDownloadMap
-} from '@/utils/items';
-import { taskManager } from '@/store/task-manager';
-import { playbackManager } from '@/store/playback-manager';
-import { apiStore } from '@/store/api';
-import { remote } from '@/plugins/remote';
-import { useSnackbar } from '@/composables/use-snackbar';
-import { useConfirmDialog } from '@/composables/use-confirm-dialog';
+} from '#/utils/items';
+import { taskManager } from '#/store/task-manager';
+import { playbackManager } from '#/store/playback-manager';
+import { apiStore } from '#/store/api';
+import { remote } from '#/plugins/remote';
+import { useSnackbar } from '#/composables/use-snackbar';
+import { useConfirmDialog } from '#/composables/use-confirm-dialog';
 
 interface MenuOption {
   title: string;
@@ -366,11 +366,14 @@ const copyDownloadURLAction = {
       if (text) {
         await (isStr(streamUrls)
           ? copyAction(text)
-          : useConfirmDialog(async () => { await copyAction(text); }, {
-              title: t('copyPrompt'),
-              text: text,
-              confirmText: t('accept')
-            }));
+          : useConfirmDialog(async () => await copyAction(text),
+              {
+                title: t('copyPrompt'),
+                text: text,
+                confirmText: t('accept')
+              }
+            )
+        );
       } else {
         useSnackbar(errorMessage, 'error');
       }

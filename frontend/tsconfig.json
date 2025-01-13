@@ -1,10 +1,10 @@
 {
   "extends": "@jellyfin-vue/configs/typescript",
   "compilerOptions": {
+    "baseUrl": ".",
     "lib": [
-      "ESNext",
-      "DOM",
-      "WebWorker"
+      "ES2024",
+      "DOM"
     ],
     "types": [
       "axios",
@@ -14,15 +14,17 @@
       "vite/client",
       "vuetify",
       "vue"
-    ],
-    "baseUrl": "."
+    ]
   },
+  "exclude": [
+    "dist",
+    "node_modules",
+    "coverage"
+  ],
   "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.vue",
-    "**/**/*.json",
-    "types/**/*.d.ts",
-    "*.config.*"
+    "**/*.ts",
+    "**/*.vue",
+    "**/*d.ts",
+    "**/*.json"
   ]
 }
