@@ -88,7 +88,7 @@ jobs:
         run: npm run build
 
       - name: Upload built application artifact ⬆️🐧🍎🪟
-        uses: actions/upload-artifact@v4.5.0
+        uses: actions/upload-artifact@v4.6.0
         id: artifact
         with:
           compression-level: 0
@@ -210,7 +210,7 @@ jobs:
             ${{ needs.docker_inputs.outputs.tags }}
 
       - name: Upload Docker image as artifact ⬆️📦
-        uses: actions/upload-artifact@v4.5.0
+        uses: actions/upload-artifact@v4.6.0
         id: artifact
         with:
           compression-level: 0
@@ -225,7 +225,7 @@ jobs:
           subject-digest: sha256:${{ steps.artifact.outputs.artifact-digest }}            
 
       - name: Upload cache artifact ⬆️⚙️
-        uses: actions/upload-artifact@v4.5.0
+        uses: actions/upload-artifact@v4.6.0
         if: ${{ inputs.push }}
         with:
           compression-level: 0
@@ -255,7 +255,7 @@ jobs:
           docker cp $(docker create --name jf $IMAGE_SHA):$ASSETS/ ./dist
 
       - name: Upload client artifact ⬆️💻
-        uses: actions/upload-artifact@v4.5.0
+        uses: actions/upload-artifact@v4.6.0
         id: artifact
         with:
           compression-level: 0
