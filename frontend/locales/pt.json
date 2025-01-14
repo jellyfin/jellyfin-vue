@@ -317,7 +317,7 @@
   "revokeFailure": "Erro ao revogar a chave API",
   "revokeSuccess": "A chave API foi revogada com sucesso",
   "role": "Função",
-  "routeValidationError": "A routeID especificada nos parâmetros do caminho não está correta",
+  "routeValidationError": "Os parâmetros especificados para aceder a esta página não estão corretos",
   "runningTasks": "Executando tarefas",
   "runtime": "Duração",
   "save": "Guardar",
