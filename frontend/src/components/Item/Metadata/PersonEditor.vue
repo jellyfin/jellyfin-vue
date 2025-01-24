@@ -18,10 +18,8 @@
                 "
                 :alt="$t('person')">
                 <template #placeholder>
-                  <VIcon
-                    class="bg-grey-darken-3">
-                    <IMdiAccount />
-                  </VIcon>
+                  <JIcon
+                    class="bg-grey-darken-3 i-mdi:account" />
                 </template>
               </JImg>
             </VAvatar>

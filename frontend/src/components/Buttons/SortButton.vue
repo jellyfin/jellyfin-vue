@@ -3,23 +3,24 @@
     icon
     :disabled="disabled"
     @click="emit('change', model[0], !ascending)">
-    <VIcon v-if="ascending">
-      <IMdiSortAscending />
-    </VIcon>
-    <VIcon v-else>
-      <IMdiSortDescending />
-    </VIcon>
+    <JIcon
+      v-if="ascending"
+      :class="ascending ? 'i-mdi:sort-ascending' : 'i-mdi:sort-descending'" />
   </VBtn>
   <VBtn class="my-2">
     {{ !$vuetify.display.smAndDown ? sortingLabel : undefined }}
-    <VIcon :end="!$vuetify.display.smAndDown">
-      <IMdiMenuDown v-if="!$vuetify.display.smAndDown" />
-      <IMdiSortAlphabeticalVariant
-        v-else-if="model.length === 0 || model[0] === items[0].value" />
-      <IMdiNumeric9PlusBoxOutline
-        v-else-if="model[0] === items[1].value" />
-      <IMdiCalendarRange v-else-if="model[0] === items[2].value" />
-    </VIcon>
+    <JIcon
+      v-if="!$vuetify.display.smAndDown"
+      class="i-mdi:menu-down" />
+    <JIcon
+      v-else-if="model.length === 0 || model[0] === items[0].value"
+      class="i-mdi:sort-alphabetical-variant" />
+    <JIcon
+      v-else-if="model[0] === items[1].value"
+      class="i-mdi:numeric-9-plus-box-outline" />
+    <JIcon
+      v-else-if="model[0] === items[2].value"
+      class="i-mdi:calendar-range" />
     <VMenu :disabled="disabled">
       <VList
         v-model:selected="model"

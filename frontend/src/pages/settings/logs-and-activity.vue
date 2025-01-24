@@ -28,15 +28,11 @@
               rel="noopener">
               <template #prepend>
                 <VAvatar>
-                  <VIcon>
-                    <IMdiFile />
-                  </VIcon>
+                  <JIcon class="i-mdi:file" />
                 </VAvatar>
               </template>
               <template #append>
-                <VIcon>
-                  <IMdiOpenInNew />
-                </VIcon>
+                <JIcon class="*i-mdi:open-in-new" />
               </template>
             </VListItem>
           </VList>
@@ -68,7 +64,7 @@
               :subtitle="activity.ShortOverview ?? undefined">
               <template #prepend>
                 <VAvatar :color="getColorFromSeverity(activity.Severity)">
-                  <VIcon :icon="getIconFromActivityType(activity.Type)" />
+                  <JIcon :class="getIconFromActivityType(activity.Type)" />
                 </VAvatar>
               </template>
               <template #append>
@@ -101,12 +97,6 @@ import {
 import { getActivityLogApi } from '@jellyfin/sdk/lib/utils/api/activity-log-api';
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
 import { format, formatRelative, parseJSON } from 'date-fns';
-import IMdiHelp from 'virtual:icons/mdi/help';
-import IMdiLock from 'virtual:icons/mdi/lock';
-import IMdiLogin from 'virtual:icons/mdi/login';
-import IMdiLogout from 'virtual:icons/mdi/logout';
-import IMdiPlay from 'virtual:icons/mdi/play';
-import IMdiStop from 'virtual:icons/mdi/stop';
 import { useI18n } from 'vue-i18n';
 import { useTheme } from 'vuetify';
 import { remote } from '#/plugins/remote';
@@ -150,25 +140,25 @@ function getColorFromSeverity(severity: LogLevel | undefined): string {
  */
 function getIconFromActivityType(
   type: string | undefined | null
-): typeof IMdiLogin {
+) {
   switch (type) {
     case 'SessionStarted': {
-      return IMdiLogin;
+      return 'i-mdi:login';
     }
     case 'SessionEnded': {
-      return IMdiLogout;
+      return 'i-mdi:logout';
     }
     case 'UserPasswordChanged': {
-      return IMdiLock;
+      return 'i-mdi:lock';
     }
     case 'VideoPlayback': {
-      return IMdiPlay;
+      return 'i-mdi:play';
     }
     case 'VideoPlaybackStopped': {
-      return IMdiStop;
+      return 'i-mdi-stop';
     }
     default: {
-      return IMdiHelp;
+      return 'i-mdi:help';
     }
   }
 }

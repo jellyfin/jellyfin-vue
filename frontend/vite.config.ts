@@ -5,8 +5,6 @@ import VueDevTools from 'vite-plugin-vue-devtools';
 import Vue from '@vitejs/plugin-vue';
 import browserslist from 'browserslist';
 import { browserslistToTargets } from 'lightningcss';
-import IconsResolver from 'unplugin-icons/resolver';
-import Icons from 'unplugin-icons/vite';
 import { Vuetify3Resolver } from 'unplugin-vue-components/resolvers';
 import Components from 'unplugin-vue-components/vite';
 import UnoCSS from 'unocss/vite';
@@ -49,26 +47,16 @@ export default defineConfig({
         }
       }
     }),
-    // This plugin allows to autoimport Vue components
+    /**
+     * This plugin is used to autoimport Vue components.
+     */
     Components({
       dirs: [resolve(import.meta.dirname, 'src/components')],
       dts: resolve(import.meta.dirname, 'types/global/components.d.ts'),
-      /**
-       * The icons resolver finds icons components from 'unplugin-icons' using this convenction:
-       * {prefix}-{collection}-{icon} e.g. <i-mdi-thumb-up />
-       */
       resolvers: [
-        IconsResolver(),
         Vuetify3Resolver(),
         JellyfinVueUIToolkit()
       ]
-    }),
-    /**
-     * This plugin allows to use all icons from Iconify as vue components
-     * See: https://github.com/antfu/unplugin-icons
-     */
-    Icons({
-      compiler: 'vue3'
     }),
     VueI18nPlugin({
       runtimeOnly: true,

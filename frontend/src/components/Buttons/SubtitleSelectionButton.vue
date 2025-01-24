@@ -6,10 +6,11 @@
       !playerElement.currentItemParsedSubtitleTracks.value ||
         playerElement.currentItemParsedSubtitleTracks.value.length === 0
     ">
-    <VIcon>
-      <IMdiClosedCaption v-if="playbackManager.currentSubtitleTrack.value" />
-      <IMdiClosedCaptionOutline v-else />
-    </VIcon>
+    <JIcon
+      :class="{
+        'i-mdi:closed-caption': playbackManager.currentSubtitleTrack.value,
+        'i-mdi:closed-caption-outline': !playbackManager.currentSubtitleTrack.value
+      }" />
     <VTooltip
       :text="$t('subtitles')"
       location="top" />
@@ -22,15 +23,16 @@
         <VListItem
           v-for="track of tracks"
           :key="track.srcIndex"
-          :append-icon="
-            track.srcIndex === playbackManager.currentSubtitleTrack.value?.Index
-              ? IMdiCheck
-              : undefined
-          "
           :title="track.label"
           @click="
             playbackManager.currentSubtitleTrack.value = track.srcIndex
-          " />
+          ">
+          <template
+            v-if="track.srcIndex === playbackManager.currentSubtitleTrack.value?.Index"
+            #prepend>
+            <JIcon class="i-mdi:check uno-w-10" />
+          </template>
+        </VListItem>
       </VList>
     </VMenu>
   </VBtn>
@@ -38,7 +40,6 @@
 
 <script setup lang="ts">
 import { SubtitleDeliveryMethod } from '@jellyfin/sdk/lib/generated-client';
-import IMdiCheck from 'virtual:icons/mdi/check';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { playbackManager } from '#/store/playback-manager';

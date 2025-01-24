@@ -9,18 +9,14 @@
       <div class="uno-flex uno-flex-row">
         <VBtn
           icon
-          @click="playerElement.toggleFullscreenVideoPlayer">
-          <VIcon>
-            <IMdiArrowExpandAll />
-          </VIcon>
+          @click.passive="playerElement.toggleFullscreenVideoPlayer">
+          <JIcon class="i:mdi-arrow-expand-all" />
         </VBtn>
         <VSpacer />
         <VBtn
           icon
-          @click="playbackManager.stop">
-          <VIcon>
-            <IMdiClose />
-          </VIcon>
+          @click.passive="playbackManager.stop">
+          <JIcon class="i-mdi:close" />
         </VBtn>
       </div>
       <div
@@ -28,28 +24,26 @@
         <VBtn
           icon
           size="large"
-          @click="playbackManager.setPreviousItem">
-          <VIcon size="32">
-            <IMdiSkipPrevious />
-          </VIcon>
+          @click.passive="playbackManager.setPreviousItem">
+          <JIcon class="i-mdi:skip-previous uno-text-lg" />
         </VBtn>
         <VBtn
           icon
           size="x-large"
-          @click="playbackManager.playPause">
-          <VIcon size="48">
-            <IMdiPlay v-if="playbackManager.isPaused.value" />
-            <IMdiPause v-else />
-          </VIcon>
+          @click.passive="playbackManager.playPause">
+          <JIcon
+            class="uno-text-2xl"
+            :class="{
+              'i-mdi:play': playbackManager.isPaused.value,
+              'i-mdi:pause': !playbackManager.isPaused.value,
+            }" />
         </VBtn>
         <VBtn
           icon
           size="large"
           :disabled="!playbackManager.nextItem.value"
-          @click="playbackManager.setNextItem">
-          <VIcon size="32">
-            <IMdiSkipNext />
-          </VIcon>
+          @click.passive="playbackManager.setNextItem">
+          <JIcon class="i-mdi:skip-next uno-text-lg" />
         </VBtn>
       </div>
     </JOverlay>

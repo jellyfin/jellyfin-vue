@@ -3,9 +3,7 @@
     color="success"
     size="small"
     variant="elevated">
-    <VIcon>
-      <IMdiCheck />
-    </VIcon>
+    <JIcon class="i-mdi:check" />
   </VChip>
 </template>
 

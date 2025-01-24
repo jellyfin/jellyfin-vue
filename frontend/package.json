@@ -63,7 +63,6 @@
     "browserslist": "4.24.4",
     "lightningcss": "1.28.2",
     "unocss": "0.65.4",
-    "unplugin-icons": "22.0.0",
     "unplugin-vue-components": "28.0.0",
     "unplugin-vue-router": "0.10.9",
     "vite": "6.0.7",

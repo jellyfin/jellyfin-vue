@@ -14,25 +14,19 @@
           <VBtn
             icon
             disabled>
-            <VIcon>
-              <IMdiInformationOutline />
-            </VIcon>
+            <JIcon class="i-mdi:information-outline" />
           </VBtn>
           <VBtn
             icon
             :disabled="loading || serverInfo.isDefault"
             @click="removeServer">
-            <VIcon>
-              <IMdiDelete />
-            </VIcon>
+            <JIcon class="i-mdi:delete" />
           </VBtn>
           <VBtn
             icon
             :disabled="loading"
             @click="setServer">
-            <VIcon>
-              <IMdiArrowRight />
-            </VIcon>
+            <JIcon class="i-mdi:arrow-right" />
           </VBtn>
         </VCardActions>
       </VCol>

@@ -85,9 +85,7 @@
             <VBtn
               icon
               to="/playback/music">
-              <VIcon>
-                <IMdiFullscreen />
-              </VIcon>
+              <JIcon class="i-mdi:fullscreen" />
             </VBtn>
           </VCol>
           <VCol

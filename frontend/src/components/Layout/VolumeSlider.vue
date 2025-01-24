@@ -4,7 +4,7 @@
       icon
       size="small"
       @click="playbackManager.toggleMute">
-      <VIcon :icon="icon" />
+      <JIcon :class="icon" />
     </VBtn>
     <VSlider
       v-model="playbackManager.currentVolume.value"
@@ -20,30 +20,25 @@
 </template>
 
 <script setup lang="ts">
-import IMdiVolumeHigh from 'virtual:icons/mdi/volume-high';
-import IMdiVolumeLow from 'virtual:icons/mdi/volume-low';
-import IMdiVolumeMedium from 'virtual:icons/mdi/volume-medium';
-import IMdiVolumeMute from 'virtual:icons/mdi/volume-mute';
 import { computed } from 'vue';
 import { playbackManager } from '#/store/playback-manager';
 
 const icon = computed(() => {
-  if (playbackManager.isMuted.value) {
-    return IMdiVolumeMute;
-  } else if (playbackManager.currentVolume.value >= 80) {
-    return IMdiVolumeHigh;
-  } else if (
-    playbackManager.currentVolume.value < 80
-    && playbackManager.currentVolume.value >= 25
-  ) {
-    return IMdiVolumeMedium;
-  } else if (
-    playbackManager.currentVolume.value < 25
-    && playbackManager.currentVolume.value >= 1
-  ) {
-    return IMdiVolumeLow;
-  } else {
-    return IMdiVolumeMute;
+  const volume = playbackManager.currentVolume.value;
+
+  switch (true) {
+    case volume >= 80: {
+      return 'i-mdi:volume-high';
+    }
+    case volume >= 25: {
+      return 'i-mdi:volume-medium';
+    }
+    case volume >= 1: {
+      return 'i-mdi:volume-mute';
+    }
+    default: {
+      return 'i-mdi:volume-mute';
+    }
   }
 });
 </script>

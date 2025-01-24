@@ -16,7 +16,7 @@
         icon
         :disabled="tabName === 'searchMenu'"
         @click="clear">
-        <IMdiArrowLeft />
+        <JIcon class="i-mdi:arrow-left" />
       </VBtn>
     </template>
 

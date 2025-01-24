@@ -10,9 +10,7 @@
       @click="navigationDrawer = !navigationDrawer" />
     <AppBarButtonLayout @click="$router.back()">
       <template #icon>
-        <VIcon>
-          <IMdiArrowLeft />
-        </VIcon>
+        <JIcon class="i-mdi:arrow-left" />
       </template>
     </AppBarButtonLayout>
     <VSpacer />
@@ -22,9 +20,7 @@
       v-hide="remote.socket.isConnected.value && isConnectedToServer"
       :color="isConnectedToServer ? 'yellow' : 'red'">
       <template #icon>
-        <VIcon>
-          <IMdiNetworkOffOutline />
-        </VIcon>
+        <JIcon class="i-mdi:network-off-outline" />
       </template>
       <template #tooltip>
         <span>{{ !remote.socket.isConnected.value ? $t('noWebSocketConnection') : $t('noServerConnection') }}</span>
@@ -33,11 +29,12 @@
     <TaskManagerButton />
     <AppBarButtonLayout @click="switchColorTheme">
       <template #icon>
-        <VIcon>
-          <IMdiBrightnessAuto v-if="clientSettings.isAutoTheme.value" />
-          <IMdiWeatherSunny v-else-if="clientSettings.currentThemeIsDark.value" />
-          <IMdiWeatherNight v-else />
-        </VIcon>
+        <JIcon
+          :class="{
+            'i-mdi:weather-sunny': clientSettings.isAutoTheme.value,
+            'i-mdi:weather-night': !clientSettings.currentThemeIsDark.value,
+            'i-mdi:brightness-auto': clientSettings.currentThemeIsDark.value
+          }" />
       </template>
       <template #tooltip>
         <span v-if="clientSettings.isAutoTheme.value">

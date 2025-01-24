@@ -13,9 +13,7 @@
             :src="item.ImageUrl"
             :alt="item.Name ?? $t('imageSearchResult')"
             once>
-            <VIcon>
-              <IMdiImage />
-            </VIcon>
+            <JIcon class="i-mdi:image" />
           </JImg>
         </template>
         <template #title>

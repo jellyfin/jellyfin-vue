@@ -11,11 +11,8 @@
     <span v-if="item.ProductionYear && year">{{ item.ProductionYear }}</span>
     <span v-if="item.OfficialRating && rating">{{ item.OfficialRating }}</span>
     <span v-if="item.CommunityRating && rating">
-      <VIcon
-        class="rating-icon"
-        size="16">
-        <IMdiStar />
-      </VIcon>
+      <JIcon
+        class="rating-icon i-mdi:star uno-opacity-60" />
       {{ item.CommunityRating.toFixed(1) }}
     </span>
     <span v-if="item.Type === 'MusicAlbum' && item.ChildCount && tracks">
@@ -56,9 +53,5 @@ span:first-of-type {
 
 span:last-of-type {
   margin-right: 0;
-}
-
-.rating-icon {
-  opacity: 0.6;
 }
 </style>

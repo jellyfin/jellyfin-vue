@@ -16,8 +16,13 @@
       <VListItem
         v-bind="templateProps"
         :title="item.raw.title"
-        :subtitle="item.raw.subtitle"
-        :prepend-icon="item.raw.icon" />
+        :subtitle="item.raw.subtitle">
+        <template #prepend>
+          <JIcon
+            :class="item.raw.icon"
+            class="uno-w-10" />
+        </template>
+      </VListItem>
     </template>
   </VSelect>
 </template>
@@ -26,11 +31,6 @@
 import { ref, computed, watch } from 'vue';
 import type { MediaStream } from '@jellyfin/sdk/lib/generated-client';
 import { useI18n } from 'vue-i18n';
-import IMdiSurroundSound20 from 'virtual:icons/mdi/surround-sound-2-0';
-import IMdiSurroundSound31 from 'virtual:icons/mdi/surround-sound-3-1';
-import IMdiSurroundSound51 from 'virtual:icons/mdi/surround-sound-5-1';
-import IMdiSurroundSound71 from 'virtual:icons/mdi/surround-sound-7-1';
-import IMdiSurroundSound from 'virtual:icons/mdi/surround-sound';
 import { watchImmediate } from '@vueuse/core';
 import { isNil } from '@jellyfin-vue/shared/validation';
 import { getLocaleName } from '#/utils/i18n';
@@ -50,22 +50,22 @@ const { t, locale } = useI18n();
  * Audio layout to get related icon
  * @returns Icon name
  */
-function getSurroundIcon(layout: string): typeof IMdiSurroundSound {
+function getSurroundIcon(layout: string) {
   switch (layout) {
     case '2.0': {
-      return IMdiSurroundSound20;
+      return 'i-mdi:surround-sound-2-0';
     }
     case '3.1': {
-      return IMdiSurroundSound31;
+      return 'i-mdi:surround-sound-3-1';
     }
     case '5.1': {
-      return IMdiSurroundSound51;
+      return 'i-mdi:surround-sound-5-1';
     }
     case '7.1': {
-      return IMdiSurroundSound71;
+      return 'i-mdi:surround-sound-7-1';
     }
     default: {
-      return IMdiSurroundSound;
+      return 'i-mdi:surround-sound';
     }
   }
 }
@@ -76,7 +76,7 @@ function getSurroundIcon(layout: string): typeof IMdiSurroundSound {
  */
 function getTrackIcon(
   track: MediaStream
-): typeof IMdiSurroundSound | undefined {
+) {
   if (type === 'Audio' && track.ChannelLayout) {
     return getSurroundIcon(track.ChannelLayout);
   }

@@ -2,9 +2,7 @@
   <VBtn
     icon
     class="align-self-center">
-    <VIcon>
-      <IMdiCog />
-    </VIcon>
+    <JIcon class="i-mdi:cog" />
     <VTooltip
       :text="$t('playbackSettings')"
       location="top" />

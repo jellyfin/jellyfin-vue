@@ -29,17 +29,13 @@
           <VBtn
             icon
             @click="onSearch">
-            <VIcon>
-              <IMdiMagnify />
-            </VIcon>
+            <JIcon class="i-mdi:magnify" />
           </VBtn>
           <VBtn
             icon
             class="ml-3"
             @click="onDelete(item)">
-            <VIcon>
-              <IMdiDelete />
-            </VIcon>
+            <JIcon class="i-mdi:delete" />
           </VBtn>
         </VCardActions>
       </VCard>
@@ -75,17 +71,13 @@
             <VBtn
               icon
               @click="onSearch">
-              <VIcon>
-                <IMdiMagnify />
-              </VIcon>
+              <JIcon class="i-mdi:magnify" />
             </VBtn>
             <VBtn
               icon
               class="ml-3"
               @click="onDelete(item)">
-              <VIcon>
-                <IMdiDelete />
-              </VIcon>
+              <JIcon class="i-mdi:delete" />
             </VBtn>
           </VCardActions>
         </VCard>

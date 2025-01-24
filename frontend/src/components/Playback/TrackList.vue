@@ -21,11 +21,8 @@
           style="width: 6.5em"
           class="text-center"
           scope="col">
-          <VIcon
-            class="text--primary"
-            size="16">
-            <IMdiClockOutline />
-          </VIcon>
+          <JIcon
+            class="i-mdi:clock-outline" />
         </th>
       </tr>
     </thead>
@@ -38,9 +35,8 @@
           <td
             colspan="4"
             class="text--secondary">
-            <VIcon class="text--secondary">
-              <IMdiDisc />
-            </VIcon>
+            <JIcon
+              class="text--secondary i-mdi:disc" />
             {{ $t('discNumber', { discNumber }) }}
           </td>
         </tr>
@@ -59,9 +55,7 @@
                     size="small"
                     icon
                     @click="playTracks(track)">
-                    <VIcon>
-                      <IMdiPlayCircleOutline />
-                    </VIcon>
+                    <JIcon class="i-mdi:play-circle-outline" />
                   </VBtn>
                 </span>
                 <span v-else>{{ track.IndexNumber }}</span>

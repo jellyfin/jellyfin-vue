@@ -3,10 +3,8 @@
     class="ma-2"
     :icon="$vuetify.display.smAndDown">
     {{ !$vuetify.display.smAndDown ? t('filter') : undefined }}
-    <VIcon :end="!$vuetify.display.smAndDown">
-      <IMdiMenuDown v-if="!$vuetify.display.smAndDown" />
-      <IMdiFilterVariant v-else />
-    </VIcon>
+    <JIcon
+      :class="$vuetify.display.smAndDown ? 'mdi-filter-variant' : 'i-mdi:menu-down'" />
     <VMenu
       :disabled="disabled"
       :close-on-content-click="false"

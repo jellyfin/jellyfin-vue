@@ -5,12 +5,9 @@
       :rounded="false"
       size="100%"
       class="d-flex justify-center align-center align-self-center uno-h-full uno-w-full">
-      <VIcon
-        class="text--disabled placeholder"
-        size="50%"
-        :icon="getItemIcon(item)">
-        <component :is="getItemIcon(item)" />
-      </VIcon>
+      <JIcon
+        class="text--disabled uno-h-[50%] uno-w-[50%]"
+        :class="getItemIcon(item)" />
     </VAvatar>
   </JOverlay>
 </template>
@@ -23,10 +20,3 @@ import { getItemIcon } from '#/utils/items';
 
 const { item } = defineProps<{ item: BaseItemDto | BaseItemPerson }>();
 </script>
-
-<style scoped>
-:deep(.placeholder svg) {
-  width: 100%;
-  height: 100%;
-}
-</style>

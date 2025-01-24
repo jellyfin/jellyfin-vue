@@ -2,9 +2,7 @@
   <VBtn
     icon
     class="align-self-center">
-    <VIcon>
-      <IMdiPlaylistPlay />
-    </VIcon>
+    <JIcon class="i-mdi:playlist-play" />
     <VTooltip
       :text="$t('queue')"
       location="top" />
@@ -22,9 +20,9 @@
                 <BlurhashImage
                   v-if="playbackManager.initiator.value"
                   :item="playbackManager.initiator.value" />
-                <VIcon
+                <JIcon
                   v-else
-                  :icon="modeIcon" />
+                  :class="modeIcon" />
               </VAvatar>
             </template>
             <template #subtitle>
@@ -46,9 +44,7 @@
           <VBtn
             icon
             @click="playbackManager.stop">
-            <VIcon>
-              <IMdiPlaylistRemove />
-            </VIcon>
+            <JIcon class="i-mdi:playlist-remove" />
             <VTooltip
               :text="$t('clearQueue')"
               location="top" />
@@ -56,9 +52,7 @@
           <VBtn
             icon
             disabled>
-            <VIcon>
-              <IMdiContentSave />
-            </VIcon>
+            <JIcon class="i-mdi:content-save" />
             <VTooltip
               :text="$t('saveAsPlaylist')"
               location="top" />
@@ -71,8 +65,6 @@
 </template>
 
 <script setup lang="ts">
-import IMdiPlaylistMusic from 'virtual:icons/mdi/playlist-music';
-import IMdiShuffle from 'virtual:icons/mdi/shuffle';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { getTotalEndsAtTime } from '#/utils/time';
@@ -123,8 +115,8 @@ const sourceText = computed(() => {
 
 const modeIcon = computed(() =>
   playbackManager.playbackInitMode.value === InitMode.Shuffle
-    ? IMdiShuffle
-    : IMdiPlaylistMusic
+    ? 'i-mdi:shuffle'
+    : 'i-mdi:playlist-music'
 );
 </script>
 

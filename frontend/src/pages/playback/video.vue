@@ -15,10 +15,10 @@
         <div class="d-flex align-center py-2 px-4">
           <div class="d-flex">
             <VBtn
-              :icon="IMdiClose"
+              icon="i-mdi:close"
               @click="playbackManager.stop" />
             <VBtn
-              :icon="IMdiChevronDown"
+              icon="i-mdi:chevron-down"
               @click="playerElement.toggleFullscreenVideoPlayer" />
           </div>
           <div class="d-flex ml-auto">
@@ -86,19 +86,18 @@
                 class="align-self-center"
                 icon
                 @click="mediaControls.togglePictureInPicture">
-                <VIcon>
-                  <IMdiPictureInPictureBottomRight />
-                </VIcon>
+                <JIcon class="i-mdi:picture-in-picture-bottom-right" />
               </VBtn>
               <VBtn
                 v-if="fullscreen.isSupported"
                 class="align-self-center"
                 icon
                 @click="fullscreen.toggle">
-                <VIcon>
-                  <IMdiFullscreen v-if="fullscreen.isFullscreen" />
-                  <IMdiFullscreenExit v-else />
-                </VIcon>
+                <JIcon
+                  :class="{
+                    'i-mdi:fullscreen': !fullscreen.isFullscreen,
+                    'i-mdi:fullscreen-exit': fullscreen.isFullscreen
+                  }" />
                 <VTooltip
                   :text="$t('fullScreen')"
                   location="top" />
@@ -123,8 +122,6 @@ meta:
 <script setup lang="ts">
 import { BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
 import { useTimeoutFn } from '@vueuse/core';
-import IMdiChevronDown from 'virtual:icons/mdi/chevron-down';
-import IMdiClose from 'virtual:icons/mdi/close';
 import { computed, shallowRef, watch } from 'vue';
 import { playbackGuard } from '#/plugins/router/middlewares/playback';
 import {

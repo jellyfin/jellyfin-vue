@@ -4,9 +4,9 @@
     icon
     :color="playbackManager.isShuffling.value ? 'primary' : undefined"
     @click="playbackManager.toggleShuffle">
-    <VIcon v-bind="$attrs">
-      <IMdiShuffle />
-    </VIcon>
+    <JIcon
+      v-bind="$attrs"
+      class="i-mdi:shuffle" />
   </VBtn>
 </template>
 

@@ -11,9 +11,8 @@
         <VAvatar
           color="primary"
           :size="size">
-          <VIcon :size="iconSize">
-            <IMdiAccount />
-          </VIcon>
+          <JIcon
+            class="i-mdi:account" />
         </VAvatar>
       </template>
     </JImg>

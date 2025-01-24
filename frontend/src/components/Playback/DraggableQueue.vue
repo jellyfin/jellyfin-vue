@@ -7,19 +7,20 @@
         <VListItem
           :title="item.Name ?? ''"
           :subtitle="getArtists(item)"
-          class="grab-cursor"
+          class="uno-cursor-grab"
           :class="{ 'text-primary font-weight-bold': isPlaying(index) }"
           @click="playbackManager.currentItemIndex.value = index">
           <template #prepend>
             <VListItemAction
               :key="index"
+              class="uno-min-w-10"
               start>
-              <VIcon>
-                <template v-if="!isHovering">
-                  {{ index + 1 }}
-                </template>
-                <IMdiDragHorizontal v-else />
-              </VIcon>
+              <template v-if="!isHovering">
+                {{ index + 1 }}
+              </template>
+              <JIcon
+                v-else
+                class="i-mdi:drag-horizontal" />
             </VListItemAction>
             <VAvatar>
               <BlurhashImage :item="item" />
@@ -99,9 +100,3 @@ watch(container, () => {
 
 onBeforeUnmount(destroy);
 </script>
-
-<style scoped>
-.grab-cursor {
-  cursor: grab;
-}
-</style>
