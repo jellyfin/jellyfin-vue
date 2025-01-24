@@ -5,7 +5,8 @@
   "exports": {
     "./typescript": "./src/typescript.json",
     "./lint": "./src/lint/index.ts",
-    "./uno": "./src/uno.ts"
+    "./uno": "./src/uno.ts",
+    "./storybook": "./src/storybook.ts"
   },
   "scripts": {
     "lint": "eslint . --flag unstable_ts_config",

@@ -15,10 +15,19 @@
     "lint": "eslint . --flag unstable_ts_config",
     "lint:fix": "eslint . --fix --flag unstable_ts_config",
     "lint:inspect": "eslint-config-inspector",
-    "check:types": "vue-tsc"
+    "check:types": "vue-tsc",
+    "storybook": "storybook dev -p 6006 --config-dir storybook --no-open"
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "3.2.4",
     "@jellyfin-vue/configs": "*",
+    "@storybook/addon-a11y": "8.5.1",
+    "@storybook/addon-essentials": "8.5.1",
+    "@storybook/addon-interactions": "8.5.1",
+    "@storybook/blocks": "8.5.1",
+    "@storybook/vue3": "8.5.1",
+    "@storybook/vue3-vite": "8.5.1",
+    "storybook": "8.5.1",
     "unplugin-vue-components": "28.0.0",
     "vite": "6.0.7"
   },
