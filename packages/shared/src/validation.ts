@@ -68,7 +68,7 @@ export function isNil(value: unknown): value is null | undefined {
  * Check if the value is an object.
  */
 export function isObj(value: unknown): value is object {
-  return typeof value === 'object' && !isNull(value);
+  return typeof value === 'object' && !isNull(value) && !isArray(value);
 }
 
 /**

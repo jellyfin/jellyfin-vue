@@ -10,10 +10,12 @@
     "lint": "eslint . --flag unstable_ts_config",
     "lint:fix": "eslint . --fix --flag unstable_ts_config",
     "lint:inspect": "eslint-config-inspector",
-    "check:types": "vue-tsc"
+    "check:types": "vue-tsc",
+    "test": "vitest run"
   },
   "devDependencies": {
-    "@jellyfin-vue/configs": "*"
+    "@jellyfin-vue/configs": "*",
+    "vitest": "3.0.4"
   },
   "dependencies": {
     "dompurify": "3.2.3",
