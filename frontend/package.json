@@ -70,7 +70,6 @@
     "@vitejs/plugin-vue": "5.2.1",
     "browserslist": "4.24.4",
     "lightningcss": "1.28.2",
-    "storybook": "8.5.1",
     "unocss": "0.65.4",
     "unplugin-vue-components": "28.0.0",
     "unplugin-vue-router": "0.10.9",
