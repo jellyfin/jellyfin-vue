@@ -7,7 +7,7 @@
         rounded />
       <VMenu location="bottom">
         <VList
-          class="min-list-width"
+          class="uno-min-w-50"
           density="compact">
           <VListItem>
             <template #prepend>
@@ -26,9 +26,7 @@
               #subtitle>
               <VListItemSubtitle>
                 {{ $t('administrator') }}
-                <VIcon size="small">
-                  <IMdiKeyChain />
-                </VIcon>
+                <JIcon class="i-mdi:key-chain uno-text-sm" />
               </VListItemSubtitle>
             </template>
           </VListItem>
@@ -36,9 +34,14 @@
           <VListItem
             v-for="(item, index) in menuItems"
             :key="`bottomMenuItems-${index}`"
-            :prepend-icon="item.icon"
             :title="item.title"
-            @click="item.action" />
+            @click="item.action">
+            <template #prepend>
+              <JIcon
+                :class="item.icon"
+                class="uno-w-10" />
+            </template>
+          </VListItem>
         </VList>
       </VMenu>
     </template>
@@ -46,9 +49,6 @@
 </template>
 
 <script setup lang="ts">
-import IMdiCog from 'virtual:icons/mdi/cog';
-import IMdiLogout from 'virtual:icons/mdi/logout';
-import IMdiPencil from 'virtual:icons/mdi/pencil';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
@@ -56,7 +56,7 @@ import { remote } from '#/plugins/remote';
 
 interface MenuItem {
   title: string;
-  icon: typeof IMdiPencil;
+  icon: string;
   action: () => void;
 }
 
@@ -70,7 +70,7 @@ const menuItems = computed<MenuItem[]>(() => {
   if (auth.currentUser.value?.Policy?.IsAdministrator) {
     menuItems.push({
       title: t('metadataEditor'),
-      icon: IMdiPencil,
+      icon: 'i-mdi:pencil',
       action: async (): Promise<void> => {
         await router.push('/metadata');
       }
@@ -80,14 +80,14 @@ const menuItems = computed<MenuItem[]>(() => {
   menuItems.push(
     {
       title: t('settings'),
-      icon: IMdiCog,
+      icon: 'i-mdi:cog',
       action: async (): Promise<void> => {
         await router.push('/settings');
       }
     },
     {
       title: t('logout'),
-      icon: IMdiLogout,
+      icon: 'i-mdi:logout',
       action: async (): Promise<void> => {
         await auth.logoutCurrentUser();
       }
@@ -97,9 +97,3 @@ const menuItems = computed<MenuItem[]>(() => {
   return menuItems;
 });
 </script>
-
-<style scoped>
-.min-list-width {
-  min-width: 200px;
-}
-</style>

@@ -140,9 +140,7 @@
               @click="onPersonAdd">
               <template #append>
                 <VAvatar>
-                  <VIcon>
-                    <IMdiPlusCircle />
-                  </VIcon>
+                  <JIcon class="i-mdi:plus-circle" />
                 </VAvatar>
               </template>
             </VListItem>
@@ -164,19 +162,15 @@
                       )
                     ">
                     <template #placeholder>
-                      <VIcon
-                        class="bg-grey-darken-3">
-                        <IMdiAccount />
-                      </VIcon>
+                      <JIcon
+                        class="bg-grey-darken-3 i-mdi:account" />
                     </template>
                   </JImg>
                 </VAvatar>
               </template>
               <template #append>
                 <VAvatar @click.stop="onPersonDel(i)">
-                  <VIcon>
-                    <IMdiDelete />
-                  </VIcon>
+                  <JIcon class="i-mdi:delete" />
                 </VAvatar>
               </template>
             </VListItem>

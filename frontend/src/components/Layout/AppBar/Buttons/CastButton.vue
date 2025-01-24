@@ -1,9 +1,7 @@
 <template>
   <AppBarButtonLayout disabled>
     <template #icon>
-      <VIcon>
-        <IMdiCast />
-      </VIcon>
+      <JIcon class="i-mdi:cast" />
       <VMenu
         v-model="menu"
         :close-on-content-click="false"
@@ -13,33 +11,23 @@
         <VCard>
           <VList color="transparent">
             <VListItem>
-              <VIcon>
-                <IMdiAccountGroup />
-              </VIcon>
+              <JIcon class="i-mdi:account-group" />
               {{ $t('syncPlayGroups') }}
               <VListItemAction>
-                <VIcon>
-                  <IMdiArrowRight />
-                </VIcon>
+                <JIcon class="i-mdi:arrow-right" />
               </VListItemAction>
             </VListItem>
             <VDivider />
             <VListItem>
-              <VIcon>
-                <IMdiAppleAirplay />
-              </VIcon>
+              <JIcon class="i-mdi:apple-airplay" />
               {{ $t('airPlayDevices') }}
             </VListItem>
             <VListItem>
-              <VIcon>
-                <IMdiCast />
-              </VIcon>
+              <JIcon class="i-mdi:cast" />
               {{ $t('googleCastPlaceholderDevice') }}
             </VListItem>
             <VListItem>
-              <VIcon>
-                <ISimpleIconsJellyfin />
-              </VIcon>
+              <JIcon class="i-simple-icons:jellyfin" />
               {{ $t('genericJellyfinPlaceholderDevice') }}
             </VListItem>
           </VList>

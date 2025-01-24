@@ -2,16 +2,19 @@
   <VTextField
     v-model="searchQuery"
     class="search-input"
-    :prepend-inner-icon="IMdiMagnify"
     :placeholder="$t('search')"
     density="compact"
     hide-details
     single-line
-    @update:focused="onFocus" />
+    @update:focused="onFocus">
+    <template #prepend-inner>
+      <JIcon
+        class="i-mdi:magnify" />
+    </template>
+  </VTextField>
 </template>
 
 <script setup lang="ts">
-import IMdiMagnify from 'virtual:icons/mdi/magnify';
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 

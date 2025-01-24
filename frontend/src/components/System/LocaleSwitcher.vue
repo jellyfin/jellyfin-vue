@@ -4,9 +4,7 @@
     :variant="elevated ? 'elevated' : undefined"
     :size="large ? 'large' : 'small'"
     :color="elevated ? undefined : 'primary'">
-    <VIcon>
-      <IMdiWeb />
-    </VIcon>
+    <JIcon class="i-mdi:language" />
     <VTooltip
       :text="$t('language')"
       :location="bottom ? 'bottom' : 'top'" />

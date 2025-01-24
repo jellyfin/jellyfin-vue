@@ -9,7 +9,7 @@
         target="_blank">
         <template #prepend>
           <VAvatar>
-            <VIcon :icon="linkItem.icon" />
+            <JIcon :class="linkItem.icon" />
           </VAvatar>
         </template>
         <VListItemTitle>
@@ -17,9 +17,8 @@
         </VListItemTitle>
         <template #append>
           <VListItemAction>
-            <VIcon>
-              <IMdiOpenInNew />
-            </VIcon>
+            <JIcon
+              class="i-mdi:open-in-new" />
           </VListItemAction>
         </template>
       </VListItem>
@@ -28,10 +27,6 @@
 </template>
 
 <script setup lang="ts">
-import IMdiBook from 'virtual:icons/mdi/book';
-import IMdiBug from 'virtual:icons/mdi/bug';
-import IMdiRocketLaunch from 'virtual:icons/mdi/rocket-launch';
-import IMdiTranslate from 'virtual:icons/mdi/translate';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -40,22 +35,22 @@ const { t } = useI18n();
 const linkItems = computed(() => {
   return [
     {
-      icon: IMdiRocketLaunch,
+      icon: 'i-mdi:rocket-launch',
       name: t('poweredByJellyfin'),
       link: 'https://jellyfin.org'
     },
     {
-      icon: IMdiBook,
+      icon: 'i-mdi:book',
       name: t('readTheDocumentation'),
       link: 'https://docs.jellyfin.org'
     },
     {
-      icon: IMdiTranslate,
+      icon: 'i-mdi:translate',
       name: t('helpTranslate'),
       link: 'https://translate.jellyfin.org'
     },
     {
-      icon: IMdiBug,
+      icon: 'i-mdi:bug',
       name: t('reportAnIssue'),
       link: 'https://github.com/jellyfin/jellyfin-vue/issues/new'
     }

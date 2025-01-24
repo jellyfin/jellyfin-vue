@@ -7,9 +7,9 @@
         v-if="!buttonColor"
         class="uno-h-6 uno-w-6"
         indeterminate />
-      <VIcon v-else>
-        <IMdiCheck />
-      </VIcon>
+      <JIcon
+        v-else
+        class="i-mdi:check" />
       <VMenu
         v-model="menu"
         :close-on-content-click="false"
@@ -29,9 +29,9 @@
                   :indeterminate="!!task.progress"
                   :model-value="task.progress"
                   size="24" />
-                <VIcon v-else>
-                  <IMdiCheck />
-                </VIcon>
+                <JIcon
+                  v-else
+                  class="i-mdi:check" />
               </template>
             </VListItem>
           </VList>

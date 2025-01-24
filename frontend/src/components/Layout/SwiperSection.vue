@@ -16,17 +16,13 @@
           class="swiper-prev"
           icon
           variant="plain">
-          <VIcon>
-            <IMdiArrowLeft />
-          </VIcon>
+          <JIcon class="i-mdi:arrow-left" />
         </VBtn>
         <VBtn
           class="swiper-next"
           icon
           variant="plain">
-          <VIcon>
-            <IMdiArrowRight />
-          </VIcon>
+          <JIcon class="i-mdi:arrow-right" />
         </VBtn>
       </div>
 

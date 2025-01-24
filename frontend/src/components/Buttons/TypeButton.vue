@@ -9,10 +9,11 @@
           ? items[0].title
           : items.find((i) => i.value === innerModel[0])?.title
     }}
-    <VIcon :end="!$vuetify.display.smAndDown">
-      <IMdiMenuDown v-if="!$vuetify.display.smAndDown" />
-      <IMdiEye v-else />
-    </VIcon>
+    <JIcon
+      :class="{
+        'i-mdi:menu-down': !$vuetify.display.smAndDown,
+        'i-mdi:eye': $vuetify.display.smAndDown
+      }" />
     <VMenu>
       <VList
         :items="items"

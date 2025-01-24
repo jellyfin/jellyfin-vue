@@ -4,9 +4,9 @@
     icon
     :disabled="!playbackManager.nextItem.value"
     @click="playbackManager.setNextItem">
-    <VIcon v-bind="$attrs">
-      <IMdiSkipNext />
-    </VIcon>
+    <JIcon
+      v-bind="$attrs"
+      class="i-mdi:skip-next" />
   </VBtn>
 </template>
 

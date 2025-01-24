@@ -20,7 +20,7 @@
           <VBtn
             icon
             @click="model = false">
-            <IMdiClose />
+            <JIcon class="i-mdi:close" />
           </VBtn>
         </template>
         <VToolbarTitle>

@@ -8,10 +8,8 @@
       location="bottom right"
       position="fixed"
       variant="elevated"
-      @click="scrollToTop">
-      <VIcon>
-        <IMdiChevronUp />
-      </VIcon>
+      @click.passive="scrollToTop">
+      <JIcon class="i-mdi:chevron-up" />
     </VBtn>
   </JTransition>
 </template>

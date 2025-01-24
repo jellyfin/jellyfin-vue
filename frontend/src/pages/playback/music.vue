@@ -3,18 +3,13 @@
     <VAppBar color="transparent">
       <AppBarButtonLayout @click="$router.back()">
         <template #icon>
-          <VIcon>
-            <IMdiArrowLeft />
-          </VIcon>
+          <JIcon class="i-mdi:arrow-left" />
         </template>
       </AppBarButtonLayout>
       <VSpacer />
       <AppBarButtonLayout @click="isVisualizing = !isVisualizing">
         <template #icon>
-          <VIcon>
-            <IDashiconsAlbum v-if="isVisualizing" />
-            <IMdiChartBar v-else />
-          </VIcon>
+          <JIcon :class="isVisualizing ? 'i-dashicons:album' : 'mdi:chart-bar'" />
         </template>
       </AppBarButtonLayout>
     </VAppBar>

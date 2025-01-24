@@ -18,9 +18,13 @@
         hide-details
         class="mt-4"
         :label="$t('password')"
-        :append-inner-icon="showPassword ? IconEyeOff : IconEye"
-        :type="showPassword ? 'text' : 'password'"
-        @click:append-inner="() => (showPassword = !showPassword)" />
+        :type="showPassword ? 'text' : 'password'">
+        <template #append-inner>
+          <JIcon
+            :class="showPassword ? 'i-mdi:eye-off' : 'i-mdi:eye'"
+            @click.passive="() => (showPassword = !showPassword)" />
+        </template>
+      </VTextField>
       <VCheckbox
         v-model="login.rememberMe"
         hide-details
@@ -68,8 +72,6 @@
 
 <script setup lang="ts">
 import type { UserDto } from '@jellyfin/sdk/lib/generated-client';
-import IconEye from 'virtual:icons/mdi/eye';
-import IconEyeOff from 'virtual:icons/mdi/eye-off';
 import { ref, shallowRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { fetchIndexPage } from '#/utils/items';

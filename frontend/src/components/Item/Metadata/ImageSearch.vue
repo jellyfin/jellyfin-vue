@@ -100,9 +100,7 @@
                 icon
                 :disabled="loading"
                 @click="onDownload(item)">
-                <VIcon>
-                  <IMdiCloudDownload />
-                </VIcon>
+                <JIcon class="i-mdi:cloud-download" />
               </VBtn>
             </VCardActions>
           </VCard>

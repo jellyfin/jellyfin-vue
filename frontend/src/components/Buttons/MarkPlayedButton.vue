@@ -2,16 +2,17 @@
   <VBtn
     v-if="canMarkWatched(item)"
     :color="isPlayed ? 'primary' : undefined"
-    :icon="IMdiCheck"
+    icon
     :loading="loading"
     size="small"
-    @click.stop.prevent="isPlayed = !isPlayed" />
+    @click.stop.prevent="isPlayed = !isPlayed">
+    <JIcon class="i-mdi:check" />
+  </VBtn>
 </template>
 
 <script setup lang="ts">
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getPlaystateApi } from '@jellyfin/sdk/lib/utils/api/playstate-api';
-import IMdiCheck from 'virtual:icons/mdi/check';
 import { computed, ref } from 'vue';
 import { canMarkWatched } from '#/utils/items';
 import { useApi } from '#/composables/apis';

@@ -13,23 +13,6 @@ import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { getUserViewsApi } from '@jellyfin/sdk/lib/utils/api/user-views-api';
-import IMdiAccount from 'virtual:icons/mdi/account';
-import IMdiAlbum from 'virtual:icons/mdi/album';
-import IMdiBookMusic from 'virtual:icons/mdi/book-music';
-import IMdiBookOpenPageVariant from 'virtual:icons/mdi/book-open-page-variant';
-import IMdiFilmstrip from 'virtual:icons/mdi/filmstrip';
-import IMdiFolder from 'virtual:icons/mdi/folder';
-import IMdiFolderMultiple from 'virtual:icons/mdi/folder-multiple';
-import IMdiImage from 'virtual:icons/mdi/image';
-import IMdiImageMultiple from 'virtual:icons/mdi/image-multiple';
-import IMdiMovie from 'virtual:icons/mdi/movie';
-import IMdiMusic from 'virtual:icons/mdi/music';
-import IMdiMusicBox from 'virtual:icons/mdi/music-box';
-import IMdiMusicNote from 'virtual:icons/mdi/music-note';
-import IMdiPlaylistPlay from 'virtual:icons/mdi/playlist-play';
-import IMdiTelevisionClassic from 'virtual:icons/mdi/television-classic';
-import IMdiYoutube from 'virtual:icons/mdi/youtube';
-import IMdiYoutubeTV from 'virtual:icons/mdi/youtube-tv';
 import type { ComputedRef } from 'vue';
 import type { RouteNamedMap } from 'vue-router/auto-routes';
 import { isNil } from '@jellyfin-vue/shared/validation';
@@ -102,40 +85,40 @@ export function isLibrary(item: BaseItemDto): boolean {
  */
 export function getLibraryIcon(
   libraryType: string | undefined | null
-): typeof IMdiMovie {
+) {
   switch (libraryType?.toLowerCase()) {
     case 'movies': {
-      return IMdiMovie;
+      return 'i-mdi:movie';
     }
     case 'music': {
-      return IMdiMusic;
+      return 'i-mdi-music';
     }
     case 'photos': {
-      return IMdiImage;
+      return 'i-mdi:image';
     }
     case 'livetv': {
-      return IMdiYoutubeTV;
+      return 'i-mdi:youtube-tv';
     }
     case 'tvshows': {
-      return IMdiTelevisionClassic;
+      return 'i-mdi:television-classic';
     }
     case 'homevideos': {
-      return IMdiImageMultiple;
+      return 'i-mdi:image-multiple';
     }
     case 'musicvideos': {
-      return IMdiMusicBox;
+      return 'i-mdi:music-box';
     }
     case 'books': {
-      return IMdiBookOpenPageVariant;
+      return 'i-mdi:book-open-page-variant';
     }
     case 'channels': {
-      return IMdiYoutube;
+      return 'i-mdi:youtube';
     }
     case 'playlists': {
-      return IMdiPlaylistPlay;
+      return 'i-mdi:playlist-play';
     }
     default: {
-      return IMdiFolder;
+      return 'i-mdi:folder';
     }
   }
 }
@@ -372,58 +355,58 @@ export function getItemDetailsLink(
  */
 export function getItemIcon(
   item: BaseItemDto | BaseItemPerson
-): typeof IMdiAccount | undefined {
+) {
   let itemIcon;
 
   if (isPerson(item)) {
-    itemIcon = IMdiAccount;
+    itemIcon = 'i-mdi:account';
   } else {
     switch (item.Type) {
       case 'Audio': {
-        itemIcon = IMdiMusicNote;
+        itemIcon = 'i-mdi:music-note';
         break;
       }
       case 'AudioBook': {
-        itemIcon = IMdiBookMusic;
+        itemIcon = 'i-mdi:book-music';
         break;
       }
       case 'Book': {
-        itemIcon = IMdiBookOpenPageVariant;
+        itemIcon = 'i-mdi:book-open-page-variant';
         break;
       }
       case 'BoxSet': {
-        itemIcon = IMdiFolderMultiple;
+        itemIcon = 'i-mdi:folder-multiple';
         break;
       }
       case 'Folder':
       case 'CollectionFolder': {
-        itemIcon = IMdiFolder;
+        itemIcon = 'i-mdi:folder';
         break;
       }
       case 'Movie': {
-        itemIcon = IMdiFilmstrip;
+        itemIcon = 'i-mdi:filmstrip';
         break;
       }
       case 'MusicAlbum': {
-        itemIcon = IMdiAlbum;
+        itemIcon = 'i-mdi:album';
         break;
       }
       case 'MusicArtist':
       case 'Person': {
-        itemIcon = IMdiAccount;
+        itemIcon = 'i-mdi:account';
         break;
       }
       case 'PhotoAlbum': {
-        itemIcon = IMdiImageMultiple;
+        itemIcon = 'i-mdi:image-multiple';
         break;
       }
       case 'Playlist': {
-        itemIcon = IMdiPlaylistPlay;
+        itemIcon = 'i-mdi:playlist-play';
         break;
       }
       case 'Series':
       case 'Episode': {
-        itemIcon = IMdiTelevisionClassic;
+        itemIcon = 'i-mdi:television-classic';
         break;
       }
     }
