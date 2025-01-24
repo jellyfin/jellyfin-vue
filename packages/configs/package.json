@@ -18,8 +18,8 @@
     "@eslint/js": "9.19.0",
     "@intlify/eslint-plugin-vue-i18n": "3.2.0",
     "@stylistic/eslint-plugin": "2.13.0",
-    "@unocss/eslint-config": "0.65.4",
-    "eslint-config-flat-gitignore": "0.3.0",
+    "@unocss/eslint-config": "65.4.3",
+    "eslint-config-flat-gitignore": "1.0.0",
     "eslint-plugin-css": "0.11.0",
     "eslint-plugin-depend": "0.12.0",
     "eslint-plugin-file-progress": "3.0.1",
@@ -35,7 +35,7 @@
     "find-up-simple": "1.0.0",
     "globals": "15.14.0",
     "typescript-eslint": "8.21.0",
-    "unocss": "0.65.4",
+    "unocss": "65.4.3",
     "vue-eslint-parser": "9.4.3"
   }
 }
