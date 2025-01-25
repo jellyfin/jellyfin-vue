@@ -28,7 +28,7 @@
             class="text-h6 font-weight-heavy"
             :class="{'text-center': !$vuetify.display.mdAndUp }">
             <RouterLink
-              class="link pa-0 text-truncate font-weight-medium mt-1 d-block"
+              class="link pa-0 text-truncate font-weight-medium d-block mt-1"
               :to="getItemDetailsLink(currentSeries)">
               {{ currentSeries.Name }}
             </RouterLink>

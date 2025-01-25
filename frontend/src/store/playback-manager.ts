@@ -843,10 +843,10 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       async (newValue, oldValue) => {
         const remove
           = newValue === PlaybackStatus.Error
-          || newValue === PlaybackStatus.Stopped;
+            || newValue === PlaybackStatus.Stopped;
         const add
           = oldValue === PlaybackStatus.Error
-          || oldValue === PlaybackStatus.Stopped;
+            || oldValue === PlaybackStatus.Stopped;
 
         if (remove || add) {
           const actionHandlers: Partial<Record<MediaSessionAction, MediaSessionActionHandler>> = {
@@ -883,7 +883,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     watchEffect(() => {
       const remove
         = this.status.value === PlaybackStatus.Error
-        || this.status.value === PlaybackStatus.Stopped;
+          || this.status.value === PlaybackStatus.Stopped;
 
       if (this.currentTime.value <= this.currentItemRuntime.value) {
         const duration = this.currentItemRuntime.value / 1000;

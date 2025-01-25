@@ -152,7 +152,7 @@ async function deleteAllDevices(): Promise<void> {
 
     devices.value
       = (await remote.sdk.newUserApi(getDevicesApi).getDevices()).data.Items
-      ?? [];
+        ?? [];
   } catch (error) {
     useSnackbar(t('deleteAllDevicesError'), 'error');
     console.error(error);
@@ -174,7 +174,7 @@ async function deleteDevice(deviceId: string): Promise<void> {
 
     devices.value
       = (await remote.sdk.newUserApi(getDevicesApi).getDevices()).data.Items
-      ?? [];
+        ?? [];
   } catch (error) {
     useSnackbar(t('deleteDeviceError'), 'error');
     console.error(error);

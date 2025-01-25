@@ -338,7 +338,7 @@ async function getData(): Promise<void> {
     }).filter((r): r is ContentOption => !isNil(r)) ?? [];
   contentOption.value
     = contentOptions.value.find(r => r.value === options.ContentType)
-    ?? contentOptions.value[0];
+      ?? contentOptions.value[0];
   contentType.value = options.ContentType ?? contentOption.value.value;
 
   metadata.value = itemInfo;
