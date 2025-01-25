@@ -15,3 +15,39 @@ jobs:
       security-events: write
     with:
       commit: ${{ github.sha }}
+
+  container_retention:
+    name: Package maintenance 👷‍♂️ 
+    runs-on: ubuntu-latest
+    env:
+      REGISTRY_IMAGE: jellyfin/jellyfin-vue
+    steps:
+      - name: Login to GitHub Container Registry 🔑
+        uses: docker/login-action@v3.3.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.JF_BOT_TOKEN }}
+
+      - name: Login to Docker Hub 🔑
+        uses: docker/login-action@v3.3.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Remove old container versions 🗑️
+        uses: snok/container-retention-policy@v3.0.0
+        with:
+          account: ${{ github.repository_owner }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          image-names: ${{ env.REGISTRY_IMAGE }}
+          image-tags: unstable*
+          tag-selection: both
+          cut-off: 4w # 4 weeks
+          dry-run: true
+      
+      # Waiting for https://github.com/containers/skopeo/issues/2503
+      # - name: Sync GHCR with DockerHub 🔄
+      #   run: |
+      #     sudo apt -y install skopeo
+      #     skopeo sync -a --preserve-digests -s docker://ghcr.io/"$REGISTRY_IMAGE" -d docker://docker.io/"$REGISTRY_IMAGE"
