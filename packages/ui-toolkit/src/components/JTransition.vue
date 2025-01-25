@@ -66,22 +66,22 @@ const onNoLeave = () => leaving.value = false;
 const enterFromClass = computed(() => {
   switch (name) {
     case 'slide-x': {
-      return '-uno-translate-x-4 uno-opacity-0';
+      return '!-uno-translate-x-4 !uno-opacity-0';
     }
     case 'slide-x-reverse': {
-      return 'uno-translate-x-4 uno-opacity-0';
+      return '!uno-translate-x-4 !uno-opacity-0';
     }
     case 'slide-y': {
-      return '-uno-translate-y-4 uno-opacity-0';
+      return '!-uno-translate-y-4 !uno-opacity-0';
     }
     case 'slide-y-reverse': {
-      return 'uno-translate-y-4 uno-opacity-0';
+      return '!uno-translate-y-4 !uno-opacity-0';
     }
     case 'rotated-zoom': {
-      return 'uno-scale-0 uno-rotate-45';
+      return '!uno-scale-0 !uno-rotate-45';
     }
     case 'fade': {
-      return 'uno-opacity-0';
+      return '!uno-opacity-0';
     }
     default: {
       return;
@@ -90,20 +90,20 @@ const enterFromClass = computed(() => {
 });
 
 /* Equivalent to *-enter-active class */
-const baseTransform = 'uno-transform-origin-center uno-transform-gpu';
+const baseTransform = '!uno-transform-origin-center !uno-transform-gpu';
 const enterActiveClass = computed(() => {
   switch (name) {
     case 'slide-x-reverse':
     case 'slide-y-reverse':
     case 'slide-y':
     case 'slide-x': {
-      return `uno-transition-property-[opacity,transform] uno-duration-default ${baseTransform}`;
+      return `!uno-transition-property-[opacity,transform] !uno-duration-default ${baseTransform}`;
     }
     case 'rotated-zoom': {
-      return `uno-transition-transform ${baseTransform}`;
+      return `!uno-transition-transform ${baseTransform}`;
     }
     case 'fade': {
-      return 'uno-transition-opacity';
+      return '!uno-transition-opacity';
     }
     default: {
       return;

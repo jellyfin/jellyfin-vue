@@ -30,12 +30,12 @@ const { hash, width = BLURHASH_DEFAULT_WIDTH, height = BLURHASH_DEFAULT_HEIGHT, 
 }>();
 
 const error = shallowRef(false);
-const canvas = useTemplateRef<HTMLCanvasElement>('canvas');
+const canvasRef = useTemplateRef<HTMLCanvasElement>('canvas');
 const offscreen = shallowRef<OffscreenCanvas>();
 const pixels = computedAsync(async () => await blurhashDecoder.getPixels(hash, width, height, punch));
 
-watch(canvas, () => {
-  offscreen.value = canvas.value ? canvas.value.transferControlToOffscreen() : undefined;
+watch(canvasRef, () => {
+  offscreen.value = canvasRef.value ? canvasRef.value.transferControlToOffscreen() : undefined;
 });
 watch([pixels, offscreen], async () => {
   if (offscreen.value && pixels.value) {

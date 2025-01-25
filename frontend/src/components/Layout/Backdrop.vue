@@ -9,7 +9,7 @@
       :style="{
         opacity,
       }"
-      class="uno-fixed uno-h-screen uno-w-screen" />
+      class="uno-fixed uno-h-screen uno-w-screen uno-transition-opacity" />
   </JTransition>
 </template>
 
@@ -43,8 +43,10 @@ export function useBackdrop(hash?: MaybeRefOrGetter<string | undefined>, opacity
     }
   });
 
-  onBeforeUnmount(() => _blurhash.value = undefined);
-  onBeforeUnmount(() => requested_opacity.value = DEFAULT_OPACITY);
+  onBeforeUnmount(() => {
+    _blurhash.value = undefined;
+    requested_opacity.value = DEFAULT_OPACITY;
+  });
 }
 </script>
 
