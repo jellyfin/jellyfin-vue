@@ -4,8 +4,8 @@
   "type": "module",
   "exports": "./src/index.ts",
   "scripts": {
-    "lint": "eslint . --flag unstable_ts_config",
-    "lint:fix": "eslint . --fix --flag unstable_ts_config",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "lint:inspect": "eslint-config-inspector",
     "check:types": "vue-tsc"
   },
