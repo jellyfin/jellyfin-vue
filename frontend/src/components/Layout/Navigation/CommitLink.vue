@@ -7,8 +7,7 @@
     rel="noopener noreferrer">
     <template #prepend>
       <JIcon
-        class="i-mdi:github uno-w-10"
-        " />
+        class="i-mdi:github uno-w-10" />
     </template>
   </VListItem>
 </template>
