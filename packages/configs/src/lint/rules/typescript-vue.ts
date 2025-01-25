@@ -133,7 +133,7 @@ const common = [
   {
     name: '(@jellyfin-vue/configs/lint/typescript-vue - sonarcloud) Custom config',
     rules: {
-      'sonarjs/function/return-type': 'off'
+      'sonarjs/function-return-type': 'off'
     }
   }
 ] satisfies Linter.Config[];

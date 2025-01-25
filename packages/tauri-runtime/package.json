@@ -2,6 +2,9 @@
   "name": "@jellyfin-vue/tauri-runtime",
   "type": "module",
   "description": "The frontend including tauri-specific runtime code",
+  "imports": {
+    "#/*": "./src/*"
+  },
   "scripts": {
     "analyze:bundle": "vite build --mode analyze:bundle",
     "analyze:cycles": "vite build --mode analyze:cycles",
@@ -21,6 +24,7 @@
     "vite": "6.0.11"
   },
   "dependencies": {
-    "@jellyfin-vue/frontend": "*"
+    "@jellyfin-vue/frontend": "*",
+    "@tauri-apps/api": "2.2.0"
   }
 }

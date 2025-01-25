@@ -18,7 +18,7 @@ export function usePlayback() {
    * - iOS's Safari fullscreen API is only available for the video element
    */
   const fullscreen = useFullscreen().isSupported.value
-    ? useFullscreen(undefined, { autoExit: true })
+    ? useFullscreen(document.body, { autoExit: true })
     : useFullscreen(mediaElementRef, { autoExit: true });
 
   const keys = useMagicKeys();
