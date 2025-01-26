@@ -10,7 +10,7 @@
         <VBtn
           icon
           @click.passive="playerElement.toggleFullscreenVideoPlayer">
-          <JIcon class="i:mdi-arrow-expand-all" />
+          <JIcon class="i-mdi:arrow-expand-all" />
         </VBtn>
         <VSpacer />
         <VBtn

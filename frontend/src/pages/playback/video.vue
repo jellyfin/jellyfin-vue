@@ -15,11 +15,15 @@
         <div class="d-flex align-center py-2 px-4">
           <div class="d-flex">
             <VBtn
-              icon="i-mdi:close"
-              @click="playbackManager.stop" />
+              icon
+              @click="playbackManager.stop">
+              <JIcon class="i-mdi:close" />
+            </VBtn>
             <VBtn
-              icon="i-mdi:chevron-down"
-              @click="playerElement.toggleFullscreenVideoPlayer" />
+              icon
+              @click="playerElement.toggleFullscreenVideoPlayer">
+              <JIcon class="i-mdi:chevron-down" />
+            </VBtn>
           </div>
           <div class="d-flex ml-auto">
             <CastButton />

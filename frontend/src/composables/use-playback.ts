@@ -4,14 +4,10 @@ import { router } from '#/plugins/router';
 import { mediaElementRef } from '#/store';
 import { playbackManager } from '#/store/playback-manager';
 
-interface PlaybackComposableReturn {
-  fullscreen: ReturnType<typeof useFullscreen>;
-}
-
 /**
  * Watchers and handlers that are common to music and video playback
  */
-export function usePlayback(): PlaybackComposableReturn {
+export function usePlayback() {
   watch(() => playbackManager.currentItem, () => {
     if (!playbackManager.currentItem.value) {
       router.back();
