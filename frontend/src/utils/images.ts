@@ -445,29 +445,28 @@ export function getLogo(
     tag?: string;
   } = {}
 ): ImageUrlInfo {
-  let imgType;
+  const imgType = ImageType.Logo;
   let imgTag;
   let itemId: string | null | undefined = item.Id;
 
   if (tag) {
-    imgType = ImageType.Logo;
     imgTag = tag;
   } else if (item.ImageTags?.Logo) {
-    imgType = ImageType.Logo;
     imgTag = item.ImageTags.Logo;
   } else if (item.ParentLogoImageTag && item.ParentLogoItemId) {
-    imgType = ImageType.Logo;
     imgTag = item.ParentLogoImageTag;
     itemId = item.ParentLogoItemId;
   }
 
   return {
-    url: getImageUrlWithSize(itemId ?? '', {
-      width,
-      quality,
-      ratio
-    }, imgType),
+    url: isNil(imgTag)
+      ? undefined
+      : getImageUrlWithSize(itemId ?? '', {
+          width,
+          quality,
+          ratio
+        }, imgType),
     blurhash:
-      imgType && imgTag ? item.ImageBlurHashes?.[imgType]?.[imgTag] : undefined
+      imgTag ? item.ImageBlurHashes?.[imgType]?.[imgTag] : undefined
   };
 }
