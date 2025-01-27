@@ -2,19 +2,6 @@
   "timezone": "Europe/Madrid",
   "packageRules": [
     {
-      "matchPackageNames": ["vue-i18n", "@intlify/unplugin-vue-i18n"],
-      "matchUpdateTypes": ["major"],
-      "enabled": false
-    },
-    {
-      "matchFileNames": [
-        "packaging/tauri/**",
-        "packages/tauri-runtime/**"
-      ],
-      "separateMajorMinor": false,
-      "groupName": "tauri"
-    },
-    {
       "matchManagers": [
         "npm"
       ],
@@ -38,6 +25,19 @@
       ],
       "separateMajorMinor": false,
       "groupName": "ci"
+    },
+    {
+      "matchPackageNames": ["vue-i18n", "@intlify/unplugin-vue-i18n"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
+    {
+      "matchFileNames": [
+        "packaging/tauri/**",
+        "packages/tauri-runtime/**"
+      ],
+      "separateMajorMinor": false,
+      "groupName": "tauri"
     },
     {
       "matchUpdateTypes": [
