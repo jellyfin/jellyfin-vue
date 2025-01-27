@@ -53,6 +53,7 @@ import type { IJVirtualWorker } from './j-virtual.worker';
 import JVirtualWorker from './j-virtual.worker?worker';
 import { windowSize } from '#/store.ts';
 import JSlot from '#/components/JSlot.vue';
+import { toPx } from '#/util/helpers';
 
 /**
  * SHARED STATE ACROSS ALL THE COMPONENT INSTANCES
@@ -63,10 +64,6 @@ const displayHeight = refDebounced(windowSize.height, 250);
 </script>
 
 <script setup lang="ts" generic="T">
-defineOptions({
-  name: 'JVirtual'
-});
-
 /**
  * BASED ON VUE-VIRTUAL-SCROLL-GRID: https://github.com/rocwang/vue-virtual-scroll-grid
  *
@@ -159,8 +156,8 @@ const contentSize = computed(() => {
     : undefined;
 });
 const rootStyles = computed<StyleValue>(() => ({
-  ...(!isNil(contentSize.value?.height) && { height: `${contentSize.value.height}px` }),
-  ...(!isNil(contentSize.value?.width) && { width: `${contentSize.value.width}px` }),
+  ...(!isNil(contentSize.value?.height) && { height: toPx(contentSize.value.height) }),
+  ...(!isNil(contentSize.value?.width) && { width: toPx(contentSize.value.width) }),
   placeContent: 'start'
 }));
   /**

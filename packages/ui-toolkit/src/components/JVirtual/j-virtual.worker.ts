@@ -3,6 +3,7 @@
 import { expose } from 'comlink';
 import { sealed } from '@jellyfin-vue/shared/validation';
 import { getItemOffsetByIndex, type ResizeMeasurement, type BufferMeta, type InternalItem } from './pipeline';
+import { toPx } from '#/util/helpers';
 
 @sealed
 class JVirtualWorker {
@@ -49,8 +50,8 @@ class JVirtualWorker {
       res.push({
         index,
         style: {
-          '--j-util-translate-x': `${x}px`,
-          '--j-util-translate-y': `${y}px`
+          '--j-util-translate-x': toPx(x),
+          '--j-util-translate-y': toPx(y)
         }
       });
     }
