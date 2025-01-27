@@ -5,7 +5,7 @@
     <template #icon>
       <JProgressCircular
         v-if="!buttonColor"
-        class="uno-h-6 uno-w-6"
+        class="uno-w-full"
         indeterminate />
       <JIcon
         v-else
@@ -24,14 +24,16 @@
               :key="`${task.id}`"
               :title="task.text">
               <template #append>
-                <VProgressCircular
-                  v-if="task.progress !== 100"
-                  :indeterminate="!!task.progress"
-                  :model-value="task.progress"
-                  size="24" />
-                <JIcon
-                  v-else
-                  class="i-mdi:check" />
+                <VListItemAction>
+                  <JProgressCircular
+                    v-if="task.progress !== 100"
+                    class="uno-w-15"
+                    :indeterminate="!!task.progress"
+                    :value="task.progress" />
+                  <JIcon
+                    v-else
+                    class="i-mdi:check" />
+                </VListItemAction>
               </template>
             </VListItem>
           </VList>
@@ -47,6 +49,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { VListItemAction } from 'vuetify/components';
 import { taskManager, TaskType } from '#/store/task-manager';
 
 interface TaskInfo {

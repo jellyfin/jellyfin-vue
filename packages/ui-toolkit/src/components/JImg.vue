@@ -8,6 +8,7 @@
       @load.passive="onLoad"
       @error.passive="onError">
     <JTransition
+      mode="out-in"
       v-bind="isObj(transitionProps) ? transitionProps : undefined"
       :disabled="!transitionProps">
       <img
@@ -24,7 +25,9 @@
         <slot
           v-else-if="loading"
           name="loading">
-          <JProgressCircular indeterminate />
+          <JProgressCircular
+            class="uno-w-full uno-h-full uno-flex uno-items-center uno-justify-center"
+            indeterminate />
         </slot>
         <slot
           v-else-if="error"

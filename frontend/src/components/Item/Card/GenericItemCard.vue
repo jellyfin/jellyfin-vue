@@ -16,9 +16,13 @@
         <JSlot class="align-center card-content uno-h-full uno-w-full uno-flex uno-justify-center !uno-m-0">
           <slot name="image" />
         </JSlot>
-        <JSlot class="align-center card-upper-content uno-flex uno-justify-center">
-          <slot name="upper-content" />
-        </JSlot>
+        <JOverlay
+          v-if="$slots['upper-content']"
+          class="uno-top-0 uno-p-2">
+          <span class="uno-flex uno-items-center">
+            <slot name="upper-content" />
+          </span>
+        </JOverlay>
         <JOverlay
           v-if="overlay && hasFinePointer"
           hover

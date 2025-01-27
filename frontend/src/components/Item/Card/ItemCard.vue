@@ -12,11 +12,10 @@
         :type="getImageType" />
     </template>
     <template #upper-content>
-      <VProgressCircular
+      <JProgressCircular
         v-if="!isNil(refreshProgress)"
-        :model-value="refreshProgress"
-        :indeterminate="refreshProgress === 0"
-        size="24" />
+        :value="refreshProgress"
+        :indeterminate="refreshProgress === 0" />
       <WatchedIndicator v-if="item.UserData && item.UserData.Played" />
       <VChip
         v-if="item.UserData && item.UserData.UnplayedItemCount"

@@ -41,11 +41,8 @@
           hide-details />
       </VRow>
       <VDivider />
-      <VProgressCircular
+      <JProgressCircular
         v-if="loading"
-        :size="70"
-        :width="7"
-        color="primary"
         indeterminate
         class="loading-bar" />
       <VCard
