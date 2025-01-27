@@ -138,7 +138,6 @@ declare module 'vue' {
     VMenu: typeof import('vuetify/components')['VMenu']
     VNavigationDrawer: typeof import('vuetify/components')['VNavigationDrawer']
     VolumeSlider: typeof import('./../../src/components/Layout/VolumeSlider.vue')['default']
-    VProgressCircular: typeof import('vuetify/components')['VProgressCircular']
     VProgressLinear: typeof import('vuetify/components')['VProgressLinear']
     VResponsive: typeof import('vuetify/components')['VResponsive']
     VRow: typeof import('vuetify/components')['VRow']

@@ -11,12 +11,7 @@ type Story = StoryObj<typeof JProgressCircular>;
 
 export const Default: Story = {
   args: {
-    indeterminate: false
-  }
-};
-
-export const Indeterminate: Story = {
-  args: {
-    indeterminate: true
+    indeterminate: false,
+    value: 0
   }
 };

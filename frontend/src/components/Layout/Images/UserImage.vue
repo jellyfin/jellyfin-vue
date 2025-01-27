@@ -3,10 +3,7 @@
     :size="size">
     <JImg
       :src="url"
-      :alt="$t('userImage')"
-      :transition-props="{
-        mode: 'out-in'
-      }">
+      :alt="$t('userImage')">
       <template #placeholder>
         <VAvatar
           color="primary"

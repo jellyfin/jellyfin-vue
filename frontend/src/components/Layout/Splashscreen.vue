@@ -10,7 +10,9 @@
       name="slide-y-reverse"
       appear>
       <div class="uno-fixed uno-bottom-25 uno-w-full uno-flex uno-flex-col uno-items-center uno-gap-5">
-        <JProgressCircular indeterminate />
+        <JProgressCircular
+          class="uno-w-20"
+          indeterminate />
         <VBtn
           v-if="remote.auth.currentUser.value"
           @click="remote.auth.logoutCurrentUser">

@@ -15,7 +15,7 @@
         <JProgressCircular
           v-else-if="loading"
           indeterminate
-          class="uno-h-4 uno-w-4" />
+          class="uno-h-full" />
         <template v-else>
           {{ items.length ?? 0 }}
         </template>
