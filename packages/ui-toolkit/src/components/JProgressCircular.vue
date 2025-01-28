@@ -14,7 +14,7 @@
     aria-valuemin="0"
     aria-valuemax="100"
     :aria-valuenow="indeterminate ? undefined : normalizedValue"
-    :aria-valuetext="indeterminate ? 'Cargando...' : `${normalizedValue}% completado`"
+    :aria-valuetext="indeterminate ? t('loading') : t('percentCompleted', { value: normalizedValue })"
     v-bind="getBaseProps($attrs, false)">
     <circle
       class="j-progress-circular--underlay uno-stroke-current uno-z-1"
@@ -32,7 +32,7 @@
       class="uno-fill-current j-progress-circular--text"
       dominant-baseline="middle"
       text-anchor="middle">
-      <template v-if="$slots.default">
+      <template v-if="$slots.default?.({}).length">
         <slot />
       </template>
       <template v-else>
@@ -59,6 +59,7 @@ const CIRCUMFERENCE = 2 * Math.PI * MAGIC_RADIUS_CONSTANT;
 </script>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
 import { computed } from 'vue';
 import { clamp, toPx } from '#/util/helpers';
 import { getBaseProps } from '#/util/props';
@@ -74,6 +75,7 @@ const { indeterminate, innerProgress, value = 0 } = defineProps<{
 
 const normalizedValue = computed(() => clamp(value, 0, 100));
 const strokeDashoffset = computed(() => toPx(CIRCUMFERENCE * (1 - normalizedValue.value / 100)));
+const { t } = useI18n();
 </script>
 
 <style scoped>
