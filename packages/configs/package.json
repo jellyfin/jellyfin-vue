@@ -19,7 +19,7 @@
     "@intlify/eslint-plugin-vue-i18n": "3.2.0",
     "@stylistic/eslint-plugin": "3.0.0",
     "@unocss/eslint-config": "65.4.3",
-    "eslint-config-flat-gitignore": "1.0.0",
+    "eslint-config-flat-gitignore": "2.0.0",
     "eslint-plugin-css": "0.11.0",
     "eslint-plugin-depend": "0.12.0",
     "eslint-plugin-file-progress": "3.0.1",
