@@ -8,7 +8,7 @@
       data-jellyfin-css-vars>
       :root {
       <template v-if="isLoading">
-        cursor: wait;
+        cursor: progress;
       </template>
       --j-theme-transition-duration: 0.3s;
       --j-theme-color-background: var(--v-theme-background);
