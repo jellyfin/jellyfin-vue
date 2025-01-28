@@ -17,7 +17,7 @@
           <slot name="image" />
         </JSlot>
         <JOverlay
-          v-if="$slots['upper-content']"
+          v-if="$slots['upper-content']?.({}).length"
           class="uno-top-0 uno-p-2">
           <span class="uno-flex uno-items-center">
             <slot name="upper-content" />

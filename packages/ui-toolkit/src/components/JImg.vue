@@ -8,7 +8,6 @@
       @load.passive="onLoad"
       @error.passive="onError">
     <JTransition
-      mode="out-in"
       v-bind="isObj(transitionProps) ? transitionProps : undefined"
       :disabled="!transitionProps">
       <img
@@ -18,15 +17,17 @@
         class="uno-w-full uno-h-full uno-object-cover"
         decoding="sync"
         v-bind="getBaseProps($attrs)">
-      <template v-else>
+      <JOverlay
+        v-else
+        v-bind="$attrs">
         <slot
-          v-if="$slots.placeholder"
+          v-if="$slots.placeholder?.({}).length"
           name="placeholder" />
         <slot
           v-else-if="loading"
           name="loading">
           <JProgressCircular
-            class="uno-w-full uno-h-full uno-flex uno-items-center uno-justify-center"
+            class="uno-flex uno-items-center uno-justify-center uno-w-full uno-h-full"
             indeterminate />
         </slot>
         <slot
@@ -34,11 +35,11 @@
           name="error">
           <JIcon class="i-mdi:image-broken-variant" />
         </slot>
-      </template>
+      </JOverlay>
     </JTransition>
   </template>
   <slot
-    v-else-if="$slots.placeholder"
+    v-else-if="$slots.placeholder?.({}).length"
     name="placeholder" />
   <slot v-else />
 </template>
@@ -57,6 +58,7 @@ import { isObj } from '@jellyfin-vue/shared/validation';
 import JIcon from './JIcon.vue';
 import JProgressCircular from './JProgressCircular.vue';
 import JTransition, { type JTransitionProps } from './JTransition.vue';
+import JOverlay from './JOverlay.vue';
 import { getBaseProps } from '#/util/props';
 
 /**

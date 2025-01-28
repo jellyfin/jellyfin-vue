@@ -13,7 +13,7 @@
               $remote.auth.currentUser?.value?.Policy?.IsAdministrator
           ">
           <JImg
-            class="logo"
+            class="uno-h-25"
             src="/icon.svg"
             :alt="$t('jellyfinLogo')" />
           <VTable class="mb-4 pb-2 information">
@@ -261,10 +261,5 @@ const adminSections = computed<MenuOptions[][]>(() => {
 .information td {
   height: 3.4em !important;
   border-bottom: 0 !important;
-}
-
-.logo {
-  background: rgb(var(--v-theme-card));
-  height: 100px;
 }
 </style>
