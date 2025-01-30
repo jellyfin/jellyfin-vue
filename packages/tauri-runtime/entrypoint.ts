@@ -1,4 +1,7 @@
-import './src/main.ts';
+/**
+ * Every polyfilled feature must be in their own module.
+ */
+import '#/fullscreen.ts';
 /**
  * The Tauri-specific code must be loaded before the frontend code to ensure that
  * all the polyfills for the runtime have been loaded

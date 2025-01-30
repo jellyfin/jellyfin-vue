@@ -17,7 +17,7 @@ export default defineConfig(
         }
       },
       // don't minify for debug builds
-      minify: process.env.TAURI_ENV_DEBUG ? false : 'esbuild',
+      ...(process.env.TAURI_ENV_DEBUG ? { minify: false } : {}),
       // produce sourcemaps for debug builds
       sourcemap: !!process.env.TAURI_ENV_DEBUG
     },

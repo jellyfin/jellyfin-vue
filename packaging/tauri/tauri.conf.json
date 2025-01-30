@@ -30,15 +30,21 @@
   "plugins": {},
   "app": {
     "security": {
-      "csp": null
+      "csp": null,
+      "capabilities": [
+        {
+          "identifier": "all instances",
+          "description": "application capabilities for all instances",
+          "windows": ["*"],
+          "permissions": [
+            "core:window:allow-set-fullscreen"
+          ]
+        }
+      ]
     },
     "windows": [
       {
-        "title": "Jellyfin Vue",
-        "width": 800,
-        "height": 600,
-        "resizable": true,
-        "fullscreen": false
+        "title": "Jellyfin Vue"
       }
     ]
   }
