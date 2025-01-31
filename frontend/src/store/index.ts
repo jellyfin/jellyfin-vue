@@ -9,21 +9,9 @@ import {
   useWindowScroll
 } from '@vueuse/core';
 import { computed, shallowRef } from 'vue';
-import type { LiteralUnion } from 'type-fest';
 import { isNil } from '@jellyfin-vue/shared/validation';
 import { remote } from '#/plugins/remote';
 import { router } from '#/plugins/router';
-import type { SubtitleTypographyChoices } from '#/store/client-settings/subtitle-settings';
-
-export const DEFAULT_TYPOGRAPHY = 'Figtree Variable';
-/**
- * Type for the different typography choices across the application
- *
- * default: Default application typography.
- *
- * system: System typography
- */
-export type TypographyChoices = LiteralUnion<BetterOmit<SubtitleTypographyChoices, 'auto'>, string>;
 
 /**
  * == BLURHASH DEFAULTS ==

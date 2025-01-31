@@ -4,7 +4,8 @@
   "description": "Shared code between Jellyfin Vue packages",
   "exports": {
     "./validation": "./src/validation.ts",
-    "./html": "./src/html.ts"
+    "./html": "./src/html.ts",
+    "./colors": "./src/colors.ts"
   },
   "scripts": {
     "lint": "eslint .",

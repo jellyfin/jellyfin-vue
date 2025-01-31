@@ -1,5 +1,6 @@
 export { default as JVirtual } from './JVirtual/JVirtual.vue';
 
+export { default as JApp } from './JApp.vue';
 export { default as JHover } from './JHover.vue';
 export { default as JOverlay } from './JOverlay.vue';
 export { default as JSlot } from './JSlot.vue';

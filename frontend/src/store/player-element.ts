@@ -19,7 +19,7 @@ import { router } from '#/plugins/router';
 import { remote } from '#/plugins/remote';
 import type { ParsedSubtitleTrack } from '#/plugins/workers/generic/subtitles';
 import { runGenericWorkerFunc } from '#/plugins/workers';
-import { subtitleSettings } from '#/store/client-settings/subtitle-settings';
+import { subtitleSettings } from '#/store/settings/subtitle';
 
 /**
  * == INTERFACES AND TYPES ==
