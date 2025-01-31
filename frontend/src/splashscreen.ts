@@ -6,23 +6,23 @@
  * is displayed instead.
  */
 import { destr } from 'destr';
-import { isBool } from '@jellyfin-vue/shared/validation';
-import type { ClientSettingsState } from '#/store/client-settings';
+import type { PartialDeep } from 'type-fest';
+import { darkColors, lightColors } from '@jellyfin-vue/shared/colors';
+import type { ThemeSettingsState } from '#/store/settings/theme';
 import '#/assets/styles/splashscreen.css';
 
-const store = localStorage.getItem('clientSettings') ?? '{}';
-const parsedStore = destr<ClientSettingsState>(store);
+const store = localStorage.getItem('themeSettings') ?? '{}';
+const parsedStore = destr<PartialDeep<ThemeSettingsState>>(store);
 const matchedDarkColorScheme = globalThis.matchMedia(
   '(prefers-color-scheme: dark)'
 ).matches;
-const darkColor = '#111827';
-const lightColor = '#f2f2f2';
-let colorToApply: typeof darkColor | typeof lightColor = matchedDarkColorScheme ? darkColor : lightColor;
+const isDark = parsedStore.darkMode ?? matchedDarkColorScheme;
+const storeColors = parsedStore.colors?.[isDark ? 'dark' : 'light'];
 
-const storeDarkMode = parsedStore.darkMode;
-
-if (isBool(storeDarkMode)) {
-  colorToApply = storeDarkMode ? darkColor : lightColor;
-}
+/**
+ * Fallback when the store is not initialized yet (first start)
+ */
+const defaults = matchedDarkColorScheme ? darkColors() : lightColors();
+const colorToApply = (storeColors ?? defaults).background!;
 
 document.body.style.setProperty('--j-theme-color-background', colorToApply);

@@ -40,7 +40,7 @@ declare module 'vue' {
     ItemMenu: typeof import('./../../src/components/Item/ItemMenu.vue')['default']
     ItemsCarousel: typeof import('./../../src/components/Layout/Carousel/Item/ItemsCarousel.vue')['default']
     ItemsCarouselTitle: typeof import('./../../src/components/Layout/Carousel/Item/ItemsCarouselTitle.vue')['default']
-    JApp: typeof import('./../../src/components/lib/JApp.vue')['default']
+    JApp: typeof import('@jellyfin-vue/ui-toolkit/components')['JApp']
     JHover: typeof import('@jellyfin-vue/ui-toolkit/components')['JHover']
     JIcon: typeof import('@jellyfin-vue/ui-toolkit/components')['JIcon']
     JImg: typeof import('@jellyfin-vue/ui-toolkit/components')['JImg']

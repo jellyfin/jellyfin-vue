@@ -1,10 +1,10 @@
 * {
   font-family: var(--j-font-family), sans-serif, system-ui !important;
+  backface-visibility: hidden;
 }
 
 html {
   overscroll-behavior: none;
-  color-scheme: light dark;
 }
 
 html.no-forced-scrollbar {

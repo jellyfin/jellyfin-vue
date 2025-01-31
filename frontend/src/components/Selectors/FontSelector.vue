@@ -47,8 +47,7 @@
 import { computedAsync, usePermission, useSupported } from '@vueuse/core';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { clientSettings } from '#/store/client-settings';
-import { DEFAULT_TYPOGRAPHY } from '#/store';
+import { DEFAULT_TYPOGRAPHY, themeSettings } from '#/store/settings/theme';
 
 const { appWide } = defineProps<{
   /**
@@ -81,7 +80,7 @@ const fontList = computedAsync(async () => {
     /**
      * Removes the current selected tpography (in case it's not the default one)
      */
-    set.delete(clientSettings.state.value.typography);
+    set.delete(themeSettings.state.value.typography);
     res.push(...set);
   }
 
@@ -102,13 +101,13 @@ const selection = computed(() => {
       value: f
     }))];
 
-  if (!appWide && !['system', 'default'].includes(clientSettings.state.value.typography)) {
+  if (!appWide && !['system', 'default'].includes(themeSettings.state.value.typography)) {
     res.unshift(
       {
         title: t('currentAppTypography', {
-          value: clientSettings.state.value.typography
+          value: themeSettings.state.value.typography
         }),
-        value: clientSettings.state.value.typography
+        value: themeSettings.state.value.typography
       }
     );
   }
@@ -119,14 +118,14 @@ const selection = computed(() => {
 const _model = computed({
   get() {
     if (appWide) {
-      return clientSettings.state.value.typography;
+      return themeSettings.state.value.typography;
     }
 
     return model.value;
   },
   set(newVal) {
     if (appWide && newVal) {
-      clientSettings.state.value.typography = newVal;
+      themeSettings.state.value.typography = newVal;
     }
 
     model.value = newVal;

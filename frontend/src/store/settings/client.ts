@@ -1,14 +1,13 @@
 import {
   useNavigatorLanguage,
-  usePreferredDark,
   watchImmediate
 } from '@vueuse/core';
 import { computed } from 'vue';
 import { isNil, sealed } from '@jellyfin-vue/shared/validation';
+import type { KeysOfUnion } from 'type-fest';
 import { i18n } from '#/plugins/i18n';
 import { vuetify } from '#/plugins/vuetify';
 import { SyncedStore } from '#/store/super/synced-store';
-import type { TypographyChoices } from '#/store';
 
 /**
  * == INTERFACES AND TYPES ==
@@ -16,16 +15,11 @@ import type { TypographyChoices } from '#/store';
  */
 
 export interface ClientSettingsState {
-  typography: TypographyChoices;
-  darkMode?: boolean;
   locale?: string;
 }
 
 @sealed
-class ClientSettingsStore extends SyncedStore<ClientSettingsState, 'typography'> {
-  private readonly _dark = 'dark' as const;
-  private readonly _light = 'light' as const;
-  private readonly _browserPrefersDark = usePreferredDark();
+class ClientSettingsStore extends SyncedStore<ClientSettingsState, KeysOfUnion<ClientSettingsState>> {
   private readonly _navigatorLanguage = useNavigatorLanguage();
   private readonly _BROWSER_LANGUAGE = computed(() =>
     /**
@@ -47,25 +41,6 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState, 'typography'>
   });
 
   /**
-   * @param mode - If true, sets the theme to dark, if false, to light. `undefined` sets it to auto
-   */
-  public readonly currentTheme = computed({
-    get: () => {
-      const browserColor = this._browserPrefersDark.value ? this._dark : this._light;
-      const userColor
-      = this._state.value.darkMode ? this._dark : this._light;
-
-      return this.isAutoTheme.value ? browserColor : userColor;
-    },
-    set: (mode?: boolean) => {
-      this._state.value.darkMode = mode;
-    }
-  });
-
-  public readonly isAutoTheme = computed(() => isNil(this._state.value.darkMode));
-  public readonly currentThemeIsDark = computed(() => this.currentTheme.value === this._dark);
-
-  /**
    * == METHODS ==
    */
   private readonly _updateLocale = (): void => {
@@ -80,8 +55,6 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState, 'typography'>
   public constructor() {
     super({
       defaultState: () => ({
-        typography: 'default',
-        darkMode: undefined,
         locale: undefined
       }),
       storeKey: 'clientSettings',
@@ -99,16 +72,6 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState, 'typography'>
       [this._BROWSER_LANGUAGE, this.locale],
       this._updateLocale
     );
-
-    /**
-     * Vuetify theme change
-     */
-    watchImmediate(this.currentTheme, () => {
-      globalThis.requestAnimationFrame(() => {
-        vuetify.theme.global.name.value
-          = this.currentTheme.value;
-      });
-    });
   }
 }
 

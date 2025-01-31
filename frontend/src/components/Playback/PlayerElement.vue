@@ -48,7 +48,7 @@ import {
 import { playbackManager } from '#/store/playback-manager';
 import { playerElement, videoContainerRef } from '#/store/player-element';
 import { getImageInfo } from '#/utils/images';
-import { subtitleSettings } from '#/store/client-settings/subtitle-settings';
+import { subtitleSettings } from '#/store/settings/subtitle';
 
 const { t } = useI18n();
 let busyWebAudio = false;

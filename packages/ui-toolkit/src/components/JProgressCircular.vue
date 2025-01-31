@@ -1,6 +1,6 @@
 <template>
   <svg
-    class="uno-object-contain uno-aspect-square uno-w-15"
+    class="uno-object-contain uno-aspect-square uno-w-15 uno-content-visibility-auto"
     :class="{
       'j-progress-circular--indeterminate': indeterminate,
     }"

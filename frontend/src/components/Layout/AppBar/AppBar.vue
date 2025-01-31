@@ -31,16 +31,16 @@
       <template #icon>
         <JIcon
           :class="{
-            'i-mdi:weather-sunny': clientSettings.isAutoTheme.value,
-            'i-mdi:weather-night': !clientSettings.currentThemeIsDark.value,
-            'i-mdi:brightness-auto': clientSettings.currentThemeIsDark.value
+            'i-mdi:weather-sunny': themeSettings.isAutoTheme.value,
+            'i-mdi:weather-night': !themeSettings.currentThemeIsDark.value,
+            'i-mdi:brightness-auto': themeSettings.currentThemeIsDark.value
           }" />
       </template>
       <template #tooltip>
-        <span v-if="clientSettings.isAutoTheme.value">
+        <span v-if="themeSettings.isAutoTheme.value">
           {{ $t('switchToLightMode') }}
         </span>
-        <span v-else-if="clientSettings.currentThemeIsDark.value">
+        <span v-else-if="themeSettings.currentThemeIsDark.value">
           {{ $t('followSystemTheme') }}
         </span>
         <span v-else>
@@ -58,7 +58,7 @@
 <script setup lang="ts">
 import { computed, inject, type Ref } from 'vue';
 import { windowScroll, isConnectedToServer, transparencyEffects } from '#/store';
-import { clientSettings } from '#/store/client-settings';
+import { themeSettings } from '#/store/settings/theme';
 import { remote } from '#/plugins/remote';
 import { JView_isRouting } from '#/store/keys';
 
@@ -75,12 +75,12 @@ function switchColorTheme(): void {
    * 2. If dark, we go to auto
    * 3. If light, we go to dark
    */
-  if (clientSettings.isAutoTheme.value) {
-    clientSettings.currentTheme.value = false;
-  } else if (clientSettings.currentThemeIsDark.value) {
-    clientSettings.currentTheme.value = undefined;
+  if (themeSettings.isAutoTheme.value) {
+    themeSettings.currentTheme.value = false;
+  } else if (themeSettings.currentThemeIsDark.value) {
+    themeSettings.currentTheme.value = undefined;
   } else {
-    clientSettings.currentTheme.value = true;
+    themeSettings.currentTheme.value = true;
   }
 }
 

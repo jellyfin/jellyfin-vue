@@ -1,7 +1,7 @@
 <template>
   <div
     class="j-splash"
-    :class="clientSettings.currentTheme.value">
+    :class="themeSettings.currentTheme.value">
     <img
       src="./icon.svg"
       alt="Jellyfin Logo"
@@ -25,5 +25,5 @@
 
 <script setup lang="ts">
 import { remote } from '#/plugins/remote';
-import { clientSettings } from '#/store/client-settings';
+import { themeSettings } from '#/store/settings/theme';
 </script>
