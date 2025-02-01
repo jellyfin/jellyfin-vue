@@ -33,11 +33,11 @@ import {
 } from '@vueuse/core';
 import {
   computed,
-  onBeforeUnmount,
   shallowRef,
   watch,
   type StyleValue,
-  useTemplateRef
+  useTemplateRef,
+  onScopeDispose
 } from 'vue';
 import { releaseProxy, wrap } from 'comlink';
 import { isNil, isUndef } from '@jellyfin-vue/shared/validation';
@@ -327,7 +327,7 @@ watch([bufferLength, resizeMeasurement, itemsLength, bufferOffset], (val, oldVal
   populateCache();
 });
 
-onBeforeUnmount(() => {
+onScopeDispose(() => {
   worker[releaseProxy]();
   workerInstance.terminate();
 });

@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, useTemplateRef, watch } from 'vue';
+import { onScopeDispose, useTemplateRef, watch } from 'vue';
 import AudioMotionAnalyzer from 'audiomotion-analyzer';
 import { mediaWebAudio } from '#/store';
 
@@ -40,5 +40,5 @@ watch(visualizerElement, () => {
   }
 });
 
-onBeforeUnmount(destroy);
+onScopeDispose(() => destroy());
 </script>
