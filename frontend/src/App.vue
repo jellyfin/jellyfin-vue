@@ -1,19 +1,19 @@
 <template>
-  <Backdrop />
-  <VApp>
-    <JApp
-      :theme
-      :loading>
+  <JApp
+    :theme
+    :loading>
+    <Backdrop />
+    <VApp>
       <RouterView v-slot="{ Component, route }">
         <JView
           :comp="Component"
           :route="route" />
       </RouterView>
-    </JApp>
+    </VApp>
     <Snackbar />
     <ConfirmDialog />
-  </VApp>
-  <PlayerElement />
+    <PlayerElement />
+  </JApp>
 </template>
 
 <script setup lang="ts">

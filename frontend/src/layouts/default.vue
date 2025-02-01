@@ -3,11 +3,13 @@
   <NavigationDrawer
     :order="display.mobile.value ? -1 : undefined"
     :drawer-items="drawerItems" />
-  <VMain>
-    <div class="pa-s">
-      <slot />
-    </div>
-  </VMain>
+  <JMain>
+    <VMain>
+      <div class="pa-s">
+        <slot />
+      </div>
+    </VMain>
+  </JMain>
   <AudioControls />
   <MiniVideoPlayer
     v-if="

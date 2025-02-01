@@ -2,14 +2,13 @@
   <JTransition
     name="slide-y-reverse"
     mode="out-in">
-    <VFooter
+    <JFooter
       v-if="
         playbackManager.isPlaying.value &&
           playbackManager.isAudio.value &&
           !isNil(playbackManager.currentItem.value)
       "
-      app
-      class="pa-0 uno-select-none">
+      class="uno-select-none uno-bg-surface">
       <VContainer fluid>
         <VRow class="ma-0">
           <VCol
@@ -102,7 +101,7 @@
           </VCol>
         </VRow>
       </VContainer>
-    </VFooter>
+    </JFooter>
   </JTransition>
 </template>
 
