@@ -15,7 +15,7 @@
     aria-valuemax="100"
     :aria-valuenow="indeterminate ? undefined : normalizedValue"
     :aria-valuetext="indeterminate ? t('loading') : t('percentCompleted', { value: normalizedValue })"
-    v-bind="getBaseProps($attrs, false)">
+    v-bind="getBaseProps($attrs)">
     <circle
       class="j-progress-circular--underlay uno-stroke-current uno-z-1"
       fill="transparent"

@@ -51,7 +51,7 @@ import {
 } from './pipeline';
 import type { IJVirtualWorker } from './j-virtual.worker';
 import JVirtualWorker from './j-virtual.worker?worker';
-import { windowSize } from '#/store.ts';
+import { windowSize } from '#/store';
 import JSlot from '#/components/JSlot.vue';
 import { toPx } from '#/util/helpers';
 

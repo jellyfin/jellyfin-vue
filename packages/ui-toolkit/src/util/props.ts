@@ -16,12 +16,11 @@ function hasClickHandler(attrs: Record<string, unknown>) {
 /**
  * Gets the base props for every component.
  */
-export function getBaseProps(attrs: Record<string, unknown>, ariaHidden = true) {
+export function getBaseProps(attrs: Record<string, unknown>) {
   const hasClick = hasClickHandler(attrs);
 
   return mergeProps(attrs, {
-    'role': hasClick ? 'button' : undefined,
-    'aria-hidden': !hasClick && ariaHidden,
-    'tabindex': hasClick ? 0 : undefined
+    role: hasClick ? 'button' : undefined,
+    tabindex: hasClick ? 0 : undefined
   });
 };

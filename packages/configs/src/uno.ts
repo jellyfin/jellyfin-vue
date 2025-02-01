@@ -31,6 +31,8 @@ export const defaultConfig = defineConfig({
       preflight: 'on-demand'
     }),
     presetIcons({
+      mode: 'mask',
+      warn: true,
       scale: 1.5
     })
   ],
