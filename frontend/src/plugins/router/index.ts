@@ -71,6 +71,7 @@ watch([
   remote.auth.currentServer
 ], () => {
   void router.replace({
+    ...router.currentRoute.value,
     force: true
   });
 }, { flush: 'sync' });
