@@ -44,7 +44,7 @@
 <script setup lang="ts">
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import Sortable from 'sortablejs';
-import { onBeforeUnmount, watch, useTemplateRef } from 'vue';
+import { watch, useTemplateRef, onScopeDispose } from 'vue';
 import { isNumber } from '@jellyfin-vue/shared/validation';
 import { playbackManager } from '#/store/playback-manager';
 
@@ -98,5 +98,5 @@ watch(container, () => {
   }
 });
 
-onBeforeUnmount(destroy);
+onScopeDispose(() => destroy());
 </script>

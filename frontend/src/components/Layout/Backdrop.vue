@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-import { toRef, type MaybeRefOrGetter, shallowRef, onMounted, onBeforeUnmount, computed } from 'vue';
+import { toRef, type MaybeRefOrGetter, shallowRef, onMounted, computed, onScopeDispose } from 'vue';
 import { watchImmediate } from '@vueuse/core';
 import { isNil } from '@jellyfin-vue/shared/validation';
 import { prefersNoTransparency } from '#/store';
@@ -43,7 +43,7 @@ export function useBackdrop(hash?: MaybeRefOrGetter<string | undefined>, opacity
     }
   });
 
-  onBeforeUnmount(() => {
+  onScopeDispose(() => {
     _blurhash.value = undefined;
     requested_opacity.value = DEFAULT_OPACITY;
   });
