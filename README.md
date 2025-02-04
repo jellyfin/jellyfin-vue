@@ -128,7 +128,7 @@ It connects by default to the Jellyfin server that is running alongside,
 but it's also capable to connect to other Jellyfin servers [like can be tested in our demo](https://demo.jellyfin.org/) and [the hosted instance](https://jellyfin-web.pages.dev/).
 By inspecting the network requests, you will find that only connections to fetch its own assets are made to the server distributing the client, but connections to your own Jellyfin server will not go through it.
 
-The same principel applies to Jellyfin Vue. Note that Jellyfin Web can also be hosted standalone, just like Jellyfin Vue.
+The same principle applies to Jellyfin Vue. Note that Jellyfin Web can also be hosted standalone, just like Jellyfin Vue.
 
 - _Relevant links_: [Community standards](https://jellyfin.org/docs/general/community-standards) and [Social Contract](https://github.com/jellyfin/jellyfin-meta/blob/master/policies-and-procedures/jellyfin-social-contract.md)
 </details>
