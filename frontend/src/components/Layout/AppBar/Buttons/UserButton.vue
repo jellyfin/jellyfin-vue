@@ -45,6 +45,9 @@
         </VList>
       </VMenu>
     </template>
+    <template #tooltip>
+      {{ auth.currentUser.value.Name }}
+    </template>
   </AppBarButtonLayout>
 </template>
 

@@ -12,4 +12,6 @@ import { shallowRef } from 'vue';
 import JSlot from '#/components/JSlot.vue';
 
 const isHovering = shallowRef(false);
+
+defineExpose({ isHovering });
 </script>
