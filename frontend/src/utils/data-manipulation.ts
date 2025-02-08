@@ -6,6 +6,7 @@ import { defu } from 'defu';
  * @param object - Target object. This one contains keys that might not be present in defaults
  * @param defaultObject - Sample/default representation of the object that should be used to detect which keys
  * should/shouldn't exist in the target.
+ * TODO: Handle deep objects
  */
 export function mergeExcludingUnknown<T extends object>(
   object: T,
@@ -29,7 +30,7 @@ export function mergeExcludingUnknown<T extends object>(
  * Uppercase the first letter of a string
  */
 export function upperFirst<T extends string>(str: T): Capitalize<T> {
-  return (str[0].toUpperCase() + str.slice(1)) as Capitalize<T>;
+  return (str[0]!.toUpperCase() + str.slice(1)) as Capitalize<T>;
 }
 
 /**

@@ -1,72 +1,76 @@
 <template>
-  <VBtn
-    icon
-    class="align-self-center">
-    <JIcon class="i-mdi:playlist-play" />
-    <VTooltip
-      :text="$t('queue')"
-      location="top" />
-    <VMenu
-      v-model="menuModel"
-      :close-on-content-click="closeOnClick"
-      :transition="'slide-y-transition'"
-      :width="listWidth"
-      location="top">
-      <VCard>
-        <VList>
-          <VListItem :title="sourceText">
-            <template #prepend>
-              <VAvatar>
-                <BlurhashImage
-                  v-if="playbackManager.initiator.value"
-                  :item="playbackManager.initiator.value" />
-                <JIcon
-                  v-else
-                  :class="modeIcon" />
-              </VAvatar>
-            </template>
-            <template #subtitle>
-              {{ getTotalEndsAtTime(playbackManager.queue.value) }} -
-              {{
-                $t('queueItems', {
-                  items: playbackManager.queueLength.value
-                })
-              }}
-            </template>
-          </VListItem>
-        </VList>
-        <VDivider />
-        <VList class="queue-area">
-          <DraggableQueue />
-        </VList>
-        <VSpacer />
-        <VCardActions>
-          <VBtn
-            icon
-            @click="playbackManager.stop">
-            <JIcon class="i-mdi:playlist-remove" />
-            <VTooltip
-              :text="$t('clearQueue')"
-              location="top" />
-          </VBtn>
-          <VBtn
-            icon
-            disabled>
-            <JIcon class="i-mdi:content-save" />
-            <VTooltip
-              :text="$t('saveAsPlaylist')"
-              location="top" />
-          </VBtn>
+  <JTooltip
+    position="top"
+    :text="$t('queue')">
+    <VBtn
+      icon
+      class="align-self-center">
+      <JIcon class="i-mdi:playlist-play" />
+      <VMenu
+        v-model="menuModel"
+        :close-on-content-click="closeOnClick"
+        :transition="'slide-y-transition'"
+        :width="listWidth"
+        location="top">
+        <VCard>
+          <VList>
+            <VListItem :title="sourceText">
+              <template #prepend>
+                <VAvatar>
+                  <BlurhashImage
+                    v-if="playbackManager.initiator.value"
+                    :item="playbackManager.initiator.value" />
+                  <JIcon
+                    v-else
+                    :class="modeIcon" />
+                </VAvatar>
+              </template>
+              <template #subtitle>
+                {{ getTotalEndsAtTime(playbackManager.queue.value) }} -
+                {{
+                  $t('queueItems', {
+                    items: playbackManager.queueLength.value
+                  })
+                }}
+              </template>
+            </VListItem>
+          </VList>
+          <VDivider />
+          <VList class="queue-area">
+            <DraggableQueue />
+          </VList>
           <VSpacer />
-        </VCardActions>
-      </VCard>
-    </VMenu>
-  </VBtn>
+          <VCardActions>
+            <JTooltip
+              position="top"
+              :text="$t('clearQueue')">
+              <VBtn
+                icon
+                @click="playbackManager.stop">
+                <JIcon class="i-mdi:playlist-remove" />
+              </VBtn>
+            </JTooltip>
+            <JTooltip
+              position="top"
+              :text="$t('saveAsPlaylist')">
+              <VBtn
+                icon
+                disabled>
+                <JIcon class="i-mdi:content-save" />
+              </VBtn>
+            </JTooltip>
+            <VSpacer />
+          </VCardActions>
+        </VCard>
+      </VMenu>
+    </VBtn>
+  </JTooltip>
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import JTooltip from '../../../../packages/ui-toolkit/src/components/JTooltip.vue';
 import { getTotalEndsAtTime } from '#/utils/time';
 import { InitMode, playbackManager } from '#/store/playback-manager';
 

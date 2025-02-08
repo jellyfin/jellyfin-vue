@@ -92,20 +92,21 @@
                 @click="mediaControls.togglePictureInPicture">
                 <JIcon class="i-mdi:picture-in-picture-bottom-right" />
               </VBtn>
-              <VBtn
-                v-if="fullscreen.isSupported"
-                class="align-self-center"
-                icon
-                @click="fullscreen.toggle">
-                <JIcon
-                  :class="{
-                    'i-mdi:fullscreen': !fullscreen.isFullscreen,
-                    'i-mdi:fullscreen-exit': fullscreen.isFullscreen
-                  }" />
-                <VTooltip
-                  :text="$t('fullScreen')"
-                  location="top" />
-              </VBtn>
+              <JTooltip
+                position="top"
+                :text="$t('fullScreen')">
+                <VBtn
+                  v-if="fullscreen.isSupported"
+                  class="align-self-center"
+                  icon
+                  @click="fullscreen.toggle">
+                  <JIcon
+                    :class="{
+                      'i-mdi:fullscreen': !fullscreen.isFullscreen,
+                      'i-mdi:fullscreen-exit': fullscreen.isFullscreen
+                    }" />
+                </VBtn>
+              </JTooltip>
             </div>
           </div>
         </div>

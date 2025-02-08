@@ -1,93 +1,94 @@
 <template>
-  <VBtn
-    icon
-    class="align-self-center">
-    <JIcon class="i-mdi:cog" />
-    <VTooltip
-      :text="$t('playbackSettings')"
-      location="top" />
-    <VMenu
-      v-model="menuModel"
-      :close-on-content-click="false"
-      :transition="'slide-y-transition'"
-      location="top">
-      <VCard min-width="300">
-        <VCardText>
-          <VRow align="center">
-            <VCol :cols="4">
-              <label>{{ $t('quality') }}</label>
-            </VCol>
-            <VCol :cols="8">
-              <VSelect
-                density="comfortable"
+  <JTooltip
+    :text="$t('playbackSettings')"
+    position="top">
+    <VBtn
+      icon
+      class="align-self-center">
+      <JIcon class="i-mdi:cog" />
+      <VMenu
+        v-model="menuModel"
+        :close-on-content-click="false"
+        :transition="'slide-y-transition'"
+        location="top">
+        <VCard min-width="300">
+          <VCardText>
+            <VRow align="center">
+              <VCol :cols="4">
+                <label>{{ $t('quality') }}</label>
+              </VCol>
+              <VCol :cols="8">
+                <VSelect
+                  density="comfortable"
 
-                disabled
-                hide-details />
-            </VCol>
-          </VRow>
-          <VRow align="center">
-            <VCol :cols="4">
-              <label>{{ $t('audio') }}</label>
-            </VCol>
-            <VCol :cols="8">
-              <MediaStreamSelector
-                v-if="playbackManager.currentItemAudioTracks.value"
-                :media-streams="playbackManager.currentItemAudioTracks.value"
-                type="Audio"
-                :default-stream-index="playbackManager.currentAudioTrack.value?.Index"
-                @input="playbackManager.currentAudioTrack.value = $event ?? -1" />
-            </VCol>
-          </VRow>
-          <VRow
-            v-if="!$vuetify.display.smAndUp"
-            align="center">
-            <VCol :cols="4">
-              <label>{{ $t('subtitles') }}</label>
-            </VCol>
-            <VCol :cols="8">
-              <MediaStreamSelector
-                v-if="playbackManager.currentItemSubtitleTracks.value"
-                :media-streams="playbackManager.currentItemSubtitleTracks.value"
-                type="Subtitle"
-                :default-stream-index="
-                  playbackManager.currentSubtitleTrack.value?.Index
-                "
-                @input="playbackManager.currentSubtitleTrack.value = $event ?? -1" />
-            </VCol>
-          </VRow>
-          <VRow align="center">
-            <VCol :cols="4">
-              <label>{{ $t('speed') }}</label>
-            </VCol>
-            <VCol :cols="8">
-              <VCombobox
-                v-model="playbackSpeed"
-                density="comfortable"
-                :items="playbackItems"
-                item-title="title"
-                item-value="speed"
-                :prefix
-                :rules="validationRules"
-                @update:focused="onFocus" />
-            </VCol>
-          </VRow>
-          <VRow align="center">
-            <VCol :cols="4">
-              <label>{{ $t('stretch') }}</label>
-            </VCol>
-            <VCol
-              :cols="8"
-              class="text-right">
-              <VSwitch
-                v-model="playerElement.state.value.isStretched"
-                color="primary"
-                hide-details />
-            </VCol>
-          </VRow>
-        </VCardText>
-      </VCard>
-    </VMenu>
-  </VBtn>
+                  disabled
+                  hide-details />
+              </VCol>
+            </VRow>
+            <VRow align="center">
+              <VCol :cols="4">
+                <label>{{ $t('audio') }}</label>
+              </VCol>
+              <VCol :cols="8">
+                <MediaStreamSelector
+                  v-if="playbackManager.currentItemAudioTracks.value"
+                  :media-streams="playbackManager.currentItemAudioTracks.value"
+                  type="Audio"
+                  :default-stream-index="playbackManager.currentAudioTrack.value?.Index"
+                  @input="playbackManager.currentAudioTrack.value = $event ?? -1" />
+              </VCol>
+            </VRow>
+            <VRow
+              v-if="!$vuetify.display.smAndUp"
+              align="center">
+              <VCol :cols="4">
+                <label>{{ $t('subtitles') }}</label>
+              </VCol>
+              <VCol :cols="8">
+                <MediaStreamSelector
+                  v-if="playbackManager.currentItemSubtitleTracks.value"
+                  :media-streams="playbackManager.currentItemSubtitleTracks.value"
+                  type="Subtitle"
+                  :default-stream-index="
+                    playbackManager.currentSubtitleTrack.value?.Index
+                  "
+                  @input="playbackManager.currentSubtitleTrack.value = $event ?? -1" />
+              </VCol>
+            </VRow>
+            <VRow align="center">
+              <VCol :cols="4">
+                <label>{{ $t('speed') }}</label>
+              </VCol>
+              <VCol :cols="8">
+                <VCombobox
+                  v-model="playbackSpeed"
+                  density="comfortable"
+                  :items="playbackItems"
+                  item-title="title"
+                  item-value="speed"
+                  :prefix
+                  :rules="validationRules"
+                  @update:focused="onFocus" />
+              </VCol>
+            </VRow>
+            <VRow align="center">
+              <VCol :cols="4">
+                <label>{{ $t('stretch') }}</label>
+              </VCol>
+              <VCol
+                :cols="8"
+                class="text-right">
+                <VSwitch
+                  v-model="playerElement.state.value.isStretched"
+                  color="primary"
+                  hide-details />
+              </VCol>
+            </VRow>
+          </VCardText>
+        </VCard>
+      </VMenu>
+    </VBtn>
+  </JTooltip>
 </template>
 
 <script setup lang="ts">
