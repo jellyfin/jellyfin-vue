@@ -1,5 +1,6 @@
 {
   "NoMediaSourcesAvailable": "沒有可用的媒體資源",
+  "NoMediaStreamsAvailable": "所選資料來源沒有可用的串流媒體",
   "accept": "接受",
   "access": "存取",
   "accessToken": "存取憑證",
