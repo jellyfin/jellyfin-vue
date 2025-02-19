@@ -39,7 +39,7 @@ jobs:
           path: dist
 
       - name: Publish to Cloudflare Pages 📃
-        uses: cloudflare/wrangler-action@v3.13.1
+        uses: cloudflare/wrangler-action@v3.14.0
         id: cf
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}

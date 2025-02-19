@@ -194,7 +194,7 @@ jobs:
           version: latest
 
       - name: Build images 🛠️
-        uses: docker/build-push-action@v6.13.0
+        uses: docker/build-push-action@v6.14.0
         id: image
         with:
           context: .
@@ -314,7 +314,7 @@ jobs:
           password: ${{ secrets.JF_BOT_TOKEN }}
 
       - name: Create multiplatform image ${{ inputs.push && 'and push 🛠️⬆️' || '🛠️' }} 
-        uses: docker/build-push-action@v6.13.0
+        uses: docker/build-push-action@v6.14.0
         id: image
         with:
           context: .
