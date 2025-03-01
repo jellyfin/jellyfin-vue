@@ -17,8 +17,8 @@
   "devDependencies": {
     "@eslint/js": "9.19.0",
     "@intlify/eslint-plugin-vue-i18n": "3.2.0",
-    "@stylistic/eslint-plugin": "3.0.1",
-    "@unocss/eslint-config": "65.4.3",
+    "@stylistic/eslint-plugin": "4.1.0",
+    "@unocss/eslint-config": "66.0.0",
     "eslint-config-flat-gitignore": "2.0.0",
     "eslint-plugin-css": "0.11.0",
     "eslint-plugin-depend": "0.12.0",
@@ -29,13 +29,13 @@
     "eslint-plugin-promise": "7.2.1",
     "eslint-plugin-regexp": "2.7.0",
     "eslint-plugin-sonarjs": "3.0.1",
-    "eslint-plugin-unicorn": "56.0.1",
+    "eslint-plugin-unicorn": "57.0.0",
     "eslint-plugin-vue": "9.32.0",
     "eslint-plugin-vue-scoped-css": "2.9.0",
     "find-up-simple": "1.0.0",
-    "globals": "15.14.0",
+    "globals": "16.0.0",
     "typescript-eslint": "8.22.0",
-    "unocss": "65.4.3",
+    "unocss": "66.0.0",
     "vue-eslint-parser": "9.4.3"
   }
 }
