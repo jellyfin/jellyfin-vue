@@ -27,7 +27,7 @@
   "anErrorHappened": "حدث خطأ",
   "apiKeys": "مفاتيح API",
   "apiKeysSettingsDescription": "إضافة وإلغاء مفاتيح API للوصول الخارجي إلى خادمك",
-  "appDefaultTypography": "الطباعة الافتراضية للتطبيق ({القيمة})",
+  "appDefaultTypography": "الطباعة الافتراضية للتطبيق ({value})",
   "appName": "اسم التطبيق",
   "appVersion": "إصدار التطبيق",
   "appearsOn": "المظاهر",
