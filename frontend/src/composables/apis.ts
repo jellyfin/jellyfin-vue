@@ -70,7 +70,7 @@ interface ComposableOps {
   skipCache?: SkipCacheOps;
 }
 
-type BaseItemComposableOps = ComposableOps & BetterOmit<SkipCacheOps, 'baseItem'> ;
+type BaseItemComposableOps = ComposableOps & BetterOmit<SkipCacheOps, 'baseItem'>;
 
 const defaultOps: BaseItemComposableOps = Object.freeze({
   globalLoading: true,
