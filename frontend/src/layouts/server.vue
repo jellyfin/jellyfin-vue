@@ -1,9 +1,7 @@
 <template>
   <LoadingIndicator />
-  <JMain>
-    <VMain class="uno-h-full">
-      <slot />
-    </VMain>
+  <JMain class="uno-h-full">
+    <slot />
   </JMain>
   <JFooter class="uno-pa-2">
     <LocaleSwitcher elevated />

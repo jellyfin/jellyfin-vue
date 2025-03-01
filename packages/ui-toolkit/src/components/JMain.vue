@@ -1,18 +1,21 @@
 <template>
-  <JSlot :style>
+  <main
+    class="v-main"
+    :style="[mainStyles, ...style]">
     <slot />
-  </JSlot>
+  </main>
 </template>
 
 <script setup lang="ts">
 /**
- * TODO: this component should shim the main tag
+ * TODO: CSS still depends on Vuetify
  */
 import { ref, provide } from 'vue';
+import { useLayout } from 'vuetify';
 import { JMain_style } from '#/store/keys';
-import JSlot from '#/components/JSlot.vue';
 
 const style = ref([]);
+const { mainStyles } = useLayout();
 
 provide(JMain_style, style);
 </script>

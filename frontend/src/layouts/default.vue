@@ -4,11 +4,9 @@
     :order="display.mobile.value ? -1 : undefined"
     :drawer-items="drawerItems" />
   <JMain>
-    <VMain>
-      <div class="pa-s">
-        <slot />
-      </div>
-    </VMain>
+    <div class="pa-s">
+      <slot />
+    </div>
   </JMain>
   <AudioControls />
   <MiniVideoPlayer
