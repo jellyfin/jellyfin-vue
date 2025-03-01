@@ -17,7 +17,7 @@
     <SearchField />
     <VSpacer />
     <AppBarButtonLayout
-      v-hide="remote.socket.isConnected.value && isConnectedToServer"
+      v-if="!(remote.socket.isConnected.value || isConnectedToServer)"
       :color="isConnectedToServer ? 'yellow' : 'red'">
       <template #icon>
         <JIcon class="i-mdi:network-off-outline" />
