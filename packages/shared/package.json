@@ -21,6 +21,6 @@
   },
   "dependencies": {
     "dompurify": "3.2.4",
-    "marked": "15.0.6"
+    "marked": "15.0.7"
   }
 }
