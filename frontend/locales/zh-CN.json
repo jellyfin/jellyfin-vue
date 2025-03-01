@@ -319,7 +319,7 @@
   "revokeFailure": "撤销API密钥时出错",
   "revokeSuccess": "成功撤销API密钥",
   "role": "角色",
-  "routeValidationError": "路由参数中指定的路由ID不正确",
+  "routeValidationError": "访问此页面的参数不正确",
   "runningTasks": "运行任务",
   "runtime": "时长",
   "save": "保存",
