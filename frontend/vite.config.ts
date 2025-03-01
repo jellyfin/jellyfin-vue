@@ -10,12 +10,8 @@ import Components from 'unplugin-vue-components/vite';
 import UnoCSS from 'unocss/vite';
 import VueRouter from 'unplugin-vue-router/vite';
 import { defineConfig } from 'vite';
-/**
- * TODO: Replace with @jellyfin-vue/vite-plugins after https://github.com/vitejs/vite/issues/5370
- * is fixed
- */
-import { JBundle, JMonorepo } from '../packages/vite-plugins/src';
-import { JellyfinVueUIToolkit } from '../packages/ui-toolkit/src/resolver';
+import { JBundle, JMonorepo } from '@jellyfin-vue/vite-plugins';
+import { JellyfinVueUIToolkit } from '@jellyfin-vue/ui-toolkit/resolver';
 import virtualModules from './scripts/virtual-modules';
 import { localeFilesFolder } from './scripts/paths';
 

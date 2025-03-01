@@ -6,16 +6,16 @@
     "#/*": "./src/*"
   },
   "scripts": {
-    "analyze:bundle": "vite build --mode analyze:bundle",
-    "analyze:cycles": "vite build --mode analyze:cycles",
+    "analyze:bundle": "vite build --mode analyze:bundle --configLoader runner",
+    "analyze:cycles": "vite build --mode analyze:cycles --configLoader runner",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "lint:inspect": "eslint-config-inspector",
-    "build": "vite build",
+    "build": "vite build --configLoader runner",
     "check": "npm run lint && npm run check:types",
     "check:types": "vue-tsc",
-    "start": "vite",
-    "serve": "vite preview",
+    "start": "vite --configLoader runner",
+    "serve": "vite preview --configLoader runner",
     "prod": "npm run build && npm run serve",
     "clean": "git clean -fxd"
   },
