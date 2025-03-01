@@ -1,4 +1,4 @@
-import { defineConfig, presetUno, transformerVariantGroup, presetIcons } from 'unocss';
+import { defineConfig, presetWind3, transformerVariantGroup, presetIcons } from 'unocss';
 import { lightColors, darkColors } from '@jellyfin-vue/shared/colors';
 
 const themeColors = {
@@ -25,7 +25,7 @@ export const defaultConfig = defineConfig({
     }
   },
   presets: [
-    presetUno({
+    presetWind3({
       prefix: 'uno-',
       variablePrefix: 'j-util-',
       preflight: 'on-demand'
