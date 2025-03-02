@@ -12,7 +12,7 @@
         class="uno-h-full">
         <Component
           :is="root ? getLayoutComponent(route.meta.layout.name) : comp">
-          <JView
+          <MainView
             v-if="root"
             v-bind="$props" />
           <slot v-else />

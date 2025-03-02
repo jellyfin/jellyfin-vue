@@ -1,6 +1,6 @@
 <template>
   <main
-    class="v-main"
+    class="uno-max-w-full uno-flex-grow-1 uno-flex-shrink-0 uno-flex-basis-auto uno-transition-all j-main"
     :style="[mainStyles, ...style]">
     <slot />
   </main>
@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 /**
- * TODO: CSS still depends on Vuetify
+ * TODO: CSS still depends on Vuetify, remove scoped styles after removal
  */
 import { ref, provide } from 'vue';
 import { useLayout } from 'vuetify';
@@ -19,3 +19,12 @@ const { mainStyles } = useLayout();
 
 provide(JMain_style, style);
 </script>
+
+<style scoped>
+.j-main {
+  padding-left: var(--v-layout-left);
+  padding-right: var(--v-layout-right);
+  padding-top: var(--v-layout-top);
+  padding-bottom: var(--v-layout-bottom);
+}
+</style>

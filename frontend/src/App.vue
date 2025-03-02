@@ -5,7 +5,7 @@
     <Backdrop />
     <VApp>
       <RouterView v-slot="{ Component, route }">
-        <JView
+        <MainView
           :comp="Component"
           :route="route" />
       </RouterView>
