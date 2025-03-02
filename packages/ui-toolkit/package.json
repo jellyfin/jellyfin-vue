@@ -33,7 +33,7 @@
   "dependencies": {
     "@skirtle/vue-vnode-utils": "0.2.0",
     "@vueuse/core": "12.7.0",
-    "color-core": "1.4.0",
+    "color": "5.0.0",
     "comlink": "4.4.2",
     "vue": "3.5.13",
     "vue-i18n": "9.14.2",

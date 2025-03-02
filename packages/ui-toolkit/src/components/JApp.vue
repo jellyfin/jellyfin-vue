@@ -11,7 +11,7 @@
         cursor: progress;
       </template>
       <template v-for="(value, key) in currentColors">
-        --j-theme-color-{{ key }}: {{ Object.values(hexToRgb(value)).join() }};
+        --j-theme-color-{{ key }}: {{ Color(value).rgb().array().join(', ') }};
         --j-theme-color-{{ key }}-text: lch(from rgb(var(--j-theme-color-{{ key }})) calc((49.44 - l) * infinity) 0 0);
       </template>
         --j-font-family: '{{ theme.typography }}';
@@ -37,7 +37,7 @@
 import { computed } from 'vue';
 import type { ColorPalette } from '@jellyfin-vue/shared/colors';
 import { watchImmediate } from '@vueuse/core';
-import { hexToRgb } from 'color-core';
+import Color from 'color';
 
 const { theme, loading } = defineProps<{
   theme: {
