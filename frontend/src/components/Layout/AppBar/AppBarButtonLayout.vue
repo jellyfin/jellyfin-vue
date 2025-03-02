@@ -1,7 +1,5 @@
 <template>
-  <JTooltip
-    v-if="$slots.tooltip"
-    position="bottom">
+  <JTooltip position="bottom">
     <VBtn
       class="align-self-center ma-1"
       icon
@@ -10,7 +8,9 @@
       v-bind="$attrs">
       <slot name="icon" />
     </VBtn>
-    <template #content>
+    <template
+      v-if="$slots.tooltip"
+      #content>
       <slot name="tooltip" />
     </template>
   </JTooltip>
