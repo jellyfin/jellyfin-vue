@@ -55,7 +55,7 @@
   },
   "devDependencies": {
     "@chromatic-com/storybook": "3.2.5",
-    "@iconify/json": "2.2.311",
+    "@iconify/json": "2.2.313",
     "@intlify/unplugin-vue-i18n": "4.0.0",
     "@jellyfin-vue/configs": "*",
     "@jellyfin-vue/vite-plugins": "*",
@@ -70,7 +70,7 @@
     "@vitejs/plugin-vue": "5.2.1",
     "browserslist": "4.24.4",
     "lightningcss": "1.29.1",
-    "type-fest": "4.36.0",
+    "type-fest": "4.37.0",
     "unocss": "66.0.0",
     "unplugin-vue-components": "28.4.1",
     "unplugin-vue-router": "0.11.2",
