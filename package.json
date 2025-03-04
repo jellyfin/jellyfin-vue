@@ -31,12 +31,12 @@
   },
   "devDependencies": {
     "@eslint/config-inspector": "1.0.1",
-    "@types/node": "22.13.8",
+    "@types/node": "22.13.9",
     "eslint": "9.21.0",
     "jiti": "2.4.2",
     "storybook": "8.6.3",
     "typescript": "5.8.2",
     "vitest": "3.0.7",
-    "vue-tsc": "2.2.6"
+    "vue-tsc": "2.2.8"
   }
 }
