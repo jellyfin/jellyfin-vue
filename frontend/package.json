@@ -36,7 +36,7 @@
     "@vueuse/core": "12.7.0",
     "assjs": "0.1.4",
     "audiomotion-analyzer": "4.5.0",
-    "axios": "1.8.1",
+    "axios": "1.8.2",
     "blurhash": "2.0.5",
     "comlink": "4.4.2",
     "date-fns": "4.1.0",
@@ -49,7 +49,7 @@
     "swiper": "11.2.5",
     "uuid": "11.1.0",
     "vue": "3.5.13",
-    "vue-i18n": "9.14.2",
+    "vue-i18n": "9.14.3",
     "vue-router": "4.5.0",
     "vuetify": "3.7.4"
   },
