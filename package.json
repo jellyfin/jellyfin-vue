@@ -30,13 +30,13 @@
     "test": "npm run test -ws --if-present"
   },
   "devDependencies": {
-    "@eslint/config-inspector": "1.0.1",
+    "@eslint/config-inspector": "1.0.2",
     "@types/node": "22.13.9",
     "eslint": "9.21.0",
     "jiti": "2.4.2",
-    "storybook": "8.6.3",
+    "storybook": "8.6.4",
     "typescript": "5.8.2",
-    "vitest": "3.0.7",
+    "vitest": "3.0.8",
     "vue-tsc": "2.2.8"
   }
 }
