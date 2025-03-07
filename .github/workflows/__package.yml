@@ -96,7 +96,7 @@ jobs:
           path: ${{ env.WORKING_DIR }}/${{ env.ARTIFACTS_PATH }}
 
       - name: Create provenance attestation 🔏
-        uses: actions/attest-build-provenance@v2.2.2
+        uses: actions/attest-build-provenance@v2.2.3
         continue-on-error: true
         with:
           subject-name: ${{ env.ARTIFACT_NAME }}
@@ -219,7 +219,7 @@ jobs:
           path: docker_image.tar
 
       - name: Create provenance attestation 🔏
-        uses: actions/attest-build-provenance@v2.2.2
+        uses: actions/attest-build-provenance@v2.2.3
         continue-on-error: true
         with:
           subject-name: ${{ env.ARTIFACT_NAME }}
@@ -264,7 +264,7 @@ jobs:
           path: dist
 
       - name: Create provenance attestation 🔏
-        uses: actions/attest-build-provenance@v2.2.2
+        uses: actions/attest-build-provenance@v2.2.3
         continue-on-error: true
         with:
           subject-name: ${{ env.ARTIFACT_NAME }}
