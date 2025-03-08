@@ -15,7 +15,7 @@
     "check:types": "vue-tsc"
   },
   "devDependencies": {
-    "@eslint/js": "9.21.0",
+    "@eslint/js": "9.22.0",
     "@intlify/eslint-plugin-vue-i18n": "4.0.0",
     "@stylistic/eslint-plugin": "4.2.0",
     "@unocss/eslint-config": "66.0.0",
