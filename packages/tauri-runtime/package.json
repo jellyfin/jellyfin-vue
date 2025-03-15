@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "@jellyfin-vue/configs": "*",
-    "vite": "6.2.1"
+    "vite": "6.2.2"
   },
   "dependencies": {
     "@jellyfin-vue/frontend": "*",
