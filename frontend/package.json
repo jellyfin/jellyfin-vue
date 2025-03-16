@@ -28,7 +28,7 @@
     "storybook": "storybook dev -p 6006 --config-dir storybook --no-open"
   },
   "dependencies": {
-    "@fontsource-variable/figtree": "5.2.5",
+    "@fontsource-variable/figtree": "5.2.6",
     "@jellyfin-vue/shared": "*",
     "@jellyfin-vue/ui-toolkit": "*",
     "@jellyfin/sdk": "0.11.0",
@@ -36,7 +36,7 @@
     "@vueuse/core": "13.0.0",
     "assjs": "0.1.4",
     "audiomotion-analyzer": "4.5.0",
-    "axios": "1.8.2",
+    "axios": "1.8.3",
     "blurhash": "2.0.5",
     "comlink": "4.4.2",
     "date-fns": "4.1.0",
