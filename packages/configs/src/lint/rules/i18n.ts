@@ -1,5 +1,4 @@
 import type { Linter } from 'eslint';
-// @ts-expect-error - The original plugin doesn't have types
 import i18nPlugin from '@intlify/eslint-plugin-vue-i18n';
 import { vueAndTsFiles } from '../shared';
 

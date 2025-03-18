@@ -10,8 +10,8 @@ export const json = [
     ...jsoncRecommended.at(1),
     name: '(@jellyfin-vue/configs/lint/json) - Custom config',
     rules: {
-      ...jsoncRecommended.at(1).rules,
-      ...jsoncRecommended.at(2).rules,
+      ...jsoncRecommended.at(1)!.rules,
+      ...jsoncRecommended.at(2)!.rules,
       'jsonc/auto': 'error',
       '@stylistic/quotes': ['error', 'double'],
       '@stylistic/semi': 'off',

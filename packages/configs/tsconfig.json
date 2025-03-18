@@ -1,6 +1,7 @@
 {
   "extends": "./src/typescript.json",
   "compilerOptions": {
+    "lib": ["ESNext"],
     "baseUrl": "."
   },
   "exclude": [
