@@ -724,13 +724,19 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       && mediaSource.Id
       && mediaSource.Container
     ) {
+      // TODO: Refactor to use the SDK for this
       const directOptions: Record<string, string> = {
         Static: String(true),
         mediaSourceId: mediaSource.Id,
         deviceId: remote.sdk.deviceInfo.id,
         api_key: remote.auth.currentUserToken.value,
         Tag: mediaSource.ETag ?? '',
-        LiveStreamId: mediaSource.LiveStreamId ?? ''
+        LiveStreamId: mediaSource.LiveStreamId ?? '',
+        ...(this.isAudio.value
+          ? {
+              audioCodec: 'aac'
+            }
+          : {})
       };
 
       const parameters = new URLSearchParams(directOptions).toString();
