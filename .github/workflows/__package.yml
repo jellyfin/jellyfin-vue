@@ -63,7 +63,7 @@ jobs:
           show-progress: false
 
       - name: Setup node environment ⚙️
-        uses: actions/setup-node@v4.2.0
+        uses: actions/setup-node@v4.3.0
         with:
           node-version: lts/*
           check-latest: true
@@ -244,7 +244,7 @@ jobs:
 
     steps:         
       - name: Download Docker image artifact 📦⬇️
-        uses: actions/download-artifact@v4.1.9
+        uses: actions/download-artifact@v4.2.0
         with:
           name: docker_image-linux_amd64
 
@@ -280,7 +280,7 @@ jobs:
 
     steps:
       - name: Download cache artifacts 📦⬇️
-        uses: actions/download-artifact@v4.1.9
+        uses: actions/download-artifact@v4.2.0
         with:
           pattern: buildx-*
           path: /tmp/${{ env.REGISTRY_IMAGE }}/cache/
