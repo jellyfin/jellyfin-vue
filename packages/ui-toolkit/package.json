@@ -28,7 +28,7 @@
     "@storybook/vue3": "8.6.7",
     "@storybook/vue3-vite": "8.6.7",
     "unplugin-vue-components": "28.4.1",
-    "vite": "6.2.2"
+    "vite": "6.2.3"
   },
   "dependencies": {
     "@skirtle/vue-vnode-utils": "0.2.0",

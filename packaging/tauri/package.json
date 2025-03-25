@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "@tauri-apps/cli": "2.4.0",
-    "vite": "6.2.2"
+    "vite": "6.2.3"
   },
   "dependencies": {
     "@jellyfin-vue/tauri-runtime": "*"
