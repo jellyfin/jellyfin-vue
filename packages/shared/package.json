@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "@jellyfin-vue/configs": "*",
-    "type-fest": "4.37.0",
+    "type-fest": "4.38.0",
     "vitest": "3.0.9"
   },
   "dependencies": {

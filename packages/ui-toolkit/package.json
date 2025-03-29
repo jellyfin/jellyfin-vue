@@ -21,12 +21,12 @@
   "devDependencies": {
     "@chromatic-com/storybook": "3.2.6",
     "@jellyfin-vue/configs": "*",
-    "@storybook/addon-a11y": "8.6.7",
-    "@storybook/addon-essentials": "8.6.7",
-    "@storybook/addon-interactions": "8.6.7",
-    "@storybook/blocks": "8.6.7",
-    "@storybook/vue3": "8.6.7",
-    "@storybook/vue3-vite": "8.6.7",
+    "@storybook/addon-a11y": "8.6.11",
+    "@storybook/addon-essentials": "8.6.11",
+    "@storybook/addon-interactions": "8.6.11",
+    "@storybook/blocks": "8.6.11",
+    "@storybook/vue3": "8.6.11",
+    "@storybook/vue3-vite": "8.6.11",
     "unplugin-vue-components": "28.4.1",
     "vite": "6.2.3"
   },

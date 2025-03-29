@@ -31,10 +31,10 @@
   },
   "devDependencies": {
     "@eslint/config-inspector": "1.0.2",
-    "@types/node": "22.13.10",
-    "eslint": "9.22.0",
+    "@types/node": "22.13.14",
+    "eslint": "9.23.0",
     "jiti": "2.4.2",
-    "storybook": "8.6.7",
+    "storybook": "8.6.11",
     "typescript": "5.8.2",
     "vitest": "3.0.9",
     "vue-tsc": "2.2.8"
