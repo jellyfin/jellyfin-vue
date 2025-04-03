@@ -20,7 +20,7 @@
     "vitest": "3.0.9"
   },
   "dependencies": {
-    "dompurify": "3.2.4",
+    "dompurify": "3.2.5",
     "marked": "15.0.7"
   }
 }
