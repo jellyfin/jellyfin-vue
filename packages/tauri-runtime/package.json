@@ -25,6 +25,6 @@
   },
   "dependencies": {
     "@jellyfin-vue/frontend": "*",
-    "@tauri-apps/api": "2.4.0"
+    "@tauri-apps/api": "2.4.1"
   }
 }
