@@ -14,7 +14,7 @@
     "find-up-simple": "1.0.1",
     "pretty-bytes": "6.1.1",
     "sonda": "0.7.1",
-    "type-fest": "4.38.0",
+    "type-fest": "4.39.1",
     "vite": "6.2.5"
   }
 }
