@@ -335,7 +335,7 @@
   "searchNoResults": "Brak wyników",
   "seasonEpisode": "Sezon {seasonNumber}, Odcinek {episodeNumber}",
   "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
-  "seconds": "{count} sekunda | {count} sekundy | {count} sekund",
+  "seconds": "{count} sekunda | {count} sekund(y)",
   "selectServer": "Wybierz serwer",
   "selectUser": "Wybierz użytkownika",
   "selectVersion": "Wybierz wersję",
