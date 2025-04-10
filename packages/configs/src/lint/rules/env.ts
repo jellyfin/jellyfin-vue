@@ -1,12 +1,12 @@
-import type { Linter } from 'eslint';
+import { defineConfig } from 'eslint/config';
 import globals from 'globals';
 
 /**
  * Gets the ESLint config from Node.js and development related files
  * @param files - Defaults to `*config.*` and files under `scripts` folder
  */
-export function getNodeFiles(files = ['*.config.*', 'scripts/**/*.ts']): Linter.Config[] {
-  return [{
+export function getNodeFiles(files = ['*.config.*', 'scripts/**/*.ts']) {
+  return defineConfig([{
     name: '(@jellyfin-vue/configs/lint/env) Node.js and development-related files',
     files,
     languageOptions: {
@@ -26,15 +26,15 @@ export function getNodeFiles(files = ['*.config.*', 'scripts/**/*.ts']): Linter.
       'unicorn/no-process-exit': 'off'
     }
   }
-  ];
+  ]);
 }
 
 /**
  * Gets the rules config for WebWorker files
  * @param files - Defaults to `*.worker.ts` files
  */
-export function getWorkerFiles(files = ['**/*.worker.ts']): Linter.Config[] {
-  return [{
+export function getWorkerFiles(files = ['**/*.worker.ts']) {
+  return defineConfig([{
     name: '(@jellyfin-vue/configs/lint/env) WebWorkers',
     files,
     languageOptions: {
@@ -42,5 +42,5 @@ export function getWorkerFiles(files = ['**/*.worker.ts']): Linter.Config[] {
         ...globals.worker
       }
     }
-  }];
+  }]);
 }

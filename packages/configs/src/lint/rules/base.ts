@@ -1,6 +1,6 @@
 import { basename, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
-import type { Linter } from 'eslint';
+import { defineConfig } from 'eslint/config';
 import { findUpSync } from 'find-up-simple';
 import unicorn from 'eslint-plugin-unicorn';
 import js from '@eslint/js';
@@ -60,7 +60,7 @@ export function getBaseConfig(packageName: string, forceCache = !CI_environment,
     }
   }
 
-  return [
+  return defineConfig([
     { ...js.configs.recommended,
       name: '(@jellyfin-vue/configs/lint/base - eslint) Extended config from plugin'
     },
@@ -175,5 +175,5 @@ export function getBaseConfig(packageName: string, forceCache = !CI_environment,
         'file-progress/activate': CI_environment ? 0 : 1
       }
     }
-  ] satisfies Linter.Config[];
+  ]);
 };

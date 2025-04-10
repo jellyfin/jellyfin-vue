@@ -1,9 +1,9 @@
-import type { Linter } from 'eslint';
+import { defineConfig } from 'eslint/config';
 import jsonc from 'eslint-plugin-jsonc';
 
 const jsoncRecommended = jsonc.configs['flat/recommended-with-json'];
 
-export const json = [
+export const json = defineConfig([
   {
     /* First index is just the plugin definition */
     ...jsoncRecommended.at(0),
@@ -18,4 +18,4 @@ export const json = [
       '@stylistic/quote-props': 'off'
     }
   }
-] satisfies Linter.Config[];
+]);

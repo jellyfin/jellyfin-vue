@@ -1,8 +1,8 @@
-import type { Linter } from 'eslint';
+import { defineConfig } from 'eslint/config';
 import i18nPlugin from '@intlify/eslint-plugin-vue-i18n';
 import { vueAndTsFiles } from '../shared';
 
-export const i18n = [
+export const i18n = defineConfig([
   {
     /* First index is just the plugin definition */
     ...i18nPlugin.configs['flat/recommended'].at(0),
@@ -45,4 +45,4 @@ export const i18n = [
       'no-irregular-whitespace': 'off'
     }
   }
-] satisfies Linter.Config[];
+]);

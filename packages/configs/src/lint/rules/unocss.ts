@@ -1,9 +1,9 @@
-import type { Linter } from 'eslint';
+import { defineConfig } from 'eslint/config';
 import UnoPlugin from '@unocss/eslint-config/flat';
 
-export const unocss = [
+export const unocss = defineConfig([
   {
     ...UnoPlugin,
     name: '(unocss) Extended config from plugin'
   }
-] satisfies Linter.Config[];
+]);

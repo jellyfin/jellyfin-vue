@@ -1,8 +1,8 @@
-import type { Linter } from 'eslint';
+import { defineConfig } from 'eslint/config';
 import { getBaseConfig, getTSVueConfig } from '@jellyfin-vue/configs/lint';
 import pkg from './package.json' with { type: 'json' };
 
-export default [
+export default defineConfig([
   ...getBaseConfig(pkg.name),
   ...getTSVueConfig(true, import.meta.dirname)
-] satisfies Linter.Config[];
+]);
