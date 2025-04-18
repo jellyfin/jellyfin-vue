@@ -15,15 +15,15 @@
     "check:types": "vue-tsc"
   },
   "devDependencies": {
-    "@eslint/js": "9.23.0",
-    "@intlify/eslint-plugin-vue-i18n": "4.0.0",
+    "@eslint/js": "9.25.0",
+    "@intlify/eslint-plugin-vue-i18n": "4.0.1",
     "@stylistic/eslint-plugin": "4.2.0",
     "@unocss/eslint-config": "66.0.0",
     "eslint-config-flat-gitignore": "2.1.0",
     "eslint-plugin-css": "0.11.0",
     "eslint-plugin-depend": "1.0.0",
     "eslint-plugin-file-progress": "3.0.2",
-    "eslint-plugin-import-x": "4.9.3",
+    "eslint-plugin-import-x": "4.10.5",
     "eslint-plugin-jsdoc": "50.6.9",
     "eslint-plugin-jsonc": "2.20.0",
     "eslint-plugin-promise": "7.2.1",
@@ -34,8 +34,8 @@
     "eslint-plugin-vue-scoped-css": "2.9.0",
     "find-up-simple": "1.0.1",
     "globals": "16.0.0",
-    "typescript-eslint": "8.28.0",
+    "typescript-eslint": "8.30.1",
     "unocss": "66.0.0",
-    "vue-eslint-parser": "10.1.1"
+    "vue-eslint-parser": "10.1.3"
   }
 }
