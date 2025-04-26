@@ -44,7 +44,7 @@
     "vue": "3.4.23",
     "vue-i18n": "9.13.0",
     "vue-router": "4.3.1",
-    "vuetify": "3.5.16"
+    "vuetify": "3.5.18"
   },
   "devDependencies": {
     "@eslint/config-inspector": "0.4.6",
