@@ -63,14 +63,14 @@ jobs:
           show-progress: false
 
       - name: Setup node environment ⚙️
-        uses: actions/setup-node@v4.3.0
+        uses: actions/setup-node@v4.4.0
         with:
           node-version: lts/*
           check-latest: true
           cache: 'npm'
 
       - name: Setup Rust Toolchain and cache 🦀
-        uses: actions-rust-lang/setup-rust-toolchain@v1.11.0
+        uses: actions-rust-lang/setup-rust-toolchain@v1.12.0
         with:
           cache-key: tauri-${{ runner.os }}
           cache-workspaces: ${{ env.WORKING_DIR }}
@@ -194,7 +194,7 @@ jobs:
           version: latest
 
       - name: Build images 🛠️
-        uses: docker/build-push-action@v6.15.0
+        uses: docker/build-push-action@v6.16.0
         id: image
         with:
           context: .
@@ -244,7 +244,7 @@ jobs:
 
     steps:         
       - name: Download Docker image artifact 📦⬇️
-        uses: actions/download-artifact@v4.2.1
+        uses: actions/download-artifact@v4.3.0
         with:
           name: docker_image-linux_amd64
 
@@ -280,7 +280,7 @@ jobs:
 
     steps:
       - name: Download cache artifacts 📦⬇️
-        uses: actions/download-artifact@v4.2.1
+        uses: actions/download-artifact@v4.3.0
         with:
           pattern: buildx-*
           path: /tmp/${{ env.REGISTRY_IMAGE }}/cache/
@@ -314,7 +314,7 @@ jobs:
           password: ${{ secrets.JF_BOT_TOKEN }}
 
       - name: Create multiplatform image ${{ inputs.push && 'and push 🛠️⬆️' || '🛠️' }} 
-        uses: docker/build-push-action@v6.15.0
+        uses: docker/build-push-action@v6.16.0
         id: image
         with:
           context: .
