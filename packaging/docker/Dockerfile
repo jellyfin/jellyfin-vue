@@ -19,7 +19,7 @@ WORKDIR /app/frontend
 RUN npm ci --no-audit && npm run build
 
 # Deploy built distribution to nginx
-FROM nginx:stable-alpine-slim
+FROM ghcr.io/nginxinc/nginx-unprivileged:stable-alpine-slim
 
 ENV ASSETS=/usr/share/nginx/html
 ENV NGINX_DEFAULT_SITE_CONFIG=/etc/nginx/conf.d/default.conf
@@ -28,6 +28,7 @@ COPY packaging/docker/contents/nginx.conf "$NGINX_DEFAULT_SITE_CONFIG"
 COPY packaging/docker/contents/*.sh /
 COPY LICENSE /usr/share/licenses/jellyfin-vue
 
+USER root
 RUN rm -rf "$ASSETS"/*
 COPY --from=build /app/frontend/dist/ "$ASSETS"
 RUN chmod +x /*.sh && /postunpack.sh && rm /postunpack.sh
