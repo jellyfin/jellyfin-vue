@@ -2,7 +2,7 @@
   <Teleport
     to="head"
     defer>
-    <!-- eslint-disable @intlify/vue-i18n/no-raw-text vue/require-component-is vue/html-indent -->
+    <!-- eslint-disable vue/require-component-is vue/html-indent -->
     <component
       is="style"
       data-jellyfin-css-vars>
@@ -22,7 +22,7 @@
         color: var(--j-theme-color-background-text);
       }
     </component>
-    <!-- eslint-enable @intlify/vue-i18n/no-raw-text vue/require-component-is vue/html-indent -->
+    <!-- eslint-enable vue/require-component-is vue/html-indent -->
   </Teleport>
   <slot />
 </template>

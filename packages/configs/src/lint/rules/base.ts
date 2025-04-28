@@ -65,7 +65,7 @@ export function getBaseConfig(packageName: string, forceCache = !CI_environment,
       name: '(@jellyfin-vue/configs/lint/base - eslint) Extended config from plugin'
     },
     {
-      ...unicorn.configs['recommended'],
+      ...unicorn.configs.recommended,
       name: '(@jellyfin-vue/configs/lint/base - unicorn) Extended config from plugin'
     },
     {
