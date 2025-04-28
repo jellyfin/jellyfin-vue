@@ -8,7 +8,6 @@
     ],
     "types": [
       "axios",
-      "@intlify/unplugin-vue-i18n/messages",
       "unplugin-vue-router/client",
       "vite/client",
       "vuetify",
