@@ -49,14 +49,12 @@
     "swiper": "11.2.6",
     "uuid": "11.1.0",
     "vue": "3.5.13",
-    "vue-i18n": "9.14.3",
     "vue-router": "4.5.0",
     "vuetify": "3.8.0"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "3.2.6",
     "@iconify/json": "2.2.321",
-    "@intlify/unplugin-vue-i18n": "4.0.0",
     "@jellyfin-vue/configs": "*",
     "@jellyfin-vue/vite-plugins": "*",
     "@rollup/plugin-virtual": "3.0.2",
