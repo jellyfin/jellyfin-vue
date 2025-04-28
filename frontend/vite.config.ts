@@ -1,5 +1,4 @@
 import { resolve } from 'node:path';
-import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 import Virtual from '@rollup/plugin-virtual';
 import VueDevTools from 'vite-plugin-vue-devtools';
 import Vue from '@vitejs/plugin-vue';
@@ -13,7 +12,6 @@ import { defineConfig } from 'vite';
 import { JBundle, JMonorepo } from '@jellyfin-vue/vite-plugins';
 import { JellyfinVueUIToolkit } from '@jellyfin-vue/ui-toolkit/resolver';
 import virtualModules from './scripts/virtual-modules';
-import { localeFilesFolder } from './scripts/paths';
 
 export default defineConfig({
   appType: 'spa',
@@ -53,14 +51,6 @@ export default defineConfig({
         Vuetify3Resolver(),
         JellyfinVueUIToolkit()
       ]
-    }),
-    VueI18nPlugin({
-      runtimeOnly: true,
-      compositionOnly: true,
-      fullInstall: false,
-      forceStringify: true,
-      include: localeFilesFolder,
-      dropMessageCompiler: true
     }),
     UnoCSS(),
     VueDevTools()

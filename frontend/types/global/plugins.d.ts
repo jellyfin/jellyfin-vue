@@ -30,12 +30,6 @@ declare module 'vue' {
   }
 }
 
-declare module 'vue-i18n' {
-  type messages = typeof en;
-
-  export interface DefineLocaleMessage extends messages {}
-}
-
 /**
  * This is important: https://stackoverflow.com/a/64189046
  * https://www.typescriptlang.org/docs/handbook/modules.html
