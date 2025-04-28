@@ -5,7 +5,8 @@
   "exports": {
     "./validation": "./src/validation.ts",
     "./html": "./src/html.ts",
-    "./colors": "./src/colors.ts"
+    "./colors": "./src/colors.ts",
+    "./utils": "./src/utils.ts"
   },
   "scripts": {
     "lint": "eslint .",
