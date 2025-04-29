@@ -27,7 +27,7 @@
     "@tauri-apps/api": "2.4.1"
   },
   "peerDependencies": {
-    "vite": "*"
+    "vite": "6.2.6"
   },
   "peerDependenciesMeta": {
     "vite": {

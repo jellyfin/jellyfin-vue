@@ -49,6 +49,6 @@
     }
   },
   "peerDependencies": {
-    "unocss": "*"
+    "unocss": "66.0.0"
   }
 }

@@ -26,14 +26,14 @@
     "@jellyfin-vue/configs": "*"
   },
   "peerDependencies": {
-    "@vueuse/core": "*",
-    "comlink": "*",
-    "i18next-vue": "*",
-    "storybook": "*",
-    "vue": "*",
+    "@vueuse/core": "13.0.0",
+    "comlink": "4.4.2",
+    "i18next-vue": "5.2.0",
+    "storybook": "8.6.11",
+    "vue": "3.5.13",
     "vuetify": "*",
-    "unplugin-vue-components": "*",
-    "vite": "*"
+    "unplugin-vue-components": "28.4.1",
+    "vite": "6.2.6"
   },
   "peerDependenciesMeta": {
     "storybook": {

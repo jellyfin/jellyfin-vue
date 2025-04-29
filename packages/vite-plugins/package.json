@@ -16,8 +16,8 @@
     "sonda": "0.7.1"
   },
   "peerDependencies": {
-    "type-fest": "*",
-    "vite": "*"
+    "type-fest": "4.38.0",
+    "vite": "6.2.6"
   },
   "peerDependenciesMeta": {
     "type-fest": {

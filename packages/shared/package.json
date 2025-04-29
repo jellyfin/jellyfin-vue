@@ -23,8 +23,8 @@
     "marked": "15.0.7"
   },
   "peerDependencies": {
-    "type-fest": "*",
-    "vitest": "*"
+    "type-fest": "4.38.0",
+    "vitest": "3.0.9"
   },
   "peerDependenciesMeta": {
     "type-fest": {
