@@ -6,6 +6,15 @@
         "npm"
       ],
       "matchDepTypes": [
+        "dependencies"
+      ],
+      "groupName": "npm (runtime)"
+    },
+    {
+      "matchManagers": [
+        "npm"
+      ],
+      "matchDepTypes": [
         "devDependencies"
       ],
       "groupName": "npm (development)"
@@ -15,9 +24,12 @@
         "npm"
       ],
       "matchDepTypes": [
-        "dependencies"
+        "peerDependencies"
       ],
-      "groupName": "npm (runtime)"
+      "matchUpdateTypes": [
+        "pin"
+      ],
+      "enabled": false
     },
     {
       "matchManagers": [
