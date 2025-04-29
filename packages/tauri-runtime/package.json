@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@jellyfin-vue/frontend": "*",
-    "@tauri-apps/api": "2.4.1"
+    "@tauri-apps/api": "2.5.0"
   },
   "peerDependencies": {
     "vite": "*"
