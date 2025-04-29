@@ -168,7 +168,7 @@
   "logo": "Лого",
   "logout": "Вийти",
   "logs": "Журнали",
-  "logsAndActivity": "Журнали & активність",
+  "logsAndActivity": "Журнали &amp; активність",
   "logsAndActivitySettingsDescription": "Читати та шукати логи серверу і дії користувачів",
   "manualLogin": "Вхід вручну",
   "maxAllowedRating": "Максимально допустимий батьківський рейтинг",
