@@ -6,6 +6,7 @@ import { computed } from 'vue';
 import { isNil, sealed } from '@jellyfin-vue/shared/validation';
 import type { KeysOfUnion } from 'type-fest';
 import i18next from 'i18next';
+import { languages } from '@jellyfin-vue/i18n';
 import { vuetify } from '#/plugins/vuetify';
 import { SyncedStore } from '#/store/super/synced-store';
 
@@ -34,7 +35,7 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState, KeysOfUnion<C
   public readonly locale = computed({
     get: () => this._state.value.locale,
     set: (newVal?: string) => {
-      const isAuto = isNil(newVal) || !i18next.languages.includes(newVal);
+      const isAuto = isNil(newVal) || !languages.includes(newVal);
 
       this._state.value.locale = isAuto ? undefined : newVal;
     }

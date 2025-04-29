@@ -107,20 +107,27 @@ export function JBundleChunking(): Plugin {
             manualChunks(id) {
               const match = /node_modules\/([^/]+)/.exec(id)?.[1];
 
-              if (id.includes('virtual:locales') || ((id.includes('vuetify') || id.includes('date-fns')) && id.includes('locale'))) {
-                return 'localization/meta';
-              }
-
-              if (id.includes('@intlify/unplugin-vue-i18n/messages')
-              ) {
-                return 'localization/messages';
-              }
-
               /**
                * Split each vendor in its own chunk
                */
               if (match) {
                 return `vendor/${match.replace('@', '')}`;
+              }
+
+              /**
+               * Split localization strings into separate chunks
+               */
+              if (id.includes('virtual:')) {
+                if (id.includes('locales/vuetify')) {
+                  return 'localization/vendor/vuetify';
+                } else if (id.includes('locales/date-fns')) {
+                  return 'localization/vendor/date-fns';
+                } else if (id.includes('i18next/resources')) {
+                  const targetPath = basename(id.split('/').at(-1)!);
+                  const isIndex = targetPath === 'resources';
+
+                  return isIndex ? 'localization' : `localization/strings/${targetPath}`;
+                }
               }
             }
           }
