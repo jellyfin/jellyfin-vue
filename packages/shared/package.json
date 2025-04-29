@@ -16,12 +16,22 @@
     "test": "vitest run"
   },
   "devDependencies": {
-    "@jellyfin-vue/configs": "*",
-    "type-fest": "*",
-    "vitest": "*"
+    "@jellyfin-vue/configs": "*"
   },
   "dependencies": {
     "dompurify": "3.2.5",
     "marked": "15.0.7"
+  },
+  "peerDependencies": {
+    "type-fest": "*",
+    "vitest": "*"
+  },
+  "peerDependenciesMeta": {
+    "type-fest": {
+      "optional": true
+    },
+    "vitest": {
+      "optional": true
+    }
   }
 }

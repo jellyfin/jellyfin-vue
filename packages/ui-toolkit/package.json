@@ -18,29 +18,32 @@
     "check:types": "vue-tsc",
     "storybook": "storybook dev -p 6006 --config-dir storybook --no-open"
   },
+  "dependencies": {
+    "@skirtle/vue-vnode-utils": "0.2.0",
+    "color": "5.0.0"
+  },
   "devDependencies": {
-    "@jellyfin-vue/configs": "*",
-    "storybook": "*"
+    "@jellyfin-vue/configs": "*"
   },
   "peerDependencies": {
     "@vueuse/core": "*",
     "comlink": "*",
     "i18next-vue": "*",
+    "storybook": "*",
     "vue": "*",
     "vuetify": "*",
     "unplugin-vue-components": "*",
     "vite": "*"
   },
   "peerDependenciesMeta": {
-    "vite": {
+    "storybook": {
       "optional": true
     },
     "unplugin-vue-components": {
       "optional": true
+    },
+    "vite": {
+      "optional": true
     }
-  },
-  "dependencies": {
-    "@skirtle/vue-vnode-utils": "0.2.0",
-    "color": "5.0.0"
   }
 }

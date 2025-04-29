@@ -55,27 +55,61 @@
     "vuetify": "3.8.0"
   },
   "devDependencies": {
-    "@chromatic-com/storybook": "*",
     "@iconify/json": "2.2.321",
     "@jellyfin-vue/configs": "*",
     "@jellyfin-vue/vite-plugins": "*",
     "@rollup/plugin-virtual": "3.0.2",
+    "@types/sortablejs": "1.15.8",
+    "@vitejs/plugin-vue": "5.2.3",
+    "browserslist": "4.24.4",
+    "lightningcss": "1.29.3",
+    "unocss": "66.0.0",
+    "unplugin-vue-components": "28.4.1",
+    "unplugin-vue-router": "0.12.0",
+    "vite-plugin-vue-devtools": "7.7.2"
+  }, 
+  "peerDependencies": {
+    "@chromatic-com/storybook": "*",
     "@storybook/addon-a11y": "*",
     "@storybook/addon-essentials": "*",
     "@storybook/addon-interactions": "*",
     "@storybook/blocks": "*",
     "@storybook/vue3": "*",
     "@storybook/vue3-vite": "*",
-    "@types/sortablejs": "1.15.8",
-    "@vitejs/plugin-vue": "5.2.3",
-    "browserslist": "4.24.4",
-    "lightningcss": "1.29.3",
     "storybook": "*",
     "type-fest": "*",
-    "unocss": "66.0.0",
-    "unplugin-vue-components": "28.4.1",
-    "unplugin-vue-router": "0.12.0",
-    "vite": "*",
-    "vite-plugin-vue-devtools": "7.7.2"
+    "vite": "*"
+  }, 
+  "peerDependenciesMeta": {
+    "@chromatic-com/storybook": {
+      "optional": true
+    },
+    "@storybook/addon-a11y": {
+      "optional": true
+    },
+    "@storybook/addon-essentials": {
+      "optional": true
+    },
+    "@storybook/addon-interactions": {
+      "optional": true
+    },
+    "@storybook/blocks": {
+      "optional": true
+    },
+    "@storybook/vue3": {
+      "optional": true
+    },
+    "@storybook/vue3-vite": {
+      "optional": true
+    },
+    "storybook": {
+      "optional": true
+    },
+    "type-fest": {
+      "optional": true
+    },
+    "vite": {
+      "optional": true
+    }
   }
 }

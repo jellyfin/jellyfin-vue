@@ -22,13 +22,16 @@
   "devDependencies": {
     "@jellyfin-vue/configs": "*"
   },
+  "dependencies": {
+    "@jellyfin-vue/frontend": "*",
+    "@tauri-apps/api": "2.4.1"
+  },
+  "peerDependencies": {
+    "vite": "*"
+  },
   "peerDependenciesMeta": {
     "vite": {
       "optional": true
     }
-  },
-  "dependencies": {
-    "@jellyfin-vue/frontend": "*",
-    "@tauri-apps/api": "2.4.1"
   }
 }
