@@ -49,7 +49,7 @@ import { isNumber } from '@jellyfin-vue/shared/validation';
 import { playbackManager } from '#/store/playback-manager';
 
 let sortable: Sortable | undefined;
-const container = useTemplateRef<HTMLSpanElement>('container');
+const container = useTemplateRef('container');
 
 /**
  * Destroys the sortable instance

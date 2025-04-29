@@ -8,7 +8,7 @@ import AudioMotionAnalyzer from 'audiomotion-analyzer';
 import { mediaWebAudio } from '#/store';
 
 let visualizerInstance: AudioMotionAnalyzer | undefined;
-const visualizerElement = useTemplateRef<HTMLDivElement>('visualizerElement');
+const visualizerElement = useTemplateRef('visualizerElement');
 
 /**
  * Destroy the visualizer instance.
