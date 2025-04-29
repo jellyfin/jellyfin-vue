@@ -15,7 +15,7 @@
             @click="clientSettings.locale.value = undefined" />
           <VDivider />
           <VListItem
-            v-for="(item, index) in i18next.languages"
+            v-for="(item, index) in languages"
             :key="index"
             :value="item === i18next.language"
             :title="getLocaleNativeName(item) ?? `${$t('unknown')} (${item})`"
@@ -27,6 +27,7 @@
 </template>
 
 <script setup lang="ts">
+import { languages } from '@jellyfin-vue/i18n';
 import { useTranslation } from 'i18next-vue';
 import { clientSettings } from '#/store/settings/client';
 import { getLocaleNativeName } from '#/utils/i18n';

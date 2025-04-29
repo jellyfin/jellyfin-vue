@@ -1,5 +1,4 @@
 import type { JTransitionProps } from '@jellyfin-vue/ui-toolkit/components';
-import type en from '#/../locales/en.json';
 import type { RemotePlugin } from '#/plugins/remote/types';
 
 /**

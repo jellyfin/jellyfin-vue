@@ -3,15 +3,17 @@
  * for TypeScript compiler (check tsconfig.json)
  * https://caniuse.com/mdn-javascript_operators_await_top_level
  */
+import '@jellyfin-vue/i18n';
 import { createApp } from 'vue';
 import { routes } from 'vue-router/auto-routes';
+import i18next from 'i18next';
+import I18NextVue from 'i18next-vue';
 import { getFontFaces } from '#/utils/data-manipulation';
-import Root from '#/App.vue';
 import { hideDirective } from '#/plugins/directives';
-import { vuePlugin as i18n } from '#/plugins/i18n';
 import { createPlugin as createRemote } from '#/plugins/remote';
 import { router } from '#/plugins/router';
 import { vuetify } from '#/plugins/vuetify';
+import Root from '#/App.vue';
 /**
  * - GLOBAL STYLES -
  */
@@ -34,7 +36,7 @@ for (const route of routes) {
 }
 
 app.use(remote);
-app.use(i18n);
+app.use(I18NextVue, { i18next });
 app.use(router);
 app.use(vuetify);
 app.directive('hide', hideDirective);
