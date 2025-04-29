@@ -19,23 +19,28 @@
     "storybook": "storybook dev -p 6006 --config-dir storybook --no-open"
   },
   "devDependencies": {
-    "@chromatic-com/storybook": "3.2.6",
     "@jellyfin-vue/configs": "*",
-    "@storybook/addon-a11y": "8.6.11",
-    "@storybook/addon-essentials": "8.6.11",
-    "@storybook/addon-interactions": "8.6.11",
-    "@storybook/blocks": "8.6.11",
-    "@storybook/vue3": "8.6.11",
-    "@storybook/vue3-vite": "8.6.11",
-    "unplugin-vue-components": "28.4.1",
-    "vite": "6.2.6"
+    "storybook": "*"
+  },
+  "peerDependencies": {
+    "@vueuse/core": "*",
+    "comlink": "*",
+    "i18next-vue": "*",
+    "vue": "*",
+    "vuetify": "*",
+    "unplugin-vue-components": "*",
+    "vite": "*"
+  },
+  "peerDependenciesMeta": {
+    "vite": {
+      "optional": true
+    },
+    "unplugin-vue-components": {
+      "optional": true
+    }
   },
   "dependencies": {
     "@skirtle/vue-vnode-utils": "0.2.0",
-    "@vueuse/core": "13.0.0",
-    "color": "5.0.0",
-    "comlink": "4.4.2",
-    "vue": "3.5.13",
-    "vuetify": "3.8.0"
+    "color": "5.0.0"
   }
 }

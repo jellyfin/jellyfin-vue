@@ -15,9 +15,16 @@
     "check:types": "vue-tsc"
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "3.2.6",
     "@eslint/js": "9.23.0",
     "@stylistic/eslint-plugin": "4.2.0",
     "@unocss/eslint-config": "66.0.0",
+    "@storybook/addon-a11y": "8.6.11",
+    "@storybook/addon-essentials": "8.6.11",
+    "@storybook/addon-interactions": "8.6.11",
+    "@storybook/blocks": "8.6.11",
+    "@storybook/vue3": "8.6.11",
+    "@storybook/vue3-vite": "8.6.11",
     "eslint-config-flat-gitignore": "2.1.0",
     "eslint-plugin-css": "0.11.0",
     "eslint-plugin-depend": "1.0.0",
@@ -34,7 +41,14 @@
     "find-up-simple": "1.0.1",
     "globals": "16.0.0",
     "typescript-eslint": "8.28.0",
-    "unocss": "66.0.0",
     "vue-eslint-parser": "10.1.1"
+  },
+  "peerDependenciesMeta": {
+    "unocss": {
+      "optional": true
+    }
+  },
+  "peerDependencies": {
+    "unocss": "*"
   }
 }
