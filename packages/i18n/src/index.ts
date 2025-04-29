@@ -13,8 +13,6 @@ await i18next.init({
   debug: import.meta.env.DEV,
   nonExplicitSupportedLngs: true,
   interpolation: {
-    prefix: '{',
-    suffix: '}',
     escapeValue: false
   },
   resources

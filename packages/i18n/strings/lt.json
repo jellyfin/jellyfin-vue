@@ -10,7 +10,7 @@
   "audio": "Garsas",
   "badRequest": "Bloga užklausa. Bandykite iš naujo",
   "continueWatching": "Tęsti žiūrėjimą",
-  "endsAt": "Baigiasi {time}",
+  "endsAt": "Baigiasi {{time}}",
   "home": "Pradžia",
   "incorrectUsernameOrPassword": "Neteisingas vartotojo vardas arba slaptažodis",
   "libraryEmpty": "Tuščia mediateka",
