@@ -1,34 +1,29 @@
 import { toRaw } from 'vue';
 import { releaseProxy, wrap } from 'comlink';
-import type { IBlurhashDecoder } from './blurhash-decoder.worker';
-import BlurhashDecoder from './blurhash-decoder.worker?worker';
-import type { ICanvasDrawer } from './canvas-drawer.worker';
-import CanvasDrawer from './canvas-drawer.worker?worker';
+import type { IBlurhashDrawer } from './blurhash-drawer.worker';
+import BlurhashDrawer from './blurhash-drawer.worker?worker';
 import type { IGenericWorker } from './generic.worker';
 import GenericWorker from './generic.worker?worker';
 import { remote } from '#/plugins/remote';
 
 /**
- * A worker for decoding blurhash strings into pixels
- */
-export const blurhashDecoder = wrap<IBlurhashDecoder>(new BlurhashDecoder());
-
-remote.auth.onAfterLogout(async () => await blurhashDecoder.clearCache());
-
-/**
- * A worker for drawing canvas offscreen. The canvas must be transferred like this:
+ * A worker for decoding blurhash strings and drawing results
+ * into offscreen canvases. The canvas must be transferred like this:
  * ```ts
  * import { transfer } from 'comlink';
  *
- *  await canvasDrawer.drawBlurhash(transfer(
- *      { canvas: offscreen,
- *        pixels,
+ *  await blurhashDrawer.draw(transfer(
+ *      { canvas,
+ *        hash,
  *        width,
- *        height
+ *        height,
+ *        punch
  *      }, [offscreen]));
  * ```
  */
-export const canvasDrawer = wrap<ICanvasDrawer>(new CanvasDrawer());
+export const blurhashDrawer = wrap<IBlurhashDrawer>(new BlurhashDrawer());
+
+remote.auth.onAfterLogout(async () => await blurhashDrawer.clearCache());
 
 /**
  * The generic worker is a class that must implement all functions that could take some time to complete

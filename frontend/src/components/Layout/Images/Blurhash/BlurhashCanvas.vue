@@ -12,8 +12,7 @@
 <script setup lang="ts">
 import { transfer } from 'comlink';
 import { shallowRef, watch, useTemplateRef } from 'vue';
-import { computedAsync } from '@vueuse/core';
-import { blurhashDecoder, canvasDrawer } from '#/plugins/workers';
+import { blurhashDrawer } from '#/plugins/workers';
 import { BLURHASH_DEFAULT_HEIGHT, BLURHASH_DEFAULT_WIDTH, BLURHASH_DEFAULT_PUNCH, isDocumentVisible } from '#/store';
 
 /**
@@ -22,7 +21,11 @@ import { BLURHASH_DEFAULT_HEIGHT, BLURHASH_DEFAULT_WIDTH, BLURHASH_DEFAULT_PUNCH
  * page is restored.
  */
 
-const { hash, width = BLURHASH_DEFAULT_WIDTH, height = BLURHASH_DEFAULT_HEIGHT, punch = BLURHASH_DEFAULT_PUNCH } = defineProps<{
+const { hash,
+  width = BLURHASH_DEFAULT_WIDTH,
+  height = BLURHASH_DEFAULT_HEIGHT,
+  punch = BLURHASH_DEFAULT_PUNCH
+} = defineProps<{
   hash: string;
   width?: number;
   height?: number;
@@ -30,27 +33,24 @@ const { hash, width = BLURHASH_DEFAULT_WIDTH, height = BLURHASH_DEFAULT_HEIGHT, 
 }>();
 
 const error = shallowRef(false);
-const canvasRef = useTemplateRef<HTMLCanvasElement>('canvas');
-const offscreen = shallowRef<OffscreenCanvas>();
-const pixels = computedAsync(async () => await blurhashDecoder.getPixels(hash, width, height, punch));
+const canvasRef = useTemplateRef('canvas');
 
-watch(canvasRef, () => {
-  offscreen.value = canvasRef.value ? canvasRef.value.transferControlToOffscreen() : undefined;
-});
-watch([pixels, offscreen], async () => {
-  if (offscreen.value && pixels.value) {
+watch(canvasRef, async () => {
+  if (canvasRef.value) {
+    error.value = false;
+
     try {
-      error.value = false;
-      await canvasDrawer.drawBlurhash(transfer(
-        { canvas: offscreen.value,
-          pixels: pixels.value,
+      const offscreen = canvasRef.value.transferControlToOffscreen();
+
+      await blurhashDrawer.draw(transfer(
+        { canvas: offscreen,
+          hash: hash,
           width: width,
-          height: height
-        }, [offscreen.value]));
+          height: height,
+          punch: punch
+        }, [offscreen]));
     } catch {
       error.value = true;
-
-      return;
     }
   }
 });
