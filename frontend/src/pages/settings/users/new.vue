@@ -88,11 +88,11 @@ meta:
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
 import { ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import { useRouter } from 'vue-router';
 import { remote } from '#/plugins/remote';
 
-const { t } = useI18n();
+const { t } = useTranslation();
 const router = useRouter();
 const name = ref('');
 const password = ref('');

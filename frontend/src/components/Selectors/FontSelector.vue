@@ -46,7 +46,7 @@
 <script setup lang="ts">
 import { computedAsync, usePermission, useSupported } from '@vueuse/core';
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import { DEFAULT_TYPOGRAPHY, themeSettings } from '#/store/settings/theme';
 
 const { appWide } = defineProps<{
@@ -58,7 +58,7 @@ const { appWide } = defineProps<{
 }>();
 
 const model = defineModel<string | undefined>();
-const { t } = useI18n();
+const { t } = useTranslation();
 
 const { query: permissionQuery, isSupported, state: fontPermission } = usePermission('local-fonts', { controls: true });
 const fontAccess = computed(() => fontPermission.value === 'granted');

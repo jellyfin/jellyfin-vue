@@ -44,7 +44,7 @@ import type {
 import { getLocalizationApi } from '@jellyfin/sdk/lib/utils/api/localization-api';
 import { getStartupApi } from '@jellyfin/sdk/lib/utils/api/startup-api';
 import { onMounted, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import { SomeItemSelectedRule } from '@jellyfin-vue/shared/validation';
 import { remote } from '#/plugins/remote';
 import { useSnackbar } from '#/composables/use-snackbar';
@@ -54,7 +54,7 @@ const emit = defineEmits<{
   'previous-step': [];
 }>();
 
-const { t } = useI18n();
+const { t } = useTranslation();
 
 const metadataLanguage = ref('');
 const metadataCountry = ref('');

@@ -29,8 +29,8 @@ export const DEFAULT_TYPOGRAPHY = 'Figtree Variable';
 
 @sealed
 class ThemeSettingsStore extends SyncedStore<ThemeSettingsState, 'typography'> {
-  private readonly _dark = 'dark' as const;
-  private readonly _light = 'light' as const;
+  private readonly _dark = 'dark';
+  private readonly _light = 'light';
   private readonly _browserPrefersDark = usePreferredDark();
 
   /**

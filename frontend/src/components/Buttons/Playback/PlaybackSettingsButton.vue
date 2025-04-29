@@ -93,13 +93,13 @@
 
 <script setup lang="ts">
 import { computed, shallowRef } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import { isObj, isStr, isUndef } from '@jellyfin-vue/shared/validation';
 import { playbackManager } from '#/store/playback-manager';
 import { playerElement } from '#/store/player-element';
 
 const menuModel = defineModel<boolean>();
-const { t } = useI18n();
+const { t } = useTranslation();
 const defaultPlaybackSpeeds = Object.freeze([0.5, 0.75, 1, 1.25, 1.5, 2]);
 const playbackItems = computed(() => defaultPlaybackSpeeds.map(speed => ({
   title: speed === 1 ? t('normal') : String(speed),

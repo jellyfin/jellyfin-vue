@@ -58,7 +58,7 @@
 import type { StartupUserDto } from '@jellyfin/sdk/lib/generated-client';
 import { getStartupApi } from '@jellyfin/sdk/lib/utils/api/startup-api';
 import { ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import { remote } from '#/plugins/remote';
 import { useSnackbar } from '#/composables/use-snackbar';
 
@@ -67,7 +67,7 @@ const emit = defineEmits<{
   'step-complete': [];
 }>();
 
-const { t } = useI18n();
+const { t } = useTranslation();
 
 const valid = ref(false);
 const admin = ref<StartupUserDto>({

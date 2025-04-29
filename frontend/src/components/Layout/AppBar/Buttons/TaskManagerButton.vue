@@ -48,7 +48,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import { VListItemAction } from 'vuetify/components';
 import { taskManager, TaskType } from '#/store/task-manager';
 
@@ -60,7 +60,7 @@ interface TaskInfo {
 
 const menu = ref(false);
 const completedTaskList = ref<TaskInfo[]>([]);
-const { t } = useI18n();
+const { t } = useTranslation();
 
 const mappedTaskList = computed<TaskInfo[]>(() => {
   return taskManager.state.value.tasks.map((tsk) => {

@@ -111,13 +111,13 @@ import type { AuthenticationInfo } from '@jellyfin/sdk/lib/generated-client';
 import { getApiKeyApi } from '@jellyfin/sdk/lib/utils/api/api-key-api';
 import { formatRelative, parseJSON } from 'date-fns';
 import { computed, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import { isNil } from '@jellyfin-vue/shared/validation';
 import { remote } from '#/plugins/remote';
 import { useSnackbar } from '#/composables/use-snackbar';
 import { useDateFns } from '#/composables/use-datefns';
 
-const { t } = useI18n();
+const { t } = useTranslation();
 
 const apiKeys = ref<AuthenticationInfo[]>([]);
 const addingNewKey = ref(false);

@@ -98,12 +98,12 @@ meta:
 <script setup lang="ts">
 import { getStartupApi } from '@jellyfin/sdk/lib/utils/api/startup-api';
 import { ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import { useRouter } from 'vue-router';
 import { useSnackbar } from '#/composables/use-snackbar';
 import { remote } from '#/plugins/remote';
 
-const { t } = useI18n();
+const { t } = useTranslation();
 const router = useRouter();
 
 const wizardStage = ref(1);

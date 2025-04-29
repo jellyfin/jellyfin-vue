@@ -146,7 +146,7 @@ import type {
   MediaStream
 } from '@jellyfin/sdk/lib/generated-client';
 import { computed, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import { isArray, isNil, isNumber } from '@jellyfin-vue/shared/validation';
 import { getLocaleName } from '#/utils/i18n';
 import { formatBitRate, formatFileSize } from '#/utils/items';
@@ -157,7 +157,7 @@ const emit = defineEmits<{
   close: [];
 }>();
 
-const { t, locale } = useI18n();
+const { t, i18next } = useTranslation();
 
 const model = defineModel<boolean>({ default: true });
 const currentTab = ref<string>();
@@ -242,7 +242,7 @@ const generalProperties = computed(() => {
  * of a media stream
  */
 function getDisplayLocaleName(language: string | null | undefined): string {
-  const result = language ? getLocaleName(language, locale.value) : undefined;
+  const result = language ? getLocaleName(language, i18next.language) : undefined;
 
   return result ?? t('unknown');
 }

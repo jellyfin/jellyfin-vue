@@ -116,7 +116,7 @@ import {
 } from '@jellyfin/sdk/lib/generated-client';
 import { getRemoteImageApi } from '@jellyfin/sdk/lib/utils/api/remote-image-api';
 import { computed, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import { getLocaleName } from '#/utils/i18n';
 import { remote } from '#/plugins/remote';
 
@@ -130,7 +130,7 @@ const emit = defineEmits<{
   'download-success': [someting: boolean];
 }>();
 
-const { t } = useI18n();
+const { t } = useTranslation();
 
 const providers = ref<ImageProviderInfo[]>([]);
 const type = ref<ImageType>(ImageType.Primary);

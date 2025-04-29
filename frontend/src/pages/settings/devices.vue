@@ -103,13 +103,13 @@ import type { DeviceInfo } from '@jellyfin/sdk/lib/generated-client';
 import { getDevicesApi } from '@jellyfin/sdk/lib/utils/api/devices-api';
 import { formatRelative, parseJSON } from 'date-fns';
 import { computed, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import { isNil } from '@jellyfin-vue/shared/validation';
 import { remote } from '#/plugins/remote';
 import { useSnackbar } from '#/composables/use-snackbar';
 import { useDateFns } from '#/composables/use-datefns';
 
-const { t } = useI18n();
+const { t } = useTranslation();
 
 const devices = ref(
   (await remote.sdk.newUserApi(getDevicesApi).getDevices()).data.Items ?? []

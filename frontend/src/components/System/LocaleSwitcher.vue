@@ -1,6 +1,6 @@
 <template>
   <JTooltip
-    :text="$t('language')"
+    :text="t('language')"
     :position="bottom ? 'bottom' : 'top'">
     <VBtn
       icon
@@ -15,11 +15,11 @@
             @click="clientSettings.locale.value = undefined" />
           <VDivider />
           <VListItem
-            v-for="(item, index) in i18n.availableLocales"
+            v-for="(item, index) in i18next.languages"
             :key="index"
-            :value="item === i18n.locale.value"
+            :value="item === i18next.language"
             :title="getLocaleNativeName(item) ?? `${$t('unknown')} (${item})`"
-            @click="clientSettings.locale.value = item" />
+            @click="async () => await i18next.changeLanguage(item)" />
         </VList>
       </VMenu>
     </VBtn>
@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import { clientSettings } from '#/store/settings/client';
 import { getLocaleNativeName } from '#/utils/i18n';
 
@@ -37,7 +37,7 @@ const { bottom, large, elevated } = defineProps<{
   elevated?: boolean;
 }>();
 
-const i18n = useI18n();
+const { t, i18next } = useTranslation();
 </script>
 
 <style scoped>

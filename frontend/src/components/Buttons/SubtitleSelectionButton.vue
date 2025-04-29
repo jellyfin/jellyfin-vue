@@ -42,13 +42,13 @@
 <script setup lang="ts">
 import { SubtitleDeliveryMethod } from '@jellyfin/sdk/lib/generated-client';
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import { playbackManager } from '#/store/playback-manager';
 import { playerElement } from '#/store/player-element';
 
 const menuModel = defineModel<boolean>();
 
-const { t } = useI18n();
+const { t } = useTranslation();
 
 const tracks = computed(() => {
   const subs = playerElement.currentItemParsedSubtitleTracks.value;

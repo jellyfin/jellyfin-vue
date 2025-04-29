@@ -58,7 +58,7 @@ import type {
 } from '@jellyfin/sdk/lib/generated-client';
 import { getItemRefreshApi } from '@jellyfin/sdk/lib/utils/api/item-refresh-api';
 import { computed, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import { TaskType, taskManager } from '#/store/task-manager';
 import { remote } from '#/plugins/remote';
 import { useSnackbar } from '#/composables/use-snackbar';
@@ -78,7 +78,7 @@ const emit = defineEmits<{
 const model = ref(true);
 const loading = ref(false);
 const replace = ref(false);
-const { t } = useI18n();
+const { t } = useTranslation();
 const selectedMethod = ref<RefreshMethod>({
   title: t('scanForNewAndUpdatedFiles'),
   value: 'scan'

@@ -30,7 +30,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import type { MediaStream } from '@jellyfin/sdk/lib/generated-client';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import { watchImmediate } from '@vueuse/core';
 import { isNil } from '@jellyfin-vue/shared/validation';
 import { getLocaleName } from '#/utils/i18n';
@@ -44,7 +44,7 @@ const { mediaStreams, type, defaultStreamIndex } = defineProps<{
 const emit = defineEmits<{
   input: [newIndex?: number];
 }>();
-const { t, locale } = useI18n();
+const { t, i18next } = useTranslation();
 
 /**
  * Audio layout to get related icon
@@ -89,7 +89,7 @@ function getTrackIcon(
 function getTrackSubtitle(track: MediaStream): string | undefined {
   if ((type === 'Audio' || type === 'Subtitle') && track.Language) {
     return upperFirst(
-      getLocaleName(track.Language, locale.value)
+      getLocaleName(track.Language, i18next.language)
       ?? `${t('unknown')} (${track.Language})`
     );
   } else if (type === 'Audio' || type === 'Subtitle') {

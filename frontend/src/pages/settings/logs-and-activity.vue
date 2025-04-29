@@ -97,13 +97,13 @@ import {
 import { getActivityLogApi } from '@jellyfin/sdk/lib/utils/api/activity-log-api';
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
 import { format, formatRelative, parseJSON } from 'date-fns';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import { useTheme } from 'vuetify';
 import { remote } from '#/plugins/remote';
 import { useDateFns } from '#/composables/use-datefns';
 import { useApi } from '#/composables/apis';
 
-const { t } = useI18n();
+const { t } = useTranslation();
 const theme = useTheme();
 
 /**

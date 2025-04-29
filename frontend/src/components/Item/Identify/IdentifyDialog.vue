@@ -95,7 +95,7 @@ import type {
 } from '@jellyfin/sdk/lib/generated-client';
 import { getItemLookupApi } from '@jellyfin/sdk/lib/utils/api/item-lookup-api';
 import { computed, ref, shallowRef, toRaw } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import { isArray, isNil, isStr } from '@jellyfin-vue/shared/validation';
 import { useConfirmDialog } from '#/composables/use-confirm-dialog';
 import { useSnackbar } from '#/composables/use-snackbar';
@@ -122,7 +122,7 @@ function close(): void {
   emit('close');
 }
 
-const { t } = useI18n();
+const { t } = useTranslation();
 
 const availableProviders = (
   await remote.sdk.newUserApi(getItemLookupApi).getExternalIdInfos({

@@ -8,8 +8,8 @@ import {
   formatDuration,
   intervalToDuration
 } from 'date-fns';
+import i18next from 'i18next';
 import { now } from '#/store';
-import { i18n } from '#/plugins/i18n';
 import { useDateFns } from '#/composables/use-datefns';
 
 /**
@@ -87,7 +87,7 @@ export function getEndsAtTime(ticks: number): string {
   const endDate = getEndsAtDate(ticks);
   const form = useDateFns(format, endDate, 'p');
 
-  return i18n.t('endsAt', {
+  return i18next.t('endsAt', {
     time: form
   });
 }

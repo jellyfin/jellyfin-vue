@@ -73,7 +73,7 @@
 <script setup lang="ts">
 import type { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { ref, shallowRef } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import { fetchIndexPage } from '#/utils/items';
 import { remote } from '#/plugins/remote';
 import { jsonConfig } from '#/utils/external-config';
@@ -84,7 +84,7 @@ defineEmits<{
   change: [];
 }>();
 
-const { t } = useI18n();
+const { t } = useTranslation();
 
 const valid = shallowRef(false);
 const login = ref({ username: '', password: '', rememberMe: true });

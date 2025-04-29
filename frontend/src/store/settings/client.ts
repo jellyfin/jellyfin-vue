@@ -5,7 +5,7 @@ import {
 import { computed } from 'vue';
 import { isNil, sealed } from '@jellyfin-vue/shared/validation';
 import type { KeysOfUnion } from 'type-fest';
-import { i18n } from '#/plugins/i18n';
+import i18next from 'i18next';
 import { vuetify } from '#/plugins/vuetify';
 import { SyncedStore } from '#/store/super/synced-store';
 
@@ -34,7 +34,7 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState, KeysOfUnion<C
   public readonly locale = computed({
     get: () => this._state.value.locale,
     set: (newVal?: string) => {
-      const isAuto = isNil(newVal) || !i18n.availableLocales.includes(newVal);
+      const isAuto = isNil(newVal) || !i18next.languages.includes(newVal);
 
       this._state.value.locale = isAuto ? undefined : newVal;
     }
@@ -47,8 +47,8 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState, KeysOfUnion<C
     const targetLocale = isNil(this.locale.value) ? this._BROWSER_LANGUAGE.value : this.locale.value;
 
     if (targetLocale) {
-      i18n.locale.value = targetLocale;
-      vuetify.locale.current.value = i18n.locale.value;
+      vuetify.locale.current.value = targetLocale;
+      void i18next.changeLanguage(targetLocale);
     }
   };
 

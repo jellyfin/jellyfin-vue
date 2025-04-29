@@ -23,10 +23,10 @@ meta:
 </route>
 
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import { usePageTitle } from '#/composables/page-title';
 
-const { t } = useI18n();
+const { t } = useTranslation();
 
 usePageTitle(() => t('addServer'));
 </script>

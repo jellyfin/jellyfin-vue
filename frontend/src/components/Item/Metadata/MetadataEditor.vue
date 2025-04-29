@@ -226,7 +226,7 @@ import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api'
 import { AxiosError } from 'axios';
 import { format, formatISO } from 'date-fns';
 import { computed, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import { watchImmediate } from '@vueuse/core';
 import { isArray, isNil } from '@jellyfin-vue/shared/validation';
 import { getItemImageUrl } from '#/utils/images';
@@ -248,7 +248,7 @@ const emit = defineEmits<{
   'cancel': [];
 }>();
 
-const { t } = useI18n();
+const { t } = useTranslation();
 
 const metadata = ref<BaseItemDto>();
 const person = ref<BaseItemPerson>();

@@ -42,7 +42,7 @@
 
 <script lang="ts">
 import { reactive, computed } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import { useConfirmDialog as vUseConfirmDialog } from '@vueuse/core';
 
 interface ConfirmDialogState {
@@ -108,5 +108,5 @@ export async function useConfirmDialog<T>(
 </script>
 
 <script setup lang="ts">
-const { t } = useI18n();
+const { t } = useTranslation();
 </script>

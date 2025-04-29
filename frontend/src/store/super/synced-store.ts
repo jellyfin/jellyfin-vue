@@ -6,11 +6,11 @@ import { computed, EffectScope, watch } from 'vue';
 import { watchDeep } from '@vueuse/core';
 import type { UnknownRecord } from 'type-fest';
 import { isNil, isStr } from '@jellyfin-vue/shared/validation';
+import i18next from 'i18next';
 import { taskManager } from '../task-manager';
 import { remote } from '#/plugins/remote';
 import { CommonStore, type CommonStoreParams } from '#/store/super/common-store';
 import { useSnackbar } from '#/composables/use-snackbar';
-import { i18n } from '#/plugins/i18n';
 import { pick } from '#/utils/data-manipulation';
 
 export abstract class SyncedStore<
@@ -102,7 +102,7 @@ export abstract class SyncedStore<
         displayPreferences.CustomPrefs = newPrefs;
         await this._updateDisplayPreferences(displayPreferences);
       } catch {
-        useSnackbar(i18n.t('failedSyncingUserSettings'), 'error');
+        useSnackbar(i18next.t('failedSyncingUserSettings'), 'error');
       } finally {
         taskManager.finishTask(syncTaskId);
       }
@@ -124,7 +124,7 @@ export abstract class SyncedStore<
         this._state.value = newState;
         this._effectScope.resume();
       } catch {
-        useSnackbar(i18n.t('failedSyncingUserSettings'), 'error');
+        useSnackbar(i18next.t('failedSyncingUserSettings'), 'error');
       }
     }
   };

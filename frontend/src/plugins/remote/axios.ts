@@ -5,9 +5,9 @@ import axios, {
   type AxiosError
 } from 'axios';
 import { sealed } from '@jellyfin-vue/shared/validation';
+import i18next from 'i18next';
 import auth from './auth';
 import { useSnackbar } from '#/composables/use-snackbar';
-import { i18n } from '#/plugins/i18n';
 
 @sealed
 class RemotePluginAxios {
@@ -33,7 +33,7 @@ class RemotePluginAxios {
         await auth.refreshCurrentUserInfo();
       } catch {
         await auth.logoutCurrentUser(true);
-        useSnackbar(i18n.t('kickedOut'), 'error');
+        useSnackbar(i18next.t('kickedOut'), 'error');
       }
     }
 
