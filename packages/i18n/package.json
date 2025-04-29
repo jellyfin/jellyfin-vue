@@ -20,6 +20,6 @@
     "@jellyfin-vue/configs": "*"
   },
   "peerDependencies": {
-    "i18next": "25.0.1"
+    "i18next": "*"
   }
 }
