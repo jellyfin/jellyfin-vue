@@ -33,14 +33,14 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 
 const { ascending, disabled } = defineProps<{ ascending: boolean; disabled?: boolean }>();
 const emit = defineEmits<{
   change: [sortBy: string, ascendingOrder: boolean];
 }>();
 
-const { t } = useI18n();
+const { t } = useTranslation();
 
 const model = ref<string[]>([]);
 

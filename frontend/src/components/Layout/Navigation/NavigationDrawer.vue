@@ -48,7 +48,7 @@
 
 <script setup lang="ts">
 import { computed, inject, type Ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import type { RouteNamedMap } from 'vue-router/auto-routes';
 import type { getLibraryIcon } from '#/utils/items';
 import { transparencyEffects } from '#/store';
@@ -65,7 +65,7 @@ const { order, drawerItems } = defineProps<{
   drawerItems: DrawerItem[];
 }>();
 
-const { t } = useI18n();
+const { t } = useTranslation();
 
 const drawer = inject<Ref<boolean>>('NavigationDrawer');
 const isRouting = inject(JView_isRouting);

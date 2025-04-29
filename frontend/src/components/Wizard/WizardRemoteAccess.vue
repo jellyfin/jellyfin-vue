@@ -27,7 +27,7 @@
 <script setup lang="ts">
 import { getStartupApi } from '@jellyfin/sdk/lib/utils/api/startup-api';
 import { ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import { remote } from '#/plugins/remote';
 import { useSnackbar } from '#/composables/use-snackbar';
 
@@ -36,7 +36,7 @@ const emit = defineEmits<{
   'previous-step': [];
 }>();
 
-const { t } = useI18n();
+const { t } = useTranslation();
 
 const allowRemoteAccess = ref(false);
 const enableUPNP = ref(false);

@@ -28,7 +28,7 @@ import type {
 import { getLocalizationApi } from '@jellyfin/sdk/lib/utils/api/localization-api';
 import { getStartupApi } from '@jellyfin/sdk/lib/utils/api/startup-api';
 import { onMounted, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import { SomeItemSelectedRule } from '@jellyfin-vue/shared/validation';
 import { remote } from '#/plugins/remote';
 import { useSnackbar } from '#/composables/use-snackbar';
@@ -37,7 +37,7 @@ const emit = defineEmits<{
   'step-complete': [];
 }>();
 
-const { locale, t } = useI18n();
+const { t, i18next } = useTranslation();
 
 const uiCulture = ref('en-US');
 const culturesList = ref<LocalizationOption[]>([]);
@@ -82,7 +82,7 @@ async function setLanguage(): Promise<void> {
   );
 
   try {
-    locale.value = uiCulture.value;
+    await i18next.changeLanguage(uiCulture.value);
     await getStartupApi(api).updateInitialConfiguration({
       startupConfigurationDto: {
         ...initialConfig.value,

@@ -77,7 +77,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import { type BaseItemPerson, ImageType } from '@jellyfin/sdk/lib/generated-client';
 import { watchImmediate } from '@vueuse/core';
 import { isNil } from '@jellyfin-vue/shared/validation';
@@ -90,7 +90,7 @@ const emit = defineEmits<{
   'close': [];
 }>();
 
-const { t } = useI18n();
+const { t } = useTranslation();
 
 const editState = ref<BaseItemPerson>();
 const options = computed(() => [

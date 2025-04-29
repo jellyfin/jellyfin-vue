@@ -19,9 +19,9 @@ import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
 import { computedAsync, watchThrottled } from '@vueuse/core';
 import { computed, watch, watchEffect } from 'vue';
 import { isNil, sealed } from '@jellyfin-vue/shared/validation';
+import i18next from 'i18next';
 import { useBaseItem } from '#/composables/apis';
 import { useSnackbar } from '#/composables/use-snackbar';
-import { i18n } from '#/plugins/i18n';
 import { remote } from '#/plugins/remote';
 import { apiStore } from '#/store/api';
 import { getImageInfo } from '#/utils/images';
@@ -244,7 +244,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   {
     onError: () => {
       this._state.value.status = PlaybackStatus.Error;
-      useSnackbar(i18n.t('cantPlayItem'), 'error');
+      useSnackbar(i18next.t('cantPlayItem'), 'error');
     }
   }
   );
@@ -805,7 +805,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
      * == MediaSession API: https://developer.mozilla.org/en-US/docs/Web/API/MediaSession ==
      */
     watchEffect(() => {
-      const { t } = i18n;
+      const { t } = i18next;
 
       globalThis.navigator.mediaSession.metadata = this.currentItem.value
         ? new MediaMetadata({

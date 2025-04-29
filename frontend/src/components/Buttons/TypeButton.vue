@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import type { BaseItemDto, BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
 import { computed, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 
 const { type } = defineProps<{
   type: BaseItemDto['CollectionType'];
@@ -34,7 +34,7 @@ const { type } = defineProps<{
 const innerModel = ref<BaseItemKind[]>([]);
 const model = defineModel<BaseItemKind | undefined>({ required: true });
 
-const { t } = useI18n();
+const { t } = useTranslation();
 
 const items = computed<{ title: string; value: BaseItemKind }[]>(() => {
   switch (type) {

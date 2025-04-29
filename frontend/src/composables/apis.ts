@@ -6,9 +6,9 @@ import { computed, effectScope, getCurrentScope, inject, isRef, shallowRef, toVa
 import { until, whenever } from '@vueuse/core';
 import type { Exact, Writable } from 'type-fest';
 import { isArray, isNil } from '@jellyfin-vue/shared/validation';
+import i18next from 'i18next';
 import { useLoading } from '#/composables/use-loading';
 import { useSnackbar } from '#/composables/use-snackbar';
-import { i18n } from '#/plugins/i18n';
 import { remote } from '#/plugins/remote';
 import { isConnectedToServer } from '#/store';
 import { apiStore } from '#/store/api';
@@ -247,7 +247,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
 
           result.value = resolved as ReturnData<T, K, typeof ofBaseItem>;
         } else {
-          useSnackbar(i18n.t('offlineCantDoThisWillRetryWhenOnline'), 'error');
+          useSnackbar(i18next.t('offlineCantDoThisWillRetryWhenOnline'), 'error');
 
           offlineParams.push({
             api: unrefApi,

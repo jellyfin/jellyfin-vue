@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import { getApiKeyApi } from '@jellyfin/sdk/lib/utils/api/api-key-api';
 import { computed, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import { useDisplay } from 'vuetify';
 import { remote } from '#/plugins/remote';
 import { useSnackbar } from '#/composables/use-snackbar';
@@ -46,7 +46,7 @@ const emit = defineEmits<{
   close: [];
 }>();
 
-const { t } = useI18n();
+const { t } = useTranslation();
 const display = useDisplay();
 
 const newKeyAppName = ref('');

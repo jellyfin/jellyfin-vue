@@ -39,7 +39,7 @@ meta:
 <script setup lang="ts">
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import { isNil } from '@jellyfin-vue/shared/validation';
 import { CardShapes, fetchIndexPage, getShapeFromCollectionType } from '#/utils/items';
 import { usePageTitle } from '#/composables/page-title';
@@ -51,7 +51,7 @@ interface HomeSection {
   type: 'libraries' | 'resumevideo' | 'nextup' | 'latestmedia';
 }
 
-const { t } = useI18n();
+const { t } = useTranslation();
 
 usePageTitle(() => t('home'));
 

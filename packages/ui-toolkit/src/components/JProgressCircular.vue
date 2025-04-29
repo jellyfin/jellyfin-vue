@@ -59,7 +59,7 @@ const CIRCUMFERENCE = 2 * Math.PI * MAGIC_RADIUS_CONSTANT;
 </script>
 
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import { computed } from 'vue';
 import { clamp, toPx } from '#/util/helpers';
 import { getBaseProps } from '#/util/props';
@@ -75,7 +75,7 @@ const { indeterminate, innerProgress, value = 0 } = defineProps<{
 
 const normalizedValue = computed(() => clamp(value, 0, 100));
 const strokeDashoffset = computed(() => toPx(CIRCUMFERENCE * (1 - normalizedValue.value / 100)));
-const { t } = useI18n();
+const { t } = useTranslation();
 </script>
 
 <style scoped>

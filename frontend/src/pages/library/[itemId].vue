@@ -76,13 +76,13 @@ import { getMusicGenresApi } from '@jellyfin/sdk/lib/utils/api/music-genres-api'
 import { getPersonsApi } from '@jellyfin/sdk/lib/utils/api/persons-api';
 import { getStudiosApi } from '@jellyfin/sdk/lib/utils/api/studios-api';
 import { computed, onBeforeMount, ref, shallowRef } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import { useRoute } from 'vue-router';
 import { methodsAsObject, useBaseItem } from '#/composables/apis';
 import type { Filters } from '#/components/Buttons/FilterButton.vue';
 import { useItemPageTitle } from '#/composables/page-title';
 
-const { t } = useI18n();
+const { t } = useTranslation();
 const route = useRoute('/library/[itemId]');
 
 const lazyLoadLimit = 50;

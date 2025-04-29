@@ -1,6 +1,6 @@
 import * as datefnslocales from 'virtual:locales/date-fns';
 import { isObj } from '@jellyfin-vue/shared/validation';
-import { i18n } from '#/plugins/i18n';
+import i18next from 'i18next';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -21,7 +21,7 @@ export function useDateFns<T extends (...a: any[]) => any>(
   /**
    * We need to remove the hyphen of our locale codes, as using named exports with them is not valid JS syntax
    */
-  const importCode = i18n.locale.value.replace(
+  const importCode = i18next.language.replace(
     '-',
     ''
   ) as keyof typeof datefnslocales;

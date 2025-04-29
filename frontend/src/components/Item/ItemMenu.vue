@@ -60,7 +60,7 @@
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { useClipboard, useEventListener } from '@vueuse/core';
 import { computed, getCurrentInstance, onMounted, shallowRef, useId, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import { useRoute, useRouter } from 'vue-router';
 import { isNil, isStr } from '@jellyfin-vue/shared/validation';
 import {
@@ -107,7 +107,7 @@ const emit = defineEmits<{
   inactive: [];
 }>();
 
-const { t } = useI18n();
+const { t } = useTranslation();
 const instanceId = useId();
 const router = useRouter();
 const route = useRoute();

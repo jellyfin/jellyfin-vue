@@ -113,13 +113,13 @@
 <script setup lang="ts">
 import { commit_hash } from 'virtual:commit';
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import type { RouteLocationRaw } from 'vue-router';
 import { remote } from '#/plugins/remote';
 import { version as clientVersion } from '#/../package.json';
 import { usePageTitle } from '#/composables/page-title';
 
-const { t } = useI18n();
+const { t } = useTranslation();
 
 interface MenuOptions {
   icon: string;

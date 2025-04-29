@@ -98,7 +98,7 @@ import {
 } from '@jellyfin/sdk/lib/generated-client';
 import { getImageApi } from '@jellyfin/sdk/lib/utils/api/image-api';
 import { computed, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import { watchImmediate } from '@vueuse/core';
 import {
   getImageInfo
@@ -109,7 +109,7 @@ const { metadata } = defineProps<{ metadata: BaseItemDto }>();
 
 const images = ref<ImageInfo[]>([]);
 const dialog = ref(false);
-const { t } = useI18n();
+const { t } = useTranslation();
 
 const generalImages = computed<ImageInfo[]>(() =>
   images.value.filter(

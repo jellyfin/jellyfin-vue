@@ -38,7 +38,7 @@
 import Hls, { ErrorTypes, Events, type ErrorData } from 'hls.js';
 import HlsWorkerUrl from 'hls.js/dist/hls.worker.js?url';
 import { computed, nextTick, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import { isNil } from '@jellyfin-vue/shared/validation';
 import { useSnackbar } from '#/composables/use-snackbar';
 import {
@@ -50,7 +50,7 @@ import { playerElement, videoContainerRef } from '#/store/player-element';
 import { getImageInfo } from '#/utils/images';
 import { subtitleSettings } from '#/store/settings/subtitle';
 
-const { t } = useI18n();
+const { t } = useTranslation();
 let busyWebAudio = false;
 const hls = Hls.isSupported()
   ? new Hls({

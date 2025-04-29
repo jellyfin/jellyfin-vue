@@ -45,20 +45,20 @@
 
 <script setup lang="ts">
 import { shallowRef } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import { useRouter } from 'vue-router';
 import { remote } from '#/plugins/remote';
 import { jsonConfig } from '#/utils/external-config';
 
 const router = useRouter();
-const i18n = useI18n();
+const { t } = useTranslation();
 const valid = shallowRef(false);
 const previousServerLength = remote.auth.addedServers.value;
 const serverUrl = shallowRef('');
 const loading = shallowRef(false);
 
 const rules = [
-  (v: string): boolean | string => !!v.trim() || i18n.t('required')
+  (v: string): boolean | string => !!v.trim() || t('required')
 ];
 
 /**

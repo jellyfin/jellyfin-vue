@@ -69,7 +69,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import JTooltip from '../../../../packages/ui-toolkit/src/components/JTooltip.vue';
 import { getTotalEndsAtTime } from '#/utils/time';
 import { InitMode, playbackManager } from '#/store/playback-manager';
@@ -79,7 +79,7 @@ const { size = 40, closeOnClick = false } = defineProps<{
   closeOnClick?: boolean;
 }>();
 
-const { t } = useI18n();
+const { t } = useTranslation();
 
 const menuModel = ref(false);
 const listWidth = computed(() => `${size}vw`);

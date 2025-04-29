@@ -75,7 +75,7 @@ import {
   type BaseItemDto
 } from '@jellyfin/sdk/lib/generated-client';
 import { computed, shallowRef } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useTranslation } from 'i18next-vue';
 import { isNil } from '@jellyfin-vue/shared/validation';
 import {
   CardShapes,
@@ -93,7 +93,7 @@ const { item, shape, overlay, text, margin } = defineProps<{
   margin?: boolean;
 }>();
 
-const { t } = useI18n();
+const { t } = useTranslation();
 const isMenuOpen = shallowRef(false);
 
 const cardType = computed(() => getShapeFromItemType(item.Type));
