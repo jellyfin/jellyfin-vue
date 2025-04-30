@@ -3,10 +3,8 @@
   "type": "module",
   "description": "Shared code between Jellyfin Vue packages",
   "exports": {
-    "./validation": "./src/validation.ts",
-    "./html": "./src/html.ts",
-    "./colors": "./src/colors.ts",
-    "./utils": "./src/utils.ts"
+    "./*": "./src/universal/*.ts",
+    "./node/*": "./src/node/*.ts"
   },
   "scripts": {
     "lint": "eslint .",
