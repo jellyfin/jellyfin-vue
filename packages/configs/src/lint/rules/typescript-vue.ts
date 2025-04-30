@@ -191,8 +191,8 @@ const vue_config = defineConfig([
             lang: 'ts'
           }
         }
-      ]
-
+      ],
+      'vue/define-props-destructuring': 'error'
     }
   }
 ]);
