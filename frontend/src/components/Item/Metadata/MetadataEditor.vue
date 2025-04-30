@@ -299,10 +299,7 @@ const tagLine = computed({
   get: () => metadata.value?.Taglines?.[0] ?? '',
   set: (v) => {
     if (metadata.value) {
-      if (!metadata.value.Taglines) {
-        metadata.value.Taglines = [];
-      }
-
+      metadata.value.Taglines ??= [];
       metadata.value.Taglines[0] = v;
     }
   }
