@@ -10,7 +10,7 @@ import UnoCSS from 'unocss/vite';
 import VueRouter from 'unplugin-vue-router/vite';
 import { defineConfig } from 'vite';
 import { JBundle, JMonorepo } from '@jellyfin-vue/vite-plugins';
-import { Ji18n } from '@jellyfin-vue/i18n/vite';
+import { genVirtualModules } from '@jellyfin-vue/i18n/vite';
 import { JellyfinVueUIToolkit } from '@jellyfin-vue/ui-toolkit/resolver';
 import virtualModules from './scripts/virtual-modules';
 
@@ -18,14 +18,16 @@ export default defineConfig({
   appType: 'spa',
   base: './',
   plugins: [
-    await Ji18n(),
     ...JBundle,
     JMonorepo(import.meta.dirname, {
       splashscreen: {
         'fetch-priority': 'high'
       }
     }),
-    Virtual(virtualModules),
+    Virtual({
+      ...(await genVirtualModules()),
+      ...virtualModules
+    }),
     VueRouter({
       dts: resolve(import.meta.dirname, 'types/global/routes.d.ts'),
       importMode: 'sync',

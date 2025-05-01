@@ -74,7 +74,7 @@ async function getVuetifyLocales(localeNames: string[]) {
 }
 
 /**
- * This plugin allows us to:
+ * Using virtual modules allows us to:
  * - Import JSON files from the strings folder
  * - Match our locales to the date-fns and Vuetify ones.
  * In order to reduce bundle size, we calculate here (at build time) only the locales that we
@@ -83,7 +83,7 @@ async function getVuetifyLocales(localeNames: string[]) {
  * We expose them later as `virtual:i18next/resources`, `virtual:date-fns/locales`
  * and `virtual:vuetify/locales` using `@rollup/plugin-virtual`
  */
-export async function Ji18n(): Promise<Plugin> {
+export async function genVirtualModules(): Promise<Record<string, string>> {
   const i18next_prefix = 'virtual:i18next/resources';
   const localeFiles = await readdir(localeFilesFolder);
   const localeNames = localeFiles.map(l => l.replace('.json', ''));
@@ -101,27 +101,13 @@ export async function Ji18n(): Promise<Plugin> {
   }
 
   return {
-    name: 'Jellyfin_Vue:i18n',
-    enforce: 'pre',
-    config: () => {
-      return {
-        build: {
-          rollupOptions: {
-            plugins: [
-              Virtual({
-                'virtual:locales/date-fns': `export { ${dfnsExports.join(
-                  ', '
-                )} } from 'date-fns/locale'`,
-                'virtual:locales/vuetify': `export { ${vuetifyExports.join(
-                  ', '
-                )} } from 'vuetify/locale'`,
-                ...modules,
-                'virtual:i18next/resources': `export const resources = ${genObjectFromRaw(resources)}`
-              })
-            ]
-          }
-        }
-      };
-    }
+    'virtual:locales/date-fns': `export { ${dfnsExports.join(
+      ', '
+    )} } from 'date-fns/locale'`,
+    'virtual:locales/vuetify': `export { ${vuetifyExports.join(
+      ', '
+    )} } from 'vuetify/locale'`,
+    ...modules,
+    'virtual:i18next/resources': `export const resources = ${genObjectFromRaw(resources)}`
   };
 }
