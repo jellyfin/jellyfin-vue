@@ -202,10 +202,8 @@ const visibleItems = computed<InternalItem[]>((previous) => {
 });
 const scrollParents = computed(() => rootRef.value && getScrollParents(rootRef.value));
 const scrollTargets = computed(() => {
-  const el = rootRef.value;
-
-  if (el && el instanceof HTMLElement) {
-    const { vertical, horizontal } = getScrollParents(el);
+  if (scrollParents.value) {
+    const { vertical, horizontal } = scrollParents.value;
 
     /**
      * If the scrolling parent is the doc root, use window instead as using
