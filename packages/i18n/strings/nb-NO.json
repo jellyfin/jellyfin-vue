@@ -72,7 +72,7 @@
   "copyStreamURL": "Kopier strømmeadresse",
   "createKeyFailure": "Feil under oppretting av en ny API-nøkkel",
   "createKeySuccess": "En ny API-nøkkel ble opprettet",
-  "crew": "Crew",
+  "crew": "Besetning",
   "criticRating": "Kritikervurdering",
   "currentAppTypography": "Nåværende typografi for applikasjonen ({{value}})",
   "currentPassword": "Nåværende passord",
