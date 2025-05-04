@@ -33,7 +33,7 @@
     "@eslint/config-inspector": "1.0.2",
     "@types/node": "22.15.3",
     "type-fest": "4.40.1",
-    "eslint": "9.25.1",
+    "eslint": "9.26.0",
     "jiti": "2.4.2",
     "storybook": "8.6.12",
     "typescript": "5.8.3",
