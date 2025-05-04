@@ -1,8 +1,6 @@
 import { readFile, readdir } from 'node:fs/promises';
 import { resolve, parse } from 'node:path';
 import { genObjectFromRaw } from 'knitwork';
-import Virtual from '@rollup/plugin-virtual';
-import type { Plugin } from 'vite';
 
 export const localeFilesFolder = resolve(import.meta.dirname, '../strings');
 
