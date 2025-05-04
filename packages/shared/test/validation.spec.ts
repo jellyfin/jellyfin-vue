@@ -1,6 +1,6 @@
 /* eslint-disable unicorn/no-null, unicorn/no-useless-undefined */
 import { test, expect } from 'vitest';
-import { isNumber, isBool, isStr, isFunc, isUndef, isNull, isNil, isObj, isArray } from '../src/validation.ts';
+import { isNumber, isBool, isStr, isFunc, isUndef, isNull, isNil, isObj, isArray } from '../src/universal/validation.ts';
 
 test('isNumber', () => {
   expect(isNumber(0)).toBe(true);
