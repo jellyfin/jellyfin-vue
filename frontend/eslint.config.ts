@@ -2,7 +2,6 @@ import { defineConfig } from 'eslint/config';
 import { getBaseConfig, getTSVueConfig, getNodeFiles, unocss, getWorkerFiles } from '@jellyfin-vue/configs/lint';
 import pkg from './package.json' with { type: 'json' };
 
-// TODO: Add missing rules for json
 export default defineConfig([
   ...getBaseConfig(pkg.name),
   ...getTSVueConfig(true, import.meta.dirname),
