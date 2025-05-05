@@ -28,7 +28,7 @@
     "storybook": "storybook dev -p 6006 --config-dir storybook --no-open"
   },
   "dependencies": {
-    "@fontsource-variable/figtree": "5.2.6",
+    "@fontsource-variable/figtree": "5.2.7",
     "@jellyfin-vue/i18n": "*",
     "@jellyfin-vue/shared": "*",
     "@jellyfin-vue/ui-toolkit": "*",
