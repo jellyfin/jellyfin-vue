@@ -44,10 +44,7 @@
         "packages/tauri-runtime/**"
       ],
       "separateMajorMinor": false,
-      "groupName": "tauri",
-      "matchPackageNames": [
-        "!vite"
-      ]
+      "groupName": "tauri"
     },
     {
       "matchUpdateTypes": [
