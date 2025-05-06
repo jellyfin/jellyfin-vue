@@ -1,5 +1,6 @@
 import type { AxiosError } from 'axios';
 import type { Class } from 'type-fest';
+import { isArray, isObject } from '@vue/shared';
 
 /**
  * Validator to which enforces that a select component has at least one value selected
@@ -26,16 +27,12 @@ export function isBool(value: unknown): value is boolean {
 /**
  * Check if the value is a string.
  */
-export function isStr(value: unknown): value is string {
-  return typeof value === 'string';
-}
+export { isString as isStr } from '@vue/shared';
 
 /**
  * Check if the given value is a funcion
  */
-export function isFunc(value: unknown): value is (...args: unknown[]) => unknown {
-  return typeof value === 'function';
-}
+export { isFunction as isFunc } from '@vue/shared';
 
 /**
  * Check if the value is undefined
@@ -68,7 +65,7 @@ export function isNil(value: unknown): value is null | undefined {
  * Check if the value is an object.
  */
 export function isObj(value: unknown): value is object {
-  return typeof value === 'object' && !isNull(value) && !isArray(value);
+  return isObject(value) && !isArray(value);
 }
 
 /**
@@ -81,9 +78,7 @@ export function isAxiosError(object: unknown): object is AxiosError {
 /**
  * Check if the value is an array
  */
-export function isArray(object: unknown): object is unknown[] {
-  return Array.isArray(object);
-}
+export { isArray } from '@vue/shared';
 
 /**
  * Seals a class

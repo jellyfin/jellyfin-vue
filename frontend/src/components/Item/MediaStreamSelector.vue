@@ -28,13 +28,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, capitalize } from 'vue';
 import type { MediaStream } from '@jellyfin/sdk/lib/generated-client';
 import { useTranslation } from 'i18next-vue';
 import { watchImmediate } from '@vueuse/core';
 import { isNil } from '@jellyfin-vue/shared/validation';
 import { getLocaleName } from '#/utils/i18n';
-import { upperFirst } from '#/utils/data-manipulation';
 
 const { mediaStreams, type, defaultStreamIndex } = defineProps<{
   mediaStreams: MediaStream[];
@@ -88,7 +87,7 @@ function getTrackIcon(
  */
 function getTrackSubtitle(track: MediaStream): string | undefined {
   if ((type === 'Audio' || type === 'Subtitle') && track.Language) {
-    return upperFirst(
+    return capitalize(
       getLocaleName(track.Language, i18next.language)
       ?? `${t('unknown')} (${track.Language})`
     );

@@ -27,13 +27,6 @@ export function mergeExcludingUnknown<T extends object>(
 }
 
 /**
- * Uppercase the first letter of a string
- */
-export function upperFirst<T extends string>(str: T): Capitalize<T> {
-  return (str[0]!.toUpperCase() + str.slice(1)) as Capitalize<T>;
-}
-
-/**
  * Get the font faces present in the document.
  *
  * Instead of using a normal iterable (like `...[...document.fonts.keys()]`),

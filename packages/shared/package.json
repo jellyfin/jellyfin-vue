@@ -21,6 +21,7 @@
     "marked": "15.0.11"
   },
   "peerDependencies": {
+    "@vue/shared": "*",
     "type-fest": "*",
     "vitest": "*"
   },
