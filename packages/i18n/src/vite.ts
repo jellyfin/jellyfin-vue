@@ -95,7 +95,7 @@ export async function genVirtualModules(): Promise<Record<string, string>> {
   }
 
   for (const locale in resources) {
-    resources[locale] = `{ translation: (await import('${i18next_prefix}/${locale}')).default }`;
+    resources[locale] = `async () => (await import('${i18next_prefix}/${locale}')).default`;
   }
 
   return {
