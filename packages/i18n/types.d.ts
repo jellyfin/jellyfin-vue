@@ -1,12 +1,6 @@
 import type en from './strings/en.json';
 
-interface FallbackLanguage {
-  translation: typeof en;
-};
-interface Resources {
-  en: FallbackLanguage;
-  [key: string]: FallbackLanguage;
-}
+type Resources = Record<string, () => Promise<typeof en>>;
 
 declare module 'i18next' {
   interface CustomTypeOptions {
@@ -24,7 +18,7 @@ declare module 'virtual:locales/date-fns' {
 declare module 'virtual:locales/vuetify' {
   import type * as locales from 'vuetify/locale';
 
-  const typeWithoutRtl: BetterOmit<typeof locales, 'defaultRtl'>;
+  const typeWithoutRtl: Omit<typeof locales, 'defaultRtl'>;
 
   export = typeWithoutRtl;
 }

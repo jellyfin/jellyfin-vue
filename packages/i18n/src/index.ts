@@ -1,4 +1,5 @@
-import i18next from 'i18next';
+import i18next, { type BackendModule } from 'i18next';
+import { NOOP } from '@vue/shared';
 import { resources } from 'virtual:i18next/resources';
 
 /**
@@ -13,13 +14,17 @@ await i18next
    */
   .use({
     type: 'backend',
-    read: async (language: string, _, done) => {
+    init: NOOP,
+    read: (language, _, done) => {
       const promise = resources[language] as Promise<Record<string, string>>;
-      const data = await promise();
 
-      done(undefined, data);
+      void (async () => {
+        const data = await promise;
+
+        done(undefined, data);
+      })();
     }
-  })
+  } satisfies BackendModule)
   .init({
     lng: DEFAULT_LANGUAGE,
     fallbackLng: DEFAULT_LANGUAGE,
