@@ -26,6 +26,7 @@
     "@jellyfin-vue/configs": "*"
   },
   "peerDependencies": {
+    "@jellyfin-vue/i18n": "*",
     "@vueuse/core": "*",
     "comlink": "*",
     "i18next-vue": "*",

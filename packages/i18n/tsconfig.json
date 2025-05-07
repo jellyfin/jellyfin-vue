@@ -14,8 +14,8 @@
     "coverage"
   ],
   "include": [
-    "*.d.ts",
-    "*.ts",
+    "**/*.d.ts",
+    "**/*.ts",
     "src/*.ts",
     "**/*.json"
   ],

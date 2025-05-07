@@ -16,13 +16,13 @@ await i18next
     type: 'backend',
     init: NOOP,
     read: (language, _, done) => {
-      const promise = resources[language] as Promise<Record<string, string>>;
+      const loadFn = resources[language];
 
-      void (async () => {
-        const data = await promise;
-
-        done(undefined, data);
-      })();
+      if (loadFn) {
+        void (async () => done(undefined, await loadFn()))();
+      } else {
+        done(new Error(`Language ${language} not found`), {});
+      }
     }
   } satisfies BackendModule)
   .init({

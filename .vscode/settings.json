@@ -17,11 +17,16 @@
   "i18n-ally.keystyle": "flat",
   "i18n-ally.sortKeys": true,
   "i18n-ally.sourceLanguage": "en",
+  "i18n-ally.includeSubfolders": false,
+  "i18n-ally.fullReloadOnChanged": true,
+  "i18n-ally.extract.autoDetect": true,
+  "i18n-ally.annotations": false,
   "i18n-ally.localesPaths": [
     "packages/i18n/strings"
   ],
   "i18n-ally.enabledFrameworks": [
-    "vue"
+    "i18next",
+    "vue-sfc"
   ],
   "eslint.validate": [
     "vue",

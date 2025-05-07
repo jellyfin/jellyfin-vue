@@ -2,11 +2,14 @@
   "name": "@jellyfin-vue/i18n",
   "type": "module",
   "description": "All internacionalization files for Jellyfin Vue",
-  "types": "./types.d.ts",
   "exports": {
-    ".": "./src/index.ts",
+    ".": {
+     "import": "./src/index.ts",
+     "types": "./index.d.ts"
+   },
     "./vite": "./src/vite.ts"
   },
+  
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
