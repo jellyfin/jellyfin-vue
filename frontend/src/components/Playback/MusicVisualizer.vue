@@ -20,12 +20,12 @@ function destroy(): void {
   }
 }
 
-watch(visualizerElement, () => {
+watch([visualizerElement, mediaWebAudio.sourceNode], () => {
   destroy();
 
-  if (visualizerElement.value) {
+  if (visualizerElement.value && mediaWebAudio.sourceNode.value) {
     visualizerInstance = new AudioMotionAnalyzer(visualizerElement.value, {
-      source: mediaWebAudio.sourceNode,
+      source: mediaWebAudio.sourceNode.value,
       connectSpeakers: false,
       mode: 2,
       gradient: 'prism',

@@ -43,7 +43,7 @@ class RemotePluginAuth extends BaseState<AuthState> {
   public readonly servers = computed(() => this._state.value.servers);
   public readonly currentServer = computed(() => this._state.value.servers[this._state.value.currentServerIndex]);
   public readonly currentUser = computed(() => this._state.value.users[this._state.value.currentUserIndex]);
-  public readonly currentUserId = computed(() => this.currentUser.value.Id);
+  public readonly currentUserId = computed(() => this.currentUser.value?.Id);
   public readonly currentUserToken = computed(() => this._getUserAccessToken(this.currentUser.value));
   public readonly addedServers = computed(() => this._state.value.servers.length);
 

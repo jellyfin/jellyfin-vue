@@ -50,9 +50,8 @@ export const mediaControls = useMediaControls(mediaElementRef);
  * WebAudio instance of the local media player
  */
 export const mediaWebAudio = {
-  context: new AudioContext(),
-  sourceNode: undefined as undefined | MediaElementAudioSourceNode,
-  gainNode: undefined as undefined | GainNode
+  context: shallowRef<AudioContext>(),
+  sourceNode: shallowRef<MediaElementAudioSourceNode>()
 };
 
 /**

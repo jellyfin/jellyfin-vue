@@ -7,16 +7,16 @@
       <div class="uno-relative">
         <Component
           :is="mediaElementType"
-          v-show="mediaElementType === 'video' && videoContainerRef"
+          v-show="playbackManager.isVideo.value && videoContainerRef"
           ref="mediaElementRef"
           :poster="String(posterUrl)"
           autoplay
           crossorigin
           playsinline
           :loop="playbackManager.isRepeatingOnce.value"
-          class="uno-h-full uno-max-h-100vh"
           :class="{
             'uno-object-fill uno-w-screen': playerElement.state.value.isStretched,
+            'uno-h-full uno-max-h-100vh': playbackManager.isVideo.value
           }"
           @loadeddata="onLoadedData">
           <track
@@ -37,9 +37,10 @@
 <script setup lang="ts">
 import Hls, { ErrorTypes, Events, type ErrorData } from 'hls.js';
 import HlsWorkerUrl from 'hls.js/dist/hls.worker.js?url';
-import { computed, nextTick, watch } from 'vue';
+import { computed, nextTick, onScopeDispose, watch } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import { isNil } from '@jellyfin-vue/shared/validation';
+import { PromiseQueue } from '@jellyfin-vue/shared/promises';
 import { useSnackbar } from '#/composables/use-snackbar';
 import {
   mediaElementRef,
@@ -51,7 +52,7 @@ import { getImageInfo } from '#/utils/images';
 import { subtitleSettings } from '#/store/settings/subtitle';
 
 const { t } = useTranslation();
-let busyWebAudio = false;
+const webAudioQueue = new PromiseQueue();
 const hls = Hls.isSupported()
   ? new Hls({
     testBandwidth: false,
@@ -90,28 +91,16 @@ function detachHls(): void {
  * Suspends WebAudio when no playback is in place
  */
 async function detachWebAudio(): Promise<void> {
-  if (mediaWebAudio.context.state === 'running' && !busyWebAudio) {
-    busyWebAudio = true;
+  const { context, sourceNode } = mediaWebAudio;
 
-    try {
-      if (mediaWebAudio.gainNode) {
-        mediaWebAudio.gainNode.gain.setValueAtTime(mediaWebAudio.gainNode.gain.value, mediaWebAudio.context.currentTime);
-        mediaWebAudio.gainNode.gain.exponentialRampToValueAtTime(0.0001, mediaWebAudio.context.currentTime + 1.5);
-        await nextTick();
-        await new Promise(resolve => globalThis.setTimeout(resolve));
-        mediaWebAudio.gainNode.disconnect();
-        mediaWebAudio.gainNode = undefined;
-      }
-
-      if (mediaWebAudio.sourceNode) {
-        mediaWebAudio.sourceNode.disconnect();
-        mediaWebAudio.sourceNode = undefined;
-      }
-
-      await mediaWebAudio.context.suspend();
-    } catch {} finally {
-      busyWebAudio = false;
+  if (context.value) {
+    if (sourceNode.value) {
+      sourceNode.value.disconnect();
+      sourceNode.value = undefined;
     }
+
+    await context.value.close();
+    context.value = undefined;
   }
 }
 
@@ -119,26 +108,12 @@ async function detachWebAudio(): Promise<void> {
  * Resumes WebAudio when playback is in place
  */
 async function attachWebAudio(el: HTMLMediaElement): Promise<void> {
-  if (mediaWebAudio.context.state === 'suspended' && !busyWebAudio) {
-    busyWebAudio = true;
+  const { context, sourceNode } = mediaWebAudio;
 
-    try {
-      await mediaWebAudio.context.resume();
-
-      mediaWebAudio.sourceNode = mediaWebAudio.context.createMediaElementSource(el);
-      mediaWebAudio.sourceNode.connect(mediaWebAudio.context.destination);
-
-      /**
-       * The gain node is to avoid cracks when stopping playback or switching really fast between tracks
-       */
-      mediaWebAudio.gainNode = mediaWebAudio.context.createGain();
-      mediaWebAudio.gainNode.connect(mediaWebAudio.context.destination);
-      mediaWebAudio.gainNode.gain.setValueAtTime(mediaWebAudio.gainNode.gain.value, mediaWebAudio.context.currentTime);
-      mediaWebAudio.gainNode.gain.exponentialRampToValueAtTime(1, mediaWebAudio.context.currentTime + 1.5);
-    } catch {} finally {
-      busyWebAudio = false;
-    }
-  }
+  context.value = new AudioContext();
+  sourceNode.value = context.value.createMediaElementSource(el);
+  await context.value.resume();
+  sourceNode.value.connect(context.value.destination);
 }
 
 /**
@@ -188,17 +163,19 @@ function onHlsEror(_event: typeof Hls.Events.ERROR, data: ErrorData): void {
   }
 }
 
-watch(mediaElementRef, async () => {
+watch(mediaElementRef, () => {
   detachHls();
-  await detachWebAudio();
+  void webAudioQueue.add(() => detachWebAudio());
 
   if (mediaElementRef.value) {
-    if (mediaElementType.value === 'video' && hls) {
+    if (playbackManager.isVideo.value && hls) {
       hls.attachMedia(mediaElementRef.value);
       hls.on(Events.ERROR, onHlsEror);
     }
 
-    await attachWebAudio(mediaElementRef.value);
+    if (playbackManager.isAudio.value) {
+      void webAudioQueue.add(() => attachWebAudio(mediaElementRef.value!));
+    }
   }
 });
 
@@ -238,4 +215,10 @@ watch(playbackManager.currentSourceUrl,
     }
   }
 );
+
+onScopeDispose(() => {
+  detachHls();
+  hls?.destroy();
+  void detachWebAudio();
+});
 </script>

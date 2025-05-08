@@ -12,12 +12,13 @@
     </VApp>
     <Snackbar />
     <ConfirmDialog />
-    <PlayerElement />
+    <PlayerElement v-if="remote.auth.currentUser.value" />
   </JApp>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { remote } from './plugins/remote';
 import { themeSettings } from '#/store/settings/theme';
 import { useLoading } from '#/composables/use-loading';
 
