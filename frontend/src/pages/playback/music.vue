@@ -9,7 +9,7 @@
       <VSpacer />
       <AppBarButtonLayout @click="isVisualizing = !isVisualizing">
         <template #icon>
-          <JIcon :class="isVisualizing ? 'i-dashicons:album' : 'mdi:chart-bar'" />
+          <JIcon :class="isVisualizing ? 'i-dashicons:album' : 'i-mdi:chart-bar'" />
         </template>
       </AppBarButtonLayout>
     </VAppBar>

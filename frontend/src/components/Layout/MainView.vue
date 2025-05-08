@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { onErrorCaptured, shallowRef, type Component, watch, computed, provide, useId, ref, type WatchOptions, inject } from 'vue';
+import { onErrorCaptured, shallowRef, type Component, watch, computed, provide, useId, ref, inject } from 'vue';
 import type { RouteLocationNormalizedGeneric, RouteMeta } from 'vue-router';
 import { isNil } from '@jellyfin-vue/shared/validation';
 import { usePausableEffect } from '@jellyfin-vue/ui-toolkit/composables/use-pausable-effect.ts';
@@ -57,15 +57,14 @@ function getLayoutComponent(layout: RouteMeta['layout']['name']): Component {
 
 const defaultTransition = 'slide-x-reverse';
 const defaultTransitionMode = 'out-in';
-const watchOps = { flush: 'sync' } satisfies WatchOptions;
 const apploaded = shallowRef(false);
 const isRouting = shallowRef(false);
 const _resolveStatus = ref<Record<string, boolean>>({});
 const allResolved = computed(() => Object.values(_resolveStatus.value).every(Boolean));
 const mustBePaused = computed(() => !allResolved.value || isRouting.value);
 
-watch(() => router.currentRoute.value.name, () => isRouting.value = true, watchOps);
-watch(allResolved, () => isRouting.value = false, watchOps);
+watch(() => router.currentRoute.value.name, () => isRouting.value = true);
+watch(allResolved, () => isRouting.value = false);
 </script>
 
 <script setup lang="ts">
@@ -93,7 +92,8 @@ const resolved = computed({
 if (root) {
   provide(JView_isRouting, mustBePaused);
   usePausableEffect(mustBePaused);
-  onErrorCaptured(() => {
+  onErrorCaptured((e, instance, info) => {
+    console.error('[Jellyfin] Error captured in MainView:', e, instance, info);
     resolved.value = true;
     isRouting.value = false;
   });

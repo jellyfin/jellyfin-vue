@@ -121,7 +121,7 @@ const [{ loading: itemLoading, data: itemSearch }, { loading: peopleLoading, dat
 
 const serverSearchIds = computed(() => {
   if (!peopleLoading.value && !itemLoading.value) {
-    return [...(itemSearch.value ?? []), ...(peopleSearch.value ?? [])].map(i => i.Id!);
+    return [...itemSearch.value, ...peopleSearch.value].map(i => i.Id!);
   }
 
   return [];
