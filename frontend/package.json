@@ -25,7 +25,8 @@
     "serve": "vite preview --configLoader runner",
     "prod": "npm run build && npm run serve",
     "clean": "git clean -fxd",
-    "storybook": "storybook dev -p 6006 --config-dir storybook --no-open"
+    "storybook": "storybook dev -p 6006 --config-dir storybook --no-open",
+    "test": "vitest run --configLoader runner"
   },
   "dependencies": {
     "@fontsource-variable/figtree": "5.2.7",

@@ -3,9 +3,9 @@ import globals from 'globals';
 
 /**
  * Gets the ESLint config from Node.js and development related files
- * @param files - Defaults to `*config.*` and files under `scripts` folder
+ * @param files - Defaults to `*config.*` and files under `scripts` and `test` folder
  */
-export function getNodeFiles(files = ['*.config.*', 'scripts/**/*.ts']) {
+export function getNodeFiles(files = ['*.config.*', 'scripts/**/*.ts', 'test/**/*.*']) {
   return defineConfig([{
     name: '(@jellyfin-vue/configs/lint/env) Node.js and development-related files',
     files,
