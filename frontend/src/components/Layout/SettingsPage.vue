@@ -25,7 +25,7 @@ import { usePageTitle } from '#/composables/page-title';
 
 const slots = useSlots();
 const pageTitle = computed(() => {
-  const slot = slots.title?.({})[0].children;
+  const slot = slots.title?.({})[0]?.children;
 
   return isStr(slot) ? slot : undefined;
 });

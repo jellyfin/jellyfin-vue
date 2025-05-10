@@ -204,7 +204,7 @@ class RemotePluginAuth extends BaseState<AuthState> {
       }
     } catch (error: unknown) {
       if (isAxiosError(error)) {
-        const { t } = i18n;
+        const { t } = i18next;
         let errorMessage = t('unexpectedError');
 
         if (!error.response) {
