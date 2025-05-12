@@ -172,7 +172,7 @@ const adminSections = computed<MenuOptions[][]>(() => {
         icon: 'i-mdi:server',
         name: t('server'),
         description: t('serverSettingsDescription'),
-        link: undefined
+        link: '/settings/server'
       },
       {
         icon: 'i-mdi:devices',
