@@ -18,8 +18,8 @@
 
         <VSelect
           v-model="serverSettings.state.value.language"
-          :loading="saving"
-          :disabled="saving"
+          :loading="loading"
+          :disabled="loading"
           variant="outlined"
           :label="$t('preferredLanguage')"
           :rules="SomeItemSelectedRule"
@@ -79,7 +79,8 @@
           variant="flat"
           width="8em"
           color="primary"
-          :loading="loading"
+          :loading="saving"
+          :disabled="saving"
           @click="saveSettings">
           {{ $t('save') }}
         </VBtn>
