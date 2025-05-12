@@ -1,7 +1,7 @@
 <template>
   <SettingsPage>
     <template #title>
-      Server Settings
+      {{ $t('serverSettings') }}
     </template>
 
     <template #content>
@@ -9,15 +9,15 @@
         md="6"
         class="uno-pb-4 uno-pt-0">
         <h3 class="mb-2 text-lg font-bold">
-          General Server Settings
+          {{ $t('serverSettingsGeneral') }}
         </h3>
 
         <VTextField
-          v-model="serverSettings.state.value.name"
-          label="Server Name" />
+          v-model="serverSettings.name"
+          :label="$t('serverName')" />
 
         <VSelect
-          v-model="serverSettings.state.value.language"
+          v-model="serverSettings.language"
           :loading="loading"
           :disabled="loading"
           variant="outlined"
@@ -28,51 +28,45 @@
           :items="culturesList" />
 
         <VCheckbox
-          v-model="serverSettings.state.value.quickConnect"
-          label="Enable Quick Connect" />
+          v-model="serverSettings.quickConnect"
+          :label="$t('enableQuickConnect')" />
 
         <h3 class="text-lg font-bold mt-6 mb-2">
-          Paths
+          {{ $t('serverSettingsPaths') }}
         </h3>
 
         <VTextField
-          v-model="serverSettings.state.value.cachePath"
-          label="Cache Path" />
+          v-model="serverSettings.cachePath"
+          :label="$t('cachePath')" />
 
         <VTextField
-          v-model="serverSettings.state.value.metadataPath"
-          label="Metadata Path" />
+          v-model="serverSettings.metadataPath"
+          :label="$t('metadataPath')" />
 
         <h3 class="text-lg font-bold mt-6 mb-2">
-          Branding
+          {{ $t('serverSettingsBranding') }}
         </h3>
 
         <VTextField
-          v-model="serverSettings.state.value.loginDisclaimer"
-          label="Login Disclaimer" />
-
-        <VTextField
-          v-model="cssPreview"
-          label="Custom CSS"
-          readonly
-          @click="openCssDialog" />
+          v-model="serverSettings.loginDisclaimer"
+          :label="$t('loginDisclaimer')" />
 
         <VCheckbox
-          v-model="serverSettings.state.value.enableSplash"
-          label="Enable Splash Screen" />
+          v-model="serverSettings.enableSplash"
+          :label="$t('enableSplashScreen')" />
 
         <h3 class="text-lg font-bold mt-6 mb-2">
-          Performance
+          {{ $t('serverSettingsPerformance') }}
         </h3>
 
         <VTextField
-          v-model.number="serverSettings.state.value.parallelLibraryScan"
-          label="Parallel Library Scan Limit"
+          v-model.number="serverSettings.parallelLibraryScan"
+          :label="$t('parallelLibraryScanLimit')"
           type="number" />
 
         <VTextField
-          v-model.number="serverSettings.state.value.parallelImageEncoding"
-          label="Parallel Image Encoding Limit"
+          v-model.number="serverSettings.parallelImageEncoding"
+          :label="$t('parallelImageEncodingLimit')"
           type="number" />
 
         <VBtn
@@ -85,41 +79,12 @@
           {{ $t('save') }}
         </VBtn>
       </VCol>
-
-      <VDialog
-        v-model="cssDialog"
-        persistent
-        max-width="600px">
-        <VCard>
-          <VCardTitle>Edit Custom CSS</VCardTitle>
-          <VCardText>
-            <VTextarea
-              v-model="serverSettings.state.value.customCSS"
-              rows="10"
-              auto-grow
-              outlined />
-          </VCardText>
-          <VCardActions>
-            <VSpacer />
-            <VBtn
-              text
-              @click="cssDialog = false">
-              Cancel
-            </VBtn>
-            <VBtn
-              color="primary"
-              @click="cssDialog = false">
-              OK
-            </VBtn>
-          </VCardActions>
-        </VCard>
-      </VDialog>
     </template>
   </SettingsPage>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import type { LocalizationOption } from '@jellyfin/sdk/lib/generated-client';
 import { getLocalizationApi } from '@jellyfin/sdk/lib/utils/api/localization-api';
 import { getConfigurationApi } from '@jellyfin/sdk/lib/utils/api/configuration-api';
@@ -140,40 +105,22 @@ interface ServerSettings {
   parallelImageEncoding: number | undefined;
 }
 
-const serverSettings = ref<{ state: { value: ServerSettings } }>({
-  state: {
-    value: {
-      name: '',
-      language: '',
-      quickConnect: false,
-      cachePath: '',
-      metadataPath: '',
-      loginDisclaimer: '',
-      customCSS: '',
-      enableSplash: true,
-      parallelLibraryScan: 0,
-      parallelImageEncoding: 0
-    }
-  }
-});
-
-const cssDialog = ref(false);
-const cssPreview = computed(() => {
-  const css = serverSettings.value.state.value.customCSS ?? '';
-
-  return css.length > 30 ? css.slice(0, 30) + '...' : css;
+const serverSettings = ref<ServerSettings>({
+  name: '',
+  language: '',
+  quickConnect: false,
+  cachePath: '',
+  metadataPath: '',
+  loginDisclaimer: '',
+  customCSS: '',
+  enableSplash: true,
+  parallelLibraryScan: 0,
+  parallelImageEncoding: 0
 });
 
 const loading = ref(false);
 const saving = ref(false);
 const culturesList = ref<LocalizationOption[]>([]);
-
-/**
- * Opens the Css Dialog popup, potentially refactor to be a individual component?
- */
-function openCssDialog() {
-  cssDialog.value = true;
-}
 
 /**
  * * Saves the settings to the server
@@ -186,21 +133,21 @@ async function saveSettings() {
     const configRes = await configApi.getConfiguration();
     const config = configRes.data;
 
-    config.ServerName = serverSettings.value.state.value.name;
-    config.UICulture = serverSettings.value.state.value.language;
-    config.QuickConnectAvailable = serverSettings.value.state.value.quickConnect;
-    config.CachePath = serverSettings.value.state.value.cachePath;
-    config.MetadataPath = serverSettings.value.state.value.metadataPath;
-    config.LibraryScanFanoutConcurrency = serverSettings.value.state.value.parallelLibraryScan;
-    config.ParallelImageEncodingLimit = serverSettings.value.state.value.parallelImageEncoding;
+    config.ServerName = serverSettings.value.name;
+    config.UICulture = serverSettings.value.language;
+    config.QuickConnectAvailable = serverSettings.value.quickConnect;
+    config.CachePath = serverSettings.value.cachePath;
+    config.MetadataPath = serverSettings.value.metadataPath;
+    config.LibraryScanFanoutConcurrency = serverSettings.value.parallelLibraryScan;
+    config.ParallelImageEncodingLimit = serverSettings.value.parallelImageEncoding;
 
     const brandingApi = remote.sdk.newUserApi(getBrandingApi);
     const brandingRes = await brandingApi.getBrandingOptions();
     const branding = brandingRes.data;
 
-    branding.LoginDisclaimer = serverSettings.value.state.value.loginDisclaimer;
-    branding.CustomCss = serverSettings.value.state.value.customCSS;
-    branding.SplashscreenEnabled = serverSettings.value.state.value.enableSplash;
+    branding.LoginDisclaimer = serverSettings.value.loginDisclaimer;
+    branding.CustomCss = serverSettings.value.customCSS;
+    branding.SplashscreenEnabled = serverSettings.value.enableSplash;
 
     await configApi.updateConfiguration({
       serverConfiguration: config
@@ -232,21 +179,21 @@ onMounted(async () => {
     const configRes = await configApi.getConfiguration();
     const config = configRes.data;
 
-    serverSettings.value.state.value.name = config.ServerName;
-    serverSettings.value.state.value.language = config.UICulture;
-    serverSettings.value.state.value.quickConnect = config.QuickConnectAvailable;
-    serverSettings.value.state.value.cachePath = config.CachePath;
-    serverSettings.value.state.value.metadataPath = config.MetadataPath;
-    serverSettings.value.state.value.parallelLibraryScan = config.LibraryScanFanoutConcurrency;
-    serverSettings.value.state.value.parallelImageEncoding = config.ParallelImageEncodingLimit;
+    serverSettings.value.name = config.ServerName;
+    serverSettings.value.language = config.UICulture;
+    serverSettings.value.quickConnect = config.QuickConnectAvailable;
+    serverSettings.value.cachePath = config.CachePath;
+    serverSettings.value.metadataPath = config.MetadataPath;
+    serverSettings.value.parallelLibraryScan = config.LibraryScanFanoutConcurrency;
+    serverSettings.value.parallelImageEncoding = config.ParallelImageEncodingLimit;
 
     const brandingApi = remote.sdk.newUserApi(getBrandingApi);
     const brandingRes = await brandingApi.getBrandingOptions();
     const branding = brandingRes.data;
 
-    serverSettings.value.state.value.loginDisclaimer = branding.LoginDisclaimer;
-    serverSettings.value.state.value.customCSS = branding.CustomCss;
-    serverSettings.value.state.value.enableSplash = branding.SplashscreenEnabled;
+    serverSettings.value.loginDisclaimer = branding.LoginDisclaimer;
+    serverSettings.value.customCSS = branding.CustomCss;
+    serverSettings.value.enableSplash = branding.SplashscreenEnabled;
   } catch (error) {
     console.error('Error loading settings:', error);
   } finally {
