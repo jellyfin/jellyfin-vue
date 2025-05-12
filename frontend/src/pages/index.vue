@@ -1,141 +1,265 @@
 <template>
-  <div>
-    <ItemsCarousel
-      v-if="carousel.length"
-      :items="carousel"
-      page-backdrop>
-      <template #referenceText>
-        {{ $t('recentlyAdded') }}
-      </template>
-    </ItemsCarousel>
-    <VContainer class="sections-after-header">
-      <VRow
-        v-for="(homeSection, index) in homeSections"
-        :key="`homeSection-${index}`">
-        <SwiperSection
-          :title="homeSection.title"
-          :items="getHomeSectionContent(homeSection)"
-          :shape="homeSection.shape" />
-      </VRow>
-    </VContainer>
-  </div>
+  <VContainer>
+    <VRow class="pt-4">
+      <VCol
+          cols="12"
+          offset-lg="1"
+          md="5"
+          lg="4"
+          class="py-4">
+        <div
+            v-if="
+            remote.auth.currentServer.value &&
+              $remote.auth.currentUser?.value?.Policy?.IsAdministrator
+          ">
+          <JImg
+              class="uno-h-25"
+              src="/icon.svg"
+              :alt="$t('jellyfinLogo')" />
+          <VTable class="mb-4 pb-2 information">
+            <tbody>
+            <tr>
+              <td>{{ $t('server') }}</td>
+              <td>{{ remote.auth.currentServer.value?.ServerName }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t('serverVersion') }}</td>
+              <td>{{ remote.auth.currentServer.value?.Version }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t('vueClientVersion') }}</td>
+              <CommitLink v-if="commit_hash" />
+              <td v-else>
+                {{ clientVersion }}
+              </td>
+            </tr>
+            </tbody>
+          </VTable>
+        </div>
+        <AboutLinks v-if="!$vuetify.display.mobile" />
+      </VCol>
+      <VCol
+          cols="12"
+          md="6"
+          lg="5"
+          class="py-4">
+        <!-- User settings -->
+        <VList
+            lines="two"
+            class="mb-4 overflow-y-hidden">
+          <VItemGroup>
+            <VListItem
+                v-for="userItem in userItems"
+                :key="userItem.name"
+                :to="userItem.link"
+                :disabled="!userItem.link">
+              <template #prepend>
+                <VAvatar>
+                  <JIcon :class="userItem.icon" />
+                </VAvatar>
+              </template>
+              <VListItemTitle>
+                {{ userItem.name }}
+              </VListItemTitle>
+              <VListItemSubtitle>
+                {{ userItem.description }}
+              </VListItemSubtitle>
+              <template #append>
+                <VListItemAction>
+                  <JIcon class="i-mdi:chevron-right" />
+                </VListItemAction>
+              </template>
+            </VListItem>
+          </VItemGroup>
+        </VList>
+        <!-- Administrator settings -->
+        <div v-if="$remote.auth.currentUser.value?.Policy?.IsAdministrator">
+          <VList
+              v-for="(adminSection, index) in adminSections"
+              :key="`admin-section-${index}`"
+              class="mb-4 overflow-y-hidden">
+            <VItemGroup>
+              <VListItem
+                  v-for="adminItem in adminSection"
+                  :key="adminItem.name"
+                  :to="adminItem.link"
+                  :disabled="!adminItem.link">
+                <template #prepend>
+                  <VAvatar>
+                    <JIcon :class="adminItem.icon" />
+                  </VAvatar>
+                </template>
+                <VListItemTitle>
+                  {{ adminItem.name }}
+                </VListItemTitle>
+                <VListItemSubtitle>
+                  {{ adminItem.description }}
+                </VListItemSubtitle>
+                <template #append>
+                  <VListItemAction>
+                    <JIcon class="i-mdi:chevron-right" />
+                  </VListItemAction>
+                </template>
+              </VListItem>
+            </VItemGroup>
+          </VList>
+        </div>
+        <AboutLinks v-if="$vuetify.display.mobile" />
+      </VCol>
+    </VRow>
+  </VContainer>
 </template>
 
-<script lang="ts">
-const excludeViewTypes = new Set([
-  'playlists',
-  'livetv',
-  'boxsets',
-  'channels'
-]);
-</script>
-
-<route lang="yaml">
-meta:
-  layout:
-    transparent: true
-</route>
-
 <script setup lang="ts">
-import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
+import { commit_hash } from 'virtual:commit';
 import { computed } from 'vue';
 import { useTranslation } from 'i18next-vue';
-import { isNil } from '@jellyfin-vue/shared/validation';
-import { CardShapes, fetchIndexPage, getShapeFromCollectionType } from '#/utils/items';
+import type { RouteLocationRaw } from 'vue-router';
+import { remote } from '#/plugins/remote';
+import { version as clientVersion } from '#/../package.json';
 import { usePageTitle } from '#/composables/page-title';
-
-interface HomeSection {
-  title: string;
-  libraryId: string;
-  shape: CardShapes;
-  type: 'libraries' | 'resumevideo' | 'nextup' | 'latestmedia';
-}
 
 const { t } = useTranslation();
 
-usePageTitle(() => t('home'));
+interface MenuOptions {
+  icon: string;
+  name: string;
+  description: string;
+  link?: RouteLocationRaw;
+}
 
-const { carousel, nextUp, views, resumeVideo, latestPerLibrary } = await fetchIndexPage();
+usePageTitle(() => t('settings'));
 
-const latestMediaSections = computed(() => {
-  return views.value.map((userView) => {
-    if (
-      userView.CollectionType
-      && !excludeViewTypes.has(userView.CollectionType)
-    ) {
-      return {
-        title: t('latestLibrary', { libraryName: userView.Name }),
-        libraryId: userView.Id ?? '',
-        shape: getShapeFromCollectionType(userView.CollectionType),
-        type: 'latestmedia'
-      };
-    }
-  }).filter((i): i is HomeSection => !isNil(i));
-});
-
-const homeSections = computed<HomeSection[]>(() => {
+const userItems = computed<MenuOptions[]>(() => {
   return [
-    /**
-     * Library tiles
-     */
     {
-      title: t('libraries'),
-      libraryId: '',
-      shape: CardShapes.Thumb,
-      type: 'libraries'
+      icon: 'i-mdi:account',
+      name: t('account'),
+      description: t('accountSettingsDescription'),
+      link: undefined
     },
-    /**
-     * Resume video
-     */
     {
-      title: t('continueWatching'),
-      libraryId: '',
-      shape: CardShapes.Thumb,
-      type: 'resumevideo'
+      icon: 'i-mdi:home',
+      name: t('homeScreen'),
+      description: t('homeScreenSettingsDescription'),
+      link: undefined
     },
-    /**
-     * Next up
-     */
     {
-      title: t('nextUp'),
-      libraryId: '',
-      shape: CardShapes.Thumb,
-      type: 'nextup'
+      icon: 'i-mdi:play-pause',
+      name: t('playback'),
+      description: t('playbackSettingsDescription'),
+      link: undefined
     },
-    /**
-     * Latest media
-     */
-    ...latestMediaSections.value
+    {
+      icon: 'i-mdi:disc-player',
+      name: t('mediaPlayers'),
+      description: t('mediaPlayersSettingsDescription'),
+      link: undefined
+    },
+    {
+      icon: 'i-mdi:subtitles',
+      name: t('subtitles'),
+      description: t('subtitlesSettingsDescription'),
+      link: '/settings/subtitles'
+    }
   ];
 });
 
-/**
- * Gets the items for every home section
- */
-function getHomeSectionContent(section: HomeSection): BaseItemDto[] {
-  switch (section.type) {
-    case 'libraries': {
-      return views.value;
-    }
-    case 'resumevideo': {
-      return resumeVideo.value;
-    }
-    case 'nextup': {
-      return nextUp.value;
-    }
-    case 'latestmedia': {
-      return latestPerLibrary.get(section.libraryId)?.value ?? [];
-    }
-    default: {
-      return [];
-    }
-  }
-};
+const adminSections = computed<MenuOptions[][]>(() => {
+  return [
+    [
+      {
+        icon: 'i-mdi:server',
+        name: t('server'),
+        description: t('serverSettingsDescription'),
+        link: '/settings/server'
+      },
+      {
+        icon: 'i-mdi:devices',
+        name: t('devices'),
+        description: t('devicesSettingsDescription'),
+        link: '/settings/devices'
+      },
+      {
+        icon: 'i-mdi:library-shelves',
+        name: t('libraries'),
+        description: t('librariesSettingsDescription'),
+        link: undefined
+      }
+    ],
+    [
+      {
+        icon: 'i-mdi:account-multiple',
+        name: t('users'),
+        description: t('userSettingsDescription'),
+        link: '/settings/users'
+      },
+      {
+        icon: 'i-mdi:key-chain',
+        name: t('apiKeys'),
+        description: t('apiKeysSettingsDescription'),
+        link: '/settings/apikeys'
+      }
+    ],
+    [
+      {
+        icon: 'i-mdi:play-network',
+        name: t('transcodingAndStreaming'),
+        description: t('transcodingSettingsDescription'),
+        link: undefined
+      },
+      {
+        icon: 'i-mdi:dlna',
+        name: t('dlna'),
+        description: t('dlnaSettingsDescription'),
+        link: undefined
+      },
+      {
+        icon: 'i-mdi:television-classic',
+        name: t('liveTv'),
+        description: t('liveTvSettingsDescription'),
+        link: undefined
+      },
+      {
+        icon: 'i-mdi:network',
+        name: t('networking'),
+        description: t('networkingSettingsDescription'),
+        link: undefined
+      }
+    ],
+    [
+      {
+        icon: 'i-mdi:puzzle',
+        name: t('plugins'),
+        description: t('pluginsSettingsDescription'),
+        link: undefined
+      },
+      {
+        icon: 'i-mdi:calendar-clock',
+        name: t('scheduledTasks'),
+        description: t('scheduledTasksSettingsDescription'),
+        link: undefined
+      },
+      {
+        icon: 'i-mdi:bell',
+        name: t('notifications'),
+        description: t('notificationsSettingsDescription'),
+        link: undefined
+      },
+      {
+        icon: 'i-mdi:text-box',
+        name: t('logsAndActivity'),
+        description: t('logsAndActivitySettingsDescription'),
+        link: '/settings/logs-and-activity'
+      }
+    ]
+  ];
+});
 </script>
 
 <style scoped>
-.sections-after-header {
-  position: relative;
-  z-index: 4;
+.information td {
+  height: 3.4em !important;
+  border-bottom: 0 !important;
 }
 </style>
