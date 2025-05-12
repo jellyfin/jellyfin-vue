@@ -84,7 +84,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, shallowRef, onMounted } from 'vue';
 import type { LocalizationOption } from '@jellyfin/sdk/lib/generated-client';
 import { getLocalizationApi } from '@jellyfin/sdk/lib/utils/api/localization-api';
 import { getConfigurationApi } from '@jellyfin/sdk/lib/utils/api/configuration-api';
@@ -111,14 +111,13 @@ const serverSettings = ref<ServerSettings>({
   cachePath: '',
   metadataPath: '',
   loginDisclaimer: '',
-  customCSS: '',
   enableSplash: true,
   parallelLibraryScan: 0,
   parallelImageEncoding: 0
 });
 
-const loading = ref(false);
-const saving = ref(false);
+const loading = shallowRef(false);
+const saving = shallowRef(false);
 const culturesList = ref<LocalizationOption[]>([]);
 
 /**
