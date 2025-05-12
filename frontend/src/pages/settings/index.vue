@@ -2,57 +2,57 @@
   <VContainer>
     <VRow class="pt-4">
       <VCol
-        cols="12"
-        offset-lg="1"
-        md="5"
-        lg="4"
-        class="py-4">
+          cols="12"
+          offset-lg="1"
+          md="5"
+          lg="4"
+          class="py-4">
         <div
-          v-if="
+            v-if="
             remote.auth.currentServer.value &&
               $remote.auth.currentUser?.value?.Policy?.IsAdministrator
           ">
           <JImg
-            class="uno-h-25"
-            src="/icon.svg"
-            :alt="$t('jellyfinLogo')" />
+              class="uno-h-25"
+              src="/icon.svg"
+              :alt="$t('jellyfinLogo')" />
           <VTable class="mb-4 pb-2 information">
             <tbody>
-              <tr>
-                <td>{{ $t('server') }}</td>
-                <td>{{ remote.auth.currentServer.value?.ServerName }}</td>
-              </tr>
-              <tr>
-                <td>{{ $t('serverVersion') }}</td>
-                <td>{{ remote.auth.currentServer.value?.Version }}</td>
-              </tr>
-              <tr>
-                <td>{{ $t('vueClientVersion') }}</td>
-                <CommitLink v-if="commit_hash" />
-                <td v-else>
-                  {{ clientVersion }}
-                </td>
-              </tr>
+            <tr>
+              <td>{{ $t('server') }}</td>
+              <td>{{ remote.auth.currentServer.value?.ServerName }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t('serverVersion') }}</td>
+              <td>{{ remote.auth.currentServer.value?.Version }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t('vueClientVersion') }}</td>
+              <CommitLink v-if="commit_hash" />
+              <td v-else>
+                {{ clientVersion }}
+              </td>
+            </tr>
             </tbody>
           </VTable>
         </div>
         <AboutLinks v-if="!$vuetify.display.mobile" />
       </VCol>
       <VCol
-        cols="12"
-        md="6"
-        lg="5"
-        class="py-4">
+          cols="12"
+          md="6"
+          lg="5"
+          class="py-4">
         <!-- User settings -->
         <VList
-          lines="two"
-          class="mb-4 overflow-y-hidden">
+            lines="two"
+            class="mb-4 overflow-y-hidden">
           <VItemGroup>
             <VListItem
-              v-for="userItem in userItems"
-              :key="userItem.name"
-              :to="userItem.link"
-              :disabled="!userItem.link">
+                v-for="userItem in userItems"
+                :key="userItem.name"
+                :to="userItem.link"
+                :disabled="!userItem.link">
               <template #prepend>
                 <VAvatar>
                   <JIcon :class="userItem.icon" />
@@ -75,15 +75,15 @@
         <!-- Administrator settings -->
         <div v-if="$remote.auth.currentUser.value?.Policy?.IsAdministrator">
           <VList
-            v-for="(adminSection, index) in adminSections"
-            :key="`admin-section-${index}`"
-            class="mb-4 overflow-y-hidden">
+              v-for="(adminSection, index) in adminSections"
+              :key="`admin-section-${index}`"
+              class="mb-4 overflow-y-hidden">
             <VItemGroup>
               <VListItem
-                v-for="adminItem in adminSection"
-                :key="adminItem.name"
-                :to="adminItem.link"
-                :disabled="!adminItem.link">
+                  v-for="adminItem in adminSection"
+                  :key="adminItem.name"
+                  :to="adminItem.link"
+                  :disabled="!adminItem.link">
                 <template #prepend>
                   <VAvatar>
                     <JIcon :class="adminItem.icon" />
@@ -172,7 +172,7 @@ const adminSections = computed<MenuOptions[][]>(() => {
         icon: 'i-mdi:server',
         name: t('server'),
         description: t('serverSettingsDescription'),
-        link: undefined
+        link: '/settings/server'
       },
       {
         icon: 'i-mdi:devices',
