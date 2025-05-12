@@ -18,8 +18,6 @@
 
         <VSelect
           v-model="serverSettings.UICulture"
-          :loading="loading"
-          :disabled="loading"
           variant="outlined"
           :label="$t('preferredLanguage')"
           :rules="SomeItemSelectedRule"
@@ -74,97 +72,50 @@
 </template>
 
 <script setup lang="ts">
-import { ref, shallowRef, watch } from 'vue';
-import type { LocalizationOption } from '@jellyfin/sdk/lib/generated-client';
+import { shallowRef, watch } from 'vue';
 import { getLocalizationApi } from '@jellyfin/sdk/lib/utils/api/localization-api';
 import { getConfigurationApi } from '@jellyfin/sdk/lib/utils/api/configuration-api';
 import { getBrandingApi } from '@jellyfin/sdk/lib/utils/api/branding-api';
 import { SomeItemSelectedRule } from '@jellyfin-vue/shared/validation';
-import type { ServerConfiguration } from '@jellyfin/sdk/lib/generated-client/models/server-configuration';
-import type { BrandingOptions } from '@jellyfin/sdk/lib/generated-client/models/branding-options';
-import i18next from 'i18next';
 import { useApi } from '#/composables/apis';
 import { taskManager } from '#/store/task-manager.ts';
-import { useSnackbar } from '#/composables/use-snackbar.ts';
 
-const serverSettings = ref<Partial<ServerConfiguration>>({
-  ServerName: '',
-  UICulture: '',
-  QuickConnectAvailable: false,
-  CachePath: '',
-  MetadataPath: '',
-  LibraryScanFanoutConcurrency: 0,
-  ParallelImageEncodingLimit: 0
-});
-const brandingSettings = ref<Partial<BrandingOptions>>({
-  LoginDisclaimer: '',
-  SplashscreenEnabled: false
-});
+let taskId: string | undefined;
 
-const loading = shallowRef(false);
-const culturesList = ref<LocalizationOption[]>([]);
+const signal = shallowRef(false);
+const [
+  { data: culturesList },
+  { data: serverSettings },
+  { data: brandingSettings }
+] = await Promise.all([
+  useApi(getLocalizationApi, 'getLocalizationOptions')(),
+  useApi(getConfigurationApi, 'getConfiguration')(),
+  useApi(getBrandingApi, 'getBrandingOptions')()
+]);
 
-const updateConfigurationApiCaller = useApi(
+const { loading: l1 } = await useApi(
   getConfigurationApi,
-  'updateConfiguration',
+  () => signal.value ? 'updateConfiguration' : undefined,
   { skipCache: { request: true }, globalLoading: false }
-);
-
-const updateNamedConfigurationApiCaller = useApi(
+)(() => ({
+  serverConfiguration: serverSettings.value
+}));
+const { loading: l2 } = await useApi(
   getConfigurationApi,
-  'updateNamedConfiguration',
+  () => signal.value ? 'updateNamedConfiguration' : undefined,
   { skipCache: { request: true }, globalLoading: false }
-);
+)(() => ({
+  key: 'branding',
+  body: JSON.stringify(brandingSettings.value)
+}));
 
-/**
- * Loads the settings from the server
- */
-async function loadSettings() {
-  loading.value = true;
-
-  try {
-    const { data: localization } = await useApi(getLocalizationApi, 'getLocalizationOptions')();
-    const { data: config } = await useApi(getConfigurationApi, 'getConfiguration')();
-    const { data: branding } = await useApi(getBrandingApi, 'getBrandingOptions')();
-
-    serverSettings.value = config.value!;
-    brandingSettings.value = branding.value;
-    culturesList.value = localization.value;
-  } catch (error) {
-    console.error('Error loading settings:', error);
-  } finally {
-    loading.value = false;
+watch([l1, l2], (newval) => {
+  if (newval.some(Boolean)) {
+    taskId = taskManager.startConfigSync();
+  } else if (taskId) {
+    taskManager.finishTask(taskId);
   }
-}
+});
 
-await loadSettings();
-
-watch(serverSettings, async () => {
-  const syncTaskId = taskManager.startConfigSync();
-
-  try {
-    await updateConfigurationApiCaller(() => ({
-      serverConfiguration: serverSettings.value
-    }));
-  } catch {
-    useSnackbar(i18next.t('failedSyncingUserSettings'), 'error');
-  } finally {
-    taskManager.finishTask(syncTaskId);
-  }
-}, { deep: true });
-
-watch(brandingSettings, async () => {
-  const syncTaskId = taskManager.startConfigSync();
-
-  try {
-    await updateNamedConfigurationApiCaller(() => ({
-      key: 'branding',
-      body: JSON.stringify(brandingSettings.value)
-    }));
-  } catch {
-    useSnackbar(i18next.t('failedSyncingUserSettings'), 'error');
-  } finally {
-    taskManager.finishTask(syncTaskId);
-  }
-}, { deep: true });
+watch([serverSettings, brandingSettings], () => signal.value = true, { once: true });
 </script>
