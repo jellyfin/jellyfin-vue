@@ -326,7 +326,7 @@
   "saveAsPlaylist": "Save queue as a playlist",
   "saved": "Saved",
   "scanForNewAndUpdatedFiles": "Scan for new and updated files",
-  "scanningItemInProgress": "Scanning '{{library}}'…",
+  "scanningItemInProgress": "Scanning '{{item}}'…",
   "scheduledTasks": "Scheduled tasks",
   "scheduledTasksSettingsDescription": "Manage scheduled tasks running on this server",
   "screenshot": "Screenshot",

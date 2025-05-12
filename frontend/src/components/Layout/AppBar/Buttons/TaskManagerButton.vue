@@ -76,7 +76,7 @@ const mappedTaskList = computed<TaskInfo[]>(() => {
         return {
           progress: tsk.progress,
           text: t('scanningItemInProgress', {
-            library: tsk.data ?? ''
+            item: tsk.data ?? ''
           }),
           id: tsk.id
         };
