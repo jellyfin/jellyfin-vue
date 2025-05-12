@@ -13,11 +13,11 @@
         </h3>
 
         <VTextField
-          v-model="serverSettings.name"
+          v-model="serverSettings.ServerName"
           :label="$t('serverName')" />
 
         <VSelect
-          v-model="serverSettings.language"
+          v-model="serverSettings.UICulture"
           :loading="loading"
           :disabled="loading"
           variant="outlined"
@@ -28,7 +28,7 @@
           :items="culturesList" />
 
         <VCheckbox
-          v-model="serverSettings.quickConnect"
+          v-model="serverSettings.QuickConnectAvailable"
           :label="$t('enableQuickConnect')" />
 
         <h3 class="uno-mb-2 uno-text-lg uno-font-bold">
@@ -36,11 +36,11 @@
         </h3>
 
         <VTextField
-          v-model="serverSettings.cachePath"
+          v-model="serverSettings.CachePath"
           :label="$t('cachePath')" />
 
         <VTextField
-          v-model="serverSettings.metadataPath"
+          v-model="serverSettings.MetadataPath"
           :label="$t('metadataPath')" />
 
         <h3 class="uno-mb-2 uno-text-lg uno-font-bold">
@@ -48,11 +48,11 @@
         </h3>
 
         <VTextField
-          v-model="serverSettings.loginDisclaimer"
+          v-model="brandingSettings.LoginDisclaimer"
           :label="$t('loginDisclaimer')" />
 
         <VCheckbox
-          v-model="serverSettings.enableSplash"
+          v-model="brandingSettings.SplashscreenEnabled"
           :label="$t('enableSplashScreen')" />
 
         <h3 class="uno-mb-2 uno-text-lg uno-font-bold">
@@ -60,140 +60,111 @@
         </h3>
 
         <VTextField
-          v-model.number="serverSettings.parallelLibraryScan"
+          v-model.number="serverSettings.LibraryScanFanoutConcurrency"
           :label="$t('parallelLibraryScanLimit')"
           type="number" />
 
         <VTextField
-          v-model.number="serverSettings.parallelImageEncoding"
+          v-model.number="serverSettings.ParallelImageEncodingLimit"
           :label="$t('parallelImageEncodingLimit')"
           type="number" />
-
-        <VBtn
-          variant="flat"
-          width="8em"
-          color="primary"
-          :loading="saving"
-          :disabled="saving"
-          @click="saveSettings">
-          {{ $t('save') }}
-        </VBtn>
       </VCol>
     </template>
   </SettingsPage>
 </template>
 
 <script setup lang="ts">
-import { ref, shallowRef, onMounted } from 'vue';
+import { ref, shallowRef, watch } from 'vue';
 import type { LocalizationOption } from '@jellyfin/sdk/lib/generated-client';
 import { getLocalizationApi } from '@jellyfin/sdk/lib/utils/api/localization-api';
 import { getConfigurationApi } from '@jellyfin/sdk/lib/utils/api/configuration-api';
 import { getBrandingApi } from '@jellyfin/sdk/lib/utils/api/branding-api';
 import { SomeItemSelectedRule } from '@jellyfin-vue/shared/validation';
-import { remote } from '#/plugins/remote';
+import type { ServerConfiguration } from '@jellyfin/sdk/lib/generated-client/models/server-configuration';
+import type { BrandingOptions } from '@jellyfin/sdk/lib/generated-client/models/branding-options';
+import i18next from 'i18next';
+import { useApi } from '#/composables/apis';
+import { taskManager } from '#/store/task-manager.ts';
+import { useSnackbar } from '#/composables/use-snackbar.ts';
 
-interface ServerSettings {
-  name: string | undefined;
-  language: string | undefined;
-  quickConnect: boolean | undefined;
-  cachePath: string | undefined | null;
-  metadataPath: string | undefined;
-  loginDisclaimer: string | undefined | null;
-  enableSplash: boolean | undefined;
-  parallelLibraryScan: number | undefined;
-  parallelImageEncoding: number | undefined;
-}
-
-const serverSettings = ref<ServerSettings>({
-  name: '',
-  language: '',
-  quickConnect: false,
-  cachePath: '',
-  metadataPath: '',
-  loginDisclaimer: '',
-  enableSplash: true,
-  parallelLibraryScan: 0,
-  parallelImageEncoding: 0
+const serverSettings = ref<Partial<ServerConfiguration>>({
+  ServerName: '',
+  UICulture: '',
+  QuickConnectAvailable: false,
+  CachePath: '',
+  MetadataPath: '',
+  LibraryScanFanoutConcurrency: 0,
+  ParallelImageEncodingLimit: 0
+});
+const brandingSettings = ref<Partial<BrandingOptions>>({
+  LoginDisclaimer: '',
+  SplashscreenEnabled: false
 });
 
 const loading = shallowRef(false);
-const saving = shallowRef(false);
 const culturesList = ref<LocalizationOption[]>([]);
 
+const updateConfigurationApiCaller = useApi(
+  getConfigurationApi,
+  'updateConfiguration',
+  { skipCache: { request: true }, globalLoading: false }
+);
+
+const updateNamedConfigurationApiCaller = useApi(
+  getConfigurationApi,
+  'updateNamedConfiguration',
+  { skipCache: { request: true }, globalLoading: false }
+);
+
 /**
- * * Saves the settings to the server
+ * Loads the settings from the server
  */
-async function saveSettings() {
-  saving.value = true;
-
-  try {
-    const configApi = remote.sdk.newUserApi(getConfigurationApi);
-    const configRes = await configApi.getConfiguration();
-    const config = configRes.data;
-
-    config.ServerName = serverSettings.value.name;
-    config.UICulture = serverSettings.value.language;
-    config.QuickConnectAvailable = serverSettings.value.quickConnect;
-    config.CachePath = serverSettings.value.cachePath;
-    config.MetadataPath = serverSettings.value.metadataPath;
-    config.LibraryScanFanoutConcurrency = serverSettings.value.parallelLibraryScan;
-    config.ParallelImageEncodingLimit = serverSettings.value.parallelImageEncoding;
-
-    const brandingApi = remote.sdk.newUserApi(getBrandingApi);
-    const brandingRes = await brandingApi.getBrandingOptions();
-    const branding = brandingRes.data;
-
-    branding.LoginDisclaimer = serverSettings.value.loginDisclaimer;
-    branding.SplashscreenEnabled = serverSettings.value.enableSplash;
-
-    await configApi.updateConfiguration({
-      serverConfiguration: config
-    });
-    await configApi.updateNamedConfiguration({
-      key: 'branding',
-      body: JSON.stringify(branding)
-    });
-
-    console.log('Settings saved successfully');
-  } catch (error) {
-    console.error('Error saving settings:', error);
-  } finally {
-    saving.value = false;
-  }
-}
-
-onMounted(async () => {
+async function loadSettings() {
   loading.value = true;
 
   try {
-    const localizationApi = remote.sdk.newUserApi(getLocalizationApi);
+    const { data: localization } = await useApi(getLocalizationApi, 'getLocalizationOptions')();
+    const { data: config } = await useApi(getConfigurationApi, 'getConfiguration')();
+    const { data: branding } = await useApi(getBrandingApi, 'getBrandingOptions')();
 
-    culturesList.value = (
-      await localizationApi.getLocalizationOptions()
-    ).data;
-
-    const configApi = remote.sdk.newUserApi(getConfigurationApi);
-    const configRes = await configApi.getConfiguration();
-    const config = configRes.data;
-
-    serverSettings.value.name = config.ServerName;
-    serverSettings.value.language = config.UICulture;
-    serverSettings.value.quickConnect = config.QuickConnectAvailable;
-    serverSettings.value.cachePath = config.CachePath;
-    serverSettings.value.metadataPath = config.MetadataPath;
-    serverSettings.value.parallelLibraryScan = config.LibraryScanFanoutConcurrency;
-    serverSettings.value.parallelImageEncoding = config.ParallelImageEncodingLimit;
-
-    const brandingApi = remote.sdk.newUserApi(getBrandingApi);
-    const brandingRes = await brandingApi.getBrandingOptions();
-    const branding = brandingRes.data;
-
-    serverSettings.value.loginDisclaimer = branding.LoginDisclaimer;
-    serverSettings.value.enableSplash = branding.SplashscreenEnabled;
+    serverSettings.value = config.value!;
+    brandingSettings.value = branding.value;
+    culturesList.value = localization.value;
   } catch (error) {
     console.error('Error loading settings:', error);
   } finally {
     loading.value = false;
   }
-});
+}
+
+await loadSettings();
+
+watch(serverSettings, async () => {
+  const syncTaskId = taskManager.startConfigSync();
+
+  try {
+    await updateConfigurationApiCaller(() => ({
+      serverConfiguration: serverSettings.value
+    }));
+  } catch {
+    useSnackbar(i18next.t('failedSyncingUserSettings'), 'error');
+  } finally {
+    taskManager.finishTask(syncTaskId);
+  }
+}, { deep: true });
+
+watch(brandingSettings, async () => {
+  const syncTaskId = taskManager.startConfigSync();
+
+  try {
+    await updateNamedConfigurationApiCaller(() => ({
+      key: 'branding',
+      body: JSON.stringify(brandingSettings.value)
+    }));
+  } catch {
+    useSnackbar(i18next.t('failedSyncingUserSettings'), 'error');
+  } finally {
+    taskManager.finishTask(syncTaskId);
+  }
+}, { deep: true });
 </script>
