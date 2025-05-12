@@ -99,7 +99,6 @@ interface ServerSettings {
   cachePath: string | undefined | null;
   metadataPath: string | undefined;
   loginDisclaimer: string | undefined | null;
-  customCSS: string | undefined | null;
   enableSplash: boolean | undefined;
   parallelLibraryScan: number | undefined;
   parallelImageEncoding: number | undefined;
@@ -146,7 +145,6 @@ async function saveSettings() {
     const branding = brandingRes.data;
 
     branding.LoginDisclaimer = serverSettings.value.loginDisclaimer;
-    branding.CustomCss = serverSettings.value.customCSS;
     branding.SplashscreenEnabled = serverSettings.value.enableSplash;
 
     await configApi.updateConfiguration({
@@ -192,7 +190,6 @@ onMounted(async () => {
     const branding = brandingRes.data;
 
     serverSettings.value.loginDisclaimer = branding.LoginDisclaimer;
-    serverSettings.value.customCSS = branding.CustomCss;
     serverSettings.value.enableSplash = branding.SplashscreenEnabled;
   } catch (error) {
     console.error('Error loading settings:', error);
