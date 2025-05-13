@@ -23,7 +23,7 @@ import i18next from 'i18next';
 import { useBaseItem } from '#/composables/apis';
 import { useSnackbar } from '#/composables/use-snackbar';
 import { remote } from '#/plugins/remote';
-import { apiStore } from '#/store/api';
+import { apiStore } from '#/store/dbs/api';
 import { getImageInfo } from '#/utils/images';
 import { getItemRuntime } from '#/utils/items';
 import playbackProfile from '#/utils/playback-profiles';
@@ -124,8 +124,8 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   /**
    * Map ids into BaseItemDto's objects of the queue
    */
-  public readonly queue = computed(() => apiStore.getItemsById(this._state.value.queue) as BaseItemDto[]);
-  public readonly initiator = computed(() => apiStore.getItemById(this._state.value.playbackInitiatorId));
+  public readonly queue = computedAsync(async () => await apiStore.getItemsById(this._state.value.queue) as BaseItemDto[], []);
+  public readonly initiator = computedAsync(async () => await apiStore.getItemById(this._state.value.playbackInitiatorId));
   public readonly currentItemIndex = computed({
     get: () => this._state.value.currentItemIndex,
     set: (newIndex: number | undefined) => {
@@ -284,8 +284,8 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   /**
    * Get the media type of the currently playing item
    */
-  private readonly _currentlyPlayingMediaType = computed(() =>
-    apiStore.getItemById(this.currentItemId.value)
+  private readonly _currentlyPlayingMediaType = computedAsync(async () =>
+    (await apiStore.getItemById(this.currentItemId.value))
       ?.MediaType
   );
 

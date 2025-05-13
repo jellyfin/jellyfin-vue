@@ -3,7 +3,7 @@ import { watch } from 'vue';
 import { isArray, isNil, isObj, isStr, sealed } from '@jellyfin-vue/shared/validation';
 import { CommonStore } from '#/store/super/common-store';
 import { remote } from '#/plugins/remote';
-import { apiStore } from '#/store/api';
+import { apiStore } from '#/store/dbs/api';
 
 /**
  * == INTERFACES AND TYPES ==
@@ -108,7 +108,7 @@ class TaskManagerStore extends CommonStore<TaskManagerState, 'tasks'> {
     /**
      * Handle refresh progress update for library items
      */
-    const refreshProgressAction = (type: string, data: object): void => {
+    const refreshProgressAction = async (type: string, data: object) => {
       if (
         type === 'RefreshProgress'
         && 'ItemId' in data
@@ -125,7 +125,7 @@ class TaskManagerStore extends CommonStore<TaskManagerState, 'tasks'> {
          * Usually when a running task is started somewhere else and the client is accssed later
          */
         if (isNil(taskPayload)) {
-          const item = apiStore.getItemById(data.ItemId);
+          const item = await apiStore.getItemById(data.ItemId);
 
           if (item?.Id && item.Name) {
             this.startTask({
@@ -172,7 +172,7 @@ class TaskManagerStore extends CommonStore<TaskManagerState, 'tasks'> {
           return;
         }
 
-        refreshProgressAction(MessageType, Data);
+        void refreshProgressAction(MessageType, Data);
         libraryChangedAction(MessageType, Data);
       }
     );

@@ -81,10 +81,10 @@
 import { BaseItemKind, type BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getPersonsApi } from '@jellyfin/sdk/lib/utils/api/persons-api';
-import { refDebounced } from '@vueuse/core';
+import { computedAsync, refDebounced } from '@vueuse/core';
 import { computed, shallowRef } from 'vue';
 import { useRoute } from 'vue-router';
-import { apiStore } from '#/store/api';
+import { apiStore } from '#/store/dbs/api';
 import { useResponsiveClasses } from '#/composables/use-responsive-classes';
 import { useBaseItem } from '#/composables/apis';
 
@@ -126,17 +126,17 @@ const serverSearchIds = computed(() => {
 
   return [];
 });
-const items = computed(() => {
+const items = computedAsync(async () => {
   if (searchDebounced.value) {
-    const items = apiStore.findItems(searchDebounced.value);
+    const items = await apiStore.findItems(searchDebounced.value);
     const itemsIds = new Set(items.map(i => i.Id!));
     const serverItems = serverSearchIds.value.filter(i => !itemsIds.has(i));
 
-    return [...items, ...(apiStore.getItemsById(serverItems) as BaseItemDto[])];
+    return [...items, ...(await apiStore.getItemsById(serverItems) as BaseItemDto[])];
   }
 
   return [];
-});
+}, []);
 const movies = computed(() =>
   items.value.filter(item => item.Type === BaseItemKind.Movie)
 );

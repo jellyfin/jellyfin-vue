@@ -115,6 +115,15 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched' |
       }))
   );
 
+  /**
+   * Filters the external subtitle tracks
+   */
+  public readonly currentItemExternalParsedSubtitleTracks = computed(() =>
+    this.currentItemParsedSubtitleTracks.value?.filter(
+      sub => !isNil(sub.codec) && !isNil(sub.src)
+    )
+  );
+
   public readonly currentExternalSubtitleTrack = computedAsync(async () => {
     const el = this.currentItemExternalParsedSubtitleTracks.value?.find(
       sub => sub.srcIndex === playbackManager.currentSubtitleTrack.value?.Index
@@ -128,15 +137,6 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched' |
 
     return el;
   });
-
-  /**
-   * Filters the external subtitle tracks
-   */
-  public readonly currentItemExternalParsedSubtitleTracks = computed(() =>
-    this.currentItemParsedSubtitleTracks.value?.filter(
-      sub => !isNil(sub.codec) && !isNil(sub.src)
-    )
-  );
 
   public readonly currentItemVttParsedSubtitleTracks = computed(() =>
     this.currentItemExternalParsedSubtitleTracks.value?.filter(

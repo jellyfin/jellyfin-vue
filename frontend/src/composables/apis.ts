@@ -2,8 +2,22 @@ import type { Api } from '@jellyfin/sdk';
 import type { BaseItemDto, BaseItemDtoQueryResult } from '@jellyfin/sdk/lib/generated-client';
 import type { AxiosResponse } from 'axios';
 import { deepEqual } from 'fast-equals';
-import { computed, effectScope, getCurrentScope, inject, isRef, shallowRef, toValue, unref, watch, type ComputedRef, type MaybeRefOrGetter, type Ref, type MaybeRef } from 'vue';
-import { until, watchDeep, whenever } from '@vueuse/core';
+import {
+  computed,
+  effectScope,
+  getCurrentScope,
+  inject,
+  isRef,
+  shallowRef,
+  toValue,
+  unref,
+  watch,
+  type ComputedRef,
+  type MaybeRefOrGetter,
+  type Ref,
+  type MaybeRef
+} from 'vue';
+import { computedAsync, until, watchDeep, whenever } from '@vueuse/core';
 import type { IsEqual, Exact, Writable } from 'type-fest';
 import { isArray, isFunc, isNil } from '@jellyfin-vue/shared/validation';
 import i18next from 'i18next';
@@ -11,7 +25,7 @@ import { useLoading } from '#/composables/use-loading';
 import { useSnackbar } from '#/composables/use-snackbar';
 import { remote } from '#/plugins/remote';
 import { isConnectedToServer } from '#/store';
-import { apiStore } from '#/store/api';
+import { apiEnums, apiStore } from '#/store/dbs/api';
 import { JView_isRouting } from '#/store/keys';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -88,10 +102,10 @@ const defaultOps: BaseItemComposableOps = Object.freeze({
 function startLoading(loading: Ref<boolean | undefined> | undefined, global: boolean): void {
   if (!isNil(loading)) {
     loading.value = true;
+  }
 
-    if (global) {
-      useLoading().start();
-    }
+  if (global) {
+    useLoading().start();
   }
 }
 
@@ -101,12 +115,12 @@ function startLoading(loading: Ref<boolean | undefined> | undefined, global: boo
  * @param global - Whether to start the global loading indicator or not
  */
 function stopLoading(loading: Ref<boolean | undefined> | undefined, global: boolean): void {
-  if (!isNil(loading)) {
+  if (!isNil(loading?.value)) {
     loading.value = false;
+  }
 
-    if (global) {
-      useLoading().finish();
-    }
+  if (global) {
+    useLoading().finish();
   }
 }
 
@@ -135,9 +149,9 @@ async function resolveAndAdd<T extends Record<K, (...args: any[]) => any>, K ext
     {
       ...args[0],
       ...(remote.auth.currentUserId.value && { userId: remote.auth.currentUserId.value }),
-      fields: apiStore.apiEnums.fields,
+      fields: apiEnums.fields,
       enableUserData: true,
-      enableImageTypes: apiStore.apiEnums.images,
+      enableImageTypes: apiEnums.images,
       enableImages: true,
       enableTotalRecordCount: false
     },
@@ -155,14 +169,10 @@ async function resolveAndAdd<T extends Record<K, (...args: any[]) => any>, K ext
       const result: ExtractItems<typeof requestData> = 'Items' in requestData && isArray(requestData.Items) ? requestData.Items : requestData;
 
       if (ofBaseItem && !ops.skipCache.baseItem) {
-        apiStore.baseItemAdd(result as BaseItemDto | BaseItemDto[]);
+        await apiStore.baseItemAdd(result as BaseItemDto | BaseItemDto[]);
       }
 
-      if (ops.skipCache.request) {
-        return result;
-      } else {
-        apiStore.requestAdd(funcName, stringifiedArgs, ofBaseItem, result);
-      }
+      return ops.skipCache.request ? result : (await apiStore.requestAdd(funcName, stringifiedArgs, ofBaseItem, result));
     }
   } catch {
     if (!isNil(loading)) {
@@ -181,50 +191,57 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
   api: MaybeRef<((api: Api) => T) | undefined>,
   methodName: MaybeRefOrGetter<K | undefined>,
   ops: Required<ComposableOps>
-): (this: any, ...args: ComposableParams<T, K, U>) => Promise<ReturnPayload<T, K, typeof ofBaseItem>> | ReturnPayload<T, K, typeof ofBaseItem> {
+): (this: any, ...args: ComposableParams<T, K, U>) => Promise<ReturnPayload<T, K, typeof ofBaseItem>> {
   const offlineParams: OfflineParams<T, K>[] = [];
   const rawParams = () => ({ raw_api: unref(api), raw_method: toValue(methodName) });
-  const isFuncDefined = () => {
-    const { raw_api, raw_method } = rawParams();
-
-    return !isNil(raw_api) && !isNil(toValue(raw_method));
-  };
 
   const loading = shallowRef<boolean | undefined>(false);
   const argsRef = shallowRef<Parameters<T[K]>>();
   const result = shallowRef<ReturnData<T, K, typeof ofBaseItem>>();
+  const evalStates = [shallowRef(true), shallowRef(true)];
 
   const stringArgs = computed(() => {
-    return JSON.stringify(argsRef.value);
+    return JSON.stringify(argsRef.value ?? []);
   });
 
+  const currentCachedRequest = computedAsync<Awaited<ReturnType<typeof apiStore.getCachedResponse>> | undefined>(
+    async () => {
+      /* We have this there so the computed refresh on signal update */
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      result.value;
+
+      const { raw_api, raw_method } = rawParams();
+
+      return await apiStore.getCachedResponse(
+        `${String(raw_api?.name)}.${String(raw_method)}`,
+        stringArgs.value);
+    },
+    undefined,
+    { evaluating: evalStates[0], flush: 'sync' }
+  );
   /**
    * TODO: Check why previous returns unknown by default without the type annotation
    */
-  const cachedData = computed<ReturnType<typeof apiStore.getCachedRequest> | undefined>((previous) => {
-    const { raw_api, raw_method } = rawParams();
-    const currentCachedRequest = apiStore.getCachedRequest(`${String(raw_api?.name)}.${String(raw_method)}`, stringArgs.value);
-
-    if ((loading.value || isNil(loading.value)) && !currentCachedRequest) {
-      return previous;
-    }
-
-    return currentCachedRequest;
-  });
-  const isCached = computed(() => !!cachedData.value);
-  const data = computed<ReturnData<T, K, typeof ofBaseItem>>(() => {
+  const cachedData = computed<typeof currentCachedRequest['value']>(previous =>
+    (loading.value || isNil(loading.value)) && !currentCachedRequest.value
+      ? previous
+      : currentCachedRequest.value
+  );
+  const data = computedAsync<ReturnData<T, K, typeof ofBaseItem>>(async () => {
     if (ops.skipCache.request && result.value) {
       if (ofBaseItem) {
         return isArray(result.value)
-          ? apiStore.getItemsById((result.value as BaseItemDto[]).map(r => r.Id)) as ReturnData<T, K, typeof ofBaseItem>
-          : apiStore.getItemById((result.value as BaseItemDto).Id) as ReturnData<T, K, typeof ofBaseItem>;
+          ? await apiStore.getItemsById((result.value as BaseItemDto[]).map(r => r.Id))
+          : await apiStore.getItemById((result.value as BaseItemDto).Id);
       } else {
         return result.value;
       }
     } else {
-      return apiStore.getRequest(cachedData.value) as ReturnData<T, K, typeof ofBaseItem>;
+      return await apiStore.getRequest(cachedData.value);
     }
-  });
+  }, undefined, { evaluating: evalStates[1], flush: 'sync' });
+  const isEvaluating = computed(() => evalStates.some(e => e.value));
+  const isCached = computed(() => !!cachedData.value && !isEvaluating.value);
 
   /**
    * Function invoked per every data change.
@@ -248,7 +265,15 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
     if (argsRef.value && !onlyPending) {
       try {
         if (isConnectedToServer.value) {
-          const resolved = await resolveAndAdd(raw_api, raw_method, ofBaseItem, isRefresh ? undefined : loading, stringArgs.value, ops, ...argsRef.value);
+          const resolved = await resolveAndAdd(
+            raw_api,
+            raw_method,
+            ofBaseItem,
+            isRefresh ? undefined : loading,
+            stringArgs.value,
+            ops,
+            ...argsRef.value
+          );
 
           result.value = resolved as ReturnData<T, K, typeof ofBaseItem>;
         } else {
@@ -264,7 +289,12 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
     }
   };
 
-  return function (this: any, ...args: ComposableParams<T, K, U>) {
+  return async function (this: any, ...args: ComposableParams<T, K, U>) {
+    const isFuncDefined = () => {
+      const { raw_api, raw_method } = rawParams();
+
+      return !isNil(raw_api) && !isNil(toValue(raw_method));
+    };
     const normalizeArgs = (): Parameters<T[K]> => args.map(a => toValue(a)) as Parameters<T[K]>;
     const runNormally = async (): Promise<void> => {
       await run({});
@@ -324,11 +354,11 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
       }
     }
 
+    await until(isEvaluating).not.toBeTruthy({ flush: 'pre' });
+
     /**
      * If there's available data before component mount, we return the cached data rightaway (see below how
      * we skip the promise) to get the component mounted as soon as possible.
-     * However, we queue a request to the server to update the data after the component is
-     * mounted. setTimeout executes it when the event loop is clear, avoiding overwhelming the engine.
      */
     if (isCached.value) {
       void run({ isRefresh: true });
@@ -397,7 +427,7 @@ export function useBaseItem<T extends Record<K, (...args: any[]) => any>, K exte
   api: MaybeRef<((api: Api) => T) | undefined>,
   methodName: MaybeRefOrGetter<K | undefined>,
   ops?: BaseItemComposableOps
-): (this: any, ...args: ComposableParams<T, K, U>) => Promise<ReturnPayload<T, K, true>> | ReturnPayload<T, K, true> {
+): (this: any, ...args: ComposableParams<T, K, U>) => Promise<ReturnPayload<T, K, true>> {
   return _sharedInternalLogic<T, K, U>(true, api, methodName, (ops ? { ...ops, ...defaultOps } : defaultOps) as Required<ComposableOps>);
 }
 
@@ -457,7 +487,7 @@ export function useApi<T extends Record<K, (...args: any[]) => any>, K extends k
   api: MaybeRef<((api: Api) => T) | undefined>,
   methodName: MaybeRefOrGetter<K | undefined>,
   ops?: ComposableOps
-): (this: any, ...args: ComposableParams<T, K, U>) => Promise<ReturnPayload<T, K, false>> | ReturnPayload<T, K, false> {
+): (this: any, ...args: ComposableParams<T, K, U>) => Promise<ReturnPayload<T, K, false>> {
   return _sharedInternalLogic<T, K, U>(false, api, methodName, (ops ? { ...ops, ...defaultOps } : defaultOps) as Required<ComposableOps>);
 }
 

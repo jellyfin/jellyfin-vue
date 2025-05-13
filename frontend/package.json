@@ -42,6 +42,7 @@
     "date-fns": "4.1.0",
     "defu": "6.1.4",
     "destr": "2.0.5",
+    "dexie": "4.0.11",
     "fast-equals": "5.2.2",
     "hls.js": "1.6.2",
     "i18next": "25.1.2",
@@ -67,7 +68,7 @@
     "unplugin-vue-components": "28.5.0",
     "unplugin-vue-router": "0.12.0",
     "vite-plugin-vue-devtools": "7.7.6"
-  }, 
+  },
   "peerDependencies": {
     "@chromatic-com/storybook": "*",
     "@storybook/addon-a11y": "*",
@@ -80,7 +81,7 @@
     "storybook": "*",
     "type-fest": "*",
     "vite": "*"
-  }, 
+  },
   "peerDependenciesMeta": {
     "@chromatic-com/storybook": {
       "optional": true
