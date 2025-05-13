@@ -2,16 +2,32 @@ import type { Api } from '@jellyfin/sdk';
 import type { BaseItemDto, BaseItemDtoQueryResult } from '@jellyfin/sdk/lib/generated-client';
 import type { AxiosResponse } from 'axios';
 import { deepEqual } from 'fast-equals';
-import { computed, effectScope, getCurrentScope, inject, isRef, shallowRef, toValue, unref, watch, type ComputedRef, type MaybeRefOrGetter, type Ref, type MaybeRef } from 'vue';
+import {
+  computed,
+  effectScope,
+  getCurrentScope,
+  inject,
+  isRef,
+  shallowRef,
+  toValue,
+  unref,
+  watch,
+  type ComputedRef,
+  type MaybeRefOrGetter,
+  type Ref,
+  type MaybeRef,
+  type ShallowRef
+} from 'vue';
 import { until, watchDeep, whenever } from '@vueuse/core';
 import type { IsEqual, Exact, Writable } from 'type-fest';
 import { isArray, isFunc, isNil } from '@jellyfin-vue/shared/validation';
 import i18next from 'i18next';
+import { defu } from 'defu';
 import { useLoading } from '#/composables/use-loading';
 import { useSnackbar } from '#/composables/use-snackbar';
 import { remote } from '#/plugins/remote';
 import { isConnectedToServer } from '#/store';
-import { apiStore } from '#/store/api';
+import { apiEnums, apiStore, lastUpdatedIds } from '#/store/dbs/api';
 import { JView_isRouting } from '#/store/keys';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -72,7 +88,7 @@ interface ComposableOps {
 
 type BaseItemComposableOps = ComposableOps & BetterOmit<SkipCacheOps, 'baseItem'>;
 
-const defaultOps: BaseItemComposableOps = Object.freeze({
+const defaultOps: () => BaseItemComposableOps = () => ({
   globalLoading: true,
   skipCache: {
     baseItem: false,
@@ -88,10 +104,10 @@ const defaultOps: BaseItemComposableOps = Object.freeze({
 function startLoading(loading: Ref<boolean | undefined> | undefined, global: boolean): void {
   if (!isNil(loading)) {
     loading.value = true;
+  }
 
-    if (global) {
-      useLoading().start();
-    }
+  if (global) {
+    useLoading().start();
   }
 }
 
@@ -101,12 +117,12 @@ function startLoading(loading: Ref<boolean | undefined> | undefined, global: boo
  * @param global - Whether to start the global loading indicator or not
  */
 function stopLoading(loading: Ref<boolean | undefined> | undefined, global: boolean): void {
-  if (!isNil(loading)) {
+  if (!isNil(loading?.value)) {
     loading.value = false;
+  }
 
-    if (global) {
-      useLoading().finish();
-    }
+  if (global) {
+    useLoading().finish();
   }
 }
 
@@ -119,7 +135,7 @@ function stopLoading(loading: Ref<boolean | undefined> | undefined, global: bool
  * @param loading - Ref to hold the loading state
  * @param args - Func args
  */
-async function resolveAndAdd<T extends Record<K, (...args: any[]) => any>, K extends keyof T>(
+async function fetchAndAdd<T extends Record<K, (...args: any[]) => any>, K extends keyof T>(
   api: (api: Api) => T,
   methodName: K,
   ofBaseItem: boolean,
@@ -135,9 +151,9 @@ async function resolveAndAdd<T extends Record<K, (...args: any[]) => any>, K ext
     {
       ...args[0],
       ...(remote.auth.currentUserId.value && { userId: remote.auth.currentUserId.value }),
-      fields: apiStore.apiEnums.fields,
+      fields: apiEnums.fields,
       enableUserData: true,
-      enableImageTypes: apiStore.apiEnums.images,
+      enableImageTypes: apiEnums.images,
       enableImages: true,
       enableTotalRecordCount: false
     },
@@ -155,14 +171,13 @@ async function resolveAndAdd<T extends Record<K, (...args: any[]) => any>, K ext
       const result: ExtractItems<typeof requestData> = 'Items' in requestData && isArray(requestData.Items) ? requestData.Items : requestData;
 
       if (ofBaseItem && !ops.skipCache.baseItem) {
-        apiStore.baseItemAdd(result as BaseItemDto | BaseItemDto[]);
+        await apiStore.baseItemAdd(result as BaseItemDto | BaseItemDto[]);
       }
 
-      if (ops.skipCache.request) {
-        return result;
-      } else {
-        apiStore.requestAdd(funcName, stringifiedArgs, ofBaseItem, result);
-      }
+      return ops.skipCache.request
+        ? result
+        : (await apiStore.requestAdd(funcName, stringifiedArgs, ofBaseItem, result)) as
+          ExtractItems<Awaited<ReturnType<T[K]>['data']>>;
     }
   } catch {
     if (!isNil(loading)) {
@@ -174,6 +189,141 @@ async function resolveAndAdd<T extends Record<K, (...args: any[]) => any>, K ext
 }
 
 /**
+ * Ensures that the last promise execution is the only
+ * one that applies the value to the passed ref
+ */
+function cancellableWrapper<T, F extends (...args: any[]) => Promise<any>>(
+  ref: ShallowRef<T>,
+  task: F
+): (...args: Parameters<F>) => Promise<void> {
+  let counter = 0;
+
+  return async (...args: Parameters<F>): Promise<void> => {
+    counter++;
+
+    const counterAtBeginning = counter;
+    const result = await task(...args);
+
+    if (counter === counterAtBeginning) {
+      ref.value = result as T;
+    }
+  };
+}
+
+/**
+ * Gets a closure holding the state of the cached ApiResponse
+ *
+ * Check {@link #/store/dbs/api/api-response:ApiResponse | ApiResponse} for more details
+ * about the storage layer.
+ */
+function getRequestClosure<T extends Record<K, (...args: any[]) => any>, K extends keyof T>(
+  rawParams: () => {
+    raw_api: ((api: Api) => T) | undefined;
+    raw_method: K | undefined;
+  },
+  argsRef: ComputedRef<string>
+) {
+  return (() => {
+    const ref = shallowRef<Awaited<ReturnType<typeof apiStore['getCachedRequest']>>>();
+
+    return {
+      ref,
+      trigger: cancellableWrapper(ref, async () => {
+        const { raw_api, raw_method } = rawParams();
+
+        return await apiStore.getCachedRequest(
+          `${String(raw_api?.name)}.${String(raw_method)}`,
+          argsRef.value
+        );
+      })
+    };
+  })();
+}
+
+/**
+ * Gets a closure holding the state of the cached Item
+ *
+ * Check {@link #/store/dbs/api/item:Item | Item} for more details
+ * about the storage layer.
+ */
+function getItemClosure<T extends Record<K, (...args: any[]) => any>, K extends keyof T>() {
+  return (() => {
+    const ref = shallowRef<Awaited<ReturnType<typeof apiStore['getCachedRequest']>>>();
+
+    return {
+      ref,
+      trigger: cancellableWrapper(ref, async (fetchResult: ReturnData<T, K, true>) => {
+        return isArray(fetchResult)
+          ? await apiStore.getItemsById((fetchResult).map(r => r.Id))
+          : await apiStore.getItemById((fetchResult as Nullish<BaseItemDto>)?.Id);
+      })
+    };
+  })();
+}
+
+/**
+ * When the composable is used inside a component or effect scope, we need to setup the effects.
+ * This is skipped if the composable is used outside of a component or effect scope.
+ */
+function setupEffects<T extends Record<K, (...args: any[]) => any>, K extends keyof T, U extends ParametersAsGetters<T[K]>>(
+  { args, argsRef, api, methodName, ofBaseItem, normalizeArgs, runNormally, refreshBaseItem, runWithRetry }: {
+    args: ComposableParams<T, K, U>;
+    argsRef: ShallowRef<Parameters<T[K]> | undefined>;
+    api: MaybeRef<((api: Api) => T) | undefined>;
+    methodName: MaybeRefOrGetter<K | undefined>;
+    ofBaseItem: boolean;
+    runNormally: () => Promise<void>;
+    runWithRetry: () => Promise<void>;
+    refreshBaseItem: () => void;
+    normalizeArgs: () => Parameters<T[K]>;
+  }
+) {
+  const scope = effectScope();
+
+  scope.run(() => {
+    if (args.length) {
+      watchDeep(args, async (_, old) => {
+        const normalizedArgs = normalizeArgs();
+
+        /**
+         * Does a deep comparison to avoid useless double requests
+         */
+        if (!normalizedArgs.every((a, index) => deepEqual(a, toValue(old[index])))) {
+          argsRef.value = normalizedArgs;
+          await runNormally();
+        }
+      });
+    }
+
+    watch(isConnectedToServer, runWithRetry);
+
+    if (ofBaseItem) {
+      watch(lastUpdatedIds, refreshBaseItem, { flush: 'sync' });
+    }
+
+    if (isRef(api)) {
+      watch(api, runNormally);
+    }
+
+    if (isRef(methodName) || isFunc(methodName)) {
+      watch(methodName, runNormally);
+    }
+  });
+
+  /**
+   * If we're routing, the effects of this composable are no longer useful, so we stop them
+   * to avoid accidental data fetching (e.g due to route param changes)
+   */
+  const isRouting = inject(JView_isRouting);
+
+  if (!isNil(isRouting)) {
+    whenever(isRouting, () => scope.stop(),
+      { once: true, flush: 'sync' }
+    );
+  }
+}
+
+/**
  * This is the internal logic of the composables
  */
 function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K extends keyof T, U extends ParametersAsGetters<T[K]>>(
@@ -181,7 +331,8 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
   api: MaybeRef<((api: Api) => T) | undefined>,
   methodName: MaybeRefOrGetter<K | undefined>,
   ops: Required<ComposableOps>
-): (this: any, ...args: ComposableParams<T, K, U>) => Promise<ReturnPayload<T, K, typeof ofBaseItem>> | ReturnPayload<T, K, typeof ofBaseItem> {
+): (this: any, ...args: ComposableParams<T, K, U>) => Promise<ReturnPayload<T, K, typeof ofBaseItem>> {
+  const hasEffects = !!getCurrentScope();
   const offlineParams: OfflineParams<T, K>[] = [];
   const rawParams = () => ({ raw_api: unref(api), raw_method: toValue(methodName) });
   const isFuncDefined = () => {
@@ -192,39 +343,49 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
 
   const loading = shallowRef<boolean | undefined>(false);
   const argsRef = shallowRef<Parameters<T[K]>>();
-  const result = shallowRef<ReturnData<T, K, typeof ofBaseItem>>();
-
   const stringArgs = computed(() => {
-    return JSON.stringify(argsRef.value);
+    return JSON.stringify(argsRef.value ?? []);
   });
 
-  /**
-   * TODO: Check why previous returns unknown by default without the type annotation
-   */
-  const cachedData = computed<ReturnType<typeof apiStore.getCachedRequest> | undefined>((previous) => {
-    const { raw_api, raw_method } = rawParams();
-    const currentCachedRequest = apiStore.getCachedRequest(`${String(raw_api?.name)}.${String(raw_method)}`, stringArgs.value);
+  const cachedRequest = ops.skipCache.request
+    ? undefined
+    : getRequestClosure<T, K>(rawParams, stringArgs);
+  const cachedItems = ops.skipCache.request && !ops.skipCache.baseItem && !ofBaseItem
+    ? undefined
+    : getItemClosure<T, K>();
+  const fetchResult = (() => {
+    const ref = shallowRef<ReturnData<T, K, typeof ofBaseItem>>();
 
-    if ((loading.value || isNil(loading.value)) && !currentCachedRequest) {
-      return previous;
-    }
-
-    return currentCachedRequest;
-  });
-  const isCached = computed(() => !!cachedData.value);
-  const data = computed<ReturnData<T, K, typeof ofBaseItem>>(() => {
-    if (ops.skipCache.request && result.value) {
-      if (ofBaseItem) {
-        return isArray(result.value)
-          ? apiStore.getItemsById((result.value as BaseItemDto[]).map(r => r.Id)) as ReturnData<T, K, typeof ofBaseItem>
-          : apiStore.getItemById((result.value as BaseItemDto).Id) as ReturnData<T, K, typeof ofBaseItem>;
-      } else {
-        return result.value;
+    return computed({
+      get: () => ref.value,
+      set: (newval) => {
+        ref.value = newval;
+        void cachedRequest?.trigger();
+        void cachedItems?.trigger(
+          newval as ExtractBaseItemDtoResponse<ReturnData<T, K, typeof ofBaseItem>>
+        );
       }
-    } else {
-      return apiStore.getRequest(cachedData.value) as ReturnData<T, K, typeof ofBaseItem>;
+    });
+  })();
+
+  const cachedData = computed(() => {
+    if (isFuncDefined() && stringArgs.value && !ops.skipCache.request) {
+      return cachedRequest!.ref.value;
     }
   });
+  const data = computed<ReturnData<T, K, typeof ofBaseItem>>((previous) => {
+    if (ops.skipCache.request && fetchResult.value) {
+      return ofBaseItem && !ops.skipCache.baseItem
+        ? cachedItems?.ref.value ?? previous ?? fetchResult.value
+        : fetchResult.value;
+    } else {
+      return cachedData.value;
+    }
+  });
+  const isCached = computed(() =>
+    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+    (ops.skipCache.request || ops.skipCache.baseItem) || cachedData.value
+  );
 
   /**
    * Function invoked per every data change.
@@ -241,104 +402,102 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
      * Rerun previous parameters when the user is back online
      */
     if (offlineParams.length) {
-      await Promise.all(offlineParams.map(p => void resolveAndAdd(p.api, p.methodName, ofBaseItem, loading, stringArgs.value, ops, ...p.args)));
+      await Promise.all(offlineParams.map(p => fetchAndAdd(
+        p.api,
+        p.methodName,
+        ofBaseItem,
+        loading,
+        stringArgs.value,
+        ops,
+        ...p.args
+      )));
       offlineParams.length = 0;
     }
 
     if (argsRef.value && !onlyPending) {
-      try {
-        if (isConnectedToServer.value) {
-          const resolved = await resolveAndAdd(raw_api, raw_method, ofBaseItem, isRefresh ? undefined : loading, stringArgs.value, ops, ...argsRef.value);
+      if (isConnectedToServer.value) {
+        const resolved = await fetchAndAdd(
+          raw_api,
+          raw_method,
+          ofBaseItem,
+          isRefresh ? undefined : loading,
+          stringArgs.value,
+          ops,
+          ...argsRef.value
+        );
 
-          result.value = resolved as ReturnData<T, K, typeof ofBaseItem>;
-        } else {
-          useSnackbar(i18next.t('offlineCantDoThisWillRetryWhenOnline'), 'error');
+        fetchResult.value = resolved as ReturnData<T, K, typeof ofBaseItem>;
+      } else {
+        useSnackbar(i18next.t('offlineCantDoThisWillRetryWhenOnline'), 'error');
 
-          offlineParams.push({
-            api: raw_api,
-            methodName: raw_method,
-            args: argsRef.value
-          });
-        }
-      } catch {}
+        offlineParams.push({
+          api: raw_api,
+          methodName: raw_method,
+          args: argsRef.value
+        });
+      }
     }
   };
 
-  return function (this: any, ...args: ComposableParams<T, K, U>) {
+  return async function (this: any, ...args: ComposableParams<T, K, U>) {
     const normalizeArgs = (): Parameters<T[K]> => args.map(a => toValue(a)) as Parameters<T[K]>;
     const runNormally = async (): Promise<void> => {
       await run({});
     };
-    const runWithRetry = async (): Promise<void> => {
-      await run({ onlyPending: true });
-    };
     const returnablePromise = async (): Promise<ReturnPayload<T, K, typeof ofBaseItem>> => {
       await runNormally();
-      await until(() => isCached.value && !ops.skipCache.request).toBeTruthy({ flush: 'pre' });
+      await until(() => isCached.value).toBeTruthy({ flush: 'pre' });
 
       return { loading, data };
     };
 
     argsRef.value = normalizeArgs();
 
-    if (!isNil(getCurrentScope())) {
-      const handleArgsChange = async (_: typeof args, old: typeof args | undefined): Promise<void> => {
-        const normalizedArgs = normalizeArgs();
-
-        /**
-         * Does a deep comparison to avoid useless double requests
-         */
-        if (old && !normalizedArgs.every((a, index) => deepEqual(a, toValue(old[index])))) {
-          argsRef.value = normalizedArgs;
-          await runNormally();
-        }
+    if (hasEffects) {
+      const runWithRetry = async (): Promise<void> => {
+        await run({ onlyPending: true });
       };
-      const scope = effectScope();
-
-      scope.run(() => {
-        if (args.length) {
-          watchDeep(args, handleArgsChange);
-        }
-
-        watch(isConnectedToServer, runWithRetry);
-
-        if (isRef(api)) {
-          watch(api, runNormally);
-        }
-
-        if (isRef(methodName) || isFunc(methodName)) {
-          watch(methodName, runNormally);
-        }
-      });
 
       /**
-       * If we're routing, the effects of this composable are no longer useful, so we stop them
-       * to avoid accidental data fetching (e.g due to route param changes)
+       * This will only run when ofBaseItem is true
        */
-      const isRouting = inject(JView_isRouting);
-
-      if (!isNil(isRouting)) {
-        whenever(isRouting, () => scope.stop(),
-          { once: true, flush: 'sync' }
+      const refreshBaseItem = () => {
+        void cachedRequest?.trigger();
+        void cachedItems?.trigger(
+          fetchResult.value as ExtractBaseItemDtoResponse<ReturnData<T, K, typeof ofBaseItem>>
         );
-      }
+      };
+
+      setupEffects({
+        args,
+        argsRef,
+        api,
+        methodName,
+        ofBaseItem,
+        runNormally,
+        runWithRetry,
+        normalizeArgs,
+        refreshBaseItem
+      });
     }
 
-    /**
-     * If there's available data before component mount, we return the cached data rightaway (see below how
-     * we skip the promise) to get the component mounted as soon as possible.
-     * However, we queue a request to the server to update the data after the component is
-     * mounted. setTimeout executes it when the event loop is clear, avoiding overwhelming the engine.
-     */
-    if (isCached.value) {
-      void run({ isRefresh: true });
-    } else if (isFuncDefined()) {
+    if (isFuncDefined()) {
+      await cachedRequest?.trigger();
+
+      /**
+       * If there's available data before component mount, we return the cached data rightaway (see below how
+       * we skip the promise) to get the component mounted as soon as possible.
+       */
+      if (isCached.value) {
+        void run({ isRefresh: true });
+      } else {
       /**
        * Wait for the cache to be populated before resolving the promise
        * If the promise never resolves (and the component never gets mounted),
        * the problem is that there is an issue in your logic, not in this composable.
        */
-      return returnablePromise();
+        return returnablePromise();
+      }
     }
 
     return { loading, data };
@@ -390,6 +549,8 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
  * @param ops.skipCache.request - USE WITH CAUTION, SINCE IT'S BETTER TO CACHE EVERYTHING BY DEFAULT.
  * Whether to skip the cache or not. Useful for requests whose return value are known to be useless to cache,
  * like marking an item as played or favorite. Defaults to false.
+ * @param ops.skipCache.baseItem - USE WITH CAUTION, SINCE IT'S BETTER TO CACHE EVERYTHING BY DEFAULT.
+ * Same as above, but also for baseItems. Defaults to false.
  * @returns data  - The BaseItemDto or BaseItemDto[] that was requested.
  * @returns loading - A boolean ref that indicates if the request is in progress. Undefined if there was an error
  */
@@ -397,8 +558,13 @@ export function useBaseItem<T extends Record<K, (...args: any[]) => any>, K exte
   api: MaybeRef<((api: Api) => T) | undefined>,
   methodName: MaybeRefOrGetter<K | undefined>,
   ops?: BaseItemComposableOps
-): (this: any, ...args: ComposableParams<T, K, U>) => Promise<ReturnPayload<T, K, true>> | ReturnPayload<T, K, true> {
-  return _sharedInternalLogic<T, K, U>(true, api, methodName, (ops ? { ...ops, ...defaultOps } : defaultOps) as Required<ComposableOps>);
+): (this: any, ...args: ComposableParams<T, K, U>) => Promise<ReturnPayload<T, K, true>> {
+  return _sharedInternalLogic<T, K, U>(
+    true,
+    api,
+    methodName,
+    defu(ops ?? {}, defaultOps()) as Required<ComposableOps>
+  );
 }
 
 /**
@@ -446,8 +612,6 @@ export function useBaseItem<T extends Record<K, (...args: any[]) => any>, K exte
  * @param ops.skipCache.request - USE WITH CAUTION, SINCE IT'S BETTER TO CACHE EVERYTHING BY DEFAULT.
  * Whether to skip the cache or not. Useful for requests whose return value are known to be useless to cache,
  * like marking an item as played or favorite. Defaults to false.
- * @param ops.skipCache.baseItem - USE WITH CAUTION, SINCE IT'S BETTER TO CACHE EVERYTHING BY DEFAULT.
- * Same as above, but also for baseItems. Defaults to false.
  * @param ops.globalLoading - Show the global loading indicator or not for this request. Defaults to true.
  * This parameter is ignored if the request is already cached and it's being refreshed (no loading indicator is shown in that case).
  * @returns data  - The request data.
@@ -457,22 +621,13 @@ export function useApi<T extends Record<K, (...args: any[]) => any>, K extends k
   api: MaybeRef<((api: Api) => T) | undefined>,
   methodName: MaybeRefOrGetter<K | undefined>,
   ops?: ComposableOps
-): (this: any, ...args: ComposableParams<T, K, U>) => Promise<ReturnPayload<T, K, false>> | ReturnPayload<T, K, false> {
-  return _sharedInternalLogic<T, K, U>(false, api, methodName, (ops ? { ...ops, ...defaultOps } : defaultOps) as Required<ComposableOps>);
-}
-
-/**
- * This is an special function to get an object with the appropiate parameters to use in the `useApi` or `useBaseItem` composables.
- * See example of usage in pages/library/[itemId].vue.
- */
-export function methodsAsObject<T extends Record<K, (...args: any[]) => any>, K extends keyof T>(
-  api: (api: Api) => T,
-  methodName: K
-): { api: (api: Api) => T; methodName: K } {
-  return {
+): (this: any, ...args: ComposableParams<T, K, U>) => Promise<ReturnPayload<T, K, false>> {
+  return _sharedInternalLogic<T, K, U>(
+    false,
     api,
-    methodName
-  };
+    methodName,
+    defu(ops ?? {}, defaultOps()) as Required<ComposableOps>
+  );
 }
 
 /* eslint-enable @typescript-eslint/no-explicit-any */

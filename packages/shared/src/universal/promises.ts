@@ -18,7 +18,6 @@ export class PromiseQueue {
           .finally(() => {
             this.activeCount--;
 
-            // Dispara la siguiente tarea en la cola, si existe
             const next = this.queue.shift();
 
             if (next) {

@@ -585,18 +585,16 @@ interface IndexPageQueries {
  */
 export async function fetchIndexPage(): Promise<IndexPageQueries> {
   const latestPerLibrary = new Map<BaseItemDto['Id'], ComputedRef<BaseItemDto[]>>();
-  const latestPromises: Promise<void>[] = [];
   const { data: views } = await useBaseItem(getUserViewsApi, 'getUserViews')();
-
-  for (const view of views.value) {
-    latestPromises.push((async () => {
+  const latestItems = views.value.map((view) => {
+    return (async () => {
       const { data } = await useBaseItem(getUserLibraryApi, 'getLatestMedia')(() => ({
         parentId: view.Id
       }));
 
       latestPerLibrary.set(view.Id, data);
-    })());
-  }
+    })();
+  });
 
   const itemPromises = [
     useBaseItem(getItemsApi, 'getResumeItems')(() => ({
@@ -606,7 +604,10 @@ export async function fetchIndexPage(): Promise<IndexPageQueries> {
     useBaseItem(getTvShowsApi, 'getNextUp')()
   ];
 
-  const results = (await Promise.all([Promise.all(itemPromises), Promise.all(latestPromises)]))[0];
+  const results = (await Promise.all([
+    Promise.all(itemPromises),
+    Promise.all(latestItems)
+  ]))[0];
 
   return {
     views,

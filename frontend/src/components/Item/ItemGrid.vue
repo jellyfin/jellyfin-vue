@@ -10,7 +10,6 @@
         :class="useResponsiveClasses('card-grid-container')">
         <ItemCard
           :item="item"
-
           link
           margin
           text

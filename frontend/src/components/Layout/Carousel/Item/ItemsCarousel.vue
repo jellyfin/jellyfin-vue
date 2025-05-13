@@ -12,8 +12,9 @@
           :class="useResponsiveClasses('slide-backdrop')"
           data-swiper-parallax="-100">
           <BlurhashImage
+            v-if="relatedItems?.[item.Id!]"
             :key="`${item.Id}-image`"
-            :item="getRelatedItem(item)"
+            :item="relatedItems[item.Id!]"
             :type="ImageType.Backdrop"
             :width="$vuetify.display.mdAndUp ? 256 : 128" />
         </div>
@@ -62,8 +63,9 @@
 import { BaseItemKind, ImageType, type BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { SwiperSlide } from 'swiper/vue';
 import { shallowRef } from 'vue';
+import { computedAsync } from '@vueuse/core';
 import { useResponsiveClasses } from '#/composables/use-responsive-classes';
-import { apiStore } from '#/store/api';
+import { apiStore } from '#/store/dbs/api';
 import { getItemDetailsLink } from '#/utils/items';
 import { useItemBackdrop } from '#/composables/backdrop';
 
@@ -79,14 +81,14 @@ useItemBackdrop(() => pageBackdrop ? items[currentIndex.value] : undefined);
 /**
  * Get the related item passed from the parent component
  */
-function getRelatedItem(item: BaseItemDto): BaseItemDto {
+async function getRelatedItem(item: BaseItemDto): Promise<BaseItemDto> {
   let relatedItem: BaseItemDto | undefined;
 
   if (item.Type === BaseItemKind.Episode && item.SeriesId) {
-    relatedItem = apiStore.getItemById(item.SeriesId);
+    relatedItem = await apiStore.getItemById(item.SeriesId);
   } else if (item.Type === BaseItemKind.MusicAlbum && item.AlbumArtists?.[0]?.Id) {
     for (const artist of item.AlbumArtists) {
-      const rArtist = apiStore.getItemById(artist.Id);
+      const rArtist = await apiStore.getItemById(artist.Id);
 
       if (rArtist) {
         relatedItem = rArtist;
@@ -94,7 +96,7 @@ function getRelatedItem(item: BaseItemDto): BaseItemDto {
       }
     }
   } else if (item.ParentLogoItemId) {
-    relatedItem = apiStore.getItemById(item.ParentLogoItemId);
+    relatedItem = await apiStore.getItemById(item.ParentLogoItemId);
   }
 
   if (relatedItem?.ImageTags?.Backdrop) {
@@ -103,6 +105,16 @@ function getRelatedItem(item: BaseItemDto): BaseItemDto {
 
   return item;
 }
+
+const relatedItems = computedAsync(async () => {
+  const res: Record<string, BaseItemDto> = {};
+
+  for (const item of items) {
+    res[item.Id!] = await getRelatedItem(item);
+  }
+
+  return res;
+});
 
 /**
  * Handle slide changes

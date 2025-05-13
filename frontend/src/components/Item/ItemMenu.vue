@@ -75,7 +75,7 @@ import {
 } from '#/utils/items';
 import { taskManager } from '#/store/task-manager';
 import { playbackManager } from '#/store/playback-manager';
-import { apiStore } from '#/store/api';
+import { apiStore } from '#/store/dbs/api';
 import { remote } from '#/plugins/remote';
 import { useSnackbar } from '#/composables/use-snackbar';
 import { useConfirmDialog } from '#/composables/use-confirm-dialog';
