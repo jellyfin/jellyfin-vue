@@ -3,7 +3,7 @@ import type { BaseItemDto, BaseItemDtoQueryResult } from '@jellyfin/sdk/lib/gene
 import type { AxiosResponse } from 'axios';
 import { deepEqual } from 'fast-equals';
 import { computed, effectScope, getCurrentScope, inject, isRef, shallowRef, toValue, unref, watch, type ComputedRef, type MaybeRefOrGetter, type Ref, type MaybeRef } from 'vue';
-import { until, whenever } from '@vueuse/core';
+import { until, watchDeep, whenever } from '@vueuse/core';
 import type { IsEqual, Exact, Writable } from 'type-fest';
 import { isArray, isFunc, isNil } from '@jellyfin-vue/shared/validation';
 import i18next from 'i18next';
@@ -183,7 +183,12 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
   ops: Required<ComposableOps>
 ): (this: any, ...args: ComposableParams<T, K, U>) => Promise<ReturnPayload<T, K, typeof ofBaseItem>> | ReturnPayload<T, K, typeof ofBaseItem> {
   const offlineParams: OfflineParams<T, K>[] = [];
-  const isFuncDefined = (): boolean => !isNil(unref(api)) && !isNil(unref(methodName));
+  const rawParams = () => ({ raw_api: unref(api), raw_method: toValue(methodName) });
+  const isFuncDefined = () => {
+    const { raw_api, raw_method } = rawParams();
+
+    return !isNil(raw_api) && !isNil(toValue(raw_method));
+  };
 
   const loading = shallowRef<boolean | undefined>(false);
   const argsRef = shallowRef<Parameters<T[K]>>();
@@ -197,7 +202,8 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
    * TODO: Check why previous returns unknown by default without the type annotation
    */
   const cachedData = computed<ReturnType<typeof apiStore.getCachedRequest> | undefined>((previous) => {
-    const currentCachedRequest = apiStore.getCachedRequest(`${String(unref(api)?.name)}.${String(unref(methodName))}`, stringArgs.value);
+    const { raw_api, raw_method } = rawParams();
+    const currentCachedRequest = apiStore.getCachedRequest(`${String(raw_api?.name)}.${String(raw_method)}`, stringArgs.value);
 
     if ((loading.value || isNil(loading.value)) && !currentCachedRequest) {
       return previous;
@@ -225,10 +231,9 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
    * @param onlyPending - Whether to run only pending requests or not
    */
   const run = async ({ onlyPending = false, isRefresh = false }): Promise<void> => {
-    const unrefApi = unref(api);
-    const unrefMethod = toValue(methodName);
+    const { raw_api, raw_method } = rawParams();
 
-    if (!unrefApi || !unrefMethod) {
+    if (!raw_api || !raw_method) {
       return;
     }
 
@@ -243,15 +248,15 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
     if (argsRef.value && !onlyPending) {
       try {
         if (isConnectedToServer.value) {
-          const resolved = await resolveAndAdd(unrefApi, unrefMethod, ofBaseItem, isRefresh ? undefined : loading, stringArgs.value, ops, ...argsRef.value);
+          const resolved = await resolveAndAdd(raw_api, raw_method, ofBaseItem, isRefresh ? undefined : loading, stringArgs.value, ops, ...argsRef.value);
 
           result.value = resolved as ReturnData<T, K, typeof ofBaseItem>;
         } else {
           useSnackbar(i18next.t('offlineCantDoThisWillRetryWhenOnline'), 'error');
 
           offlineParams.push({
-            api: unrefApi,
-            methodName: unrefMethod,
+            api: raw_api,
+            methodName: raw_method,
             args: argsRef.value
           });
         }
@@ -292,7 +297,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
 
       scope.run(() => {
         if (args.length) {
-          watch(args, handleArgsChange);
+          watchDeep(args, handleArgsChange);
         }
 
         watch(isConnectedToServer, runWithRetry);
