@@ -610,9 +610,9 @@ export async function fetchIndexPage(): Promise<IndexPageQueries> {
 
   return {
     views,
-    resumeVideo: results[0].data,
-    carousel: results[1].data,
-    nextUp: results[2].data,
+    resumeVideo: results[0]!.data,
+    carousel: results[1]!.data,
+    nextUp: results[2]!.data,
     latestPerLibrary
   };
 }

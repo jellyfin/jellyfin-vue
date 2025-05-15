@@ -2,10 +2,10 @@ import type { Api } from '@jellyfin/sdk';
 import type { BaseItemDto, BaseItemDtoQueryResult } from '@jellyfin/sdk/lib/generated-client';
 import type { AxiosResponse } from 'axios';
 import { deepEqual } from 'fast-equals';
-import { computed, effectScope, getCurrentScope, inject, isRef, shallowRef, toValue, unref, watch, type ComputedRef, type Ref } from 'vue';
+import { computed, effectScope, getCurrentScope, inject, isRef, shallowRef, toValue, unref, watch, type ComputedRef, type MaybeRefOrGetter, type Ref, type MaybeRef } from 'vue';
 import { until, whenever } from '@vueuse/core';
-import type { Exact, Writable } from 'type-fest';
-import { isArray, isNil } from '@jellyfin-vue/shared/validation';
+import type { IsEqual, Exact, Writable } from 'type-fest';
+import { isArray, isFunc, isNil } from '@jellyfin-vue/shared/validation';
 import i18next from 'i18next';
 import { useLoading } from '#/composables/use-loading';
 import { useSnackbar } from '#/composables/use-snackbar';
@@ -19,7 +19,7 @@ type OmittedKeys = 'fields' | 'userId' | 'enableImages' | 'enableTotalRecordCoun
 type ParametersAsGetters<T extends (...args: any[]) => any> = T extends (...args: infer P) => any
   ? { [K in keyof P]: () => BetterOmit<Writable<P[K]>, OmittedKeys> }
   : never;
-type ExtractResponseDataType<T> = Awaited<T> extends AxiosResponse<infer U> ? U : undefined;
+type ExtractResponseDataType<T> = Awaited<T> extends AxiosResponse<infer U> ? U : never;
 type ComposableParams<T extends Record<K, (...args: any[]) => any>, K extends keyof T, U extends ParametersAsGetters<T[K]>> =
   Exact<ParametersAsGetters<T[K]>, U>;
 /**
@@ -30,24 +30,24 @@ type ComposableParams<T extends Record<K, (...args: any[]) => any>, K extends ke
 type ExtractItems<T> = T extends { Items?: infer U } ? U extends (infer V)[] ? NonNullable<V>[] : never : T;
 
 /**
- * If response.data is BaseItemDto or BaseItemDto[], returns it. Otherwise, returns undefined.
+ * If response.data is BaseItemDto or BaseItemDto[], returns it. Otherwise, returns never.
  */
 type ExtractBaseItemDtoResponse<T> =
-  (ExtractResponseDataType<T> extends BaseItemDto ? BaseItemDto :
-      (ExtractResponseDataType<T> extends BaseItemDtoQueryResult ? BaseItemDto[] :
-        ExtractResponseDataType<T> extends BaseItemDto[] ? BaseItemDto[] : undefined));
+  IsEqual<ExtractResponseDataType<T>, BaseItemDto> extends true ? BaseItemDto :
+    IsEqual<ExtractResponseDataType<T>, BaseItemDtoQueryResult> extends true ? BaseItemDto[] :
+      IsEqual<ExtractResponseDataType<T>, BaseItemDto[]> extends true ? BaseItemDto[] :
+        never;
 /**
- * If response.data is BaseItemDto or BaseItemDto[], returns undefined. Otherwise, returns the data type.
+ * If response.data is BaseItemDto or BaseItemDto[], returns never. Otherwise, returns the data type.
  */
 type ExtractResponseType<T> =
-  (ExtractResponseDataType<T> extends BaseItemDto ? undefined :
-      (ExtractResponseDataType<T> extends BaseItemDtoQueryResult ? undefined :
-        ExtractItems<ExtractResponseDataType<T>>));
+  IsEqual<ExtractResponseDataType<T>, BaseItemDto> extends true ? never :
+    IsEqual<ExtractResponseDataType<T>, BaseItemDtoQueryResult> extends true ? never :
+      IsEqual<ExtractResponseDataType<T>, BaseItemDto[]> extends true ? never :
+        ExtractItems<ExtractResponseDataType<T>>;
 
 type ReturnData<T extends Record<K, (...args: any[]) => any>, K extends keyof T, J extends boolean> =
   J extends true ? ExtractBaseItemDtoResponse<ReturnType<T[K]>> : ExtractResponseType<ReturnType<T[K]>>;
-
-type MaybeReadonlyRef<T> = T | Ref<T> | ComputedRef<T>;
 
 interface ReturnPayload<T extends Record<K, (...args: any[]) => any>, K extends keyof T, J extends boolean> {
   loading: Ref<boolean | undefined>;
@@ -178,8 +178,8 @@ async function resolveAndAdd<T extends Record<K, (...args: any[]) => any>, K ext
  */
 function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K extends keyof T, U extends ParametersAsGetters<T[K]>>(
   ofBaseItem: boolean,
-  api: MaybeReadonlyRef<((api: Api) => T) | undefined>,
-  methodName: MaybeReadonlyRef<K | undefined>,
+  api: MaybeRef<((api: Api) => T) | undefined>,
+  methodName: MaybeRefOrGetter<K | undefined>,
   ops: Required<ComposableOps>
 ): (this: any, ...args: ComposableParams<T, K, U>) => Promise<ReturnPayload<T, K, typeof ofBaseItem>> | ReturnPayload<T, K, typeof ofBaseItem> {
   const offlineParams: OfflineParams<T, K>[] = [];
@@ -226,7 +226,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
    */
   const run = async ({ onlyPending = false, isRefresh = false }): Promise<void> => {
     const unrefApi = unref(api);
-    const unrefMethod = unref(methodName);
+    const unrefMethod = toValue(methodName);
 
     if (!unrefApi || !unrefMethod) {
       return;
@@ -301,7 +301,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
           watch(api, runNormally);
         }
 
-        if (isRef(methodName)) {
+        if (isRef(methodName) || isFunc(methodName)) {
           watch(methodName, runNormally);
         }
       });
@@ -376,7 +376,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
  * This will not happen if either ``api`` or ``methodName`` are set undefined, so
  * you can use that composable invokation after mount (like in LikeButton component).
  *
- * Don't worry, TypeScript will tell you that `data` is always undefined when you can't use the composable with an specific API method.
+ * Don't worry, TypeScript will tell you that `data` is always `never` when you can't use the composable with an specific API method.
  *
  * @param api - The API's endpoint to use.
  * @param methodname- - The operation to execute.
@@ -389,8 +389,8 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
  * @returns loading - A boolean ref that indicates if the request is in progress. Undefined if there was an error
  */
 export function useBaseItem<T extends Record<K, (...args: any[]) => any>, K extends keyof T, U extends ParametersAsGetters<T[K]>>(
-  api: MaybeReadonlyRef<((api: Api) => T) | undefined>,
-  methodName: MaybeReadonlyRef<K | undefined>,
+  api: MaybeRef<((api: Api) => T) | undefined>,
+  methodName: MaybeRefOrGetter<K | undefined>,
   ops?: BaseItemComposableOps
 ): (this: any, ...args: ComposableParams<T, K, U>) => Promise<ReturnPayload<T, K, true>> | ReturnPayload<T, K, true> {
   return _sharedInternalLogic<T, K, U>(true, api, methodName, (ops ? { ...ops, ...defaultOps } : defaultOps) as Required<ComposableOps>);
@@ -433,7 +433,7 @@ export function useBaseItem<T extends Record<K, (...args: any[]) => any>, K exte
  * This will not happen if either ``api`` or ``methodName`` are set undefined, so
  * you can use that composable invokation after mount (like in LikeButton component).
  *
- * Don't worry, TypeScript will tell you that `data` is always undefined when you can't use the composable with an specific API method.
+ * Don't worry, TypeScript will tell you that `data` is always `never` when you can't use the composable with an specific API method.
  *
  * @param api - The API's endpoint to use.
  * @param methodname- - The operation to execute.
@@ -449,8 +449,8 @@ export function useBaseItem<T extends Record<K, (...args: any[]) => any>, K exte
  * @returns loading - A boolean ref that indicates if the request is in progress. Undefined if there was an error
  */
 export function useApi<T extends Record<K, (...args: any[]) => any>, K extends keyof T, U extends ParametersAsGetters<T[K]>>(
-  api: MaybeReadonlyRef<((api: Api) => T) | undefined>,
-  methodName: MaybeReadonlyRef<K | undefined>,
+  api: MaybeRef<((api: Api) => T) | undefined>,
+  methodName: MaybeRefOrGetter<K | undefined>,
   ops?: ComposableOps
 ): (this: any, ...args: ComposableParams<T, K, U>) => Promise<ReturnPayload<T, K, false>> | ReturnPayload<T, K, false> {
   return _sharedInternalLogic<T, K, U>(false, api, methodName, (ops ? { ...ops, ...defaultOps } : defaultOps) as Required<ComposableOps>);
