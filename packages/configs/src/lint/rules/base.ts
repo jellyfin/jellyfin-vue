@@ -103,6 +103,7 @@ export function getBaseConfig(packageName: string, forceCache = !CI_environment,
         'unicorn/consistent-function-scoping': 'off',
         'unicorn/prevent-abbreviations': 'off',
         'unicorn/no-await-expression-member': 'off',
+        'unicorn/no-for-loop': 'off',
         /**
          * See https://github.com/jellyfin/jellyfin-vue/pull/2361
          */
