@@ -72,16 +72,16 @@
 </template>
 
 <script setup lang="ts">
-import { shallowRef, watch } from 'vue';
+import { onScopeDispose, shallowRef, watch } from 'vue';
 import { getLocalizationApi } from '@jellyfin/sdk/lib/utils/api/localization-api';
 import { getConfigurationApi } from '@jellyfin/sdk/lib/utils/api/configuration-api';
 import { getBrandingApi } from '@jellyfin/sdk/lib/utils/api/branding-api';
 import { SomeItemSelectedRule } from '@jellyfin-vue/shared/validation';
+import { watchDeep } from '@vueuse/core';
 import { useApi } from '#/composables/apis';
 import { taskManager } from '#/store/task-manager.ts';
 
-let taskId: string | undefined;
-
+const tasks = new Map<number, string>();
 const signal = shallowRef(false);
 const [
   { data: culturesList },
@@ -109,13 +109,26 @@ const { loading: l2 } = await useApi(
   body: JSON.stringify(brandingSettings.value)
 }));
 
-watch([l1, l2], (newval) => {
-  if (newval.some(Boolean)) {
-    taskId = taskManager.startConfigSync();
-  } else if (taskId) {
-    taskManager.finishTask(taskId);
+watch([l1, l2], (newvals) => {
+  for (let idx = 0; idx < newvals.length; idx++) {
+    if (newvals[idx] && !tasks.has(idx)) {
+      tasks.set(idx, taskManager.startConfigSync());
+    } else {
+      const taskId = tasks.get(idx);
+
+      if (taskId) {
+        taskManager.finishTask(taskId);
+        tasks.delete(idx);
+      }
+    }
   }
 });
 
-watch([serverSettings, brandingSettings], () => signal.value = true, { once: true });
+watchDeep([serverSettings, brandingSettings], () => signal.value = true, { once: true });
+
+onScopeDispose(() => {
+  for (const [,id] of tasks) {
+    taskManager.finishTask(id);
+  }
+});
 </script>
