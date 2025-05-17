@@ -77,7 +77,9 @@ export function JBundleAnalysis(): Plugin {
           }
         }
 
-        const server = await preview();
+        const server = await preview({
+          configLoader: 'runner'
+        });
 
         console.log();
         server.printUrls();
