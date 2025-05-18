@@ -56,7 +56,7 @@
     "vuetify": "3.8.0"
   },
   "devDependencies": {
-    "@iconify/json": "2.2.338",
+    "@iconify/json": "2.2.339",
     "@jellyfin-vue/configs": "*",
     "@jellyfin-vue/vite-plugins": "*",
     "@rollup/plugin-virtual": "3.0.2",
