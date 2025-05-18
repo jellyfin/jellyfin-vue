@@ -7,37 +7,30 @@
         v-model="searchTab"
         class="mx-auto">
         <VTab
-          :key="0"
           :disabled="movies.length <= 0">
           {{ $t('movies') }}
         </VTab>
         <VTab
-          :key="1"
           :disabled="series.length <= 0">
           {{ $t('shows') }}
         </VTab>
         <VTab
-          :key="2"
           :disabled="albums.length <= 0">
           {{ $t('albums') }}
         </VTab>
         <VTab
-          :key="3"
           :disabled="tracks.length <= 0">
           {{ $t('songs') }}
         </VTab>
         <VTab
-          :key="4"
           :disabled="books.length <= 0">
           {{ $t('books') }}
         </VTab>
         <VTab
-          :key="5"
           :disabled="people.length <= 0">
           {{ $t('people') }}
         </VTab>
         <VTab
-          :key="6"
           :disabled="artists.length <= 0">
           {{ $t('artists') }}
         </VTab>
@@ -49,25 +42,25 @@
           <VWindow
             v-model="searchTab"
             class="bg-transparent">
-            <VWindowItem :key="0">
+            <VWindowItem>
               <ItemGrid :items="movies" />
             </VWindowItem>
-            <VWindowItem :key="1">
+            <VWindowItem>
               <ItemGrid :items="series" />
             </VWindowItem>
-            <VWindowItem :key="2">
+            <VWindowItem>
               <ItemGrid :items="albums" />
             </VWindowItem>
-            <VWindowItem :key="3">
+            <VWindowItem>
               <ItemGrid :items="tracks" />
             </VWindowItem>
-            <VWindowItem :key="4">
+            <VWindowItem>
               <ItemGrid :items="books" />
             </VWindowItem>
-            <VWindowItem :key="5">
+            <VWindowItem>
               <ItemGrid :items="people" />
             </VWindowItem>
-            <VWindowItem :key="6">
+            <VWindowItem>
               <ItemGrid :items="artists" />
             </VWindowItem>
           </VWindow>
@@ -78,25 +71,39 @@
 </template>
 
 <script setup lang="ts">
-import { BaseItemKind, type BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
+import { BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getPersonsApi } from '@jellyfin/sdk/lib/utils/api/persons-api';
-import { refDebounced } from '@vueuse/core';
-import { computed, shallowRef } from 'vue';
-import { useRoute } from 'vue-router';
-import { apiStore } from '#/store/api';
+import { computedAsync, refDebounced } from '@vueuse/core';
+import { computed } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { defu } from 'defu';
+import { apiStore } from '#/store/dbs/api';
 import { useResponsiveClasses } from '#/composables/use-responsive-classes';
 import { useBaseItem } from '#/composables/apis';
 
 const route = useRoute();
+const router = useRouter();
 
-const searchTab = shallowRef(0);
-
+const searchTab = computed({
+  get: () => Number(route.query.tab ?? 0),
+  set: (value) => {
+    void router.replace(
+      defu(
+        { query: { tab: String(value) } },
+        router.currentRoute.value
+      )
+    );
+  }
+});
 const searchQuery = computed(() => route.query.q?.toString() ?? '');
 const searchDebounced = refDebounced(searchQuery, 400);
 const itemSearchMethod = computed(() => searchDebounced.value ? 'getItems' : undefined);
 const peopleSearchMethod = computed(() => searchDebounced.value ? 'getPersons' : undefined);
-const [{ loading: itemLoading, data: itemSearch }, { loading: peopleLoading, data: peopleSearch }] = await Promise.all([
+const [
+  { data: itemSearch },
+  { data: peopleSearch }]
+= await Promise.all([
   useBaseItem(getItemsApi, itemSearchMethod, {
     skipCache: { request: true }
   })(() => ({
@@ -119,23 +126,43 @@ const [{ loading: itemLoading, data: itemSearch }, { loading: peopleLoading, dat
   }))
 ]);
 
-const serverSearchIds = computed(() => {
-  if (!peopleLoading.value && !itemLoading.value) {
-    return [...itemSearch.value, ...peopleSearch.value].map(i => i.Id!);
-  }
+const cachedItems = computedAsync(
+  async () => await apiStore.findItems(searchDebounced.value),
+  [],
+  { lazy: true }
+);
 
-  return [];
-});
 const items = computed(() => {
-  if (searchDebounced.value) {
-    const items = apiStore.findItems(searchDebounced.value);
-    const itemsIds = new Set(items.map(i => i.Id!));
-    const serverItems = serverSearchIds.value.filter(i => !itemsIds.has(i));
+  const result = [];
 
-    return [...items, ...(apiStore.getItemsById(serverItems) as BaseItemDto[])];
+  if (searchDebounced.value) {
+    const foundItems = new Set<string>();
+    const sources = [itemSearch.value, peopleSearch.value, cachedItems.value];
+    let currentSourceIndex = 0;
+    let i = 0;
+
+    while (currentSourceIndex < sources.length) {
+      const currentArray = sources[currentSourceIndex] ?? [];
+
+      if (i < currentArray.length) {
+        const item = currentArray[i];
+        const itemId = item?.Id;
+
+        if (itemId && !foundItems.has(itemId)) {
+          foundItems.add(itemId);
+          result.push(item);
+        }
+
+        i++;
+      } else {
+        // Pasar al siguiente array y reiniciar el índice
+        currentSourceIndex++;
+        i = 0;
+      }
+    }
   }
 
-  return [];
+  return result;
 });
 const movies = computed(() =>
   items.value.filter(item => item.Type === BaseItemKind.Movie)

@@ -78,7 +78,7 @@ import { getStudiosApi } from '@jellyfin/sdk/lib/utils/api/studios-api';
 import { computed, onBeforeMount, ref, shallowRef } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import { useRoute } from 'vue-router';
-import { methodsAsObject, useBaseItem } from '#/composables/apis';
+import { useBaseItem } from '#/composables/apis';
 import type { Filters } from '#/components/Buttons/FilterButton.vue';
 import { useItemPageTitle } from '#/composables/page-title';
 
@@ -126,7 +126,7 @@ function onChangeFilter(changedFilters: Filters): void {
 const { data: libraryQuery } = await useBaseItem(getItemsApi, 'getItems')(() => ({
   ids: [route.params.itemId]
 }));
-const library = computed(() => libraryQuery.value[0]);
+const library = computed(() => libraryQuery.value[0]!);
 const viewType = computed({
   get() {
     if (innerItemKind.value) {
@@ -178,27 +178,27 @@ const parentId = computed(() => library.value.Id);
 const methods = computed(() => {
   switch (viewType.value) {
     case 'MusicArtist': {
-      return methodsAsObject(getArtistsApi, 'getArtists');
+      return [getArtistsApi, 'getArtists'] as const;
     }
     case 'Person': {
-      return methodsAsObject(getPersonsApi, 'getPersons');
+      return [getPersonsApi, 'getPersons'] as const;
     }
     case 'Genre': {
-      return methodsAsObject(getGenresApi, 'getGenres');
+      return [getGenresApi, 'getGenres'] as const;
     }
     case 'MusicGenre': {
-      return methodsAsObject(getMusicGenresApi, 'getMusicGenres');
+      return [getMusicGenresApi, 'getMusicGenres'] as const;
     }
     case 'Studio': {
-      return methodsAsObject(getStudiosApi, 'getStudios');
+      return [getStudiosApi, 'getStudios'] as const;
     }
     default: {
-      return methodsAsObject(getItemsApi, 'getItems');
+      return [getItemsApi, 'getItems'] as const;
     }
   }
 });
-const api = computed(() => methods.value.api);
-const method = computed(() => methods.value.methodName);
+const api = computed(() => methods.value[0]);
+const method = computed(() => methods.value[1]);
 
 /**
  * TODO: Improve the type situation of this statement

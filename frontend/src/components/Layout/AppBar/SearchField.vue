@@ -16,6 +16,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { defu } from 'defu';
 import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute();
@@ -26,12 +27,12 @@ const searchQuery = computed({
     return route.query.q?.toString() ?? '';
   },
   set(value) {
-    void router.replace({
-      ...router.currentRoute.value,
-      query: {
-        q: value.trim() || undefined
-      }
-    });
+    void router.replace(
+      defu(
+        { query: { q: value.trim() } },
+        router.currentRoute.value
+      )
+    );
   }
 });
 
