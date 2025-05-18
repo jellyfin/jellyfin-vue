@@ -11,16 +11,18 @@
       <slot :item="items[0]" />
     </Component>
     <template v-if="visibleItems.length">
-      <JSlot
-        v-for="internal_item in visibleItems"
-        :key="indexAsKey ? internal_item.index : undefined"
-        class="uno-transform-gpu"
-        :class="gridClass"
-        :style="internal_item.style">
-        <slot
-          :item="items[internal_item.index]"
-          :index="internal_item.index" />
-      </JSlot>
+      <template v-for="internal_item in visibleItems">
+        <JSlot
+          v-if="items[internal_item.index]"
+          :key="indexAsKey ? internal_item.index : undefined"
+          class="uno-transform-gpu"
+          :class="gridClass"
+          :style="internal_item.style">
+          <slot
+            :item="items[internal_item.index]"
+            :index="internal_item.index" />
+        </JSlot>
+      </template>
     </template>
   </Component>
 </template>
@@ -262,7 +264,7 @@ const populateCache = (() => {
    * We cache the items to avoid the extra overhead of sending the items
    * to the worker when scrolling fast. We cache 2 times the buffer length
    */
-  function populateCache(): void {
+  return function (): void {
     if (!isUndef(resizeMeasurement.value)
       && Number.isFinite(bufferLength.value)
       && Number.isFinite(bufferOffset.value)
@@ -286,9 +288,7 @@ const populateCache = (() => {
         void setCache(i);
       }
     }
-  }
-
-  return populateCache;
+  };
 })();
 
 useEventListener(scrollTargets, 'scroll', () => {
