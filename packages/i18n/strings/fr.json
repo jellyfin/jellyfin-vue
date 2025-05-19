@@ -261,7 +261,7 @@
   "originalTitle": "Titre original",
   "overview": "Synopsis",
   "parallelImageEncodingLimit": "Limite de parallélisation de l'encodage d'image",
-  "parallelLibraryScanLimit": "Limite du scan de la librairie parallèle",
+  "parallelLibraryScanLimit": "Limite du scan de la librairie en parallèle",
   "parentalControl": "Contrôle parental",
   "parentalRating": "Classification parentale",
   "parentalRatings": "Classifications parentales",
