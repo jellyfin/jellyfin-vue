@@ -358,7 +358,7 @@
   "serverSettingsPaths": "Chemins",
   "serverSettingsPerformance": "Performance",
   "serverVersion": "Version du serveur",
-  "serverVersionTooLow": "La version du serveur doit être {{version}} ou plus haut",
+  "serverVersionTooLow": "La version du serveur doit être {{version}} ou supérieure",
   "setAdminError": "Impossible de créer un compte Administrateur.",
   "setLanguageError": "Impossible de définir la langue du client.",
   "setMetadataError": "Impossible de définir la langue des méta-données.",
