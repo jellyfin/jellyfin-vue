@@ -5,14 +5,15 @@ import { mediaElementRef } from '#/store';
 import { playbackManager } from '#/store/playback-manager';
 
 /**
- * Watchers and handlers that are common to music and video playback
+ * Watchers and handlers that are common to fullscreen music and video playback
+ * pages
  */
 export function usePlayback() {
-  watch(() => playbackManager.currentItem, () => {
+  watch(playbackManager.currentItem, () => {
     if (!playbackManager.currentItem.value) {
       router.back();
     }
-  });
+  }, { flush: 'sync' });
 
   /**
    * - iOS's Safari fullscreen API is only available for the video element
