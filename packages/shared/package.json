@@ -17,8 +17,8 @@
     "@jellyfin-vue/configs": "*"
   },
   "dependencies": {
-    "dompurify": "3.2.5",
-    "marked": "15.0.11"
+    "dompurify": "3.2.6",
+    "marked": "15.0.12"
   },
   "peerDependencies": {
     "@vue/shared": "*",
