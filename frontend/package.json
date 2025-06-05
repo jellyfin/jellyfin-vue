@@ -70,43 +70,11 @@
     "vite-plugin-vue-devtools": "7.7.6"
   },
   "peerDependencies": {
-    "@chromatic-com/storybook": "*",
-    "@storybook/addon-a11y": "*",
-    "@storybook/addon-essentials": "*",
-    "@storybook/addon-interactions": "*",
-    "@storybook/blocks": "*",
-    "@storybook/vue3": "*",
-    "@storybook/vue3-vite": "*",
     "@vue/shared": "*",
-    "storybook": "*",
     "type-fest": "*",
     "vite": "*"
   },
   "peerDependenciesMeta": {
-    "@chromatic-com/storybook": {
-      "optional": true
-    },
-    "@storybook/addon-a11y": {
-      "optional": true
-    },
-    "@storybook/addon-essentials": {
-      "optional": true
-    },
-    "@storybook/addon-interactions": {
-      "optional": true
-    },
-    "@storybook/blocks": {
-      "optional": true
-    },
-    "@storybook/vue3": {
-      "optional": true
-    },
-    "@storybook/vue3-vite": {
-      "optional": true
-    },
-    "storybook": {
-      "optional": true
-    },
     "type-fest": {
       "optional": true
     },

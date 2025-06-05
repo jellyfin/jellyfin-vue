@@ -30,16 +30,12 @@
     "@vueuse/core": "*",
     "comlink": "*",
     "i18next-vue": "*",
-    "storybook": "*",
     "vue": "*",
     "vuetify": "*",
     "unplugin-vue-components": "*",
     "vite": "*"
   },
   "peerDependenciesMeta": {
-    "storybook": {
-      "optional": true
-    },
     "unplugin-vue-components": {
       "optional": true
     },
