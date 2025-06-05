@@ -11,6 +11,7 @@ import vue from 'eslint-plugin-vue';
 import promise from 'eslint-plugin-promise';
 import globals from 'globals';
 import vueParser from 'vue-eslint-parser';
+import { getPackagePath } from '@jellyfin-vue/shared/node/utils';
 import { eqeqeqConfig, vueAndTsFiles, vueFiles, tsFiles } from '../shared';
 
 const recommendedKey = 'flat/recommended';
@@ -21,7 +22,7 @@ const recommendedKey = 'flat/recommended';
 const flatArrayOfObjects = (obj: unknown[]) => Object.assign({}, ...obj);
 
 /** Common TypeScript and Vue rules */
-const common = defineConfig([
+const common = (packageName: string) => defineConfig([
   {
     ...flatArrayOfObjects(tseslint.configs.strictTypeChecked),
     name: '(@jellyfin-vue/configs/lint/typescript-vue - typescript-eslint) Extended config from plugin (strict type checking)'
@@ -55,7 +56,12 @@ const common = defineConfig([
       'import-x': eslintImportX
     },
     rules: {
-      'import-x/no-extraneous-dependencies': 'error',
+      'import-x/no-extraneous-dependencies': [
+        'error',
+        {
+          packageDir: [getPackagePath('jellyfin-vue'), getPackagePath(packageName)]
+        }
+      ],
       'import-x/order': 'error',
       'import-x/no-cycle': 'error',
       'import-x/no-nodejs-modules': 'error',
@@ -202,10 +208,10 @@ const vue_config = defineConfig([
  * @param enableVue - Whether to apply the base config for Vue files
  * @returns
  */
-export function getTSVueConfig(enableVue = true, tsconfigRootDir = import.meta.dirname) {
+export function getTSVueConfig(packageName: string, enableVue = true, tsconfigRootDir = import.meta.dirname) {
   const result = [
     ...(enableVue ? vue_config : []),
-    ...common.map(conf => ({
+    ...common(packageName).map(conf => ({
       ...conf, files: enableVue ? vueAndTsFiles : tsFiles
     }))];
 

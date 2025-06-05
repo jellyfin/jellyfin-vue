@@ -1,3 +1,4 @@
+import { getPackagePath } from '@jellyfin-vue/shared/node/utils';
 import { defineConfig } from 'eslint/config';
 import globals from 'globals';
 
@@ -5,7 +6,7 @@ import globals from 'globals';
  * Gets the ESLint config from Node.js and development related files
  * @param files - Defaults to `*config.*` and files under `scripts` folder
  */
-export function getNodeFiles(files = ['*.config.*', 'scripts/**/*.ts']) {
+export function getNodeFiles(packageName: string, files = ['*.config.*', 'scripts/**/*.ts']) {
   return defineConfig([{
     name: '(@jellyfin-vue/configs/lint/env) Node.js and development-related files',
     files,
@@ -19,7 +20,8 @@ export function getNodeFiles(files = ['*.config.*', 'scripts/**/*.ts']) {
       'import-x/no-extraneous-dependencies': [
         'error',
         {
-          devDependencies: true
+          devDependencies: true,
+          packageDir: [getPackagePath('jellyfin-vue'), getPackagePath(packageName)]
         }
       ],
       'import-x/no-nodejs-modules': 'off',
