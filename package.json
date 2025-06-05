@@ -31,14 +31,14 @@
   },
   "devDependencies": {
     "@eslint/config-inspector": "1.0.2",
-    "@types/node": "22.15.21",
-    "eslint": "9.27.0",
+    "@types/node": "22.15.29",
+    "eslint": "9.28.0",
     "jiti": "2.4.2",
     "storybook": "8.6.14",
     "type-fest": "4.41.0",
     "typescript": "5.8.3",
     "vite": "6.3.5",
-    "vitest": "3.1.4",
+    "vitest": "3.2.2",
     "vue-tsc": "2.2.10"
   },
   "overrides": {
