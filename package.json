@@ -23,11 +23,14 @@
     "yarn": "yarn is not supported. Please use npm"
   },
   "scripts": {
-    "lint": "npm run lint -ws --if-present",
-    "lint:fix": "npm run lint:fix -ws --if-present",
-    "check:types": "npm run check:types -ws --if-present",
-    "analyze:cycles": "npm run analyze:cycles -ws --if-present",
-    "test": "npm run test -ws --if-present"
+    "lint": "npm run lint -ws --include-workspace-root=false",
+    "lint:fix": "npm run lint:fix -ws --include-workspace-root=false",
+    "check:types": "npm run check:types -ws --include-workspace-root=false",
+    "analyze:cycles": "npm run analyze:cycles -ws --include-workspace-root=false",
+    "test": "npm run test -ws --include-workspace-root=false"
+  },
+  "dependencies": {
+    "vue": "3.5.15"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "4.0.0",
@@ -41,9 +44,13 @@
     "storybook": "9.0.5",
     "type-fest": "4.41.0",
     "typescript": "5.8.3",
+    "unocss": "66.1.3",
     "vite": "6.3.5",
     "vitest": "3.2.2",
     "vue-tsc": "2.2.10"
+  },
+  "peerDependencies": {
+    "@vue/shared": "*"
   },
   "overrides": {
     "stylus": "0.64.0"

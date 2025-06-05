@@ -19,6 +19,7 @@
     "storybook": "storybook dev -p 6006 --config-dir storybook --no-open"
   },
   "dependencies": {
+    "@jellyfin-vue/shared": "*",
     "@skirtle/vue-vnode-utils": "0.2.0",
     "color": "5.0.0"
   },
@@ -30,16 +31,12 @@
     "@vueuse/core": "*",
     "comlink": "*",
     "i18next-vue": "*",
-    "vue": "*",
-    "vuetify": "*",
     "unplugin-vue-components": "*",
-    "vite": "*"
+    "vue": "*",
+    "vuetify": "*"
   },
   "peerDependenciesMeta": {
     "unplugin-vue-components": {
-      "optional": true
-    },
-    "vite": {
       "optional": true
     }
   }

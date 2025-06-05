@@ -12,13 +12,5 @@
   },
   "dependencies": {
     "@jellyfin-vue/tauri-runtime": "*"
-  },
-  "peerDependencies": {
-    "vite": "*"
-  },
-  "peerDependenciesMeta": {
-    "vite": {
-      "optional": true
-    }
   }
 }
