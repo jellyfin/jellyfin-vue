@@ -51,7 +51,6 @@
     "sortablejs": "1.15.6",
     "swiper": "11.2.8",
     "uuid": "11.1.0",
-    "vue": "3.5.15",
     "vue-router": "4.5.1",
     "vuetify": "3.8.0"
   },
@@ -64,22 +63,8 @@
     "@vitejs/plugin-vue": "5.2.4",
     "browserslist": "4.25.0",
     "lightningcss": "1.30.1",
-    "unocss": "66.1.3",
     "unplugin-vue-components": "28.7.0",
     "unplugin-vue-router": "0.12.0",
     "vite-plugin-vue-devtools": "7.7.6"
-  },
-  "peerDependencies": {
-    "@vue/shared": "*",
-    "type-fest": "*",
-    "vite": "*"
-  },
-  "peerDependenciesMeta": {
-    "type-fest": {
-      "optional": true
-    },
-    "vite": {
-      "optional": true
-    }
   }
 }

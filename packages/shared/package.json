@@ -19,18 +19,5 @@
   "dependencies": {
     "dompurify": "3.2.6",
     "marked": "15.0.12"
-  },
-  "peerDependencies": {
-    "@vue/shared": "*",
-    "type-fest": "*",
-    "vitest": "*"
-  },
-  "peerDependenciesMeta": {
-    "type-fest": {
-      "optional": true
-    },
-    "vitest": {
-      "optional": true
-    }
   }
 }

@@ -14,17 +14,5 @@
     "find-up-simple": "1.0.1",
     "pretty-bytes": "7.0.0",
     "sonda": "0.7.1"
-  },
-  "peerDependencies": {
-    "type-fest": "*",
-    "vite": "*"
-  },
-  "peerDependenciesMeta": {
-    "type-fest": {
-      "optional": true
-    },
-    "vite": {
-      "optional": true
-    }
   }
 }

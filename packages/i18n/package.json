@@ -21,7 +21,6 @@
     "knitwork": "1.2.0"
   },
   "peerDependencies": {
-    "@vue/shared": "*",
     "date-fns": "*",
     "i18next": "*",
     "vuetify": "*"
