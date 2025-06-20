@@ -1,4 +1,4 @@
-import { basename, resolve } from 'node:path';
+import { basename, resolve, join } from 'node:path';
 import { globSync } from 'node:fs';
 import { lstat, rename, rm } from 'node:fs/promises';
 import type { LiteralUnion } from 'type-fest';
@@ -18,7 +18,6 @@ const defaultConfig = { build: { outDir: 'dist' } };
  */
 export function JBundleAnalysis(): Plugin {
   let mode: LiteralUnion<'analyze:bundle' | 'analyze:cycles', string>;
-  const report_filename = () => resolve(defaultConfig.build.outDir, 'bundle-report.html');
   const warnings: RollupLog[] = [];
 
   return {
@@ -35,8 +34,8 @@ export function JBundleAnalysis(): Plugin {
               plugins: [
                 Sonda({
                   open: false,
-                  filename: report_filename(),
-                  detailed: true,
+                  outputDir: defaultConfig.build.outDir,
+                  deep: true,
                   sources: true,
                   gzip: false,
                   brotli: false
@@ -69,12 +68,12 @@ export function JBundleAnalysis(): Plugin {
           throw new Error('There are circular dependencies');
         }
       } else if (mode === 'analyze:bundle') {
-        await rename(report_filename(), resolve(defaultConfig.build.outDir, 'index.html'));
+        const src = resolve(defaultConfig.build.outDir);
 
-        for (const file of globSync(resolve(defaultConfig.build.outDir, '**/*'))) {
-          if (!file.endsWith('index.html')) {
-            await rm(file, { force: true, recursive: true });
-          }
+        await rm(join(src, 'index.html'));
+
+        for (const file of globSync(join(src, '**/*'))) {
+          await (file.includes('sonda') ? rename(file, resolve(defaultConfig.build.outDir, 'index.html')) : rm(file, { force: true, recursive: true }));
         }
 
         const server = await preview({
