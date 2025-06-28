@@ -70,7 +70,7 @@ jobs:
           cache: 'npm'
 
       - name: Setup Rust Toolchain and cache 🦀
-        uses: actions-rust-lang/setup-rust-toolchain@v1.12.0
+        uses: actions-rust-lang/setup-rust-toolchain@v1.13.0
         with:
           cache-key: tauri-${{ runner.os }}
           cache-workspaces: ${{ env.WORKING_DIR }}
@@ -96,7 +96,7 @@ jobs:
           path: ${{ env.WORKING_DIR }}/${{ env.ARTIFACTS_PATH }}
 
       - name: Create provenance attestation 🔏
-        uses: actions/attest-build-provenance@v2.3.0
+        uses: actions/attest-build-provenance@v2.4.0
         continue-on-error: true
         with:
           subject-name: ${{ env.ARTIFACT_NAME }}
@@ -188,7 +188,7 @@ jobs:
         uses: docker/setup-qemu-action@v3.6.0
 
       - name: Configure Docker Buildx ⚙️
-        uses: docker/setup-buildx-action@v3.10.0
+        uses: docker/setup-buildx-action@v3.11.1
         with:
           cleanup: false
           version: latest
@@ -219,7 +219,7 @@ jobs:
           path: docker_image.tar
 
       - name: Create provenance attestation 🔏
-        uses: actions/attest-build-provenance@v2.3.0
+        uses: actions/attest-build-provenance@v2.4.0
         continue-on-error: true
         with:
           subject-name: ${{ env.ARTIFACT_NAME }}
@@ -264,7 +264,7 @@ jobs:
           path: dist
 
       - name: Create provenance attestation 🔏
-        uses: actions/attest-build-provenance@v2.3.0
+        uses: actions/attest-build-provenance@v2.4.0
         continue-on-error: true
         with:
           subject-name: ${{ env.ARTIFACT_NAME }}
@@ -295,7 +295,7 @@ jobs:
         uses: docker/setup-qemu-action@v3.6.0
 
       - name: Configure Docker Buildx ⚙️
-        uses: docker/setup-buildx-action@v3.10.0
+        uses: docker/setup-buildx-action@v3.11.1
         with:
           cleanup: false
           version: latest
