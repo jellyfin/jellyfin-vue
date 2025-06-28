@@ -19,7 +19,7 @@
     "@eslint/js": "9.30.0",
     "@eslint/json": "0.12.0",
     "@jellyfin-vue/shared": "*",
-    "@stylistic/eslint-plugin": "4.4.1",
+    "@stylistic/eslint-plugin": "5.0.0",
     "@unocss/eslint-config": "66.3.2",
     "eslint-config-flat-gitignore": "2.1.0",
     "eslint-plugin-css": "0.11.0",
