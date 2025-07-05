@@ -47,7 +47,7 @@
     "unocss": "66.3.2",
     "vite": "7.0.0",
     "vitest": "3.2.4",
-    "vue-tsc": "2.2.10"
+    "vue-tsc": "3.0.1"
   },
   "peerDependencies": {
     "@vue/shared": "*"
