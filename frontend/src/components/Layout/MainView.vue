@@ -74,7 +74,8 @@ const { comp, route } = defineProps<{
 }>();
 
 const id = useId();
-const root = isNil(inject(JView_isRouting));
+const injectedRouting = inject(JView_isRouting, null);
+const root = isNil(injectedRouting);
 
 const resolved = computed({
   get() {
