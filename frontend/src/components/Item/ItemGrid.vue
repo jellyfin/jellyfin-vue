@@ -6,7 +6,7 @@
         v-slot="{ item }"
         :items="items"
         grid
-        index-as-key
+        :get-key="item => item.Id"
         :class="useResponsiveClasses('card-grid-container')">
         <ItemCard
           :item="item"

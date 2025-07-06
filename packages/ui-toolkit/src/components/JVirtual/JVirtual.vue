@@ -10,17 +10,21 @@
       :class="gridClass">
       <slot :item="items[0]" />
     </Component>
-    <template v-if="visibleItems.length">
-      <template v-for="internal_item in visibleItems">
+    <template v-if="visibleItemsLength">
+      <template
+        v-for="comp_index in visibleItemsLength"
+        :key="getKey?.(items[visibleItems[comp_index - 1]!.index] as T)">
         <JSlot
-          v-if="items[internal_item.index]"
-          :key="indexAsKey ? internal_item.index : undefined"
+          v-if="
+            visibleItems[comp_index - 1] &&
+              items[visibleItems[comp_index - 1]!.index] &&
+              visibleItems[comp_index - 1]!.style"
           class="uno-transform-gpu"
           :class="gridClass"
-          :style="internal_item.style">
+          :style="visibleItems[comp_index - 1]!.style">
           <slot
-            :item="items[internal_item.index]"
-            :index="internal_item.index" />
+            :item="items[visibleItems[comp_index - 1]!.index]!"
+            :index="visibleItems[comp_index - 1]!.index" />
         </JSlot>
       </template>
     </template>
@@ -79,7 +83,15 @@ const displayHeight = refDebounced(windowSize.height, 250);
  * - Type support for the data that must be passed to the virtualized component's instances
  * - Improved documentation and comments
  */
-const { items, tag = 'div', probeTag = 'div', bufferMultiplier = 1.2, scrollTo, grid, indexAsKey } = defineProps<{
+const {
+  items,
+  tag = 'div',
+  probeTag = 'div',
+  bufferMultiplier = 1.2,
+  scrollTo,
+  grid,
+  getKey
+} = defineProps<{
   items: T[];
   /**
    * Element to use as a container for the virtualized elements
@@ -98,7 +110,7 @@ const { items, tag = 'div', probeTag = 'div', bufferMultiplier = 1.2, scrollTo, 
    */
   bufferMultiplier?: number;
   /**
-   * Item index to scroll to. It just scrolls to the item, it doesn't lock screen to it.
+   * Item index to scroll to. It just scrolls to the item on change, it doesn't lock screen to it.
    */
   scrollTo?: number;
   /**
@@ -109,7 +121,7 @@ const { items, tag = 'div', probeTag = 'div', bufferMultiplier = 1.2, scrollTo, 
    * Updates the content by using the index as key. This is useful in case the inner content
    * doesn't react properly to changes in the data.
    */
-  indexAsKey?: boolean;
+  getKey?: (item: T) => unknown;
 }>();
 
 /**
@@ -202,6 +214,7 @@ const visibleItems = computed<InternalItem[]>((previous) => {
 
   return [];
 });
+const visibleItemsLength = computed(() => visibleItems.value.length);
 const scrollParents = computed(() => rootRef.value && getScrollParents(rootRef.value));
 const scrollTargets = computed(() => {
   if (scrollParents.value) {
