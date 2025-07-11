@@ -1,6 +1,7 @@
 {
   "recommendations": [
     "antfu.iconify",
+    "antfu.unocss",
     "aaron-bond.better-comments",
     "eamodio.gitlens",
     "vue.volar",
