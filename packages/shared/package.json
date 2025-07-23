@@ -18,6 +18,6 @@
   },
   "dependencies": {
     "dompurify": "3.2.6",
-    "marked": "16.0.0"
+    "marked": "16.1.1"
   }
 }
