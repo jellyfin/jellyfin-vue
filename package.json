@@ -35,19 +35,19 @@
   "devDependencies": {
     "@chromatic-com/storybook": "4.0.1",
     "@eslint/config-inspector": "1.1.0",
-    "@storybook/addon-a11y": "9.0.14",
-    "@storybook/vue3": "9.0.14",
-    "@storybook/vue3-vite": "9.0.14",
-    "@types/node": "24.0.7",
-    "eslint": "9.30.0",
-    "jiti": "2.4.2",
-    "storybook": "9.0.14",
+    "@storybook/addon-a11y": "9.0.18",
+    "@storybook/vue3": "9.0.18",
+    "@storybook/vue3-vite": "9.0.18",
+    "@types/node": "24.1.0",
+    "eslint": "9.31.0",
+    "jiti": "2.5.0",
+    "storybook": "9.0.18",
     "type-fest": "4.41.0",
     "typescript": "5.8.3",
-    "unocss": "66.3.2",
-    "vite": "7.0.0",
+    "unocss": "66.3.3",
+    "vite": "7.0.6",
     "vitest": "3.2.4",
-    "vue-tsc": "3.0.1"
+    "vue-tsc": "3.0.3"
   },
   "peerDependencies": {
     "@vue/shared": "*"
