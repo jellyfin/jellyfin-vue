@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "@eslint/css": "0.10.0",
-    "@eslint/js": "9.31.0",
+    "@eslint/js": "9.32.0",
     "@eslint/json": "0.13.1",
     "@jellyfin-vue/shared": "*",
     "@stylistic/eslint-plugin": "5.2.2",
@@ -31,7 +31,7 @@
     "eslint-plugin-regexp": "2.9.0",
     "eslint-plugin-sonarjs": "3.0.4",
     "eslint-plugin-unicorn": "60.0.0",
-    "eslint-plugin-vue": "10.3.0",
+    "eslint-plugin-vue": "10.4.0",
     "eslint-plugin-vue-scoped-css": "2.11.0",
     "find-up-simple": "1.0.1",
     "globals": "16.3.0",
