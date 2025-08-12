@@ -30,6 +30,7 @@ export interface ResizeMeasurement extends GridMeasurement {
 export interface BufferMeta {
   bufferedOffset: number;
   bufferedLength: number;
+  crosswiseLines: number;
 }
 
 interface ItemOffset {
@@ -142,7 +143,7 @@ export function getResizeMeasurement(
 /**
  * Whether the scroll direction is horizontal or not
  */
-function isHorizontallyScrolled(resizeMeasurement: ResizeMeasurement): boolean {
+export function isHorizontallyScrolled(resizeMeasurement: ResizeMeasurement): boolean {
   return resizeMeasurement.flow === 'column';
 }
 
@@ -217,9 +218,10 @@ export function getBufferMeta(
    */
   const intersectedWithMultiplier = itemsIntersectingViewport * multiplier;
   const renderedItems
-    = (intersectedWithMultiplier) % 2 === 0
+    = Math.ceil((intersectedWithMultiplier) % 2 === 0
       ? intersectedWithMultiplier * 4
-      : intersectedWithMultiplier * 4 + 1;
+      : intersectedWithMultiplier * 4 + 1);
+
   /**
    * DOM nodes that are not intersecting the viewport
    */
@@ -233,8 +235,15 @@ export function getBufferMeta(
   const cursor = Math.max(itemsBefore - Math.round(itemsAroundViewport / 2), 0);
 
   return {
+    crosswiseLines,
     bufferedOffset: cursor,
-    bufferedLength: renderedItems
+    /**
+     * Ensure renderedItems is always a multiple of crosswiseLines
+     * to have complete rows/columns without missing elements
+     */
+    bufferedLength: renderedItems % crosswiseLines === 0
+      ? renderedItems
+      : Math.ceil(renderedItems / crosswiseLines) * crosswiseLines
   };
 }
 
@@ -287,7 +296,12 @@ export function getContentSize(
 /**
  * Gets the necessary information to scroll the grid to a specific item
  */
-export function getScrollToInfo(scrollParents: ScrollParents, rootEl: HTMLElement, resizeMeasurement: ResizeMeasurement, scrollTo: number) {
+export function getScrollToInfo(
+  scrollParents: ScrollParents,
+  rootEl: HTMLElement,
+  resizeMeasurement: ResizeMeasurement,
+  scrollTo: number
+) {
   const computedStyle = globalThis.getComputedStyle(rootEl);
 
   const gridPaddingTop = Number(computedStyle.getPropertyValue('padding-top')) || 0;
