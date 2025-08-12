@@ -2,7 +2,10 @@
   <Component
     :is="tag"
     ref="rootRef"
-    :style="rootStyles">
+    class="uno-relative uno-place-content-start"
+    :style="[rootStyles, {
+      'top': toPx(spaceBefore)
+    }]">
     <Component
       :is="probeTag"
       ref="probeRef"
@@ -10,22 +13,18 @@
       :class="gridClass">
       <slot :item="items[0]" />
     </Component>
-    <template v-if="visibleItemsLength">
+    <JSlot
+      v-if="grid"
+      :class="gridClass">
+      <slot :item="visibleItems[0]?.item" />
+    </JSlot>
+    <template v-if="visibleItemsLength - 1">
       <template
         v-for="comp_index in visibleItemsLength"
         :key="getKey?.(items[visibleItems[comp_index - 1]!.index] as T)">
-        <JSlot
-          v-if="
-            visibleItems[comp_index - 1] &&
-              items[visibleItems[comp_index - 1]!.index] &&
-              visibleItems[comp_index - 1]!.style"
-          class="uno-transform-gpu"
-          :class="gridClass"
-          :style="visibleItems[comp_index - 1]!.style">
-          <slot
-            :item="items[visibleItems[comp_index - 1]!.index]!"
-            :index="visibleItems[comp_index - 1]!.index" />
-        </JSlot>
+        <slot
+          :item="items[visibleItems[comp_index - 1]!.index]!"
+          :index="visibleItems[comp_index - 1]!.index" />
       </template>
     </template>
   </Component>
@@ -169,11 +168,6 @@ const contentSize = computed(() => {
     ? getContentSize(resizeMeasurement.value, itemsLength.value)
     : undefined;
 });
-const rootStyles = computed<StyleValue>(() => ({
-  ...(!isNil(contentSize.value?.height) && { height: toPx(contentSize.value.height) }),
-  ...(!isNil(contentSize.value?.width) && { width: toPx(contentSize.value.width) }),
-  placeContent: 'start'
-}));
   /**
    * Cache internal properties instead of passing them as objects, as using the objects directly will lead to firing the computed properties' effects
    * even if they haven't changed (since returning a object is always a new object and there's no proper way in Javascript to compare objects).
@@ -205,6 +199,12 @@ const bufferMeta = computed(() => {
 });
 const bufferLength = computed(() => Math.ceil(bufferMeta.value?.bufferedLength ?? 0));
 const bufferOffset = computed(() => Math.ceil(bufferMeta.value?.bufferedOffset ?? 0));
+const itemsPerLine = computed(() => bufferMeta.value?.crosswiseLines);
+const spaceBefore = computed(() => (bufferOffset.value / itemsPerLine.value) * resizeMeasurement.value?.itemHeightWithGap);
+const rootStyles = computed<StyleValue>(() => ({
+  ...(!isNil(contentSize.value?.height) && { height: toPx(contentSize.value.height - spaceBefore.value) }),
+  ...(!isNil(contentSize.value?.width) && { width: toPx(contentSize.value.width - spaceBefore.value) })
+}));
 const visibleItems = computed<InternalItem[]>((previous) => {
   if (Number.isFinite(workerUpdates.value) && Number.isFinite(scrollEvents.value)) {
     const elems = cache.get(bufferOffset.value) ?? [];
