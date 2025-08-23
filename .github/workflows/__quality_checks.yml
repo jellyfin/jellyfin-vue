@@ -14,13 +14,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v5.0.0
         with:
           ref: ${{ inputs.commit }}
           show-progress: false
 
       - name: Scan
-        uses: actions/dependency-review-action@v4.7.1
+        uses: actions/dependency-review-action@v4.7.2
         with:
           base-ref: ${{ github.event.pull_request.base.sha || 'master' }}
           head-ref: ${{ github.event.pull_request.head.sha || github.ref }}
@@ -39,7 +39,7 @@ jobs:
 
     steps:
       - name: Checkout ⬇️
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v5.0.0
         with:
           ref: ${{ inputs.commit }}
           show-progress: false
@@ -63,7 +63,7 @@ jobs:
 
     steps:
       - name: Checkout ⬇️
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v5.0.0
         with:
           ref: ${{ inputs.commit }}
           show-progress: false
