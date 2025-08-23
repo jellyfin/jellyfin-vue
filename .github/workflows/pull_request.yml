@@ -34,7 +34,7 @@ jobs:
     name: Semantic Pull Request 📚
     steps:
       - name: Validate PR title 👌
-        uses: amannn/action-semantic-pull-request@v5.5.3
+        uses: amannn/action-semantic-pull-request@v6.1.1
         env:
           GITHUB_TOKEN: ${{ secrets.JF_BOT_TOKEN }}
         with:
