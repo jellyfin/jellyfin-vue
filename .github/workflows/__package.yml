@@ -70,7 +70,7 @@ jobs:
           cache: 'npm'
 
       - name: Setup Rust Toolchain and cache 🦀
-        uses: actions-rust-lang/setup-rust-toolchain@v1.14.0
+        uses: actions-rust-lang/setup-rust-toolchain@v1.14.1
         with:
           cache-key: tauri-${{ runner.os }}
           cache-workspaces: ${{ env.WORKING_DIR }}
