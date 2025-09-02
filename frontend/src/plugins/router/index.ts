@@ -11,13 +11,14 @@ import { loginGuard } from './middlewares/login';
 import { metaGuard } from './middlewares/meta';
 import { validateGuard } from './middlewares/validate';
 import { jsonConfig } from '#/utils/external-config';
+import { routes } from 'vue-router/auto-routes';
 
 export const router = createRouter({
   history:
     jsonConfig.routerMode === 'history'
       ? createWebHistory()
       : createWebHashHistory(),
-  routes: [],
+  routes: routes,
   /**
    * TODO: Fix this, so it only scrolls to the top once suspense resolves
    */
@@ -69,7 +70,8 @@ router.back = () => {
 watch([
   remote.auth.currentUser,
   remote.auth.currentServer
-], () => {
+], async () => {
+  await router.isReady();
   void router.replace({
     ...router.currentRoute.value,
     force: true
