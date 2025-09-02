@@ -15,12 +15,12 @@
     "check:types": "vue-tsc"
   },
   "devDependencies": {
-    "@eslint/css": "0.10.0",
-    "@eslint/js": "9.32.0",
-    "@eslint/json": "0.13.1",
+    "@eslint/css": "0.11.0",
+    "@eslint/js": "9.34.0",
+    "@eslint/json": "0.13.2",
     "@jellyfin-vue/shared": "*",
-    "@stylistic/eslint-plugin": "5.2.2",
-    "@unocss/eslint-config": "66.3.3",
+    "@stylistic/eslint-plugin": "5.3.1",
+    "@unocss/eslint-config": "66.5.0",
     "eslint-config-flat-gitignore": "2.1.0",
     "eslint-plugin-css": "0.11.0",
     "eslint-plugin-depend": "1.2.0",
@@ -28,14 +28,14 @@
     "eslint-plugin-import-x": "4.16.1",
     "eslint-plugin-jsdoc": "54.2.1",
     "eslint-plugin-promise": "7.2.1",
-    "eslint-plugin-regexp": "2.9.0",
-    "eslint-plugin-sonarjs": "3.0.4",
+    "eslint-plugin-regexp": "2.10.0",
+    "eslint-plugin-sonarjs": "3.0.5",
     "eslint-plugin-unicorn": "60.0.0",
     "eslint-plugin-vue": "10.4.0",
     "eslint-plugin-vue-scoped-css": "2.11.0",
     "find-up-simple": "1.0.1",
     "globals": "16.3.0",
-    "typescript-eslint": "8.38.0",
+    "typescript-eslint": "8.42.0",
     "vue-eslint-parser": "10.2.0"
   }
 }
