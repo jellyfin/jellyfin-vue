@@ -51,7 +51,7 @@ jobs:
 
     steps:
       - name: Label depending on modified files
-        uses: actions/labeler@v5.0.0
+        uses: actions/labeler@v6.0.1
         with:
           sync-labels: true
           repo-token: ${{ secrets.JF_BOT_TOKEN }}

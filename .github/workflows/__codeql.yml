@@ -25,16 +25,16 @@ jobs:
           show-progress: false
 
       - name: Initialize CodeQL 🛠️
-        uses: github/codeql-action/init@v3.30.0
+        uses: github/codeql-action/init@v3.30.3
         with:
           queries: security-and-quality
           languages: ${{ matrix.language }}
           dependency-caching: true
 
       - name: Autobuild 📦
-        uses: github/codeql-action/autobuild@v3.30.0
+        uses: github/codeql-action/autobuild@v3.30.3
 
       - name: Perform CodeQL Analysis 🧪
-        uses: github/codeql-action/analyze@v3.30.0
+        uses: github/codeql-action/analyze@v3.30.3
         with:
           category: '/language:${{matrix.language}}'
