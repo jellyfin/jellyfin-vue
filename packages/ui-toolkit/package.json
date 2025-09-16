@@ -21,7 +21,7 @@
   "dependencies": {
     "@jellyfin-vue/shared": "*",
     "@skirtle/vue-vnode-utils": "0.2.0",
-    "color": "5.0.0"
+    "color": "5.0.2"
   },
   "devDependencies": {
     "@jellyfin-vue/configs": "*"
