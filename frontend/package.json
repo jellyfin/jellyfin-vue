@@ -28,7 +28,7 @@
     "storybook": "storybook dev -p 6006 --config-dir storybook --no-open"
   },
   "dependencies": {
-    "@fontsource-variable/figtree": "5.2.8",
+    "@fontsource-variable/figtree": "5.2.9",
     "@jellyfin-vue/i18n": "*",
     "@jellyfin-vue/shared": "*",
     "@jellyfin-vue/ui-toolkit": "*",
@@ -36,7 +36,7 @@
     "@vueuse/core": "13.9.0",
     "assjs": "0.1.4",
     "audiomotion-analyzer": "4.5.1",
-    "axios": "1.12.0",
+    "axios": "1.12.2",
     "blurhash": "2.0.5",
     "comlink": "4.4.2",
     "date-fns": "4.1.0",
@@ -44,8 +44,8 @@
     "destr": "2.0.5",
     "dexie": "4.2.0",
     "fast-equals": "5.2.2",
-    "hls.js": "1.6.11",
-    "i18next": "25.4.2",
+    "hls.js": "1.6.12",
+    "i18next": "25.5.2",
     "i18next-vue": "5.3.0",
     "libpgs": "0.8.1",
     "sortablejs": "1.15.6",
