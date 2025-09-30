@@ -28,7 +28,7 @@
     "storybook": "storybook dev -p 6006 --config-dir storybook --no-open"
   },
   "dependencies": {
-    "@fontsource-variable/figtree": "5.2.9",
+    "@fontsource-variable/figtree": "5.2.10",
     "@jellyfin-vue/i18n": "*",
     "@jellyfin-vue/shared": "*",
     "@jellyfin-vue/ui-toolkit": "*",
@@ -43,13 +43,13 @@
     "defu": "6.1.4",
     "destr": "2.0.5",
     "dexie": "4.2.0",
-    "fast-equals": "5.2.2",
-    "hls.js": "1.6.12",
+    "fast-equals": "5.3.2",
+    "hls.js": "1.6.13",
     "i18next": "25.5.2",
     "i18next-vue": "5.3.0",
     "libpgs": "0.8.1",
     "sortablejs": "1.15.6",
-    "swiper": "12.0.1",
+    "swiper": "12.0.2",
     "uuid": "13.0.0",
     "vue-router": "4.5.1",
     "vuetify": "3.8.0"
