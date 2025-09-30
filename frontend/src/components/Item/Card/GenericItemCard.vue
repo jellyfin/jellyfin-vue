@@ -41,7 +41,8 @@
           "
           :model-value="progress"
           absolute
-          location="bottom" />
+          location="bottom"
+          class="uno-z-50" />
       </div>
     </Component>
     <div
