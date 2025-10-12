@@ -44,4 +44,128 @@ declare module 'vue-router/auto-routes' {
     '/settings/users/new': RouteRecordInfo<'/settings/users/new', '/settings/users/new', Record<never, never>, Record<never, never>>,
     '/wizard': RouteRecordInfo<'/wizard', '/wizard', Record<never, never>, Record<never, never>>,
   }
+
+  /**
+   * Route file to route info map by unplugin-vue-router.
+   * Used by the volar plugin to automatically type useRoute()
+   *
+   * Each key is a file path relative to the project root with 2 properties:
+   * - routes: union of route names of the possible routes when in this page (passed to useRoute<...>())
+   * - views: names of nested views (can be passed to <RouterView name="...">)
+   *
+   * @internal
+   */
+  export interface _RouteFileInfoMap {
+    'src/pages/index.vue': {
+      routes: '/'
+      views: never
+    }
+    'src/pages/artist/[itemId].vue': {
+      routes: '/artist/[itemId]'
+      views: never
+    }
+    'src/pages/genre/[itemId].vue': {
+      routes: '/genre/[itemId]'
+      views: never
+    }
+    'src/pages/item/[itemId].vue': {
+      routes: '/item/[itemId]'
+      views: never
+    }
+    'src/pages/library/[itemId].vue': {
+      routes: '/library/[itemId]'
+      views: never
+    }
+    'src/pages/metadata.vue': {
+      routes: '/metadata'
+      views: never
+    }
+    'src/pages/musicalbum/[itemId].vue': {
+      routes: '/musicalbum/[itemId]'
+      views: never
+    }
+    'src/pages/person/[itemId].vue': {
+      routes: '/person/[itemId]'
+      views: never
+    }
+    'src/pages/playback/music.vue': {
+      routes: '/playback/music'
+      views: never
+    }
+    'src/pages/playback/video.vue': {
+      routes: '/playback/video'
+      views: never
+    }
+    'src/pages/search.vue': {
+      routes: '/search'
+      views: never
+    }
+    'src/pages/series/[itemId].vue': {
+      routes: '/series/[itemId]'
+      views: never
+    }
+    'src/pages/server/add.vue': {
+      routes: '/server/add'
+      views: never
+    }
+    'src/pages/server/login.vue': {
+      routes: '/server/login'
+      views: never
+    }
+    'src/pages/server/select.vue': {
+      routes: '/server/select'
+      views: never
+    }
+    'src/pages/settings/index.vue': {
+      routes: '/settings/'
+      views: never
+    }
+    'src/pages/settings/apikeys.vue': {
+      routes: '/settings/apikeys'
+      views: never
+    }
+    'src/pages/settings/devices.vue': {
+      routes: '/settings/devices'
+      views: never
+    }
+    'src/pages/settings/logs-and-activity.vue': {
+      routes: '/settings/logs-and-activity'
+      views: never
+    }
+    'src/pages/settings/server.vue': {
+      routes: '/settings/server'
+      views: never
+    }
+    'src/pages/settings/subtitles.vue': {
+      routes: '/settings/subtitles'
+      views: never
+    }
+    'src/pages/settings/users/index.vue': {
+      routes: '/settings/users/'
+      views: never
+    }
+    'src/pages/settings/users/[id].vue': {
+      routes: '/settings/users/[id]'
+      views: never
+    }
+    'src/pages/settings/users/new.vue': {
+      routes: '/settings/users/new'
+      views: never
+    }
+    'src/pages/wizard.vue': {
+      routes: '/wizard'
+      views: never
+    }
+  }
+
+  /**
+   * Get a union of possible route names in a certain route component file.
+   * Used by the volar plugin to automatically type useRoute()
+   *
+   * @internal
+   */
+  export type _RouteNamesForFilePath<FilePath extends string> =
+    _RouteFileInfoMap extends Record<FilePath, infer Info>
+      ? Info['routes']
+      : keyof RouteNamedMap
 }
