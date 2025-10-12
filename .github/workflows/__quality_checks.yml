@@ -49,7 +49,6 @@ jobs:
         with:
           node-version: lts/*
           check-latest: true
-          cache: 'npm'
 
       - name: Install dependencies 📦
         run: npm ci --no-audit

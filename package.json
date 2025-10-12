@@ -6,6 +6,7 @@
   "bugs": {
     "url": "https://github.com/jellyfin/jellyfin-vue/issues"
   },
+  "packageManager": "npm@10.9.3",
   "repository": {
     "type": "git",
     "url": "https://github.com/jellyfin/jellyfin-vue/"
@@ -19,8 +20,7 @@
   ],
   "engines": {
     "node": ">=22.11.0 <23.0.0",
-    "npm": ">=10.9.0",
-    "yarn": "yarn is not supported. Please use npm"
+    "npm": ">=10.9.0"
   },
   "scripts": {
     "lint": "npm run lint -ws --include-workspace-root=false",
