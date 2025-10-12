@@ -129,8 +129,10 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   public readonly currentItemIndex = computed({
     get: () => this._state.value.currentItemIndex,
     set: (newIndex: number | undefined) => {
-      this._state.value.currentItemIndex = newIndex;
-      this.currentTime.value = 0;
+      if (newIndex !== this._state.value.currentItemIndex) {
+        this._state.value.currentItemIndex = newIndex;
+        this.currentTime.value = 0;
+      }
     }
   });
 
