@@ -63,7 +63,7 @@
     "@vitejs/plugin-vue": "6.0.1",
     "browserslist": "4.26.2",
     "lightningcss": "1.30.2",
-    "unplugin-vue-components": "29.1.0",
+    "unplugin-vue-components": "30.0.0",
     "unplugin-vue-router": "0.15.0",
     "vite-plugin-vue-devtools": "8.0.2"
   }
