@@ -44,7 +44,6 @@
           <ItemCard
             :item="item"
             :shape="shape"
-
             text
             link
             margin
