@@ -17,7 +17,7 @@
     "@jellyfin-vue/configs": "*"
   },
   "dependencies": {
-    "dompurify": "3.2.7",
-    "marked": "16.3.0"
+    "dompurify": "3.3.0",
+    "marked": "16.4.1"
   }
 }
