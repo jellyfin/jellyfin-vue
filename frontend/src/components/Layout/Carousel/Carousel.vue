@@ -24,7 +24,9 @@
       @real-index-change="onSlideChange"
       @touch-start="onTouch"
       @touch-end="onTouch">
-      <slot name="slides" />
+      <slot
+        name="slides"
+        @vue:updated="() => console.log('jslot update')" />
     </Swiper>
     <CarouselProgressBar
       v-if="progressBar && !topProgressBar && slides > 0"
@@ -49,7 +51,7 @@ import 'swiper/css/parallax';
 import 'swiper/css/virtual';
 import { A11y, EffectFade, Keyboard, Parallax, Virtual } from 'swiper/modules';
 import { Swiper } from 'swiper/vue';
-import { ref, shallowRef } from 'vue';
+import { shallowRef, onMounted } from 'vue';
 import { useResponsiveClasses } from '#/composables/use-responsive-classes';
 
 const { slideDuration = 7000, progressBar, topProgressBar } = defineProps<{
@@ -69,9 +71,15 @@ const emit = defineEmits<{
 
 const modules = [A11y, Parallax, EffectFade, Keyboard, Virtual];
 
-const currentIndex = ref(0);
-const isPaused = ref(false);
+const currentIndex = shallowRef(0);
+const isPaused = shallowRef(false);
 const swiperInstance = shallowRef<SwiperType>();
+
+onMounted(() => {
+  if (swiperInstance.value) {
+    swiperInstance.value.update();
+  }
+});
 
 /**
  * Handle slide changes

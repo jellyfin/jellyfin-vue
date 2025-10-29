@@ -99,7 +99,7 @@ import 'swiper/css/keyboard';
 import 'swiper/css/virtual';
 import { A11y, EffectCoverflow, Virtual } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import { computed, shallowRef, watchEffect } from 'vue';
+import { computed, shallowRef, watchEffect, onMounted } from 'vue';
 import { isNil } from '@jellyfin-vue/shared/validation';
 import { playbackGuard } from '#/plugins/router/middlewares/playback';
 import { playbackManager } from '#/store/playback-manager';
@@ -128,6 +128,12 @@ const artistString = computed(() =>
 );
 
 const swiperInstance = shallowRef<SwiperType>();
+
+onMounted(() => {
+  if (swiperInstance.value) {
+    swiperInstance.value.update();
+  }
+});
 
 useItemBackdrop(playbackManager.currentItem, 0.75);
 useItemPageTitle(playbackManager.currentItem);
