@@ -108,6 +108,8 @@ jobs:
       tags: ${{ env.tags }}
       platforms: ${{ env.platforms }}
       caches: ${{ env.caches }}
+    env:
+      REQUESTED_ARCHITECTURES: ${{ inputs.architectures }}
 
     # EOF is needed for multiline environment variables in a GitHub Actions context
     steps:
@@ -118,48 +120,74 @@ jobs:
       - name: Parse commit hash ⚙️
         if: ${{ inputs.commit != '' }}
         id: sha
+        env:
+          COMMIT: ${{ inputs.commit }}
         run: |
-          PARSEABLE_SHA='${{ inputs.commit }}'
-          echo "sha=${PARSEABLE_SHA::7}" >> $GITHUB_OUTPUT
+          echo "sha=${COMMIT::7}" >> $GITHUB_OUTPUT
 
-      ## How tags are assigned:
-      ## - 1º block: Handle 'stable' release: No commit, is_prerelease=false
-      ## - 2º block: Handle 'stable-rc' release: No commit, is_prerelease=true
-      ## - 3º block: Handle 'unstable' release: Has commit hash
-      #
-      ## Before setting as output, we remove the blank lines
       - name: Generate tags 🏷️
+        env:
+          INPUT_COMMIT: ${{ inputs.commit }}
+          INPUT_TAG_NAME: ${{ inputs.tag_name }}
+          INPUT_IS_PRERELEASE: ${{ inputs.is_prerelease }}
+          STEP_DATE: ${{ steps.date.outputs.date }}
+          STEP_SHA: ${{ steps.sha.outputs.sha }}
         run: |
-          TG='${{ inputs.commit == '' && !inputs.is_prerelease && format('{0}:{1}', env.REGISTRY_IMAGE, 'latest') || '' }}\n'
-          TG+='${{ inputs.commit == '' && !inputs.is_prerelease && format('{0}:{1}', env.REGISTRY_IMAGE, env.RELEASE_TAG) || '' }}\n'
-          TG+='${{ inputs.commit == '' && !inputs.is_prerelease && inputs.tag_name && format('{0}:{1}.{2}', env.REGISTRY_IMAGE, env.RELEASE_TAG, inputs.tag_name) || '' }}\n'
-          TG+='${{ inputs.commit == '' && !inputs.is_prerelease && format('ghcr.io/{0}:{1}', env.REGISTRY_IMAGE, 'latest') || '' }}\n'
-          TG+='${{ inputs.commit == '' && !inputs.is_prerelease && format('ghcr.io/{0}:{1}', env.REGISTRY_IMAGE, env.RELEASE_TAG) || '' }}\n'
-          TG+='${{ inputs.commit == '' && !inputs.is_prerelease && inputs.tag_name && format('ghcr.io/{0}:{1}.{2}', env.REGISTRY_IMAGE, env.RELEASE_TAG, inputs.tag_name) || '' }}\n'
-
-          TG+='${{ inputs.commit == '' && inputs.is_prerelease && format('{0}:{1}', env.REGISTRY_IMAGE, env.PRERELEASE_TAG) || '' }}\n'
-          TG+='${{ inputs.commit == '' && inputs.is_prerelease && inputs.tag_name && format('{0}:{1}.{2}', env.REGISTRY_IMAGE, env.PRERELEASE_TAG, inputs.tag_name) || '' }}\n'
-          TG+='${{ inputs.commit == '' && inputs.is_prerelease && format('ghcr.io/{0}:{1}', env.REGISTRY_IMAGE, env.PRERELEASE_TAG) || '' }}\n'
-          TG+='${{ inputs.commit == '' && inputs.is_prerelease && inputs.tag_name && format('ghcr.io/{0}:{1}.{2}', env.REGISTRY_IMAGE, env.PRERELEASE_TAG, inputs.tag_name) || '' }}\n'
-
-          TG+='${{ inputs.commit != '' && format('{0}:{1}', env.REGISTRY_IMAGE, env.COMMIT_TAG) || '' }}\n'
-          TG+='${{ inputs.commit != '' && format('{0}:{1}.{2}.{3}', env.REGISTRY_IMAGE, env.COMMIT_TAG, steps.date.outputs.date, steps.sha.outputs.sha) || '' }}\n'
-          TG+='${{ inputs.commit != '' && format('ghcr.io/{0}:{1}', env.REGISTRY_IMAGE, env.COMMIT_TAG) || '' }}\n'
-          TG+='${{ inputs.commit != '' && format('ghcr.io/{0}:{1}.{2}.{3}', env.REGISTRY_IMAGE, env.COMMIT_TAG, steps.date.outputs.date, steps.sha.outputs.sha) || '' }}'
+          TG=""
+          
+          # Stable release: No commit, is_prerelease=false
+          if [[ -z "$INPUT_COMMIT" ]] && [[ "$INPUT_IS_PRERELEASE" == "false" ]]; then
+            TG+="${REGISTRY_IMAGE}:latest"$'\n'
+            TG+="${REGISTRY_IMAGE}:${RELEASE_TAG}"$'\n'
+            if [[ -n "$INPUT_TAG_NAME" ]]; then
+              TG+="${REGISTRY_IMAGE}:${RELEASE_TAG}.${INPUT_TAG_NAME}"$'\n'
+            fi
+            TG+="ghcr.io/${REGISTRY_IMAGE}:latest"$'\n'
+            TG+="ghcr.io/${REGISTRY_IMAGE}:${RELEASE_TAG}"$'\n'
+            if [[ -n "$INPUT_TAG_NAME" ]]; then
+              TG+="ghcr.io/${REGISTRY_IMAGE}:${RELEASE_TAG}.${INPUT_TAG_NAME}"$'\n'
+            fi
+          fi
+          
+          # Stable-rc release: No commit, is_prerelease=true
+          if [[ -z "$INPUT_COMMIT" ]] && [[ "$INPUT_IS_PRERELEASE" == "true" ]]; then
+            TG+="${REGISTRY_IMAGE}:${PRERELEASE_TAG}"$'\n'
+            if [[ -n "$INPUT_TAG_NAME" ]]; then
+              TG+="${REGISTRY_IMAGE}:${PRERELEASE_TAG}.${INPUT_TAG_NAME}"$'\n'
+            fi
+            TG+="ghcr.io/${REGISTRY_IMAGE}:${PRERELEASE_TAG}"$'\n'
+            if [[ -n "$INPUT_TAG_NAME" ]]; then
+              TG+="ghcr.io/${REGISTRY_IMAGE}:${PRERELEASE_TAG}.${INPUT_TAG_NAME}"$'\n'
+            fi
+          fi
+          
+          # Unstable release: Has commit hash
+          if [[ -n "$INPUT_COMMIT" ]]; then
+            TG+="${REGISTRY_IMAGE}:${COMMIT_TAG}"$'\n'
+            TG+="${REGISTRY_IMAGE}:${COMMIT_TAG}.${STEP_DATE}.${STEP_SHA}"$'\n'
+            TG+="ghcr.io/${REGISTRY_IMAGE}:${COMMIT_TAG}"$'\n'
+            TG+="ghcr.io/${REGISTRY_IMAGE}:${COMMIT_TAG}.${STEP_DATE}.${STEP_SHA}"$'\n'
+          fi
+          
           echo "tags<<EOF" >> $GITHUB_ENV
-          echo -e "$TG" | tr -s '\n' >> $GITHUB_ENV
+          echo -e "$TG" | sed '/^$/d' >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
       - name: Generate platform array 🖥️📝
+        env:
+          ARCHITECTURES: ${{ env.REQUESTED_ARCHITECTURES }}
         run: |
-          PARSED_ARRAY=$(echo '${{ inputs.architectures }}' | jq '. | map("linux/" + .) | .[]' | tr -d '"')
+          PARSED_ARRAY=$(echo "$ARCHITECTURES" | jq '. | map("linux/" + .) | .[]' | tr -d '"')
           echo "platforms<<EOF" >> $GITHUB_ENV
           echo "$PARSED_ARRAY" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
       - name: Generate cache array 💾📝
+        env:
+          ARCHITECTURES: ${{ env.REQUESTED_ARCHITECTURES }}
+          IMAGE: ${{ env.REGISTRY_IMAGE }}
         run: |
-          PARSED_ARRAY=$(echo '${{ inputs.architectures }}' | jq '. | map("type=local,mode=min,src=/tmp/${{ env.REGISTRY_IMAGE }}/cache/buildx-" + .) | .[]' | tr -d '"')
+          PARSED_ARRAY=$(echo "$ARCHITECTURES" | jq --arg image "$IMAGE" '. | map("type=local,mode=min,src=/tmp/" + $image + "/cache/buildx-" + .) | .[]' | tr -d '"')
           echo "caches<<EOF" >> $GITHUB_ENV
           echo "$PARSED_ARRAY" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
