@@ -33,7 +33,7 @@
     "@jellyfin-vue/shared": "*",
     "@jellyfin-vue/ui-toolkit": "*",
     "@jellyfin/sdk": "0.11.0",
-    "@vueuse/core": "13.9.0",
+    "@vueuse/core": "14.0.0",
     "assjs": "0.1.4",
     "audiomotion-analyzer": "4.5.1",
     "axios": "1.12.2",
