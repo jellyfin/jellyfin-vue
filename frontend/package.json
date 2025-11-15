@@ -55,16 +55,16 @@
     "vuetify": "3.8.0"
   },
   "devDependencies": {
-    "@iconify/json": "2.2.401",
+    "@iconify/json": "2.2.407",
     "@jellyfin-vue/configs": "*",
     "@jellyfin-vue/vite-plugins": "*",
     "@rollup/plugin-virtual": "3.0.2",
     "@types/sortablejs": "1.15.9",
     "@vitejs/plugin-vue": "6.0.1",
-    "browserslist": "4.27.0",
+    "browserslist": "4.28.0",
     "lightningcss": "1.30.2",
     "unplugin-vue-components": "30.0.0",
-    "unplugin-vue-router": "0.16.0",
+    "unplugin-vue-router": "0.17.0",
     "vite-plugin-vue-devtools": "8.0.3"
   }
 }
