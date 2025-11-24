@@ -57,7 +57,7 @@ jobs:
     runs-on: ${{ matrix.platform }}-latest
     steps:
       - name: Checkout ⬇️
-        uses: actions/checkout@v5.0.0
+        uses: actions/checkout@v6.0.0
         with:
           ref: ${{ inputs.commit || github.sha }}
           show-progress: false
@@ -206,13 +206,13 @@ jobs:
 
     steps:
       - name: Checkout ⬇️
-        uses: actions/checkout@v5.0.0
+        uses: actions/checkout@v6.0.0
         with:
           ref: ${{ inputs.commit || github.sha }}
           show-progress: false
 
       - name: Configure QEMU ⚙️
-        uses: docker/setup-qemu-action@v3.6.0
+        uses: docker/setup-qemu-action@v3.7.0
 
       - name: Configure Docker Buildx ⚙️
         uses: docker/setup-buildx-action@v3.11.1
@@ -313,13 +313,13 @@ jobs:
           path: /tmp/${{ env.REGISTRY_IMAGE }}/cache/
   
       - name: Checkout ⬇️
-        uses: actions/checkout@v5.0.0
+        uses: actions/checkout@v6.0.0
         with:
           ref: ${{ inputs.commit || github.sha }}
           show-progress: false
 
       - name: Configure QEMU ⚙️
-        uses: docker/setup-qemu-action@v3.6.0
+        uses: docker/setup-qemu-action@v3.7.0
 
       - name: Configure Docker Buildx ⚙️
         uses: docker/setup-buildx-action@v3.11.1
