@@ -13,6 +13,6 @@
     "@jellyfin-vue/configs": "*",
     "find-up-simple": "1.0.1",
     "pretty-bytes": "7.1.0",
-    "sonda": "0.9.0"
+    "sonda": "0.10.1"
   }
 }
