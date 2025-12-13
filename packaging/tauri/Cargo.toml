@@ -14,10 +14,10 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [build-dependencies]
-tauri-build = { version = "=2.5.1", features = [] }
+tauri-build = { version = "=2.5.3", features = [] }
 
 [dependencies]
-tauri = { version = "=2.9.1", features = [] }
+tauri = { version = "=2.9.5", features = [] }
 
 [features]
 default = ["custom-protocol"]
