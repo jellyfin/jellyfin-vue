@@ -43,15 +43,15 @@
     "defu": "6.1.4",
     "destr": "2.0.5",
     "dexie": "4.2.1",
-    "fast-equals": "5.3.3",
+    "fast-equals": "5.3.4",
     "hls.js": "1.6.15",
-    "i18next": "25.6.3",
+    "i18next": "25.7.2",
     "i18next-vue": "5.3.1",
     "libpgs": "0.8.1",
     "sortablejs": "1.15.6",
     "swiper": "12.0.3",
     "uuid": "13.0.0",
-    "vue-router": "4.6.3",
+    "vue-router": "4.6.4",
     "vuetify": "3.11.3"
   },
   "devDependencies": {
