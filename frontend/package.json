@@ -43,7 +43,7 @@
     "defu": "6.1.4",
     "destr": "2.0.5",
     "dexie": "4.2.1",
-    "fast-equals": "5.4.0",
+    "fast-equals": "6.0.0",
     "hls.js": "1.6.15",
     "i18next": "25.7.2",
     "i18next-vue": "5.3.1",
