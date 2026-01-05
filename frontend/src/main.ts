@@ -5,7 +5,6 @@
  */
 import '@jellyfin-vue/i18n';
 import { createApp } from 'vue';
-import { routes } from 'vue-router/auto-routes';
 import i18next from 'i18next';
 import I18NextVue from 'i18next-vue';
 import { getFontFaces } from '#/utils/data-manipulation';
@@ -26,14 +25,6 @@ import '#/assets/styles/index.css';
  */
 const remote = createRemote();
 const app = createApp(Root);
-
-/**
- * We add routes at this point instead of in the router plugin to avoid circular references
- * in components. At this stage, we're sure plugins are instantiated.
- */
-for (const route of routes) {
-  router.addRoute(route);
-}
 
 app.use(remote);
 app.use(I18NextVue, { i18next });
