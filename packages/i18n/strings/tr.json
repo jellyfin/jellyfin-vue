@@ -304,7 +304,7 @@
   "refresh": "Yenile",
   "refreshKeysFailure": "API anahtarları yenilenirken hata oluştu",
   "refreshMetadata": "Meta veriyi yenile",
-  "refreshMetadataHint": "Meta veriler, Kontrol Panelinden etkinleştirilen ayarlara ve internet hizmetlerine göre yenilenir",
+  "refreshMetadataHint": "Meta veriler, Yönetim Panelinden etkinleştirilen ayarlara ve internet hizmetlerine göre yenilenir",
   "releaseDate": "Yayın tarihi",
   "rememberMe": "Beni hatırla",
   "remoteAccess": "Uzaktan Erişim",
