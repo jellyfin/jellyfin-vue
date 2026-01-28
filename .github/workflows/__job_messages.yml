@@ -33,7 +33,7 @@ env:
 jobs:
   cf_pages_msg:
     name: Cloudflare Pages deployment 📃🚀
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
 
     steps:
       - name: Compose message 📃

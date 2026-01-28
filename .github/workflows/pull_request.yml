@@ -30,7 +30,7 @@ jobs:
 
   semantic-commits:
     if: ${{ always() && !cancelled() && github.repository == 'jellyfin/jellyfin-vue' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     name: Semantic Pull Request 📚
     steps:
       - name: Validate PR title 👌
@@ -47,7 +47,7 @@ jobs:
   label:
     name: Labeling 🏷️
     if: ${{ always() && !cancelled() && github.repository == 'jellyfin/jellyfin-vue'}}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
 
     steps:
       - name: Label depending on modified files

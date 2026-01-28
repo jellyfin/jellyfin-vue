@@ -103,7 +103,7 @@ jobs:
 
   docker_inputs:
     name: Prepare Docker build variables 🏷️🐳
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     outputs:
       tags: ${{ env.tags }}
       platforms: ${{ env.platforms }}

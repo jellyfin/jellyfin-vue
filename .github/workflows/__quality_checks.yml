@@ -58,7 +58,7 @@ jobs:
 
   commits_checks:
     name: Commit linting 💬✅
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
 
     steps:
       - name: Checkout ⬇️

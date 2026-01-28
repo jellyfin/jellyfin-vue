@@ -23,7 +23,7 @@ env:
 jobs:
   cf-pages:
     name: Cloudflare Pages 📃
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     environment: 
       name: ${{ inputs.branch == 'master' && 'Production' || 'Preview' }}
       url: ${{ steps.cf.outputs.deployment-url }}
