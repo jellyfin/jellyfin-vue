@@ -57,13 +57,13 @@ jobs:
     runs-on: ${{ matrix.platform }}-latest
     steps:
       - name: Checkout ⬇️
-        uses: actions/checkout@v6.0.1
+        uses: actions/checkout@v6.0.2
         with:
           ref: ${{ inputs.commit || github.sha }}
           show-progress: false
 
       - name: Setup node environment ⚙️
-        uses: actions/setup-node@v6.1.0
+        uses: actions/setup-node@v6.2.0
         with:
           node-version: lts/*
           check-latest: true
@@ -95,7 +95,7 @@ jobs:
           path: ${{ env.WORKING_DIR }}/${{ env.ARTIFACTS_PATH }}
 
       - name: Create provenance attestation 🔏
-        uses: actions/attest-build-provenance@v3.0.0
+        uses: actions/attest-build-provenance@v3.2.0
         continue-on-error: true
         with:
           subject-name: ${{ env.ARTIFACT_NAME }}
@@ -206,7 +206,7 @@ jobs:
 
     steps:
       - name: Checkout ⬇️
-        uses: actions/checkout@v6.0.1
+        uses: actions/checkout@v6.0.2
         with:
           ref: ${{ inputs.commit || github.sha }}
           show-progress: false
@@ -215,7 +215,7 @@ jobs:
         uses: docker/setup-qemu-action@v3.7.0
 
       - name: Configure Docker Buildx ⚙️
-        uses: docker/setup-buildx-action@v3.11.1
+        uses: docker/setup-buildx-action@v3.12.0
         with:
           cleanup: false
           version: latest
@@ -246,7 +246,7 @@ jobs:
           path: docker_image.tar
 
       - name: Create provenance attestation 🔏
-        uses: actions/attest-build-provenance@v3.0.0
+        uses: actions/attest-build-provenance@v3.2.0
         continue-on-error: true
         with:
           subject-name: ${{ env.ARTIFACT_NAME }}
@@ -291,7 +291,7 @@ jobs:
           path: dist
 
       - name: Create provenance attestation 🔏
-        uses: actions/attest-build-provenance@v3.0.0
+        uses: actions/attest-build-provenance@v3.2.0
         continue-on-error: true
         with:
           subject-name: ${{ env.ARTIFACT_NAME }}
@@ -313,7 +313,7 @@ jobs:
           path: /tmp/${{ env.REGISTRY_IMAGE }}/cache/
   
       - name: Checkout ⬇️
-        uses: actions/checkout@v6.0.1
+        uses: actions/checkout@v6.0.2
         with:
           ref: ${{ inputs.commit || github.sha }}
           show-progress: false
@@ -322,19 +322,19 @@ jobs:
         uses: docker/setup-qemu-action@v3.7.0
 
       - name: Configure Docker Buildx ⚙️
-        uses: docker/setup-buildx-action@v3.11.1
+        uses: docker/setup-buildx-action@v3.12.0
         with:
           cleanup: false
           version: latest
 
       - name: Login to Docker Hub 🔑
-        uses: docker/login-action@v3.6.0
+        uses: docker/login-action@v3.7.0
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Login to GitHub Container Registry 🔑
-        uses: docker/login-action@v3.6.0
+        uses: docker/login-action@v3.7.0
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}

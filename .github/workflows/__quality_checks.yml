@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v6.0.1
+        uses: actions/checkout@v6.0.2
         with:
           ref: ${{ inputs.commit }}
           show-progress: false
@@ -39,13 +39,13 @@ jobs:
 
     steps:
       - name: Checkout ⬇️
-        uses: actions/checkout@v6.0.1
+        uses: actions/checkout@v6.0.2
         with:
           ref: ${{ inputs.commit }}
           show-progress: false
 
       - name: Setup node environment ⚙️
-        uses: actions/setup-node@v6.1.0
+        uses: actions/setup-node@v6.2.0
         with:
           node-version: lts/*
           check-latest: true
@@ -62,13 +62,13 @@ jobs:
 
     steps:
       - name: Checkout ⬇️
-        uses: actions/checkout@v6.0.1
+        uses: actions/checkout@v6.0.2
         with:
           ref: ${{ inputs.commit }}
           show-progress: false
 
       - name: Check if all commits comply with the specification
-        uses: webiny/action-conventional-commits@v1.3.0
+        uses: webiny/action-conventional-commits@v1.3.1
 
       - name: Check for merge commits
         run: |
