@@ -55,14 +55,14 @@
     "vuetify": "3.11.3"
   },
   "devDependencies": {
-    "@iconify/json": "2.2.422",
+    "@iconify/json": "2.2.432",
     "@jellyfin-vue/configs": "*",
     "@jellyfin-vue/vite-plugins": "*",
     "@rollup/plugin-virtual": "3.0.2",
     "@types/sortablejs": "1.15.9",
     "@vitejs/plugin-vue": "6.0.3",
     "browserslist": "4.28.1",
-    "lightningcss": "1.30.2",
+    "lightningcss": "1.31.1",
     "unplugin-vue-components": "31.0.0",
     "unplugin-vue-router": "0.19.2",
     "vite-plugin-vue-devtools": "8.0.5"
