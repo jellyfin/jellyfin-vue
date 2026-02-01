@@ -15,7 +15,8 @@ jobs:
     name: Create comments ✍️
     if: ${{ always() && !cancelled() && github.repository == 'jellyfin/jellyfin-vue' }}
     uses: ./.github/workflows/__job_messages.yml
-    secrets: inherit
+    secrets:
+      JF_BOT_TOKEN: ${{ secrets.JF_BOT_TOKEN }}
     with:
       commit: ${{ github.event.pull_request.head.sha }}
       in_progress: true
@@ -25,7 +26,8 @@ jobs:
     name: Automation 🎛️
     if: ${{ always() && !cancelled() && github.repository == 'jellyfin/jellyfin-vue' }}
     uses: ./.github/workflows/__automation.yml
-    secrets: inherit
+    secrets:
+      JF_BOT_TOKEN: ${{ secrets.JF_BOT_TOKEN }}
 
   semantic-commits:
     if: ${{ always() && !cancelled() && github.repository == 'jellyfin/jellyfin-vue' }}
