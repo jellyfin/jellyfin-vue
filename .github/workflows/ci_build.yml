@@ -1,0 +1,72 @@
+name: CI Build 🔨
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+  merge_group:
+
+permissions: {}
+
+jobs:
+  save-pr-context:
+    name: Save PR context 📋
+    if: ${{ github.event_name == 'pull_request' }}
+    runs-on: ubuntu-slim
+    steps:
+      - name: Save PR context for deploy workflow
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+          BASE_REPO: ${{ github.repository }}
+        run: |
+          cat <<EOF > pr-context.json
+          {
+            "number": $PR_NUMBER,
+            "head_sha": "$HEAD_SHA",
+            "head_ref": "$HEAD_REF",
+            "head_repo": "$HEAD_REPO",
+            "base_repo": "$BASE_REPO"
+          }
+          EOF
+          cat pr-context.json
+
+      - name: Upload PR context
+        uses: actions/upload-artifact@v6.0.0
+        with:
+          name: pr-context
+          path: pr-context.json
+          retention-days: 1
+
+  build:
+    name: Build 🏗️
+    if: ${{ always() && !cancelled() }}
+    uses: ./.github/workflows/__package.yml
+    permissions:
+      contents: read
+    with:
+      commit: ${{ github.event.pull_request.head.sha || github.sha }}
+
+  quality_checks:
+    name: Quality checks 👌🧪
+    if: ${{ always() && !cancelled() }}
+    uses: ./.github/workflows/__quality_checks.yml
+    permissions:
+      contents: read
+    with:
+      commit: ${{ github.event.pull_request.head.sha || github.sha }}
+
+  codeql:
+    name: GitHub CodeQL 🔬
+    if: ${{ always() && !cancelled() }}
+    uses: ./.github/workflows/__codeql.yml
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    with:
+      commit: ${{ github.event.pull_request.head.sha || github.sha }}
