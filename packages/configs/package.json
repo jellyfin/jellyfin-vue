@@ -16,8 +16,8 @@
   },
   "devDependencies": {
     "@eslint/css": "0.14.1",
-    "@eslint/js": "9.39.2",
-    "@eslint/json": "0.14.0",
+    "@eslint/js": "10.0.1",
+    "@eslint/json": "1.0.0",
     "@jellyfin-vue/shared": "*",
     "@stylistic/eslint-plugin": "5.7.1",
     "@unocss/eslint-config": "66.6.0",
