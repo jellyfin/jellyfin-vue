@@ -8,7 +8,7 @@
     "clean": "git clean -fxd"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "2.9.6"
+    "@tauri-apps/cli": "2.10.0"
   },
   "dependencies": {
     "@jellyfin-vue/tauri-runtime": "*"
