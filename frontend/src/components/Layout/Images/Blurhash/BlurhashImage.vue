@@ -48,7 +48,8 @@ const imageUrl = computed(() => getImageInfo(item, {
   preferThumb: type === ImageType.Thumb,
   preferBanner: type === ImageType.Banner,
   preferLogo: type === ImageType.Logo,
-  preferBackdrop: type === ImageType.Backdrop
+  preferBackdrop: type === ImageType.Backdrop,
+  inheritThumb: false
 }).url);
 const hash = computed(() => getBlurhash(item, type));
 </script>
