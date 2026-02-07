@@ -1,0 +1,66 @@
+name: CI Deploy 🚀
+
+on:
+  workflow_run:
+    workflows: ["CI Build 🔨"]
+    types: [completed]
+
+permissions:
+  contents: read
+  deployments: write
+  pull-requests: write
+
+jobs:
+  load-context:
+    name: Load PR context 📋
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'pull_request' &&
+      github.repository == 'jellyfin/jellyfin-vue'
+    runs-on: ubuntu-slim
+    outputs:
+      pr_number: ${{ steps.pr.outputs.number }}
+      branch: ${{ steps.pr.outputs.branch }}
+      commit: ${{ steps.pr.outputs.head_sha }}
+
+    steps:
+      - name: Download PR context
+        uses: actions/download-artifact@v7.0.0
+        with:
+          name: pr-context
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Load PR context
+        id: pr
+        run: |
+          cat pr-context.json
+          echo "number=$(jq -r .number pr-context.json)" >> $GITHUB_OUTPUT
+          echo "head_sha=$(jq -r .head_sha pr-context.json)" >> $GITHUB_OUTPUT
+          echo "head_ref=$(jq -r .head_ref pr-context.json)" >> $GITHUB_OUTPUT
+          echo "head_repo=$(jq -r .head_repo pr-context.json)" >> $GITHUB_OUTPUT
+          echo "base_repo=$(jq -r .base_repo pr-context.json)" >> $GITHUB_OUTPUT
+
+          HEAD_REPO=$(jq -r .head_repo pr-context.json)
+          HEAD_REF=$(jq -r .head_ref pr-context.json)
+          BASE_REPO=$(jq -r .base_repo pr-context.json)
+          if [[ "$HEAD_REPO" != "$BASE_REPO" && "$HEAD_REF" == "master" ]]; then
+            echo "branch=${HEAD_REPO}/${HEAD_REF}" >> $GITHUB_OUTPUT
+          else
+            echo "branch=${HEAD_REF}" >> $GITHUB_OUTPUT
+          fi
+
+  deploy:
+    name: Deploy 🚀
+    needs: load-context
+    uses: ./.github/workflows/__deploy.yml
+    secrets: inherit
+    permissions:
+      contents: read
+      deployments: write
+    with:
+      branch: ${{ needs.load-context.outputs.branch }}
+      commit: ${{ needs.load-context.outputs.commit }}
+      comment: true
+      artifact_run_id: ${{ github.event.workflow_run.id }}
+      pr_number: ${{ needs.load-context.outputs.pr_number }}

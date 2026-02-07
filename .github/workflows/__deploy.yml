@@ -16,6 +16,14 @@ on:
         required: false
         type: string
         default: frontend
+      artifact_run_id:
+        description: Run ID for cross-workflow artifact download
+        required: false
+        type: string
+      pr_number:
+        description: PR number (required for workflow_run context)
+        required: false
+        type: string
 
 env:
   CF_PROJECT_NAME: jf-vue
@@ -37,6 +45,8 @@ jobs:
         with:
           name: ${{ inputs.artifact_name }}
           path: dist
+          run-id: ${{ inputs.artifact_run_id || github.run_id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to Cloudflare Pages 📃
         uses: cloudflare/wrangler-action@v3.14.1
@@ -62,3 +72,4 @@ jobs:
       preview_alias: ${{ needs.cf-pages.outputs.alias-url }}
       in_progress: false
       comment: ${{ inputs.comment }}
+      pr_number: ${{ inputs.pr_number }}
