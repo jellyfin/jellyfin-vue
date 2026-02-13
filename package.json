@@ -30,7 +30,7 @@
     "test": "npm run test -ws --include-workspace-root=false"
   },
   "dependencies": {
-    "vue": "3.5.27"
+    "vue": "3.5.28"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "5.0.0",
