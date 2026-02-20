@@ -36,7 +36,7 @@
     "@vueuse/core": "14.1.0",
     "assjs": "0.1.4",
     "audiomotion-analyzer": "4.5.4",
-    "axios": "1.13.4",
+    "axios": "1.13.5",
     "blurhash": "2.0.5",
     "comlink": "4.4.2",
     "date-fns": "4.1.0",
@@ -49,7 +49,7 @@
     "i18next-vue": "5.4.0",
     "libpgs": "0.8.1",
     "sortablejs": "1.15.6",
-    "swiper": "12.1.0",
+    "swiper": "12.1.2",
     "uuid": "13.0.0",
     "vue-router": "4.6.4",
     "vuetify": "3.11.3"
