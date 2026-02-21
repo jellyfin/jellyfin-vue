@@ -1,7 +1,7 @@
 <template>
   <VBtn
     :icon="$vuetify.display.smAndDown"
-    class="my-2">
+    class="uno-my-2">
     {{
       $vuetify.display.smAndDown || items.length === 0
         ? undefined
