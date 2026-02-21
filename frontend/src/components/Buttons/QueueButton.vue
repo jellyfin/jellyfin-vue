@@ -4,7 +4,7 @@
     :text="$t('queue')">
     <VBtn
       icon
-      class="align-self-center">
+      class="uno-self-center">
       <JIcon class="i-mdi:playlist-play" />
       <VMenu
         v-model="menuModel"
