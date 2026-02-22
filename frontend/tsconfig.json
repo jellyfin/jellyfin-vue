@@ -9,7 +9,6 @@
     "types": [
       "axios",
       "@jellyfin-vue/i18n",
-      "unplugin-vue-router/client",
       "vite/client",
       "vuetify",
       "vue"
@@ -25,5 +24,11 @@
     "**/*.vue",
     "**/*d.ts",
     "**/*.json"
-  ]
+  ],
+  "vueCompilerOptions": {
+    "plugins": [
+      "vue-router/volar/sfc-typed-router",
+      "vue-router/volar/sfc-route-blocks"
+    ],
+  },
 }
