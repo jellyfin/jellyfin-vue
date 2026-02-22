@@ -39,6 +39,9 @@ export default defineConfig({
       ]
     }),
     Vue({
+      features: {
+        optionsAPI: false
+      },
       template: {
         transformAssetUrls: {
           img: []
