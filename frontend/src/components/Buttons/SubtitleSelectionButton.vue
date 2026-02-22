@@ -4,7 +4,7 @@
     position="top">
     <VBtn
       icon
-      class="align-self-center"
+      class="uno-self-center"
       :disabled="
         !playerElement.currentItemParsedSubtitleTracks.value ||
           playerElement.currentItemParsedSubtitleTracks.value.length === 0

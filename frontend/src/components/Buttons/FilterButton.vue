@@ -1,6 +1,6 @@
 <template>
   <VBtn
-    class="ma-2"
+    class="uno-ma-2"
     :icon="$vuetify.display.smAndDown">
     {{ !$vuetify.display.smAndDown ? t('filter') : undefined }}
     <JIcon

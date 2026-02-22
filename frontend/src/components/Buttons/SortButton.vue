@@ -7,7 +7,7 @@
       v-if="ascending"
       :class="ascending ? 'i-mdi:sort-ascending' : 'i-mdi:sort-descending'" />
   </VBtn>
-  <VBtn class="my-2">
+  <VBtn class="uno-my-2">
     {{ !$vuetify.display.smAndDown ? sortingLabel : undefined }}
     <JIcon
       v-if="!$vuetify.display.smAndDown"
