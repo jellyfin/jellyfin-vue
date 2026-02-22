@@ -51,7 +51,7 @@
     "sortablejs": "1.15.6",
     "swiper": "12.1.2",
     "uuid": "13.0.0",
-    "vue-router": "4.6.4",
+    "vue-router": "5.0.3",
     "vuetify": "3.11.3"
   },
   "devDependencies": {
