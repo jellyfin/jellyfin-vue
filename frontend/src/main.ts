@@ -1,7 +1,8 @@
 /**
- * Top-level await requires ES2022 (at least) as target and module
- * for TypeScript compiler (check tsconfig.json)
- * https://caniuse.com/mdn-javascript_operators_await_top_level
+ * These features are used across the codebase and requires specific
+ * ECMAScript versions as target in TypeScript compiler (check tsconfig.json):
+ * - Top-level: ES2022 https://caniuse.com/mdn-javascript_operators_await_top_level
+ * - Object.groupBy: ES2024 https://caniuse.com/mdn-javascript_builtins_object_groupby
  */
 import '@jellyfin-vue/i18n';
 import { createApp } from 'vue';

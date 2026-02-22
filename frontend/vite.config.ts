@@ -63,7 +63,7 @@ export default defineConfig({
     /**
      * See main.ts for an explanation of this target
      */
-    target: 'esnext',
+    target: 'es2024',
     cssCodeSplit: true,
     cssMinify: 'lightningcss',
     modulePreload: {
