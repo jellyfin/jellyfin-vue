@@ -39,7 +39,7 @@
     "@storybook/vue3": "10.2.10",
     "@storybook/vue3-vite": "10.2.10",
     "@types/node": "25.3.0",
-    "eslint": "9.39.3",
+    "eslint": "10.0.2",
     "jiti": "2.6.1",
     "storybook": "10.2.10",
     "type-fest": "5.4.4",
