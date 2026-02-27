@@ -36,7 +36,7 @@
     "@vueuse/core": "14.2.1",
     "assjs": "0.1.5",
     "audiomotion-analyzer": "4.5.4",
-    "axios": "1.13.5",
+    "axios": "1.13.6",
     "blurhash": "2.0.5",
     "comlink": "4.4.2",
     "date-fns": "4.1.0",
