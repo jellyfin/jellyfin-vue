@@ -20,13 +20,13 @@
     "@eslint/json": "0.14.0",
     "@jellyfin-vue/shared": "*",
     "@stylistic/eslint-plugin": "5.9.0",
-    "@unocss/eslint-config": "66.6.0",
+    "@unocss/eslint-config": "66.6.2",
     "eslint-config-flat-gitignore": "2.2.1",
     "eslint-plugin-css": "0.12.0",
     "eslint-plugin-depend": "1.4.0",
     "eslint-plugin-file-progress": "3.0.2",
     "eslint-plugin-import-x": "4.16.1",
-    "eslint-plugin-jsdoc": "62.7.0",
+    "eslint-plugin-jsdoc": "62.7.1",
     "eslint-plugin-promise": "7.2.1",
     "eslint-plugin-regexp": "3.0.0",
     "eslint-plugin-sonarjs": "3.0.7",
@@ -34,8 +34,8 @@
     "eslint-plugin-vue": "10.8.0",
     "eslint-plugin-vue-scoped-css": "2.12.0",
     "find-up-simple": "1.0.1",
-    "globals": "17.3.0",
-    "typescript-eslint": "8.56.0",
+    "globals": "17.4.0",
+    "typescript-eslint": "8.56.1",
     "vue-eslint-parser": "10.4.0"
   }
 }
