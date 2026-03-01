@@ -69,7 +69,7 @@ jobs:
           check-latest: true
 
       - name: Setup Rust Toolchain and cache 🦀
-        uses: actions-rust-lang/setup-rust-toolchain@v1.15.2
+        uses: actions-rust-lang/setup-rust-toolchain@v1.15.3
         with:
           cache-key: tauri-${{ runner.os }}
           cache-workspaces: ${{ env.WORKING_DIR }}
@@ -87,7 +87,7 @@ jobs:
         run: npm run build
 
       - name: Upload built application artifact ⬆️🐧🍎🪟
-        uses: actions/upload-artifact@v6.0.0
+        uses: actions/upload-artifact@v7.0.0
         id: artifact
         with:
           compression-level: 0
@@ -95,7 +95,7 @@ jobs:
           path: ${{ env.WORKING_DIR }}/${{ env.ARTIFACTS_PATH }}
 
       - name: Create provenance attestation 🔏
-        uses: actions/attest-build-provenance@v3.2.0
+        uses: actions/attest-build-provenance@v4.1.0
         continue-on-error: true
         with:
           subject-name: ${{ env.ARTIFACT_NAME }}
@@ -221,7 +221,7 @@ jobs:
           version: latest
 
       - name: Build images 🛠️
-        uses: docker/build-push-action@v6.18.0
+        uses: docker/build-push-action@v6.19.2
         id: image
         with:
           context: .
@@ -238,7 +238,7 @@ jobs:
             ${{ needs.docker_inputs.outputs.tags }}
 
       - name: Upload Docker image as artifact ⬆️📦
-        uses: actions/upload-artifact@v6.0.0
+        uses: actions/upload-artifact@v7.0.0
         id: artifact
         with:
           compression-level: 0
@@ -246,14 +246,14 @@ jobs:
           path: docker_image.tar
 
       - name: Create provenance attestation 🔏
-        uses: actions/attest-build-provenance@v3.2.0
+        uses: actions/attest-build-provenance@v4.1.0
         continue-on-error: true
         with:
           subject-name: ${{ env.ARTIFACT_NAME }}
           subject-digest: sha256:${{ steps.artifact.outputs.artifact-digest }}            
 
       - name: Upload cache artifact ⬆️⚙️
-        uses: actions/upload-artifact@v6.0.0
+        uses: actions/upload-artifact@v7.0.0
         if: ${{ inputs.push }}
         with:
           compression-level: 0
@@ -271,7 +271,7 @@ jobs:
 
     steps:         
       - name: Download Docker image artifact 📦⬇️
-        uses: actions/download-artifact@v7.0.0
+        uses: actions/download-artifact@v8.0.0
         with:
           name: docker_image-linux_amd64
 
@@ -283,7 +283,7 @@ jobs:
           docker cp $(docker create --name jf $IMAGE_SHA):$ASSETS/ ./dist
 
       - name: Upload client artifact ⬆️💻
-        uses: actions/upload-artifact@v6.0.0
+        uses: actions/upload-artifact@v7.0.0
         id: artifact
         with:
           compression-level: 0
@@ -291,7 +291,7 @@ jobs:
           path: dist
 
       - name: Create provenance attestation 🔏
-        uses: actions/attest-build-provenance@v3.2.0
+        uses: actions/attest-build-provenance@v4.1.0
         continue-on-error: true
         with:
           subject-name: ${{ env.ARTIFACT_NAME }}
@@ -307,7 +307,7 @@ jobs:
 
     steps:
       - name: Download cache artifacts 📦⬇️
-        uses: actions/download-artifact@v7.0.0
+        uses: actions/download-artifact@v8.0.0
         with:
           pattern: buildx-*
           path: /tmp/${{ env.REGISTRY_IMAGE }}/cache/
@@ -341,7 +341,7 @@ jobs:
           password: ${{ secrets.JF_BOT_TOKEN }}
 
       - name: Create multiplatform image ${{ inputs.push && 'and push 🛠️⬆️' || '🛠️' }} 
-        uses: docker/build-push-action@v6.18.0
+        uses: docker/build-push-action@v6.19.2
         id: image
         with:
           context: .
