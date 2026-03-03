@@ -7,7 +7,7 @@ import { browserslistToTargets } from 'lightningcss';
 import { Vuetify3Resolver } from 'unplugin-vue-components/resolvers';
 import Components from 'unplugin-vue-components/vite';
 import UnoCSS from 'unocss/vite';
-import VueRouter from 'unplugin-vue-router/vite';
+import VueRouter from 'vue-router/vite';
 import { defineConfig } from 'vite';
 import { JBundle, JMonorepo } from '@jellyfin-vue/vite-plugins';
 import { genVirtualModules } from '@jellyfin-vue/i18n/vite';
