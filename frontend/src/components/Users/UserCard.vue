@@ -1,7 +1,7 @@
 <template>
   <JHover v-slot="{ isHovering }">
     <div
-      class="ma-2 d-flex flex-column pointer"
+      class="uno-m-2 uno-flex uno-flex-column pointer"
       @click="$emit('connect', user)">
       <VBtn
         :active="isHovering"
@@ -14,7 +14,7 @@
           rounded
           :size="128" />
       </VBtn>
-      <a class="text-center link text-subtitle-1 mt-2">
+      <a class="uno-text-center link text-subtitle-1 uno-mt-2">
         {{ user.Name }}
       </a>
     </div>
