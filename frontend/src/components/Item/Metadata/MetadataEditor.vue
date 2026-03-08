@@ -181,7 +181,14 @@
             @close="person = undefined" />
         </VWindowItem>
         <VWindowItem value="images">
-          <ImageEditor :metadata="metadata" />
+          <ImageEditor
+            :metadata="metadata"
+            @add-image="openUploadImgeEditor" />
+          <UploadImageDialog
+            :item-id="itemId"
+            :is-image-dialog-visible="isImageDialogVisible"
+            @close="closeUploadImgeEditor"
+            @upload-image="onImageUpload" />
         </VWindowItem>
       </VWindow>
     </VCardText>
@@ -258,6 +265,7 @@ const tabName = ref<string>();
 const contentOptions = ref<ContentOption[]>([]);
 const contentOption = ref<ContentOption>();
 const contentType = ref<string>();
+const isImageDialogVisible = ref<boolean>(false);
 const genresModel = computed({
   get() {
     return metadata.value?.Genres ?? undefined;
@@ -336,7 +344,7 @@ async function getData(): Promise<void> {
   contentOption.value
     = contentOptions.value.find(r => r.value === options.ContentType)
       ?? contentOptions.value[0];
-  contentType.value = options.ContentType ?? contentOption.value.value;
+  contentType.value = options.ContentType ?? contentOption.value?.value;
 
   metadata.value = itemInfo;
 
@@ -485,6 +493,28 @@ function onPersonAdd(): void {
  */
 function onPersonEdit(item: BaseItemPerson): void {
   person.value = item;
+}
+
+/**
+ * Handle upload image editor opening
+ */
+function openUploadImgeEditor(): void {
+  isImageDialogVisible.value = true;
+}
+
+/**
+ * Handle upload image editor opening
+ */
+function closeUploadImgeEditor(): void {
+  isImageDialogVisible.value = false;
+}
+
+/**
+ * Handle upload image editor opening
+ */
+async function onImageUpload(): Promise<void> {
+  await getData();
+  isImageDialogVisible.value = false;
 }
 
 /**
