@@ -134,7 +134,6 @@ declare module 'vue' {
     VExpansionPanel: typeof import('vuetify/components')['VExpansionPanel']
     VExpansionPanels: typeof import('vuetify/components')['VExpansionPanels']
     VExpansionPanelText: typeof import('vuetify/components')['VExpansionPanelText']
-    VFileInput: typeof import('vuetify/components')['VFileInput']
     VForm: typeof import('vuetify/components')['VForm']
     VItemGroup: typeof import('vuetify/components')['VItemGroup']
     VList: typeof import('vuetify/components')['VList']
