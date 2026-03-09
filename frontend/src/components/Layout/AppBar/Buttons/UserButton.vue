@@ -2,7 +2,6 @@
   <AppBarButtonLayout v-if="auth.currentUser.value">
     <template #icon>
       <UserImage
-        :user="auth.currentUser.value"
         :size="40"
         rounded />
       <VMenu location="bottom">
@@ -12,7 +11,6 @@
           <VListItem>
             <template #prepend>
               <UserImage
-                :user="auth.currentUser.value"
                 :size="40"
                 rounded />
             </template>
