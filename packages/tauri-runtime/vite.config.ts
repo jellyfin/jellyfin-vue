@@ -1,24 +1,23 @@
 import { resolve } from 'node:path';
 import { defineConfig, mergeConfig } from 'vite';
-// @ts-expect-error - This error will be fixed once the Vite team adds monorepo support for config files
-import BaseConfig from '../../frontend/vite.config.ts';
+import BaseConfig from '@jellyfin-vue/frontend/vite-config';
 
 const host = process.env.TAURI_DEV_HOST;
 
 export default defineConfig(
   mergeConfig(BaseConfig, {
-    // prevent vite from obscuring rust errors
+    // Prevent vite from obscuring rust errors
     clearScreen: false,
     build: {
       outDir: resolve(import.meta.dirname, 'dist'),
-      rollupOptions: {
+      rolldownOptions: {
         input: {
           main: resolve(import.meta.dirname, 'entrypoint.ts')
         }
       },
-      // don't minify for debug builds
+      // Don't minify for debug builds
       ...(process.env.TAURI_ENV_DEBUG ? { minify: false } : {}),
-      // produce sourcemaps for debug builds
+      // Produce sourcemaps for debug builds
       sourcemap: !!process.env.TAURI_ENV_DEBUG
     },
     server: {

@@ -6,7 +6,7 @@ import { findUpSync } from 'find-up-simple';
 /**
  * This plugin allows the Vite Config to be used as a monorepo with multiple Vite projects
  * In normal setups, Vite takes the application inputs from the `<script type="module" src="...">`
- * tags in the index.html file. This plugin generates those dynamically based on the `build.rollupOptions.input`
+ * tags in the index.html file. This plugin generates those dynamically based on the `build.rolldownOptions.input`
  * of the Vite config.
  *
  * @param path - Must always be import.meta.dirname, but needs to be passed from the parent module
@@ -26,7 +26,7 @@ export function JMonorepo(path: string, inputAttrs: Record<string, Record<string
       }
     }),
     configResolved(config) {
-      resolvedInputs = config.build.rollupOptions.input ?? {};
+      resolvedInputs = config.build.rolldownOptions.input ?? {};
     },
     transformIndexHtml: {
       order: 'pre',
