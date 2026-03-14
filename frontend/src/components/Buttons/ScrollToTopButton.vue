@@ -2,7 +2,7 @@
   <JTransition name="rotated-zoom">
     <VBtn
       v-show="y > 1"
-      class="ma-4"
+      class="uno-m-4"
       color="primary"
       icon
       location="bottom right"
