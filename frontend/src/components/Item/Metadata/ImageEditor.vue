@@ -3,7 +3,6 @@
     <span>{{ $t('images') }}</span>
     <VBtn
       icon
-      class="uno-ml-auto"
       @click="emit('add-image')">
       <JIcon class="i-mdi:plus-circle" />
     </VBtn>
