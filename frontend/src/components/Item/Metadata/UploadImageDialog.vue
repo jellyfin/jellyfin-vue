@@ -1,6 +1,7 @@
 <template>
   <VDialog
-    max-width="60%"
+    width="100%"
+    max-width="800px"
     :model-value="isImageDialogVisible"
     @update:model-value="closeDialog">
     <VCard class="px-6">
