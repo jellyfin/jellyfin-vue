@@ -8,7 +8,6 @@
       :disabled="disabled"
       @change="onInputChange">
     <div
-      tabindex="0"
       :class="[
         'uno-min-h-84 uno-flex uno-flex-col items-center justify-center',
         'uno-border-2 uno-border-dashed uno-rounded-xl uno-p-8 uno-text-center uno-bg-transparent',
@@ -35,7 +34,7 @@
             block
             size="large"
             color="primary"
-            @click="onDropZoneClick">
+            @click="onBrowseButtonClick">
             {{ t('browseFiles') }}
           </VBtn>
         </div>
@@ -55,7 +54,7 @@
         v-if="preview"
         :src="preview"
         class="uno-w-12 uno-h-12 uno-object-cover uno-rounded-md uno-border uno-border-gray-200 dark:uno-border-gray-700">
-      <div class="flex flex-col">
+      <div>
         <div class="uno-font-medium uno-text-gray-900 dark:uno-text-gray-100 uno-break-all">
           {{ file.name }}
         </div>
@@ -76,7 +75,7 @@
 
 <script setup lang="ts">
 import { useTranslation } from 'i18next-vue';
-import { computed, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, ref, watch } from 'vue';
 import JIcon from './JIcon.vue';
 
 const { accept, disabled } = defineProps<{
@@ -119,7 +118,7 @@ const acceptedFileRules = computed(() => {
 });
 
 /**
- * Handles the file update and validation.
+ * Handle the file update and validation.
  */
 function updateFile(value: File | undefined): void {
   errorMessage.value = undefined;
@@ -149,7 +148,7 @@ function updateFile(value: File | undefined): void {
 }
 
 /**
- * Handles the file input change.
+ * Handle the file input change.
  */
 function onInputChange(event: Event): void {
   const target = event.target as HTMLInputElement;
@@ -159,33 +158,43 @@ function onInputChange(event: Event): void {
 }
 
 /**
- * Handles the file drop.
+ * Handle the file drop.
  */
 function onDrop(e: DragEvent): void {
   e.preventDefault();
   dragging.value = false;
+
+  if (disabled) {
+    return;
+  }
+
   updateFile(e.dataTransfer?.files[0]);
 }
 
 /**
- * Handles the file drag over.
+ * Handle the file drag over.
  */
 function onDragOver(e: DragEvent): void {
   e.preventDefault();
+
+  if (disabled) {
+    return;
+  }
+
   dragging.value = true;
 }
 
 /**
- * Handles the file drag leave.
+ * Handle the file drag leave.
  */
 function onDragLeave(): void {
   dragging.value = false;
 }
 
 /**
- * Handles the drop zone click.
+ * Handle the drop zone click.
  */
-function onDropZoneClick(): void {
+function onBrowseButtonClick(): void {
   if (disabled) {
     return;
   }
@@ -194,20 +203,34 @@ function onDropZoneClick(): void {
 }
 
 /**
- * Handles the image clear icon click.
+ * Handle the image clear icon click.
  */
 function onClearButtonClick(): void {
   file.value = undefined;
+  errorMessage.value = undefined;
 }
 
 watch(file, (newFile) => {
+  if (preview.value) {
+    URL.revokeObjectURL(preview.value);
+    preview.value = undefined;
+  }
+
   if (!newFile) {
     preview.value = undefined;
 
     return;
   }
 
-  preview.value = newFile.type.startsWith('image/') ? URL.createObjectURL(newFile) : undefined;
+  if (newFile.type.startsWith('image/')) {
+    preview.value = URL.createObjectURL(newFile);
+  }
+});
+
+onBeforeUnmount(() => {
+  if (preview.value) {
+    URL.revokeObjectURL(preview.value);
+  }
 });
 
 </script>
