@@ -503,14 +503,14 @@ function openUploadImgeEditor(): void {
 }
 
 /**
- * Handle upload image editor opening
+ * Handle upload image editor closing
  */
 function closeUploadImgeEditor(): void {
   isImageDialogVisible.value = false;
 }
 
 /**
- * Handle upload image editor opening
+ * Handle image upload
  */
 async function onImageUpload(): Promise<void> {
   await getData();

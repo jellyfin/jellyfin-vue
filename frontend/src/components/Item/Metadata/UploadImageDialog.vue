@@ -2,7 +2,7 @@
   <VDialog
     max-width="60%"
     :model-value="isImageDialogVisible"
-    @update:model-value="emit('close')">
+    @update:model-value="closeDialog">
     <VCard class="px-6">
       <VCardTitle>{{ t('addImage') }}</VCardTitle>
       <VDivider class="uno-mb-6" />
@@ -35,7 +35,7 @@
           variant="flat"
           width="8em"
           class="mr-1"
-          @click="emit('close')">
+          @click="closeDialog">
           {{ t('cancel') }}
         </VBtn>
         <VBtn
@@ -88,17 +88,28 @@ const imageTypes = computed(() => [
 ]);
 
 /**
- * Handles the file upload.
+ * Handle dialog closing.
+ */
+function closeDialog(): void {
+  selectedFile.value = undefined;
+  imageType.value = undefined;
+  emit('close');
+}
+
+/**
+ * Handle the file upload.
  */
 async function onSave(): Promise<void> {
   if (!selectedFile.value || !imageType.value) {
     useSnackbar(t('failedToReadImage'), 'red');
-    emit('close');
 
     return;
   }
 
-  const base64FileContent = await ReadFileContent(selectedFile.value);
+  // According to the TypeScript typings, the SDK expects the body to be a File.
+  // However, sending a File causes the backend to return a 500 error due to a base64 parsing exception.
+  // When the File is converted to a base64 string, the backend works as expected.
+  const base64FileContent = await readFileContent(selectedFile.value);
 
   const payload: ImageApiSetItemImageRequest = {
     itemId,
@@ -119,16 +130,16 @@ async function onSave(): Promise<void> {
     imageType.value = undefined;
 
     emit('upload-image');
-    useSnackbar(t('imageUploadedSuccesfully'), 'green');
+    useSnackbar(t('imageUploadedSuccessfully'), 'green');
   } catch {
     useSnackbar(t('imageUploadFailed'), 'red');
   }
 }
 
 /**
- * Reads the file content in base64 format.
+ * Read the file content in base64 format.
  */
-async function ReadFileContent(file: File): Promise<string> {
+async function readFileContent(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
 
