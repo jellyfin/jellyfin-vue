@@ -16,18 +16,17 @@
           ? 'uno-border-blue-500 uno-bg-blue-50'
           : 'uno-border-gray-300 hover:uno-border-gray-400 uno-bg-gray-50'
       ]"
-      @click="openPicker"
-      @dragover="dragOver"
-      @dragleave="dragLeave"
-      @drop="drop">
+      @dragover="onDragOver"
+      @dragleave="onDragLeave"
+      @drop="onDrop">
       <div class="uno-flex uno-flex-col uno-items-center uno-text-center">
         <JIcon class="i-mdi:cloud-upload uno-text-5xl uno-text-gray" />
         <div class="uno-font-bold uno-text-3xl uno-mt-4">
-          Drag and drop file here
+          {{ t('dragAndDropFileHere') }}
         </div>
         <div class="uno-flex uno-items-center uno-gap-4 uno-text-sm uno-text-gray-500 uno-w-full uno-justify-center my-6">
           <div class="uno-flex-1 uno-border-t uno-border-gray-300 uno-w-[20%] uno-max-w-[200px]" />
-          <span class="uno-font-medium uno-text-xl">or</span>
+          <span class="uno-font-medium uno-text-xl">{{ t('or').toLowerCase() }}</span>
           <div class="uno-flex-1 uno-border-t uno-border-gray-300 uno-w-[20%] uno-max-w-[200px]" />
         </div>
         <div>
@@ -36,11 +35,16 @@
             block
             size="large"
             color="primary"
-            @click="clearFile">
-            Browse files
+            @click="onDropZoneClick">
+            {{ t('browseFiles') }}
           </VBtn>
         </div>
       </div>
+    </div>
+    <div
+      v-if="errorMessage"
+      class="uno-mt-2 uno-text-red">
+      {{ errorMessage }}
     </div>
     <div
       v-if="file"
@@ -63,7 +67,7 @@
         icon
         class="ml-auto"
         size="medium"
-        @click="clearFile">
+        @click="onClearButtonClick">
         <JIcon class="i-mdi:delete uno-min-w-10" />
       </VBtn>
     </div>
@@ -71,25 +75,76 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { useTranslation } from 'i18next-vue';
+import { computed, ref, watch } from 'vue';
 import JIcon from './JIcon.vue';
 
-const { accept = '', disabled } = defineProps<{
-  modelValue: File | undefined;
+const { accept, disabled } = defineProps<{
   accept?: string;
   disabled?: boolean;
 }>();
+
+const { t } = useTranslation();
 
 const file = defineModel<File | undefined>();
 
 const inputRef = ref<HTMLInputElement | undefined>(undefined);
 const dragging = ref(false);
 const preview = ref<string | undefined>(undefined);
+const errorMessage = ref<string | undefined>(undefined);
+
+const acceptedFileRules = computed(() => {
+  const exactTypes = new Set<string>();
+  const wildcards: string[] = [];
+
+  if (!accept) {
+    return { exactTypes, wildcards };
+  }
+
+  for (const raw of accept.split(',')) {
+    const value = raw.trim();
+
+    if (!value) {
+      continue;
+    }
+
+    if (value.endsWith('/*')) {
+      wildcards.push(value.slice(0, -1));
+    } else {
+      exactTypes.add(value);
+    }
+  }
+
+  return { exactTypes, wildcards };
+});
 
 /**
- * Sets file.
+ * Handles the file update and validation.
  */
-function setFile(value: File | undefined): void {
+function updateFile(value: File | undefined): void {
+  errorMessage.value = undefined;
+
+  if (!value) {
+    file.value = undefined;
+
+    return;
+  }
+
+  let isFileAccepted = !accept;
+
+  if (!isFileAccepted) {
+    const { exactTypes, wildcards } = acceptedFileRules.value;
+
+    isFileAccepted = exactTypes.has(value.type) || wildcards.some(prefix => value.type.startsWith(prefix));
+  }
+
+  if (!isFileAccepted) {
+    errorMessage.value = t('invalidFileFormat');
+    file.value = undefined;
+
+    return;
+  }
+
   file.value = value;
 }
 
@@ -99,45 +154,49 @@ function setFile(value: File | undefined): void {
 function onInputChange(event: Event): void {
   const target = event.target as HTMLInputElement;
 
-  setFile(target.files?.[0] ?? undefined);
+  updateFile(target.files?.[0]);
   target.value = '';
 }
 
 /**
- * Drops file.
+ * Handles the file drop.
  */
-function drop(e: DragEvent): void {
+function onDrop(e: DragEvent): void {
   e.preventDefault();
   dragging.value = false;
-  setFile(e.dataTransfer?.files[0] ?? undefined);
+  updateFile(e.dataTransfer?.files[0]);
 }
 
 /**
- * Drops file.
+ * Handles the file drag over.
  */
-function dragOver(e: DragEvent): void {
+function onDragOver(e: DragEvent): void {
   e.preventDefault();
   dragging.value = true;
 }
 
 /**
- * Drops file.
+ * Handles the file drag leave.
  */
-function dragLeave(): void {
+function onDragLeave(): void {
   dragging.value = false;
 }
 
 /**
- * Drops file.
+ * Handles the drop zone click.
  */
-function openPicker(): void {
+function onDropZoneClick(): void {
+  if (disabled) {
+    return;
+  }
+
   inputRef.value?.click();
 }
 
 /**
- * Drops file.
+ * Handles the image clear icon click.
  */
-function clearFile(): void {
+function onClearButtonClick(): void {
   file.value = undefined;
 }
 

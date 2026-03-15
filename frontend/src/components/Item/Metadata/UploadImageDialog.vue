@@ -8,7 +8,9 @@
       <VDivider class="uno-mb-6" />
       <VCardText class="pa-3">
         <VRow>
-          <JFileUpload v-model="selectedFile" />
+          <JFileUpload
+            v-model="selectedFile"
+            accept="image/*" />
         </VRow>
         <VRow
           v-if="selectedFile">
