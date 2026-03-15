@@ -4,24 +4,24 @@
     :model-value="isImageDialogVisible"
     @update:model-value="emit('close')">
     <VCard class="px-6">
-      <VCardTitle>{{ t('editPerson') }}</VCardTitle>
+      <VCardTitle>{{ t('addImage') }}</VCardTitle>
       <VDivider class="uno-mb-6" />
       <VCardText class="pa-3">
         <VRow>
-          <JFileUpload v-model="file" />
+          <JFileUpload v-model="selectedFile" />
         </VRow>
         <VRow
-          v-if="file">
+          v-if="selectedFile">
           <VSelect
             v-model="imageType"
             variant="outlined"
             class="uno-mt-6"
-            :label="$t('preferredLanguage')"
+            :label="$t('imageType')"
             item-title="text"
             :items="imageTypes" />
         </VRow>
       </VCardText>
-
+      <VDivider class="uno-mt-6" />
       <VCardActions
         class="d-flex align-center pa-3 uno-mt-2"
         :class="{
@@ -37,10 +37,11 @@
           {{ t('cancel') }}
         </VBtn>
         <VBtn
+          :disabled="!selectedFile || !imageType"
           variant="flat"
           width="8em"
           color="primary"
-          @click="onSubmit">
+          @click="onSave">
           {{ t('save') }}
         </VBtn>
       </VCardActions>
@@ -50,7 +51,11 @@
 
 <script setup lang="ts">
 import { useTranslation } from 'i18next-vue';
+import { getImageApi } from '@jellyfin/sdk/lib/utils/api/image-api';
+import type { ImageApiSetItemImageRequest } from '@jellyfin/sdk/lib/generated-client/api/image-api';
+import type { ImageType } from '@jellyfin/sdk/lib/generated-client/models/image-type';
 import { computed, ref } from 'vue';
+import type { AxiosRequestConfig } from 'axios';
 import { remote } from '#/plugins/remote';
 import { useSnackbar } from '#/composables/use-snackbar';
 
@@ -66,8 +71,8 @@ const emit = defineEmits<{
 
 const { t } = useTranslation();
 
-const file = ref<File | undefined>(undefined);
-const imageType = ref<string | undefined>(undefined);
+const selectedFile = ref<File | undefined>(undefined);
+const imageType = ref<ImageType | undefined>(undefined);
 const imageTypes = computed(() => [
   { text: t('primary'), value: 'Primary' },
   { text: t('banner'), value: 'Banner' },
@@ -83,45 +88,66 @@ const imageTypes = computed(() => [
 /**
  * Handles the file upload.
  */
-async function onSubmit(): Promise<void> {
-  const axios = remote.sdk.api?.axiosInstance;
-  const serverAddress = remote.sdk.api?.basePath;
-  const accessToken = remote.sdk.api?.accessToken;
-
-  if (!accessToken || !axios || !serverAddress || !file.value) {
-    useSnackbar('Error', 'red');
+async function onSave(): Promise<void> {
+  if (!selectedFile.value || !imageType.value) {
+    useSnackbar(t('failedToReadImage'), 'red');
     emit('close');
 
     return;
   }
 
-  const path = `${serverAddress}/Items/${itemId}/Images/${imageType.value}`;
-  const base64 = await fileToBase64(file.value);
+  const base64FileContent = await ReadFileContent(selectedFile.value);
 
-  await axios.post(path, base64, {
+  const payload: ImageApiSetItemImageRequest = {
+    itemId,
+    imageType: imageType.value,
+    body: base64FileContent as unknown as File
+  };
+
+  const config: AxiosRequestConfig = {
     headers: {
-      'Content-Type': file.value.type,
-      'Authorization': `MediaBrowser Client="Jellyfin Web (Vue)", Device="Chrome", DeviceId="116db439-0724-4224-bf76-0bae81671cb2", Version="0.3.1", Token="${accessToken}"`
+      'Content-Type': selectedFile.value.type
     }
-  });
+  };
 
-  emit('upload-image');
+  try {
+    await remote.sdk.newUserApi(getImageApi).setItemImage(payload, config);
+
+    selectedFile.value = undefined;
+    imageType.value = undefined;
+
+    emit('upload-image');
+    useSnackbar(t('imageUploadedSuccesfully'), 'green');
+  } catch {
+    useSnackbar(t('imageUploadFailed'), 'red');
+  }
 }
 
 /**
- * Handles the file upload.
+ * Reads the file content in base64 format.
  */
-async function fileToBase64(file: File): Promise<string> {
+async function ReadFileContent(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
 
     reader.addEventListener('load', () => {
       const result = reader.result as string;
 
-      resolve(result.split(',')[1]);
+      const base64FileContent = result.split(',')[1];
+
+      if (!base64FileContent) {
+        reject(new Error('Failed to read file content'));
+
+        return;
+      }
+
+      resolve(base64FileContent);
     });
 
-    reader.onerror = reject;
+    reader.addEventListener('error', () => {
+      reject(reader.error ?? new Error('File reading failed'));
+    });
+
     reader.readAsDataURL(file);
   });
 }
