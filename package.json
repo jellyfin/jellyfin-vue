@@ -51,8 +51,5 @@
   },
   "peerDependencies": {
     "@vue/shared": "*"
-  },
-  "overrides": {
-    "stylus": "0.64.0"
   }
 }

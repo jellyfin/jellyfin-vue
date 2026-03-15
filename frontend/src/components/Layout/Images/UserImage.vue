@@ -2,7 +2,7 @@
   <VAvatar
     :size="size">
     <JImg
-      :src="getUserImageUrl(remote.auth.currentUser.value)"
+      :src="getUserImageUrl(user ?? remote.auth.currentUser.value)"
       :alt="$t('userImage')">
       <template #placeholder>
         <VAvatar
@@ -28,7 +28,7 @@ import { getUserImageUrl } from '#/utils/images';
  * in AppBar's button.
  */
 const { user, size = 64, rounded } = defineProps<{
-  user: UserDto;
+  user?: UserDto;
   size?: number;
   rounded?: boolean;
 }>();
