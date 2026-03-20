@@ -183,11 +183,11 @@
         <VWindowItem value="images">
           <ImageEditor
             :metadata="metadata"
-            @add-image="openUploadImgeEditor" />
+            @add-image="isImageDialogVisible = true" />
           <UploadImageDialog
             :item-id="itemId"
             :is-image-dialog-visible="isImageDialogVisible"
-            @close="closeUploadImgeEditor"
+            @close="isImageDialogVisible = false"
             @upload-image="onImageUpload" />
         </VWindowItem>
       </VWindow>
@@ -232,7 +232,7 @@ import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { AxiosError } from 'axios';
 import { format, formatISO } from 'date-fns';
-import { computed, ref } from 'vue';
+import { computed, ref, shallowRef } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import { watchImmediate } from '@vueuse/core';
 import { isArray, isNil } from '@jellyfin-vue/shared/validation';
@@ -265,7 +265,7 @@ const tabName = ref<string>();
 const contentOptions = ref<ContentOption[]>([]);
 const contentOption = ref<ContentOption>();
 const contentType = ref<string>();
-const isImageDialogVisible = ref<boolean>(false);
+const isImageDialogVisible = shallowRef<boolean>(false);
 const genresModel = computed({
   get() {
     return metadata.value?.Genres ?? undefined;
@@ -493,20 +493,6 @@ function onPersonAdd(): void {
  */
 function onPersonEdit(item: BaseItemPerson): void {
   person.value = item;
-}
-
-/**
- * Handle upload image editor opening
- */
-function openUploadImgeEditor(): void {
-  isImageDialogVisible.value = true;
-}
-
-/**
- * Handle upload image editor closing
- */
-function closeUploadImgeEditor(): void {
-  isImageDialogVisible.value = false;
 }
 
 /**
