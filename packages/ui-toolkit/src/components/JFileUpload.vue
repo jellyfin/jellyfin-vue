@@ -15,9 +15,9 @@
           ? 'uno-border-blue-500 uno-bg-blue-50'
           : 'uno-border-gray-300 hover:uno-border-gray-400 uno-bg-gray-50'
       ]"
-      @dragover="onDragOver"
+      @dragover.prevent="onDragOver"
       @dragleave="onDragLeave"
-      @drop="onDrop">
+      @drop.prevent="onDrop">
       <div class="uno-flex uno-flex-col uno-items-center uno-text-center">
         <JIcon class="i-mdi:cloud-upload uno-text-5xl uno-text-gray" />
         <div class="uno-font-bold uno-text-3xl uno-mt-4">
@@ -76,7 +76,12 @@
 <script setup lang="ts">
 import { useTranslation } from 'i18next-vue';
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
+import { useEventListener } from '@vueuse/core';
 import JIcon from './JIcon.vue';
+
+export interface JFileUploadExpose {
+  readSelectedFileAsBase64: () => Promise<string | undefined>;
+}
 
 const { accept, disabled } = defineProps<{
   accept?: string;
@@ -161,7 +166,6 @@ function onInputChange(event: Event): void {
  * Handle the file drop.
  */
 function onDrop(e: DragEvent): void {
-  e.preventDefault();
   dragging.value = false;
 
   if (disabled) {
@@ -174,9 +178,7 @@ function onDrop(e: DragEvent): void {
 /**
  * Handle the file drag over.
  */
-function onDragOver(e: DragEvent): void {
-  e.preventDefault();
-
+function onDragOver(): void {
   if (disabled) {
     return;
   }
@@ -209,6 +211,42 @@ function onClearButtonClick(): void {
   file.value = undefined;
   errorMessage.value = undefined;
 }
+
+/**
+ * Read the file content in base64 format.
+ */
+async function readSelectedFileAsBase64(): Promise<string | undefined> {
+  if (!file.value) {
+    return undefined;
+  }
+
+  return await new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    useEventListener(reader, 'load', () => {
+      const result = reader.result as string;
+      const base64FileContent = result.split(',')[1];
+
+      if (!base64FileContent) {
+        reject(new Error('Failed to read file content'));
+
+        return;
+      }
+
+      resolve(base64FileContent);
+    }, { once: true });
+
+    useEventListener(reader, 'error', () => {
+      reject(reader.error ?? new Error('File reading failed'));
+    }, { once: true });
+
+    reader.readAsDataURL(file.value as Blob);
+  });
+}
+
+defineExpose({
+  readSelectedFileAsBase64
+});
 
 watch(file, (newFile) => {
   if (preview.value) {

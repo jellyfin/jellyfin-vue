@@ -10,6 +10,7 @@
       <VCardText class="pa-3">
         <VRow>
           <JFileUpload
+            ref="fileUploadRef"
             v-model="selectedFile"
             accept="image/*" />
         </VRow>
@@ -59,6 +60,7 @@ import type { ImageApiSetItemImageRequest } from '@jellyfin/sdk/lib/generated-cl
 import type { ImageType } from '@jellyfin/sdk/lib/generated-client/models/image-type';
 import { computed, ref } from 'vue';
 import type { AxiosRequestConfig } from 'axios';
+import type { JFileUploadExpose } from '@jellyfin-vue/ui-toolkit/components';
 import { remote } from '#/plugins/remote';
 import { useSnackbar } from '#/composables/use-snackbar';
 
@@ -76,6 +78,7 @@ const { t } = useTranslation();
 
 const selectedFile = ref<File | undefined>(undefined);
 const imageType = ref<ImageType | undefined>(undefined);
+const fileUploadRef = ref<JFileUploadExpose | undefined>(undefined);
 const imageTypes = computed(() => [
   { text: t('primary'), value: 'Primary' },
   { text: t('banner'), value: 'Banner' },
@@ -110,7 +113,7 @@ async function onSave(): Promise<void> {
   // According to the TypeScript typings, the SDK expects the body to be a File.
   // However, sending a File causes the backend to return a 500 error due to a base64 parsing exception.
   // When the File is converted to a base64 string, the backend works as expected.
-  const base64FileContent = await readFileContent(selectedFile.value);
+  const base64FileContent = await fileUploadRef.value?.readSelectedFileAsBase64();
 
   const payload: ImageApiSetItemImageRequest = {
     itemId,
@@ -135,34 +138,5 @@ async function onSave(): Promise<void> {
   } catch {
     useSnackbar(t('imageUploadFailed'), 'red');
   }
-}
-
-/**
- * Read the file content in base64 format.
- */
-async function readFileContent(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-
-    reader.addEventListener('load', () => {
-      const result = reader.result as string;
-
-      const base64FileContent = result.split(',')[1];
-
-      if (!base64FileContent) {
-        reject(new Error('Failed to read file content'));
-
-        return;
-      }
-
-      resolve(base64FileContent);
-    });
-
-    reader.addEventListener('error', () => {
-      reject(reader.error ?? new Error('File reading failed'));
-    });
-
-    reader.readAsDataURL(file);
-  });
 }
 </script>
