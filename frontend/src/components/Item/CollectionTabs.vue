@@ -2,7 +2,7 @@
   <div v-if="children">
     <VTabs
       v-model="currentTab"
-      class="mb-3"
+      class="uno-mb-3"
       bg-color="transparent">
       <VTab
         v-for="(baseItems, type) in children"
@@ -13,12 +13,12 @@
     </VTabs>
     <h1
       v-if="!children"
-      class="text-center text-h5">
+      class="uno-text-center text-h5">
       {{ $t('collectionEmpty') }}
     </h1>
     <VWindow
       v-model="currentTab"
-      class="bg-transparent">
+      class="uno-bg-transparent">
       <VWindowItem
         v-for="(baseItems, type) in children"
         :key="type"

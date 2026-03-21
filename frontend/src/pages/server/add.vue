@@ -1,13 +1,13 @@
 <template>
   <VContainer
-    class="fill-height"
+    class="uno-h-height"
     fluid>
     <VRow justify="center">
       <VCol
         sm="6"
         md="6"
         lg="5">
-        <h1 class="text-h4 mb-6 text-center">
+        <h1 class="text-h4 uno-mb-6 uno-text-center">
           {{ $t('addServer') }}
         </h1>
         <AddServerForm />
