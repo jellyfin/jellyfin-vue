@@ -6,3 +6,7 @@ export interface JAnchorProps {
    */
   position: 'top' | 'bottom' | 'left' | 'right';
 }
+
+export interface JFileUploadExpose {
+  readSelectedFileAsBase64: () => Promise<string | undefined>;
+}

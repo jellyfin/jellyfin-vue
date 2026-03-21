@@ -24,9 +24,7 @@
           {{ t('dragAndDropFileHere') }}
         </div>
         <div class="uno-flex uno-items-center uno-gap-4 uno-text-sm uno-text-gray-500 uno-w-full uno-justify-center uno-my-6">
-          <div class="uno-flex-1 uno-border-t uno-border-gray-300 uno-w-[20%] uno-max-w-[200px]" />
-          <span class="uno-font-medium uno-text-xl">{{ t('or').toLowerCase() }}</span>
-          <div class="uno-flex-1 uno-border-t uno-border-gray-300 uno-w-[20%] uno-max-w-[200px]" />
+          <div class="uno-flex-1 uno-border-t uno-border-gray-300 uno-w-[40%] uno-max-w-[400px]" />
         </div>
         <div>
           <VBtn
@@ -77,10 +75,7 @@ import { useTranslation } from 'i18next-vue';
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
 import { useEventListener } from '@vueuse/core';
 import JIcon from './JIcon.vue';
-
-export interface JFileUploadExpose {
-  readSelectedFileAsBase64: () => Promise<string | undefined>;
-}
+import type { JFileUploadExpose } from '#/types';
 
 const { accept, disabled } = defineProps<{
   accept?: string;
@@ -243,7 +238,7 @@ async function readSelectedFileAsBase64(): Promise<string | undefined> {
   });
 }
 
-defineExpose({
+defineExpose<JFileUploadExpose>({
   readSelectedFileAsBase64
 });
 
