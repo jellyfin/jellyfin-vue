@@ -14,5 +14,10 @@ export default defineConfig([
       'types/global/routes.d.ts',
       'types/global/components.d.ts'
     ]
+  },
+  {
+    rules: {
+      'import/no-duplicates': 'error'
+    }
   }
 ]);
