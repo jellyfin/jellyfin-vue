@@ -98,12 +98,11 @@ export function JBundleChunking(): Plugin {
       build: {
         rollupOptions: {
           output: {
+            strictExecutionOrder: true,
             /**
              * This is the first thing that should be debugged when there are issues
              * with the bundle.
-             * The first thing you should do is set strict execution order.
              */
-            // strictExecutionOrder: true,
             codeSplitting: {
               groups: [
                 {
