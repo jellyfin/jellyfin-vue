@@ -1,6 +1,11 @@
 <template>
   <h2 class="text-h6">
-    {{ $t('images') }}
+    <span>{{ $t('images') }}</span>
+    <VBtn
+      icon
+      @click="emit('add-image')">
+      <JIcon class="i-mdi:plus-circle" />
+    </VBtn>
   </h2>
   <VRow>
     <VCol
@@ -16,7 +21,7 @@
         variant="outlined">
         <JImg
           :alt="$t('imageSearchResult')"
-          :src="imageFormat(item)" />
+          :src="imagePath(item)" />
         <div class="text-center text-subtitle-1">
           {{ item.ImageType }}
         </div>
@@ -60,7 +65,7 @@
           variant="outlined">
           <JImg
             :alt="$t('imageSearchResult')"
-            :src="imageFormat(item)" />
+            :src="imagePath(item)" />
           <div class="text-center text-subtitle-1">
             {{ item.ImageType }}
           </div>
@@ -100,12 +105,13 @@ import { getImageApi } from '@jellyfin/sdk/lib/utils/api/image-api';
 import { computed, ref } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import { watchImmediate } from '@vueuse/core';
-import {
-  getImageInfo
-} from '#/utils/images';
 import { remote } from '#/plugins/remote';
 
 const { metadata } = defineProps<{ metadata: BaseItemDto }>();
+
+const emit = defineEmits<{
+  'add-image': [];
+}>();
 
 const images = ref<ImageInfo[]>([]);
 const dialog = ref(false);
@@ -142,16 +148,12 @@ async function getItemImageInfos(): Promise<void> {
 /**
  * Get an image url
  */
-function imageFormat(imageInfo: ImageInfo): string | undefined {
-  if (imageInfo.ImageType && imageInfo.ImageTag) {
-    return getImageInfo(metadata, {
-      preferThumb: imageInfo.ImageType === ImageType.Thumb,
-      preferBanner: imageInfo.ImageType === ImageType.Banner,
-      preferLogo: imageInfo.ImageType === ImageType.Logo,
-      preferBackdrop: imageInfo.ImageType === ImageType.Backdrop,
-      tag: imageInfo.ImageTag
-    }).url;
+function imagePath(imageInfo: ImageInfo): string | undefined {
+  if (!metadata.Id) {
+    return undefined;
   }
+
+  return remote.sdk.newUserApi(getImageApi).getItemImageUrlById(metadata.Id, imageInfo.ImageType);
 }
 
 /**
