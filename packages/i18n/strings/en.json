@@ -148,6 +148,7 @@
   "imageUploadFailed": "Image upload failed",
   "imageVotes": "{{votes}} votes",
   "images": "Images",
+  "imagePreview": "Image preview",
   "incorrectUsernameOrPassword": "Incorrect username or password",
   "information": "Information",
   "instantMix": "Instant mix",

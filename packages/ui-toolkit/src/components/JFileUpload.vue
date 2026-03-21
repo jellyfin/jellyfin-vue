@@ -53,6 +53,7 @@
       dark:uno-border-gray-700">
       <img
         v-if="preview"
+        :alt="t('imagePreview')"
         :src="preview"
         class="uno-w-12 uno-h-12 uno-object-cover uno-rounded-md uno-border uno-border-gray-200 dark:uno-border-gray-700">
       <div>
@@ -106,13 +107,9 @@ const acceptedFileRules = computed(() => {
   for (const raw of accept.split(',')) {
     const value = raw.trim();
 
-    if (!value) {
-      continue;
-    }
-
     if (value.endsWith('/*')) {
       wildcards.push(value.slice(0, -1));
-    } else {
+    } else if (value) {
       exactTypes.add(value);
     }
   }
