@@ -30,7 +30,7 @@ export function JBundleAnalysis(): Plugin {
         return {
           build: {
             sourcemap: true,
-            rollupOptions: {
+            rolldownOptions: {
               plugins: [
                 Sonda({
                   open: false,
@@ -47,7 +47,7 @@ export function JBundleAnalysis(): Plugin {
       } else if (env.mode === 'analyze:cycles') {
         return {
           build: {
-            rollupOptions: {
+            rolldownOptions: {
               onwarn: (warning) => {
                 if (warning.code === 'CIRCULAR_DEPENDENCY') {
                   warnings.push(warning);
@@ -98,38 +98,57 @@ export function JBundleChunking(): Plugin {
       build: {
         rollupOptions: {
           output: {
+            strictExecutionOrder: true,
             /**
              * This is the first thing that should be debugged when there are issues
-             * withe the bundle. Check these issues:
-             * - https://github.com/vitejs/vite/issues/5142
-             * - https://github.com/evanw/esbuild/issues/399
-             * - https://github.com/rollup/rollup/issues/3888
+             * with the bundle.
              */
-            manualChunks(id) {
-              const match = /node_modules\/([^/]+)/.exec(id)?.[1];
+            codeSplitting: {
+              groups: [
+                {
+                  /**
+                   * Split each vendor in its own chunk
+                   */
+                  name: (id) => {
+                    const match = /node_modules\/([^/]+)/.exec(id)?.[1];
 
-              /**
-               * Split each vendor in its own chunk
-               */
-              if (match) {
-                return `vendor/${match.replace('@', '')}`;
-              }
+                    if (match) {
+                      return `vendor/${match.replace('@', '')}`;
+                    }
+                  },
+                  priority: 10
+                },
+                {
+                  /**
+                   * Split Vuetify localization into separate chunk
+                   */
+                  name: 'localization/vendor/vuetify',
+                  test: /virtual:.*locales[\\/]vuetify/,
+                  priority: 9
+                },
+                {
+                  /**
+                   * Split Date-fns localization into separate chunk
+                   */
+                  name: 'localization/vendor/date-fns',
+                  test: /virtual:.*locales[\\/]date-fns/,
+                  priority: 9
+                },
+                {
+                  /**
+                   * Split i18next resources into separate chunks
+                   */
+                  name: (id) => {
+                    if (id.includes('virtual:') || id.includes('i18next/resources')) {
+                      const targetPath = basename(id.split('/').at(-1)!);
+                      const isIndex = targetPath === 'resources';
 
-              /**
-               * Split localization strings into separate chunks
-               */
-              if (id.includes('virtual:')) {
-                if (id.includes('locales/vuetify')) {
-                  return 'localization/vendor/vuetify';
-                } else if (id.includes('locales/date-fns')) {
-                  return 'localization/vendor/date-fns';
-                } else if (id.includes('i18next/resources')) {
-                  const targetPath = basename(id.split('/').at(-1)!);
-                  const isIndex = targetPath === 'resources';
-
-                  return isIndex ? 'localization' : `localization/strings/${targetPath}`;
+                      return isIndex ? 'localization' : `localization/strings/${targetPath}`;
+                    }
+                  },
+                  priority: 8
                 }
-              }
+              ]
             }
           }
         }

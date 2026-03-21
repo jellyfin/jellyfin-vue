@@ -33,10 +33,11 @@
     "@jellyfin-vue/shared": "*",
     "@jellyfin-vue/ui-toolkit": "*",
     "@jellyfin/sdk": "0.13.0",
+    "@unocss/reset": "66.6.6",
     "@vueuse/core": "14.2.1",
     "assjs": "0.1.5",
     "audiomotion-analyzer": "4.5.4",
-    "axios": "1.13.5",
+    "axios": "1.13.6",
     "blurhash": "2.0.5",
     "comlink": "4.4.2",
     "date-fns": "4.1.0",
@@ -45,7 +46,7 @@
     "dexie": "4.3.0",
     "fast-equals": "6.0.0",
     "hls.js": "1.6.15",
-    "i18next": "25.8.13",
+    "i18next": "25.8.18",
     "i18next-vue": "5.4.0",
     "libpgs": "0.8.1",
     "sortablejs": "1.15.7",
@@ -55,15 +56,15 @@
     "vuetify": "3.11.3"
   },
   "devDependencies": {
-    "@iconify/json": "2.2.442",
+    "@iconify/json": "2.2.453",
     "@jellyfin-vue/configs": "*",
     "@jellyfin-vue/vite-plugins": "*",
     "@rollup/plugin-virtual": "3.0.2",
     "@types/sortablejs": "1.15.9",
-    "@vitejs/plugin-vue": "6.0.4",
+    "@vitejs/plugin-vue": "6.0.5",
     "browserslist": "4.28.1",
-    "lightningcss": "1.31.1",
+    "lightningcss": "1.32.0",
     "unplugin-vue-components": "31.0.0",
-    "vite-plugin-vue-devtools": "8.0.6"
+    "vite-plugin-vue-devtools": "8.1.0"
   }
 }

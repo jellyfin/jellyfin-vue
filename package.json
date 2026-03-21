@@ -30,24 +30,24 @@
     "test": "npm run test -ws --include-workspace-root=false"
   },
   "dependencies": {
-    "vue": "3.5.28"
+    "vue": "3.5.30"
   },
   "devDependencies": {
-    "@chromatic-com/storybook": "5.0.1",
-    "@eslint/config-inspector": "1.4.2",
-    "@storybook/addon-a11y": "10.2.10",
-    "@storybook/vue3": "10.2.10",
-    "@storybook/vue3-vite": "10.2.10",
-    "@types/node": "25.3.0",
-    "eslint": "9.39.3",
+    "@chromatic-com/storybook": "5.0.2",
+    "@eslint/config-inspector": "1.5.0",
+    "@storybook/addon-a11y": "10.3.1",
+    "@storybook/vue3": "10.3.1",
+    "@storybook/vue3-vite": "10.3.1",
+    "@types/node": "25.5.0",
+    "eslint": "9.39.4",
     "jiti": "2.6.1",
-    "storybook": "10.2.10",
-    "type-fest": "5.4.4",
+    "storybook": "10.3.1",
+    "type-fest": "5.5.0",
     "typescript": "5.9.3",
-    "unocss": "66.6.0",
-    "vite": "7.3.1",
-    "vitest": "4.0.18",
-    "vue-tsc": "3.2.5"
+    "unocss": "66.6.7",
+    "vite": "8.0.1",
+    "vitest": "4.1.0",
+    "vue-tsc": "3.2.6"
   },
   "peerDependencies": {
     "@vue/shared": "*"
