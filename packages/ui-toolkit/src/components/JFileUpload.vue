@@ -53,7 +53,7 @@
       dark:uno-border-gray-700">
       <img
         v-if="preview"
-        :alt="t('imagePreview')"
+        :alt="t('preview')"
         :src="preview"
         class="uno-w-12 uno-h-12 uno-object-cover uno-rounded-md uno-border uno-border-gray-200 dark:uno-border-gray-700">
       <div>
