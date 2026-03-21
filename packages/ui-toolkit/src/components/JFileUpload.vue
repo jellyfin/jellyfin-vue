@@ -9,7 +9,7 @@
       @change="onInputChange">
     <div
       :class="[
-        'uno-min-h-84 uno-flex uno-flex-col items-center justify-center',
+        'uno-min-h-84 uno-flex uno-flex-col uno-items-center uno-justify-center',
         'uno-border-2 uno-border-dashed uno-rounded-xl uno-p-8 uno-text-center uno-bg-transparent',
         dragging
           ? 'uno-border-blue-500 uno-bg-blue-50'
@@ -23,7 +23,7 @@
         <div class="uno-font-bold uno-text-3xl uno-mt-4">
           {{ t('dragAndDropFileHere') }}
         </div>
-        <div class="uno-flex uno-items-center uno-gap-4 uno-text-sm uno-text-gray-500 uno-w-full uno-justify-center my-6">
+        <div class="uno-flex uno-items-center uno-gap-4 uno-text-sm uno-text-gray-500 uno-w-full uno-justify-center uno-my-6">
           <div class="uno-flex-1 uno-border-t uno-border-gray-300 uno-w-[20%] uno-max-w-[200px]" />
           <span class="uno-font-medium uno-text-xl">{{ t('or').toLowerCase() }}</span>
           <div class="uno-flex-1 uno-border-t uno-border-gray-300 uno-w-[20%] uno-max-w-[200px]" />
@@ -58,13 +58,12 @@
         <div class="uno-font-medium uno-text-gray-900 dark:uno-text-gray-100 uno-break-all">
           {{ file.name }}
         </div>
-        <div class="uno-text-small uno-text-gray-700 dark:uno-text-gray-100 uno-break-all">
+        <div class="uno-text-gray-700 dark:uno-text-gray-100 uno-break-all">
           {{ file.type }}
         </div>
       </div>
       <VBtn
         icon
-        class="ml-auto"
         size="medium"
         @click="onClearButtonClick">
         <JIcon class="i-mdi:delete uno-min-w-10" />

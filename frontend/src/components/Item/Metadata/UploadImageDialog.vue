@@ -4,10 +4,10 @@
     max-width="800px"
     :model-value="isImageDialogVisible"
     @update:model-value="closeDialog">
-    <VCard class="px-6">
+    <VCard class="uno-px-6">
       <VCardTitle>{{ t('addImage') }}</VCardTitle>
       <VDivider class="uno-mb-6" />
-      <VCardText class="pa-3">
+      <VCardText class="uno-pa-3">
         <VRow>
           <JFileUpload
             ref="fileUploadRef"
@@ -27,16 +27,16 @@
       </VCardText>
       <VDivider class="uno-mt-6" />
       <VCardActions
-        class="d-flex align-center pa-3 uno-mt-2"
+        class="uno-mt-2 uno-flex uno-items-center uno-pa-3"
         :class="{
-          'justify-end': !$vuetify.display.mobile,
-          'justify-center': $vuetify.display.mobile
+          'uno-justify-end': !$vuetify.display.mobile,
+          'uno-justify-center': $vuetify.display.mobile
         }">
         <VSpacer />
         <VBtn
           variant="flat"
           width="8em"
-          class="mr-1"
+          class="uno-mr-1"
           @click="closeDialog">
           {{ t('cancel') }}
         </VBtn>
