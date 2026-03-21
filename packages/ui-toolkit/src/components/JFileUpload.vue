@@ -20,12 +20,15 @@
       @drop.prevent="onDrop">
       <div class="uno-flex uno-flex-col uno-items-center uno-text-center">
         <JIcon class="i-mdi:cloud-upload uno-text-5xl uno-text-gray" />
-        <div class="uno-font-bold uno-text-3xl uno-mt-4">
-          {{ t('dragAndDropFileHere') }}
+        <div>
+          <div class="uno-font-bold uno-text-3xl uno-mt-4">
+            {{ t('dragAndDropFileHere') }}
+          </div>
+          <div class="uno-flex uno-items-center uno-gap-4 uno-text-sm uno-text-gray-500 uno-w-full uno-justify-center uno-my-6">
+            <div class="uno-flex-1 uno-border-t uno-border-gray-300 uno-w-[100%]" />
+          </div>
         </div>
-        <div class="uno-flex uno-items-center uno-gap-4 uno-text-sm uno-text-gray-500 uno-w-full uno-justify-center uno-my-6">
-          <div class="uno-flex-1 uno-border-t uno-border-gray-300 uno-w-[40%] uno-max-w-[400px]" />
-        </div>
+
         <div>
           <VBtn
             variant="flat"
@@ -63,6 +66,7 @@
       <VBtn
         icon
         size="medium"
+        class="uno-ml-auto"
         @click="onClearButtonClick">
         <JIcon class="i-mdi:delete uno-min-w-10" />
       </VBtn>
@@ -72,7 +76,7 @@
 
 <script setup lang="ts">
 import { useTranslation } from 'i18next-vue';
-import { computed, onBeforeUnmount, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, ref, shallowRef, watch } from 'vue';
 import { useEventListener } from '@vueuse/core';
 import JIcon from './JIcon.vue';
 import type { JFileUploadExpose } from '#/types';
@@ -87,9 +91,9 @@ const { t } = useTranslation();
 const file = defineModel<File | undefined>();
 
 const inputRef = ref<HTMLInputElement | undefined>(undefined);
-const dragging = ref(false);
-const preview = ref<string | undefined>(undefined);
-const errorMessage = ref<string | undefined>(undefined);
+const dragging = shallowRef(false);
+const preview = shallowRef<string | undefined>();
+const errorMessage = shallowRef<string | undefined>();
 
 const acceptedFileRules = computed(() => {
   const exactTypes = new Set<string>();
