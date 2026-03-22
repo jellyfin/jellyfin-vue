@@ -6,21 +6,21 @@
     <VCard>
       <VCardTitle
         v-if="state.title"
-        class="text-center">
+        class="uno-text-center">
         {{ state.title }}
       </VCardTitle>
       <VCardSubtitle
         v-if="state.subtitle"
-        class="text-center">
+        class="uno-text-center">
         {{ state.subtitle }}
       </VCardSubtitle>
 
       <VDivider />
       <VCardText
-        class="text-center d-flex align-center justify-center">
+        class="uno-flex uno-items-center uno-justify-center uno-text-center">
         <JSafeHtml :html="state.text" />
       </VCardText>
-      <VCardActions class="align-center justify-center">
+      <VCardActions class="uno-items-center uno-justify-center">
         <VBtn
           variant="elevated"
           color="secondary"
