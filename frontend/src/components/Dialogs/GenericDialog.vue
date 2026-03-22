@@ -8,7 +8,7 @@
     <VCard
       :loading="loading"
       height="100%"
-      class="d-flex flex-column">
+      class="uno-flex uno-flex-col">
       <slot name="loader" />
       <VToolbar color="transparent">
         <template
@@ -41,10 +41,10 @@
       <VDivider v-if="$slots.actions" />
       <VCardActions
         v-if="$slots.actions"
-        class="d-flex align-center pa-3"
+        class="uno-flex uno-items-center uno-pa-3"
         :class="{
-          'justify-end': !$vuetify.display.mobile,
-          'justify-center': $vuetify.display.mobile
+          'uno-justify-end': !$vuetify.display.mobile,
+          'uno-justify-center': $vuetify.display.mobile
         }">
         <slot name="actions" />
       </VCardActions>
