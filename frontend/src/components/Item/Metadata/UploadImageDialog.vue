@@ -1,7 +1,6 @@
 <template>
   <VDialog
-    width="100%"
-    max-width="800px"
+    class="uno-max-w-[800px] uno-w-full"
     :model-value="isImageDialogVisible"
     @update:model-value="closeDialog">
     <VCard class="uno-px-6">
@@ -35,7 +34,6 @@
         <VSpacer />
         <VBtn
           variant="flat"
-          width="8em"
           class="uno-mr-1"
           @click="closeDialog">
           {{ t('cancel') }}
@@ -43,8 +41,8 @@
         <VBtn
           :disabled="!selectedFile || !imageType"
           variant="flat"
-          width="8em"
           color="primary"
+          class="uno-min-w-[8em]"
           @click="onSave">
           {{ t('save') }}
         </VBtn>
