@@ -15,7 +15,7 @@
                 rounded />
             </template>
             <template #title>
-              <VListItemTitle class="text-body-1">
+              <VListItemTitle class="uno-transform-none uno-text-base uno-font-normal uno-tracking-wide">
                 {{ auth.currentUser.value.Name }}
               </VListItemTitle>
             </template>
@@ -28,7 +28,7 @@
               </VListItemSubtitle>
             </template>
           </VListItem>
-          <VDivider class="my-2" />
+          <VDivider class="uno-my-2" />
           <VListItem
             v-for="(item, index) in menuItems"
             :key="`bottomMenuItems-${index}`"
