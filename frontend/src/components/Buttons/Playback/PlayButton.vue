@@ -1,5 +1,5 @@
 <template>
-  <div class="d-inline-flex">
+  <div class="uno-inline-flex">
     <VBtn
       v-if="canPlay(item) && (fab || iconOnly)"
       :variant="iconOnly ? undefined : 'elevated'"
@@ -19,7 +19,7 @@
       v-else-if="!fab"
       :disabled="disabled || !canPlay(item)"
       :loading="loading"
-      class="mr-2"
+      class="uno-mr-2"
       color="primary"
       min-width="8em"
       variant="flat"
