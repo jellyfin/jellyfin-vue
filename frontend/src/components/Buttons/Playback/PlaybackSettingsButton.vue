@@ -4,7 +4,7 @@
     position="top">
     <VBtn
       icon
-      class="align-self-center">
+      class="uno-self-center">
       <JIcon class="i-mdi:cog" />
       <VMenu
         v-model="menuModel"
