@@ -1,5 +1,5 @@
 <template>
-  <VContainer class="px-6">
+  <VContainer class="uno-px-6">
     <VRow>
       <VCol
         cols="12"
