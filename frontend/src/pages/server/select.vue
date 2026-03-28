@@ -1,24 +1,24 @@
 <template>
   <VContainer
-    class="fill-height"
+    class="!uno-h-full"
     fluid>
     <VRow justify="center">
       <VCol
         sm="6"
         md="6"
         lg="5">
-        <h1 class="text-h4 mb-6 text-center">
+        <h1 class="text-h4 uno-mb-6 uno-text-center">
           {{ $t('selectServer') }}
         </h1>
         <div>
           <ServerCard
             v-for="server in $remote.auth.servers.value"
             :key="server.Id || useId()"
-            class="mt-2"
+            class="uno-mt-2"
             :server-info="server" />
         </div>
         <VBtn
-          class="mt-6"
+          class="uno-mt-6"
           block
           size="large"
           color="primary"
