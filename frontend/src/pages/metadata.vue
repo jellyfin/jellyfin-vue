@@ -1,5 +1,5 @@
 <template>
-  <VRow class="pa-4 metadata">
+  <VRow class="metadata uno-p-4">
     <VCol
       cols="3"
       class="tree-view-container">
