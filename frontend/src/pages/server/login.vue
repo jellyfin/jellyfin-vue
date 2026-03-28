@@ -1,6 +1,6 @@
 <template>
   <VContainer
-    class="fill-height"
+    class="uno-flex uno-flex-wrap uno-items-center !uno-h-full"
     fluid>
     <VRow justify="center">
       <VCol
@@ -8,7 +8,7 @@
         sm="10"
         md="7"
         lg="5">
-        <h1 class="text-h4 mb-6 text-center">
+        <h1 class="text-h4 uno-mb-6 uno-text-center">
           {{ $t('selectUser') }}
         </h1>
         <VRow
@@ -27,11 +27,11 @@
           align="center"
           justify="center"
           dense
-          class="mt-6">
+          class="uno-mt-6">
           <VCol
             cols="11"
             sm="6"
-            class="d-flex justify-center">
+            class="uno-flex uno-justify-center">
             <VBtn
               block
               size="large"
@@ -43,7 +43,7 @@
           <VCol
             cols="11"
             sm="6"
-            class="d-flex justify-center">
+            class="uno-flex uno-justify-center">
             <VBtn
               v-if="jsonConfig.allowServerSelection"
               block
@@ -66,15 +66,15 @@
         lg="5">
         <h1
           v-if="currentUser"
-          class="text-h4 mb-3 text-center">
+          class="text-h4 uno-mb-3 uno-text-center">
           {{ $t('loginAs', { name: currentUser.Name }) }}
         </h1>
         <h1
           v-else
-          class="text-h4 text-center">
+          class="text-h4 uno-text-center">
           {{ $t('login') }}
         </h1>
-        <h5 class="text-center mb-3 text--disabled">
+        <h5 class="text--disabled uno-mb-3 uno-text-center">
           {{ $remote.auth.currentServer.value?.ServerName }}
         </h5>
         <LoginForm
@@ -83,7 +83,7 @@
           @change="resetCurrentUser" />
         <p
           v-if="disclaimer"
-          class="mt-6 text-center text-p">
+          class="text-p uno-mt-6 uno-text-center">
           <JSafeHtml :html="disclaimer" />
         </p>
       </VCol>
