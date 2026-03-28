@@ -3,12 +3,12 @@
     <VAppBar
       density="compact"
       flat>
-      <span class="text-h6 hidden-sm-and-down">
+      <span class="text-h6 uno-hidden uno-min-[960px]:block">
         {{ library.Name }}
       </span>
       <VChip
         size="small"
-        class="hidden-sm-and-down ma-2">
+        class="uno-m-2 uno-hidden uno-min-[960px]:flex">
         <template v-if="loading && items.length === lazyLoadLimit && initialId === route.params.itemId">
           {{ t('lazyLoading', { value: items.length }) }}
         </template>
@@ -24,7 +24,7 @@
 
         vertical
         inset
-        class="hidden-sm-and-down mx-2" />
+        class="uno-mx-2 uno-hidden uno-min-[960px]:flex" />
       <TypeButton
         v-if="hasViewTypes"
         v-model="viewType"
@@ -33,7 +33,7 @@
         v-if="isSortable && hasViewTypes"
         inset
         vertical
-        class="mx-2" />
+        class="uno-mx-2" />
       <SortButton
         v-if="isSortable"
         :ascending="sortAscending"
