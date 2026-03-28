@@ -1,6 +1,6 @@
 <template>
   <VContainer
-    class="fill-height"
+    class="!uno-h-full"
     fluid>
     <VRow justify="center">
       <VCol
@@ -10,7 +10,7 @@
         xl="8">
         <VStepper
           v-model="wizardStage"
-          class="transparent-background">
+          class="!uno-bg-transparent">
           <VStepperHeader>
             <VStepperItem
               :complete="wizardStage > 1"
@@ -52,7 +52,7 @@
               key="1-content"
               :value="1">
               <WizardLanguage
-                class="pt-4"
+                class="uno-pt-4"
                 @step-complete="nextStep" />
             </VStepperWindowItem>
 
@@ -60,7 +60,7 @@
               key="2-content"
               :value="2">
               <WizardAdminAccount
-                class="pt-4"
+                class="uno-pt-4"
                 @step-complete="nextStep"
                 @previous-step="previousStep" />
             </VStepperWindowItem>
@@ -69,7 +69,7 @@
               key="3-content"
               :value="3">
               <WizardMetadata
-                class="pt-4"
+                class="uno-pt-4"
                 @step-complete="nextStep"
                 @previous-step="previousStep" />
             </VStepperWindowItem>
@@ -78,7 +78,7 @@
               key="4-content"
               :value="4">
               <WizardRemoteAccess
-                class="pt-4"
+                class="uno-pt-4"
                 @step-complete="nextStep"
                 @previous-step="previousStep" />
             </VStepperWindowItem>
@@ -150,9 +150,3 @@ function previousStep(): void {
   wizardStage.value -= 1;
 }
 </script>
-
-<style scoped>
-.transparent-background {
-  background-color: transparent !important;
-}
-</style>
