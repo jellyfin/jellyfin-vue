@@ -5,7 +5,7 @@
       :class="useResponsiveClasses('second-toolbar')">
       <VTabs
         v-model="searchTab"
-        class="mx-auto">
+        class="uno-mx-auto">
         <VTab
           :disabled="movies.length <= 0">
           {{ $t('movies') }}
@@ -41,7 +41,7 @@
         <VCol>
           <VWindow
             v-model="searchTab"
-            class="bg-transparent">
+            class="uno-bg-transparent">
             <VWindowItem>
               <ItemGrid :items="movies" />
             </VWindowItem>
@@ -103,28 +103,28 @@ const peopleSearchMethod = computed(() => searchDebounced.value ? 'getPersons' :
 const [
   { data: itemSearch },
   { data: peopleSearch }]
-= await Promise.all([
-  useBaseItem(getItemsApi, itemSearchMethod, {
-    skipCache: { request: true }
-  })(() => ({
-    searchTerm: searchDebounced.value,
-    includeItemTypes: [
-      BaseItemKind.Movie,
-      BaseItemKind.Series,
-      BaseItemKind.Audio,
-      BaseItemKind.MusicAlbum,
-      BaseItemKind.Book,
-      BaseItemKind.MusicArtist,
-      BaseItemKind.Person
-    ],
-    recursive: true
-  })),
-  useBaseItem(getPersonsApi, peopleSearchMethod, {
-    skipCache: { request: true }
-  })(() => ({
-    searchTerm: searchDebounced.value
-  }))
-]);
+  = await Promise.all([
+    useBaseItem(getItemsApi, itemSearchMethod, {
+      skipCache: { request: true }
+    })(() => ({
+      searchTerm: searchDebounced.value,
+      includeItemTypes: [
+        BaseItemKind.Movie,
+        BaseItemKind.Series,
+        BaseItemKind.Audio,
+        BaseItemKind.MusicAlbum,
+        BaseItemKind.Book,
+        BaseItemKind.MusicArtist,
+        BaseItemKind.Person
+      ],
+      recursive: true
+    })),
+    useBaseItem(getPersonsApi, peopleSearchMethod, {
+      skipCache: { request: true }
+    })(() => ({
+      searchTerm: searchDebounced.value
+    }))
+  ]);
 
 const cachedItems = computedAsync(
   async () => await apiStore.findItems(searchDebounced.value),
