@@ -97,6 +97,7 @@
     "ThibaultNocchi"
   ],
   "extends": [
-    "mergeConfidence:age-confidence-badges"
+    "mergeConfidence:age-confidence-badges",
+    "helpers:pinGitHubActionDigests"
   ]
 }
