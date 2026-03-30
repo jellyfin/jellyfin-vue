@@ -12,8 +12,8 @@
         'uno-opacity-0': !overlay
       }">
       <div class="osd-top pt-s pl-s pr-s">
-        <div class="d-flex align-center py-2 px-4">
-          <div class="d-flex">
+        <div class="uno-flex uno-items-center uno-px-4 uno-py-2">
+          <div class="uno-flex">
             <VBtn
               icon
               @click="playbackManager.stop">
@@ -25,31 +25,31 @@
               <JIcon class="i-mdi:chevron-down" />
             </VBtn>
           </div>
-          <div class="d-flex ml-auto">
+          <div class="uno-ml-auto uno-flex">
             <CastButton />
           </div>
         </div>
       </div>
       <div class="pl-s pr-s osd-bottom pb-s">
-        <div class="pa-4">
+        <div class="uno-p-4">
           <TimeSlider />
           <div
-            class="d-flex justify-space-between align-stretch uno-relative">
+            class="uno-relative uno-flex uno-items-stretch uno-justify-between">
             <div
               v-if="$vuetify.display.mdAndUp"
-              class="d-flex flex-column justify-center align-start mr-auto video-title">
+              class="video-title uno-mr-auto uno-flex uno-flex-col uno-items-start uno-justify-center">
               <template
                 v-if="
                   playbackManager.currentlyPlayingType.value ===
                     BaseItemKind.Episode
                 ">
-                <span class="text-subtitle-1 text-truncate mt-1">
+                <span class="text-subtitle-1 uno-mt-1 uno-truncate">
                   {{ playbackManager.currentItem.value?.Name }}
                 </span>
-                <span class="text--secondary text-truncate text-subtitle-2">
+                <span class="text--secondary text-subtitle-2 uno-truncate">
                   {{ playbackManager.currentItem.value?.SeriesName }}
                 </span>
-                <span class="text-subtitle-2 text--secondary text-truncate">
+                <span class="text-subtitle-2 text--secondary uno-truncate">
                   {{
                     $t('seasonEpisode', {
                       seasonNumber:
@@ -65,20 +65,20 @@
               <br>
               <span
                 v-if="playbackManager.currentItem.value?.RunTimeTicks"
-                class="text-subtitle-2 text--secondary text-truncate">
+                class="text-subtitle-2 text--secondary uno-truncate">
                 {{ getEndsAtTime((playbackManager.currentItem.value?.RunTimeTicks ?? 0) - msToTicks(playbackManager.currentTime.value * 1000)) }}
               </span>
             </div>
             <div
-              class="d-flex align-center player-controls justify-start justify-md-center">
-              <PreviousTrackButton class="mx-1" />
-              <PlayPauseButton class="mx-1" />
-              <NextTrackButton class="mx-1" />
+              class="player-controls justify-md-center uno-flex uno-items-center uno-justify-start">
+              <PreviousTrackButton class="uno-mx-1" />
+              <PlayPauseButton class="uno-mx-1" />
+              <NextTrackButton class="uno-mx-1" />
             </div>
-            <div class="d-flex ml-auto aligh-center ml-md-0">
+            <div class="ml-md-0 uno-ml-auto uno-flex uno-items-center">
               <VolumeSlider
                 v-if="$vuetify.display.smAndUp"
-                class="mr-2" />
+                class="uno-mr-2" />
               <QueueButton close-on-click />
               <SubtitleSelectionButton
                 v-if="$vuetify.display.smAndUp"
@@ -87,7 +87,7 @@
                 v-model="playbackSettingsButtonOpened" />
               <VBtn
                 v-if="mediaControls.supportsPictureInPicture"
-                class="align-self-center"
+                class="uno-self-center"
                 icon
                 @click="mediaControls.togglePictureInPicture">
                 <JIcon class="i-mdi:picture-in-picture-bottom-right" />
@@ -97,7 +97,7 @@
                 :text="$t('fullScreen')">
                 <VBtn
                   v-if="fullscreen.isSupported"
-                  class="align-self-center"
+                  class="uno-self-center"
                   icon
                   @click="fullscreen.toggle">
                   <JIcon
