@@ -14,28 +14,28 @@
           md="9">
           <h1
             class="text-h5 text-sm-h4"
-            :class="{ 'text-center': !$vuetify.display.mdAndUp }">
+            :class="{ 'uno-text-center': !$vuetify.display.mdAndUp }">
             {{ item.Name }}
           </h1>
           <h2
             v-if="item.OriginalTitle && item.OriginalTitle !== item.Name"
             class="text-subtitle-1"
-            :class="{ 'text-center': !$vuetify.display.mdAndUp }">
+            :class="{ 'uno-text-center': !$vuetify.display.mdAndUp }">
             {{ item.OriginalTitle }}
           </h2>
           <h3
             v-if="currentSeries"
             class="text-h6 font-weight-heavy"
-            :class="{'text-center': !$vuetify.display.mdAndUp }">
+            :class="{'uno-text-center': !$vuetify.display.mdAndUp }">
             <RouterLink
-              class="link pa-0 text-truncate font-weight-medium d-block mt-1"
+              class="link uno-mt-1 uno-block uno-truncate uno-p-0 uno-font-medium"
               :to="getItemDetailsLink(currentSeries)">
               {{ currentSeries.Name }}
             </RouterLink>
           </h3>
           <div
-            class="text-h4 font-weight-medium mt-2 text-caption"
-            :class="{ 'text-center': !$vuetify.display.mdAndUp }">
+            class="text-h4 text-caption uno-mt-2 uno-font-medium"
+            :class="{ 'uno-text-center': !$vuetify.display.mdAndUp }">
             <MediaInfo
               :item="item"
               year
@@ -44,13 +44,13 @@
               ends-at />
           </div>
           <VRow
-            class="align-center my-4"
+            class="uno-my-4 uno-items-center"
             :class="{
-              'justify-center': !$vuetify.display.mdAndUp,
-              'ml-0': $vuetify.display.mdAndUp
+              'uno-justify-center': !$vuetify.display.mdAndUp,
+              'uno-ml-0': $vuetify.display.mdAndUp
             }">
             <PlayButton
-              class="mr-2"
+              class="uno-mr-2"
               :item="item"
               :media-source-index="currentSourceIndex"
               :video-track-index="currentVideoTrack"
@@ -58,10 +58,10 @@
               :subtitle-track-index="currentSubtitleTrack" />
             <LikeButton
               :item="item"
-              class="mr-2" />
+              class="uno-mr-2" />
             <MarkPlayedButton
               :item="item"
-              class="mr-2" />
+              class="uno-mr-2" />
             <ItemMenu
               :item="item"
               :media-source-index="currentSourceIndex" />
@@ -75,11 +75,11 @@
               <VCol
                 :cols="12"
                 :sm="2"
-                class="text-truncate px-0">
+                class="uno-truncate uno-px-0">
                 <label class="text--secondary">{{ $t('genres') }}</label>
               </VCol>
               <VCol
-                class="px-0"
+                class="uno-px-0"
                 :cols="12"
                 :sm="10">
                 <VSlideGroup>
@@ -89,7 +89,7 @@
                     <VChip
                       size="small"
                       link
-                      :class="{ 'ml-2': index > 0 }"
+                      :class="{ 'uno-ml-2': index > 0 }"
                       :to="`/genre/${genre.Id}?type=${item.Type}`">
                       {{ genre.Name }}
                     </VChip>
@@ -103,11 +103,11 @@
               <VCol
                 :cols="12"
                 :sm="2"
-                class="px-0 text-truncate mt-sm-3 py-sm-0">
+                class="mt-sm-3 py-sm-0 uno-truncate uno-px-0">
                 <label class="text--secondary">{{ $t('directing') }}</label>
               </VCol>
               <VCol
-                class="px-0"
+                class="uno-px-0"
                 :cols="12"
                 :sm="10">
                 <VSlideGroup>
@@ -130,11 +130,11 @@
               <VCol
                 :cols="12"
                 :sm="2"
-                class="mt-sm-3 py-sm-0 px-0 text-truncate">
+                class="mt-sm-3 py-sm-0 uno-truncate uno-px-0">
                 <label class="text--secondary">{{ $t('writing') }}</label>
               </VCol>
               <VCol
-                class="px-0"
+                class="uno-px-0"
                 :cols="12"
                 :sm="10">
                 <VSlideGroup>
@@ -160,11 +160,11 @@
                 <VCol
                   :cols="12"
                   :sm="2"
-                  class="mt-sm-3 py-sm-0 px-0 text-truncate">
+                  class="mt-sm-3 py-sm-0 uno-truncate uno-px-0">
                   <label class="text--secondary">{{ $t('version') }}</label>
                 </VCol>
                 <VCol
-                  class="px-0"
+                  class="uno-px-0"
                   :cols="12"
                   :sm="10">
                   <MediaSourceSelector
@@ -180,11 +180,11 @@
                 <VCol
                   :cols="12"
                   :sm="2"
-                  class="mt-sm-3 py-sm-0 px-0 text-truncate">
+                  class="mt-sm-3 py-sm-0 uno-truncate uno-px-0">
                   <label class="text--secondary">{{ $t('video') }}</label>
                 </VCol>
                 <VCol
-                  class="px-0"
+                  class="uno-px-0"
                   :cols="12"
                   :sm="10">
                   <MediaStreamSelector
@@ -201,11 +201,11 @@
                 <VCol
                   :cols="12"
                   :sm="2"
-                  class="mt-sm-3 py-sm-0 px-0 text-truncate">
+                  class="mt-sm-3 py-sm-0 uno-truncate uno-px-0">
                   <label class="text--secondary">{{ $t('audio') }}</label>
                 </VCol>
                 <VCol
-                  class="px-0"
+                  class="uno-px-0"
                   :cols="12"
                   :sm="10">
                   <MediaStreamSelector
@@ -222,11 +222,11 @@
                 <VCol
                   :cols="12"
                   :sm="2"
-                  class="mt-sm-3 py-sm-0 px-0 text-truncate">
+                  class="mt-sm-3 py-sm-0 uno-truncate uno-px-0">
                   <label class="text--secondary">{{ $t('subtitles') }}</label>
                 </VCol>
                 <VCol
-                  class="px-0"
+                  class="uno-px-0"
                   :cols="12"
                   :sm="10">
                   <MediaStreamSelector
@@ -248,14 +248,14 @@
                   item.MediaType === 'Video' &&
                   (!item.MediaSources || item.MediaSources.length === 0)
               "
-              class="text-h5 my-4">
+              class="text-h5 uno-my-4">
               {{ $t('NoMediaSourcesAvailable') }}
             </div>
           </VCol>
           <div>
             <p
               v-if="item.Taglines && item.Taglines.length"
-              class="text-subtitle-1 text-truncate">
+              class="text-subtitle-1 uno-truncate">
               {{ item.Taglines[0] }}
             </p>
             <p
