@@ -31,7 +31,7 @@ jobs:
     name: Semantic Pull Request 📚
     steps:
       - name: Validate PR title 👌
-        uses: amannn/action-semantic-pull-request@v6.1.1
+        uses: amannn/action-semantic-pull-request@48f256284bd46cdaab1048c3721360e808335d50 # v6.1.1
         env:
           GITHUB_TOKEN: ${{ secrets.JF_BOT_TOKEN }}
         with:
@@ -48,7 +48,7 @@ jobs:
 
     steps:
       - name: Label depending on modified files
-        uses: actions/labeler@v6.0.1
+        uses: actions/labeler@634933edcd8ababfe52f92936142cc22ac488b1b # v6.0.1
         with:
           sync-labels: true
           repo-token: ${{ secrets.JF_BOT_TOKEN }}

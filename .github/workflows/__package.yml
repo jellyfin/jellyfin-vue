@@ -57,19 +57,19 @@ jobs:
     runs-on: ${{ matrix.platform }}-latest
     steps:
       - name: Checkout ⬇️
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           ref: ${{ inputs.commit || github.sha }}
           show-progress: false
 
       - name: Setup node environment ⚙️
-        uses: actions/setup-node@v6.2.0
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version: lts/*
           check-latest: true
 
       - name: Setup Rust Toolchain and cache 🦀
-        uses: actions-rust-lang/setup-rust-toolchain@v1.15.2
+        uses: actions-rust-lang/setup-rust-toolchain@150fca883cd4034361b621bd4e6a9d34e5143606 # v1.15.4
         with:
           cache-key: tauri-${{ runner.os }}
           cache-workspaces: ${{ env.WORKING_DIR }}
@@ -87,7 +87,7 @@ jobs:
         run: npm run build
 
       - name: Upload built application artifact ⬆️🐧🍎🪟
-        uses: actions/upload-artifact@v6.0.0
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         id: artifact
         with:
           compression-level: 0
@@ -95,7 +95,7 @@ jobs:
           path: ${{ env.WORKING_DIR }}/${{ env.ARTIFACTS_PATH }}
 
       - name: Create provenance attestation 🔏
-        uses: actions/attest@v4.1.0
+        uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26 # v4.1.0
         continue-on-error: true
         with:
           subject-name: ${{ env.ARTIFACT_NAME }}
@@ -207,22 +207,22 @@ jobs:
 
     steps:
       - name: Checkout ⬇️
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           ref: ${{ inputs.commit || github.sha }}
           show-progress: false
 
       - name: Configure QEMU ⚙️
-        uses: docker/setup-qemu-action@v3.7.0
+        uses: docker/setup-qemu-action@ce360397dd3f832beb865e1373c09c0e9f86d70a # v4.0.0
 
       - name: Configure Docker Buildx ⚙️
-        uses: docker/setup-buildx-action@v3.12.0
+        uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # v4.0.0
         with:
           cleanup: false
           version: latest
 
       - name: Build images 🛠️
-        uses: docker/build-push-action@v6.18.0
+        uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294 # v7.0.0
         id: image
         with:
           context: .
@@ -239,7 +239,7 @@ jobs:
             ${{ needs.docker_inputs.outputs.tags }}
 
       - name: Upload Docker image as artifact ⬆️📦
-        uses: actions/upload-artifact@v6.0.0
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         id: artifact
         with:
           compression-level: 0
@@ -247,7 +247,7 @@ jobs:
           path: docker_image.tar          
 
       - name: Upload cache artifact ⬆️⚙️
-        uses: actions/upload-artifact@v6.0.0
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: ${{ inputs.push }}
         with:
           compression-level: 0
@@ -256,7 +256,7 @@ jobs:
             /tmp/${{ env.REGISTRY_IMAGE }}/cache/${{ matrix.platform }}
 
       - name: Create provenance attestation 🔏
-        uses: actions/attest@v4.1.0
+        uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26 # v4.1.0
         continue-on-error: true
         with:
           subject-name: ${{ env.ARTIFACT_NAME }}
@@ -272,7 +272,7 @@ jobs:
 
     steps:         
       - name: Download Docker image artifact 📦⬇️
-        uses: actions/download-artifact@v7.0.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: docker_image-linux_amd64
 
@@ -284,7 +284,7 @@ jobs:
           docker cp $(docker create --name jf $IMAGE_SHA):$ASSETS/ ./dist
 
       - name: Upload client artifact ⬆️💻
-        uses: actions/upload-artifact@v6.0.0
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         id: artifact
         with:
           compression-level: 0
@@ -292,7 +292,7 @@ jobs:
           path: dist
 
       - name: Create provenance attestation 🔏
-        uses: actions/attest@v4.1.0
+        uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26 # v4.1.0
         continue-on-error: true
         with:
           subject-name: ${{ env.ARTIFACT_NAME }}
@@ -309,41 +309,41 @@ jobs:
 
     steps:
       - name: Download cache artifacts 📦⬇️
-        uses: actions/download-artifact@v7.0.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           pattern: buildx-*
           path: /tmp/${{ env.REGISTRY_IMAGE }}/cache/
   
       - name: Checkout ⬇️
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           ref: ${{ inputs.commit || github.sha }}
           show-progress: false
 
       - name: Configure QEMU ⚙️
-        uses: docker/setup-qemu-action@v3.7.0
+        uses: docker/setup-qemu-action@ce360397dd3f832beb865e1373c09c0e9f86d70a # v4.0.0
 
       - name: Configure Docker Buildx ⚙️
-        uses: docker/setup-buildx-action@v3.12.0
+        uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # v4.0.0
         with:
           cleanup: false
           version: latest
 
       - name: Login to Docker Hub 🔑
-        uses: docker/login-action@v3.7.0
+        uses: docker/login-action@b45d80f862d83dbcd57f89517bcf500b2ab88fb2 # v4.0.0
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Login to GitHub Container Registry 🔑
-        uses: docker/login-action@v3.7.0
+        uses: docker/login-action@b45d80f862d83dbcd57f89517bcf500b2ab88fb2 # v4.0.0
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.JF_BOT_TOKEN }}
 
       - name: Create multiplatform image ${{ inputs.push && 'and push 🛠️⬆️' || '🛠️' }} 
-        uses: docker/build-push-action@v6.18.0
+        uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294 # v7.0.0
         id: image
         with:
           context: .
@@ -362,7 +362,7 @@ jobs:
             ${{ needs.docker_inputs.outputs.tags }}
 
       - name: Remove cache artifacts 🗑️
-        uses: geekyeggo/delete-artifact@v5.1.0
+        uses: geekyeggo/delete-artifact@176a747ab7e287e3ff4787bf8a148716375ca118 # v6.0.0
         continue-on-error: true
         with:
           name: |
