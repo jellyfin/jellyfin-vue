@@ -1,12 +1,12 @@
 <template>
   <VContainer>
-    <VRow class="pt-4">
+    <VRow class="uno-pt-4">
       <VCol
         cols="12"
         offset-lg="1"
         md="5"
         lg="4"
-        class="py-4">
+        class="uno-py-4">
         <div
           v-if="
             remote.auth.currentServer.value &&
@@ -16,7 +16,7 @@
             class="uno-h-25"
             src="/icon.svg"
             :alt="$t('jellyfinLogo')" />
-          <VTable class="mb-4 pb-2 information">
+          <VTable class="information uno-mb-4 uno-pb-2">
             <tbody>
               <tr>
                 <td>{{ $t('server') }}</td>
@@ -42,11 +42,11 @@
         cols="12"
         md="6"
         lg="5"
-        class="py-4">
+        class="uno-py-4">
         <!-- User settings -->
         <VList
           lines="two"
-          class="mb-4 overflow-y-hidden">
+          class="uno-mb-4 uno-overflow-y-hidden">
           <VItemGroup>
             <VListItem
               v-for="userItem in userItems"
@@ -77,7 +77,7 @@
           <VList
             v-for="(adminSection, index) in adminSections"
             :key="`admin-section-${index}`"
-            class="mb-4 overflow-y-hidden">
+            class="uno-mb-4 uno-overflow-y-hidden">
             <VItemGroup>
               <VListItem
                 v-for="adminItem in adminSection"
