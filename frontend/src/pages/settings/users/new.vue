@@ -17,7 +17,7 @@
         width="100%"
         height="100%">
         <VForm
-          class="px-2 py-5"
+          class="uno-px-2 uno-py-5"
           @submit.prevent="createUser">
           <VRow>
             <VCol>
@@ -35,7 +35,7 @@
           </VRow>
           <VRow>
             <VCol>
-              <div class="text-subtitle-1 font-weight-medium text-capitalize">
+              <div class="text-subtitle-1 uno-font-medium uno-capitalize">
                 {{ t('libraryAccess') }}
               </div>
               <VCheckbox
@@ -55,7 +55,7 @@
                       :value="library.Id" />
                   </VCol>
                 </VRow>
-                <div class="ml-2 text-warning">
+                <div class="text-warning uno-ml-2">
                   {{ t('libraryAccessNote') }}
                 </div>
               </VCard>
@@ -67,7 +67,7 @@
                 color="primary"
                 variant="elevated"
                 :loading="loading"
-                class="float-right"
+                class="uno-float-right"
                 @click="createUser">
                 {{ t('newUser') }}
               </VBtn>
