@@ -35,7 +35,7 @@
     "eslint-plugin-vue-scoped-css": "3.0.0",
     "find-up-simple": "1.0.1",
     "globals": "17.4.0",
-    "typescript-eslint": "8.57.2",
+    "typescript-eslint": "8.58.0",
     "vue-eslint-parser": "10.4.0"
   }
 }
