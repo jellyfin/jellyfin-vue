@@ -12,17 +12,17 @@
         <VCol
           cols="12"
           sm="7">
-          <VRow class="d-flex flex-column">
-            <div class="d-flex flex-column ml-sm-4">
+          <VRow class="uno-flex uno-flex-col">
+            <div class="ml-sm-4 uno-flex uno-flex-col">
               <div
-                class="text-subtitle-1 text--secondary font-weight-medium text-capitalize">
+                class="text-subtitle-1 text--secondary uno-font-medium uno-capitalize">
                 {{ $t('artist') }}
               </div>
               <h1 class="text-h4 text-md-h2">
                 {{ item.Name }}
               </h1>
             </div>
-            <div class="d-flex align-center ml-sm-4 my-2">
+            <div class="ml-sm-4 uno-my-2 uno-flex uno-items-center">
               <PlayButton :item="item" />
               <ItemMenu :item="item" />
               <LikeButton :item="item" />
