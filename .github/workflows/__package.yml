@@ -42,9 +42,13 @@ jobs:
           - MacOS
           - Ubuntu
           - Windows
+    permissions: {}
     defaults:
       run:
         working-directory: ${{ env.WORKING_DIR }}
+    outputs:
+      provenance-name: ${{ env.ARTIFACT_NAME }}
+      provenance-digest: ${{ steps.artifact.outputs.artifact-digest }}
 
     env:
       WORKING_DIR: packaging/tauri
@@ -94,16 +98,10 @@ jobs:
           name: ${{ env.ARTIFACT_NAME }}
           path: ${{ env.WORKING_DIR }}/${{ env.ARTIFACTS_PATH }}
 
-      - name: Create provenance attestation 🔏
-        uses: actions/attest-build-provenance@v3.2.0
-        continue-on-error: true
-        with:
-          subject-name: ${{ env.ARTIFACT_NAME }}
-          subject-digest: sha256:${{ steps.artifact.outputs.artifact-digest }}
-
   docker_inputs:
     name: Prepare Docker build variables 🏷️🐳
     runs-on: ubuntu-slim
+    permissions: {}
     outputs:
       tags: ${{ env.tags }}
       platforms: ${{ env.platforms }}
@@ -196,10 +194,14 @@ jobs:
     name: Docker image for ${{ matrix.platform }} 💿🐳
     runs-on: ${{ contains(matrix.platform, 'arm') && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
     needs: docker_inputs
+    permissions: {}
     strategy:
       fail-fast: false
       matrix:
         platform: ${{ fromJson(inputs.architectures) }}
+    outputs:
+      provenance-name: ${{ env.ARTIFACT_NAME }}
+      provenance-digest: ${{ steps.artifact.outputs.artifact-digest }}
 
     env:
       ARTIFACT_NAME: docker_image-linux_${{ matrix.platform }}
@@ -243,14 +245,7 @@ jobs:
         with:
           compression-level: 0
           name: ${{ env.ARTIFACT_NAME }}
-          path: docker_image.tar
-
-      - name: Create provenance attestation 🔏
-        uses: actions/attest-build-provenance@v3.2.0
-        continue-on-error: true
-        with:
-          subject-name: ${{ env.ARTIFACT_NAME }}
-          subject-digest: sha256:${{ steps.artifact.outputs.artifact-digest }}            
+          path: docker_image.tar          
 
       - name: Upload cache artifact ⬆️⚙️
         uses: actions/upload-artifact@v6.0.0
@@ -264,7 +259,12 @@ jobs:
   frontend:
     name: Publish frontend artifact 🚀
     runs-on: ubuntu-latest
-    needs: docker
+    permissions: {}
+    needs: 
+      - docker
+    outputs:
+      provenance-name: ${{ env.ARTIFACT_NAME }}
+      provenance-digest: ${{ steps.artifact.outputs.artifact-digest }}
 
     env:
       ARTIFACT_NAME: frontend
@@ -290,12 +290,39 @@ jobs:
           name: ${{ env.ARTIFACT_NAME }}
           path: dist
 
-      - name: Create provenance attestation 🔏
+  create-attestations:
+    name: Create provenance attestations 🔏
+    runs-on: ubuntu-slim
+    needs:
+      - tauri
+      - docker
+      - frontend
+    permissions:
+      id-token: write
+      attestations: write
+      artifact-metadata: write
+        
+    steps:
+      - name: Create attestation (frontend) 🔏
         uses: actions/attest-build-provenance@v3.2.0
         continue-on-error: true
         with:
-          subject-name: ${{ env.ARTIFACT_NAME }}
-          subject-digest: sha256:${{ steps.artifact.outputs.artifact-digest }}
+          subject-name: ${{ job.frontend.outputs.provenance-name }}
+          subject-digest: sha256:${{ job.frontend.outputs.provenance-digest }}
+
+      - name: Create attestation (Tauri) 🔏
+        uses: actions/attest-build-provenance@v3.2.0
+        continue-on-error: true
+        with:
+          subject-name: ${{ job.tauri.outputs.provenance-name }}
+          subject-digest: sha256:${{ job.tauri.outputs.provenance-digest }}
+
+      - name: Create attestation (Docker) 🔏
+        uses: actions/attest-build-provenance@v3.2.0
+        continue-on-error: true
+        with:
+          subject-name: ${{ job.docker.outputs.provenance-name }}
+          subject-digest: sha256:${{ job.docker.outputs.provenance-digest }}
 
   docker_merge:
     name: Merge Docker images 💿🐳
