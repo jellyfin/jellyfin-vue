@@ -1,6 +1,6 @@
 import { resolve } from 'node:path';
 import { defineConfig, mergeConfig } from 'vite';
-import BaseConfig from '@jellyfin-vue/frontend/vite-config';
+import BaseConfig from '@jellyfin-vue/frontend/configs/vite';
 
 const host = process.env.TAURI_DEV_HOST;
 

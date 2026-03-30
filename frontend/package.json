@@ -10,7 +10,8 @@
   },
   "exports": {
     ".": "./src/main.ts",
-    "./vite-config": "./vite.config.ts"
+    "./configs/vite": "./vite.config.ts",
+    "./configs/uno": "./uno.config.ts"
   },
   "scripts": {
     "analyze:bundle": "vite build --mode analyze:bundle --configLoader runner",
