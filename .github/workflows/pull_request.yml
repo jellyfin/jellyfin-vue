@@ -8,9 +8,6 @@ on:
   pull_request_target:
   merge_group:
 
-permissions:
-  pull-requests: read
-
 jobs:
   push-comment:
     name: Create comments ✍️
@@ -64,6 +61,7 @@ jobs:
     permissions:
       id-token: write
       attestations: write
+      artifact-metadata: write
     with:
       commit: ${{ github.event.pull_request.head.sha }}
 
@@ -72,6 +70,7 @@ jobs:
     if: ${{ always() && !cancelled() }}
     uses: ./.github/workflows/__quality_checks.yml
     permissions: {}
+    secrets: {}
     with:
       commit: ${{ github.event.pull_request.head.sha }}
 
@@ -80,9 +79,9 @@ jobs:
     if: ${{ always() && !cancelled() }}
     uses: ./.github/workflows/__codeql.yml
     permissions:
-      actions: read
       contents: read
       security-events: write
+    secrets: {}
     with:
       commit: ${{ github.event.pull_request.head.sha }}
 
