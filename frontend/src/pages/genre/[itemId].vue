@@ -11,7 +11,7 @@
       <PlayButton
         :item="genre" />
       <VBtn
-        class="mr-2 play-button"
+        class="play-button uno-mr-2"
         min-width="8em"
         variant="outlined"
         :to="`./${genre.Id}/shuffle`">
@@ -36,7 +36,7 @@
             text
             boilerplate />
         </VCol>
-        <div class="text-center empty-message">
+        <div class="empty-message uno-text-center">
           <h1 class="text-h5">
             {{ $t('libraryEmpty') }}
           </h1>
