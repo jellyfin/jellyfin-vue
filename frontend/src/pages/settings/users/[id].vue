@@ -62,7 +62,7 @@
                       :loading="loading"
                       color="primary"
                       variant="elevated"
-                      class="float-right"
+                      class="uno-float-right"
                       @click="saveProfile">
                       {{ t('save') }}
                     </VBtn>
@@ -87,7 +87,7 @@
                 <div v-if="!model.CanAccessAllLibraries && libraries">
                   <VRow>
                     <div
-                      class="text-subtitle-1 text--secondary font-weight-medium text-capitalize">
+                      class="text-subtitle-1 text--secondary uno-font-medium uno-capitalize">
                       {{ $t('libraries') }}
                     </div>
                   </VRow>
@@ -108,7 +108,7 @@
                       :loading="loading"
                       color="primary"
                       variant="elevated"
-                      class="float-right"
+                      class="uno-float-right"
                       @click="saveAccess">
                       {{ t('save') }}
                     </VBtn>
@@ -133,7 +133,7 @@
                       hide-details
                       clearable />
                     <div
-                      class="text-subtitle-1 font-weight-medium text-warning">
+                      class="text-subtitle-1 text-warning uno-font-medium">
                       {{ $t('maxAllowedRatingSubtitle') }}
                     </div>
                   </VCol>
@@ -141,7 +141,7 @@
                 <VRow>
                   <VCol>
                     <div
-                      class="text-subtitle-1 text--secondary font-weight-medium text-capitalize">
+                      class="text-subtitle-1 text--secondary uno-font-medium uno-capitalize">
                       {{ $t('blockUnratedItems') }}
                     </div>
                   </VCol>
@@ -164,7 +164,7 @@
                   <VRow>
                     <VCol>
                       <div
-                        class="font-weight-medium text-capitalize text-title">
+                        class="text-title uno-font-medium uno-capitalize">
                         {{ t('blockTags') }}
                       </div>
                     </VCol>
@@ -182,7 +182,7 @@
                     :key="blockedTag">
                     <VCol>
                       <div
-                        class="text-subtitle-1 font-weight-medium text-capitalize">
+                        class="text-subtitle-1 uno-font-medium uno-capitalize">
                         {{ blockedTag }}
                       </div>
                     </VCol>
@@ -202,7 +202,7 @@
                       :loading="loading"
                       color="primary"
                       variant="elevated"
-                      class="float-right"
+                      class="uno-float-right"
                       @click="saveParentalControl">
                       {{ t('save') }}
                     </VBtn>
@@ -261,7 +261,7 @@
                       :disabled="loading"
                       variant="elevated"
                       color="primary"
-                      class="float-right"
+                      class="uno-float-right"
                       @click="submitPassword">
                       {{ t('save') }}
                     </VBtn>
@@ -275,7 +275,7 @@
       <VDialog
         v-model="addTagDialogOpen"
         width="auto">
-        <VCol class="pa-0 add-key-dialog">
+        <VCol class="add-key-dialog uno-p-0">
           <VCard>
             <VCardTitle>{{ t('addBlockedTag') }}</VCardTitle>
             <VCardActions>
