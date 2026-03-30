@@ -55,7 +55,7 @@
     "vuetify": "3.11.3"
   },
   "devDependencies": {
-    "@iconify/json": "2.2.453",
+    "@iconify/json": "2.2.456",
     "@jellyfin-vue/configs": "*",
     "@jellyfin-vue/vite-plugins": "*",
     "@rollup/plugin-virtual": "3.0.2",
@@ -64,7 +64,7 @@
     "@vitejs/plugin-vue": "6.0.5",
     "browserslist": "4.28.1",
     "lightningcss": "1.32.0",
-    "unplugin-vue-components": "31.0.0",
-    "vite-plugin-vue-devtools": "8.1.0"
+    "unplugin-vue-components": "31.1.0",
+    "vite-plugin-vue-devtools": "8.1.1"
   }
 }
