@@ -6,18 +6,18 @@
     <template #content>
       <VCol
         md="6"
-        class="pt-0 pb-4">
+        class="uno-pb-4 uno-pt-0">
         <JTransition group>
           <h2
             key="logs-title"
-            class="text-h6 mb-2">
+            class="text-h6 uno-mb-2">
             {{ t('logs') }}
           </h2>
           <VList
             v-if="logs.length"
             key="log-list"
             lines="two"
-            class="mb-2">
+            class="uno-mb-2">
             <VListItem
               v-for="file in logs"
               :key="file.Name ?? undefined"
@@ -45,18 +45,18 @@
       </VCol>
       <VCol
         md="6"
-        class="pt-0 pb-4">
+        class="uno-pb-4 uno-pt-0">
         <JTransition group>
           <h2
             key="activity-title"
-            class="text-h6 mb-2">
+            class="text-h6 uno-mb-2">
             {{ t('activity') }}
           </h2>
           <VList
             v-if="activityList.length"
             key="activity-list"
             lines="two"
-            class="mb-2">
+            class="uno-mb-2">
             <VListItem
               v-for="activity in activityList"
               :key="activity.Id"
