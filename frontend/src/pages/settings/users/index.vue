@@ -25,7 +25,7 @@
           <VCard
             v-for="user in users"
             :key="user.Id"
-            class="pa-2"
+            class="uno-p-2"
             @click="$router.push(`/settings/users/${user['Id']}`)">
             <VRow>
               <VCol>
@@ -34,12 +34,12 @@
                   :size="48" />
               </VCol>
               <VCol>
-                <VCardTitle class="pa-0 fixed-width">
+                <VCardTitle class="fixed-width uno-p-0">
                   {{ user.Name }}
                 </VCardTitle>
                 <VCardSubtitle
                   v-if="user.LastActivityDate"
-                  class="pa-0 fixed-width">
+                  class="fixed-width uno-p-0">
                   {{
                     $t('lastActivityDate', {
                       value: useDateFns(formatDistanceToNow, new Date(user.LastActivityDate), { addSuffix: true })
