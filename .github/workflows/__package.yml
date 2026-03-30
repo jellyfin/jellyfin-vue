@@ -304,21 +304,21 @@ jobs:
         
     steps:
       - name: Create attestation (frontend) 🔏
-        uses: actions/attest-build-provenance@v3.2.0
+        uses: actions/attest@v4.1.0
         continue-on-error: true
         with:
           subject-name: ${{ job.frontend.outputs.provenance-name }}
           subject-digest: sha256:${{ job.frontend.outputs.provenance-digest }}
 
       - name: Create attestation (Tauri) 🔏
-        uses: actions/attest-build-provenance@v3.2.0
+        uses: actions/attest@v4.1.0
         continue-on-error: true
         with:
           subject-name: ${{ job.tauri.outputs.provenance-name }}
           subject-digest: sha256:${{ job.tauri.outputs.provenance-digest }}
 
       - name: Create attestation (Docker) 🔏
-        uses: actions/attest-build-provenance@v3.2.0
+        uses: actions/attest@v4.1.0
         continue-on-error: true
         with:
           subject-name: ${{ job.docker.outputs.provenance-name }}
