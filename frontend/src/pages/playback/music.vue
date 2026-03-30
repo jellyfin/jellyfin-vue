@@ -13,11 +13,11 @@
         </template>
       </AppBarButtonLayout>
     </VAppBar>
-    <VCol class="px-0">
+    <VCol class="uno-px-0">
       <JTransition mode="out-in">
         <Swiper
           v-if="!isVisualizing"
-          class="d-flex justify-center align-center uno-select-none"
+          class="uno-flex uno-select-none uno-items-center uno-justify-center"
           :modules="modules"
           :slides-per-view="4"
           :autoplay="false"
@@ -32,7 +32,7 @@
             v-for="(item, index) in playbackManager.queue.value"
             :key="`${item.Id}-${index}`"
             :virtual-index="`${item.Id}-${index}`"
-            class="d-flex justify-center">
+            class="uno-flex uno-justify-center">
             <div class="album-cover presentation-height">
               <BlurhashImage :item="item" />
             </div>
@@ -40,11 +40,11 @@
         </Swiper>
         <MusicVisualizer
           v-else
-          class="d-flex justify-center align-center presentation-height uno-select-none" />
+          class="presentation-height uno-flex uno-select-none uno-items-center uno-justify-center" />
       </JTransition>
-      <VRow class="justify-center align-center mt-3">
+      <VRow class="uno-mt-3 uno-items-center uno-justify-center">
         <VCol cols="6">
-          <VRow class="justify-center align-center">
+          <VRow class="uno-items-center uno-justify-center">
             <VCol>
               <VRow>
                 <h1 class="text-h4">
@@ -58,17 +58,17 @@
               </VRow>
             </VCol>
             <!-- TODO: Fix alignment with the end time of TimeSlider -->
-            <VCol class="d-flex justify-end">
+            <VCol class="uno-flex uno-justify-end">
               <LikeButton
                 v-if="playbackManager.currentItem.value"
                 :item="playbackManager?.currentItem.value"
                 size="x-large" />
             </VCol>
           </VRow>
-          <VRow class="justify-center align-center mt-3">
+          <VRow class="uno-mt-3 uno-items-center uno-justify-center">
             <TimeSlider />
           </VRow>
-          <VRow class="justify-center align-center">
+          <VRow class="uno-items-center uno-justify-center">
             <ShuffleButton size="x-large" />
             <PreviousTrackButton size="x-large" />
             <PlayPauseButton size="x-large" />
