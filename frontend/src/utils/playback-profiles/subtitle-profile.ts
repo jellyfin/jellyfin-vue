@@ -13,9 +13,7 @@ import {
  * @returns An array of subtitle profiles for the current platform.
  */
 export function getSubtitleProfiles(): SubtitleProfile[] {
-  const SubtitleProfiles: SubtitleProfile[] = [];
-
-  SubtitleProfiles.push(
+  const SubtitleProfiles: SubtitleProfile[] = [
     {
       Format: 'vtt',
       Method: SubtitleDeliveryMethod.External
@@ -32,7 +30,7 @@ export function getSubtitleProfiles(): SubtitleProfile[] {
       Format: 'pgssub',
       Method: SubtitleDeliveryMethod.External
     }
-  );
+  ];
 
   return SubtitleProfiles;
 }
