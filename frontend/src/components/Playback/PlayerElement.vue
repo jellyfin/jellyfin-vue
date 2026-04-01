@@ -55,9 +55,9 @@ const { t } = useTranslation();
 const webAudioQueue = new PromiseQueue();
 const hls = Hls.isSupported()
   ? new Hls({
-    testBandwidth: false,
-    workerPath: HlsWorkerUrl
-  })
+      testBandwidth: false,
+      workerPath: HlsWorkerUrl
+    })
   : undefined;
 
 const mediaElementType = computed<'audio' | 'video' | undefined>(() => {
@@ -174,7 +174,7 @@ watch(mediaElementRef, () => {
     }
 
     if (playbackManager.isAudio.value) {
-      void webAudioQueue.add(() => attachWebAudio(mediaElementRef.value!));
+      void webAudioQueue.add(() => attachWebAudio(mediaElementRef.value));
     }
   }
 });

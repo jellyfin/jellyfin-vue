@@ -35,11 +35,11 @@ class JVirtualWorker {
 
     if (collectionLength > bufferedLength) {
       first
-      = collectionLength < offsetPlusLength
+        = collectionLength < offsetPlusLength
           ? collectionLength - bufferedLength
           : bufferedOffset;
       last
-      = Math.min(collectionLength, offsetPlusLength);
+        = Math.min(collectionLength, offsetPlusLength);
     }
 
     const res = [];

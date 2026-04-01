@@ -74,7 +74,7 @@ import JTooltip from '../../../../packages/ui-toolkit/src/components/JTooltip.vu
 import { getTotalEndsAtTime } from '#/utils/time';
 import { InitMode, playbackManager } from '#/store/playback-manager';
 
-const { size = 40, closeOnClick = false } = defineProps<{
+const { size = 40, closeOnClick } = defineProps<{
   size?: number;
   closeOnClick?: boolean;
 }>();

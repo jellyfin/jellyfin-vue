@@ -36,8 +36,8 @@ type ParametersAsGetters<T extends (...args: any[]) => any> = T extends (...args
   ? { [K in keyof P]: () => BetterOmit<Writable<P[K]>, OmittedKeys> }
   : never;
 type ExtractResponseDataType<T> = Awaited<T> extends AxiosResponse<infer U> ? U : never;
-type ComposableParams<T extends Record<K, (...args: any[]) => any>, K extends keyof T, U extends ParametersAsGetters<T[K]>> =
-  Exact<ParametersAsGetters<T[K]>, U>;
+type ComposableParams<T extends Record<K, (...args: any[]) => any>, K extends keyof T, U extends ParametersAsGetters<T[K]>>
+  = Exact<ParametersAsGetters<T[K]>, U>;
 /**
  * If the response contains an Items (usually the *QueryResult ones) property, we return the value of Items instead of the whole response,
  * so we return the appropiate type for it. We also remove null and undefined since we already check for that
@@ -48,22 +48,22 @@ type ExtractItems<T> = T extends { Items?: infer U } ? U extends (infer V)[] ? N
 /**
  * If response.data is BaseItemDto or BaseItemDto[], returns it. Otherwise, returns never.
  */
-type ExtractBaseItemDtoResponse<T> =
-  IsEqual<ExtractResponseDataType<T>, BaseItemDto> extends true ? BaseItemDto :
-    IsEqual<ExtractResponseDataType<T>, BaseItemDtoQueryResult> extends true ? BaseItemDto[] :
-      IsEqual<ExtractResponseDataType<T>, BaseItemDto[]> extends true ? BaseItemDto[] :
-        never;
+type ExtractBaseItemDtoResponse<T>
+  = IsEqual<ExtractResponseDataType<T>, BaseItemDto> extends true ? BaseItemDto
+    : IsEqual<ExtractResponseDataType<T>, BaseItemDtoQueryResult> extends true ? BaseItemDto[]
+      : IsEqual<ExtractResponseDataType<T>, BaseItemDto[]> extends true ? BaseItemDto[]
+        : never;
 /**
  * If response.data is BaseItemDto or BaseItemDto[], returns never. Otherwise, returns the data type.
  */
-type ExtractResponseType<T> =
-  IsEqual<ExtractResponseDataType<T>, BaseItemDto> extends true ? never :
-    IsEqual<ExtractResponseDataType<T>, BaseItemDtoQueryResult> extends true ? never :
-      IsEqual<ExtractResponseDataType<T>, BaseItemDto[]> extends true ? never :
-        ExtractItems<ExtractResponseDataType<T>>;
+type ExtractResponseType<T>
+  = IsEqual<ExtractResponseDataType<T>, BaseItemDto> extends true ? never
+    : IsEqual<ExtractResponseDataType<T>, BaseItemDtoQueryResult> extends true ? never
+      : IsEqual<ExtractResponseDataType<T>, BaseItemDto[]> extends true ? never
+        : ExtractItems<ExtractResponseDataType<T>>;
 
-type ReturnData<T extends Record<K, (...args: any[]) => any>, K extends keyof T, J extends boolean> =
-  J extends true ? ExtractBaseItemDtoResponse<ReturnType<T[K]>> : ExtractResponseType<ReturnType<T[K]>>;
+type ReturnData<T extends Record<K, (...args: any[]) => any>, K extends keyof T, J extends boolean>
+  = J extends true ? ExtractBaseItemDtoResponse<ReturnType<T[K]>> : ExtractResponseType<ReturnType<T[K]>>;
 
 interface ReturnPayload<T extends Record<K, (...args: any[]) => any>, K extends keyof T, J extends boolean> {
   loading: Ref<boolean | undefined>;

@@ -721,8 +721,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       remote.sdk.api?.basePath
       && remote.auth.currentUserToken.value
       && mediaType
-      && mediaSource
-      && mediaSource.SupportsDirectStream
+      && mediaSource?.SupportsDirectStream
       && mediaSource.Type
       && mediaSource.Id
       && mediaSource.Container
@@ -812,17 +811,17 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
 
       globalThis.navigator.mediaSession.metadata = this.currentItem.value
         ? new MediaMetadata({
-          title: this.currentItem.value.Name ?? t('unknownTitle'),
-          artist: this.currentItem.value.AlbumArtist ?? t('unknownArtist'),
-          album: this.currentItem.value.Album ?? t('unknownAlbum'),
-          artwork: [96, 128, 192, 256, 384, 512].map(size => ({
-            src:
-                getImageInfo(this.currentItem.value!, {
+            title: this.currentItem.value.Name ?? t('unknownTitle'),
+            artist: this.currentItem.value.AlbumArtist ?? t('unknownArtist'),
+            album: this.currentItem.value.Album ?? t('unknownAlbum'),
+            artwork: [96, 128, 192, 256, 384, 512].map(size => ({
+              src:
+                getImageInfo(this.currentItem.value, {
                   width: size
                 }).url ?? '',
-            sizes: `${size}x${size}`
-          }))
-        })
+              sizes: `${size}x${size}`
+            }))
+          })
       /* eslint-disable-next-line unicorn/no-null */
         : null;
     });

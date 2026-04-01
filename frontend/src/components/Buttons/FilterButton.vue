@@ -173,12 +173,12 @@ import { useTranslation } from 'i18next-vue';
 import { remote } from '#/plugins/remote';
 import { useSnackbar } from '#/composables/use-snackbar';
 
-export type FeatureFilters =
-  | 'HasSubtitles'
-  | 'HasTrailer'
-  | 'HasSpecialFeature'
-  | 'HasThemeSong'
-  | 'HasThemeVideo';
+export type FeatureFilters
+  = | 'HasSubtitles'
+    | 'HasTrailer'
+    | 'HasSpecialFeature'
+    | 'HasThemeSong'
+    | 'HasThemeVideo';
 
 export type TypeFilters = 'Bluray' | 'Dvd' | 'isHD' | 'is4K' | 'is3D';
 

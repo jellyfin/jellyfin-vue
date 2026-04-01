@@ -10,9 +10,7 @@ import { isWebOS } from '#/utils/browser-detection';
 export function getSupportedWebMAudioCodecs(
   videoTestElement: HTMLVideoElement
 ): string[] {
-  const codecs = [];
-
-  codecs.push('vorbis');
+  const codecs = ['vorbis'];
 
   if (
     !isWebOS()
