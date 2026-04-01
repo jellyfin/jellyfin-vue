@@ -40,16 +40,13 @@
       "mode": "auto"
     }
   ],
-  "vue.server.hybridMode": true,
   "vue.autoInsert.dotValue": true,
   "vue.inlayHints.missingProps": true,
-  "vue.complete.casing.props": "kebab",
-  "vue.complete.casing.tags": "pascal",
   "vue.format.script.initialIndent": true,
   "vue.format.style.initialIndent": true,
   "vue.inlayHints.inlineHandlerLeading": true,
   "vue.inlayHints.vBindShorthand": true,
   "vue.inlayHints.optionsWrapper": true,
   "vue.inlayHints.destructuredProps": true,
-  "typescript.tsserver.experimental.enableProjectDiagnostics": false
+  "js/ts.tsserver.experimental.enableProjectDiagnostics": true,
 }
