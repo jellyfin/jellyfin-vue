@@ -1,5 +1,8 @@
 {
   "timezone": "Europe/Madrid",
+  "npm": {
+    "stabilityDays": 7
+  },
   "packageRules": [
     {
       "matchManagers": [
