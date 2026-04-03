@@ -65,7 +65,7 @@
     "@vitejs/plugin-vue": "6.0.5",
     "browserslist": "4.28.1",
     "lightningcss": "1.32.0",
-    "unplugin-vue-components": "31.1.0",
+    "unplugin-vue-components": "32.0.0",
     "vite-plugin-vue-devtools": "8.1.1"
   }
 }
