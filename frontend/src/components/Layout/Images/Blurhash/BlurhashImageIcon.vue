@@ -4,7 +4,7 @@
       v-if="getItemIcon(item)"
       :rounded="false"
       size="100%"
-      class="d-flex justify-center align-center align-self-center uno-h-full uno-w-full">
+      class="uno-flex uno-justify-center uno-items-center uno-self-center uno-h-full uno-w-full">
       <JIcon
         class="text--disabled uno-h-[50%] uno-w-[50%]"
         :class="getItemIcon(item)" />
