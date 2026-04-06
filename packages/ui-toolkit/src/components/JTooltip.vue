@@ -24,7 +24,7 @@
 import { useTemplateRef } from 'vue';
 import JAnchor from './JAnchor.vue';
 import JHover from './JHover.vue';
-import type { JAnchorProps } from '#/types';
+import type { JAnchorProps } from '#/types.d.ts';
 
 const { position = 'bottom', text } = defineProps<JAnchorProps & { text?: string }>();
 const hoverComp = useTemplateRef('hoverRef');

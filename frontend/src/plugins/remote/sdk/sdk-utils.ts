@@ -11,7 +11,7 @@ import {
   isTizen,
   isWebOS
 } from '#/utils/browser-detection';
-import { version } from '#/../package.json';
+import { version } from '#/package.json';
 
 /**
  * Returns the device ID, creating it in case it does not exist

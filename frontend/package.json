@@ -6,12 +6,14 @@
     "defaults and supports es6-module"
   ],
   "imports": {
+    "#/package.json": "./package.json",
     "#/*": "./src/*"
   },
   "exports": {
     ".": "./src/main.ts",
     "./configs/vite": "./vite.config.ts",
-    "./configs/uno": "./uno.config.ts"
+    "./configs/uno": "./uno.config.ts",
+    "./configs/typescript": "./tsconfig.json"
   },
   "scripts": {
     "analyze:bundle": "vite build --mode analyze:bundle --configLoader runner",

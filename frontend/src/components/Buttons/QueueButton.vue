@@ -70,7 +70,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { useTranslation } from 'i18next-vue';
-import JTooltip from '../../../../packages/ui-toolkit/src/components/JTooltip.vue';
+import { JTooltip } from '@jellyfin-vue/ui-toolkit/components';
 import { getTotalEndsAtTime } from '#/utils/time';
 import { InitMode, playbackManager } from '#/store/playback-manager';
 
