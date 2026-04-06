@@ -116,7 +116,7 @@ import { computed } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import type { RouteLocationRaw } from 'vue-router';
 import { remote } from '#/plugins/remote';
-import { version as clientVersion } from '#/../package.json';
+import { version as clientVersion } from '#/package.json';
 import { usePageTitle } from '#/composables/page-title';
 
 const { t } = useTranslation();

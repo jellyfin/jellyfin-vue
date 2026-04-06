@@ -4,9 +4,5 @@ export interface JAnchorProps {
    * from the real one, since the component will be repositioned
    * automatically if it doesn't fit properly in the screen.
    */
-  position: 'top' | 'bottom' | 'left' | 'right';
-}
-
-export interface JFileUploadExpose {
-  readSelectedFileAsBase64: () => Promise<string | undefined>;
+  position?: 'top' | 'bottom' | 'left' | 'right';
 }

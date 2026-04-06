@@ -8,7 +8,7 @@
   "exports": {
     "./composables/*.ts": "./src/composables/*.ts",
     "./components": "./src/components/index.ts",
-    "./store": "./src/store.ts",
+    "./store": "./src/store/index.ts",
     "./resolver": "./src/resolver.ts"
   },
   "scripts": {

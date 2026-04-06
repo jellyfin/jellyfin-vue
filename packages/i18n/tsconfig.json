@@ -1,12 +1,14 @@
 {
   "extends": "@jellyfin-vue/configs/typescript",
   "compilerOptions": {
-    "baseUrl": ".",
     "lib": [
       "ESNext",
       "DOM"
     ],
-    "types": ["vite/client"]
+    "types": [
+      "vite/client",
+      "@types/node"
+    ]
   },
   "exclude": [
     "dist",

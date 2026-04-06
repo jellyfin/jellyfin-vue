@@ -1,1 +1,1 @@
-export { defaultConfig as default } from '@jellyfin-vue/frontend/configs/uno';
+export { default } from '@jellyfin-vue/frontend/configs/uno';

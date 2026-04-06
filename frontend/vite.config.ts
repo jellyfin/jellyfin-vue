@@ -70,7 +70,7 @@ export default defineConfig({
       polyfill: false
     },
     reportCompressedSize: false,
-    rolldownOptions: {
+    rollupOptions: {
       input: {
         splashscreen: resolve(import.meta.dirname, 'src/splashscreen.ts'),
         main: resolve(import.meta.dirname, 'src/main.ts'),

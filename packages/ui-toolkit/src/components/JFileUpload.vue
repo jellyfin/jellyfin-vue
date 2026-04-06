@@ -80,7 +80,7 @@ import { useTranslation } from 'i18next-vue';
 import { computed, onBeforeUnmount, ref, shallowRef, watch } from 'vue';
 import { useEventListener } from '@vueuse/core';
 import JIcon from './JIcon.vue';
-import type { JFileUploadExpose } from '#/types';
+import type { JFileUploadExpose } from '#/types.d.ts';
 
 const { accept, disabled } = defineProps<{
   accept?: string;
@@ -239,7 +239,7 @@ async function readSelectedFileAsBase64(): Promise<string | undefined> {
   });
 }
 
-defineExpose<JFileUploadExpose>({
+defineExpose({
   readSelectedFileAsBase64
 });
 

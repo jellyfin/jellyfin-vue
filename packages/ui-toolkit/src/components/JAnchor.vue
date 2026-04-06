@@ -9,7 +9,6 @@
     <span
       class="uno-absolute uno-z-1500 anchor-target"
       :style="{
-        // @ts-expect-error - The API is not common yet
         'position-anchor': anchorName,
         // eslint-disable-next-line css/no-unknown-property
         'position-area': position ?? 'bottom span-all',
@@ -28,7 +27,7 @@ const isSupported = CSS.supports('position-try', 'flip-block');
 <script setup lang="ts">
 import { useId } from 'vue';
 import JSlot from './JSlot.vue';
-import type { JAnchorProps } from '#/types';
+import type { JAnchorProps } from '#/types.d.ts';
 
 const { position } = defineProps<JAnchorProps>();
 const anchorName = `--${useId()}`;
