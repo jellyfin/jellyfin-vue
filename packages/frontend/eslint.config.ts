@@ -4,9 +4,9 @@ import pkg from './package.json' with { type: 'json' };
 
 export default defineConfig([
   ...getBaseConfig(pkg.name),
-  ...getTSVueConfig(pkg.name, true, import.meta.dirname),
+  ...getTSVueConfig(true, import.meta.dirname),
   ...unocss,
-  ...getNodeFiles(pkg.name),
+  ...getNodeFiles(),
   ...getWorkerFiles(),
   {
     name: '(@jellyfin-vue/frontend) Ignored files',

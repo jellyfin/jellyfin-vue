@@ -4,6 +4,7 @@ import sonarjs from 'eslint-plugin-sonarjs';
 import regexp from 'eslint-plugin-regexp';
 import jsdoc from 'eslint-plugin-jsdoc';
 import eslintImportX from 'eslint-plugin-import-x';
+import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
 import vueScopedCSS from 'eslint-plugin-vue-scoped-css';
 import css from 'eslint-plugin-css';
 import vue from 'eslint-plugin-vue';
@@ -11,8 +12,8 @@ import vue from 'eslint-plugin-vue';
 import promise from 'eslint-plugin-promise';
 import globals from 'globals';
 import vueParser from 'vue-eslint-parser';
-import { getPackagePath } from '@jellyfin-vue/configs/utils';
-import { eqeqeqConfig, vueAndTsFiles, vueFiles, tsFiles } from '../shared';
+import { eqeqeqConfig, vueAndTsFiles, vueFiles, tsFiles } from '../shared.ts';
+import { getAllPackagePaths } from '@jellyfin-vue/configs/utils';
 
 const recommendedKey = 'flat/recommended';
 
@@ -22,7 +23,7 @@ const recommendedKey = 'flat/recommended';
 const flatArrayOfObjects = (obj: unknown[]) => Object.assign({}, ...obj);
 
 /** Common TypeScript and Vue rules */
-const common = (packageName: string) => defineConfig([
+const common = () => defineConfig([
   {
     ...flatArrayOfObjects(tseslint.configs.strictTypeChecked),
     name: '(@jellyfin-vue/configs/lint/typescript-vue - typescript-eslint) Extended config from plugin (strict type checking)'
@@ -55,15 +56,21 @@ const common = (packageName: string) => defineConfig([
     plugins: {
       'import-x': eslintImportX
     },
+    settings: {
+      'import-x/resolver-next': [
+        createTypeScriptImportResolver()
+      ]
+    },
     rules: {
       'import-x/no-extraneous-dependencies': [
         'error',
         {
-          packageDir: [getPackagePath('jellyfin-vue'), getPackagePath(packageName)]
+          packageDir: [...getAllPackagePaths()]
         }
       ],
       'import-x/order': 'error',
       'import-x/no-cycle': 'error',
+      'import-x/extensions': ['error', 'ignorePackages', { fix: false, checkTypeImports: true }],
       'import-x/no-nodejs-modules': 'error',
       'import-x/no-duplicates': ['error', { 'prefer-inline': true, 'considerQueryString': true }],
       // From the recommended preset
@@ -208,10 +215,10 @@ const vue_config = defineConfig([
  * @param enableVue - Whether to apply the base config for Vue files
  * @returns
  */
-export function getTSVueConfig(packageName: string, enableVue = true, tsconfigRootDir = import.meta.dirname) {
+export function getTSVueConfig(enableVue = true, tsconfigRootDir = import.meta.dirname) {
   const result = [
     ...(enableVue ? vue_config : []),
-    ...common(packageName).map(conf => ({
+    ...common().map(conf => ({
       ...conf, files: enableVue ? vueAndTsFiles : tsFiles
     }))];
 

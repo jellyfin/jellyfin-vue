@@ -44,6 +44,13 @@ const packagePaths = (() => {
 })();
 
 /**
+ * Gets the paths of all packages in the monorepo, including the root package
+ */
+export function getAllPackagePaths() {
+  return new Set([monorepoRoot, ...packagePaths.values()]);
+}
+
+/**
  * Gets the path of a monorepo package
  */
 export function getPackagePath(
