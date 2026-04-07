@@ -9,7 +9,8 @@
         "npm"
       ],
       "matchDepTypes": [
-        "dependencies"
+        "dependencies",
+        "pnpm.catalog.runtime"
       ],
       "groupName": "npm (runtime)"
     },
@@ -18,7 +19,8 @@
         "npm"
       ],
       "matchDepTypes": [
-        "devDependencies"
+        "devDependencies",
+        "pnpm.catalog.development"
       ],
       "groupName": "npm (development)"
     },

@@ -16,10 +16,10 @@
     "lint:inspect": "eslint-config-inspector"
   },
   "dependencies": {
-    "@vue/shared": "catalog:",
-    "date-fns": "catalog:",
-    "i18next": "catalog:",
-    "vuetify": "catalog:"
+    "@vue/shared": "catalog:runtime",
+    "date-fns": "catalog:runtime",
+    "i18next": "catalog:runtime",
+    "vuetify": "catalog:runtime"
   },
   "devDependencies": {
     "@jellyfin-vue/configs": "workspace:*",

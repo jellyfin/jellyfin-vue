@@ -42,7 +42,7 @@
     "eslint-plugin-unicorn": "62.0.0",
     "eslint-plugin-vue": "10.8.0",
     "eslint-plugin-vue-scoped-css": "3.0.0",
-    "find-up-simple": "catalog:",
+    "find-up-simple": "catalog:development",
     "globals": "17.4.0",
     "jiti": "2.6.1",
     "storybook": "10.3.3",

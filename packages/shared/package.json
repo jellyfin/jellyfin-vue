@@ -14,7 +14,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@vue/shared": "catalog:",
+    "@vue/shared": "catalog:runtime",
     "dompurify": "3.3.3",
     "marked": "17.0.5"
   },

@@ -11,7 +11,7 @@
   },
   "devDependencies": {
     "@jellyfin-vue/configs": "workspace:*",
-    "find-up-simple": "catalog:",
+    "find-up-simple": "catalog:development",
     "pretty-bytes": "7.1.0",
     "sonda": "0.11.1"
   }

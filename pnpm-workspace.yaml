@@ -13,14 +13,16 @@ injectWorkspacePackages: true
 shamefullyHoist: true
 fetchRetries: 15
 
-catalog:
-  vue: 3.5.31
-  '@vue/shared': 3.5.31
-  '@vueuse/core': 14.2.1
-  comlink: 4.4.2
-  date-fns: 4.1.0
-  find-up-simple: 1.0.1
-  i18next: 26.0.2
-  i18next-vue: 5.4.0
-  unplugin-vue-components: 31.1.0
-  vuetify: 3.11.3
+catalogs:
+  runtime:
+    vue: 3.5.31
+    '@vue/shared': 3.5.31
+    '@vueuse/core': 14.2.1
+    comlink: 4.4.2
+    date-fns: 4.1.0
+    i18next: 26.0.2
+    i18next-vue: 5.4.0
+    vuetify: 3.11.3
+  development:
+    find-up-simple: 1.0.1
+    unplugin-vue-components: 31.1.0

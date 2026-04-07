@@ -22,14 +22,14 @@
     "@jellyfin-vue/i18n": "workspace:*",
     "@jellyfin-vue/shared": "workspace:*",
     "@skirtle/vue-vnode-utils": "0.2.0",
-    "@vueuse/core": "catalog:",
+    "@vueuse/core": "catalog:runtime",
     "color": "5.0.3",
-    "comlink": "catalog:",
-    "i18next-vue": "catalog:",
-    "vuetify": "catalog:"
+    "comlink": "catalog:runtime",
+    "i18next-vue": "catalog:runtime",
+    "vuetify": "catalog:runtime"
   },
   "devDependencies": {
     "@jellyfin-vue/configs": "workspace:*",
-    "unplugin-vue-components": "catalog:"
+    "unplugin-vue-components": "catalog:development"
   }
 }
