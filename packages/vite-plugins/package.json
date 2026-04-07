@@ -4,10 +4,10 @@
   "type": "module",
   "exports": "./src/index.ts",
   "scripts": {
+    "check:types": "vue-tsc",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "lint:inspect": "eslint-config-inspector",
-    "check:types": "vue-tsc"
+    "lint:inspect": "eslint-config-inspector"
   },
   "devDependencies": {
     "@jellyfin-vue/configs": "workspace:*",
