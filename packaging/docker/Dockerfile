@@ -10,13 +10,13 @@ ARG COMMIT_HASH
 ENV IS_STABLE=$IS_STABLE
 ENV COMMIT_HASH=$COMMIT_HASH
 
-COPY package.json package-lock.json .npmrc /app/
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml /app/
 COPY frontend /app/frontend
 COPY packages /app/packages
 WORKDIR /app/frontend
 
 # Build client
-RUN npm ci --no-audit && npm run build
+RUN corepack pnpm install --frozen-lockfile && corepack pnpm build
 
 # Deploy built distribution to nginx
 FROM ghcr.io/nginxinc/nginx-unprivileged:stable-alpine-slim

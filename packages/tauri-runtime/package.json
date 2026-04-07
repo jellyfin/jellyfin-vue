@@ -12,18 +12,18 @@
     "lint:fix": "eslint . --fix",
     "lint:inspect": "eslint-config-inspector",
     "build": "vite build --configLoader runner",
-    "check": "npm run lint && npm run check:types",
+    "check": "pnpm lint && pnpm check:types",
     "check:types": "vue-tsc",
     "start": "vite --configLoader runner",
     "serve": "vite preview --configLoader runner",
-    "prod": "npm run build && npm run serve",
+    "prod": "pnpm build && pnpm serve",
     "clean": "git clean -fxd"
   },
   "devDependencies": {
-    "@jellyfin-vue/configs": "*"
+    "@jellyfin-vue/configs": "workspace:*"
   },
   "dependencies": {
-    "@jellyfin-vue/frontend": "*",
+    "@jellyfin-vue/frontend": "workspace:*",
     "@tauri-apps/api": "2.10.1"
   }
 }

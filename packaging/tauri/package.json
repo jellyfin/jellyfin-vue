@@ -2,15 +2,15 @@
   "name": "@jellyfin-vue/tauri-packaging",
   "private": true,
   "scripts": {
-    "start": "npm run gen-icon && tauri dev",
+    "start": "pnpm gen-icon && tauri dev",
     "gen-icon": "tauri icon ../../frontend/public/icon.svg",
-    "build": "npm run gen-icon && tauri build",
+    "build": "pnpm gen-icon && tauri build",
     "clean": "git clean -fxd"
   },
   "devDependencies": {
     "@tauri-apps/cli": "2.10.1"
   },
   "dependencies": {
-    "@jellyfin-vue/tauri-runtime": "*"
+    "@jellyfin-vue/tauri-runtime": "workspace:*"
   }
 }

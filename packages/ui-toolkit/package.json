@@ -19,25 +19,17 @@
     "storybook": "storybook dev -p 6006 --config-dir storybook --no-open"
   },
   "dependencies": {
-    "@jellyfin-vue/shared": "*",
+    "@jellyfin-vue/i18n": "workspace:*",
+    "@jellyfin-vue/shared": "workspace:*",
+    "@vueuse/core": "catalog:",
+    "comlink": "catalog:",
     "@skirtle/vue-vnode-utils": "0.2.0",
-    "color": "5.0.3"
+    "i18next-vue": "catalog:",
+    "color": "5.0.3",
+    "vuetify": "catalog:"
   },
   "devDependencies": {
-    "@jellyfin-vue/configs": "*"
-  },
-  "peerDependencies": {
-    "@jellyfin-vue/i18n": "*",
-    "@vueuse/core": "*",
-    "comlink": "*",
-    "i18next-vue": "*",
-    "unplugin-vue-components": "*",
-    "vue": "*",
-    "vuetify": "*"
-  },
-  "peerDependenciesMeta": {
-    "unplugin-vue-components": {
-      "optional": true
-    }
+    "@jellyfin-vue/configs": "workspace:*",
+    "unplugin-vue-components": "catalog:"
   }
 }

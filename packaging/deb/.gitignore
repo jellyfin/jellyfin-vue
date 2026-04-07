@@ -6,4 +6,3 @@ dist/
 frontend
 package-lock.json
 package.json
-.npmrc

@@ -75,7 +75,7 @@ jobs:
           cache-workspaces: ${{ env.WORKING_DIR }}
 
       - name: Install npm dependencies 📦
-        run: npm ci --no-audit
+        run: corepack pnpm install --frozen-lockfile
 
       - name: Install Linux dependencies 📦🐧
         if: ${{ matrix.platform == 'ubuntu' }}
@@ -84,7 +84,7 @@ jobs:
           sudo apt install -y --no-install-recommends $(cat apt_packages)
 
       - name: Build application 🛠️
-        run: npm run build
+        run: corepack pnpm build
 
       - name: Upload built application artifact ⬆️🐧🍎🪟
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0

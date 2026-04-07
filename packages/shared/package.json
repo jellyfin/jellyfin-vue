@@ -14,9 +14,11 @@
     "test": "vitest run"
   },
   "devDependencies": {
-    "@jellyfin-vue/configs": "*"
+    "@jellyfin-vue/configs": "workspace:*",
+    "find-up-simple": "catalog:"
   },
   "dependencies": {
+    "@vue/shared": "catalog:",
     "dompurify": "3.3.3",
     "marked": "17.0.5"
   }

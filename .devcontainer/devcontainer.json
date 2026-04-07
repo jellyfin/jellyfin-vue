@@ -23,7 +23,7 @@
   },
   "postCreateCommand": {
     "tauri-deps": "install_packages $(cat packaging/tauri/apt_packages)",
-    "npm": "npm ci --no-audit",
+    "pnpm": "corepack pnpm install --frozen-lockfile",
     "unshallow": "git fetch --unshallow || true"
   },
   "postAttachCommand": {

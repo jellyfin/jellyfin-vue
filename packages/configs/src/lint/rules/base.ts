@@ -172,7 +172,7 @@ export function getBaseConfig(packageName: string, forceCache = !CI_environment,
         {
           ...json.configs.recommended,
           files,
-          ignores: [...ignoresForOtherLangs, 'package-lock.json', ...files.map(file => `!${file}`)],
+          ignores: [...ignoresForOtherLangs, 'pnpm-lock.yaml', ...files.map(file => `!${file}`)],
           language: `json/${lang}`,
           name: `(@jellyfin-vue/configs/lint/base - ${lang}) Extended config from plugin`
         }];

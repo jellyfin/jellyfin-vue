@@ -70,7 +70,6 @@
     ]
   },
   "ignoreDeps": [
-    "npm",
     "node",
     "vuetify"
   ],
