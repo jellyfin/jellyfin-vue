@@ -6,9 +6,9 @@ import type { RouteNamedMap } from 'vue-router/auto-routes';
 import { until } from '@vueuse/core';
 import { isNil } from '@jellyfin-vue/shared/validation';
 import i18next from 'i18next';
-import { remote } from '#/plugins/remote';
-import { jsonConfig } from '#/utils/external-config';
-import { useSnackbar } from '#/composables/use-snackbar';
+import { remote } from '#/plugins/remote/index.ts';
+import { jsonConfig } from '#/utils/external-config.ts';
+import { useSnackbar } from '#/composables/use-snackbar.ts';
 
 const serverAddUrl = '/server/add';
 const serverSelectUrl = '/server/select';

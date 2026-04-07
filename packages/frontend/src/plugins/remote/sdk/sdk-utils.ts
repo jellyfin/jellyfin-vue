@@ -10,7 +10,7 @@ import {
   isMobile,
   isTizen,
   isWebOS
-} from '#/utils/browser-detection';
+} from '#/utils/browser-detection.ts';
 import { version } from '#/package.json';
 
 /**

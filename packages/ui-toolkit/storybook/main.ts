@@ -1,6 +1,6 @@
+import { join } from 'node:path';
 import storybookConfig from '@jellyfin-vue/configs/storybook';
 import { getPackagePath } from '@jellyfin-vue/configs/utils';
-import { join } from 'node:path';
 
 storybookConfig.core.builder.options.viteConfigPath = join(
   getPackagePath('@jellyfin-vue/frontend')!,

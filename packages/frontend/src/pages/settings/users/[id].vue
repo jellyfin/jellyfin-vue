@@ -323,9 +323,9 @@ import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
 import { computed, ref } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import { useRoute, useRouter } from 'vue-router';
-import { remote } from '#/plugins/remote';
-import { useSnackbar } from '#/composables/use-snackbar';
-import { useConfirmDialog } from '#/composables/use-confirm-dialog';
+import { remote } from '#/plugins/remote/index.ts';
+import { useSnackbar } from '#/composables/use-snackbar.ts';
+import { useConfirmDialog } from '#/composables/use-confirm-dialog.ts';
 
 interface CurrentUser {
   Name: string;

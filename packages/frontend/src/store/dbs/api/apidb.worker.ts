@@ -5,9 +5,9 @@ import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { isArray } from '@jellyfin-vue/shared/validation';
 import type { Arrayable } from 'type-fest';
 import { expose } from 'comlink';
-import { BaseDb } from '../base-db';
-import { ApiResponse } from './api-response';
-import { Item } from './item';
+import { BaseDb } from '../base-db.ts';
+import { ApiResponse } from './api-response.ts';
+import { Item } from './item.ts';
 
 class ApiDatabase extends BaseDb {
   declare public responses: EntityTable<ApiResponse, 'function' | 'params'>;

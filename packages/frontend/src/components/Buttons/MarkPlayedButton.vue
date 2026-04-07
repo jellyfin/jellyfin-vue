@@ -14,8 +14,8 @@
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getPlaystateApi } from '@jellyfin/sdk/lib/utils/api/playstate-api';
 import { computed, ref } from 'vue';
-import { canMarkWatched } from '#/utils/items';
-import { useApi } from '#/composables/apis';
+import { canMarkWatched } from '#/utils/items.ts';
+import { useApi } from '#/composables/apis.ts';
 
 const { item } = defineProps<{
   item: BaseItemDto;

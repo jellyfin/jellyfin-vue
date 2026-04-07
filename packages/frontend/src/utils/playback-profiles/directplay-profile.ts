@@ -6,12 +6,12 @@ import {
   type DirectPlayProfile,
   DlnaProfileType
 } from '@jellyfin/sdk/lib/generated-client';
-import { getSupportedMP4VideoCodecs } from './helpers/mp4-video-formats';
-import { getSupportedMP4AudioCodecs } from './helpers/mp4-audio-formats';
-import { hasMkvSupport } from './helpers/transcoding-formats';
-import { getSupportedWebMAudioCodecs } from './helpers/webm-audio-formats';
-import { getSupportedWebMVideoCodecs } from './helpers/webm-video-formats';
-import { getSupportedAudioCodecs } from './helpers/audio-formats';
+import { getSupportedMP4VideoCodecs } from './helpers/mp4-video-formats.ts';
+import { getSupportedMP4AudioCodecs } from './helpers/mp4-audio-formats.ts';
+import { hasMkvSupport } from './helpers/transcoding-formats.ts';
+import { getSupportedWebMAudioCodecs } from './helpers/webm-audio-formats.ts';
+import { getSupportedWebMVideoCodecs } from './helpers/webm-video-formats.ts';
+import { getSupportedAudioCodecs } from './helpers/audio-formats.ts';
 
 /**
  * Returns a valid DirectPlayProfile for the current platform.

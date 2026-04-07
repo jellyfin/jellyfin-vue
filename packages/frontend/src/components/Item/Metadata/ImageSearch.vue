@@ -117,8 +117,8 @@ import {
 import { getRemoteImageApi } from '@jellyfin/sdk/lib/utils/api/remote-image-api';
 import { computed, ref, watch } from 'vue';
 import { useTranslation } from 'i18next-vue';
-import { getLocaleName } from '#/utils/i18n';
-import { remote } from '#/plugins/remote';
+import { getLocaleName } from '#/utils/i18n.ts';
+import { remote } from '#/plugins/remote/index.ts';
 
 const { metadata, dialog } = defineProps<{
   metadata: BaseItemDto;

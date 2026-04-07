@@ -47,7 +47,7 @@
 import { computedAsync, usePermission, useSupported } from '@vueuse/core';
 import { computed } from 'vue';
 import { useTranslation } from 'i18next-vue';
-import { DEFAULT_TYPOGRAPHY, themeSettings } from '#/store/settings/theme';
+import { DEFAULT_TYPOGRAPHY, themeSettings } from '#/store/settings/theme.ts';
 
 const { appWide } = defineProps<{
   /**

@@ -3,8 +3,8 @@ import type { LiteralUnion } from 'type-fest';
 import { darkColors, lightColors, type ColorPalette } from '@jellyfin-vue/configs/uno/colors';
 import { usePreferredDark, watchImmediate } from '@vueuse/core';
 import { computed } from 'vue';
-import { SyncedStore } from '#/store/super/synced-store';
-import { vuetify } from '#/plugins/vuetify';
+import { SyncedStore } from '#/store/super/synced-store.ts';
+import { vuetify } from '#/plugins/vuetify.ts';
 
 /**
  * Type for the different typography choices across the application

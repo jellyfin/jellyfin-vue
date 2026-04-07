@@ -1,4 +1,4 @@
-import { vuetify } from '#/plugins/vuetify';
+import { vuetify } from '#/plugins/vuetify.ts';
 
 const display = vuetify.display;
 

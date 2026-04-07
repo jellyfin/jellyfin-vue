@@ -50,7 +50,7 @@
 import { computed, ref, watch } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import { VListItemAction } from 'vuetify/components';
-import { taskManager, TaskType } from '#/store/task-manager';
+import { taskManager, TaskType } from '#/store/task-manager.ts';
 
 interface TaskInfo {
   progress: undefined | number;

@@ -78,7 +78,7 @@ import { getConfigurationApi } from '@jellyfin/sdk/lib/utils/api/configuration-a
 import { getBrandingApi } from '@jellyfin/sdk/lib/utils/api/branding-api';
 import { SomeItemSelectedRule } from '@jellyfin-vue/shared/validation';
 import { watchDeep } from '@vueuse/core';
-import { useApi } from '#/composables/apis';
+import { useApi } from '#/composables/apis.ts';
 import { taskManager } from '#/store/task-manager.ts';
 
 const tasks = new Map<number, string>();

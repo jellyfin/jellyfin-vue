@@ -16,10 +16,10 @@ import { getUserViewsApi } from '@jellyfin/sdk/lib/utils/api/user-views-api';
 import type { ComputedRef } from 'vue';
 import type { RouteNamedMap } from 'vue-router/auto-routes';
 import { isNil } from '@jellyfin-vue/shared/validation';
-import { ticksToMs } from './time';
-import { router } from '#/plugins/router';
-import { remote } from '#/plugins/remote';
-import { useBaseItem } from '#/composables/apis';
+import { ticksToMs } from './time.ts';
+import { router } from '#/plugins/router/index.ts';
+import { remote } from '#/plugins/remote/index.ts';
+import { useBaseItem } from '#/composables/apis.ts';
 
 /**
  * A list of valid collections that should be treated as folders.

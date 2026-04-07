@@ -17,7 +17,7 @@
 import { toRef, type MaybeRefOrGetter, shallowRef, onMounted, computed, onScopeDispose } from 'vue';
 import { watchImmediate } from '@vueuse/core';
 import { isNil } from '@jellyfin-vue/shared/validation';
-import { prefersNoTransparency } from '#/store';
+import { prefersNoTransparency } from '#/store/index.ts';
 
 const DEFAULT_OPACITY = 0.25;
 const requested_opacity = shallowRef(DEFAULT_OPACITY);

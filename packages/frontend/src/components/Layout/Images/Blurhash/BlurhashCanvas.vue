@@ -12,8 +12,8 @@
 <script setup lang="ts">
 import { transfer } from 'comlink';
 import { shallowRef, watch, useTemplateRef } from 'vue';
-import { blurhashDrawer } from '#/plugins/workers';
-import { BLURHASH_DEFAULT_HEIGHT, BLURHASH_DEFAULT_WIDTH, BLURHASH_DEFAULT_PUNCH, isDocumentVisible } from '#/store';
+import { blurhashDrawer } from '#/plugins/workers/index.ts';
+import { BLURHASH_DEFAULT_HEIGHT, BLURHASH_DEFAULT_WIDTH, BLURHASH_DEFAULT_PUNCH, isDocumentVisible } from '#/store/index.ts';
 
 /**
  * Browsers stop canvases when the page is out of view (for example, minimised or in a background tab).

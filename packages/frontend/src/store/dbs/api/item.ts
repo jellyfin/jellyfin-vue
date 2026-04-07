@@ -1,6 +1,6 @@
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { BaseDbEntity } from '../base-entity';
-import type { TApiDatabase } from '.';
+import { BaseDbEntity } from '../base-entity.ts';
+import type { TApiDatabase } from './index.ts';
 
 export class Item extends BaseDbEntity<TApiDatabase> implements BaseItemDto {
   public static override readonly tableName = 'items';

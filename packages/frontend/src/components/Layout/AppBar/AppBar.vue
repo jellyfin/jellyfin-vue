@@ -57,10 +57,10 @@
 
 <script setup lang="ts">
 import { computed, inject, type Ref } from 'vue';
-import { windowScroll, isConnectedToServer, transparencyEffects } from '#/store';
-import { themeSettings } from '#/store/settings/theme';
-import { remote } from '#/plugins/remote';
-import { JView_isRouting } from '#/store/keys';
+import { windowScroll, isConnectedToServer, transparencyEffects } from '#/store/index.ts';
+import { themeSettings } from '#/store/settings/theme.ts';
+import { remote } from '#/plugins/remote/index.ts';
+import { JView_isRouting } from '#/store/keys.ts';
 
 const { y } = windowScroll;
 const isRouting = inject(JView_isRouting);

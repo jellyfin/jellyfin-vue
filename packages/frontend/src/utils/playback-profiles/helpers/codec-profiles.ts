@@ -21,7 +21,7 @@ import {
   isWebOS,
   isXbox,
   safariVersion
-} from '#/utils/browser-detection';
+} from '#/utils/browser-detection.ts';
 
 /**
  * Gets the max video bitrate

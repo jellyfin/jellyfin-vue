@@ -6,7 +6,7 @@ import {
   hasAv1Support,
   hasVp8Support,
   hasVp9Support
-} from './mp4-video-formats';
+} from './mp4-video-formats.ts';
 
 /**
  * Get an array of supported codecs WebM video codecs

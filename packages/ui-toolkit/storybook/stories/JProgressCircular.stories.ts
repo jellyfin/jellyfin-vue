@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
-import { JProgressCircular } from '#/components';
+import { JProgressCircular } from '#/components/index.ts';
 
 const meta: Meta<typeof JProgressCircular> = {
   component: JProgressCircular

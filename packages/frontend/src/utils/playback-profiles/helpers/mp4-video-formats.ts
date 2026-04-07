@@ -8,7 +8,7 @@ import {
   isTizen55,
   isTv,
   isWebOS5
-} from '#/utils/browser-detection';
+} from '#/utils/browser-detection.ts';
 
 /**
  * Checks if the client has support for the H264 codec

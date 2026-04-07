@@ -41,15 +41,15 @@ import { computed, nextTick, onScopeDispose, watch } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import { isNil } from '@jellyfin-vue/shared/validation';
 import { PromiseQueue } from '@jellyfin-vue/shared/promises';
-import { useSnackbar } from '#/composables/use-snackbar';
+import { useSnackbar } from '#/composables/use-snackbar.ts';
 import {
   mediaElementRef,
   mediaWebAudio
-} from '#/store';
-import { playbackManager } from '#/store/playback-manager';
-import { playerElement, videoContainerRef } from '#/store/player-element';
-import { getImageInfo } from '#/utils/images';
-import { subtitleSettings } from '#/store/settings/subtitle';
+} from '#/store/index.ts';
+import { playbackManager } from '#/store/playback-manager.ts';
+import { playerElement, videoContainerRef } from '#/store/player-element.ts';
+import { getImageInfo } from '#/utils/images.ts';
+import { subtitleSettings } from '#/store/settings/subtitle.ts';
 
 const { t } = useTranslation();
 const webAudioQueue = new PromiseQueue();

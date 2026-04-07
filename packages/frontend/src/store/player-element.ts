@@ -12,14 +12,14 @@ import { SubtitleDeliveryMethod } from '@jellyfin/sdk/lib/generated-client/model
 import { computedAsync, useFullscreen } from '@vueuse/core';
 import { MediaStreamType } from '@jellyfin/sdk/lib/generated-client';
 import { isNil, sealed } from '@jellyfin-vue/shared/validation';
-import { playbackManager } from './playback-manager';
-import { mediaElementRef } from '#/store';
-import { CommonStore } from '#/store/super/common-store';
-import { router } from '#/plugins/router';
-import { remote } from '#/plugins/remote';
-import type { ParsedSubtitleTrack } from '#/plugins/workers/generic/subtitles';
-import { runGenericWorkerFunc } from '#/plugins/workers';
-import { subtitleSettings } from '#/store/settings/subtitle';
+import { playbackManager } from './playback-manager.ts';
+import { mediaElementRef } from '#/store/index.ts';
+import { CommonStore } from '#/store/super/common-store.ts';
+import { router } from '#/plugins/router/index.ts';
+import { remote } from '#/plugins/remote/index.ts';
+import type { ParsedSubtitleTrack } from '#/plugins/workers/generic/subtitles.ts';
+import { runGenericWorkerFunc } from '#/plugins/workers/index.ts';
+import { subtitleSettings } from '#/store/settings/subtitle.ts';
 
 /**
  * == INTERFACES AND TYPES ==

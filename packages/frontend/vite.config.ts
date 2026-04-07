@@ -12,7 +12,7 @@ import { defineConfig } from 'vite';
 import { JBundle, JMonorepo } from '@jellyfin-vue/vite-plugins';
 import { genVirtualModules } from '@jellyfin-vue/i18n/vite';
 import { JellyfinVueUIToolkit } from '@jellyfin-vue/ui-toolkit/resolver';
-import virtualModules from './scripts/virtual-modules';
+import virtualModules from './scripts/virtual-modules.ts';
 
 export default defineConfig({
   appType: 'spa',

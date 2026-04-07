@@ -78,9 +78,9 @@ import { computedAsync, refDebounced } from '@vueuse/core';
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { defu } from 'defu';
-import { apiStore } from '#/store/dbs/api';
-import { useResponsiveClasses } from '#/composables/use-responsive-classes';
-import { useBaseItem } from '#/composables/apis';
+import { apiStore } from '#/store/dbs/api/index.ts';
+import { useResponsiveClasses } from '#/composables/use-responsive-classes.ts';
+import { useBaseItem } from '#/composables/apis.ts';
 
 const route = useRoute();
 const router = useRouter();

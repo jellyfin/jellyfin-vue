@@ -5,9 +5,9 @@
 import type { Api } from '@jellyfin/sdk';
 import { watchSyncEffect } from 'vue';
 import { isNil, sealed } from '@jellyfin-vue/shared/validation';
-import RemotePluginAuthInstance from '../auth';
-import RemotePluginAxiosInstance from '../axios';
-import SDK, { useOneTimeAPI } from './sdk-utils';
+import RemotePluginAuthInstance from '../auth.ts';
+import RemotePluginAxiosInstance from '../axios.ts';
+import SDK, { useOneTimeAPI } from './sdk-utils.ts';
 
 @sealed
 class RemotePluginSDK {

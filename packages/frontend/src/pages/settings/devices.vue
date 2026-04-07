@@ -105,9 +105,9 @@ import { formatRelative, parseJSON } from 'date-fns';
 import { computed, ref } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import { isNil } from '@jellyfin-vue/shared/validation';
-import { remote } from '#/plugins/remote';
-import { useSnackbar } from '#/composables/use-snackbar';
-import { useDateFns } from '#/composables/use-datefns';
+import { remote } from '#/plugins/remote/index.ts';
+import { useSnackbar } from '#/composables/use-snackbar.ts';
+import { useDateFns } from '#/composables/use-datefns.ts';
 
 const { t } = useTranslation();
 

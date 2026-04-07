@@ -148,8 +148,8 @@ import type {
 import { computed, ref } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import { isArray, isNil, isNumber } from '@jellyfin-vue/shared/validation';
-import { getLocaleName } from '#/utils/i18n';
-import { formatBitRate, formatFileSize } from '#/utils/items';
+import { getLocaleName } from '#/utils/i18n.ts';
+import { formatBitRate, formatFileSize } from '#/utils/items.ts';
 
 const { item, mediaSourceIndex } = defineProps<{ item: BaseItemDto; mediaSourceIndex?: number }>();
 

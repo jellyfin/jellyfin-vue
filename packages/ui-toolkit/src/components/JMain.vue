@@ -12,7 +12,7 @@
  */
 import { ref, provide } from 'vue';
 import { useLayout } from 'vuetify';
-import { JMain_style } from '#/store/keys';
+import { JMain_style } from '#/store/keys.ts';
 
 const style = ref([]);
 const { mainStyles } = useLayout();

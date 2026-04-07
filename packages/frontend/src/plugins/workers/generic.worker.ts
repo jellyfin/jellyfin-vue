@@ -2,7 +2,7 @@
 
 import { expose } from 'comlink';
 import { sealed } from '@jellyfin-vue/shared/validation';
-import { parseVttFile } from './generic/subtitles';
+import { parseVttFile } from './generic/subtitles.ts';
 
 /**
  * All functions that could take some time to complete and block the main thread

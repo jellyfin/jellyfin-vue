@@ -11,9 +11,9 @@ import { toRaw, watch } from 'vue';
 import { isArray, isObj, sealed } from '@jellyfin-vue/shared/validation';
 import { wrap } from 'comlink';
 import { useSessionStorage } from '@vueuse/core';
-import type { IApiDatabase } from './apidb.worker';
-import ApiDatabase from './apidb.worker?worker';
-import { remote } from '#/plugins/remote';
+import type { IApiDatabase } from './apidb.worker.ts';
+import ApiDatabase from './apidb.worker.ts?worker';
+import { remote } from '#/plugins/remote/index.ts';
 
 /**
  * Contains all the enums used in the API as array constants

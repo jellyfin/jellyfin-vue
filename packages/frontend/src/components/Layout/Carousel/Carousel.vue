@@ -52,7 +52,7 @@ import 'swiper/css/virtual';
 import { A11y, EffectFade, Keyboard, Parallax, Virtual } from 'swiper/modules';
 import { Swiper } from 'swiper/vue';
 import { shallowRef, onMounted } from 'vue';
-import { useResponsiveClasses } from '#/composables/use-responsive-classes';
+import { useResponsiveClasses } from '#/composables/use-responsive-classes.ts';
 
 const { slideDuration = 7000, progressBar, topProgressBar } = defineProps<{
   slides: number;

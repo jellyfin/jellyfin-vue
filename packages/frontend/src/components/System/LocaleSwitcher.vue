@@ -29,8 +29,8 @@
 <script setup lang="ts">
 import { languages } from '@jellyfin-vue/i18n';
 import { useTranslation } from 'i18next-vue';
-import { clientSettings } from '#/store/settings/client';
-import { getLocaleNativeName } from '#/utils/i18n';
+import { clientSettings } from '#/store/settings/client.ts';
+import { getLocaleNativeName } from '#/utils/i18n.ts';
 
 const { bottom, large, elevated } = defineProps<{
   bottom?: boolean;

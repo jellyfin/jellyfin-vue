@@ -35,8 +35,8 @@ import { usePausableEffect } from '@jellyfin-vue/ui-toolkit/composables/use-paus
 import DefaultLayout from '#/layouts/default.vue';
 import FullPageLayout from '#/layouts/fullpage.vue';
 import ServerLayout from '#/layouts/server.vue';
-import { JView_isRouting } from '#/store/keys';
-import { router } from '#/plugins/router';
+import { JView_isRouting } from '#/store/keys.ts';
+import { router } from '#/plugins/router/index.ts';
 
 /**
  * Return the appropiate layout component according to the route's meta.layout property

@@ -72,13 +72,13 @@ import {
   getItemIdFromSourceIndex,
   getItemSeasonDownloadMap,
   getItemSeriesDownloadMap
-} from '#/utils/items';
-import { taskManager } from '#/store/task-manager';
-import { playbackManager } from '#/store/playback-manager';
-import { apiStore } from '#/store/dbs/api';
-import { remote } from '#/plugins/remote';
-import { useSnackbar } from '#/composables/use-snackbar';
-import { useConfirmDialog } from '#/composables/use-confirm-dialog';
+} from '#/utils/items.ts';
+import { taskManager } from '#/store/task-manager.ts';
+import { playbackManager } from '#/store/playback-manager.ts';
+import { apiStore } from '#/store/dbs/api/index.ts';
+import { remote } from '#/plugins/remote/index.ts';
+import { useSnackbar } from '#/composables/use-snackbar.ts';
+import { useConfirmDialog } from '#/composables/use-confirm-dialog.ts';
 
 interface MenuOption {
   title: string;

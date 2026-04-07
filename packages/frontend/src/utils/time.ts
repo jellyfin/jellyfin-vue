@@ -9,8 +9,8 @@ import {
   intervalToDuration
 } from 'date-fns';
 import i18next from 'i18next';
-import { now } from '#/store';
-import { useDateFns } from '#/composables/use-datefns';
+import { now } from '#/store/index.ts';
+import { useDateFns } from '#/composables/use-datefns.ts';
 
 /**
  * Formats Time

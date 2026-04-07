@@ -10,8 +10,8 @@ import {
 } from '@vueuse/core';
 import { computed, shallowRef } from 'vue';
 import { isNil } from '@jellyfin-vue/shared/validation';
-import { remote } from '#/plugins/remote';
-import { router } from '#/plugins/router';
+import { remote } from '#/plugins/remote/index.ts';
+import { router } from '#/plugins/router/index.ts';
 
 /**
  * == BLURHASH DEFAULTS ==

@@ -2,7 +2,7 @@ import { ImageType, type BaseItemDto } from '@jellyfin/sdk/lib/generated-client'
 import { toValue, type MaybeRefOrGetter } from 'vue';
 import type { ArrayTail } from 'type-fest';
 import { useBackdrop } from '#/components/Layout/Backdrop.vue';
-import { getBlurhash } from '#/utils/images';
+import { getBlurhash } from '#/utils/images.ts';
 
 /**
  * Same as useBackdrop, but is a shorthand for items only.

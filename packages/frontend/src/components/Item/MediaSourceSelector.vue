@@ -21,7 +21,7 @@
 import { computed, ref, watch } from 'vue';
 import type { MediaSourceInfo } from '@jellyfin/sdk/lib/generated-client';
 import { isNil } from '@jellyfin-vue/shared/validation';
-import { getItemizedSelect } from '#/utils/forms';
+import { getItemizedSelect } from '#/utils/forms.ts';
 
 const { sources, defaultSourceIndex, label } = defineProps<{
   sources: MediaSourceInfo[];

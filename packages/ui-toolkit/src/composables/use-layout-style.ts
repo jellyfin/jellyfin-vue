@@ -1,7 +1,7 @@
 import { inject, onScopeDispose, ref, toValue, type MaybeRefOrGetter, type Ref, type StyleValue } from 'vue';
 import { isNil } from '@jellyfin-vue/shared/validation';
 import { watchImmediate } from '@vueuse/core';
-import { JMain_style } from '#/store/keys';
+import { JMain_style } from '#/store/keys.ts';
 
 /**
  * Modifies the style of the main div component

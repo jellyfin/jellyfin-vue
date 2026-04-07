@@ -20,17 +20,17 @@ import { computedAsync, watchThrottled } from '@vueuse/core';
 import { computed, watch, watchEffect } from 'vue';
 import { isNil, sealed } from '@jellyfin-vue/shared/validation';
 import i18next from 'i18next';
-import { useBaseItem } from '#/composables/apis';
-import { useSnackbar } from '#/composables/use-snackbar';
-import { remote } from '#/plugins/remote';
-import { apiStore } from '#/store/dbs/api';
-import { getImageInfo } from '#/utils/images';
-import { getItemRuntime } from '#/utils/items';
-import playbackProfile from '#/utils/playback-profiles';
-import { msToTicks } from '#/utils/time';
-import { mediaControls, mediaElementRef } from '#/store';
-import { CommonStore } from '#/store/super/common-store';
-import { runGenericWorkerFunc } from '#/plugins/workers';
+import { useBaseItem } from '#/composables/apis.ts';
+import { useSnackbar } from '#/composables/use-snackbar.ts';
+import { remote } from '#/plugins/remote/index.ts';
+import { apiStore } from '#/store/dbs/api/index.ts';
+import { getImageInfo } from '#/utils/images.ts';
+import { getItemRuntime } from '#/utils/items.ts';
+import playbackProfile from '#/utils/playback-profiles/index.ts';
+import { msToTicks } from '#/utils/time.ts';
+import { mediaControls, mediaElementRef } from '#/store/index.ts';
+import { CommonStore } from '#/store/super/common-store.ts';
+import { runGenericWorkerFunc } from '#/plugins/workers/index.ts';
 
 /**
  * == INTERFACES AND TYPES ==

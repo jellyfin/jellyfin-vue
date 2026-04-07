@@ -2,8 +2,8 @@
  * @deprecated - Check #/utils/playback-profiles/index
  */
 
-import { hasVp8Support } from './mp4-video-formats';
-import { getSupportedAudioCodecs } from './audio-formats';
+import { hasVp8Support } from './mp4-video-formats.ts';
+import { getSupportedAudioCodecs } from './audio-formats.ts';
 import {
   isTizen,
   isTizen4,
@@ -11,7 +11,7 @@ import {
   isTizen55,
   isTv,
   isWebOS
-} from '#/utils/browser-detection';
+} from '#/utils/browser-detection.ts';
 
 /**
  * Checks if the client can play the AC3 codec

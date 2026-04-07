@@ -115,9 +115,9 @@ import { commit_hash } from 'virtual:commit';
 import { computed } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import type { RouteLocationRaw } from 'vue-router';
-import { remote } from '#/plugins/remote';
+import { remote } from '#/plugins/remote/index.ts';
 import { version as clientVersion } from '#/package.json';
-import { usePageTitle } from '#/composables/page-title';
+import { usePageTitle } from '#/composables/page-title.ts';
 
 const { t } = useTranslation();
 

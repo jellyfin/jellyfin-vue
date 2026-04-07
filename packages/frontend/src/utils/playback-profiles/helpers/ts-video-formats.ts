@@ -2,7 +2,7 @@
  * @deprecated - Check #/utils/playback-profiles/index
  */
 
-import { hasH264Support } from './mp4-video-formats';
+import { hasH264Support } from './mp4-video-formats.ts';
 
 /**
  * List of supported ts video codecs

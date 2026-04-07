@@ -50,9 +50,9 @@
 import { computed, inject, type Ref } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import type { RouteNamedMap } from 'vue-router/auto-routes';
-import type { getLibraryIcon } from '#/utils/items';
-import { transparencyEffects } from '#/store';
-import { JView_isRouting } from '#/store/keys';
+import type { getLibraryIcon } from '#/utils/items.ts';
+import { transparencyEffects } from '#/store/index.ts';
+import { JView_isRouting } from '#/store/keys.ts';
 
 export interface DrawerItem {
   icon: ReturnType<typeof getLibraryIcon>;

@@ -2,8 +2,8 @@
 
 import { expose } from 'comlink';
 import { sealed } from '@jellyfin-vue/shared/validation';
-import { getItemOffsetByIndex, type ResizeMeasurement, type BufferMeta, type InternalItem } from './pipeline';
-import { toPx } from '#/util/helpers';
+import { getItemOffsetByIndex, type ResizeMeasurement, type BufferMeta, type InternalItem } from './pipeline.ts';
+import { toPx } from '#/util/helpers.ts';
 
 @sealed
 class JVirtualWorker {

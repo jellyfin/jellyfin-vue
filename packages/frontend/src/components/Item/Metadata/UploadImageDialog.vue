@@ -59,8 +59,8 @@ import type { ImageType } from '@jellyfin/sdk/lib/generated-client/models/image-
 import { computed, ref } from 'vue';
 import type { AxiosRequestConfig } from 'axios';
 import type { JFileUploadExpose } from '@jellyfin-vue/ui-toolkit/components';
-import { remote } from '#/plugins/remote';
-import { useSnackbar } from '#/composables/use-snackbar';
+import { remote } from '#/plugins/remote/index.ts';
+import { useSnackbar } from '#/composables/use-snackbar.ts';
 
 const { isImageDialogVisible, itemId } = defineProps<{
   isImageDialogVisible: boolean;

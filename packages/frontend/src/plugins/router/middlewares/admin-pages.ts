@@ -1,7 +1,7 @@
 import type { NavigationGuardReturn, RouteLocationNormalized } from 'vue-router';
 import i18next from 'i18next';
-import { useSnackbar } from '#/composables/use-snackbar';
-import { remote } from '#/plugins/remote';
+import { useSnackbar } from '#/composables/use-snackbar.ts';
+import { remote } from '#/plugins/remote/index.ts';
 
 /**
  * Redirect the user to index page when attempting to access

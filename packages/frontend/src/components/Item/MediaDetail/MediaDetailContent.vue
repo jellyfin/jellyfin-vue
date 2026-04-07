@@ -20,8 +20,8 @@ import type {
 } from '@jellyfin/sdk/lib/generated-client';
 import { useTranslation } from 'i18next-vue';
 import { isNumber, isBool } from '@jellyfin-vue/shared/validation';
-import { getLocaleName } from '#/utils/i18n';
-import { formatBitRate } from '#/utils/items';
+import { getLocaleName } from '#/utils/i18n.ts';
+import { formatBitRate } from '#/utils/items.ts';
 
 const { stream, videoTimestamp } = defineProps<{
   stream: MediaStream;

@@ -100,8 +100,8 @@ import { getStartupApi } from '@jellyfin/sdk/lib/utils/api/startup-api';
 import { ref } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import { useRouter } from 'vue-router';
-import { useSnackbar } from '#/composables/use-snackbar';
-import { remote } from '#/plugins/remote';
+import { useSnackbar } from '#/composables/use-snackbar.ts';
+import { remote } from '#/plugins/remote/index.ts';
 
 const { t } = useTranslation();
 const router = useRouter();

@@ -11,5 +11,5 @@
 </template>
 
 <script setup lang="ts">
-import { RepeatMode, playbackManager } from '#/store/playback-manager';
+import { RepeatMode, playbackManager } from '#/store/playback-manager.ts';
 </script>

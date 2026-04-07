@@ -236,11 +236,11 @@ import { computed, ref, shallowRef } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import { watchImmediate } from '@vueuse/core';
 import { isArray, isNil } from '@jellyfin-vue/shared/validation';
-import { getItemImageUrl } from '#/utils/images';
-import { remote } from '#/plugins/remote';
-import { useSnackbar } from '#/composables/use-snackbar';
-import { useDateFns } from '#/composables/use-datefns';
-import { pick } from '#/utils/data-manipulation';
+import { getItemImageUrl } from '#/utils/images.ts';
+import { remote } from '#/plugins/remote/index.ts';
+import { useSnackbar } from '#/composables/use-snackbar.ts';
+import { useDateFns } from '#/composables/use-datefns.ts';
+import { pick } from '#/utils/data-manipulation.ts';
 
 interface ContentOption {
   value: string;

@@ -9,11 +9,11 @@ import { createApp } from 'vue';
 import { routes } from 'vue-router/auto-routes';
 import i18next from 'i18next';
 import I18NextVue from 'i18next-vue';
-import { getFontFaces } from '#/utils/data-manipulation';
-import { hideDirective } from '#/plugins/directives';
-import { createPlugin as createRemote } from '#/plugins/remote';
-import { router } from '#/plugins/router';
-import { vuetify } from '#/plugins/vuetify';
+import { getFontFaces } from '#/utils/data-manipulation.ts';
+import { hideDirective } from '#/plugins/directives.ts';
+import { createPlugin as createRemote } from '#/plugins/remote/index.ts';
+import { router } from '#/plugins/router/index.ts';
+import { vuetify } from '#/plugins/vuetify.ts';
 import Root from '#/App.vue';
 /**
  * - GLOBAL STYLES -

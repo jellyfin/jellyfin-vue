@@ -59,9 +59,9 @@ import type {
 import { getItemRefreshApi } from '@jellyfin/sdk/lib/utils/api/item-refresh-api';
 import { computed, ref } from 'vue';
 import { useTranslation } from 'i18next-vue';
-import { TaskType, taskManager } from '#/store/task-manager';
-import { remote } from '#/plugins/remote';
-import { useSnackbar } from '#/composables/use-snackbar';
+import { TaskType, taskManager } from '#/store/task-manager.ts';
+import { remote } from '#/plugins/remote/index.ts';
+import { useSnackbar } from '#/composables/use-snackbar.ts';
 
 interface RefreshMethod {
   title: string;

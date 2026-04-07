@@ -38,8 +38,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { type BaseItemDto, BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
-import { getLogo } from '#/utils/images';
-import { getItemDetailsLink } from '#/utils/items';
+import { getLogo } from '#/utils/images.ts';
+import { getItemDetailsLink } from '#/utils/items.ts';
 
 const { item } = defineProps<{ item: BaseItemDto }>();
 
