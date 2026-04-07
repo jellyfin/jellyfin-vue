@@ -7,7 +7,7 @@
  */
 import { destr } from 'destr';
 import type { PartialDeep } from 'type-fest';
-import { darkColors, lightColors } from '@jellyfin-vue/shared/colors';
+import { darkColors, lightColors } from '@jellyfin-vue/configs/uno/colors';
 import type { ThemeSettingsState } from '#/store/settings/theme';
 import '#/assets/styles/splashscreen.css';
 

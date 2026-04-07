@@ -63,9 +63,6 @@ importers:
       '@eslint/json':
         specifier: 0.14.0
         version: 0.14.0
-      '@jellyfin-vue/shared':
-        specifier: workspace:*
-        version: link:../shared
       '@storybook/addon-a11y':
         specifier: 10.3.3
         version: 10.3.3(storybook@10.3.3(@testing-library/dom@10.4.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))
@@ -312,9 +309,6 @@ importers:
       '@jellyfin-vue/configs':
         specifier: workspace:*
         version: link:../configs
-      find-up-simple:
-        specifier: 'catalog:'
-        version: 1.0.1
       yaml:
         specifier: 2.8.3
         version: 2.8.3
