@@ -1,6 +1,5 @@
 import { extname, join } from 'node:path';
-import type { Plugin } from 'vite';
-import type { InputOptions } from 'rollup';
+import type { Plugin, Rolldown } from 'vite';
 import { findUpSync } from 'find-up-simple';
 
 /**
@@ -13,7 +12,7 @@ import { findUpSync } from 'find-up-simple';
  * @param inputAttrs - Additional attributes to provide for specific inputs
  */
 export function JMonorepo(path: string, inputAttrs: Record<string, Record<string, string>>): Plugin {
-  let resolvedInputs: NonNullable<InputOptions['input']> = {};
+  let resolvedInputs: NonNullable<Rolldown.InputOptions['input']> = {};
 
   return {
     name: 'Jellyfin_Vue:monorepo_setup',

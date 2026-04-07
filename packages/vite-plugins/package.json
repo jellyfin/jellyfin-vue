@@ -10,8 +10,8 @@
     "check:types": "vue-tsc"
   },
   "devDependencies": {
-    "@jellyfin-vue/configs": "*",
-    "find-up-simple": "1.0.1",
+    "@jellyfin-vue/configs": "workspace:*",
+    "find-up-simple": "catalog:",
     "pretty-bytes": "7.1.0",
     "sonda": "0.11.1"
   }

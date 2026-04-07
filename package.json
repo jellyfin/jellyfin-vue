@@ -1,55 +1,31 @@
 {
   "name": "jellyfin-vue",
+  "version": "0.3.1",
   "private": true,
-  "type": "module",
   "homepage": "https://jellyfin.org/",
   "bugs": {
     "url": "https://github.com/jellyfin/jellyfin-vue/issues"
   },
-  "packageManager": "npm@11.6.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/jellyfin/jellyfin-vue/"
   },
   "license": "GPL-3.0-only",
   "author": "jellyfin-vue Contributors (https://github.com/jellyfin/jellyfin-vue/graphs/contributors)",
-  "workspaces": [
-    "frontend",
-    "packaging/tauri",
-    "packages/*"
-  ],
+  "type": "module",
+  "scripts": {
+    "analyze:cycles": "pnpm -r --if-present --no-bail analyze:cycles",
+    "check:types": "pnpm -r --if-present --no-bail check:types",
+    "lint": "pnpm -r --if-present --no-bail lint",
+    "lint:fix": "pnpm -r --if-present --no-bail lint:fix",
+    "test": "pnpm -r --if-present --no-bail test"
+  },
+  "packageManager": "pnpm@10.33.0",
   "engines": {
     "node": ">=24.11.0 <25.0.0",
-    "npm": ">=11.6.1"
-  },
-  "scripts": {
-    "lint": "npm run lint -ws --include-workspace-root=false",
-    "lint:fix": "npm run lint:fix -ws --include-workspace-root=false",
-    "check:types": "npm run check:types -ws --include-workspace-root=false",
-    "analyze:cycles": "npm run analyze:cycles -ws --include-workspace-root=false",
-    "test": "npm run test -ws --include-workspace-root=false"
-  },
-  "dependencies": {
-    "vue": "3.5.31"
+    "pnpm": ">=10.33.0"
   },
   "devDependencies": {
-    "@chromatic-com/storybook": "5.1.1",
-    "@eslint/config-inspector": "1.5.0",
-    "@storybook/addon-a11y": "10.3.3",
-    "@storybook/vue3": "10.3.3",
-    "@storybook/vue3-vite": "10.3.3",
-    "@types/node": "25.5.0",
-    "eslint": "9.39.4",
-    "jiti": "2.6.1",
-    "storybook": "10.3.3",
-    "type-fest": "5.5.0",
-    "typescript": "6.0.2",
-    "unocss": "66.6.7",
-    "vite": "8.0.3",
-    "vitest": "4.1.2",
-    "vue-tsc": "3.2.6"
-  },
-  "peerDependencies": {
-    "@vue/shared": "*"
+    "pnpm": "10.33.0"
   }
 }

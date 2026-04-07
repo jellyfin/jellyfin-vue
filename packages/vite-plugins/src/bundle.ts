@@ -2,10 +2,9 @@ import { basename, resolve, join } from 'node:path';
 import { globSync } from 'node:fs';
 import { lstat, rename, rm } from 'node:fs/promises';
 import type { LiteralUnion } from 'type-fest';
-import type { RollupLog } from 'rollup';
 import prettyBytes from 'pretty-bytes';
 import Sonda from 'sonda/rollup';
-import { normalizePath, preview, type Plugin } from 'vite';
+import { normalizePath, preview, type Plugin, type Rolldown } from 'vite';
 
 /**
  * TODO: Track https://github.com/vitejs/vite/pull/19005 so we can pull Vite's default config instead
@@ -18,7 +17,7 @@ const defaultConfig = { build: { outDir: 'dist' } };
  */
 export function JBundleAnalysis(): Plugin {
   let mode: LiteralUnion<'analyze:bundle' | 'analyze:cycles', string>;
-  const warnings: RollupLog[] = [];
+  const warnings: Rolldown.RolldownLog = [];
 
   return {
     name: 'Jellyfin_Vue:bundle_analysis',
@@ -110,11 +109,21 @@ export function JBundleChunking(): Plugin {
                    * Split each vendor in its own chunk
                    */
                   name: (id) => {
-                    const match = /node_modules\/([^/]+)/.exec(id)?.[1];
+                    const normalizedId = id.replaceAll('\\', '/');
+                    const nodeModulesPrefix = 'node_modules/';
+                    const nodeModulesIndex = normalizedId.lastIndexOf(nodeModulesPrefix);
 
-                    if (match) {
-                      return `vendor/${match.replace('@', '')}`;
+                    if (nodeModulesIndex === -1) {
+                      return;
                     }
+
+                    const packageName = normalizedId.slice(nodeModulesIndex + nodeModulesPrefix.length).split('/')[0];
+
+                    if (!packageName) {
+                      return;
+                    }
+
+                    return `vendor/${packageName.replace('@', '')}`;
                   },
                   priority: 10
                 },

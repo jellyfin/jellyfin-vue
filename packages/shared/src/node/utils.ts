@@ -1,24 +1,24 @@
-import { execSync } from 'node:child_process';
+import { globSync, readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { findUpSync } from 'find-up-simple';
 import type { LiteralUnion } from 'type-fest';
 
-const encoding = 'utf8';
+const workspaceManifest = findUpSync('pnpm-workspace.yaml', { type: 'file' });
+const monorepoRoot = workspaceManifest ? dirname(workspaceManifest) : process.cwd();
 
-// eslint-disable-next-line sonarjs/no-os-command-from-path
-const monorepoRoot = execSync('npm prefix', {
-  encoding
-}).trim();
 const packagePaths = (() => {
-  // eslint-disable-next-line sonarjs/no-os-command-from-path
-  const listing = JSON.parse(execSync('npm query .workspace', {
-    encoding,
-    cwd: monorepoRoot
-  }));
-
   const relation = new Map<string, string>();
+  const packageJsonPaths = [
+    join(monorepoRoot, 'frontend/package.json'),
+    join(monorepoRoot, 'packaging/tauri/package.json'),
+    ...globSync(join(monorepoRoot, 'packages/*/package.json'))
+  ];
 
-  for (const list of listing) {
-    if (list.path && list.name) {
-      relation.set(list.name, list.path);
+  for (const packageJsonPath of packageJsonPaths) {
+    const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8')) as { name?: string };
+
+    if (packageJson.name) {
+      relation.set(packageJson.name, dirname(packageJsonPath));
     }
   }
 
