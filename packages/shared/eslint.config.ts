@@ -4,6 +4,6 @@ import pkg from './package.json' with { type: 'json' };
 
 export default defineConfig([
   ...getBaseConfig(pkg.name),
-  ...getTSVueConfig(pkg.name, false, import.meta.dirname),
-  ...getNodeFiles(pkg.name, ['./src/node/**/*.ts'])
+  ...getTSVueConfig(false, import.meta.dirname),
+  ...getNodeFiles(['./src/node/**/*.ts'])
 ]);
