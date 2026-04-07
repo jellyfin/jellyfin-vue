@@ -11,14 +11,13 @@ override_dh_auto_test:
 override_dh_clistrip:
 
 override_dh_auto_build:
-	cp -ra root/{package.json,pnpm-workspace.yaml,pnpm-lock.yaml,frontend,packages} $(CURDIR)/
+	cp -ra root/{package.json,pnpm-workspace.yaml,pnpm-lock.yaml,packages} $(CURDIR)/
 	corepack pnpm install --frozen-lockfile
-	cd frontend && corepack pnpm build
-	mv $(CURDIR)/frontend/dist $(CURDIR)/dist
-	rm -rf $(CURDIR)/frontend $(CURDIR)/packages $(CURDIR)/node_modules $(CURDIR)/package.json $(CURDIR)/pnpm-lock.yaml $(CURDIR)/pnpm-workspace.yaml
+	cd packages/frontend && corepack pnpm build
+	mv $(CURDIR)/packages/frontend/dist $(CURDIR)/dist
+	rm -rf $(CURDIR)/packages $(CURDIR)/node_modules $(CURDIR)/package.json $(CURDIR)/pnpm-lock.yaml $(CURDIR)/pnpm-workspace.yaml
 
 override_dh_auto_clean:
-	test -d $(CURDIR)/frontend && rm -rf '$(CURDIR)/frontend' || true
 	test -d $(CURDIR)/packages && rm -rf '$(CURDIR)/packages' || true
 	test -d $(CURDIR)/dist && rm -rf '$(CURDIR)/dist' || true
 	test -d $(CURDIR)/node_modules && rm -rf '$(CURDIR)/node_modules' || true
