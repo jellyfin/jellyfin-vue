@@ -23,8 +23,8 @@ catalogs:
       specifier: 1.0.1
       version: 1.0.1
     i18next:
-      specifier: 26.0.2
-      version: 26.0.2
+      specifier: 26.0.3
+      version: 26.0.3
     i18next-vue:
       specifier: 5.4.0
       version: 5.4.0
@@ -218,10 +218,10 @@ importers:
         version: 1.6.15
       i18next:
         specifier: 'catalog:'
-        version: 26.0.2(typescript@6.0.2)
+        version: 26.0.3(typescript@6.0.2)
       i18next-vue:
         specifier: 'catalog:'
-        version: 5.4.0(i18next@26.0.2(typescript@6.0.2))(vue@3.5.31(typescript@6.0.2))
+        version: 5.4.0(i18next@26.0.3(typescript@6.0.2))(vue@3.5.31(typescript@6.0.2))
       libpgs:
         specifier: 0.8.1
         version: 0.8.1
@@ -285,7 +285,7 @@ importers:
         version: 4.1.0
       i18next:
         specifier: 'catalog:'
-        version: 26.0.2(typescript@6.0.2)
+        version: 26.0.3(typescript@6.0.2)
       vuetify:
         specifier: 'catalog:'
         version: 3.11.3(typescript@6.0.2)(vue@3.5.31(typescript@6.0.2))
@@ -351,7 +351,7 @@ importers:
         version: 4.4.2
       i18next-vue:
         specifier: 'catalog:'
-        version: 5.4.0(i18next@26.0.2(typescript@6.0.2))(vue@3.5.31(typescript@6.0.2))
+        version: 5.4.0(i18next@26.0.3(typescript@6.0.2))(vue@3.5.31(typescript@6.0.2))
       vuetify:
         specifier: 'catalog:'
         version: 3.11.3(typescript@6.0.2)(vue@3.5.31(typescript@6.0.2))
@@ -382,7 +382,7 @@ importers:
     dependencies:
       '@jellyfin-vue/tauri-runtime':
         specifier: workspace:*
-        version: link:../../packages/tauri-runtime
+        version: file:packages/tauri-runtime
     devDependencies:
       '@tauri-apps/cli':
         specifier: 2.10.1
@@ -819,6 +819,21 @@ packages:
 
   '@iconify/utils@3.1.0':
     resolution: {integrity: sha512-Zlzem1ZXhI1iHeeERabLNzBHdOa4VhQbqAcOQaMKuTuyZCpwKbC2R4Dd0Zo3g9EAc+Y4fiarO8HIHRAth7+skw==, tarball: https://registry.npmjs.org/@iconify/utils/-/utils-3.1.0.tgz}
+
+  '@jellyfin-vue/frontend@file:packages/frontend':
+    resolution: {directory: packages/frontend, type: directory}
+
+  '@jellyfin-vue/i18n@file:packages/i18n':
+    resolution: {directory: packages/i18n, type: directory}
+
+  '@jellyfin-vue/shared@file:packages/shared':
+    resolution: {directory: packages/shared, type: directory}
+
+  '@jellyfin-vue/tauri-runtime@file:packages/tauri-runtime':
+    resolution: {directory: packages/tauri-runtime, type: directory}
+
+  '@jellyfin-vue/ui-toolkit@file:packages/ui-toolkit':
+    resolution: {directory: packages/ui-toolkit, type: directory}
 
   '@jellyfin/sdk@0.13.0':
     resolution: {integrity: sha512-oiBAOXH6s+dKdReSsYgNktBDzbxtg4JVWhEzIxZSxKcWMdSKmBtK41MhXRO7IWAC40DguKUm3nU/Z493qPAlWA==, tarball: https://registry.npmjs.org/@jellyfin/sdk/-/sdk-0.13.0.tgz}
@@ -2513,8 +2528,8 @@ packages:
       i18next: '>=23'
       vue: ^3.4.38
 
-  i18next@26.0.2:
-    resolution: {integrity: sha512-WsK0SdP+7tGzsxpT+Us1s2nvOyx657DatBodaNZe4KcPTPYzkVfRKUygN69mB+sCbbnifRuKz+Ya5JRzd8DNHw==, tarball: https://registry.npmjs.org/i18next/-/i18next-26.0.2.tgz}
+  i18next@26.0.3:
+    resolution: {integrity: sha512-1571kXINxHKY7LksWp8wP+zP0YqHSSpl/OW0Y0owFEf2H3s8gCAffWaZivcz14rMkOvn3R/psiQxVsR9t2Nafg==, tarball: https://registry.npmjs.org/i18next/-/i18next-26.0.3.tgz}
     peerDependencies:
       typescript: ^5 || ^6
     peerDependenciesMeta:
@@ -4085,6 +4100,92 @@ snapshots:
       '@iconify/types': 2.0.0
       mlly: 1.8.2
 
+  '@jellyfin-vue/frontend@file:packages/frontend':
+    dependencies:
+      '@fontsource-variable/figtree': 5.2.10
+      '@iconify/json': 2.2.456
+      '@jellyfin-vue/i18n': file:packages/i18n(vue@3.5.31)
+      '@jellyfin-vue/shared': file:packages/shared
+      '@jellyfin-vue/ui-toolkit': file:packages/ui-toolkit(i18next@26.0.3)(vue@3.5.31)
+      '@jellyfin/sdk': 0.13.0(axios@1.14.0)
+      '@vueuse/core': 14.2.1(vue@3.5.31)
+      assjs: 0.1.5
+      audiomotion-analyzer: 4.5.4
+      axios: 1.14.0
+      blurhash: 2.0.5
+      comlink: 4.4.2
+      date-fns: 4.1.0
+      defu: 6.1.5
+      destr: 2.0.5
+      dexie: 4.4.1
+      fast-equals: 6.0.0
+      hls.js: 1.6.15
+      i18next: 26.0.3(typescript@6.0.2)
+      i18next-vue: 5.4.0(i18next@26.0.3)(vue@3.5.31)
+      libpgs: 0.8.1
+      sortablejs: 1.15.7
+      swiper: 12.1.3
+      uuid: 13.0.0
+      vue: 3.5.31
+      vue-router: 5.0.4(vue@3.5.31)
+      vuetify: 3.11.3(vue@3.5.31)
+    transitivePeerDependencies:
+      - '@pinia/colada'
+      - '@vue/compiler-sfc'
+      - debug
+      - pinia
+      - typescript
+      - vite-plugin-vuetify
+      - webpack-plugin-vuetify
+
+  '@jellyfin-vue/i18n@file:packages/i18n(vue@3.5.31)':
+    dependencies:
+      '@vue/shared': 3.5.31
+      date-fns: 4.1.0
+      i18next: 26.0.3(typescript@6.0.2)
+      vuetify: 3.11.3(vue@3.5.31)
+    transitivePeerDependencies:
+      - typescript
+      - vite-plugin-vuetify
+      - vue
+      - webpack-plugin-vuetify
+
+  '@jellyfin-vue/shared@file:packages/shared':
+    dependencies:
+      '@vue/shared': 3.5.31
+      dompurify: 3.3.3
+      marked: 17.0.5
+
+  '@jellyfin-vue/tauri-runtime@file:packages/tauri-runtime':
+    dependencies:
+      '@jellyfin-vue/frontend': file:packages/frontend
+      '@tauri-apps/api': 2.10.1
+    transitivePeerDependencies:
+      - '@pinia/colada'
+      - '@vue/compiler-sfc'
+      - debug
+      - pinia
+      - typescript
+      - vite-plugin-vuetify
+      - webpack-plugin-vuetify
+
+  '@jellyfin-vue/ui-toolkit@file:packages/ui-toolkit(i18next@26.0.3)(vue@3.5.31)':
+    dependencies:
+      '@jellyfin-vue/i18n': file:packages/i18n(vue@3.5.31)
+      '@jellyfin-vue/shared': file:packages/shared
+      '@skirtle/vue-vnode-utils': 0.2.0(vue@3.5.31)
+      '@vueuse/core': 14.2.1(vue@3.5.31)
+      color: 5.0.3
+      comlink: 4.4.2
+      i18next-vue: 5.4.0(i18next@26.0.3)(vue@3.5.31)
+      vuetify: 3.11.3(vue@3.5.31)
+    transitivePeerDependencies:
+      - i18next
+      - typescript
+      - vite-plugin-vuetify
+      - vue
+      - webpack-plugin-vuetify
+
   '@jellyfin/sdk@0.13.0(axios@1.14.0)':
     dependencies:
       axios: 1.14.0
@@ -4264,6 +4365,10 @@ snapshots:
   '@skirtle/vue-vnode-utils@0.2.0(vue@3.5.31(typescript@6.0.2))':
     dependencies:
       vue: 3.5.31(typescript@6.0.2)
+
+  '@skirtle/vue-vnode-utils@0.2.0(vue@3.5.31)':
+    dependencies:
+      vue: 3.5.31
 
   '@standard-schema/spec@1.1.0': {}
 
@@ -4845,6 +4950,16 @@ snapshots:
     optionalDependencies:
       vue: 3.5.31(typescript@6.0.2)
 
+  '@vue-macros/common@3.1.2(vue@3.5.31)':
+    dependencies:
+      '@vue/compiler-sfc': 3.5.32
+      ast-kit: 2.2.0
+      local-pkg: 1.1.2
+      magic-string-ast: 1.0.3
+      unplugin-utils: 0.3.1
+    optionalDependencies:
+      vue: 3.5.31
+
   '@vue/babel-helper-vue-transform-on@1.5.0': {}
 
   '@vue/babel-plugin-jsx@1.5.0(@babel/core@7.29.0)':
@@ -5003,6 +5118,12 @@ snapshots:
       '@vue/shared': 3.5.31
       vue: 3.5.31(typescript@6.0.2)
 
+  '@vue/server-renderer@3.5.31(vue@3.5.31)':
+    dependencies:
+      '@vue/compiler-ssr': 3.5.31
+      '@vue/shared': 3.5.31
+      vue: 3.5.31
+
   '@vue/shared@3.5.31': {}
 
   '@vue/shared@3.5.32': {}
@@ -5014,11 +5135,22 @@ snapshots:
       '@vueuse/shared': 14.2.1(vue@3.5.31(typescript@6.0.2))
       vue: 3.5.31(typescript@6.0.2)
 
+  '@vueuse/core@14.2.1(vue@3.5.31)':
+    dependencies:
+      '@types/web-bluetooth': 0.0.21
+      '@vueuse/metadata': 14.2.1
+      '@vueuse/shared': 14.2.1(vue@3.5.31)
+      vue: 3.5.31
+
   '@vueuse/metadata@14.2.1': {}
 
   '@vueuse/shared@14.2.1(vue@3.5.31(typescript@6.0.2))':
     dependencies:
       vue: 3.5.31(typescript@6.0.2)
+
+  '@vueuse/shared@14.2.1(vue@3.5.31)':
+    dependencies:
+      vue: 3.5.31
 
   acorn-jsx@5.3.2(acorn@8.16.0):
     dependencies:
@@ -5785,12 +5917,17 @@ snapshots:
 
   html-entities@2.6.0: {}
 
-  i18next-vue@5.4.0(i18next@26.0.2(typescript@6.0.2))(vue@3.5.31(typescript@6.0.2)):
+  i18next-vue@5.4.0(i18next@26.0.3(typescript@6.0.2))(vue@3.5.31(typescript@6.0.2)):
     dependencies:
-      i18next: 26.0.2(typescript@6.0.2)
+      i18next: 26.0.3(typescript@6.0.2)
       vue: 3.5.31(typescript@6.0.2)
 
-  i18next@26.0.2(typescript@6.0.2):
+  i18next-vue@5.4.0(i18next@26.0.3)(vue@3.5.31):
+    dependencies:
+      i18next: 26.0.3(typescript@6.0.2)
+      vue: 3.5.31
+
+  i18next@26.0.3(typescript@6.0.2):
     dependencies:
       '@babel/runtime': 7.29.2
     optionalDependencies:
@@ -6834,11 +6971,40 @@ snapshots:
     optionalDependencies:
       '@vue/compiler-sfc': 3.5.32
 
+  vue-router@5.0.4(vue@3.5.31):
+    dependencies:
+      '@babel/generator': 7.29.1
+      '@vue-macros/common': 3.1.2(vue@3.5.31)
+      '@vue/devtools-api': 8.1.1
+      ast-walker-scope: 0.8.3
+      chokidar: 5.0.0
+      json5: 2.2.3
+      local-pkg: 1.1.2
+      magic-string: 0.30.21
+      mlly: 1.8.2
+      muggle-string: 0.4.1
+      pathe: 2.0.3
+      picomatch: 4.0.4
+      scule: 1.3.0
+      tinyglobby: 0.2.15
+      unplugin: 3.0.0
+      unplugin-utils: 0.3.1
+      vue: 3.5.31
+      yaml: 2.8.3
+
   vue-tsc@3.2.6(typescript@6.0.2):
     dependencies:
       '@volar/typescript': 2.4.28
       '@vue/language-core': 3.2.6
       typescript: 6.0.2
+
+  vue@3.5.31:
+    dependencies:
+      '@vue/compiler-dom': 3.5.31
+      '@vue/compiler-sfc': 3.5.31
+      '@vue/runtime-dom': 3.5.31
+      '@vue/server-renderer': 3.5.31(vue@3.5.31)
+      '@vue/shared': 3.5.31
 
   vue@3.5.31(typescript@6.0.2):
     dependencies:
@@ -6855,6 +7021,10 @@ snapshots:
       vue: 3.5.31(typescript@6.0.2)
     optionalDependencies:
       typescript: 6.0.2
+
+  vuetify@3.11.3(vue@3.5.31):
+    dependencies:
+      vue: 3.5.31
 
   webpack-virtual-modules@0.6.2: {}
 
