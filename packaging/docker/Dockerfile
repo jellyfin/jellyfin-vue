@@ -11,9 +11,8 @@ ENV IS_STABLE=$IS_STABLE
 ENV COMMIT_HASH=$COMMIT_HASH
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml /app/
-COPY frontend /app/frontend
 COPY packages /app/packages
-WORKDIR /app/frontend
+WORKDIR /app/packages/frontend
 
 # Build client
 RUN corepack pnpm install --frozen-lockfile && corepack pnpm build
@@ -30,7 +29,7 @@ COPY LICENSE /usr/share/licenses/jellyfin-vue
 
 USER root
 RUN rm -rf "$ASSETS"/*
-COPY --from=build /app/frontend/dist/ "$ASSETS"
+COPY --from=build /app/packages/frontend/dist/ "$ASSETS"
 RUN chmod +x /*.sh && /postunpack.sh && rm /postunpack.sh
 USER nginx
 WORKDIR "$ASSETS"

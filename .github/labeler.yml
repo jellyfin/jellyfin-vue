@@ -7,16 +7,18 @@ ci:
 - changed-files:
   - any-glob-to-any-file:
     - '.github/workflows/**/**'
+    - '.github/renovate.json'
+    - '.github/labeler.yml'
 
 'frontend:store':
 - changed-files:
   - any-glob-to-any-file:
-    - 'frontend/store/**/*.ts'
+    - 'packages/frontend/store/**/*.ts'
 
 'frontend:plugins':
 - changed-files:
   - any-glob-to-any-file:
-    - 'frontend/plugins/**/*.ts'
+    - 'packages/frontend/plugins/**/*.ts'
 
 vue:
 - changed-files:
@@ -31,6 +33,8 @@ packaging:
 ui:
 - changed-files:
   - any-glob-to-any-file:
-    - 'frontend/components/**/*.vue'
-    - 'frontend/layouts/**/*.vue'
-    - 'frontend/pages/**/*.vue'
+    - 'packages/frontend/components/**/*.vue'
+    - 'packages/frontend/layouts/**/*.vue'
+    - 'packages/frontend/pages/**/*.vue'
+    - 'packages/ui-toolkit/**/*.vue'
+    - 'packages/ui-toolkit/**/*.ts'

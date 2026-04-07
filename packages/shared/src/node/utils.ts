@@ -2,17 +2,35 @@ import { globSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { findUpSync } from 'find-up-simple';
 import type { LiteralUnion } from 'type-fest';
+import { parse } from 'yaml';
 
 const workspaceManifest = findUpSync('pnpm-workspace.yaml', { type: 'file' });
 const monorepoRoot = workspaceManifest ? dirname(workspaceManifest) : process.cwd();
 
+/**
+ * Gets the workspace packages directly from pnpm configuration
+ * @param workspaceManifestPath 
+ * @returns 
+ */
+function getWorkspacePackagePatterns(workspaceManifestPath: string): string[] {
+  const workspace = parse(readFileSync(workspaceManifestPath, 'utf8')) as { packages?: unknown };
+
+  if (!workspace || !Array.isArray(workspace.packages)) {
+    return [];
+  }
+
+  return workspace.packages.filter((packagePattern): packagePattern is string => typeof packagePattern === 'string');
+}
+
 const packagePaths = (() => {
   const relation = new Map<string, string>();
-  const packageJsonPaths = [
-    join(monorepoRoot, 'frontend/package.json'),
-    join(monorepoRoot, 'packaging/tauri/package.json'),
-    ...globSync(join(monorepoRoot, 'packages/*/package.json'))
-  ];
+  const packageJsonPaths = new Set(
+    workspaceManifest
+      ? getWorkspacePackagePatterns(workspaceManifest).flatMap(packagePattern =>
+          globSync(join(monorepoRoot, packagePattern, 'package.json'))
+        )
+      : []
+  );
 
   for (const packageJsonPath of packageJsonPaths) {
     const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8')) as { name?: string };

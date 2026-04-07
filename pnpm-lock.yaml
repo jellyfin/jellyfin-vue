@@ -46,121 +46,6 @@ importers:
         specifier: 10.33.0
         version: 10.33.0
 
-  frontend:
-    dependencies:
-      '@fontsource-variable/figtree':
-        specifier: 5.2.10
-        version: 5.2.10
-      '@iconify/json':
-        specifier: 2.2.456
-        version: 2.2.456
-      '@jellyfin-vue/i18n':
-        specifier: workspace:*
-        version: link:../packages/i18n
-      '@jellyfin-vue/shared':
-        specifier: workspace:*
-        version: link:../packages/shared
-      '@jellyfin-vue/ui-toolkit':
-        specifier: workspace:*
-        version: link:../packages/ui-toolkit
-      '@jellyfin/sdk':
-        specifier: 0.13.0
-        version: 0.13.0(axios@1.14.0)
-      '@vueuse/core':
-        specifier: 'catalog:'
-        version: 14.2.1(vue@3.5.31(typescript@6.0.2))
-      assjs:
-        specifier: 0.1.5
-        version: 0.1.5
-      audiomotion-analyzer:
-        specifier: 4.5.4
-        version: 4.5.4
-      axios:
-        specifier: 1.14.0
-        version: 1.14.0
-      blurhash:
-        specifier: 2.0.5
-        version: 2.0.5
-      comlink:
-        specifier: 'catalog:'
-        version: 4.4.2
-      date-fns:
-        specifier: 'catalog:'
-        version: 4.1.0
-      defu:
-        specifier: 6.1.5
-        version: 6.1.5
-      destr:
-        specifier: 2.0.5
-        version: 2.0.5
-      dexie:
-        specifier: 4.4.1
-        version: 4.4.1
-      fast-equals:
-        specifier: 6.0.0
-        version: 6.0.0
-      hls.js:
-        specifier: 1.6.15
-        version: 1.6.15
-      i18next:
-        specifier: 'catalog:'
-        version: 26.0.2(typescript@6.0.2)
-      i18next-vue:
-        specifier: 'catalog:'
-        version: 5.4.0(i18next@26.0.2(typescript@6.0.2))(vue@3.5.31(typescript@6.0.2))
-      libpgs:
-        specifier: 0.8.1
-        version: 0.8.1
-      sortablejs:
-        specifier: 1.15.7
-        version: 1.15.7
-      swiper:
-        specifier: 12.1.3
-        version: 12.1.3
-      uuid:
-        specifier: 13.0.0
-        version: 13.0.0
-      vue:
-        specifier: 'catalog:'
-        version: 3.5.31(typescript@6.0.2)
-      vue-router:
-        specifier: 5.0.4
-        version: 5.0.4(@vue/compiler-sfc@3.5.32)(vue@3.5.31(typescript@6.0.2))
-      vuetify:
-        specifier: 'catalog:'
-        version: 3.11.3(typescript@6.0.2)(vue@3.5.31(typescript@6.0.2))
-    devDependencies:
-      '@jellyfin-vue/configs':
-        specifier: workspace:*
-        version: link:../packages/configs
-      '@jellyfin-vue/vite-plugins':
-        specifier: workspace:*
-        version: link:../packages/vite-plugins
-      '@rollup/plugin-virtual':
-        specifier: 3.0.2
-        version: 3.0.2
-      '@types/sortablejs':
-        specifier: 1.15.9
-        version: 1.15.9
-      '@unocss/reset':
-        specifier: 66.6.7
-        version: 66.6.7
-      '@vitejs/plugin-vue':
-        specifier: 6.0.5
-        version: 6.0.5(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@25.5.0)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))(vue@3.5.31(typescript@6.0.2))
-      browserslist:
-        specifier: 4.28.1
-        version: 4.28.1
-      lightningcss:
-        specifier: 1.32.0
-        version: 1.32.0
-      unplugin-vue-components:
-        specifier: 'catalog:'
-        version: 31.1.0(vue@3.5.31(typescript@6.0.2))
-      vite-plugin-vue-devtools:
-        specifier: 8.1.1
-        version: 8.1.1(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@25.5.0)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))(vue@3.5.31(typescript@6.0.2))
-
   packages/configs:
     devDependencies:
       '@chromatic-com/storybook':
@@ -275,6 +160,121 @@ importers:
         specifier: 3.2.6
         version: 3.2.6(typescript@6.0.2)
 
+  packages/frontend:
+    dependencies:
+      '@fontsource-variable/figtree':
+        specifier: 5.2.10
+        version: 5.2.10
+      '@iconify/json':
+        specifier: 2.2.456
+        version: 2.2.456
+      '@jellyfin-vue/i18n':
+        specifier: workspace:*
+        version: link:../i18n
+      '@jellyfin-vue/shared':
+        specifier: workspace:*
+        version: link:../shared
+      '@jellyfin-vue/ui-toolkit':
+        specifier: workspace:*
+        version: link:../ui-toolkit
+      '@jellyfin/sdk':
+        specifier: 0.13.0
+        version: 0.13.0(axios@1.14.0)
+      '@vueuse/core':
+        specifier: 'catalog:'
+        version: 14.2.1(vue@3.5.31(typescript@6.0.2))
+      assjs:
+        specifier: 0.1.5
+        version: 0.1.5
+      audiomotion-analyzer:
+        specifier: 4.5.4
+        version: 4.5.4
+      axios:
+        specifier: 1.14.0
+        version: 1.14.0
+      blurhash:
+        specifier: 2.0.5
+        version: 2.0.5
+      comlink:
+        specifier: 'catalog:'
+        version: 4.4.2
+      date-fns:
+        specifier: 'catalog:'
+        version: 4.1.0
+      defu:
+        specifier: 6.1.5
+        version: 6.1.5
+      destr:
+        specifier: 2.0.5
+        version: 2.0.5
+      dexie:
+        specifier: 4.4.1
+        version: 4.4.1
+      fast-equals:
+        specifier: 6.0.0
+        version: 6.0.0
+      hls.js:
+        specifier: 1.6.15
+        version: 1.6.15
+      i18next:
+        specifier: 'catalog:'
+        version: 26.0.2(typescript@6.0.2)
+      i18next-vue:
+        specifier: 'catalog:'
+        version: 5.4.0(i18next@26.0.2(typescript@6.0.2))(vue@3.5.31(typescript@6.0.2))
+      libpgs:
+        specifier: 0.8.1
+        version: 0.8.1
+      sortablejs:
+        specifier: 1.15.7
+        version: 1.15.7
+      swiper:
+        specifier: 12.1.3
+        version: 12.1.3
+      uuid:
+        specifier: 13.0.0
+        version: 13.0.0
+      vue:
+        specifier: 'catalog:'
+        version: 3.5.31(typescript@6.0.2)
+      vue-router:
+        specifier: 5.0.4
+        version: 5.0.4(@vue/compiler-sfc@3.5.32)(vue@3.5.31(typescript@6.0.2))
+      vuetify:
+        specifier: 'catalog:'
+        version: 3.11.3(typescript@6.0.2)(vue@3.5.31(typescript@6.0.2))
+    devDependencies:
+      '@jellyfin-vue/configs':
+        specifier: workspace:*
+        version: link:../configs
+      '@jellyfin-vue/vite-plugins':
+        specifier: workspace:*
+        version: link:../vite-plugins
+      '@rollup/plugin-virtual':
+        specifier: 3.0.2
+        version: 3.0.2
+      '@types/sortablejs':
+        specifier: 1.15.9
+        version: 1.15.9
+      '@unocss/reset':
+        specifier: 66.6.7
+        version: 66.6.7
+      '@vitejs/plugin-vue':
+        specifier: 6.0.5
+        version: 6.0.5(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@25.5.0)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))(vue@3.5.31(typescript@6.0.2))
+      browserslist:
+        specifier: 4.28.1
+        version: 4.28.1
+      lightningcss:
+        specifier: 1.32.0
+        version: 1.32.0
+      unplugin-vue-components:
+        specifier: 'catalog:'
+        version: 31.1.0(vue@3.5.31(typescript@6.0.2))
+      vite-plugin-vue-devtools:
+        specifier: 8.1.1
+        version: 8.1.1(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@25.5.0)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))(vue@3.5.31(typescript@6.0.2))
+
   packages/i18n:
     dependencies:
       '@vue/shared':
@@ -315,12 +315,15 @@ importers:
       find-up-simple:
         specifier: 'catalog:'
         version: 1.0.1
+      yaml:
+        specifier: 2.8.3
+        version: 2.8.3
 
   packages/tauri-runtime:
     dependencies:
       '@jellyfin-vue/frontend':
         specifier: workspace:*
-        version: link:../../frontend
+        version: link:../frontend
       '@tauri-apps/api':
         specifier: 2.10.1
         version: 2.10.1

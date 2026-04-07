@@ -1,5 +1,4 @@
 packages:
-  - frontend
   - packaging/tauri
   - packages/*
 
@@ -11,6 +10,7 @@ packageImportMethod: hardlink
 lockfileIncludeTarballUrl: true
 linkWorkspacePackages: deep
 injectWorkspacePackages: true
+shamefullyHoist: true
 fetchRetries: 15
 
 catalog:
