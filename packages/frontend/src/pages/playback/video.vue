@@ -128,14 +128,14 @@ meta:
 import { BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
 import { useTimeoutFn } from '@vueuse/core';
 import { computed, shallowRef, watch } from 'vue';
-import { playbackGuard } from '#/plugins/router/middlewares/playback';
+import { playbackGuard } from '#/plugins/router/middlewares/playback.ts';
 import {
   mediaControls
-} from '#/store';
-import { playbackManager } from '#/store/playback-manager';
-import { playerElement, videoContainerRef } from '#/store/player-element';
-import { getEndsAtTime, msToTicks } from '#/utils/time';
-import { usePlayback } from '#/composables/use-playback';
+} from '#/store/index.ts';
+import { playbackManager } from '#/store/playback-manager.ts';
+import { playerElement, videoContainerRef } from '#/store/player-element.ts';
+import { getEndsAtTime, msToTicks } from '#/utils/time.ts';
+import { usePlayback } from '#/composables/use-playback.ts';
 
 defineOptions({
   beforeRouteEnter: playbackGuard

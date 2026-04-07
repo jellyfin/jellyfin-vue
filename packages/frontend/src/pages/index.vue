@@ -41,8 +41,8 @@ import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { computed } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import { isNil } from '@jellyfin-vue/shared/validation';
-import { CardShapes, fetchIndexPage, getShapeFromCollectionType } from '#/utils/items';
-import { usePageTitle } from '#/composables/page-title';
+import { CardShapes, fetchIndexPage, getShapeFromCollectionType } from '#/utils/items.ts';
+import { usePageTitle } from '#/composables/page-title.ts';
 
 interface HomeSection {
   title: string;

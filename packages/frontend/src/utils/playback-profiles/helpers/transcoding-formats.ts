@@ -7,7 +7,7 @@ import {
   isTizen,
   isTv,
   supportsMediaSource
-} from '#/utils/browser-detection';
+} from '#/utils/browser-detection.ts';
 
 /**
  * Checks if the client can play native HLS

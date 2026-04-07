@@ -1,10 +1,10 @@
 import { toRaw } from 'vue';
 import { releaseProxy, wrap } from 'comlink';
-import type { IBlurhashDrawer } from './blurhash-drawer.worker';
-import BlurhashDrawer from './blurhash-drawer.worker?worker';
-import type { IGenericWorker } from './generic.worker';
-import GenericWorker from './generic.worker?worker';
-import { remote } from '#/plugins/remote';
+import type { IBlurhashDrawer } from './blurhash-drawer.worker.ts';
+import BlurhashDrawer from './blurhash-drawer.worker.ts?worker';
+import type { IGenericWorker } from './generic.worker.ts';
+import GenericWorker from './generic.worker.ts?worker';
+import { remote } from '#/plugins/remote/index.ts';
 
 /**
  * A worker for decoding blurhash strings and drawing results

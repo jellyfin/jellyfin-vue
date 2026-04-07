@@ -5,5 +5,5 @@
 </template>
 
 <script setup lang="ts">
-import { getBaseProps } from '#/util/props';
+import { getBaseProps } from '#/util/props.ts';
 </script>

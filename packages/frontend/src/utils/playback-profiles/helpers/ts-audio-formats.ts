@@ -8,7 +8,7 @@ import {
   hasAc3Support,
   hasEac3Support,
   hasMp3AudioSupport
-} from './mp4-audio-formats';
+} from './mp4-audio-formats.ts';
 
 /**
  * List of supported Ts audio codecs

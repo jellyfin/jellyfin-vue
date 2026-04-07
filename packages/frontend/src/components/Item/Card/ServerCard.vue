@@ -37,8 +37,8 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue';
 import { useRouter } from 'vue-router';
-import { remote } from '#/plugins/remote';
-import type { ServerInfo } from '#/plugins/remote/auth';
+import { remote } from '#/plugins/remote/index.ts';
+import type { ServerInfo } from '#/plugins/remote/auth.ts';
 
 const { serverInfo } = defineProps<{ serverInfo: ServerInfo }>();
 

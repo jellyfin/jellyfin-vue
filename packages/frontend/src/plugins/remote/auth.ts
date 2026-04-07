@@ -10,9 +10,9 @@ import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
 import { computed } from 'vue';
 import { isAxiosError, isNil, sealed } from '@jellyfin-vue/shared/validation';
 import i18next from 'i18next';
-import SDK, { useOneTimeAPI } from './sdk/sdk-utils';
-import { useSnackbar } from '#/composables/use-snackbar';
-import { BaseState } from '#/store/super/base-state';
+import SDK, { useOneTimeAPI } from './sdk/sdk-utils.ts';
+import { useSnackbar } from '#/composables/use-snackbar.ts';
+import { BaseState } from '#/store/super/base-state.ts';
 
 export interface ServerInfo extends BetterOmit<PublicSystemInfo, 'LocalAddress'> {
   PublicAddress: string;

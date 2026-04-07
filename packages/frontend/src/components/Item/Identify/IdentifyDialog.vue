@@ -97,9 +97,9 @@ import { getItemLookupApi } from '@jellyfin/sdk/lib/utils/api/item-lookup-api';
 import { computed, ref, shallowRef, toRaw } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import { isArray, isNil, isStr } from '@jellyfin-vue/shared/validation';
-import { useConfirmDialog } from '#/composables/use-confirm-dialog';
-import { useSnackbar } from '#/composables/use-snackbar';
-import { remote } from '#/plugins/remote';
+import { useConfirmDialog } from '#/composables/use-confirm-dialog.ts';
+import { useSnackbar } from '#/composables/use-snackbar.ts';
+import { remote } from '#/plugins/remote/index.ts';
 
 interface IdentifyField {
   key: string;

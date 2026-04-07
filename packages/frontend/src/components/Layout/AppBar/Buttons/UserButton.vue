@@ -53,7 +53,7 @@
 import { computed } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import { useRouter } from 'vue-router';
-import { remote } from '#/plugins/remote';
+import { remote } from '#/plugins/remote/index.ts';
 
 interface MenuItem {
   title: string;

@@ -40,7 +40,7 @@ meta:
 <script setup lang="ts">
 import { useId } from 'vue';
 import { useTranslation } from 'i18next-vue';
-import { usePageTitle } from '#/composables/page-title';
+import { usePageTitle } from '#/composables/page-title.ts';
 
 const { t } = useTranslation();
 

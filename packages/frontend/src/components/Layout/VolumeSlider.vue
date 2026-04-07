@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { playbackManager } from '#/store/playback-manager';
+import { playbackManager } from '#/store/playback-manager.ts';
 
 const icon = computed(() => {
   const volume = playbackManager.currentVolume.value;

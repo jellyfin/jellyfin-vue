@@ -10,7 +10,7 @@ import stylistic from '@stylistic/eslint-plugin';
 import { configs as dependConfigs } from 'eslint-plugin-depend';
 import gitignore from 'eslint-config-flat-gitignore';
 import fileProgress from 'eslint-plugin-file-progress';
-import { eqeqeqConfig, ignoresForOtherLangs } from '../shared';
+import { eqeqeqConfig, ignoresForOtherLangs } from '../shared.ts';
 
 const CI_environment = !!process.env.CI;
 

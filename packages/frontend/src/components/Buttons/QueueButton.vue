@@ -71,8 +71,8 @@
 import { computed, ref } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import { JTooltip } from '@jellyfin-vue/ui-toolkit/components';
-import { getTotalEndsAtTime } from '#/utils/time';
-import { InitMode, playbackManager } from '#/store/playback-manager';
+import { getTotalEndsAtTime } from '#/utils/time.ts';
+import { InitMode, playbackManager } from '#/store/playback-manager.ts';
 
 const { size = 40, closeOnClick } = defineProps<{
   size?: number;

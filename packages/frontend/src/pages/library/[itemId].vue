@@ -78,9 +78,9 @@ import { getStudiosApi } from '@jellyfin/sdk/lib/utils/api/studios-api';
 import { computed, onBeforeMount, ref, shallowRef } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import { useRoute } from 'vue-router';
-import { useBaseItem } from '#/composables/apis';
+import { useBaseItem } from '#/composables/apis.ts';
 import type { Filters } from '#/components/Buttons/FilterButton.vue';
-import { useItemPageTitle } from '#/composables/page-title';
+import { useItemPageTitle } from '#/composables/page-title.ts';
 
 const { t } = useTranslation();
 const route = useRoute('/library/[itemId]');

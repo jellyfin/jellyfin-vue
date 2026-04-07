@@ -47,8 +47,8 @@
 import { shallowRef } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import { useRouter } from 'vue-router';
-import { remote } from '#/plugins/remote';
-import { jsonConfig } from '#/utils/external-config';
+import { remote } from '#/plugins/remote/index.ts';
+import { jsonConfig } from '#/utils/external-config.ts';
 
 const router = useRouter();
 const { t } = useTranslation();

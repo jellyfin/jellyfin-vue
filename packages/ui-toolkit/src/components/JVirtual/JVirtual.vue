@@ -54,12 +54,12 @@ import {
   getScrollParents,
   getScrollToInfo,
   type InternalItem
-} from './pipeline';
-import type { IJVirtualWorker } from './j-virtual.worker';
-import JVirtualWorker from './j-virtual.worker?worker';
-import { windowSize } from '#/store';
+} from './pipeline.ts';
+import type { IJVirtualWorker } from './j-virtual.worker.ts';
+import JVirtualWorker from './j-virtual.worker.ts?worker';
+import { windowSize } from '#/store/index.ts';
 import JSlot from '#/components/JSlot.vue';
-import { toPx } from '#/util/helpers';
+import { toPx } from '#/util/helpers.ts';
 
 /**
  * SHARED STATE ACROSS ALL THE COMPONENT INSTANCES

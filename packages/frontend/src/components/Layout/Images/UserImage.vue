@@ -18,8 +18,8 @@
 
 <script setup lang="ts">
 import type { UserDto } from '@jellyfin/sdk/lib/generated-client';
-import { remote } from '#/plugins/remote';
-import { getUserImageUrl } from '#/utils/images';
+import { remote } from '#/plugins/remote/index.ts';
+import { getUserImageUrl } from '#/utils/images.ts';
 
 /**
  * TODO: In reality, rounded is unnecessary since it can be passed as fallthrough,

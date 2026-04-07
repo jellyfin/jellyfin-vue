@@ -5,12 +5,12 @@ import {
   createWebHistory
 } from 'vue-router';
 import { isStr } from '@jellyfin-vue/shared/validation';
-import { remote } from '../remote';
-import { adminGuard } from './middlewares/admin-pages';
-import { loginGuard } from './middlewares/login';
-import { metaGuard } from './middlewares/meta';
-import { validateGuard } from './middlewares/validate';
-import { jsonConfig } from '#/utils/external-config';
+import { remote } from '../remote/index.ts';
+import { adminGuard } from './middlewares/admin-pages.ts';
+import { loginGuard } from './middlewares/login.ts';
+import { metaGuard } from './middlewares/meta.ts';
+import { validateGuard } from './middlewares/validate.ts';
+import { jsonConfig } from '#/utils/external-config.ts';
 
 export const router = createRouter({
   history:

@@ -7,11 +7,11 @@ import { watchDeep } from '@vueuse/core';
 import type { UnknownRecord } from 'type-fest';
 import { isNil, isStr } from '@jellyfin-vue/shared/validation';
 import i18next from 'i18next';
-import { taskManager } from '../task-manager';
-import { remote } from '#/plugins/remote';
-import { CommonStore, type CommonStoreParams } from '#/store/super/common-store';
-import { useSnackbar } from '#/composables/use-snackbar';
-import { pick } from '#/utils/data-manipulation';
+import { taskManager } from '../task-manager.ts';
+import { remote } from '#/plugins/remote/index.ts';
+import { CommonStore, type CommonStoreParams } from '#/store/super/common-store.ts';
+import { useSnackbar } from '#/composables/use-snackbar.ts';
+import { pick } from '#/utils/data-manipulation.ts';
 
 export abstract class SyncedStore<
   T extends object = UnknownRecord,

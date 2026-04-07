@@ -2,7 +2,7 @@
  * @deprecated - Check #/utils/playback-profiles/index
  */
 
-import { hasH264Support, hasHevcSupport } from './mp4-video-formats';
+import { hasH264Support, hasHevcSupport } from './mp4-video-formats.ts';
 import {
   isApple,
   isChrome,
@@ -10,7 +10,7 @@ import {
   isFirefox,
   isTizen,
   isWebOS
-} from '#/utils/browser-detection';
+} from '#/utils/browser-detection.ts';
 
 /**
  * Gets an array of supported fmp4 video codecs

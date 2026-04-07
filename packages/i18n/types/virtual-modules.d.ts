@@ -13,7 +13,7 @@ declare module 'virtual:locales/vuetify' {
 }
 
 declare module 'virtual:i18next/resources' {
-  import type { LanguageKeys } from './types/i18next';
+  import type { LanguageKeys } from './i18next.d.ts';
 
   export const resources: Record<string, () => Promise<Record<LanguageKeys, string>>>;
 }

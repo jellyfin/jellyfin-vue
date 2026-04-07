@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { getBaseProps } from '#/util/props';
+import { getBaseProps } from '#/util/props.ts';
 /**
  * @component - JOverlay
  * This component is used to create an overlay over the parent div.

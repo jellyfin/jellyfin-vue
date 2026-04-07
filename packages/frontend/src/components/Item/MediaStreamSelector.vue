@@ -33,7 +33,7 @@ import type { MediaStream } from '@jellyfin/sdk/lib/generated-client';
 import { useTranslation } from 'i18next-vue';
 import { watchImmediate } from '@vueuse/core';
 import { isNil } from '@jellyfin-vue/shared/validation';
-import { getLocaleName } from '#/utils/i18n';
+import { getLocaleName } from '#/utils/i18n.ts';
 
 const { mediaStreams, type, defaultStreamIndex } = defineProps<{
   mediaStreams: MediaStream[];

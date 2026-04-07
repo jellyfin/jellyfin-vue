@@ -61,8 +61,8 @@ const CIRCUMFERENCE = 2 * Math.PI * MAGIC_RADIUS_CONSTANT;
 <script setup lang="ts">
 import { useTranslation } from 'i18next-vue';
 import { computed } from 'vue';
-import { clamp, toPx } from '#/util/helpers';
-import { getBaseProps } from '#/util/props';
+import { clamp, toPx } from '#/util/helpers.ts';
+import { getBaseProps } from '#/util/props.ts';
 
 const { indeterminate, innerProgress, value = 0 } = defineProps<{
   indeterminate?: boolean;

@@ -16,4 +16,4 @@ export { default as JTooltip } from './JTooltip.vue';
 export { default as JTransition } from './JTransition.vue';
 export type { JTransitionProps } from './JTransition.vue';
 
-export type * from '../types';
+export type * from '../types.d.ts';

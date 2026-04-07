@@ -13,7 +13,7 @@
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { computed, ref } from 'vue';
-import { useApi } from '#/composables/apis';
+import { useApi } from '#/composables/apis.ts';
 
 const { size = 'small', item } = defineProps<{ item: BaseItemDto; size?: string }>();
 /**

@@ -101,11 +101,11 @@ meta:
 import type { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { ref, shallowRef, computed, watch } from 'vue';
 import { useTranslation } from 'i18next-vue';
-import { remote } from '#/plugins/remote';
-import { jsonConfig } from '#/utils/external-config';
-import { usePageTitle } from '#/composables/page-title';
-import { useSnackbar } from '#/composables/use-snackbar';
-import { isConnectedToServer } from '#/store';
+import { remote } from '#/plugins/remote/index.ts';
+import { jsonConfig } from '#/utils/external-config.ts';
+import { usePageTitle } from '#/composables/page-title.ts';
+import { useSnackbar } from '#/composables/use-snackbar.ts';
+import { isConnectedToServer } from '#/store/index.ts';
 
 const { t } = useTranslation();
 

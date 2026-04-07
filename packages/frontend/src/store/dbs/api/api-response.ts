@@ -1,8 +1,8 @@
 import { isArray } from '@jellyfin-vue/shared/validation';
 import type { LiteralUnion } from 'type-fest';
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { BaseDbEntity } from '../base-entity';
-import type { TApiDatabase } from '.';
+import { BaseDbEntity } from '../base-entity.ts';
+import type { TApiDatabase } from './index.ts';
 
 interface ConstructorParams<T> {
   function: string;

@@ -24,7 +24,7 @@ meta:
 
 <script setup lang="ts">
 import { useTranslation } from 'i18next-vue';
-import { usePageTitle } from '#/composables/page-title';
+import { usePageTitle } from '#/composables/page-title.ts';
 
 const { t } = useTranslation();
 

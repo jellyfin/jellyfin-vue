@@ -1,8 +1,8 @@
 import { useFullscreen, useMagicKeys, whenever } from '@vueuse/core';
 import { watch } from 'vue';
-import { router } from '#/plugins/router';
-import { mediaElementRef } from '#/store';
-import { playbackManager } from '#/store/playback-manager';
+import { router } from '#/plugins/router/index.ts';
+import { mediaElementRef } from '#/store/index.ts';
+import { playbackManager } from '#/store/playback-manager.ts';
 
 /**
  * Watchers and handlers that are common to fullscreen music and video playback

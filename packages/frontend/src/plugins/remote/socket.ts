@@ -2,8 +2,8 @@ import { useWebSocket } from '@vueuse/core';
 import { destr } from 'destr';
 import { computed, watch } from 'vue';
 import { isNil, sealed } from '@jellyfin-vue/shared/validation';
-import auth from './auth';
-import sdk from './sdk';
+import auth from './auth.ts';
+import sdk from './sdk/index.ts';
 
 interface WebSocketMessage {
   MessageType: string;

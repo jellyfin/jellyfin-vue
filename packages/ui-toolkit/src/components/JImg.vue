@@ -59,7 +59,7 @@ import JIcon from './JIcon.vue';
 import JProgressCircular from './JProgressCircular.vue';
 import JTransition, { type JTransitionProps } from './JTransition.vue';
 import JOverlay from './JOverlay.vue';
-import { getBaseProps } from '#/util/props';
+import { getBaseProps } from '#/util/props.ts';
 
 /**
  * We don't want <link> to inherit any attributes and the component might not render any

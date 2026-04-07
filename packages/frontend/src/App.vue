@@ -18,9 +18,9 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { remote } from './plugins/remote';
-import { themeSettings } from '#/store/settings/theme';
-import { useLoading } from '#/composables/use-loading';
+import { remote } from './plugins/remote/index.ts';
+import { themeSettings } from '#/store/settings/theme.ts';
+import { useLoading } from '#/composables/use-loading.ts';
 
 /**
  * When app is mounted, the classes and styles we initialized in the pre-Vue splashscreen in body

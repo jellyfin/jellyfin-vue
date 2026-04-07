@@ -24,6 +24,6 @@
 </template>
 
 <script setup lang="ts">
-import { remote } from '#/plugins/remote';
-import { themeSettings } from '#/store/settings/theme';
+import { remote } from '#/plugins/remote/index.ts';
+import { themeSettings } from '#/store/settings/theme.ts';
 </script>

@@ -37,7 +37,7 @@
 <script setup lang="ts">
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { useTranslation } from 'i18next-vue';
-import { getItemDetailsLink } from '#/utils/items';
+import { getItemDetailsLink } from '#/utils/items.ts';
 
 const { relatedItems, vertical } = defineProps<{
   relatedItems: BaseItemDto[];

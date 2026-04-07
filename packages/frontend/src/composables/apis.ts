@@ -23,12 +23,12 @@ import type { IsEqual, Exact, Writable } from 'type-fest';
 import { isArray, isFunc, isNil } from '@jellyfin-vue/shared/validation';
 import i18next from 'i18next';
 import { defu } from 'defu';
-import { useLoading } from '#/composables/use-loading';
-import { useSnackbar } from '#/composables/use-snackbar';
-import { remote } from '#/plugins/remote';
-import { isConnectedToServer } from '#/store';
-import { apiEnums, apiStore, lastUpdatedIds } from '#/store/dbs/api';
-import { JView_isRouting } from '#/store/keys';
+import { useLoading } from '#/composables/use-loading.ts';
+import { useSnackbar } from '#/composables/use-snackbar.ts';
+import { remote } from '#/plugins/remote/index.ts';
+import { isConnectedToServer } from '#/store/index.ts';
+import { apiEnums, apiStore, lastUpdatedIds } from '#/store/dbs/api/index.ts';
+import { JView_isRouting } from '#/store/keys.ts';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type OmittedKeys = 'fields' | 'userId' | 'enableImages' | 'enableTotalRecordCount' | 'enableImageTypes';

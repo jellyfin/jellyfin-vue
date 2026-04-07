@@ -1,5 +1,5 @@
 import type { JTransitionProps } from '@jellyfin-vue/ui-toolkit/components';
-import type { RemotePlugin } from '#/plugins/remote/types';
+import type { RemotePlugin } from '#/plugins/remote/types.d.ts';
 
 /**
  * The object that represents RouteMeta is defined at #/plugins/router/middleware/meta

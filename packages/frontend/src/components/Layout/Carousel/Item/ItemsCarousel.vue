@@ -64,10 +64,10 @@ import { BaseItemKind, ImageType, type BaseItemDto } from '@jellyfin/sdk/lib/gen
 import { SwiperSlide } from 'swiper/vue';
 import { shallowRef } from 'vue';
 import { computedAsync } from '@vueuse/core';
-import { useResponsiveClasses } from '#/composables/use-responsive-classes';
-import { apiStore } from '#/store/dbs/api';
-import { getItemDetailsLink } from '#/utils/items';
-import { useItemBackdrop } from '#/composables/backdrop';
+import { useResponsiveClasses } from '#/composables/use-responsive-classes.ts';
+import { apiStore } from '#/store/dbs/api/index.ts';
+import { getItemDetailsLink } from '#/utils/items.ts';
+import { useItemBackdrop } from '#/composables/backdrop.ts';
 
 const { items, pageBackdrop } = defineProps<{
   items: BaseItemDto[];

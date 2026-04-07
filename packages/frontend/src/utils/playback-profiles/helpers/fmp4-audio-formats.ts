@@ -2,15 +2,15 @@
  * @deprecated - Check #/utils/playback-profiles/index
  */
 
-import { getSupportedAudioCodecs } from './audio-formats';
+import { getSupportedAudioCodecs } from './audio-formats.ts';
 import {
   hasAacSupport,
   hasAc3InHlsSupport,
   hasAc3Support,
   hasEac3Support,
   hasMp3AudioSupport
-} from './mp4-audio-formats';
-import { isEdge } from '#/utils/browser-detection';
+} from './mp4-audio-formats.ts';
+import { isEdge } from '#/utils/browser-detection.ts';
 
 /**
  * Gets an array with the supported fmp4 codecs

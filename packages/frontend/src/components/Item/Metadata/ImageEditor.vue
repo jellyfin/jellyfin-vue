@@ -105,7 +105,7 @@ import { getImageApi } from '@jellyfin/sdk/lib/utils/api/image-api';
 import { computed, ref } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import { watchImmediate } from '@vueuse/core';
-import { remote } from '#/plugins/remote';
+import { remote } from '#/plugins/remote/index.ts';
 
 const { metadata } = defineProps<{ metadata: BaseItemDto }>();
 

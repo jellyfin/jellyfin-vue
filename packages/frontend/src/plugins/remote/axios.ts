@@ -6,8 +6,8 @@ import axios, {
 } from 'axios';
 import { sealed } from '@jellyfin-vue/shared/validation';
 import i18next from 'i18next';
-import auth from './auth';
-import { useSnackbar } from '#/composables/use-snackbar';
+import auth from './auth.ts';
+import { useSnackbar } from '#/composables/use-snackbar.ts';
 
 @sealed
 class RemotePluginAxios {

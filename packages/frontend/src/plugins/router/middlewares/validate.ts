@@ -1,7 +1,7 @@
 import type { NavigationGuardReturn, RouteLocationNormalized } from 'vue-router';
 import { isStr } from '@jellyfin-vue/shared/validation';
 import i18next from 'i18next';
-import { useSnackbar } from '#/composables/use-snackbar';
+import { useSnackbar } from '#/composables/use-snackbar.ts';
 
 /**
  * Validates that the route has a correct itemId parameter by checking that the parameter is a valid

@@ -43,8 +43,8 @@
 import { SubtitleDeliveryMethod } from '@jellyfin/sdk/lib/generated-client';
 import { computed } from 'vue';
 import { useTranslation } from 'i18next-vue';
-import { playbackManager } from '#/store/playback-manager';
-import { playerElement } from '#/store/player-element';
+import { playbackManager } from '#/store/playback-manager.ts';
+import { playerElement } from '#/store/player-element.ts';
 
 const menuModel = defineModel<boolean>();
 

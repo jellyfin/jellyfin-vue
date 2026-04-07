@@ -26,10 +26,10 @@
  */
 
 import type { DeviceProfile } from '@jellyfin/sdk/lib/generated-client';
-import { getCodecProfiles } from './helpers/codec-profiles';
-import { getDirectPlayProfiles } from './directplay-profile';
-import { getTranscodingProfiles } from './transcoding-profile';
-import { getSubtitleProfiles } from './subtitle-profile';
+import { getCodecProfiles } from './helpers/codec-profiles.ts';
+import { getDirectPlayProfiles } from './directplay-profile.ts';
+import { getTranscodingProfiles } from './transcoding-profile.ts';
+import { getSubtitleProfiles } from './subtitle-profile.ts';
 
 /**
  * Creates a device profile containing supported codecs for the active Cast device.

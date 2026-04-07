@@ -170,8 +170,8 @@ import { type BaseItemDto, ItemFilter } from '@jellyfin/sdk/lib/generated-client
 import { getFilterApi } from '@jellyfin/sdk/lib/utils/api/filter-api';
 import { computed, ref, watch } from 'vue';
 import { useTranslation } from 'i18next-vue';
-import { remote } from '#/plugins/remote';
-import { useSnackbar } from '#/composables/use-snackbar';
+import { remote } from '#/plugins/remote/index.ts';
+import { useSnackbar } from '#/composables/use-snackbar.ts';
 
 export type FeatureFilters
   = | 'HasSubtitles'

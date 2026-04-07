@@ -81,7 +81,7 @@ import { useTranslation } from 'i18next-vue';
 import { type BaseItemPerson, ImageType } from '@jellyfin/sdk/lib/generated-client';
 import { watchImmediate } from '@vueuse/core';
 import { isNil } from '@jellyfin-vue/shared/validation';
-import { getItemImageUrl } from '#/utils/images';
+import { getItemImageUrl } from '#/utils/images.ts';
 
 const { person } = defineProps<{ person: BaseItemPerson | undefined }>();
 

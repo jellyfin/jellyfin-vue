@@ -1,6 +1,6 @@
 import Dexie from 'dexie';
 import type { ArrayTail } from 'type-fest';
-import type { BaseDbEntity } from './base-entity';
+import type { BaseDbEntity } from './base-entity.ts';
 
 const staleTime = 604_800_000; /* 1 week in milliseconds */
 

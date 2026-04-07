@@ -90,7 +90,7 @@ import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
 import { ref } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import { useRouter } from 'vue-router';
-import { remote } from '#/plugins/remote';
+import { remote } from '#/plugins/remote/index.ts';
 
 const { t } = useTranslation();
 const router = useRouter();

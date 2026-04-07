@@ -7,19 +7,19 @@ import {
   EncodingContext,
   type TranscodingProfile
 } from '@jellyfin/sdk/lib/generated-client';
-import { getSupportedAudioCodecs } from './helpers/audio-formats';
-import { getSupportedMP4AudioCodecs } from './helpers/mp4-audio-formats';
+import { getSupportedAudioCodecs } from './helpers/audio-formats.ts';
+import { getSupportedMP4AudioCodecs } from './helpers/mp4-audio-formats.ts';
 import {
   getSupportedMP4VideoCodecs,
   hasVp8Support
-} from './helpers/mp4-video-formats';
+} from './helpers/mp4-video-formats.ts';
 import {
   canPlayNativeHls,
   canPlayHlsWithMSE,
   hasMkvSupport
-} from './helpers/transcoding-formats';
-import { getSupportedTsAudioCodecs } from './helpers/ts-audio-formats';
-import { getSupportedTsVideoCodecs } from './helpers/ts-video-formats';
+} from './helpers/transcoding-formats.ts';
+import { getSupportedTsAudioCodecs } from './helpers/ts-audio-formats.ts';
+import { getSupportedTsVideoCodecs } from './helpers/ts-video-formats.ts';
 import {
   isTv,
   isApple,
@@ -27,7 +27,7 @@ import {
   isChromiumBased,
   isAndroid,
   isTizen
-} from '#/utils/browser-detection';
+} from '#/utils/browser-detection.ts';
 
 /**
  * Returns a valid TranscodingProfile for the current platform.

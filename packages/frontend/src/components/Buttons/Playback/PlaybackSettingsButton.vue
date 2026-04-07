@@ -95,8 +95,8 @@
 import { computed, shallowRef } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import { isObj, isStr, isUndef } from '@jellyfin-vue/shared/validation';
-import { playbackManager } from '#/store/playback-manager';
-import { playerElement } from '#/store/player-element';
+import { playbackManager } from '#/store/playback-manager.ts';
+import { playerElement } from '#/store/player-element.ts';
 
 const menuModel = defineModel<boolean>();
 const { t } = useTranslation();

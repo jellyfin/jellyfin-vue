@@ -64,7 +64,7 @@ import { A11y, FreeMode, Navigation, Virtual } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { computed, useId } from 'vue';
 import { useDisplay, useTheme } from 'vuetify';
-import { CardShapes } from '#/utils/items';
+import { CardShapes } from '#/utils/items.ts';
 
 const { title, items, shape } = defineProps<{
   title: string;

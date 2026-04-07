@@ -99,9 +99,9 @@ import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
 import { format, formatRelative, parseJSON } from 'date-fns';
 import { useTranslation } from 'i18next-vue';
 import { useTheme } from 'vuetify';
-import { remote } from '#/plugins/remote';
-import { useDateFns } from '#/composables/use-datefns';
-import { useApi } from '#/composables/apis';
+import { remote } from '#/plugins/remote/index.ts';
+import { useDateFns } from '#/composables/use-datefns.ts';
+import { useApi } from '#/composables/apis.ts';
 
 const { t } = useTranslation();
 const theme = useTheme();

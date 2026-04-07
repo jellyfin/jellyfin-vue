@@ -51,5 +51,5 @@
 </template>
 
 <script setup lang="ts">
-import { subtitleSettings } from '#/store/settings/subtitle';
+import { subtitleSettings } from '#/store/settings/subtitle.ts';
 </script>

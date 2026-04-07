@@ -74,9 +74,9 @@
 import type { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { ref, shallowRef } from 'vue';
 import { useTranslation } from 'i18next-vue';
-import { fetchIndexPage } from '#/utils/items';
-import { remote } from '#/plugins/remote';
-import { jsonConfig } from '#/utils/external-config';
+import { fetchIndexPage } from '#/utils/items.ts';
+import { remote } from '#/plugins/remote/index.ts';
+import { jsonConfig } from '#/utils/external-config.ts';
 
 const { user, disabled } = defineProps<{ user?: UserDto; disabled?: boolean }>();
 

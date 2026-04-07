@@ -32,7 +32,7 @@
 
 <script lang="ts">
 import { Transition, TransitionGroup, type TransitionProps, shallowRef, computed, type DefineComponent } from 'vue';
-import { prefersNoMotion, isSlow } from '#/store';
+import { prefersNoMotion, isSlow } from '#/store/index.ts';
 import { usePausableEffect } from '#/composables/use-pausable-effect.ts';
 
 interface Props {

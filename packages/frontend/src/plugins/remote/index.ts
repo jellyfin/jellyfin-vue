@@ -8,10 +8,10 @@
  */
 import type { App } from 'vue';
 import { isNil, sealed } from '@jellyfin-vue/shared/validation';
-import RemotePluginAuthInstance from './auth';
-import RemotePluginSDKInstance from './sdk';
-import RemotePluginSocketInstance from './socket';
-import { jsonConfig } from '#/utils/external-config';
+import RemotePluginAuthInstance from './auth.ts';
+import RemotePluginSDKInstance from './sdk/index.ts';
+import RemotePluginSocketInstance from './socket.ts';
+import { jsonConfig } from '#/utils/external-config.ts';
 
 @sealed
 class RemotePlugin {

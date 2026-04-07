@@ -7,8 +7,8 @@ import { isNil, sealed } from '@jellyfin-vue/shared/validation';
 import type { KeysOfUnion } from 'type-fest';
 import i18next from 'i18next';
 import { languages } from '@jellyfin-vue/i18n';
-import { vuetify } from '#/plugins/vuetify';
-import { SyncedStore } from '#/store/super/synced-store';
+import { vuetify } from '#/plugins/vuetify.ts';
+import { SyncedStore } from '#/store/super/synced-store.ts';
 
 /**
  * == INTERFACES AND TYPES ==
