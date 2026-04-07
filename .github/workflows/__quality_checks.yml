@@ -35,7 +35,9 @@ jobs:
           - lint
           - test
           - check:types
+          # Checks for dependency cycles in the bundle and in the monorepo setup
           - analyze:cycles
+          - 'pnpm i --lockfile-only --config.disallow-workspace-cycles=true'
 
     steps:
       - name: Checkout ⬇️
@@ -51,7 +53,7 @@ jobs:
           check-latest: true
 
       - name: Install dependencies 📦
-        run: corepack pnpm install --frozen-lockfile
+        run: corepack pnpm i --frozen-lockfile
 
       - name: Run ${{ matrix.command }} ⚙️
         run: corepack pnpm ${{ matrix.command }}

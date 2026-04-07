@@ -9,8 +9,8 @@ const monorepoRoot = workspaceManifest ? dirname(workspaceManifest) : process.cw
 
 /**
  * Gets the workspace packages directly from pnpm configuration
- * @param workspaceManifestPath 
- * @returns 
+ * @param workspaceManifestPath
+ * @returns
  */
 function getWorkspacePackagePatterns(workspaceManifestPath: string): string[] {
   const workspace = parse(readFileSync(workspaceManifestPath, 'utf8')) as { packages?: unknown };

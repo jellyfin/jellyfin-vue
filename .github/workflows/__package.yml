@@ -75,7 +75,7 @@ jobs:
           cache-workspaces: ${{ env.WORKING_DIR }}
 
       - name: Install npm dependencies 📦
-        run: corepack pnpm install --frozen-lockfile
+        run: corepack pnpm i --frozen-lockfile
 
       - name: Install Linux dependencies 📦🐧
         if: ${{ matrix.platform == 'ubuntu' }}
