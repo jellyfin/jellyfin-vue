@@ -22,5 +22,5 @@ catalog:
   find-up-simple: 1.0.1
   i18next: 26.0.2
   i18next-vue: 5.4.0
-  unplugin-vue-components: 31.1.0
+  unplugin-vue-components: 32.0.0
   vuetify: 3.11.3
