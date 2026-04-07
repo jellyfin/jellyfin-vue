@@ -15,7 +15,6 @@
   },
   "devDependencies": {
     "@jellyfin-vue/configs": "workspace:*",
-    "find-up-simple": "catalog:",
     "yaml": "2.8.3"
   },
   "dependencies": {

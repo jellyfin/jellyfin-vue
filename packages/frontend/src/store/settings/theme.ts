@@ -1,6 +1,6 @@
 import { isNil, sealed } from '@jellyfin-vue/shared/validation';
 import type { LiteralUnion } from 'type-fest';
-import { darkColors, lightColors, type ColorPalette } from '@jellyfin-vue/shared/colors';
+import { darkColors, lightColors, type ColorPalette } from '@jellyfin-vue/configs/uno/colors';
 import { usePreferredDark, watchImmediate } from '@vueuse/core';
 import { computed } from 'vue';
 import { SyncedStore } from '#/store/super/synced-store';

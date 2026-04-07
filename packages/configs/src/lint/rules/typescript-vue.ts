@@ -11,7 +11,7 @@ import vue from 'eslint-plugin-vue';
 import promise from 'eslint-plugin-promise';
 import globals from 'globals';
 import vueParser from 'vue-eslint-parser';
-import { getPackagePath } from '@jellyfin-vue/shared/node/utils';
+import { getPackagePath } from '@jellyfin-vue/configs/utils';
 import { eqeqeqConfig, vueAndTsFiles, vueFiles, tsFiles } from '../shared';
 
 const recommendedKey = 'flat/recommended';

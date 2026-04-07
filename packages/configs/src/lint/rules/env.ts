@@ -1,4 +1,4 @@
-import { getPackagePath } from '@jellyfin-vue/shared/node/utils';
+import { getPackagePath } from '@jellyfin-vue/configs/utils';
 import { defineConfig } from 'eslint/config';
 import globals from 'globals';
 

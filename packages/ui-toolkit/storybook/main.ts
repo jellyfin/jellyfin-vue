@@ -1,5 +1,5 @@
 import storybookConfig from '@jellyfin-vue/configs/storybook';
-import { getPackagePath } from '@jellyfin-vue/shared/node/utils';
+import { getPackagePath } from '@jellyfin-vue/configs/utils';
 import { join } from 'node:path';
 
 storybookConfig.core.builder.options.viteConfigPath = join(

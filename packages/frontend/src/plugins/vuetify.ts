@@ -1,4 +1,4 @@
-import { darkColors, lightColors } from '@jellyfin-vue/shared/colors';
+import { darkColors, lightColors } from '@jellyfin-vue/configs/uno/colors';
 import * as vuetifyLocales from 'virtual:locales/vuetify';
 import { createVuetify, type ThemeDefinition } from 'vuetify';
 import { md3 } from 'vuetify/blueprints';

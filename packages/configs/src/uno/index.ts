@@ -1,5 +1,5 @@
 import { defineConfig, presetWind3, transformerVariantGroup, presetIcons } from 'unocss';
-import { lightColors, darkColors } from '@jellyfin-vue/shared/colors';
+import { lightColors, darkColors } from './colors.ts';
 
 const themeColors = {
   ...Object.fromEntries(
