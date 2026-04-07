@@ -57,6 +57,9 @@
       "dependencyDashboardApproval": true
     }
   ],
+  "postUpdateOptions": [
+    "pnpmDedupe"
+  ],
   "dependencyDashboard": true,
   "prConcurrentLimit": 0,
   "prHourlyLimit": 0,
