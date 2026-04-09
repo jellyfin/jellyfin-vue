@@ -40,7 +40,7 @@
     "@vueuse/core": "catalog:runtime",
     "assjs": "0.1.5",
     "audiomotion-analyzer": "4.5.4",
-    "axios": "1.14.0",
+    "axios": "1.15.0",
     "blurhash": "2.0.5",
     "comlink": "catalog:runtime",
     "date-fns": "catalog:runtime",
