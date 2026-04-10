@@ -136,7 +136,7 @@ const userItems = computed<MenuOptions[]>(() => {
       icon: 'i-mdi:account',
       name: t('account'),
       description: t('accountSettingsDescription'),
-      link: undefined
+      link: '/settings/account'
     },
     {
       icon: 'i-mdi:home',
