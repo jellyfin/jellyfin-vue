@@ -11,6 +11,7 @@
           <JFileUpload
             ref="fileUploadRef"
             v-model="selectedFile"
+            type="dropzone"
             accept="image/*" />
         </VRow>
         <VRow
