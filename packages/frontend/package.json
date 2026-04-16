@@ -32,7 +32,7 @@
   ],
   "dependencies": {
     "@fontsource-variable/figtree": "5.2.10",
-    "@iconify/json": "2.2.458",
+    "@iconify/json": "2.2.460",
     "@jellyfin-vue/i18n": "workspace:*",
     "@jellyfin-vue/shared": "workspace:*",
     "@jellyfin-vue/ui-toolkit": "workspace:*",
@@ -44,7 +44,7 @@
     "blurhash": "2.0.5",
     "comlink": "catalog:runtime",
     "date-fns": "catalog:runtime",
-    "defu": "6.1.5",
+    "defu": "6.1.7",
     "destr": "2.0.5",
     "dexie": "4.4.2",
     "fast-equals": "6.0.0",
