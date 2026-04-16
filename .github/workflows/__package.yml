@@ -69,7 +69,7 @@ jobs:
           check-latest: true
 
       - name: Setup Rust Toolchain and cache 🦀
-        uses: actions-rust-lang/setup-rust-toolchain@150fca883cd4034361b621bd4e6a9d34e5143606 # v1.15.4
+        uses: actions-rust-lang/setup-rust-toolchain@2b1f5e9b395427c92ee4e3331786ca3c37afe2d7 # v1.16.0
         with:
           cache-key: tauri-${{ runner.os }}
           cache-workspaces: ${{ env.WORKING_DIR }}
@@ -87,7 +87,7 @@ jobs:
         run: corepack pnpm build
 
       - name: Upload built application artifact ⬆️🐧🍎🪟
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         id: artifact
         with:
           compression-level: 0
@@ -222,7 +222,7 @@ jobs:
           version: latest
 
       - name: Build images 🛠️
-        uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294 # v7.0.0
+        uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f # v7.1.0
         id: image
         with:
           context: .
@@ -239,7 +239,7 @@ jobs:
             ${{ needs.docker_inputs.outputs.tags }}
 
       - name: Upload Docker image as artifact ⬆️📦
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         id: artifact
         with:
           compression-level: 0
@@ -247,7 +247,7 @@ jobs:
           path: docker_image.tar          
 
       - name: Upload cache artifact ⬆️⚙️
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         if: ${{ inputs.push }}
         with:
           compression-level: 0
@@ -284,7 +284,7 @@ jobs:
           docker cp $(docker create --name jf $IMAGE_SHA):$ASSETS/ ./dist
 
       - name: Upload client artifact ⬆️💻
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         id: artifact
         with:
           compression-level: 0
@@ -343,7 +343,7 @@ jobs:
           password: ${{ secrets.JF_BOT_TOKEN }}
 
       - name: Create multiplatform image ${{ inputs.push && 'and push 🛠️⬆️' || '🛠️' }} 
-        uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294 # v7.0.0
+        uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f # v7.1.0
         id: image
         with:
           context: .
