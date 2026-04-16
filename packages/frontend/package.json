@@ -64,9 +64,9 @@
     "@jellyfin-vue/vite-plugins": "workspace:*",
     "@rollup/plugin-virtual": "3.0.2",
     "@types/sortablejs": "1.15.9",
-    "@unocss/reset": "66.6.7",
+    "@unocss/reset": "66.6.8",
     "@vitejs/plugin-vue": "6.0.5",
-    "browserslist": "4.28.1",
+    "browserslist": "4.28.2",
     "lightningcss": "1.32.0",
     "unplugin-vue-components": "catalog:development",
     "vite-plugin-vue-devtools": "8.1.1"
