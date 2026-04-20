@@ -281,7 +281,7 @@
   "parentalRating": "Alterseinstufung",
   "parentalRatings": "Altersfreigabe",
   "password": "Passwort",
-  "passwordChangeFailed": "Passwort konnte nicht geändert werden",
+  "passwordChangeFailed": "Passwortänderung fehlgeschlagen",
   "passwordChangedSuccessfully": "Passwort erfolgreich geändert",
   "people": "Leute",
   "percentCompleted": "{{value}}% abgeschlossen ",
