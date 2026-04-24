@@ -32,7 +32,7 @@
   ],
   "dependencies": {
     "@fontsource-variable/figtree": "5.2.10",
-    "@iconify/json": "2.2.460",
+    "@iconify/json": "2.2.462",
     "@jellyfin-vue/i18n": "workspace:*",
     "@jellyfin-vue/shared": "workspace:*",
     "@jellyfin-vue/ui-toolkit": "workspace:*",
@@ -48,7 +48,7 @@
     "destr": "2.0.5",
     "dexie": "4.4.2",
     "fast-equals": "6.0.0",
-    "hls.js": "1.6.15",
+    "hls.js": "1.6.16",
     "i18next": "catalog:runtime",
     "i18next-vue": "catalog:runtime",
     "libpgs": "0.8.1",
