@@ -180,7 +180,7 @@ importers:
         version: link:../ui-toolkit
       '@jellyfin/sdk':
         specifier: 0.13.0
-        version: 0.13.0(axios@1.15.0)
+        version: 0.13.0(axios@1.15.2)
       '@vueuse/core':
         specifier: catalog:runtime
         version: 14.2.1(vue@3.5.32(typescript@6.0.2))
@@ -191,8 +191,8 @@ importers:
         specifier: 4.5.4
         version: 4.5.4
       axios:
-        specifier: 1.15.0
-        version: 1.15.0
+        specifier: 1.15.2
+        version: 1.15.2
       blurhash:
         specifier: 2.0.5
         version: 2.0.5
@@ -307,8 +307,8 @@ importers:
         specifier: 3.4.0
         version: 3.4.0
       marked:
-        specifier: 18.0.0
-        version: 18.0.0
+        specifier: 18.0.2
+        version: 18.0.2
     devDependencies:
       '@jellyfin-vue/configs':
         specifier: workspace:*
@@ -1831,8 +1831,8 @@ packages:
     resolution: {integrity: sha512-byD6KPdvo72y/wj2T/4zGEvvlis+PsZsn/yPS3pEO+sFpcrqRpX/TJCxvVaEsNeMrfQbCr7w163YqoD9IYwHXw==, tarball: https://registry.npmjs.org/axe-core/-/axe-core-4.11.2.tgz}
     engines: {node: '>=4'}
 
-  axios@1.15.0:
-    resolution: {integrity: sha512-wWyJDlAatxk30ZJer+GeCWS209sA42X+N5jU2jy6oHTp7ufw8uzUTVFBX9+wTfAlhiJXGS0Bq7X6efruWjuK9Q==, tarball: https://registry.npmjs.org/axios/-/axios-1.15.0.tgz}
+  axios@1.15.2:
+    resolution: {integrity: sha512-wLrXxPtcrPTsNlJmKjkPnNPK2Ihe0hn0wGSaTEiHRPxwjvJwT3hKmXF4dpqxmPO9SoNb2FsYXj/xEo0gHN+D5A==, tarball: https://registry.npmjs.org/axios/-/axios-1.15.2.tgz}
 
   babel-walk@3.0.0-canary-5:
     resolution: {integrity: sha512-GAwkz0AihzY5bkwIY5QDR+LvsRQgB/B+1foMPvi0FZPMl5fjD7ICiznUiBdLYMH1QYe6vqu4gWYytZOccLouFw==, tarball: https://registry.npmjs.org/babel-walk/-/babel-walk-3.0.0-canary-5.tgz}
@@ -2741,8 +2741,8 @@ packages:
   magic-string@0.30.21:
     resolution: {integrity: sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==, tarball: https://registry.npmjs.org/magic-string/-/magic-string-0.30.21.tgz}
 
-  marked@18.0.0:
-    resolution: {integrity: sha512-2e7Qiv/HJSXj8rDEpgTvGKsP8yYtI9xXHKDnrftrmnrJPaFNM7VRb2YCzWaX4BP1iCJ/XPduzDJZMFoqTCcIMA==, tarball: https://registry.npmjs.org/marked/-/marked-18.0.0.tgz}
+  marked@18.0.2:
+    resolution: {integrity: sha512-NsmlUYBS/Zg57rgDWMYdnre6OTj4e+qq/JS2ot3KrYLSoHLw+sDu0Nm1ZGpRgYAq6c+b1ekaY5NzVchMCQnzcg==, tarball: https://registry.npmjs.org/marked/-/marked-18.0.2.tgz}
     engines: {node: '>= 20'}
     hasBin: true
 
@@ -3474,8 +3474,8 @@ packages:
   vue-component-type-helpers@2.2.12:
     resolution: {integrity: sha512-YbGqHZ5/eW4SnkPNR44mKVc6ZKQoRs/Rux1sxC6rdwXb4qpbOSYfDr9DsTHolOTGmIKgM9j141mZbBeg05R1pw==, tarball: https://registry.npmjs.org/vue-component-type-helpers/-/vue-component-type-helpers-2.2.12.tgz}
 
-  vue-component-type-helpers@3.2.6:
-    resolution: {integrity: sha512-O02tnvIfOQVmnvoWwuSydwRoHjZVt8UEBR+2p4rT35p8GAy5VTlWP8o5qXfJR/GWCN0nVZoYWsVUvx2jwgdBmQ==, tarball: https://registry.npmjs.org/vue-component-type-helpers/-/vue-component-type-helpers-3.2.6.tgz}
+  vue-component-type-helpers@3.2.8:
+    resolution: {integrity: sha512-9689efAXhN/EV86plgkL/XFiJSXhGtWPG6JDboZ+QnjlUWUUQrQ0ILKQtw4iQsuwIwu5k6Aw+JnehDe7161e7A==, tarball: https://registry.npmjs.org/vue-component-type-helpers/-/vue-component-type-helpers-3.2.8.tgz}
 
   vue-docgen-api@4.79.2:
     resolution: {integrity: sha512-n9ENAcs+40awPZMsas7STqjkZiVlIjxIKgiJr5rSohDP0/JCrD9VtlzNojafsA1MChm/hz2h3PDtUedx3lbgfA==, tarball: https://registry.npmjs.org/vue-docgen-api/-/vue-docgen-api-4.79.2.tgz}
@@ -4018,9 +4018,9 @@ snapshots:
       '@iconify/types': 2.0.0
       mlly: 1.8.2
 
-  '@jellyfin/sdk@0.13.0(axios@1.15.0)':
+  '@jellyfin/sdk@0.13.0(axios@1.15.2)':
     dependencies:
-      axios: 1.15.0
+      axios: 1.15.2
 
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:
@@ -4251,7 +4251,7 @@ snapshots:
       storybook: 10.3.5(@testing-library/dom@10.4.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       type-fest: 2.19.0
       vue: 3.5.32(typescript@6.0.2)
-      vue-component-type-helpers: 3.2.6
+      vue-component-type-helpers: 3.2.8
 
   '@stylistic/eslint-plugin@5.10.0(eslint@10.2.0(jiti@2.6.1))':
     dependencies:
@@ -5034,7 +5034,7 @@ snapshots:
 
   axe-core@4.11.2: {}
 
-  axios@1.15.0:
+  axios@1.15.2:
     dependencies:
       follow-redirects: 1.15.11
       form-data: 4.0.5
@@ -5897,7 +5897,7 @@ snapshots:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  marked@18.0.0: {}
+  marked@18.0.2: {}
 
   math-intrinsics@1.1.0: {}
 
@@ -6647,7 +6647,7 @@ snapshots:
 
   vue-component-type-helpers@2.2.12: {}
 
-  vue-component-type-helpers@3.2.6: {}
+  vue-component-type-helpers@3.2.8: {}
 
   vue-docgen-api@4.79.2(vue@3.5.32(typescript@6.0.2)):
     dependencies:
