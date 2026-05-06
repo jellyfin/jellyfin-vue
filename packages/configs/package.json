@@ -18,7 +18,7 @@
   },
   "devDependencies": {
     "@chromatic-com/storybook": "5.1.1",
-    "@eslint/config-inspector": "1.5.0",
+    "@eslint/config-inspector": "2.0.0",
     "@eslint/css": "1.1.0",
     "@eslint/js": "10.0.1",
     "@eslint/json": "1.2.0",

@@ -53,8 +53,8 @@ importers:
         specifier: 5.1.1
         version: 5.1.1(storybook@10.3.5(@testing-library/dom@10.4.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))
       '@eslint/config-inspector':
-        specifier: 1.5.0
-        version: 1.5.0(eslint@10.2.0(jiti@2.6.1))
+        specifier: 2.0.0
+        version: 2.0.0(eslint@10.2.0(jiti@2.6.1))
       '@eslint/css':
         specifier: 1.1.0
         version: 1.1.0
@@ -747,8 +747,9 @@ packages:
     resolution: {integrity: sha512-jJhqiY3wPMlWWO3370M86CPJ7pt8GmEwSLglMfQhjXal07RCvhmU0as4IuUEW5SJeunfItiEetHmSxCCe9lDBg==, tarball: https://registry.npmjs.org/@eslint/config-helpers/-/config-helpers-0.5.4.tgz}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
 
-  '@eslint/config-inspector@1.5.0':
-    resolution: {integrity: sha512-YK/VdQ+pibx5pcCI2GPZVO6vFemf/pkB662HuFtc5AA4WLQ9upb3fAoZSjOAYoDJx58qGTDp6xq9ldd/vluNxQ==, tarball: https://registry.npmjs.org/@eslint/config-inspector/-/config-inspector-1.5.0.tgz}
+  '@eslint/config-inspector@2.0.0':
+    resolution: {integrity: sha512-hiKajDjwP72AB52/l+qWBdCui/eVW+XFqpfQqspnnI0wyI9wN/DUNZT8SE+GNniOYKhxHc/qT2Esv/buz5ySOw==, tarball: https://registry.npmjs.org/@eslint/config-inspector/-/config-inspector-2.0.0.tgz}
+    engines: {node: ^20.19.0 || ^22.13.0 || >=24}
     hasBin: true
     peerDependencies:
       eslint: ^8.50.0 || ^9.0.0 || ^10.0.0
@@ -3952,7 +3953,7 @@ snapshots:
     dependencies:
       '@eslint/core': 1.2.1
 
-  '@eslint/config-inspector@1.5.0(eslint@10.2.0(jiti@2.6.1))':
+  '@eslint/config-inspector@2.0.0(eslint@10.2.0(jiti@2.6.1))':
     dependencies:
       ansis: 4.2.0
       bundle-require: 5.1.0(esbuild@0.27.7)
