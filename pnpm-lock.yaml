@@ -44,8 +44,8 @@ importers:
   .:
     devDependencies:
       pnpm:
-        specifier: 10.33.0
-        version: 10.33.0
+        specifier: 11.0.3
+        version: 11.0.3
 
   packages/configs:
     devDependencies:
@@ -383,7 +383,7 @@ importers:
     dependencies:
       '@jellyfin-vue/tauri-runtime':
         specifier: workspace:*
-        version: file:packages/tauri-runtime
+        version: link:../../packages/tauri-runtime
     devDependencies:
       '@tauri-apps/cli':
         specifier: 2.10.1
@@ -822,21 +822,6 @@ packages:
 
   '@iconify/utils@3.1.0':
     resolution: {integrity: sha512-Zlzem1ZXhI1iHeeERabLNzBHdOa4VhQbqAcOQaMKuTuyZCpwKbC2R4Dd0Zo3g9EAc+Y4fiarO8HIHRAth7+skw==, tarball: https://registry.npmjs.org/@iconify/utils/-/utils-3.1.0.tgz}
-
-  '@jellyfin-vue/frontend@file:packages/frontend':
-    resolution: {directory: packages/frontend, type: directory}
-
-  '@jellyfin-vue/i18n@file:packages/i18n':
-    resolution: {directory: packages/i18n, type: directory}
-
-  '@jellyfin-vue/shared@file:packages/shared':
-    resolution: {directory: packages/shared, type: directory}
-
-  '@jellyfin-vue/tauri-runtime@file:packages/tauri-runtime':
-    resolution: {directory: packages/tauri-runtime, type: directory}
-
-  '@jellyfin-vue/ui-toolkit@file:packages/ui-toolkit':
-    resolution: {directory: packages/ui-toolkit, type: directory}
 
   '@jellyfin/sdk@0.13.0':
     resolution: {integrity: sha512-oiBAOXH6s+dKdReSsYgNktBDzbxtg4JVWhEzIxZSxKcWMdSKmBtK41MhXRO7IWAC40DguKUm3nU/Z493qPAlWA==, tarball: https://registry.npmjs.org/@jellyfin/sdk/-/sdk-0.13.0.tgz}
@@ -2897,9 +2882,9 @@ packages:
     resolution: {integrity: sha512-Nc3IT5yHzflTfbjgqWcCPpo7DaKy4FnpB0l/zCAW0Tc7jxAiuqSxHasntB3D7887LSrA93kDJ9IXovxJYxyLCA==, tarball: https://registry.npmjs.org/pluralize/-/pluralize-8.0.0.tgz}
     engines: {node: '>=4'}
 
-  pnpm@10.33.0:
-    resolution: {integrity: sha512-EFaLtKavtYyes2MNqQzJUWQXq+vT+rvmc58K55VyjaFJHp21pUTHatjrdXD1xLs9bGN7LLQb/c20f6gjyGSTGQ==, tarball: https://registry.npmjs.org/pnpm/-/pnpm-10.33.0.tgz}
-    engines: {node: '>=18.12'}
+  pnpm@11.0.3:
+    resolution: {integrity: sha512-EESPKYiTN4fGaZrvaDF0x0H2RyrZG348j+PivaV76KD3yvWJSbi8IuYkV4s9xuV4drpMYxkoobhMwUHhLHm8zQ==, tarball: https://registry.npmjs.org/pnpm/-/pnpm-11.0.3.tgz}
+    engines: {node: '>=22.13'}
     hasBin: true
 
   postcss-safe-parser@7.0.1:
@@ -4003,92 +3988,6 @@ snapshots:
       '@iconify/types': 2.0.0
       mlly: 1.8.2
 
-  '@jellyfin-vue/frontend@file:packages/frontend':
-    dependencies:
-      '@fontsource-variable/figtree': 5.2.10
-      '@iconify/json': 2.2.467
-      '@jellyfin-vue/i18n': file:packages/i18n(vue@3.5.33)
-      '@jellyfin-vue/shared': file:packages/shared
-      '@jellyfin-vue/ui-toolkit': file:packages/ui-toolkit(i18next@26.0.8)(vue@3.5.33)
-      '@jellyfin/sdk': 0.13.0(axios@1.15.2)
-      '@vueuse/core': 14.2.1(vue@3.5.33)
-      assjs: 0.1.6
-      audiomotion-analyzer: 4.5.4
-      axios: 1.15.2
-      blurhash: 2.0.5
-      comlink: 4.4.2
-      date-fns: 4.1.0
-      defu: 6.1.7
-      destr: 2.0.5
-      dexie: 4.4.2
-      fast-equals: 6.0.0
-      hls.js: 1.6.16
-      i18next: 26.0.8(typescript@6.0.3)
-      i18next-vue: 5.4.0(i18next@26.0.8)(vue@3.5.33)
-      libpgs: 0.8.1
-      sortablejs: 1.15.7
-      swiper: 12.1.3
-      uuid: 14.0.0
-      vue: 3.5.33
-      vue-router: 5.0.6(vue@3.5.33)
-      vuetify: 3.11.3(vue@3.5.33)
-    transitivePeerDependencies:
-      - '@pinia/colada'
-      - '@vue/compiler-sfc'
-      - debug
-      - pinia
-      - typescript
-      - vite-plugin-vuetify
-      - webpack-plugin-vuetify
-
-  '@jellyfin-vue/i18n@file:packages/i18n(vue@3.5.33)':
-    dependencies:
-      '@vue/shared': 3.5.33
-      date-fns: 4.1.0
-      i18next: 26.0.8(typescript@6.0.3)
-      vuetify: 3.11.3(vue@3.5.33)
-    transitivePeerDependencies:
-      - typescript
-      - vite-plugin-vuetify
-      - vue
-      - webpack-plugin-vuetify
-
-  '@jellyfin-vue/shared@file:packages/shared':
-    dependencies:
-      '@vue/shared': 3.5.33
-      dompurify: 3.4.1
-      marked: 18.0.2
-
-  '@jellyfin-vue/tauri-runtime@file:packages/tauri-runtime':
-    dependencies:
-      '@jellyfin-vue/frontend': file:packages/frontend
-      '@tauri-apps/api': 2.10.1
-    transitivePeerDependencies:
-      - '@pinia/colada'
-      - '@vue/compiler-sfc'
-      - debug
-      - pinia
-      - typescript
-      - vite-plugin-vuetify
-      - webpack-plugin-vuetify
-
-  '@jellyfin-vue/ui-toolkit@file:packages/ui-toolkit(i18next@26.0.8)(vue@3.5.33)':
-    dependencies:
-      '@jellyfin-vue/i18n': file:packages/i18n(vue@3.5.33)
-      '@jellyfin-vue/shared': file:packages/shared
-      '@skirtle/vue-vnode-utils': 0.2.0(vue@3.5.33)
-      '@vueuse/core': 14.2.1(vue@3.5.33)
-      color: 5.0.3
-      comlink: 4.4.2
-      i18next-vue: 5.4.0(i18next@26.0.8)(vue@3.5.33)
-      vuetify: 3.11.3(vue@3.5.33)
-    transitivePeerDependencies:
-      - i18next
-      - typescript
-      - vite-plugin-vuetify
-      - vue
-      - webpack-plugin-vuetify
-
   '@jellyfin/sdk@0.13.0(axios@1.15.2)':
     dependencies:
       axios: 1.15.2
@@ -4267,10 +4166,6 @@ snapshots:
   '@skirtle/vue-vnode-utils@0.2.0(vue@3.5.33(typescript@6.0.3))':
     dependencies:
       vue: 3.5.33(typescript@6.0.3)
-
-  '@skirtle/vue-vnode-utils@0.2.0(vue@3.5.33)':
-    dependencies:
-      vue: 3.5.33
 
   '@standard-schema/spec@1.1.0': {}
 
@@ -4852,16 +4747,6 @@ snapshots:
     optionalDependencies:
       vue: 3.5.33(typescript@6.0.3)
 
-  '@vue-macros/common@3.1.2(vue@3.5.33)':
-    dependencies:
-      '@vue/compiler-sfc': 3.5.33
-      ast-kit: 2.2.0
-      local-pkg: 1.1.2
-      magic-string-ast: 1.0.3
-      unplugin-utils: 0.3.1
-    optionalDependencies:
-      vue: 3.5.33
-
   '@vue/babel-helper-vue-transform-on@1.5.0': {}
 
   '@vue/babel-plugin-jsx@1.5.0(@babel/core@7.29.0)':
@@ -4990,12 +4875,6 @@ snapshots:
       '@vue/shared': 3.5.33
       vue: 3.5.33(typescript@6.0.3)
 
-  '@vue/server-renderer@3.5.33(vue@3.5.33)':
-    dependencies:
-      '@vue/compiler-ssr': 3.5.33
-      '@vue/shared': 3.5.33
-      vue: 3.5.33
-
   '@vue/shared@3.5.33': {}
 
   '@vueuse/core@14.2.1(vue@3.5.33(typescript@6.0.3))':
@@ -5005,22 +4884,11 @@ snapshots:
       '@vueuse/shared': 14.2.1(vue@3.5.33(typescript@6.0.3))
       vue: 3.5.33(typescript@6.0.3)
 
-  '@vueuse/core@14.2.1(vue@3.5.33)':
-    dependencies:
-      '@types/web-bluetooth': 0.0.21
-      '@vueuse/metadata': 14.2.1
-      '@vueuse/shared': 14.2.1(vue@3.5.33)
-      vue: 3.5.33
-
   '@vueuse/metadata@14.2.1': {}
 
   '@vueuse/shared@14.2.1(vue@3.5.33(typescript@6.0.3))':
     dependencies:
       vue: 3.5.33(typescript@6.0.3)
-
-  '@vueuse/shared@14.2.1(vue@3.5.33)':
-    dependencies:
-      vue: 3.5.33
 
   '@webcontainer/env@1.1.1': {}
 
@@ -5745,11 +5613,6 @@ snapshots:
       i18next: 26.0.8(typescript@6.0.3)
       vue: 3.5.33(typescript@6.0.3)
 
-  i18next-vue@5.4.0(i18next@26.0.8)(vue@3.5.33):
-    dependencies:
-      i18next: 26.0.8(typescript@6.0.3)
-      vue: 3.5.33
-
   i18next@26.0.8(typescript@6.0.3):
     optionalDependencies:
       typescript: 6.0.3
@@ -6132,7 +5995,7 @@ snapshots:
 
   pluralize@8.0.0: {}
 
-  pnpm@10.33.0: {}
+  pnpm@11.0.3: {}
 
   postcss-safe-parser@7.0.1(postcss@8.5.14):
     dependencies:
@@ -6760,40 +6623,11 @@ snapshots:
     optionalDependencies:
       '@vue/compiler-sfc': 3.5.33
 
-  vue-router@5.0.6(vue@3.5.33):
-    dependencies:
-      '@babel/generator': 7.29.1
-      '@vue-macros/common': 3.1.2(vue@3.5.33)
-      '@vue/devtools-api': 8.1.1
-      ast-walker-scope: 0.8.3
-      chokidar: 5.0.0
-      json5: 2.2.3
-      local-pkg: 1.1.2
-      magic-string: 0.30.21
-      mlly: 1.8.2
-      muggle-string: 0.4.1
-      pathe: 2.0.3
-      picomatch: 4.0.4
-      scule: 1.3.0
-      tinyglobby: 0.2.16
-      unplugin: 3.0.0
-      unplugin-utils: 0.3.1
-      vue: 3.5.33
-      yaml: 2.8.3
-
   vue-tsc@3.2.7(typescript@6.0.3):
     dependencies:
       '@volar/typescript': 2.4.28
       '@vue/language-core': 3.2.7
       typescript: 6.0.3
-
-  vue@3.5.33:
-    dependencies:
-      '@vue/compiler-dom': 3.5.33
-      '@vue/compiler-sfc': 3.5.33
-      '@vue/runtime-dom': 3.5.33
-      '@vue/server-renderer': 3.5.33(vue@3.5.33)
-      '@vue/shared': 3.5.33
 
   vue@3.5.33(typescript@6.0.3):
     dependencies:
@@ -6810,10 +6644,6 @@ snapshots:
       vue: 3.5.33(typescript@6.0.3)
     optionalDependencies:
       typescript: 6.0.3
-
-  vuetify@3.11.3(vue@3.5.33):
-    dependencies:
-      vue: 3.5.33
 
   webpack-virtual-modules@0.6.2: {}
 
