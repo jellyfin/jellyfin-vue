@@ -5,6 +5,12 @@
   },
   "packageRules": [
     {
+      "matchDepNames": [
+        "pnpm"
+      ],
+      "groupName": "pnpm"
+    },
+    {
       "matchManagers": [
         "npm"
       ],
