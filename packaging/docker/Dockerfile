@@ -15,7 +15,7 @@ COPY packages /app/packages
 WORKDIR /app/packages/frontend
 
 # Build client
-RUN corepack pnpm i --frozen-lockfile && corepack pnpm build
+RUN corepack pnpm ci && corepack pnpm build
 
 # Deploy built distribution to nginx
 FROM ghcr.io/nginxinc/nginx-unprivileged:stable-alpine-slim

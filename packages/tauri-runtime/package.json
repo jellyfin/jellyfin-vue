@@ -24,6 +24,7 @@
     "@tauri-apps/api": "2.10.1"
   },
   "devDependencies": {
-    "@jellyfin-vue/configs": "workspace:*"
+    "@jellyfin-vue/configs": "workspace:*",
+    "vite": "catalog:development"
   }
 }
