@@ -57,6 +57,18 @@
       ],
       "groupName": "lockfiles",
       "dependencyDashboardApproval": true
+    },
+    {
+      "matchDepNames": [
+        "pnpm"
+      ],
+      "matchDepTypes": [
+        "devDependencies",
+        "engines",
+        "packageManager"
+      ],
+      "separateMajorMinor": false,
+      "groupName": "pnpm"
     }
   ],
   "postUpdateOptions": [
