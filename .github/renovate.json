@@ -20,7 +20,9 @@
       ],
       "matchDepTypes": [
         "devDependencies",
-        "pnpm.catalog.development"
+        "pnpm.catalog.development",
+        "engines",
+        "packageManager"
       ],
       "groupName": "npm (development)"
     },
@@ -62,12 +64,9 @@
       "matchDepNames": [
         "pnpm"
       ],
-      "matchDepTypes": [
-        "devDependencies",
-        "engines",
-        "packageManager"
+      "matchUpdateTypes": [
+        "major"
       ],
-      "separateMajorMinor": false,
       "groupName": "pnpm"
     }
   ],
