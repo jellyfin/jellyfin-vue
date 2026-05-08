@@ -28,7 +28,7 @@
     "@stylistic/eslint-plugin": "5.10.0",
     "@types/node": "25.6.0",
     "@unocss/eslint-config": "66.6.8",
-    "eslint": "10.2.1",
+    "eslint": "10.3.0",
     "eslint-config-flat-gitignore": "2.3.0",
     "eslint-import-resolver-typescript": "4.4.4",
     "eslint-plugin-css": "0.12.0",
