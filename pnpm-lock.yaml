@@ -44,8 +44,8 @@ importers:
   .:
     devDependencies:
       pnpm:
-        specifier: 10.33.0
-        version: 10.33.0
+        specifier: 11.0.3
+        version: 11.0.3
 
   packages/configs:
     devDependencies:
@@ -2931,9 +2931,9 @@ packages:
     resolution: {integrity: sha512-Nc3IT5yHzflTfbjgqWcCPpo7DaKy4FnpB0l/zCAW0Tc7jxAiuqSxHasntB3D7887LSrA93kDJ9IXovxJYxyLCA==, tarball: https://registry.npmjs.org/pluralize/-/pluralize-8.0.0.tgz}
     engines: {node: '>=4'}
 
-  pnpm@10.33.0:
-    resolution: {integrity: sha512-EFaLtKavtYyes2MNqQzJUWQXq+vT+rvmc58K55VyjaFJHp21pUTHatjrdXD1xLs9bGN7LLQb/c20f6gjyGSTGQ==, tarball: https://registry.npmjs.org/pnpm/-/pnpm-10.33.0.tgz}
-    engines: {node: '>=18.12'}
+  pnpm@11.0.3:
+    resolution: {integrity: sha512-EESPKYiTN4fGaZrvaDF0x0H2RyrZG348j+PivaV76KD3yvWJSbi8IuYkV4s9xuV4drpMYxkoobhMwUHhLHm8zQ==, tarball: https://registry.npmjs.org/pnpm/-/pnpm-11.0.3.tgz}
+    engines: {node: '>=22.13'}
     hasBin: true
 
   postcss-safe-parser@7.0.1:
@@ -6212,7 +6212,7 @@ snapshots:
 
   pluralize@8.0.0: {}
 
-  pnpm@10.33.0: {}
+  pnpm@11.0.3: {}
 
   postcss-safe-parser@7.0.1(postcss@8.5.14):
     dependencies:
