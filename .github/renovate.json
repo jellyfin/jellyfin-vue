@@ -1,7 +1,7 @@
 {
   "timezone": "Europe/Madrid",
   "npm": {
-    "minimumReleaseAge": "7 days"
+    "minimumReleaseAge": "1 day"
   },
   "packageRules": [
     {
