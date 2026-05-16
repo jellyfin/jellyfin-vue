@@ -65,10 +65,10 @@
     "@rollup/plugin-virtual": "3.0.2",
     "@types/sortablejs": "1.15.9",
     "@unocss/reset": "66.6.8",
-    "@vitejs/plugin-vue": "6.0.6",
+    "@vitejs/plugin-vue": "6.0.7",
     "browserslist": "4.28.2",
     "lightningcss": "1.32.0",
     "unplugin-vue-components": "catalog:development",
-    "vite-plugin-vue-devtools": "8.1.1"
+    "vite-plugin-vue-devtools": "8.1.2"
   }
 }
