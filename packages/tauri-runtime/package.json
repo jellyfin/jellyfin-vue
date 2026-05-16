@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@jellyfin-vue/frontend": "workspace:*",
-    "@tauri-apps/api": "2.10.1"
+    "@tauri-apps/api": "2.11.0"
   },
   "devDependencies": {
     "@jellyfin-vue/configs": "workspace:*"
