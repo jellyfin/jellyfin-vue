@@ -13,6 +13,11 @@ injectWorkspacePackages: true
 shamefullyHoist: true
 fetchRetries: 15
 
+allowBuilds:
+  '@skirtle/vue-vnode-utils': false
+  esbuild: true
+  unrs-resolver: true
+
 catalogs:
   runtime:
     vue: 3.5.34
