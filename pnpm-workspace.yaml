@@ -26,7 +26,7 @@ catalogs:
     '@vueuse/core': 14.3.0
     comlink: 4.4.2
     date-fns: 4.1.0
-    i18next: 26.0.9
+    i18next: 26.2.0
     i18next-vue: 5.4.0
     vuetify: 3.11.3
   development:
