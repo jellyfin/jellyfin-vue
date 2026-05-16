@@ -53,7 +53,7 @@ jobs:
           check-latest: true
 
       - name: Install dependencies 📦
-        run: corepack pnpm i --frozen-lockfile
+        run: corepack pnpm ci
 
       - name: Run ${{ matrix.command }} ⚙️
         run: corepack pnpm ${{ matrix.command }}
