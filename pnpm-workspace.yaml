@@ -4,14 +4,15 @@ packages:
 
 saveExact: true
 engineStrict: true
-ignoreDepScripts: true
-blockExoticSubdeps: true
 packageImportMethod: hardlink
 lockfileIncludeTarballUrl: true
 linkWorkspacePackages: deep
 injectWorkspacePackages: true
 shamefullyHoist: true
 fetchRetries: 15
+strictDepBuilds: false
+dedupePeers: true
+dedupeDirectDeps: true
 
 allowBuilds:
   '@skirtle/vue-vnode-utils': false
