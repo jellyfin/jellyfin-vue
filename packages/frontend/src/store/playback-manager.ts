@@ -201,8 +201,9 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       if(!isNil(currentSubtitleItems) && Array.isArray(currentSubtitleItems)) {
         const subtitleTrack = currentSubtitleItems
         .filter((Stream: MediaStream, Index: number) => {
-          if(!isNil(this._state.value.mediaSourceIndexes.subtitle) && this._state.value.mediaSourceIndexes.subtitle >= 0)
+          if(!isNil(this._state.value.mediaSourceIndexes.subtitle) && this._state.value.mediaSourceIndexes.subtitle >= 0) {
             return Index === this._state.value.mediaSourceIndexes.subtitle;
+          }
           // or default true when undefined,
           // TODO: when play from continue watching, this._state.value.mediaSourceIndexes.subtitle will be undefined,
           // needed default value example by user config when there was avaliable
@@ -212,7 +213,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
           Stream.Index = Index;
           return Stream;
         });
-        return Array.isArray(subtitleTrack) ? subtitleTrack.shift() : subtitleTrack;
+        return Array.isArray(subtitleTrack) && subtitleTrack.length ? subtitleTrack.shift() : { Index: -1 };
       }
       return { Index: -1 };
     },
