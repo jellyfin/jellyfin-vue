@@ -198,20 +198,23 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   public readonly currentSubtitleTrack = computed({
     get: () => {
       const currentSubtitleItems = this.currentMediaSource.value?.MediaStreams?.filter((Stream: MediaStream) => Stream.Type === MediaStreamType.Subtitle);
-      if (!isNil(this._state.value.mediaSourceIndexes.subtitle) && this._state.value.mediaSourceIndexes.subtitle >= 0
-      ) {
+      if(!isNil(currentSubtitleItems) && Array.isArray(currentSubtitleItems)) {
         const subtitleTrack = currentSubtitleItems
-        .filter((Stream: MediaStream, Index: number) => Index === this._state.value.mediaSourceIndexes.subtitle)
+        .filter((Stream: MediaStream, Index: number) => {
+          if(!isNil(this._state.value.mediaSourceIndexes.subtitle) && this._state.value.mediaSourceIndexes.subtitle >= 0)
+            return Index === this._state.value.mediaSourceIndexes.subtitle;
+          // or default true when undefined,
+          // TODO: when play from continue watching, this._state.value.mediaSourceIndexes.subtitle will be undefined,
+          // needed default value example by user config when there was avaliable
+          return isNil(this._state.value.mediaSourceIndexes.subtitle);
+        })
         .map((Stream: MediaStream, Index: number) => {
-            Stream.Index = Index;
-            return Stream;
-          }
-        );
+          Stream.Index = Index;
+          return Stream;
+        });
         return Array.isArray(subtitleTrack) ? subtitleTrack.shift() : subtitleTrack;
       }
-      // TODO: when play from continue watching, this._state.value.mediaSourceIndexes.subtitle will be undefined,
-      // needed default value example by user config
-      return { Index: !isNil(currentSubtitleItems) && Array.isArray(currentSubtitleItems) && isNil(this._state.value.mediaSourceIndexes.subtitle) ? currentSubtitleItems.length - 1 : -1 };
+      return { Index: -1 };
     },
     set: (newIndex: number) => this._state.value.mediaSourceIndexes.subtitle = newIndex
   });
