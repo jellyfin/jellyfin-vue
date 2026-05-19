@@ -19,9 +19,11 @@
               </VCol>
               <VCol :cols="8">
                 <VSelect
+                  v-model="maxStreamingBitrate"
                   density="comfortable"
-
-                  disabled
+                  :items="qualityItems"
+                  item-title="title"
+                  item-value="value"
                   hide-details />
               </VCol>
             </VRow>
@@ -100,6 +102,28 @@ import { playerElement } from '#/store/player-element.ts';
 
 const menuModel = defineModel<boolean>();
 const { t } = useTranslation();
+
+/**
+ * Streaming quality presets. `0` means automatic (source quality); any other
+ * value is the maximum streaming bitrate in bps passed to the server.
+ */
+const qualityItems = computed(() => [
+  { title: t('auto'), value: 0 },
+  { title: '1080p - 20 Mbps', value: 20_000_000 },
+  { title: '1080p - 10 Mbps', value: 10_000_000 },
+  { title: '720p - 8 Mbps', value: 8_000_000 },
+  { title: '720p - 4 Mbps', value: 4_000_000 },
+  { title: '480p - 3 Mbps', value: 3_000_000 },
+  { title: '480p - 1.5 Mbps', value: 1_500_000 },
+  { title: '360p - 720 kbps', value: 720_000 }
+]);
+const maxStreamingBitrate = computed({
+  get: () => playbackManager.maxStreamingBitrate.value ?? 0,
+  set: (val: number) => {
+    playbackManager.maxStreamingBitrate.value = val || undefined;
+  }
+});
+
 const defaultPlaybackSpeeds = Object.freeze([0.5, 0.75, 1, 1.25, 1.5, 2]);
 const playbackItems = computed(() => defaultPlaybackSpeeds.map(speed => ({
   title: speed === 1 ? t('normal') : String(speed),
