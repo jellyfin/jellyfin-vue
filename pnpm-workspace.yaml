@@ -31,4 +31,4 @@ catalogs:
     vuetify: 3.11.3
   development:
     find-up-simple: 1.0.1
-    unplugin-vue-components: 32.0.0
+    unplugin-vue-components: 32.1.0
