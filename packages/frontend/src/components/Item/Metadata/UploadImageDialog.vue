@@ -109,15 +109,17 @@ async function onSave(): Promise<void> {
     return;
   }
 
-  // According to the TypeScript typings, the SDK expects the body to be a File.
-  // However, sending a File causes the backend to return a 500 error due to a base64 parsing exception.
-  // When the File is converted to a base64 string, the backend works as expected.
+  /*
+   * According to the TypeScript typings, the SDK expects the body to be a File.
+   * However, sending a File causes the backend to return a 500 error due to a base64 parsing exception.
+   * When the File is converted to a base64 string, the backend works as expected.
+   */
   const base64FileContent = await fileUploadRef.value?.readSelectedFileAsBase64();
 
   const payload: ImageApiSetItemImageRequest = {
     itemId,
     imageType: imageType.value,
-    body: base64FileContent as unknown as File
+    body: base64FileContent
   };
 
   const config: AxiosRequestConfig = {

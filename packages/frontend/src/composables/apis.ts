@@ -171,7 +171,7 @@ async function fetchAndAdd<T extends Record<K, (...args: any[]) => any>, K exten
       const result: ExtractItems<typeof requestData> = 'Items' in requestData && isArray(requestData.Items) ? requestData.Items : requestData;
 
       if (ofBaseItem && !ops.skipCache.baseItem) {
-        await apiStore.baseItemAdd(result as BaseItemDto | BaseItemDto[]);
+        await apiStore.baseItemAdd(result);
       }
 
       return ops.skipCache.request
