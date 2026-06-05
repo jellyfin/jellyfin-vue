@@ -30,12 +30,6 @@ const excludeViewTypes = new Set([
 ]);
 </script>
 
-<route lang="yaml">
-meta:
-  layout:
-    transparent: true
-</route>
-
 <script setup lang="ts">
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { computed } from 'vue';
@@ -43,6 +37,15 @@ import { useTranslation } from 'i18next-vue';
 import { isNil } from '@jellyfin-vue/shared/validation';
 import { CardShapes, fetchIndexPage, getShapeFromCollectionType } from '#/utils/items.ts';
 import { usePageTitle } from '#/composables/page-title.ts';
+
+definePage({
+  meta: {
+    layout: {
+      transparent: true,
+      transition: {}
+    }
+  }
+});
 
 interface HomeSection {
   title: string;

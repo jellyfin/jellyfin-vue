@@ -79,11 +79,6 @@
   </SettingsPage>
 </template>
 
-<route lang="yaml">
-meta:
-  admin: true
-</route>
-
 <script setup lang="ts">
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
@@ -91,6 +86,15 @@ import { ref } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import { useRouter } from 'vue-router';
 import { remote } from '#/plugins/remote/index.ts';
+
+definePage({
+  meta: {
+    admin: true,
+    layout: {
+      transition: {}
+    }
+  }
+});
 
 const { t } = useTranslation();
 const router = useRouter();

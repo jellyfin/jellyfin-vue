@@ -81,15 +81,6 @@
   </JMain>
 </template>
 
-<route lang="yaml">
-meta:
-  layout:
-    name: fullpage
-    transition:
-      enter: 'slide-y-reverse'
-      leave: 'slide-y'
-</route>
-
 <script setup lang="ts">
 import type SwiperType from 'swiper';
 import 'swiper/css';
@@ -107,8 +98,17 @@ import { usePlayback } from '#/composables/use-playback.ts';
 import { useItemBackdrop } from '#/composables/backdrop.ts';
 import { useItemPageTitle } from '#/composables/page-title.ts';
 
-defineOptions({
-  beforeRouteEnter: playbackGuard
+definePage({
+  beforeEnter: playbackGuard,
+  meta: {
+    layout: {
+      name: 'fullpage',
+      transition: {
+        enter: 'slide-y-reverse',
+        leave: 'slide-y'
+      }
+    }
+  }
 });
 
 usePlayback();

@@ -85,11 +85,6 @@
   </SettingsPage>
 </template>
 
-<route lang="yaml">
-meta:
-  admin: true
-</route>
-
 <script setup lang="ts">
 import {
   LogLevel
@@ -102,6 +97,15 @@ import { useTheme } from 'vuetify';
 import { remote } from '#/plugins/remote/index.ts';
 import { useDateFns } from '#/composables/use-datefns.ts';
 import { useApi } from '#/composables/apis.ts';
+
+definePage({
+  meta: {
+    admin: true,
+    layout: {
+      transition: {}
+    }
+  }
+});
 
 const { t } = useTranslation();
 const theme = useTheme();

@@ -4,6 +4,7 @@ import {
   createWebHashHistory,
   createWebHistory
 } from 'vue-router';
+import { handleHotUpdate } from 'vue-router/auto-routes';
 import { isStr } from '@jellyfin-vue/shared/validation';
 import { remote } from '../remote/index.ts';
 import { adminGuard } from './middlewares/admin-pages.ts';
@@ -75,3 +76,7 @@ watch([
     force: true
   });
 }, { flush: 'sync' });
+
+if (import.meta.hot) {
+  handleHotUpdate(router);
+}
