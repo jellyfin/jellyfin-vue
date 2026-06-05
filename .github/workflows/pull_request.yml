@@ -23,7 +23,9 @@ jobs:
     name: Automation 🎛️
     if: ${{ always() && !cancelled() && github.repository == 'jellyfin/jellyfin-vue' }}
     uses: ./.github/workflows/__automation.yml
-    secrets: inherit
+    permissions:
+      contents: read
+      pull-requests: write
 
   semantic-commits:
     if: ${{ always() && !cancelled() && github.repository == 'jellyfin/jellyfin-vue' }}

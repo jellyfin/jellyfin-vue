@@ -20,7 +20,9 @@ jobs:
     name: Automation 🎛️
     if: ${{ github.repository == 'jellyfin/jellyfin-vue' }}
     uses: ./.github/workflows/__automation.yml
-    secrets: inherit
+    permissions:
+      contents: read
+      pull-requests: write
 
   main:
     name: ${{ github.event_name == 'push' && 'Unstable 🚀⚠️' || 'Stable 🏷️✅' }}
