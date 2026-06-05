@@ -21,7 +21,7 @@
   "dependencies": {
     "@jellyfin-vue/i18n": "workspace:*",
     "@jellyfin-vue/shared": "workspace:*",
-    "@skirtle/vue-vnode-utils": "0.2.0",
+    "@skirtle/vue-vnode-utils": "0.3.0",
     "@vueuse/core": "catalog:runtime",
     "color": "5.0.3",
     "comlink": "catalog:runtime",
