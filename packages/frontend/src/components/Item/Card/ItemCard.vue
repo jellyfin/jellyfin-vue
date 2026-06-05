@@ -1,6 +1,6 @@
 <template>
   <GenericItemCard
-    :progress="progress"
+    :progress="item.Type !== BaseItemKind.Series ? progress : undefined"
     :shape="shape ?? cardType"
     :overlay="overlay"
     :force-overlay="isMenuOpen"
