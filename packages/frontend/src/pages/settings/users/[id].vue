@@ -305,11 +305,6 @@
   </SettingsPage>
 </template>
 
-<route lang="yaml">
-meta:
-  admin: true
-</route>
-
 <script setup lang="ts">
 import type {
   BaseItemDtoQueryResult,
@@ -326,6 +321,15 @@ import { useRoute, useRouter } from 'vue-router';
 import { remote } from '#/plugins/remote/index.ts';
 import { useSnackbar } from '#/composables/use-snackbar.ts';
 import { useConfirmDialog } from '#/composables/use-confirm-dialog.ts';
+
+definePage({
+  meta: {
+    admin: true,
+    layout: {
+      transition: {}
+    }
+  }
+});
 
 interface CurrentUser {
   Name: string;

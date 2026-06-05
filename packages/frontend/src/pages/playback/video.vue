@@ -115,15 +115,6 @@
   </div>
 </template>
 
-<route lang="yaml">
-meta:
-  layout:
-    name: fullpage
-    transition:
-      enter: 'slide-y-reverse'
-      leave: 'slide-y'
-</route>
-
 <script setup lang="ts">
 import { BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
 import { useTimeoutFn } from '@vueuse/core';
@@ -137,8 +128,17 @@ import { playerElement, videoContainerRef } from '#/store/player-element.ts';
 import { getEndsAtTime, msToTicks } from '#/utils/time.ts';
 import { usePlayback } from '#/composables/use-playback.ts';
 
-defineOptions({
-  beforeRouteEnter: playbackGuard
+definePage({
+  beforeEnter: playbackGuard,
+  meta: {
+    layout: {
+      name: 'fullpage',
+      transition: {
+        enter: 'slide-y-reverse',
+        leave: 'slide-y'
+      }
+    }
+  }
 });
 
 const { fullscreen } = usePlayback();

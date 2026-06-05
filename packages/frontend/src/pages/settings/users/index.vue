@@ -55,17 +55,21 @@
   </SettingsPage>
 </template>
 
-<route lang="yaml">
-meta:
-  admin: true
-</route>
-
 <script setup lang="ts">
 import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
 import { formatDistanceToNow } from 'date-fns';
 import { useTranslation } from 'i18next-vue';
 import { useDateFns } from '#/composables/use-datefns.ts';
 import { useApi } from '#/composables/apis.ts';
+
+definePage({
+  meta: {
+    admin: true,
+    layout: {
+      transition: {}
+    }
+  }
+});
 
 const { t } = useTranslation();
 

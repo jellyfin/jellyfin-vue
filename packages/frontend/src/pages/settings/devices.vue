@@ -93,11 +93,6 @@
   </SettingsPage>
 </template>
 
-<route lang="yaml">
-meta:
-  admin: true
-</route>
-
 <script setup lang="ts">
 import type { DeviceInfo } from '@jellyfin/sdk/lib/generated-client';
 import { getDevicesApi } from '@jellyfin/sdk/lib/utils/api/devices-api';
@@ -108,6 +103,15 @@ import { isNil } from '@jellyfin-vue/shared/validation';
 import { remote } from '#/plugins/remote/index.ts';
 import { useSnackbar } from '#/composables/use-snackbar.ts';
 import { useDateFns } from '#/composables/use-datefns.ts';
+
+definePage({
+  meta: {
+    admin: true,
+    layout: {
+      transition: {}
+    }
+  }
+});
 
 const { t } = useTranslation();
 

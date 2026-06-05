@@ -188,7 +188,7 @@ const vue_config = defineConfig([
         }
       ],
       'vue/define-macros-order': ['error', {
-        order: ['defineOptions', 'defineProps', 'defineEmits', 'defineSlots']
+        order: ['definePage', 'defineOptions', 'defineProps', 'defineEmits', 'defineSlots']
       }],
       'vue/html-closing-bracket-newline': ['error', { multiline: 'never' }],
       'vue/block-order': ['error', {

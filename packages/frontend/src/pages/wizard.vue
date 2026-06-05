@@ -89,12 +89,6 @@
   </VContainer>
 </template>
 
-<route lang="yaml">
-meta:
-  layout:
-    name: server
-</route>
-
 <script setup lang="ts">
 import { getStartupApi } from '@jellyfin/sdk/lib/utils/api/startup-api';
 import { ref } from 'vue';
@@ -102,6 +96,15 @@ import { useTranslation } from 'i18next-vue';
 import { useRouter } from 'vue-router';
 import { useSnackbar } from '#/composables/use-snackbar.ts';
 import { remote } from '#/plugins/remote/index.ts';
+
+definePage({
+  meta: {
+    layout: {
+      name: 'server',
+      transition: {}
+    }
+  }
+});
 
 const { t } = useTranslation();
 const router = useRouter();

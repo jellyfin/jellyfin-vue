@@ -31,16 +31,19 @@
   </VContainer>
 </template>
 
-<route lang="yaml">
-meta:
-  layout:
-    name: server
-</route>
-
 <script setup lang="ts">
 import { useId } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import { usePageTitle } from '#/composables/page-title.ts';
+
+definePage({
+  meta: {
+    layout: {
+      name: 'server',
+      transition: {}
+    }
+  }
+});
 
 const { t } = useTranslation();
 

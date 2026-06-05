@@ -20,11 +20,14 @@ const reactiveMeta = ref(defaultMeta());
  * The layout of the destination page needs to exist before the route
  * is accessed. This is why we need the following block in pages:
  *
- * <route lang="yaml">
- *  meta:
- *    layout:
- *      name: server
- * </route>
+ * definePage({
+ *  meta: {
+ *   layout: {
+ *      name: 'server',
+ *     transition: {}
+ *    }
+ *  }
+ *});
  *
  * That block is also needed when a property needs to be resolved before
  * the component is instantiated (i.e, the admin property, so the correct redirection is done)

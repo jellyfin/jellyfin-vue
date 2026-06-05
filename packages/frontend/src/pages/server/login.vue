@@ -91,12 +91,6 @@
   </VContainer>
 </template>
 
-<route lang="yaml">
-meta:
-  layout:
-    name: server
-</route>
-
 <script setup lang="ts">
 import type { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { ref, shallowRef, computed, watch } from 'vue';
@@ -106,6 +100,15 @@ import { jsonConfig } from '#/utils/external-config.ts';
 import { usePageTitle } from '#/composables/page-title.ts';
 import { useSnackbar } from '#/composables/use-snackbar.ts';
 import { isConnectedToServer } from '#/store/index.ts';
+
+definePage({
+  meta: {
+    layout: {
+      name: 'server',
+      transition: {}
+    }
+  }
+});
 
 const { t } = useTranslation();
 
