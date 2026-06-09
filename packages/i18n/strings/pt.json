@@ -259,7 +259,7 @@
   "numberTracks": "{{number}} faixas",
   "offlineCantDoThisWillRetryWhenOnline": "Não pode realizar esta ação porque perdeu a ligação com o servidor. Uma nova tentativa será realizada ao recuperá-la.",
   "originalTitle": "Título original",
-  "overview": "Visão geral",
+  "overview": "Sinopse",
   "parallelImageEncodingLimit": "Limite de codificação de imagens em paralelo",
   "parallelLibraryScanLimit": "Limite de análises paralelas da biblioteca",
   "parentalControl": "Controlo parental",
