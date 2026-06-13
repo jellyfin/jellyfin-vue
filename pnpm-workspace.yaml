@@ -21,8 +21,8 @@ allowBuilds:
 
 catalogs:
   runtime:
-    vue: 3.5.35
-    '@vue/shared': 3.5.35
+    vue: 3.5.38
+    '@vue/shared': 3.5.38
     '@vueuse/core': 14.3.0
     comlink: 4.4.2
     date-fns: 4.4.0
