@@ -91,7 +91,9 @@ function getTrackSubtitle(track: MediaStream): string | undefined {
       getLocaleName(track.Language, i18next.language)
       ?? `${t('unknown')} (${track.Language})`
     );
-  } else if (type === 'Audio' || type === 'Subtitle') {
+  }
+
+  if (type === 'Audio' || type === 'Subtitle') {
     return t('undefined');
   }
 }

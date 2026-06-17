@@ -26,7 +26,7 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState, KeysOfUnion<C
     /**
      * Removes the culture info from the language string, so 'es-ES' is recognised as 'es'
      */
-    this._navigatorLanguage.language.value?.split('-')[0]
+    this._navigatorLanguage.language.value?.split('-', 1)[0]
   );
 
   /**

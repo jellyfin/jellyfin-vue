@@ -92,9 +92,13 @@ const nextUpDuration = computed(() => {
    */
   if (currentItemDuration.value >= 5 * 60 * 60) {
     return 540;
-  } else if (currentItemDuration.value >= 2 * 60 * 60) {
+  }
+
+  if (currentItemDuration.value >= 2 * 60 * 60) {
     return 210;
-  } else if (currentItemDuration.value >= 45 * 60) {
+  }
+
+  if (currentItemDuration.value >= 45 * 60) {
     return 120;
   }
 

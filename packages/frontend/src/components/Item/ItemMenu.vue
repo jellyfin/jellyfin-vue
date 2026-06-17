@@ -118,9 +118,7 @@ const parent = getCurrentInstance()?.parent;
  * the same screen
  */
 const show = computed({
-  get() {
-    return instanceId === openMenu.value;
-  },
+  get: () => instanceId === openMenu.value,
   set(newVal: boolean) {
     openMenu.value = newVal ? instanceId : undefined;
   }
@@ -313,13 +311,14 @@ const copyDownloadURLAction = {
   icon: 'i-mdi:content-copy',
   action: async (): Promise<void> => {
     const clipboard = useClipboard();
-    let streamUrls: Map<string, string> | string | undefined;
 
     if (!clipboard.isSupported.value) {
       useSnackbar(t('clipboardUnsupported'), 'error');
 
       return;
     }
+
+    let streamUrls: Map<string, string> | string | undefined;
 
     if (item.Id) {
       switch (item.Type) {
@@ -342,7 +341,7 @@ const copyDownloadURLAction = {
        */
       const text
         = streamUrls instanceof Map
-          ? [...streamUrls.entries()]
+          ? [...streamUrls]
               .map(([k, v]) => `(${k}) - ${v}`)
               .join('\n')
           : streamUrls;

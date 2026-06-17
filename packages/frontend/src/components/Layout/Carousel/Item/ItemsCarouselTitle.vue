@@ -48,14 +48,12 @@ const itemLink = computed(() => getItemDetailsLink(item));
 const titleString = computed(() => {
   if (item.Type === BaseItemKind.MusicAlbum && item.AlbumArtist) {
     return item.AlbumArtist;
-  } else if (
-    item.Type === BaseItemKind.Episode
-    && item.SeriesName
-  ) {
-    return item.SeriesName;
-  } else {
-    return item.Name;
   }
+
+  return item.Type === BaseItemKind.Episode
+    && item.SeriesName
+    ? item.SeriesName
+    : item.Name;
 });
 
 const logoLink = computed(() => {
@@ -67,7 +65,9 @@ const logoLink = computed(() => {
       item.AlbumArtists[0],
       BaseItemKind.MusicArtist
     );
-  } else if (item.Type === BaseItemKind.Episode && item.SeriesId) {
+  }
+
+  if (item.Type === BaseItemKind.Episode && item.SeriesId) {
     return getItemDetailsLink({ Id: item.SeriesId }, BaseItemKind.Series);
   }
 });

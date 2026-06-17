@@ -10,9 +10,11 @@ import { remote } from '#/plugins/remote/index.ts';
 export function adminGuard(
   to: RouteLocationNormalized
 ): NavigationGuardReturn {
-  if (to.meta.admin && !remote.auth.currentUser.value?.Policy?.IsAdministrator) {
-    useSnackbar(i18next.t('unauthorized'), 'error');
-
-    return false;
+  if (!(to.meta.admin && !remote.auth.currentUser.value?.Policy?.IsAdministrator)) {
+    return;
   }
+
+  useSnackbar(i18next.t('unauthorized'), 'error');
+
+  return false;
 }

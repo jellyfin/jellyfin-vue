@@ -378,9 +378,9 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
       return ofBaseItem && !ops.skipCache.baseItem
         ? cachedItems?.ref.value ?? previous ?? fetchResult.value
         : fetchResult.value;
-    } else {
-      return cachedData.value;
     }
+
+    return cachedData.value;
   });
   const isCached = computed(() =>
     // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing

@@ -28,9 +28,13 @@ async function _getBestServerPage(): Promise<Nullish<keyof RouteNamedMap>> {
 
   if (!remote.auth.addedServers.value) {
     return serverAddUrl;
-  } else if (isNil(remote.auth.currentServer.value)) {
+  }
+
+  if (isNil(remote.auth.currentServer.value)) {
     return serverSelectUrl;
-  } else if (!remote.auth.currentServer.value.StartupWizardCompleted) {
+  }
+
+  if (!remote.auth.currentServer.value.StartupWizardCompleted) {
     return serverWizard;
   }
 }

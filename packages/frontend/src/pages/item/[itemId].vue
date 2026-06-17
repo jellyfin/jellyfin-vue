@@ -367,9 +367,7 @@ const currentSourceIndex = computed(() =>
 );
 
 const currentSource = computed({
-  get() {
-    return selectedSource.value ?? item.value.MediaSources?.[0] ?? {};
-  },
+  get: () => selectedSource.value ?? item.value.MediaSources?.[0] ?? {},
   set(newValue) {
     selectedSource.value = newValue;
   }

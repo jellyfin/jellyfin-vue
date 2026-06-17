@@ -21,7 +21,7 @@ export function supportsMediaSource(): boolean {
    * Browsers that lack a media source implementation will have no reference
    * to |window.MediaSource|.
    */
-  return !!globalThis.MediaSource;
+  return !!MediaSource;
 }
 
 /**

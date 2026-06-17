@@ -115,9 +115,9 @@ const playbackSpeed = computed({
 
     if (isUndef(_playbackSpeed.value)) {
       return playbackSpeedIndex === -1 ? String(playbackManager.playbackSpeed.value) : playbackItems.value[playbackSpeedIndex];
-    } else {
-      return _playbackSpeed.value;
     }
+
+    return _playbackSpeed.value;
   },
   set: (val: PlaybackSpeedValue) => {
     _playbackSpeed.value = val;

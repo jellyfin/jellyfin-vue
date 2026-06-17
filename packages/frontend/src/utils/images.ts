@@ -105,7 +105,9 @@ export function getImageTag(
 
   if (item.ImageTags?.[type]) {
     return item.ImageTags[type];
-  } else if (type === ImageType.Backdrop && item.BackdropImageTags?.[index]) {
+  }
+
+  if (type === ImageType.Backdrop && item.BackdropImageTags?.[index]) {
     return item.BackdropImageTags[index];
   }
 
@@ -144,23 +146,41 @@ export function getImageTag(
 export function getParentId(item: BaseItemDto): string | undefined {
   if (item.AlbumId) {
     return item.AlbumId;
-  } else if (item.ChannelId) {
+  }
+
+  if (item.ChannelId) {
     return item.ChannelId;
-  } else if (item.SeriesId) {
+  }
+
+  if (item.SeriesId) {
     return item.SeriesId;
-  } else if (item.ParentArtItemId) {
+  }
+
+  if (item.ParentArtItemId) {
     return item.ParentArtItemId;
-  } else if (item.ParentPrimaryImageItemId) {
+  }
+
+  if (item.ParentPrimaryImageItemId) {
     return item.ParentPrimaryImageItemId;
-  } else if (item.ParentThumbItemId) {
+  }
+
+  if (item.ParentThumbItemId) {
     return item.ParentThumbItemId;
-  } else if (item.ParentBackdropItemId) {
+  }
+
+  if (item.ParentBackdropItemId) {
     return item.ParentBackdropItemId;
-  } else if (item.ParentLogoItemId) {
+  }
+
+  if (item.ParentLogoItemId) {
     return item.ParentLogoItemId;
-  } else if (item.SeasonId) {
+  }
+
+  if (item.SeasonId) {
     return item.SeasonId;
-  } else if (item.ParentId) {
+  }
+
+  if (item.ParentId) {
     return item.ParentId;
   }
 }

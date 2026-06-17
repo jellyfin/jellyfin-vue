@@ -18,12 +18,12 @@ import { version } from '#/package.json';
  */
 function ensureDeviceId(): string {
   const storageKey = 'deviceId';
-  const val = globalThis.localStorage.getItem(storageKey);
+  const val = localStorage.getItem(storageKey);
 
   if (!val) {
     const id = v4();
 
-    globalThis.localStorage.setItem(storageKey, id);
+    localStorage.setItem(storageKey, id);
 
     return id;
   }

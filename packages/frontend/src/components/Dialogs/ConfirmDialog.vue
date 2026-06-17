@@ -63,9 +63,7 @@ const state = reactive<ConfirmDialogState>({
 
 const { isRevealed, reveal, confirm, cancel } = vUseConfirmDialog();
 const model = computed({
-  get() {
-    return isRevealed.value;
-  },
+  get: () => isRevealed.value,
   set(newVal) {
     if (!newVal) {
       cancel();

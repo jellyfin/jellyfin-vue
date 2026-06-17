@@ -8,9 +8,11 @@ import { useSnackbar } from '#/composables/use-snackbar.ts';
  * Validates that no playback is happening when accesing a route
  */
 export function playbackGuard(): NavigationGuardReturn {
-  if (isNil(playbackManager.currentItem.value)) {
-    useSnackbar(i18next.t('routeValidationError'), 'error');
-
-    return false;
+  if (!isNil(playbackManager.currentItem.value)) {
+    return;
   }
+
+  useSnackbar(i18next.t('routeValidationError'), 'error');
+
+  return false;
 }

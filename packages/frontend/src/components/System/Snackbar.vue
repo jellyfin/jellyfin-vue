@@ -33,14 +33,14 @@ export function useSnackbar(message: string, color: string): void {
 
 <script setup lang="ts">
 const model = computed({
-  get() {
-    return state.message !== '';
-  },
+  get: () => state.message !== '',
   set(newValue) {
-    if (!newValue) {
-      state.message = '';
-      state.color = '';
+    if (newValue) {
+      return;
     }
+
+    state.message = '';
+    state.color = '';
   }
 });
 </script>

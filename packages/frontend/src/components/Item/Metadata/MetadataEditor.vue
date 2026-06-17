@@ -267,9 +267,7 @@ const contentOption = ref<ContentOption>();
 const contentType = ref<string>();
 const isImageDialogVisible = shallowRef<boolean>(false);
 const genresModel = computed({
-  get() {
-    return metadata.value?.Genres ?? undefined;
-  },
+  get: () => metadata.value?.Genres ?? undefined,
   set(newVal) {
     if (isArray(newVal) && metadata.value) {
       metadata.value.Genres = newVal;
@@ -277,9 +275,7 @@ const genresModel = computed({
   }
 });
 const tagsModel = computed({
-  get() {
-    return metadata.value?.Tags ?? undefined;
-  },
+  get: () => metadata.value?.Tags ?? undefined,
   set(newVal) {
     if (isArray(newVal) && metadata.value) {
       metadata.value.Tags = newVal;
@@ -306,10 +302,12 @@ const dateCreated = computed(() => {
 const tagLine = computed({
   get: () => metadata.value?.Taglines?.[0] ?? '',
   set: (v) => {
-    if (metadata.value) {
-      metadata.value.Taglines ??= [];
-      metadata.value.Taglines[0] = v;
+    if (!metadata.value) {
+      return;
     }
+
+    metadata.value.Taglines ??= [];
+    metadata.value.Taglines[0] = v;
   }
 });
 

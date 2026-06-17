@@ -14,10 +14,12 @@ const visualizerElement = useTemplateRef('visualizerElement');
  * Destroy the visualizer instance.
  */
 function destroy(): void {
-  if (visualizerInstance) {
-    visualizerInstance.destroy();
-    visualizerInstance = undefined;
+  if (!visualizerInstance) {
+    return;
   }
+
+  visualizerInstance.destroy();
+  visualizerInstance = undefined;
 }
 
 watch([visualizerElement, mediaWebAudio.sourceNode], () => {

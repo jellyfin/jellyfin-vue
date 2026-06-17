@@ -77,9 +77,7 @@ const id = useId();
 const root = isNil(inject(JView_isRouting));
 
 const resolved = computed({
-  get() {
-    return _resolveStatus.value[id] ?? false;
-  },
+  get: () => _resolveStatus.value[id] ?? false,
   set(newVal) {
     _resolveStatus.value[id] = newVal;
 

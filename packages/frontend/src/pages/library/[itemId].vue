@@ -131,9 +131,9 @@ const viewType = computed({
   get() {
     if (innerItemKind.value) {
       return innerItemKind.value;
-    } else {
-      return library.value.CollectionType ? COLLECTION_TYPES_MAPPINGS[library.value.CollectionType] : undefined;
     }
+
+    return library.value.CollectionType ? COLLECTION_TYPES_MAPPINGS[library.value.CollectionType] : undefined;
   },
   set(newVal) {
     innerItemKind.value = newVal;

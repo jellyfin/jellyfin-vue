@@ -28,9 +28,7 @@ const currentInput = ref(0);
 const clicked = ref(false);
 const runtime = computed(() => playbackManager.currentItemRuntime.value / 1000);
 const sliderValue = computed({
-  get() {
-    return clicked.value ? currentInput.value : playbackManager.currentTime.value;
-  },
+  get: () => clicked.value ? currentInput.value : playbackManager.currentTime.value,
   set(newValue) {
     currentInput.value = newValue;
   }

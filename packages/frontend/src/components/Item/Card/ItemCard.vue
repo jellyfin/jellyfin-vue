@@ -125,7 +125,9 @@ const cardSubtitle = computed(() => {
     case BaseItemKind.Series: {
       if (item.Status === 'Continuing' && !isNil(item.ProductionYear)) {
         return `${item.ProductionYear} - ${t('present')}`;
-      } else if (item.EndDate) {
+      }
+
+      if (item.EndDate) {
         const endYear = new Date(item.EndDate).toLocaleString('en-us', {
           year: 'numeric'
         });
@@ -169,7 +171,9 @@ const cardSubtitleLink = computed(() => {
     && item.AlbumArtists?.length
   ) {
     return getItemDetailsLink(item.AlbumArtists[0], 'MusicArtist');
-  } else if (item.Type === BaseItemKind.Episode) {
+  }
+
+  if (item.Type === BaseItemKind.Episode) {
     return getItemDetailsLink(item);
   }
 });

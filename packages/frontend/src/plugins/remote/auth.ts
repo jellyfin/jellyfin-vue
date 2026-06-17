@@ -256,19 +256,21 @@ class RemotePluginAuth extends BaseState<AuthState> {
    * @param skipRequest - Skips the request and directly removes the user from the store
    */
   public readonly logoutCurrentUser = async (skipRequest = false): Promise<void> => {
-    if (!isNil(this.currentUser.value) && !isNil(this.currentServer.value)) {
-      await this._runCallbacks(this._callbacks.beforeLogout);
-      await this.logoutUser(this.currentUser.value, this.currentServer.value, skipRequest);
-
-      this._state.value.currentUserIndex = -1;
-      /**
-       * We need this so the callbacks are run after all the dependencies are updated
-       * (i.e the page component is routed to index).
-       */
-      globalThis.requestAnimationFrame(() =>
-        globalThis.setTimeout(() => void this._runCallbacks(this._callbacks.afterLogout))
-      );
+    if (!(!isNil(this.currentUser.value) && !isNil(this.currentServer.value))) {
+      return;
     }
+
+    await this._runCallbacks(this._callbacks.beforeLogout);
+    await this.logoutUser(this.currentUser.value, this.currentServer.value, skipRequest);
+
+    this._state.value.currentUserIndex = -1;
+    /**
+     * We need this so the callbacks are run after all the dependencies are updated
+     * (i.e the page component is routed to index).
+     */
+    globalThis.requestAnimationFrame(() =>
+      globalThis.setTimeout(() => void this._runCallbacks(this._callbacks.afterLogout), 0)
+    );
   };
 
   /**

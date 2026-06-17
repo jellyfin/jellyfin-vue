@@ -28,9 +28,7 @@ const { loading } = await useApi(getUserLibraryApi, methodToExecute, { skipCache
 }));
 
 const isFavorite = computed({
-  get() {
-    return item.UserData?.IsFavorite ?? false;
-  },
+  get: () => item.UserData?.IsFavorite ?? false,
   set(newValue) {
     methodToExecute.value = newValue ? 'markFavoriteItem' : 'unmarkFavoriteItem';
   }

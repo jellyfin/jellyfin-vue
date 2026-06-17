@@ -64,7 +64,7 @@ const { query: permissionQuery, isSupported, state: fontPermission } = usePermis
 const fontAccess = computed(() => fontPermission.value === 'granted');
 const isQueryLocalFontsSupported = useSupported(() => isSupported.value && 'queryLocalFonts' in globalThis);
 const askForPermission = async () => isQueryLocalFontsSupported.value
-  ? Promise.all([permissionQuery, globalThis.queryLocalFonts])
+  ? Promise.all([permissionQuery, queryLocalFonts])
   : undefined;
 
 /**

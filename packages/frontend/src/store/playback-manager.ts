@@ -129,10 +129,12 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   public readonly currentItemIndex = computed({
     get: () => this._state.value.currentItemIndex,
     set: (newIndex: number | undefined) => {
-      if (newIndex !== this._state.value.currentItemIndex) {
-        this._state.value.currentItemIndex = newIndex;
-        this.currentTime.value = 0;
+      if (newIndex === this._state.value.currentItemIndex) {
+        return;
       }
+
+      this._state.value.currentItemIndex = newIndex;
+      this.currentTime.value = 0;
     }
   });
 
@@ -256,7 +258,9 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   private readonly _previousItemIndex = computed(() => {
     if (this.isRepeatingAll.value && this._state.value.currentItemIndex === 0) {
       return this.queueLength.value - 1;
-    } else if (!isNil(this._state.value.currentItemIndex)) {
+    }
+
+    if (!isNil(this._state.value.currentItemIndex)) {
       return this._state.value.currentItemIndex - 1;
     }
   });
@@ -266,7 +270,9 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   private readonly _nextItemIndex = computed(() => {
     if (this.isRepeatingAll.value && this._state.value.currentItemIndex === this.queueLength.value - 1) {
       return 0;
-    } else if (!isNil(this._state.value.currentItemIndex)) {
+    }
+
+    if (!isNil(this._state.value.currentItemIndex)) {
       return this._state.value.currentItemIndex + 1;
     }
   });
@@ -743,7 +749,9 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       }
 
       return `${remote.sdk.api.basePath}/${mediaType}/${mediaSource.Id}/stream.${mediaSource.Container}?${parameters}`;
-    } else if (remote.sdk.api?.basePath && mediaSource?.SupportsTranscoding && mediaSource.TranscodingUrl) {
+    }
+
+    if (remote.sdk.api?.basePath && mediaSource?.SupportsTranscoding && mediaSource.TranscodingUrl) {
       return `${remote.sdk.api.basePath}${mediaSource.TranscodingUrl}`;
     }
   };
@@ -809,7 +817,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     watchEffect(() => {
       const { t } = i18next;
 
-      globalThis.navigator.mediaSession.metadata = this.currentItem.value
+      navigator.mediaSession.metadata = this.currentItem.value
         ? new MediaMetadata({
             title: this.currentItem.value.Name ?? t('unknownTitle'),
             artist: this.currentItem.value.AlbumArtist ?? t('unknownArtist'),
@@ -828,16 +836,16 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     watchEffect(() => {
       switch (this.status.value) {
         case PlaybackStatus.Playing: {
-          globalThis.navigator.mediaSession.playbackState = 'playing';
+          navigator.mediaSession.playbackState = 'playing';
           break;
         }
         case PlaybackStatus.Paused:
         case PlaybackStatus.Buffering: {
-          globalThis.navigator.mediaSession.playbackState = 'paused';
+          navigator.mediaSession.playbackState = 'paused';
           break;
         }
         default: {
-          globalThis.navigator.mediaSession.playbackState = 'none';
+          navigator.mediaSession.playbackState = 'none';
         }
       }
     });
@@ -866,7 +874,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
 
           for (const action in actionHandlers) {
             try {
-              globalThis.navigator.mediaSession.setActionHandler(
+              navigator.mediaSession.setActionHandler(
                 action as MediaSessionAction,
                 /* eslint-disable-next-line unicorn/no-null */
                 add ? actionHandlers[action as keyof typeof actionHandlers] ?? null : null
@@ -890,7 +898,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       if (this.currentTime.value <= this.currentItemRuntime.value) {
         const duration = this.currentItemRuntime.value / 1000;
 
-        globalThis.navigator.mediaSession.setPositionState(
+        navigator.mediaSession.setPositionState(
           remove
             ? undefined
             : {

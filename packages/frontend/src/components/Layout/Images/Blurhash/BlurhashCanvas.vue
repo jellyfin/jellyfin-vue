@@ -36,22 +36,24 @@ const error = shallowRef(false);
 const canvasRef = useTemplateRef('canvas');
 
 watch(canvasRef, async () => {
-  if (canvasRef.value) {
-    error.value = false;
+  if (!canvasRef.value) {
+    return;
+  }
 
-    try {
-      const offscreen = canvasRef.value.transferControlToOffscreen();
+  error.value = false;
 
-      await blurhashDrawer.draw(transfer(
-        { canvas: offscreen,
-          hash: hash,
-          width: width,
-          height: height,
-          punch: punch
-        }, [offscreen]));
-    } catch {
-      error.value = true;
-    }
+  try {
+    const offscreen = canvasRef.value.transferControlToOffscreen();
+
+    await blurhashDrawer.draw(transfer(
+      { canvas: offscreen,
+        hash: hash,
+        width: width,
+        height: height,
+        punch: punch
+      }, [offscreen]));
+  } catch {
+    error.value = true;
   }
 });
 </script>

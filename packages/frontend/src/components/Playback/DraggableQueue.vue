@@ -55,10 +55,12 @@ const container = useTemplateRef('container');
  * Destroys the sortable instance
  */
 function destroy(): void {
-  if (sortable) {
-    sortable.destroy();
-    sortable = undefined;
+  if (!sortable) {
+    return;
   }
+
+  sortable.destroy();
+  sortable = undefined;
 }
 
 /**

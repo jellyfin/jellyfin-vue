@@ -46,7 +46,7 @@ const findSubtitle = (dialogue: ParsedSubtitleTrack['dialogue'], start = 0) => {
 };
 
 const dialogue = computed(() => playerElement.currentExternalSubtitleTrack.value?.parsed?.dialogue);
-const currentSubtitle = computed<{ index: number; sub?: Dialogue } | undefined>((previous) => {
+const currentSubtitle = computed<undefined | { index: number; sub?: Dialogue }>((previous) => {
   if (!isNil(dialogue.value)) {
     const hasPrevious = !isNil(previous);
     const nextIndex = hasPrevious ? previous.index + 1 : 0;
@@ -60,7 +60,9 @@ const currentSubtitle = computed<{ index: number; sub?: Dialogue } | undefined>(
 
       if (!isNil(newIndex)) {
         return { index: newIndex, sub: dialogue.value[newIndex] };
-      } else if (hasPrevious) {
+      }
+
+      if (hasPrevious) {
         return { index: previous.index };
       }
     }
@@ -70,9 +72,13 @@ const currentSubtitle = computed<{ index: number; sub?: Dialogue } | undefined>(
 const fontFamily = computed(() => {
   if (subtitleSettings.state.value.fontFamily === 'default') {
     return DEFAULT_TYPOGRAPHY;
-  } else if (subtitleSettings.state.value.fontFamily === 'system') {
+  }
+
+  if (subtitleSettings.state.value.fontFamily === 'system') {
     return 'system-ui';
-  } else if (subtitleSettings.state.value.fontFamily !== 'auto') {
+  }
+
+  if (subtitleSettings.state.value.fontFamily !== 'auto') {
     return subtitleSettings.state.value.fontFamily;
   }
 });

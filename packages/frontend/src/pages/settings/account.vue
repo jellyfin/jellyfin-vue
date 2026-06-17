@@ -194,10 +194,12 @@ async function changePassword() {
 }
 
 watch(selectedUserPicture, async (newVal) => {
-  if (newVal) {
-    await nextTick();
-    await changeUserImage();
+  if (!newVal) {
+    return;
   }
+
+  await nextTick();
+  await changeUserImage();
 });
 
 </script>

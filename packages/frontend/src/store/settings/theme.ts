@@ -56,11 +56,9 @@ class ThemeSettingsStore extends SyncedStore<ThemeSettingsState, 'typography'> {
   public readonly currentTypography = computed(() => {
     if (this._state.value.typography === 'system') {
       return 'system-ui';
-    } else if (this._state.value.typography === 'default') {
-      return DEFAULT_TYPOGRAPHY;
-    } else {
-      return this._state.value.typography;
     }
+
+    return this._state.value.typography === 'default' ? DEFAULT_TYPOGRAPHY : this._state.value.typography;
   });
 
   public constructor() {

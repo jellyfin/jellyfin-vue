@@ -34,9 +34,7 @@ const { loading } = await useApi(getPlaystateApi, methodToExecute, { skipCache: 
 }));
 
 const isPlayed = computed({
-  get() {
-    return item.UserData?.Played;
-  },
+  get: () => item.UserData?.Played,
   set(newValue) {
     methodToExecute.value = newValue ? 'markPlayedItem' : 'markUnplayedItem';
   }

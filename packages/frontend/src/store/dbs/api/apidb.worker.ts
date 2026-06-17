@@ -36,15 +36,17 @@ class ApiDatabase extends BaseDb {
     await this.items.where('Id').anyOf(itemIds).primaryKeys();
 
   private readonly _getRequest = async (cache?: ApiResponse) => {
-    if (cache) {
-      if (cache.ofBaseItem) {
-        const array = await this.getItemsById(cache.ids);
-
-        return cache.wasArray ? array : array[0];
-      }
-
-      return cache.rawResult;
+    if (!cache) {
+      return;
     }
+
+    if (cache.ofBaseItem) {
+      const array = await this.getItemsById(cache.ids);
+
+      return cache.wasArray ? array : array[0];
+    }
+
+    return cache.rawResult;
   };
 
   public readonly getCachedRequest = async (funcName: string, params: string) =>

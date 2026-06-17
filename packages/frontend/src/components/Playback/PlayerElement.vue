@@ -63,7 +63,9 @@ const hls = Hls.isSupported()
 const mediaElementType = computed<'audio' | 'video' | undefined>(() => {
   if (playbackManager.isAudio.value) {
     return 'audio';
-  } else if (playbackManager.isVideo.value) {
+  }
+
+  if (playbackManager.isVideo.value) {
     return 'video';
   }
 });
@@ -81,10 +83,12 @@ const posterUrl = computed(() =>
  * Detaches HLS instance after playback is done
  */
 function detachHls(): void {
-  if (hls) {
-    hls.detachMedia();
-    hls.off(Events.ERROR, onHlsEror);
+  if (!hls) {
+    return;
   }
+
+  hls.detachMedia();
+  hls.off(Events.ERROR, onHlsEror);
 }
 
 /**
@@ -120,16 +124,18 @@ async function attachWebAudio(el: HTMLMediaElement): Promise<void> {
  * Called by the media element when the playback is ready
  */
 async function onLoadedData(): Promise<void> {
-  if (playbackManager.isVideo.value) {
-    if (mediaElementRef.value) {
-      /**
-       * Makes the resume start from the correct time
-       */
-      mediaElementRef.value.currentTime = playbackManager.currentTime.value;
-    }
-
-    await playerElement.applyCurrentSubtitle();
+  if (!playbackManager.isVideo.value) {
+    return;
   }
+
+  if (mediaElementRef.value) {
+    /**
+     * Makes the resume start from the correct time
+     */
+    mediaElementRef.value.currentTime = playbackManager.currentTime.value;
+  }
+
+  await playerElement.applyCurrentSubtitle();
 }
 
 /**

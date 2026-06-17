@@ -85,29 +85,35 @@ onMounted(() => {
  * Handle slide changes
  */
 function onSlideChange(): void {
-  if (swiperInstance.value) {
-    currentIndex.value = swiperInstance.value.realIndex;
-    emit('on-slide-change', currentIndex.value, swiperInstance.value);
+  if (!swiperInstance.value) {
+    return;
   }
+
+  currentIndex.value = swiperInstance.value.realIndex;
+  emit('on-slide-change', currentIndex.value, swiperInstance.value);
 }
 /**
  * Handle touch events
  */
 function onTouch(): void {
-  if (swiperInstance.value) {
-    isPaused.value = !isPaused.value;
-    emit('on-touch', isPaused.value, swiperInstance.value);
+  if (!swiperInstance.value) {
+    return;
   }
+
+  isPaused.value = !isPaused.value;
+  emit('on-touch', isPaused.value, swiperInstance.value);
 }
 
 /**
  * Handle animation end from progress bars
  */
 function onAnimationEnd(): void {
-  if (swiperInstance.value) {
-    swiperInstance.value.allowSlideNext = true;
-    swiperInstance.value.slideNext();
+  if (!swiperInstance.value) {
+    return;
   }
+
+  swiperInstance.value.allowSlideNext = true;
+  swiperInstance.value.slideNext();
 }
 
 /**
