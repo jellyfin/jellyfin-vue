@@ -17,7 +17,7 @@ const defaultConfig = { build: { outDir: 'dist' } };
  */
 export function JBundleAnalysis(): Plugin {
   let mode: LiteralUnion<'analyze:bundle' | 'analyze:cycles', string>;
-  const warnings: Rolldown.RolldownLog = [];
+  const warnings: Rolldown.RolldownLog[] = [];
 
   return {
     name: 'Jellyfin_Vue:bundle_analysis',
@@ -43,10 +43,15 @@ export function JBundleAnalysis(): Plugin {
             }
           }
         };
-      } else if (env.mode === 'analyze:cycles') {
+      }
+
+      if (env.mode === 'analyze:cycles') {
         return {
           build: {
             rolldownOptions: {
+              checks: {
+                circularDependency: true
+              },
               onwarn: (warning) => {
                 if (warning.code === 'CIRCULAR_DEPENDENCY') {
                   warnings.push(warning);
@@ -87,7 +92,7 @@ export function JBundleAnalysis(): Plugin {
 }
 
 /**
- * Creates the Rollup's chunking strategy of the application (for code-splitting)
+ * Creates the Rollup's chunking strategy of the app (for code-splitting)
  */
 export function JBundleChunking(): Plugin {
   return {
@@ -117,7 +122,7 @@ export function JBundleChunking(): Plugin {
                       return;
                     }
 
-                    const packageName = normalizedId.slice(nodeModulesIndex + nodeModulesPrefix.length).split('/')[0];
+                    const packageName = normalizedId.slice(nodeModulesIndex + nodeModulesPrefix.length).split('/', 1)[0];
 
                     if (!packageName) {
                       return;
