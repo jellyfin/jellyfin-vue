@@ -108,6 +108,8 @@ export function getBaseConfig(packageName: string, forceCache = !CI_environment,
          * See https://github.com/jellyfin/jellyfin-vue/pull/2361
          */
         'unicorn/explicit-length-check': 'off',
+        'unicorn/comment-content': 'off',
+        'unicorn/no-top-level-side-effects': 'off',
         '@stylistic/padding-line-between-statements': [
           'error',
           // Always require blank lines after import, except between imports
