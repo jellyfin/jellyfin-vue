@@ -274,6 +274,7 @@
   "numberTracks": "{{number}} tracks",
   "offlineCantDoThisWillRetryWhenOnline": "You can't perform this action because you've lost the connection to the server. It will be retried once it's recovered.",
   "originalTitle": "Original title",
+  "original": "Original",
   "overview": "Overview",
   "parallelImageEncodingLimit": "Parallel Image Encoding Limit",
   "parallelLibraryScanLimit": "Parallel Library Scan limit",

@@ -80,7 +80,7 @@ interface PlaybackManagerState {
   playbackSpeed: number;
   /**
    * Maximum streaming bitrate in bps. When set, the server transcodes the
-   * media source to fit within it. Undefined means automatic (source quality).
+   * media source to fit within it. Undefined means source quality.
    */
   maxStreamingBitrate?: number;
 }
@@ -327,7 +327,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   });
 
   /**
-   * Maximum streaming bitrate in bps. Undefined means automatic (source quality).
+   * Maximum streaming bitrate in bps. Undefined means source quality.
    * Changing this re-requests the playback info, transparently reloading the
    * source at the current playback time.
    */

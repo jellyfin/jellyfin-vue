@@ -104,11 +104,11 @@ const menuModel = defineModel<boolean>();
 const { t } = useTranslation();
 
 /**
- * Streaming quality presets. `0` means automatic (source quality); any other
+ * Streaming quality presets. `0` means source quality; any other
  * value is the maximum streaming bitrate in bps passed to the server.
  */
 const qualityItems = computed(() => [
-  { title: t('auto'), value: 0 },
+  { title: t('original'), value: 0 },
   { title: '1080p - 20 Mbps', value: 20_000_000 },
   { title: '1080p - 10 Mbps', value: 10_000_000 },
   { title: '720p - 8 Mbps', value: 8_000_000 },
