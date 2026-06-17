@@ -22,7 +22,7 @@ import 'uno.css';
 import '#/assets/styles/index.css';
 
 /**
- * - VUE PLUGINS, STORE AND DIRECTIVE -
+ * - Vue.js PLUGINS, STORE AND DIRECTIVE -
  * The order of statements IS IMPORTANT
  */
 const remote = createRemote();
@@ -55,3 +55,15 @@ await document.fonts.ready;
  * MOUNTING POINT
  */
 app.mount(document.body);
+
+/**
+ * DEV-MODE LOGIC
+ */
+if (import.meta.env.DEV) {
+  /* eslint-disable-next-line unicorn/no-lonely-if */
+  if (import.meta.hot) {
+    const { handleHotUpdate } = await import('vue-router/auto-routes');
+
+    handleHotUpdate(router);
+  }
+}
