@@ -305,8 +305,8 @@ importers:
         specifier: catalog:runtime
         version: 3.5.38
       dompurify:
-        specifier: 3.4.9
-        version: 3.4.9
+        specifier: 3.4.10
+        version: 3.4.10
       marked:
         specifier: 18.0.5
         version: 18.0.5
@@ -2475,8 +2475,8 @@ packages:
   dom-accessibility-api@0.6.3:
     resolution: {integrity: sha512-7ZgogeTnjuHbo+ct10G9Ffp0mif17idi0IyWNVA/wcwcm7NPOD/WEHVP3n7n3MhXqxoIYm8d6MuZohYWIZ4T3w==, tarball: https://registry.npmjs.org/dom-accessibility-api/-/dom-accessibility-api-0.6.3.tgz}
 
-  dompurify@3.4.9:
-    resolution: {integrity: sha512-4dPSRMRDqHvs0V4YDFCsaIZo4if5u0xM+llyxiM2fwuZFdKArUBAF3VtI2+n8NKg9P870WMdYk0UhqQNoWXbfQ==, tarball: https://registry.npmjs.org/dompurify/-/dompurify-3.4.9.tgz}
+  dompurify@3.4.10:
+    resolution: {integrity: sha512-0xzNv0e7oYC6yyuOGZIABPM4qtg3QxLFniDNPP4ZP90wR8Yq3zgwpRbrNiT4N3IKqDbbYFEJLV+JWEs19aZ//w==, tarball: https://registry.npmjs.org/dompurify/-/dompurify-3.4.10.tgz}
 
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==, tarball: https://registry.npmjs.org/dunder-proto/-/dunder-proto-1.0.1.tgz}
@@ -4502,7 +4502,7 @@ snapshots:
   '@jellyfin-vue/shared@file:packages/shared':
     dependencies:
       '@vue/shared': 3.5.38
-      dompurify: 3.4.9
+      dompurify: 3.4.10
       marked: 18.0.5
 
   '@jellyfin-vue/tauri-runtime@file:packages/tauri-runtime':
@@ -5930,7 +5930,7 @@ snapshots:
 
   dom-accessibility-api@0.6.3: {}
 
-  dompurify@3.4.9:
+  dompurify@3.4.10:
     optionalDependencies:
       '@types/trusted-types': 2.0.7
 
