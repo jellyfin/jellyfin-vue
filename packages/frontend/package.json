@@ -46,7 +46,7 @@
     "date-fns": "catalog:runtime",
     "defu": "6.1.7",
     "destr": "2.0.5",
-    "dexie": "4.4.3",
+    "dexie": "4.4.4",
     "fast-equals": "6.0.0",
     "hls.js": "1.6.16",
     "i18next": "catalog:runtime",
