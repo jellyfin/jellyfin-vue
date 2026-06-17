@@ -39,7 +39,7 @@
     "eslint-plugin-promise": "7.3.0",
     "eslint-plugin-regexp": "3.1.0",
     "eslint-plugin-sonarjs": "4.0.3",
-    "eslint-plugin-unicorn": "66.0.0",
+    "eslint-plugin-unicorn": "67.0.0",
     "eslint-plugin-vue": "10.9.2",
     "eslint-plugin-vue-scoped-css": "3.1.1",
     "find-up-simple": "catalog:development",
