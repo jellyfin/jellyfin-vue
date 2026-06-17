@@ -210,8 +210,8 @@ importers:
         specifier: 2.0.5
         version: 2.0.5
       dexie:
-        specifier: 4.4.3
-        version: 4.4.3
+        specifier: 4.4.4
+        version: 4.4.4
       fast-equals:
         specifier: 6.0.0
         version: 6.0.0
@@ -2472,8 +2472,8 @@ packages:
       '@modelcontextprotocol/sdk':
         optional: true
 
-  dexie@4.4.3:
-    resolution: {integrity: sha512-N+3IGQ3HPlyO2YAkntGAwitm42BpBGV86MttzUMiRzWLa4NGh0pltVRcUVF4ybL/OnXjCrr9k7SDPIKkFYP2Lg==, tarball: https://registry.npmjs.org/dexie/-/dexie-4.4.3.tgz}
+  dexie@4.4.4:
+    resolution: {integrity: sha512-jIwsYI8Os2hgnqc6O49YwFDKGc5v5QjGx0wPVp543ip1F53VFAKMLthV2pQosQcVTv3eAskTWYspOx195PM0FQ==, tarball: https://registry.npmjs.org/dexie/-/dexie-4.4.4.tgz}
 
   doctypes@1.1.0:
     resolution: {integrity: sha512-LLBi6pEqS6Do3EKQ3J0NqHWV5hhb78Pi8vvESYwyOy2c31ZEZVdtitdzsQsKb7878PEERhzUk0ftqGhG6Mz+pQ==, tarball: https://registry.npmjs.org/doctypes/-/doctypes-1.1.0.tgz}
@@ -4491,7 +4491,7 @@ snapshots:
       date-fns: 4.4.0
       defu: 6.1.7
       destr: 2.0.5
-      dexie: 4.4.3
+      dexie: 4.4.4
       fast-equals: 6.0.0
       hls.js: 1.6.16
       i18next: 26.3.1(typescript@6.0.3)
@@ -5949,7 +5949,7 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  dexie@4.4.3: {}
+  dexie@4.4.4: {}
 
   doctypes@1.1.0: {}
 
