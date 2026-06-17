@@ -78,6 +78,11 @@ interface PlaybackManagerState {
   playbackInitiatorId?: BaseItemDto['Id'];
   playbackInitMode: InitMode;
   playbackSpeed: number;
+  /**
+   * Maximum streaming bitrate in bps. When set, the server transcodes the
+   * media source to fit within it. Undefined means source quality.
+   */
+  maxStreamingBitrate?: number;
 }
 
 /**
@@ -234,6 +239,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
           itemId: this.currentItem.value.Id,
           userId: remote.auth.currentUserId.value,
           autoOpenLiveStream: true,
+          maxStreamingBitrate: this._state.value.maxStreamingBitrate,
           playbackInfoDto: { DeviceProfile: playbackProfile },
           mediaSourceId: this.currentMediaSource.value.Id,
           audioStreamIndex: this._state.value.mediaSourceIndexes.audio,
@@ -317,6 +323,18 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     get: () => this._state.value.playbackSpeed,
     set: (newSpeed: number) => {
       this._state.value.playbackSpeed = newSpeed;
+    }
+  });
+
+  /**
+   * Maximum streaming bitrate in bps. Undefined means source quality.
+   * Changing this re-requests the playback info, transparently reloading the
+   * source at the current playback time.
+   */
+  public readonly maxStreamingBitrate = computed({
+    get: () => this._state.value.maxStreamingBitrate,
+    set: (newBitrate: number | undefined) => {
+      this._state.value.maxStreamingBitrate = newBitrate;
     }
   });
 
@@ -779,7 +797,8 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
         playSessionId: undefined,
         playbackInitiatorId: undefined,
         playbackInitMode: InitMode.Unknown,
-        playbackSpeed: 1
+        playbackSpeed: 1,
+        maxStreamingBitrate: undefined
       })
     });
     /**
