@@ -4,7 +4,6 @@ import {
   createWebHashHistory,
   createWebHistory
 } from 'vue-router';
-import { handleHotUpdate } from 'vue-router/auto-routes';
 import { isStr } from '@jellyfin-vue/shared/validation';
 import { remote } from '../remote/index.ts';
 import { adminGuard } from './middlewares/admin-pages.ts';
@@ -22,9 +21,7 @@ export const router = createRouter({
   /**
    * TODO: Fix this, so it only scrolls to the top once suspense resolves
    */
-  scrollBehavior(_to, _from, savedPosition) {
-    return savedPosition ?? { top: 0 };
-  }
+  scrollBehavior: (_to, _from, savedPosition) => savedPosition ?? { top: 0 }
 });
 
 /**
@@ -76,7 +73,3 @@ watch([
     force: true
   });
 }, { flush: 'sync' });
-
-if (import.meta.hot) {
-  handleHotUpdate(router);
-}
