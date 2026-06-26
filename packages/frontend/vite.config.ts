@@ -70,6 +70,7 @@ export default defineConfig({
       polyfill: false
     },
     reportCompressedSize: false,
+    chunkImportMap: true,
     rolldownOptions: {
       input: {
         splashscreen: resolve(import.meta.dirname, 'src/splashscreen.ts'),
