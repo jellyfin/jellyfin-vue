@@ -32,7 +32,7 @@
   ],
   "dependencies": {
     "@fontsource-variable/figtree": "5.2.10",
-    "@iconify/json": "2.2.487",
+    "@iconify/json": "2.2.491",
     "@jellyfin-vue/i18n": "workspace:*",
     "@jellyfin-vue/shared": "workspace:*",
     "@jellyfin-vue/ui-toolkit": "workspace:*",
@@ -40,7 +40,7 @@
     "@vueuse/core": "catalog:runtime",
     "assjs": "0.1.8",
     "audiomotion-analyzer": "4.5.4",
-    "axios": "1.18.0",
+    "axios": "1.18.1",
     "blurhash": "2.0.5",
     "comlink": "catalog:runtime",
     "date-fns": "catalog:runtime",
@@ -54,7 +54,7 @@
     "libpgs": "0.8.1",
     "sortablejs": "1.15.7",
     "swiper": "12.2.0",
-    "uuid": "14.0.0",
+    "uuid": "14.0.1",
     "vue": "catalog:runtime",
     "vue-router": "5.1.0",
     "vuetify": "catalog:runtime"
