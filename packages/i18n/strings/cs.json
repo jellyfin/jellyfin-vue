@@ -273,6 +273,7 @@
   "notificationsSettingsDescription": "Spravovat a nastavit oznámení posílaná tímto serverem",
   "numberTracks": "{{number}} skladeb",
   "offlineCantDoThisWillRetryWhenOnline": "Tato akce nemůže být provedena, protože bylo ztraceno spojení se serverem. Po obnovení spojení bude proveden další pokus.",
+  "original": "Původní",
   "originalTitle": "Původní název",
   "overview": "Popis",
   "parallelImageEncodingLimit": "Limit paralelního kódování obrázků",
