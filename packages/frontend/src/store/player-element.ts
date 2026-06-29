@@ -130,9 +130,10 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched' |
     ) as SubtitleExternalTrack;
 
     if (this._useCustomSubtitleTrack.value) {
-      const data = await runGenericWorkerFunc('parseVttFile')(el.src);
-
-      el.parsed = data;
+      // when use await this computedAsync values become undefined in several applySubtitle logic
+      runGenericWorkerFunc('parseVttFile')(el.src).then(parsed => {
+        el.parsed = parsed;
+      });
     }
 
     return el;
@@ -206,10 +207,13 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched' |
       const trackSrc = this.currentExternalSubtitleTrack.value.src;
       const subtitleTrackPayload = await this._fetchSubtitleTrack(trackSrc);
 
-      if (subtitleTrackPayload[trackSrc]) {
-        /**
-         * video_width works better with ultrawide monitors
-         */
+      /**
+       * only load when no this._asssub, sometime this method called twice intermediacy with no time to _clear,
+       * even has this._cleanups but same this._asssub instance may have not fully disabled subtitle,
+       * video_width works better with ultrawide monitors
+       * TODO: when change subtitle while player is playing, subtitle will stuck but seeking or playpause will resolve the problem
+       */
+      if (subtitleTrackPayload[trackSrc] && !this._asssub) {
         this._asssub = new ASSSUB(
           subtitleTrackPayload[trackSrc],
           mediaElementRef.value,
