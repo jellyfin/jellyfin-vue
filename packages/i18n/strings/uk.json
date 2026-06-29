@@ -273,6 +273,7 @@
   "notificationsSettingsDescription": "Керувати і конфігурувати сповіщення, надіслані цим сервером",
   "numberTracks": "{{number}} треків",
   "offlineCantDoThisWillRetryWhenOnline": "Ви не можете виконати цю дію, оскільки втратили з'єднання з сервером. Спробу буде повторено, коли з'єднання буде відновлено.",
+  "original": "Оригінал",
   "originalTitle": "Оригінальна назва",
   "overview": "Огляд",
   "parallelImageEncodingLimit": "Обмеження на паралельне кодування зображень",

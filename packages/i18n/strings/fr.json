@@ -273,6 +273,7 @@
   "notificationsSettingsDescription": "Gérer et configurer les notifications envoyées par ce serveur",
   "numberTracks": "{{number}} pistes",
   "offlineCantDoThisWillRetryWhenOnline": "Vous ne pouvez pas effectuer cette action car vous avez perdu la connexion avec le serveur. Elle sera réessayée une fois la connexion rétablie.",
+  "original": "Original",
   "originalTitle": "Titre original",
   "overview": "Synopsis",
   "parallelImageEncodingLimit": "Limite de parallélisation de l'encodage d'image",
