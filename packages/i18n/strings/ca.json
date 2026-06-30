@@ -273,6 +273,7 @@
   "notificationsSettingsDescription": "Administra i configura les notificacions enviades per aquest servidor",
   "numberTracks": "{{number}} pistes",
   "offlineCantDoThisWillRetryWhenOnline": "No podeu realitzar aquesta acció perquè heu perdut la connexió amb el servidor. Es tornarà a provar així que es recuperi.",
+  "original": "Original",
   "originalTitle": "Títol original",
   "overview": "Sinopsi",
   "parallelImageEncodingLimit": "Límit de codificació en paral·lel d'imatges",
