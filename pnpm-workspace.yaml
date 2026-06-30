@@ -21,12 +21,12 @@ allowBuilds:
 
 catalogs:
   runtime:
-    vue: 3.5.38
-    '@vue/shared': 3.5.38
+    vue: 3.5.39
+    '@vue/shared': 3.5.39
     '@vueuse/core': 14.3.0
     comlink: 4.4.2
     date-fns: 4.4.0
-    i18next: 26.3.1
+    i18next: 26.3.3
     i18next-vue: 5.4.0
     vuetify: 3.11.3
   development:
