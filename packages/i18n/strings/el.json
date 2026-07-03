@@ -242,6 +242,7 @@
   "notificationsSettingsDescription": "Διαχειριστείτε και διαμορφώστε την ειδοποίηση που αποστέλλεται από αυτόν τον διακομιστή",
   "numberTracks": "{{number}} κομμάτια",
   "offlineCantDoThisWillRetryWhenOnline": "Δεν μπορείτε να εκτελέσετε αυτήν την ενέργεια επειδή χάσατε τη σύνδεση με τον διακομιστή. Θα ξαναδοκιμαστεί μόλις ανακτηθεί.",
+  "original": "Αρχικό",
   "originalTitle": "Πρωτότυπος τίτλος",
   "overview": "Περίληψη",
   "parentalControl": "Γονικός έλεγχος",
