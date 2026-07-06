@@ -241,7 +241,7 @@ async function readSelectedFileAsBase64(): Promise<string | undefined> {
 
     useEventListener(reader, 'load', () => {
       const result = reader.result as string;
-      const base64FileContent = result.split(',')[1];
+      const base64FileContent = result.split(',', 2)[1];
 
       if (!base64FileContent) {
         reject(new Error('Failed to read file content'));

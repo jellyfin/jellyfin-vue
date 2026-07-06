@@ -36,7 +36,9 @@ function localeTransform(keys: string[], l: string): string | undefined {
     /**
      * Takes the part before the potential hyphen to try, for instance "fr-FR" in i18n to "fr"
      */
-  } else if (testStrings[0] && keys.includes(testStrings[0])) {
+  }
+
+  if (testStrings[0] && keys.includes(testStrings[0])) {
     return `${testStrings[0]} as ${lang}`;
   }
 }

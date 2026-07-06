@@ -59,7 +59,7 @@ export function formatTime(seconds: number): string {
   let minutes = Math.floor(seconds / 60);
   const hours = Math.floor(minutes / 60);
 
-  minutes = minutes - hours * 60;
+  minutes -= hours * 60;
   seconds = Math.floor(seconds - (minutes * 60 + hours * 60 * 60));
 
   return hours

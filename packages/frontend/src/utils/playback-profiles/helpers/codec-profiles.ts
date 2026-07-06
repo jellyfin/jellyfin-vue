@@ -188,7 +188,7 @@ export function getCodecProfiles(
       || videoTestElement
         .canPlayType('video/mp4; codecs="avc1.6e0033"')
         .replace(/no/, '')) // TODO: These tests are passing in Safari, but playback is failing
-        && (!isApple() || !isWebOS() || !(isEdge() && !isChromiumBased()))
+        && (!isApple() || !isWebOS() || !isEdge() || isChromiumBased())
   ) {
     h264Profiles += '|high 10';
   }

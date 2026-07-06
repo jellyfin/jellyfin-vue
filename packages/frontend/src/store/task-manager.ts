@@ -109,37 +109,37 @@ class TaskManagerStore extends CommonStore<TaskManagerState, 'tasks'> {
      * Handle refresh progress update for library items
      */
     const refreshProgressAction = async (type: string, data: object) => {
-      if (
-        type === 'RefreshProgress'
+      if (!(type === 'RefreshProgress'
         && 'ItemId' in data
         && isStr(data.ItemId)
-        && 'Progress' in data
-      ) {
-        // TODO: Verify all the different tasks that this message may belong to - here we assume libraries.
+        && 'Progress' in data)) {
+        return;
+      }
 
-        const progress = Number(data.Progress);
-        const taskPayload = this.getTask(data.ItemId);
+      // TODO: Verify all the different tasks that this message may belong to - here we assume libraries.
 
-        /**
-         * Start task if update its received and it doesn't exist in the store.
-         * Usually when a running task is started somewhere else and the client is accssed later
-         */
-        if (isNil(taskPayload)) {
-          const item = await apiStore.getItemById(data.ItemId);
+      const progress = Number(data.Progress);
+      const taskPayload = this.getTask(data.ItemId);
 
-          if (item?.Id && item.Name) {
-            this.startTask({
-              type: TaskType.LibraryRefresh,
-              id: item.Id,
-              data: item.Name,
-              progress
-            });
-          }
-        } else if (progress >= 0 && progress < 100) {
-          taskPayload.progress = progress;
-        } else if (progress >= 0) {
-          this.finishTask(data.ItemId);
+      /**
+       * Start task if update its received and it doesn't exist in the store.
+       * Usually when a running task is started somewhere else and the client is accssed later
+       */
+      if (isNil(taskPayload)) {
+        const item = await apiStore.getItemById(data.ItemId);
+
+        if (item?.Id && item.Name) {
+          this.startTask({
+            type: TaskType.LibraryRefresh,
+            id: item.Id,
+            data: item.Name,
+            progress
+          });
         }
+      } else if (progress >= 0 && progress < 100) {
+        taskPayload.progress = progress;
+      } else if (progress >= 0) {
+        this.finishTask(data.ItemId);
       }
     };
     /**

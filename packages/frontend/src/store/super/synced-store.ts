@@ -84,28 +84,30 @@ export abstract class SyncedStore<
    * Updates CustomPrefs by merging passed in value with existing custom prefs
    */
   private readonly _updateState = async (): Promise<void> => {
-    if (remote.auth.currentUser.value) {
-      /**
-       * Creates a config syncing task, so UI can show that there's a syncing in progress
-       */
-      const syncTaskId = taskManager.startConfigSync();
+    if (!remote.auth.currentUser.value) {
+      return;
+    }
 
-      try {
-        const newPrefs: DisplayPreferencesDto['CustomPrefs'] = {};
+    /**
+     * Creates a config syncing task, so UI can show that there's a syncing in progress
+     */
+    const syncTaskId = taskManager.startConfigSync();
 
-        for (const key of this._syncedKeys) {
-          newPrefs[String(key)] = this._serializeCustomPref(this._state.value[key]);
-        }
+    try {
+      const newPrefs: DisplayPreferencesDto['CustomPrefs'] = {};
 
-        const displayPreferences = await this._fetchDisplayPreferences();
-
-        displayPreferences.CustomPrefs = newPrefs;
-        await this._updateDisplayPreferences(displayPreferences);
-      } catch {
-        useSnackbar(i18next.t('failedSyncingUserSettings'), 'error');
-      } finally {
-        taskManager.finishTask(syncTaskId);
+      for (const key of this._syncedKeys) {
+        newPrefs[String(key)] = this._serializeCustomPref(this._state.value[key]);
       }
+
+      const displayPreferences = await this._fetchDisplayPreferences();
+
+      displayPreferences.CustomPrefs = newPrefs;
+      await this._updateDisplayPreferences(displayPreferences);
+    } catch {
+      useSnackbar(i18next.t('failedSyncingUserSettings'), 'error');
+    } finally {
+      taskManager.finishTask(syncTaskId);
     }
   };
 

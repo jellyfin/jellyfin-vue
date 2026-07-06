@@ -153,12 +153,14 @@ export function JBundleChunking(): Plugin {
                    * Split i18next resources into separate chunks
                    */
                   name: (id) => {
-                    if (id.includes('virtual:') || id.includes('i18next/resources')) {
-                      const targetPath = basename(id.split('/').at(-1)!);
-                      const isIndex = targetPath === 'resources';
-
-                      return isIndex ? 'localization' : `localization/strings/${targetPath}`;
+                    if (!(id.includes('virtual:') || id.includes('i18next/resources'))) {
+                      return;
                     }
+
+                    const targetPath = basename(id.split('/').at(-1)!);
+                    const isIndex = targetPath === 'resources';
+
+                    return isIndex ? 'localization' : `localization/strings/${targetPath}`;
                   },
                   priority: 8
                 }

@@ -16,21 +16,21 @@ class RemotePluginSocket {
    * == STATE ==
    */
   private readonly _socketUrl = computed(() => {
-    if (
-      auth.currentUserToken.value
+    if (!(auth.currentUserToken.value
       && auth.currentServer.value
       && sdk.deviceInfo.id
-      && sdk.api?.basePath
-    ) {
-      const socketParameters = new URLSearchParams({
-        api_key: auth.currentUserToken.value,
-        deviceId: sdk.deviceInfo.id
-      }).toString();
-
-      return `${sdk.api.basePath}/socket?${socketParameters}`
-        .replace('https:', 'wss:')
-        .replace('http:', 'ws:');
+      && sdk.api?.basePath)) {
+      return;
     }
+
+    const socketParameters = new URLSearchParams({
+      api_key: auth.currentUserToken.value,
+      deviceId: sdk.deviceInfo.id
+    }).toString();
+
+    return `${sdk.api.basePath}/socket?${socketParameters}`
+      .replace('https:', 'wss:')
+      .replace('http:', 'ws:');
   });
 
   private readonly _keepAliveMessage = 'KeepAlive';

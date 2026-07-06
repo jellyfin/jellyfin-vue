@@ -27,7 +27,7 @@ useResizeObserver(el, (entries) => {
     const entry = entries[0];
 
     height.value = toPx(entry!.contentRect.height);
-  });
+  }, 0);
 });
 
 useLayoutStyle(() => ({ 'padding-bottom': height.value }));

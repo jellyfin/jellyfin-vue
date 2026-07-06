@@ -43,7 +43,7 @@ export function getBaseConfig(packageName: string, forceCache = !CI_environment,
       console.log(`[@jellyfin-vue/configs/lint] (${packageName}) Force enabling caching for this run`);
     }
 
-    if (warningAsErrors && !newArgs.some(arg => arg.includes('--max-warnings'))) {
+    if (warningAsErrors && newArgs.every(arg => !arg.includes('--max-warnings'))) {
       newArgs.push('--max-warnings=0');
       console.log(`[@jellyfin-vue/configs/lint] (${packageName}) Force enabling warnings for this run`);
     }
