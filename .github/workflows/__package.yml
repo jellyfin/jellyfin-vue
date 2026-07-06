@@ -69,7 +69,7 @@ jobs:
           check-latest: true
 
       - name: Setup Rust Toolchain and cache 🦀
-        uses: actions-rust-lang/setup-rust-toolchain@46268bd060767258de96ed93c1251119784f2ab6 # v1.16.1
+        uses: actions-rust-lang/setup-rust-toolchain@166cdcfd11aee3cb47222f9ddb555ce30ddb9659 # v1.17.0
         with:
           cache-key: tauri-${{ runner.os }}
           cache-workspaces: ${{ env.WORKING_DIR }}
@@ -95,7 +95,7 @@ jobs:
           path: ${{ env.WORKING_DIR }}/${{ env.ARTIFACTS_PATH }}
 
       - name: Create provenance attestation 🔏
-        uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26 # v4.1.0
+        uses: actions/attest@a1948c3f048ba23858d222213b7c278aabede763 # v4.1.1
         continue-on-error: true
         with:
           subject-name: ${{ env.ARTIFACT_NAME }}
@@ -213,16 +213,16 @@ jobs:
           show-progress: false
 
       - name: Configure QEMU ⚙️
-        uses: docker/setup-qemu-action@06116385d9baf250c9f4dcb4858b16962ea869c3 # v4.1.0
+        uses: docker/setup-qemu-action@96fe6ef7f33517b61c61be40b68a1882f3264fb8 # v4.2.0
 
       - name: Configure Docker Buildx ⚙️
-        uses: docker/setup-buildx-action@d7f5e7f509e45cec5c76c4d5afdd7de93d0b3df5 # v4.1.0
+        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
         with:
           cleanup: false
           version: latest
 
       - name: Build images 🛠️
-        uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf # v7.2.0
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
         id: image
         with:
           context: .
@@ -256,7 +256,7 @@ jobs:
             /tmp/${{ env.REGISTRY_IMAGE }}/cache/${{ matrix.platform }}
 
       - name: Create provenance attestation 🔏
-        uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26 # v4.1.0
+        uses: actions/attest@a1948c3f048ba23858d222213b7c278aabede763 # v4.1.1
         continue-on-error: true
         with:
           subject-name: ${{ env.ARTIFACT_NAME }}
@@ -292,7 +292,7 @@ jobs:
           path: dist
 
       - name: Create provenance attestation 🔏
-        uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26 # v4.1.0
+        uses: actions/attest@a1948c3f048ba23858d222213b7c278aabede763 # v4.1.1
         continue-on-error: true
         with:
           subject-name: ${{ env.ARTIFACT_NAME }}
@@ -321,29 +321,29 @@ jobs:
           show-progress: false
 
       - name: Configure QEMU ⚙️
-        uses: docker/setup-qemu-action@06116385d9baf250c9f4dcb4858b16962ea869c3 # v4.1.0
+        uses: docker/setup-qemu-action@96fe6ef7f33517b61c61be40b68a1882f3264fb8 # v4.2.0
 
       - name: Configure Docker Buildx ⚙️
-        uses: docker/setup-buildx-action@d7f5e7f509e45cec5c76c4d5afdd7de93d0b3df5 # v4.1.0
+        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
         with:
           cleanup: false
           version: latest
 
       - name: Login to Docker Hub 🔑
-        uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee # v4.2.0
+        uses: docker/login-action@af1e73f918a031802d376d3c8bbc3fe56130a9b0 # v4.4.0
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Login to GitHub Container Registry 🔑
-        uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee # v4.2.0
+        uses: docker/login-action@af1e73f918a031802d376d3c8bbc3fe56130a9b0 # v4.4.0
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.JF_BOT_TOKEN }}
 
       - name: Create multiplatform image ${{ inputs.push && 'and push 🛠️⬆️' || '🛠️' }} 
-        uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf # v7.2.0
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
         id: image
         with:
           context: .
