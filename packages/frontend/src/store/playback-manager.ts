@@ -9,7 +9,9 @@ import {
   ItemFilter,
   ItemSortBy,
   MediaStreamType,
-  type BaseItemDto
+  SubtitleDeliveryMethod,
+  type BaseItemDto,
+  type MediaStream
 } from '@jellyfin/sdk/lib/generated-client';
 import { getInstantMixApi } from '@jellyfin/sdk/lib/utils/api/instant-mix-api';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
@@ -31,6 +33,7 @@ import { msToTicks } from '#/utils/time.ts';
 import { mediaControls, mediaElementRef } from '#/store/index.ts';
 import { CommonStore } from '#/store/super/common-store.ts';
 import { runGenericWorkerFunc } from '#/plugins/workers/index.ts';
+import RemotePluginAuthInstance from '../plugins/remote/auth';
 
 /**
  * == INTERFACES AND TYPES ==
@@ -149,7 +152,21 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   );
 
   public readonly currentMediaSourceIndex = computed(() => this._state.value.mediaSourceIndexes.source);
-  public readonly currentMediaSource = computed(() => this.currentItem.value?.MediaSources?.[this.currentMediaSourceIndex.value ?? 0]);
+  public readonly currentMediaSource = computed(() => {
+    /**
+     * DeliveryMethod and DeliveryUrl props for MediaStream type Subtitle,
+     * this manual properties building for that currentItemParsedSubtitleTracks from player-elements required.
+     */
+    const ApiKey = RemotePluginAuthInstance.currentUserToken.value;
+    const mediaSource = this.currentItem.value?.MediaSources?.[this.currentMediaSourceIndex.value ?? 0];
+    !isNil(mediaSource) && Array.isArray(mediaSource.MediaStreams) && mediaSource.MediaStreams.map((Stream: MediaStream, Index: number) => {
+      return Stream.Type === MediaStreamType.Subtitle && !isNil(ApiKey) ? Object.assign(Stream, {
+        DeliveryMethod: SubtitleDeliveryMethod.External,
+        DeliveryUrl: `/Videos/${mediaSource?.Id}/${mediaSource?.Id}/Subtitles/${Index}/0/Stream.${Stream.Codec}?ApiKey=${ApiKey}`
+      }) : Stream;
+    });
+    return mediaSource;
+  });
   public readonly currentVideoTrack = computed({
     get: () => {
       if (!isNil(this._state.value.mediaSourceIndexes.video)
@@ -178,16 +195,34 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     set: (newIndex: number) => this._state.value.mediaSourceIndexes.audio = newIndex
   });
 
+  /**
+   * Returning index from filtered subtitle only MediaStreams,
+   * based 3 different stream array [video, audio, subtitle] perspective mediaSourceIndexes = 2,
+   * but filtered subtitle will be Index = 0 because only one subtitle available,
+   * for srcIndex from currentItemParsedSubtitleTracks player-elements equals to.
+   * and check not -1 srcIndex for disabled subtitle implemented in <SubtitleSelectionButton />
+   */
   public readonly currentSubtitleTrack = computed({
     get: () => {
-      if (!isNil(this._state.value.mediaSourceIndexes.subtitle)
-      ) {
-        return this.currentMediaSource.value?.MediaStreams?.find(
-          stream =>
-            stream.Type === MediaStreamType.Subtitle
-            && stream.Index === this._state.value.mediaSourceIndexes.subtitle
-        );
+      const currentSubtitleItems = this.currentMediaSource.value?.MediaStreams?.filter((Stream: MediaStream) => Stream.Type === MediaStreamType.Subtitle);
+      if(!isNil(currentSubtitleItems) && Array.isArray(currentSubtitleItems)) {
+        const subtitleTrack = currentSubtitleItems
+        .filter((Stream: MediaStream, Index: number) => {
+          if(!isNil(this._state.value.mediaSourceIndexes.subtitle) && this._state.value.mediaSourceIndexes.subtitle >= 0) {
+            return Index === this._state.value.mediaSourceIndexes.subtitle;
+          }
+          // or default true when undefined,
+          // TODO: when play from continue watching, this._state.value.mediaSourceIndexes.subtitle will be undefined,
+          // needed default value example by user config when there was avaliable
+          return isNil(this._state.value.mediaSourceIndexes.subtitle);
+        })
+        .map((Stream: MediaStream, Index: number) => {
+          Stream.Index = Index;
+          return Stream;
+        });
+        return Array.isArray(subtitleTrack) && subtitleTrack.length ? subtitleTrack.shift() : { Index: -1 };
       }
+      return { Index: -1 };
     },
     set: (newIndex: number) => this._state.value.mediaSourceIndexes.subtitle = newIndex
   });
