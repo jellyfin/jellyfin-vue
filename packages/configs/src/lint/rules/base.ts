@@ -110,6 +110,8 @@ export function getBaseConfig(packageName: string, forceCache = !CI_environment,
         'unicorn/explicit-length-check': 'off',
         'unicorn/comment-content': 'off',
         'unicorn/no-top-level-side-effects': 'off',
+        'unicorn/name-replacements': 'off',
+        'unicorn/consistent-boolean-name': 'off',
         '@stylistic/padding-line-between-statements': [
           'error',
           // Always require blank lines after import, except between imports

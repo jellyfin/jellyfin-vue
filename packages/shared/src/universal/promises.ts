@@ -11,11 +11,14 @@ export class PromiseQueue {
     return new Promise<T>((resolve, reject) => {
       const run = () => {
         this.activeCount++;
-        /* eslint-disable promise/prefer-await-to-then, promise/catch-or-return */
-        task()
-          .then(resolve)
-          .catch(reject)
-          .finally(() => {
+        void (async () => {
+          try {
+            const result = await task();
+
+            resolve(result);
+          } catch (error) {
+            reject(error instanceof Error ? error : new Error(String(error)));
+          } finally {
             this.activeCount--;
 
             const next = this.queue.shift();
@@ -23,8 +26,8 @@ export class PromiseQueue {
             if (next) {
               next();
             }
-          });
-        /* eslint-enable promise/prefer-await-to-then, promise/catch-or-return */
+          }
+        })();
       };
 
       if (this.activeCount < this.concurrency) {
