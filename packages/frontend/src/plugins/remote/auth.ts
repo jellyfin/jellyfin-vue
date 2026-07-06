@@ -228,16 +228,18 @@ class RemotePluginAuth extends BaseState<AuthState> {
    * Refreshes the current user infos, to fetch a new picture for instance
    */
   public readonly refreshCurrentUserInfo = async (): Promise<void> => {
-    if (!isNil(this.currentUser.value) && !isNil(this.currentServer.value)) {
-      const api = useOneTimeAPI(
-        this.currentServer.value.PublicAddress,
-        this.currentUserToken.value
-      );
-
-      this._state.value.users[this._state.value.currentUserIndex] = (
-        await getUserApi(api).getCurrentUser()
-      ).data;
+    if (isNil(this.currentUser.value) || isNil(this.currentServer.value)) {
+      return;
     }
+
+    const api = useOneTimeAPI(
+      this.currentServer.value.PublicAddress,
+      this.currentUserToken.value
+    );
+
+    this._state.value.users[this._state.value.currentUserIndex] = (
+      await getUserApi(api).getCurrentUser()
+    ).data;
   };
 
   private readonly _refreshServers = async (): Promise<void> => {
@@ -256,7 +258,7 @@ class RemotePluginAuth extends BaseState<AuthState> {
    * @param skipRequest - Skips the request and directly removes the user from the store
    */
   public readonly logoutCurrentUser = async (skipRequest = false): Promise<void> => {
-    if (!(!isNil(this.currentUser.value) && !isNil(this.currentServer.value))) {
+    if (isNil(this.currentUser.value) || isNil(this.currentServer.value)) {
       return;
     }
 

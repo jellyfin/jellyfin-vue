@@ -196,31 +196,31 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched' |
    * Applies SSA (SubStation Alpha) subtitles to the media element.
    */
   private readonly _applySsaSubtitles = async (): Promise<void> => {
-    if (
-      mediaElementRef.value
+    if (!(mediaElementRef.value
       && this.currentExternalSubtitleTrack.value
-      && (mediaElementRef.value instanceof HTMLVideoElement)
-    ) {
-      this._clear();
+      && (mediaElementRef.value instanceof HTMLVideoElement))) {
+      return;
+    }
 
-      const trackSrc = this.currentExternalSubtitleTrack.value.src;
-      const subtitleTrackPayload = await this._fetchSubtitleTrack(trackSrc);
+    this._clear();
 
-      if (subtitleTrackPayload[trackSrc]) {
-        /**
-         * video_width works better with ultrawide monitors
-         */
-        this._asssub = new ASSSUB(
-          subtitleTrackPayload[trackSrc],
-          mediaElementRef.value,
-          { resampling: 'video_width' }
-        );
+    const trackSrc = this.currentExternalSubtitleTrack.value.src;
+    const subtitleTrackPayload = await this._fetchSubtitleTrack(trackSrc);
 
-        this._cleanups.add(() => {
-          this._asssub?.destroy();
-          this._asssub = undefined;
-        });
-      }
+    if (subtitleTrackPayload[trackSrc]) {
+      /**
+       * video_width works better with ultrawide monitors
+       */
+      this._asssub = new ASSSUB(
+        subtitleTrackPayload[trackSrc],
+        mediaElementRef.value,
+        { resampling: 'video_width' }
+      );
+
+      this._cleanups.add(() => {
+        this._asssub?.destroy();
+        this._asssub = undefined;
+      });
     }
   };
 
@@ -253,19 +253,19 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched' |
    * Applies VTT (WebVTT) subtitles to the media element.
    */
   private readonly _applyVttSubtitles = () => {
-    if (
-      mediaElementRef.value
-      && this.currentExternalSubtitleTrack.value
-    ) {
-      const subtitleTrack = this.currentExternalSubtitleTrack.value;
+    if (!(mediaElementRef.value
+      && this.currentExternalSubtitleTrack.value)) {
+      return;
+    }
 
-      /**
-       * Check if client is able to display custom subtitle track
-       * otherwise show default subtitle track
-       */
-      if (!this._useCustomSubtitleTrack.value && !isNil(mediaElementRef.value.textTracks[subtitleTrack.srcIndex])) {
-        mediaElementRef.value.textTracks[subtitleTrack.srcIndex].mode = 'showing';
-      }
+    const subtitleTrack = this.currentExternalSubtitleTrack.value;
+
+    /**
+     * Check if client is able to display custom subtitle track
+     * otherwise show default subtitle track
+     */
+    if (!this._useCustomSubtitleTrack.value && !isNil(mediaElementRef.value.textTracks[subtitleTrack.srcIndex])) {
+      mediaElementRef.value.textTracks[subtitleTrack.srcIndex].mode = 'showing';
     }
   };
 

@@ -498,12 +498,14 @@ export async function getItemSeasonDownloadMap(
     ).data.Items ?? [];
 
   for (const episode of episodes) {
-    if (episode.Id && !isNil(episode.Name)) {
-      const url = getItemDownloadUrl(episode.Id);
+    if (!episode.Id || isNil(episode.Name)) {
+      continue;
+    }
 
-      if (url) {
-        result.set(episode.Name, url);
-      }
+    const url = getItemDownloadUrl(episode.Id);
+
+    if (url) {
+      result.set(episode.Name, url);
     }
   }
 
@@ -529,11 +531,13 @@ export async function getItemSeriesDownloadMap(
     ).data.Items ?? [];
 
   for (const season of seasons) {
-    if (season.Id) {
-      const map = await getItemSeasonDownloadMap(season.Id);
-
-      result = new Map([...result, ...map]);
+    if (!season.Id) {
+      continue;
     }
+
+    const map = await getItemSeasonDownloadMap(season.Id);
+
+    result = new Map([...result, ...map]);
   }
 
   return result;

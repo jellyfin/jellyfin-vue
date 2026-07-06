@@ -47,24 +47,26 @@ const findSubtitle = (dialogue: ParsedSubtitleTrack['dialogue'], start = 0) => {
 
 const dialogue = computed(() => playerElement.currentExternalSubtitleTrack.value?.parsed?.dialogue);
 const currentSubtitle = computed<undefined | { index: number; sub?: Dialogue }>((previous) => {
-  if (!isNil(dialogue.value)) {
-    const hasPrevious = !isNil(previous);
-    const nextIndex = hasPrevious ? previous.index + 1 : 0;
-    const isNext = hasPrevious && predicate(dialogue.value[nextIndex]);
-    const isCurrent = hasPrevious && predicate(dialogue.value[previous.index]);
+  if (isNil(dialogue.value)) {
+    return;
+  }
 
-    if (isCurrent) {
-      return previous;
-    } else {
-      const newIndex = isNext ? nextIndex : findSubtitle(dialogue.value, nextIndex);
+  const hasPrevious = !isNil(previous);
+  const nextIndex = hasPrevious ? previous.index + 1 : 0;
+  const isNext = hasPrevious && predicate(dialogue.value[nextIndex]);
+  const isCurrent = hasPrevious && predicate(dialogue.value[previous.index]);
 
-      if (!isNil(newIndex)) {
-        return { index: newIndex, sub: dialogue.value[newIndex] };
-      }
+  if (isCurrent) {
+    return previous;
+  } else {
+    const newIndex = isNext ? nextIndex : findSubtitle(dialogue.value, nextIndex);
 
-      if (hasPrevious) {
-        return { index: previous.index };
-      }
+    if (!isNil(newIndex)) {
+      return { index: newIndex, sub: dialogue.value[newIndex] };
+    }
+
+    if (hasPrevious) {
+      return { index: previous.index };
     }
   }
 });

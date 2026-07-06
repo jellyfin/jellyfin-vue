@@ -217,19 +217,21 @@ const visibleItems = computed<InternalItem[]>((previous) => {
 const visibleItemsLength = computed(() => visibleItems.value.length);
 const scrollParents = computed(() => rootRef.value && getScrollParents(rootRef.value));
 const scrollTargets = computed(() => {
-  if (scrollParents.value) {
-    const { vertical, horizontal } = scrollParents.value;
-
-    /**
-     * If the scrolling parent is the doc root, use window instead as using
-     * document root might not work properly.
-     */
-    return (
-      vertical === horizontal ? [vertical] : [vertical, horizontal]
-    ).map(parent =>
-      (parent === document.documentElement ? globalThis : parent)
-    );
+  if (!scrollParents.value) {
+    return;
   }
+
+  const { vertical, horizontal } = scrollParents.value;
+
+  /**
+   * If the scrolling parent is the doc root, use window instead as using
+   * document root might not work properly.
+   */
+  return (
+    vertical === horizontal ? [vertical] : [vertical, horizontal]
+  ).map(parent =>
+    (parent === document.documentElement ? globalThis : parent)
+  );
 });
 
 /**
@@ -263,10 +265,12 @@ const populateCache = (() => {
      * old data might be pushed instead, so we avoid it here.
      */
     globalThis.requestAnimationFrame(() => {
-      if (cache.size !== 0) {
-        cache.set(offset, values);
-        workerUpdates.value++;
+      if (cache.size === 0) {
+        return;
       }
+
+      cache.set(offset, values);
+      workerUpdates.value++;
     });
   }
 
@@ -278,28 +282,29 @@ const populateCache = (() => {
    * to the worker when scrolling fast. We cache 2 times the buffer length
    */
   return function (): void {
-    if (!isUndef(resizeMeasurement.value)
+    if (!(!isUndef(resizeMeasurement.value)
       && Number.isFinite(bufferLength.value)
-      && Number.isFinite(bufferOffset.value)
-    ) {
-      const area = bufferLength.value * 2;
-      const start = Math.max(1, bufferOffset.value - area);
-      const finish = bufferOffset.value + area;
+      && Number.isFinite(bufferOffset.value))) {
+      return;
+    }
 
-      /**
-       * We always populate 0 first, so there's no blank space shown at the beginning
-       * or when scrolling to top after a resize in the bottom area.
-       */
-      if (!cache.has(0)) {
-        void setCache(0);
-      }
+    const area = bufferLength.value * 2;
+    const start = Math.max(1, bufferOffset.value - area);
+    const finish = bufferOffset.value + area;
 
-      for (let i = finish; i >= start && !cache.has(i); i--) {
-      /**
-       * Fire all the operations concurrently, no need to await them
-       */
-        void setCache(i);
-      }
+    /**
+     * We always populate 0 first, so there's no blank space shown at the beginning
+     * or when scrolling to top after a resize in the bottom area.
+     */
+    if (!cache.has(0)) {
+      void setCache(0);
+    }
+
+    for (let i = finish; i >= start && !cache.has(i); i--) {
+    /**
+     * Fire all the operations concurrently, no need to await them
+     */
+      void setCache(i);
     }
   };
 })();
@@ -315,16 +320,18 @@ useEventListener(scrollTargets, 'scroll', () => {
  * Tracks if the scroll must be pointed at an specific element
  */
 watch(() => scrollTo, () => {
-  if (!isNil(rootRef.value)
+  if (!(!isNil(rootRef.value)
     && !isUndef(scrollTo)
     && !isUndef(resizeMeasurement.value)
     && !isNil(scrollParents.value)
     && scrollTo > 0
-    && scrollTo < itemsLength.value) {
-    const { target, top, left } = getScrollToInfo(scrollParents.value, rootRef.value, resizeMeasurement.value, scrollTo);
-
-    target.scrollTo({ top, left, behavior: 'smooth' });
+    && scrollTo < itemsLength.value)) {
+    return;
   }
+
+  const { target, top, left } = getScrollToInfo(scrollParents.value, rootRef.value, resizeMeasurement.value, scrollTo);
+
+  target.scrollTo({ top, left, behavior: 'smooth' });
 });
 
 /**

@@ -16,7 +16,7 @@ export default defineConfig(
         }
       },
       // Don't minify for debug builds
-      ...(process.env.TAURI_ENV_DEBUG ? { minify: false } : {}),
+      ...(process.env.TAURI_ENV_DEBUG && { minify: false }),
       // Produce sourcemaps for debug builds
       sourcemap: !!process.env.TAURI_ENV_DEBUG
     },
@@ -24,7 +24,7 @@ export default defineConfig(
     // Tauri expects a fixed port, fail if that port is not available
       strictPort: true,
       // if the host Tauri is expecting is set, use it
-      ...(host ? { host } : {})
+      ...(host && { host })
     },
     // Env variables starting with the item of `envPrefix` will be exposed in tauri's source code through `import.meta.env`.
     envPrefix: ['VITE_', 'TAURI_ENV_*']

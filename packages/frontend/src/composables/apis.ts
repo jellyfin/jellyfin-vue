@@ -288,7 +288,7 @@ function setupEffects<T extends Record<K, (...args: any[]) => any>, K extends ke
         /**
          * Does a deep comparison to avoid useless double requests
          */
-        if (!normalizedArgs.every((a, index) => deepEqual(a, toValue(old[index])))) {
+        if (normalizedArgs.some((a, index) => !deepEqual(a, toValue(old[index])))) {
           argsRef.value = normalizedArgs;
           await runNormally();
         }

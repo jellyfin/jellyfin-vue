@@ -259,11 +259,9 @@ export function getTSVueConfig(enableVue = true, tsconfigRootDir = import.meta.d
       ...langOptions,
       parserOptions: {
         ...sharedParserOptions,
-        ...(enableVue
-          ? {
-              extraFileExtensions: ['.vue']
-            }
-          : {})
+        ...(enableVue && {
+          extraFileExtensions: ['.vue']
+        })
       }
     }
   };

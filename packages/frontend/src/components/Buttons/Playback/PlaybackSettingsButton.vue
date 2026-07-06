@@ -171,12 +171,14 @@ const validationRules = [
  * Set one of the objects on Combobox's blur
  */
 function onFocus(e: boolean): void {
-  if (!e) {
-    const playbackSpeedIndex = defaultPlaybackSpeeds.indexOf(playbackManager.playbackSpeed.value);
+  if (e) {
+    return;
+  }
 
-    if (playbackSpeedIndex !== -1) {
-      _playbackSpeed.value = playbackItems.value[playbackSpeedIndex];
-    }
+  const playbackSpeedIndex = defaultPlaybackSpeeds.indexOf(playbackManager.playbackSpeed.value);
+
+  if (playbackSpeedIndex !== -1) {
+    _playbackSpeed.value = playbackItems.value[playbackSpeedIndex];
   }
 }
 </script>

@@ -535,30 +535,34 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   };
 
   public readonly setNewQueue = (queue: string[]): void => {
-    if (this.currentItemId.value) {
-      const newIndex = queue.indexOf(this.currentItemId.value);
-
-      this._state.value.queue = queue;
-      this._state.value.currentItemIndex = newIndex;
+    if (!this.currentItemId.value) {
+      return;
     }
+
+    const newIndex = queue.indexOf(this.currentItemId.value);
+
+    this._state.value.queue = queue;
+    this._state.value.currentItemIndex = newIndex;
   };
 
   public readonly changeItemPosition = (
     itemId: string | undefined,
     newIndex: number
   ): void => {
-    if (itemId && this.queueHasItem(itemId)) {
-      const newQueue = this._state.value.queue.filter(id => id !== itemId);
-
-      newQueue.splice(newIndex, 0, itemId);
-      this.setNewQueue(newQueue);
+    if (!(itemId && this.queueHasItem(itemId))) {
+      return;
     }
+
+    const newQueue = this._state.value.queue.filter(id => id !== itemId);
+
+    newQueue.splice(newIndex, 0, itemId);
+    this.setNewQueue(newQueue);
   };
 
   public readonly stop = (): void => {
-    const sessionId = String(this._state.value.playSessionId ?? '');
+    const sessionId = (this._state.value.playSessionId ?? '');
     const time = Number(this.currentTime.value);
-    const itemId = String(this.currentItem.value?.Id ?? '');
+    const itemId = (this.currentItem.value?.Id ?? '');
     const volume = Number(this.currentVolume.value);
 
     this._reset();

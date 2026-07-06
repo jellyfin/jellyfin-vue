@@ -211,30 +211,32 @@ const displayName = computed(() => {
   return selectedMediaSource.value?.Name ?? t('mediaInfo');
 });
 const generalProperties = computed(() => {
-  if (selectedMediaSource.value) {
-    const p = new Map<string, string | number | boolean | null | undefined>();
-    const formats
-      = isArray(selectedMediaSource.value.Formats)
-        && selectedMediaSource.value.Formats.length
-        ? selectedMediaSource.value.Formats.join(',')
-        : undefined;
-    const fileSize = isNumber(selectedMediaSource.value.Size)
-      ? formatFileSize(selectedMediaSource.value.Size)
-      : undefined;
-    const bitrate
-      = isNumber(selectedMediaSource.value.Bitrate)
-        && selectedMediaSource.value.Bitrate > 0
-        ? formatBitRate(selectedMediaSource.value.Bitrate)
-        : undefined;
-
-    p.set(t('mediaInfoFileContainer'), selectedMediaSource.value.Container);
-    p.set(t('mediaInfoFileFormats'), formats);
-    p.set(t('mediaInfoFilePath'), selectedMediaSource.value.Path);
-    p.set(t('mediaInfoFileSize'), fileSize);
-    p.set(t('mediaInfoGenericBitrate'), bitrate);
-
-    return p.entries();
+  if (!selectedMediaSource.value) {
+    return;
   }
+
+  const p = new Map<string, string | number | boolean | null | undefined>();
+  const formats
+    = isArray(selectedMediaSource.value.Formats)
+      && selectedMediaSource.value.Formats.length
+      ? selectedMediaSource.value.Formats.join(',')
+      : undefined;
+  const fileSize = isNumber(selectedMediaSource.value.Size)
+    ? formatFileSize(selectedMediaSource.value.Size)
+    : undefined;
+  const bitrate
+    = isNumber(selectedMediaSource.value.Bitrate)
+      && selectedMediaSource.value.Bitrate > 0
+      ? formatBitRate(selectedMediaSource.value.Bitrate)
+      : undefined;
+
+  p.set(t('mediaInfoFileContainer'), selectedMediaSource.value.Container);
+  p.set(t('mediaInfoFileFormats'), formats);
+  p.set(t('mediaInfoFilePath'), selectedMediaSource.value.Path);
+  p.set(t('mediaInfoFileSize'), fileSize);
+  p.set(t('mediaInfoGenericBitrate'), bitrate);
+
+  return p.entries();
 });
 
 /**

@@ -10,7 +10,7 @@ import { remote } from '#/plugins/remote/index.ts';
 export function adminGuard(
   to: RouteLocationNormalized
 ): NavigationGuardReturn {
-  if (!(to.meta.admin && !remote.auth.currentUser.value?.Policy?.IsAdministrator)) {
+  if (!to.meta.admin || remote.auth.currentUser.value?.Policy?.IsAdministrator) {
     return;
   }
 
