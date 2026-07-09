@@ -3,7 +3,6 @@
   "build": { 
     "dockerfile": "Dockerfile"
   },
-  "remoteUser": "root",
   "features": {
     "ghcr.io/devcontainers/features/rust:1": {
       "profile": "default"
@@ -22,7 +21,7 @@
     }
   },
   "postCreateCommand": {
-    "tauri-deps": "install_packages $(cat packaging/tauri/apt_packages)",
+    "tauri-deps": "sudo install_packages $(cat packaging/tauri/apt_packages)",
     "pnpm": "corepack pnpm ci",
     "unshallow": "git fetch --unshallow || true"
   },
