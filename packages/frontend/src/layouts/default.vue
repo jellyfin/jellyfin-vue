@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { computed, onBeforeMount, onUnmounted, provide, ref, watch } from 'vue';
+import { computed, provide, ref, watch } from 'vue';
 import { useDisplay } from 'vuetify';
 import type { DrawerItem } from '#/components/Layout/Navigation/NavigationDrawer.vue';
 import { playbackManager } from '#/store/playback-manager.ts';
@@ -43,10 +43,4 @@ watch(display.mobile, () => {
 });
 
 provide('NavigationDrawer', navDrawer);
-onBeforeMount(() => {
-  document.documentElement.classList.remove('no-forced-scrollbar');
-});
-onUnmounted(() => {
-  document.documentElement.classList.add('no-forced-scrollbar');
-});
 </script>

@@ -1,14 +1,8 @@
 * {
   font-family: var(--j-font-family), sans-serif, system-ui !important;
   backface-visibility: hidden;
-}
-
-html {
+  scrollbar-gutter: stable both-edges;
   overscroll-behavior: none;
-}
-
-html.no-forced-scrollbar {
-  overflow-y: unset !important;
 }
 
 /* Custom utility classes */
