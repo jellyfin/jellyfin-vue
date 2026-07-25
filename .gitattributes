@@ -35,6 +35,7 @@ LICENSE         text
 .gitignore      export-ignore
 
 *.gitattributes linguist-language=gitattributes
-package-lock.json linguist-generated=true linguist-language=JSON
+pnpm-lock.yaml linguist-generated=true linguist-language=YAML
 packaging/tauri/Cargo.lock text linguist-generated=true linguist-language=TOML
-locales/*.json merge=union
+packages/i18n/strings/*.json merge=union
+.devcontainer/devcontainer-lock.json text eol=lf linguist-generated=true linguist-language=JSON

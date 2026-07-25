@@ -1,5 +1,5 @@
 {
-  "editor.formatOnSave": true, 
+  "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "always",
     "source.organizeImports": "never"
@@ -48,5 +48,5 @@
   "vue.inlayHints.vBindShorthand": true,
   "vue.inlayHints.optionsWrapper": true,
   "vue.inlayHints.destructuredProps": true,
-  "js/ts.tsserver.experimental.enableProjectDiagnostics": true,
+  "js/ts.tsserver.experimental.enableProjectDiagnostics": true
 }
