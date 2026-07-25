@@ -40,7 +40,8 @@
     },
     {
       "matchManagers": [
-        "github-actions"
+        "github-actions",
+        "devcontainer"
       ],
       "separateMajorMinor": false,
       "groupName": "ci"
@@ -92,7 +93,8 @@
   "enabledManagers": [
     "npm",
     "github-actions",
-    "cargo"
+    "cargo",
+    "devcontainer"
   ],
   "labels": [
     "dependencies"
