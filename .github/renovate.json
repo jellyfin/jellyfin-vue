@@ -84,7 +84,9 @@
     "labels": [
       "security",
       "dependencies"
-    ]
+    ],
+    "separateMajorMinor": false,
+    "vulnerabilityFixStrategy": "highest"
   },
   "ignoreDeps": [
     "node",
