@@ -168,8 +168,8 @@ importers:
         specifier: 5.3.0
         version: 5.3.0
       '@iconify/json':
-        specifier: 2.2.503
-        version: 2.2.503
+        specifier: 2.2.506
+        version: 2.2.506
       '@jellyfin-vue/i18n':
         specifier: workspace:*
         version: link:../i18n
@@ -231,8 +231,8 @@ importers:
         specifier: 1.15.7
         version: 1.15.7
       swiper:
-        specifier: 14.0.5
-        version: 14.0.5
+        specifier: 14.0.6
+        version: 14.0.6
       uuid:
         specifier: 14.0.1
         version: 14.0.1
@@ -308,8 +308,8 @@ importers:
         specifier: 3.4.12
         version: 3.4.12
       marked:
-        specifier: 18.0.6
-        version: 18.0.6
+        specifier: 18.0.7
+        version: 18.0.7
     devDependencies:
       '@jellyfin-vue/configs':
         specifier: workspace:*
@@ -851,8 +851,8 @@ packages:
     resolution: {integrity: sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ==, tarball: https://registry.npmjs.org/@humanwhocodes/retry/-/retry-0.4.3.tgz}
     engines: {node: '>=18.18'}
 
-  '@iconify/json@2.2.503':
-    resolution: {integrity: sha512-544itETUPS/V5X6wZycbNZMqK5HtHsRbuBvoZWSByQVFf3IAY5qg36pzDpy3B3tk+pJld6E417P06yc0OtHLsA==, tarball: https://registry.npmjs.org/@iconify/json/-/json-2.2.503.tgz}
+  '@iconify/json@2.2.506':
+    resolution: {integrity: sha512-ohz5vOiAOjuE3sqRTPCpYYtXL7C9HAAowd6pwYlKH80wXnO9DpMbnHCaC+wtWWukosK/Uc4nLXzW62W/Qo7HGQ==, tarball: https://registry.npmjs.org/@iconify/json/-/json-2.2.506.tgz}
 
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==, tarball: https://registry.npmjs.org/@iconify/types/-/types-2.0.0.tgz}
@@ -3005,8 +3005,8 @@ packages:
     resolution: {integrity: sha512-ayF7iT+44LXdxJLTrTd3TLQpFDDvPCBxXxbv+pMUSuHA5Q8zyAfwkRP6aHHwNVFBUFWtxAHqwNJxF8vMZLAbVg==, tarball: https://registry.npmjs.org/make-asynchronous/-/make-asynchronous-1.1.0.tgz}
     engines: {node: '>=18'}
 
-  marked@18.0.6:
-    resolution: {integrity: sha512-MrV5puXBfuiy6wl6DLaq3BtIJQAJToAd5zt/ZKhRfGRAuFPALE7/4Y7jnxRQoEgK/pBgurGqLyAuRgZ2xOjr6w==, tarball: https://registry.npmjs.org/marked/-/marked-18.0.6.tgz}
+  marked@18.0.7:
+    resolution: {integrity: sha512-iDVQ5ldaiKXn6b2JroX5kgRfmwgqolW7NpaEzTl1k/2Zh1njIEN9yniyLV/mOvWwtsE8OGgkjsCYvijuPk1dtA==, tarball: https://registry.npmjs.org/marked/-/marked-18.0.7.tgz}
     engines: {node: '>= 20'}
     hasBin: true
 
@@ -3460,8 +3460,8 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==, tarball: https://registry.npmjs.org/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz}
     engines: {node: '>= 0.4'}
 
-  swiper@14.0.5:
-    resolution: {integrity: sha512-SMSKS0sj+lPIFzngfIKb5cyBtzmAuJw7rXgXdyYiDReb+pSpJXuNljHYgT4DXa5Stnl2Ew2/Lam5ipv4PIqZ7A==, tarball: https://registry.npmjs.org/swiper/-/swiper-14.0.5.tgz}
+  swiper@14.0.6:
+    resolution: {integrity: sha512-ArptjmcZMBvpLCbvzSKuqvQpjjITCbZdymiGOrbZQffQ3ZSjgpvMByXX0WZBUt+FV4PPIumdYfZ9ZdBbFsdH6g==, tarball: https://registry.npmjs.org/swiper/-/swiper-14.0.6.tgz}
     engines: {node: '>= 4.7.0'}
 
   synckit@0.11.13:
@@ -4392,7 +4392,7 @@ snapshots:
 
   '@humanwhocodes/retry@0.4.3': {}
 
-  '@iconify/json@2.2.503':
+  '@iconify/json@2.2.506':
     dependencies:
       '@iconify/types': 2.0.0
       pathe: 2.0.3
@@ -4408,7 +4408,7 @@ snapshots:
   '@jellyfin-vue/frontend@file:packages/frontend(@vue/compiler-sfc@3.5.40)(esbuild@0.27.7)(typescript@6.0.3)(vite@8.1.5)':
     dependencies:
       '@fontsource-variable/figtree': 5.3.0
-      '@iconify/json': 2.2.503
+      '@iconify/json': 2.2.506
       '@jellyfin-vue/i18n': file:packages/i18n(typescript@6.0.3)(vue@3.5.40)
       '@jellyfin-vue/shared': file:packages/shared
       '@jellyfin-vue/ui-toolkit': file:packages/ui-toolkit(i18next@26.3.6)(typescript@6.0.3)(vue@3.5.40)
@@ -4429,7 +4429,7 @@ snapshots:
       i18next-vue: 5.4.0(i18next@26.3.6)(vue@3.5.40)
       libpgs: 0.8.1
       sortablejs: 1.15.7
-      swiper: 14.0.5
+      swiper: 14.0.6
       uuid: 14.0.1
       vue: 3.5.40(typescript@6.0.3)
       vue-router: 5.2.0(@vue/compiler-sfc@3.5.40)(esbuild@0.27.7)(rolldown@1.1.5)(vite@8.1.5)(vue@3.5.40)
@@ -4469,7 +4469,7 @@ snapshots:
     dependencies:
       '@vue/shared': 3.5.40
       dompurify: 3.4.12
-      marked: 18.0.6
+      marked: 18.0.7
 
   '@jellyfin-vue/tauri-runtime@file:packages/tauri-runtime':
     dependencies:
@@ -6491,7 +6491,7 @@ snapshots:
       type-fest: 4.41.0
       web-worker: 1.5.0
 
-  marked@18.0.6: {}
+  marked@18.0.7: {}
 
   math-intrinsics@1.1.0: {}
 
@@ -7002,7 +7002,7 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  swiper@14.0.5: {}
+  swiper@14.0.6: {}
 
   synckit@0.11.13:
     dependencies:
