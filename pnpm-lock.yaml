@@ -19,8 +19,8 @@ catalogs:
       specifier: 3.5.40
       version: 3.5.40
     '@vueuse/core':
-      specifier: 14.3.0
-      version: 14.3.0
+      specifier: 14.4.0
+      version: 14.4.0
     comlink:
       specifier: 4.4.2
       version: 4.4.2
@@ -168,8 +168,8 @@ importers:
         specifier: 5.3.0
         version: 5.3.0
       '@iconify/json':
-        specifier: 2.2.506
-        version: 2.2.506
+        specifier: 2.2.508
+        version: 2.2.508
       '@jellyfin-vue/i18n':
         specifier: workspace:*
         version: link:../i18n
@@ -181,10 +181,10 @@ importers:
         version: link:../ui-toolkit
       '@jellyfin/sdk':
         specifier: 0.13.0
-        version: 0.13.0(axios@1.18.1)
+        version: 0.13.0(axios@1.19.0)
       '@vueuse/core':
         specifier: catalog:runtime
-        version: 14.3.0(vue@3.5.40)
+        version: 14.4.0(vue@3.5.40)
       assjs:
         specifier: 0.1.9
         version: 0.1.9
@@ -192,8 +192,8 @@ importers:
         specifier: 4.5.4
         version: 4.5.4
       axios:
-        specifier: 1.18.1
-        version: 1.18.1(debug@4.4.3)
+        specifier: 1.19.0
+        version: 1.19.0(debug@4.4.3)
       blurhash:
         specifier: 2.0.5
         version: 2.0.5
@@ -231,8 +231,8 @@ importers:
         specifier: 1.15.7
         version: 1.15.7
       swiper:
-        specifier: 14.0.6
-        version: 14.0.6
+        specifier: 14.0.7
+        version: 14.0.7
       uuid:
         specifier: 14.0.1
         version: 14.0.1
@@ -344,7 +344,7 @@ importers:
         version: 0.3.0(vue@3.5.40)
       '@vueuse/core':
         specifier: catalog:runtime
-        version: 14.3.0(vue@3.5.40)
+        version: 14.4.0(vue@3.5.40)
       color:
         specifier: 5.0.3
         version: 5.0.3
@@ -851,8 +851,8 @@ packages:
     resolution: {integrity: sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ==, tarball: https://registry.npmjs.org/@humanwhocodes/retry/-/retry-0.4.3.tgz}
     engines: {node: '>=18.18'}
 
-  '@iconify/json@2.2.506':
-    resolution: {integrity: sha512-ohz5vOiAOjuE3sqRTPCpYYtXL7C9HAAowd6pwYlKH80wXnO9DpMbnHCaC+wtWWukosK/Uc4nLXzW62W/Qo7HGQ==, tarball: https://registry.npmjs.org/@iconify/json/-/json-2.2.506.tgz}
+  '@iconify/json@2.2.508':
+    resolution: {integrity: sha512-oUwfUoJP2LvwZY56x1wl2MngIUkiKsyrxRc69GA161Qi87uBEZ5rA3wIG9UD3cBc6tIST6/sWowHfP4dznyQBQ==, tarball: https://registry.npmjs.org/@iconify/json/-/json-2.2.508.tgz}
 
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==, tarball: https://registry.npmjs.org/@iconify/types/-/types-2.0.0.tgz}
@@ -1973,16 +1973,16 @@ packages:
   '@vue/shared@3.5.40':
     resolution: {integrity: sha512-WxnBtruIqOoV3rA4jeKDWzrYI5h7Cp4+pjwDi8kWGHz+IslhiN+wguLVVhtv2l8VoU02rzDCVfDjgCl1lNpZVg==, tarball: https://registry.npmjs.org/@vue/shared/-/shared-3.5.40.tgz}
 
-  '@vueuse/core@14.3.0':
-    resolution: {integrity: sha512-aHfz47g0ZhMtTVHmIzMVpJy8ePhhOy68GY5bv110+5DVtZ+W7BsOx+m61UNQqfrWyPztIHIanWa3E2tib3NFIw==, tarball: https://registry.npmjs.org/@vueuse/core/-/core-14.3.0.tgz}
+  '@vueuse/core@14.4.0':
+    resolution: {integrity: sha512-X4WHz1HlCzCBoYXesUkifzzWBAcZgXG8Fi5iNPQg/epdzOB3gu8Fawj3hvuwYR1nGcXGnvxwYYcUC/71++svtQ==, tarball: https://registry.npmjs.org/@vueuse/core/-/core-14.4.0.tgz}
     peerDependencies:
       vue: ^3.5.0
 
-  '@vueuse/metadata@14.3.0':
-    resolution: {integrity: sha512-BwxmbAzwAVF50+MW57GXOUEV61nFBGnlBvrTqj49PqWJu3uw7hdu72ztXeZ33RdZtDY6kO+bfCAE1PCn88Tktw==, tarball: https://registry.npmjs.org/@vueuse/metadata/-/metadata-14.3.0.tgz}
+  '@vueuse/metadata@14.4.0':
+    resolution: {integrity: sha512-swx/255R6JyHZFJhx845iz5CRWDZdCfvkZOpACWc5+c5WHcG24mv8gUT1WIdFQaHt6dq79rvILd9QnCWiyVm9g==, tarball: https://registry.npmjs.org/@vueuse/metadata/-/metadata-14.4.0.tgz}
 
-  '@vueuse/shared@14.3.0':
-    resolution: {integrity: sha512-bZpge9eSXwa4ToSiqJ7j6KRwhAsneMFoSz3LMWKQDkqimm3D/tbFlrklrs/IOqC8tEcYmXQZJ6N0UrjhBirVCg==, tarball: https://registry.npmjs.org/@vueuse/shared/-/shared-14.3.0.tgz}
+  '@vueuse/shared@14.4.0':
+    resolution: {integrity: sha512-JRgY90Sz8DDtPMsaDflvPMp9xYk69JZAmbuDvAquUVXKr2gEjqtzGNTTthLfckH0BzBqvnu31gb4a8TGLRe79g==, tarball: https://registry.npmjs.org/@vueuse/shared/-/shared-14.4.0.tgz}
     peerDependencies:
       vue: ^3.5.0
 
@@ -2076,8 +2076,8 @@ packages:
     resolution: {integrity: sha512-s7iGf5GaVMxEG0ENN9x+xTr7GFZCb1ZP/1uATUpCEK2X78nDB3RwbtFCo9pGAf9ru+VwoQ464DkaLEeRM08wJA==, tarball: https://registry.npmjs.org/axe-core/-/axe-core-4.12.1.tgz}
     engines: {node: '>=4'}
 
-  axios@1.18.1:
-    resolution: {integrity: sha512-3nTvFlvpn9Zu/RkHUqtc7/+al4UpRW5az71ap5zccp6e8RAYEzhMTecX8Dz1wWDYrPpUoB1HAQEGEAEvUr7S9g==, tarball: https://registry.npmjs.org/axios/-/axios-1.18.1.tgz}
+  axios@1.19.0:
+    resolution: {integrity: sha512-ht/iuYZXEjFxLH/Hkezgd7m6JKlHHXEUSneaDz8uZe1Gj5QZtCnpyDsckvAiEnT89OEbCLmnte4R4sn7P0EKFw==, tarball: https://registry.npmjs.org/axios/-/axios-1.19.0.tgz}
 
   babel-walk@3.0.0-canary-5:
     resolution: {integrity: sha512-GAwkz0AihzY5bkwIY5QDR+LvsRQgB/B+1foMPvi0FZPMl5fjD7ICiznUiBdLYMH1QYe6vqu4gWYytZOccLouFw==, tarball: https://registry.npmjs.org/babel-walk/-/babel-walk-3.0.0-canary-5.tgz}
@@ -3460,8 +3460,8 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==, tarball: https://registry.npmjs.org/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz}
     engines: {node: '>= 0.4'}
 
-  swiper@14.0.6:
-    resolution: {integrity: sha512-ArptjmcZMBvpLCbvzSKuqvQpjjITCbZdymiGOrbZQffQ3ZSjgpvMByXX0WZBUt+FV4PPIumdYfZ9ZdBbFsdH6g==, tarball: https://registry.npmjs.org/swiper/-/swiper-14.0.6.tgz}
+  swiper@14.0.7:
+    resolution: {integrity: sha512-PDMY+8hNQBh4kAYdfKIF1GNS7u3hg4xl3NVKBey0rENnpUpTsiE/aCcbgpmm1PIf4RMI7loO3XhW9BdxLzQw0A==, tarball: https://registry.npmjs.org/swiper/-/swiper-14.0.7.tgz}
     engines: {node: '>= 4.7.0'}
 
   synckit@0.11.13:
@@ -4392,7 +4392,7 @@ snapshots:
 
   '@humanwhocodes/retry@0.4.3': {}
 
-  '@iconify/json@2.2.506':
+  '@iconify/json@2.2.508':
     dependencies:
       '@iconify/types': 2.0.0
       pathe: 2.0.3
@@ -4408,15 +4408,15 @@ snapshots:
   '@jellyfin-vue/frontend@file:packages/frontend(@vue/compiler-sfc@3.5.40)(esbuild@0.27.7)(typescript@6.0.3)(vite@8.1.5)':
     dependencies:
       '@fontsource-variable/figtree': 5.3.0
-      '@iconify/json': 2.2.506
+      '@iconify/json': 2.2.508
       '@jellyfin-vue/i18n': file:packages/i18n(typescript@6.0.3)(vue@3.5.40)
       '@jellyfin-vue/shared': file:packages/shared
       '@jellyfin-vue/ui-toolkit': file:packages/ui-toolkit(i18next@26.3.6)(typescript@6.0.3)(vue@3.5.40)
-      '@jellyfin/sdk': 0.13.0(axios@1.18.1)
-      '@vueuse/core': 14.3.0(vue@3.5.40)
+      '@jellyfin/sdk': 0.13.0(axios@1.19.0)
+      '@vueuse/core': 14.4.0(vue@3.5.40)
       assjs: 0.1.9
       audiomotion-analyzer: 4.5.4
-      axios: 1.18.1(debug@4.4.3)
+      axios: 1.19.0(debug@4.4.3)
       blurhash: 2.0.5
       comlink: 4.4.2
       date-fns: 4.4.0
@@ -4429,7 +4429,7 @@ snapshots:
       i18next-vue: 5.4.0(i18next@26.3.6)(vue@3.5.40)
       libpgs: 0.8.1
       sortablejs: 1.15.7
-      swiper: 14.0.6
+      swiper: 14.0.7
       uuid: 14.0.1
       vue: 3.5.40(typescript@6.0.3)
       vue-router: 5.2.0(@vue/compiler-sfc@3.5.40)(esbuild@0.27.7)(rolldown@1.1.5)(vite@8.1.5)(vue@3.5.40)
@@ -4499,7 +4499,7 @@ snapshots:
       '@jellyfin-vue/i18n': file:packages/i18n(typescript@6.0.3)(vue@3.5.40)
       '@jellyfin-vue/shared': file:packages/shared
       '@skirtle/vue-vnode-utils': 0.3.0(vue@3.5.40)
-      '@vueuse/core': 14.3.0(vue@3.5.40)
+      '@vueuse/core': 14.4.0(vue@3.5.40)
       color: 5.0.3
       comlink: 4.4.2
       i18next-vue: 5.4.0(i18next@26.3.6)(vue@3.5.40)
@@ -4511,9 +4511,9 @@ snapshots:
       - vue
       - webpack-plugin-vuetify
 
-  '@jellyfin/sdk@0.13.0(axios@1.18.1)':
+  '@jellyfin/sdk@0.13.0(axios@1.19.0)':
     dependencies:
-      axios: 1.18.1(debug@4.4.3)
+      axios: 1.19.0(debug@4.4.3)
 
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:
@@ -5523,16 +5523,16 @@ snapshots:
 
   '@vue/shared@3.5.40': {}
 
-  '@vueuse/core@14.3.0(vue@3.5.40)':
+  '@vueuse/core@14.4.0(vue@3.5.40)':
     dependencies:
       '@types/web-bluetooth': 0.0.21
-      '@vueuse/metadata': 14.3.0
-      '@vueuse/shared': 14.3.0(vue@3.5.40)
+      '@vueuse/metadata': 14.4.0
+      '@vueuse/shared': 14.4.0(vue@3.5.40)
       vue: 3.5.40(typescript@6.0.3)
 
-  '@vueuse/metadata@14.3.0': {}
+  '@vueuse/metadata@14.4.0': {}
 
-  '@vueuse/shared@14.3.0(vue@3.5.40)':
+  '@vueuse/shared@14.4.0(vue@3.5.40)':
     dependencies:
       vue: 3.5.40(typescript@6.0.3)
 
@@ -5606,7 +5606,7 @@ snapshots:
 
   axe-core@4.12.1: {}
 
-  axios@1.18.1(debug@4.4.3):
+  axios@1.19.0(debug@4.4.3):
     dependencies:
       follow-redirects: 1.16.0(debug@4.4.3)
       form-data: 4.0.6
@@ -7002,7 +7002,7 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  swiper@14.0.6: {}
+  swiper@14.0.7: {}
 
   synckit@0.11.13:
     dependencies:
