@@ -273,6 +273,7 @@
   "notificationsSettingsDescription": "Meldingen die door deze server worden verzonden beheren en configureren",
   "numberTracks": "{{number}} nummers",
   "offlineCantDoThisWillRetryWhenOnline": "Je kunt dit niet doen doordat de verbinding met de server is verbroken. Het wordt opnieuw geprobeerd wanneer we weer online zijn.",
+  "original": "Origineel",
   "originalTitle": "Originele titel",
   "overview": "Overzicht",
   "parallelImageEncodingLimit": "Limiet voor gelijktijdige beeldcodering",
