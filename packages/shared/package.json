@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@vue/shared": "catalog:runtime",
-    "dompurify": "3.4.12",
+    "dompurify": "3.4.13",
     "marked": "18.0.7"
   },
   "devDependencies": {
