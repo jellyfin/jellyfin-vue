@@ -1,8 +1,11 @@
 * {
   font-family: var(--j-font-family), sans-serif, system-ui !important;
   backface-visibility: hidden;
-  scrollbar-gutter: stable both-edges;
   overscroll-behavior: none;
+}
+
+body {
+  scrollbar-gutter: stable both-edges;
 }
 
 /* Custom utility classes */
