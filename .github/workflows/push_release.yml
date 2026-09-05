@@ -33,6 +33,8 @@ jobs:
       id-token: write
       attestations: write
       artifact-metadata: write
+      contents: read
+      packages: write
     with:
       commit: ${{ github.event_name == 'push' && github.sha }}
       is_prerelease: ${{ github.event_name == 'release' && github.event.action == 'prereleased' }}
