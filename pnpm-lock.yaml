@@ -28,8 +28,8 @@ catalogs:
       specifier: 4.4.0
       version: 4.4.0
     i18next:
-      specifier: 26.4.1
-      version: 26.4.1
+      specifier: 26.4.2
+      version: 26.4.2
     i18next-vue:
       specifier: 5.4.0
       version: 5.4.0
@@ -168,8 +168,8 @@ importers:
         specifier: 5.3.0
         version: 5.3.0
       '@iconify/json':
-        specifier: 2.2.524
-        version: 2.2.524
+        specifier: 2.2.525
+        version: 2.2.525
       '@jellyfin-vue/i18n':
         specifier: workspace:*
         version: link:../i18n
@@ -213,17 +213,17 @@ importers:
         specifier: 4.4.5
         version: 4.4.5
       fast-equals:
-        specifier: 6.0.2
-        version: 6.0.2
+        specifier: 6.0.3
+        version: 6.0.3
       hls.js:
         specifier: 1.7.2
         version: 1.7.2
       i18next:
         specifier: catalog:runtime
-        version: 26.4.1(typescript@6.0.3)
+        version: 26.4.2(typescript@6.0.3)
       i18next-vue:
         specifier: catalog:runtime
-        version: 5.4.0(i18next@26.4.1)(vue@3.5.42)
+        version: 5.4.0(i18next@26.4.2)(vue@3.5.42)
       libpgs:
         specifier: 0.9.0
         version: 0.9.0
@@ -287,7 +287,7 @@ importers:
         version: 4.4.0
       i18next:
         specifier: catalog:runtime
-        version: 26.4.1(typescript@6.0.3)
+        version: 26.4.2(typescript@6.0.3)
       vuetify:
         specifier: catalog:runtime
         version: 3.11.3(typescript@6.0.3)(vue@3.5.42)
@@ -353,7 +353,7 @@ importers:
         version: 4.4.2
       i18next-vue:
         specifier: catalog:runtime
-        version: 5.4.0(i18next@26.4.1)(vue@3.5.42)
+        version: 5.4.0(i18next@26.4.2)(vue@3.5.42)
       vuetify:
         specifier: catalog:runtime
         version: 3.11.3(typescript@6.0.3)(vue@3.5.42)
@@ -830,8 +830,8 @@ packages:
     resolution: {integrity: sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ==, tarball: https://registry.npmjs.org/@humanwhocodes/retry/-/retry-0.4.3.tgz}
     engines: {node: '>=18.18'}
 
-  '@iconify/json@2.2.524':
-    resolution: {integrity: sha512-xw2TRuiRcOzx8mTXRNIfg9FYr4sd7Z7s/DGKitJZt3njeiFmjHte8qKWEGK+IePYtQ1QyVnhfOi+5sEjVTmvDQ==, tarball: https://registry.npmjs.org/@iconify/json/-/json-2.2.524.tgz}
+  '@iconify/json@2.2.525':
+    resolution: {integrity: sha512-QB0vDFwtU13MgkiygAi1F6pS9zfTDUQZU0PPBGrU8FIAHpc8HBFNsCOW7r6JAb+OtCq3p+VuqbN4oNxlMdVm8w==, tarball: https://registry.npmjs.org/@iconify/json/-/json-2.2.525.tgz}
 
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==, tarball: https://registry.npmjs.org/@iconify/types/-/types-2.0.0.tgz}
@@ -2571,8 +2571,8 @@ packages:
   fast-deep-equal@3.1.3:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==, tarball: https://registry.npmjs.org/fast-deep-equal/-/fast-deep-equal-3.1.3.tgz}
 
-  fast-equals@6.0.2:
-    resolution: {integrity: sha512-sAjhj9ZhOxYCGiNMnZLaucOqf5ZeFnHNoKoAZiD9thhJ0N8RP85qJK759/97C/3L7NzzmGVB5uiX9AUpySZmUQ==, tarball: https://registry.npmjs.org/fast-equals/-/fast-equals-6.0.2.tgz}
+  fast-equals@6.0.3:
+    resolution: {integrity: sha512-IECu4C0fFZFoUC2cA2rDaNUuVIfWIZMwh3tY+ng924vOuD9OaUFFrcIrVwCKbV7TJDkGmrHfhwZ7R0AnHfVhyw==, tarball: https://registry.npmjs.org/fast-equals/-/fast-equals-6.0.3.tgz}
     engines: {node: '>=6.0.0'}
 
   fast-json-stable-stringify@2.1.0:
@@ -2718,8 +2718,8 @@ packages:
       i18next: '>=23'
       vue: ^3.4.38
 
-  i18next@26.4.1:
-    resolution: {integrity: sha512-9YbX5E6gd1H+yaOSX3izCsPj5iWXyH7X4oC+iuHHJJw8AeHglzOK5SJf+1CHxaYKYigcea+8jvzSxqYx46YvyA==, tarball: https://registry.npmjs.org/i18next/-/i18next-26.4.1.tgz}
+  i18next@26.4.2:
+    resolution: {integrity: sha512-RX+R0VLg13IbvRuJSxnqykUFS9vQZTl8wYpWPCIUDWVrSGjsQywB5Y+pjzrkboxGAuYfJZVH1InFTdgBdxq6ug==, tarball: https://registry.npmjs.org/i18next/-/i18next-26.4.2.tgz}
     peerDependencies:
       typescript: ^5 || ^6 || ^7
     peerDependenciesMeta:
@@ -4342,7 +4342,7 @@ snapshots:
 
   '@humanwhocodes/retry@0.4.3': {}
 
-  '@iconify/json@2.2.524':
+  '@iconify/json@2.2.525':
     dependencies:
       '@iconify/types': 2.0.0
       pathe: 2.0.3
@@ -4358,10 +4358,10 @@ snapshots:
   '@jellyfin-vue/frontend@file:packages/frontend(@vue/compiler-sfc@3.5.42)(esbuild@0.28.2)(typescript@6.0.3)(vite@8.2.2)':
     dependencies:
       '@fontsource-variable/figtree': 5.3.0
-      '@iconify/json': 2.2.524
+      '@iconify/json': 2.2.525
       '@jellyfin-vue/i18n': file:packages/i18n(typescript@6.0.3)(vue@3.5.42)
       '@jellyfin-vue/shared': file:packages/shared
-      '@jellyfin-vue/ui-toolkit': file:packages/ui-toolkit(i18next@26.4.1)(typescript@6.0.3)(vue@3.5.42)
+      '@jellyfin-vue/ui-toolkit': file:packages/ui-toolkit(i18next@26.4.2)(typescript@6.0.3)(vue@3.5.42)
       '@jellyfin/sdk': 0.13.0(axios@1.20.0)
       '@vueuse/core': 14.4.0(vue@3.5.42)
       assjs: 0.1.10
@@ -4373,10 +4373,10 @@ snapshots:
       defu: 6.1.7
       destr: 2.0.5
       dexie: 4.4.5
-      fast-equals: 6.0.2
+      fast-equals: 6.0.3
       hls.js: 1.7.2
-      i18next: 26.4.1(typescript@6.0.3)
-      i18next-vue: 5.4.0(i18next@26.4.1)(vue@3.5.42)
+      i18next: 26.4.2(typescript@6.0.3)
+      i18next-vue: 5.4.0(i18next@26.4.2)(vue@3.5.42)
       libpgs: 0.9.0
       sortablejs: 1.15.7
       swiper: 14.2.0
@@ -4407,7 +4407,7 @@ snapshots:
     dependencies:
       '@vue/shared': 3.5.42
       date-fns: 4.4.0
-      i18next: 26.4.1(typescript@6.0.3)
+      i18next: 26.4.2(typescript@6.0.3)
       vuetify: 3.11.3(typescript@6.0.3)(vue@3.5.42)
     transitivePeerDependencies:
       - typescript
@@ -4444,7 +4444,7 @@ snapshots:
       - webpack
       - webpack-plugin-vuetify
 
-  '@jellyfin-vue/ui-toolkit@file:packages/ui-toolkit(i18next@26.4.1)(typescript@6.0.3)(vue@3.5.42)':
+  '@jellyfin-vue/ui-toolkit@file:packages/ui-toolkit(i18next@26.4.2)(typescript@6.0.3)(vue@3.5.42)':
     dependencies:
       '@jellyfin-vue/i18n': file:packages/i18n(typescript@6.0.3)(vue@3.5.42)
       '@jellyfin-vue/shared': file:packages/shared
@@ -4452,7 +4452,7 @@ snapshots:
       '@vueuse/core': 14.4.0(vue@3.5.42)
       color: 5.0.3
       comlink: 4.4.2
-      i18next-vue: 5.4.0(i18next@26.4.1)(vue@3.5.42)
+      i18next-vue: 5.4.0(i18next@26.4.2)(vue@3.5.42)
       vuetify: 3.11.3(typescript@6.0.3)(vue@3.5.42)
     transitivePeerDependencies:
       - i18next
@@ -6071,7 +6071,7 @@ snapshots:
 
   fast-deep-equal@3.1.3: {}
 
-  fast-equals@6.0.2: {}
+  fast-equals@6.0.3: {}
 
   fast-json-stable-stringify@2.1.0: {}
 
@@ -6191,12 +6191,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  i18next-vue@5.4.0(i18next@26.4.1)(vue@3.5.42):
+  i18next-vue@5.4.0(i18next@26.4.2)(vue@3.5.42):
     dependencies:
-      i18next: 26.4.1(typescript@6.0.3)
+      i18next: 26.4.2(typescript@6.0.3)
       vue: 3.5.42(typescript@6.0.3)
 
-  i18next@26.4.1(typescript@6.0.3):
+  i18next@26.4.2(typescript@6.0.3):
     optionalDependencies:
       typescript: 6.0.3
 
