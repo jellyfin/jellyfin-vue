@@ -57,6 +57,48 @@ export enum CardShapes {
 export const defaultSortOrder = [ItemSortBy.PremiereDate, ItemSortBy.ProductionYear, ItemSortBy.SortName];
 
 /**
+ * The person types the server reports once per job, meaning someone credited for
+ * multiple jobs is sent as multiple people.
+ */
+const mergeableCrewTypes = new Set(['Director', 'Writer', 'Producer']);
+
+/**
+ * Gets the crew of an item, combining the credits of a person holding multiple jobs into
+ * a single entry listing all their roles, like "Director / Producer". Actors are left out,
+ * so a person playing multiple characters keeps one entry per character.
+ *
+ * @param people - The people of the item.
+ * @returns The crew, with one entry per person.
+ */
+export function getMergedCrew(people: BaseItemPerson[]): BaseItemPerson[] {
+  const crew: BaseItemPerson[] = [];
+  const indexes = new Map<string, number>();
+
+  for (const person of people) {
+    if (!mergeableCrewTypes.has(person.Type ?? '')) {
+      continue;
+    }
+
+    const index = isNil(person.Id) ? undefined : indexes.get(person.Id);
+
+    if (isNil(index)) {
+      if (!isNil(person.Id)) {
+        indexes.set(person.Id, crew.length);
+      }
+
+      crew.push(person);
+    } else {
+      const merged = crew[index]!;
+      const roles = [merged.Role, person.Role].filter(role => !isNil(role) && role !== '');
+
+      crew[index] = { ...merged, Role: [...new Set(roles)].join(' / ') };
+    }
+  }
+
+  return crew;
+}
+
+/**
  * Determines if the item is a person
  *
  * @param item - The item to be checked.

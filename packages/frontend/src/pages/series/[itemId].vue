@@ -192,7 +192,7 @@ import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
-import { getItemDetailsLink } from '#/utils/items.ts';
+import { getItemDetailsLink, getMergedCrew } from '#/utils/items.ts';
 import { useBaseItem } from '#/composables/apis.ts';
 import { useItemBackdrop } from '#/composables/backdrop.ts';
 import { useItemPageTitle } from '#/composables/page-title.ts';
@@ -229,9 +229,7 @@ const seasonEpisodes = computed(() => {
 });
 
 const crew = computed<BaseItemPerson[]>(() =>
-  (item.value.People ?? []).filter(person =>
-    ['Director', 'Writer'].includes(person.Type ?? '')
-  )
+  getMergedCrew(item.value.People ?? [])
 );
 
 const actors = computed<BaseItemPerson[]>(() =>
