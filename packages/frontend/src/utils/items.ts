@@ -74,11 +74,9 @@ export function getMergedCrew(people: BaseItemPerson[]): BaseItemPerson[] {
   const crew: BaseItemPerson[] = [];
   const indexes = new Map<string, number>();
 
-  for (const person of people) {
-    if (!mergeableCrewTypes.has(person.Type ?? '')) {
-      continue;
-    }
+  const credits = people.filter(person => mergeableCrewTypes.has(person.Type ?? ''));
 
+  for (const person of credits) {
     const index = isNil(person.Id) ? undefined : indexes.get(person.Id);
 
     if (isNil(index)) {
