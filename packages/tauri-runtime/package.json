@@ -11,11 +11,11 @@
     "build": "vite build --configLoader runner",
     "check": "pnpm lint && pnpm check:types",
     "check:types": "vue-tsc",
-    "clean": "git clean -fxd",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "lint:inspect": "eslint-config-inspector",
     "prod": "pnpm build && pnpm serve",
+    "reset": "git clean -fxd",
     "serve": "vite preview --configLoader runner",
     "start": "vite --configLoader runner"
   },
