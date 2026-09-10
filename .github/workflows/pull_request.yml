@@ -64,6 +64,8 @@ jobs:
       id-token: write
       attestations: write
       artifact-metadata: write
+      contents: read
+      packages: write
     with:
       commit: ${{ github.event.pull_request.head.sha }}
 
