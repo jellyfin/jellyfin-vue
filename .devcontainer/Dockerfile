@@ -10,5 +10,5 @@ RUN sudo chmod 0755 /usr/sbin/install_packages
 RUN sudo apt update -qq && \
   sudo apt upgrade -y && \
   sudo apt autoremove --purge -y && \
-  curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo bash && \
+  curl -fsSL https://deb.nodesource.com/setup_24.x | sudo bash && \
   sudo install_packages nodejs

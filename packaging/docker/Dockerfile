@@ -1,7 +1,18 @@
 ## This dockerfile builds the client entirely in a Docker context
 
-# slim image can't be used since we need git to fetch the commit hash
-FROM node:lts-slim AS build
+FROM node:24-slim AS build
+
+# Copy only the workspace manifests first so dependency installation is cached
+# independently of source code changes: this layer only busts when a
+# package.json or the lockfile actually change, not on every commit.
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml /app/
+COPY --parents packages/*/package.json /app/
+WORKDIR /app/packages/frontend
+
+# Install dependencies. The cache mount persists pnpm's content-addressable
+# store across builds (including --no-cache builds, since mount caches are
+# independent from layer caching), so re-installs skip re-downloading packages.
+RUN --mount=type=cache,target=/root/.local/share/pnpm/store corepack pnpm ci
 
 # Set build arguments
 ARG IS_STABLE=0
@@ -10,12 +21,14 @@ ARG COMMIT_HASH
 ENV IS_STABLE=$IS_STABLE
 ENV COMMIT_HASH=$COMMIT_HASH
 
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml /app/
-COPY packages /app/packages
-WORKDIR /app/packages/frontend
+# Now bring in the actual source. COMMIT_HASH changes on almost every build,
+# but it's declared above the install step so it never invalidates it.
+# Exclude node_modules/dist in case they exist in the build context (e.g. a
+# local checkout with packages already installed/built).
+COPY --exclude=**/node_modules --exclude=**/dist packages /app/packages
 
 # Build client
-RUN corepack pnpm ci && corepack pnpm build
+RUN --mount=type=cache,target=/root/.local/share/pnpm/store corepack pnpm build
 
 # Deploy built distribution to nginx
 FROM ghcr.io/nginxinc/nginx-unprivileged:stable-alpine-slim

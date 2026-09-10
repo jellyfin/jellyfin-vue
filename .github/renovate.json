@@ -69,6 +69,54 @@
         "major"
       ],
       "groupName": "pnpm"
+    },
+    {
+      "matchManagers": [
+        "dockerfile"
+      ],
+      "enabled": false
+    },
+    {
+      "matchManagers": [
+        "dockerfile"
+      ],
+      "matchPackageNames": [
+        "node"
+      ],
+      "enabled": true,
+      "versionCompatibility": "^(?<version>[^-]+)(?<compatibility>-.*)?$"
+    },
+    {
+      "matchPackageNames": [
+        "node"
+      ],
+      "versioning": "node",
+      "groupName": "node"
+    },
+    {
+      "matchPackageNames": [
+        "node"
+      ],
+      "matchDepTypes": [
+        "engines"
+      ],
+      "rangeStrategy": "widen"
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Bump the NodeSource major pinned in the devcontainer Dockerfile (setup_XX.x). Version-only bump: the hosted Renovate GitHub App can't run postUpgradeTasks to verify the NodeSource repo URL exists for the new major before opening the PR (that requires self-hosted Renovate with an admin-configured allowedCommands).",
+      "managerFilePatterns": [
+        ".devcontainer/Dockerfile"
+      ],
+      "matchStrings": [
+        "setup_(?<currentValue>\\d+)\\.x"
+      ],
+      "depNameTemplate": "node",
+      "datasourceTemplate": "node",
+      "versioningTemplate": "node",
+      "autoReplaceStringTemplate": "setup_{{{newValue}}}.x"
     }
   ],
   "postUpdateOptions": [
@@ -89,14 +137,15 @@
     "vulnerabilityFixStrategy": "highest"
   },
   "ignoreDeps": [
-    "node",
     "vuetify"
   ],
   "enabledManagers": [
     "npm",
     "github-actions",
     "cargo",
-    "devcontainer"
+    "devcontainer",
+    "dockerfile",
+    "custom.regex"
   ],
   "labels": [
     "dependencies"
