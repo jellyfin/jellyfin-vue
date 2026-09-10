@@ -1,6 +1,6 @@
 ## This dockerfile builds the client entirely in a Docker context
 
-FROM node:24-slim AS build
+FROM node:24.21.0-slim AS build
 
 # Copy only the workspace manifests first so dependency installation is cached
 # independently of source code changes: this layer only busts when a
