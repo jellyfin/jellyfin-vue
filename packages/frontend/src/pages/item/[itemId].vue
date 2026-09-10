@@ -306,7 +306,7 @@ import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { getItemDetailsLink, getMediaStreams } from '#/utils/items.ts';
+import { getItemDetailsLink, getMediaStreams, getMergedCrew } from '#/utils/items.ts';
 import { getItemizedSelect } from '#/utils/forms.ts';
 import { useBaseItem } from '#/composables/apis.ts';
 import { useItemBackdrop } from '#/composables/backdrop.ts';
@@ -341,9 +341,7 @@ const currentAudioTrack = ref<number>();
 const currentSubtitleTrack = ref<number>();
 
 const crew = computed<BaseItemPerson[]>(() =>
-  (item.value.People ?? []).filter(person =>
-    ['Director', 'Writer'].includes(person.Type ?? '')
-  )
+  getMergedCrew(item.value.People ?? [])
 );
 
 const actors = computed<BaseItemPerson[]>(() =>
