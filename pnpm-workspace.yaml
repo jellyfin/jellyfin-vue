@@ -17,6 +17,7 @@ dedupeDirectDeps: true
 allowBuilds:
   '@skirtle/vue-vnode-utils': false
   esbuild: true
+  pnpm: true
   unrs-resolver: true
 
 catalogs:
