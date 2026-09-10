@@ -88,10 +88,18 @@
     },
     {
       "matchPackageNames": [
-        "node"
+        "node",
+        "actions/node-versions"
       ],
       "versioning": "node",
       "groupName": "node"
+    },
+    {
+      "matchPackageNames": [
+        "node",
+        "actions/node-versions"
+      ],
+      "rangeStrategy": "replace"
     },
     {
       "matchPackageNames": [
