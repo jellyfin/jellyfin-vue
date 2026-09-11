@@ -155,7 +155,6 @@ const overlay = computed({
 });
 
 const timeout = useTimeoutFn(() => {
-  console.log('overlay', false)
   overlay.value = false;
 }, 5000);
 
