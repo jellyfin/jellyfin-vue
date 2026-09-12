@@ -281,8 +281,8 @@ importers:
         specifier: workspace:*
         version: link:../ui-toolkit
       '@jellyfin/sdk':
-        specifier: 0.13.0
-        version: 0.13.0(axios@1.20.0)
+        specifier: 1.0.0
+        version: 1.0.0(axios@1.20.0)
       '@vueuse/core':
         specifier: catalog:runtime
         version: 14.4.0(vue@3.5.42)
@@ -995,8 +995,8 @@ packages:
   '@jellyfin-vue/ui-toolkit@file:packages/ui-toolkit':
     resolution: {directory: packages/ui-toolkit, type: directory}
 
-  '@jellyfin/sdk@0.13.0':
-    resolution: {integrity: sha512-oiBAOXH6s+dKdReSsYgNktBDzbxtg4JVWhEzIxZSxKcWMdSKmBtK41MhXRO7IWAC40DguKUm3nU/Z493qPAlWA==, tarball: https://registry.npmjs.org/@jellyfin/sdk/-/sdk-0.13.0.tgz}
+  '@jellyfin/sdk@1.0.0':
+    resolution: {integrity: sha512-bu7EbMxEz+mH2N/v8Oj/dDCQQvTmEVTZBzKhYgwpKrL9l63LMZvjY2gvnU4imMi9389kzh0LQD75MzMtcoDJtA==, tarball: https://registry.npmjs.org/@jellyfin/sdk/-/sdk-1.0.0.tgz}
     peerDependencies:
       axios: ^1.12.0
 
@@ -4831,7 +4831,7 @@ snapshots:
       '@jellyfin-vue/i18n': file:packages/i18n(typescript@6.0.3)(vue@3.5.42)
       '@jellyfin-vue/shared': file:packages/shared
       '@jellyfin-vue/ui-toolkit': file:packages/ui-toolkit(i18next@26.4.2)(typescript@6.0.3)(vue@3.5.42)
-      '@jellyfin/sdk': 0.13.0(axios@1.20.0)
+      '@jellyfin/sdk': 1.0.0(axios@1.20.0)
       '@vueuse/core': 14.4.0(vue@3.5.42)
       assjs: 0.1.10
       audiomotion-analyzer: 4.5.4
@@ -4930,7 +4930,7 @@ snapshots:
       - vue
       - webpack-plugin-vuetify
 
-  '@jellyfin/sdk@0.13.0(axios@1.20.0)':
+  '@jellyfin/sdk@1.0.0(axios@1.20.0)':
     dependencies:
       axios: 1.20.0(debug@4.4.3)
 
