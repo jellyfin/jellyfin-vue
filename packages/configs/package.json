@@ -18,7 +18,7 @@
   },
   "devDependencies": {
     "@chromatic-com/storybook": "5.3.1",
-    "@eslint/config-inspector": "3.4.0",
+    "@eslint/config-inspector": "3.4.1",
     "@eslint/css": "1.4.0",
     "@eslint/js": "10.0.1",
     "@eslint/json": "2.1.0",
@@ -27,7 +27,7 @@
     "@storybook/vue3-vite": "10.6.0",
     "@stylistic/eslint-plugin": "5.10.0",
     "@types/node": "26.5.1",
-    "@unocss/eslint-config": "66.10.1",
+    "@unocss/eslint-config": "66.10.2",
     "eslint": "10.10.0",
     "eslint-config-flat-gitignore": "2.4.0",
     "eslint-import-resolver-typescript": "4.4.5",
@@ -49,8 +49,8 @@
     "type-fest": "5.9.0",
     "typescript": "6.0.3",
     "typescript-eslint": "8.70.0",
-    "unocss": "66.10.1",
-    "vite": "8.2.2",
+    "unocss": "66.10.2",
+    "vite": "8.3.0",
     "vitest": "4.1.11",
     "vue-eslint-parser": "10.4.1",
     "vue-tsc": "3.3.11"
