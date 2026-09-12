@@ -269,8 +269,8 @@ importers:
         specifier: 5.3.0
         version: 5.3.0
       '@iconify/json':
-        specifier: 2.2.526
-        version: 2.2.526
+        specifier: 2.2.527
+        version: 2.2.527
       '@jellyfin-vue/i18n':
         specifier: workspace:*
         version: link:../i18n
@@ -311,14 +311,14 @@ importers:
         specifier: 2.0.5
         version: 2.0.5
       dexie:
-        specifier: 4.4.5
-        version: 4.4.5
+        specifier: 4.4.6
+        version: 4.4.6
       fast-equals:
         specifier: 6.0.3
         version: 6.0.3
       hls.js:
-        specifier: 1.7.2
-        version: 1.7.2
+        specifier: 1.7.3
+        version: 1.7.3
       i18next:
         specifier: catalog:runtime
         version: 26.4.2(typescript@6.0.3)
@@ -971,8 +971,8 @@ packages:
     resolution: {integrity: sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ==, tarball: https://registry.npmjs.org/@humanwhocodes/retry/-/retry-0.4.3.tgz}
     engines: {node: '>=18.18'}
 
-  '@iconify/json@2.2.526':
-    resolution: {integrity: sha512-DJ235CZST2dG8h9yOlL91Jhg+4rTHhE3cm5aHhpfrhwSEn/4ScHXZPwjKIFo4DOe05xhyRG0PQqDmRsVJzDiZQ==, tarball: https://registry.npmjs.org/@iconify/json/-/json-2.2.526.tgz}
+  '@iconify/json@2.2.527':
+    resolution: {integrity: sha512-3NRdMve2biuS/y+Hm6e3xF2Ttx73pyZ8fn+zqXxWVOL/Q+KqgqYJwSpqiTDTRJ7q1XLevAJBzM3ykWYR5rM8nQ==, tarball: https://registry.npmjs.org/@iconify/json/-/json-2.2.527.tgz}
 
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==, tarball: https://registry.npmjs.org/@iconify/types/-/types-2.0.0.tgz}
@@ -2627,8 +2627,8 @@ packages:
   devlop@1.1.0:
     resolution: {integrity: sha512-RWmIqhcFf1lRYBvNmr7qTNuyCt/7/ns2jbpp1+PalgE/rDQcBT0fioSMUpJ93irlUhC5hrg4cYqe6U+0ImW0rA==, tarball: https://registry.npmjs.org/devlop/-/devlop-1.1.0.tgz}
 
-  dexie@4.4.5:
-    resolution: {integrity: sha512-wWCHdihT3dmlUSuNhn5mMZDWSpG0suxjAni7YjjiZdzabZcKmy3uNZGZ7AeYYXBoLbpSXX35fikPLkPC44Osiw==, tarball: https://registry.npmjs.org/dexie/-/dexie-4.4.5.tgz}
+  dexie@4.4.6:
+    resolution: {integrity: sha512-hJP/BO6mjB+tX6hToIO1kmxYLNmun90wYbfcoAoLpKEyDYal/k33dg0TAfoUe2TDsbbLoVIzljJ3BN2UbR5EOg==, tarball: https://registry.npmjs.org/dexie/-/dexie-4.4.6.tgz}
 
   doctypes@1.1.0:
     resolution: {integrity: sha512-LLBi6pEqS6Do3EKQ3J0NqHWV5hhb78Pi8vvESYwyOy2c31ZEZVdtitdzsQsKb7878PEERhzUk0ftqGhG6Mz+pQ==, tarball: https://registry.npmjs.org/doctypes/-/doctypes-1.1.0.tgz}
@@ -3021,8 +3021,8 @@ packages:
   hast-util-whitespace@3.0.0:
     resolution: {integrity: sha512-88JUN06ipLwsnv+dVn+OIYOvAuvBMy/Qoi6O7mQHxdPXpjy+Cd6xRkWwux7DKO+4sYILtLBRIKgsdpS2gQc7qw==, tarball: https://registry.npmjs.org/hast-util-whitespace/-/hast-util-whitespace-3.0.0.tgz}
 
-  hls.js@1.7.2:
-    resolution: {integrity: sha512-CW/pPvSOFIRsosbwxrYaE9ERmpTo5fbTqL7wCvuCFlqW1Bmb1K5fXsY7yiH95rmlr4rVuA7UXHbM/cIXQ6AXwg==, tarball: https://registry.npmjs.org/hls.js/-/hls.js-1.7.2.tgz}
+  hls.js@1.7.3:
+    resolution: {integrity: sha512-MsPlx6yVW4Qv4C7mEVou4/gk/5cN2dVxOTnrNjPSmyH2f0Ln+/UkG10Ax1PE6OvrmTVPKgQYozTtBaPOuCzq7A==, tarball: https://registry.npmjs.org/hls.js/-/hls.js-1.7.3.tgz}
 
   hookable@5.5.3:
     resolution: {integrity: sha512-Yc+BQe8SvoXH1643Qez1zqLRmbA5rCL+sSmk6TVos0LWVfNIB7PGncdlId77WzLGSIB5KaWgTaNTs2lNVEI6VQ==, tarball: https://registry.npmjs.org/hookable/-/hookable-5.5.3.tgz}
@@ -4811,7 +4811,7 @@ snapshots:
 
   '@humanwhocodes/retry@0.4.3': {}
 
-  '@iconify/json@2.2.526':
+  '@iconify/json@2.2.527':
     dependencies:
       '@iconify/types': 2.0.0
       pathe: 2.0.3
@@ -4827,7 +4827,7 @@ snapshots:
   '@jellyfin-vue/frontend@file:packages/frontend(@vue/compiler-sfc@3.5.42)(debug@4.4.3)(esbuild@0.28.2)(rolldown@1.2.7)(typescript@6.0.3)(vite@8.2.2)':
     dependencies:
       '@fontsource-variable/figtree': 5.3.0
-      '@iconify/json': 2.2.526
+      '@iconify/json': 2.2.527
       '@jellyfin-vue/i18n': file:packages/i18n(typescript@6.0.3)(vue@3.5.42)
       '@jellyfin-vue/shared': file:packages/shared
       '@jellyfin-vue/ui-toolkit': file:packages/ui-toolkit(i18next@26.4.2)(typescript@6.0.3)(vue@3.5.42)
@@ -4841,9 +4841,9 @@ snapshots:
       date-fns: 4.4.0
       defu: 6.1.7
       destr: 2.0.5
-      dexie: 4.4.5
+      dexie: 4.4.6
       fast-equals: 6.0.3
-      hls.js: 1.7.2
+      hls.js: 1.7.3
       i18next: 26.4.2(typescript@6.0.3)
       i18next-vue: 5.4.0(i18next@26.4.2)(vue@3.5.42)
       libpgs: 0.9.0
@@ -6431,7 +6431,7 @@ snapshots:
     dependencies:
       dequal: 2.0.3
 
-  dexie@4.4.5: {}
+  dexie@4.4.6: {}
 
   doctypes@1.1.0: {}
 
@@ -6894,7 +6894,7 @@ snapshots:
     dependencies:
       '@types/hast': 3.0.5
 
-  hls.js@1.7.2: {}
+  hls.js@1.7.3: {}
 
   hookable@5.5.3: {}
 
