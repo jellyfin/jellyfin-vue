@@ -16,7 +16,7 @@
   "dependencies": {
     "@vue/shared": "catalog:runtime",
     "dompurify": "3.4.15",
-    "marked": "18.0.12"
+    "marked": "18.0.13"
   },
   "devDependencies": {
     "@jellyfin-vue/configs": "workspace:*",
