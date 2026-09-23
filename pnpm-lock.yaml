@@ -177,8 +177,8 @@ catalogs:
       specifier: 3.5.42
       version: 3.5.42
     '@vueuse/core':
-      specifier: 14.4.0
-      version: 14.4.0
+      specifier: 15.0.0
+      version: 15.0.0
     comlink:
       specifier: 4.4.2
       version: 4.4.2
@@ -338,11 +338,11 @@ importers:
         specifier: workspace:*
         version: link:../ui-toolkit
       '@jellyfin/sdk':
-        specifier: 0.13.0
-        version: 0.13.0(axios@1.20.0)
+        specifier: 1.0.0
+        version: 1.0.0(axios@1.20.0)
       '@vueuse/core':
         specifier: catalog:runtime
-        version: 14.4.0(vue@3.5.42)
+        version: 15.0.0(vue@3.5.42)
       assjs:
         specifier: 0.1.10
         version: 0.1.10
@@ -502,7 +502,7 @@ importers:
         version: 0.3.0(vue@3.5.42)
       '@vueuse/core':
         specifier: catalog:runtime
-        version: 14.4.0(vue@3.5.42)
+        version: 15.0.0(vue@3.5.42)
       color:
         specifier: 5.0.3
         version: 5.0.3
@@ -1023,8 +1023,8 @@ packages:
   '@jellyfin-vue/ui-toolkit@file:packages/ui-toolkit':
     resolution: {directory: packages/ui-toolkit, type: directory}
 
-  '@jellyfin/sdk@0.13.0':
-    resolution: {integrity: sha512-oiBAOXH6s+dKdReSsYgNktBDzbxtg4JVWhEzIxZSxKcWMdSKmBtK41MhXRO7IWAC40DguKUm3nU/Z493qPAlWA==, tarball: https://registry.npmjs.org/@jellyfin/sdk/-/sdk-0.13.0.tgz}
+  '@jellyfin/sdk@1.0.0':
+    resolution: {integrity: sha512-bu7EbMxEz+mH2N/v8Oj/dDCQQvTmEVTZBzKhYgwpKrL9l63LMZvjY2gvnU4imMi9389kzh0LQD75MzMtcoDJtA==, tarball: https://registry.npmjs.org/@jellyfin/sdk/-/sdk-1.0.0.tgz}
     peerDependencies:
       axios: ^1.12.0
 
@@ -2250,16 +2250,19 @@ packages:
   '@vue/shared@3.5.42':
     resolution: {integrity: sha512-2rPxex1jQf4jvl9MOHl6YaXCPcrNqz/FstMOEh3QWY+/OME9nQTvl9WYeCwhW7AFjaR0SnngZGlp/wkR6rkI6g==, tarball: https://registry.npmjs.org/@vue/shared/-/shared-3.5.42.tgz}
 
-  '@vueuse/core@14.4.0':
-    resolution: {integrity: sha512-X4WHz1HlCzCBoYXesUkifzzWBAcZgXG8Fi5iNPQg/epdzOB3gu8Fawj3hvuwYR1nGcXGnvxwYYcUC/71++svtQ==, tarball: https://registry.npmjs.org/@vueuse/core/-/core-14.4.0.tgz}
+  '@vueuse/core@15.0.0':
+    resolution: {integrity: sha512-Zv67h5mrk7YHDJsRObx+DXaCBz6RKBUpxqLesJ+3xZNPG6yuQs7ja7kg3veFrrouYLWAqydQ7CwGEbLVxB43Ng==, tarball: https://registry.npmjs.org/@vueuse/core/-/core-15.0.0.tgz}
+    engines: {node: '>=22'}
     peerDependencies:
       vue: ^3.5.0
 
-  '@vueuse/metadata@14.4.0':
-    resolution: {integrity: sha512-swx/255R6JyHZFJhx845iz5CRWDZdCfvkZOpACWc5+c5WHcG24mv8gUT1WIdFQaHt6dq79rvILd9QnCWiyVm9g==, tarball: https://registry.npmjs.org/@vueuse/metadata/-/metadata-14.4.0.tgz}
+  '@vueuse/metadata@15.0.0':
+    resolution: {integrity: sha512-sfWE5LADAKJ0KnjtGliMdSN8Ij/L7uP6rXIZlgPloAI4zvvefbw6H5Lt7KJA6RqQOYgVqWF5Guj50HHMIzygBg==, tarball: https://registry.npmjs.org/@vueuse/metadata/-/metadata-15.0.0.tgz}
+    engines: {node: '>=22'}
 
-  '@vueuse/shared@14.4.0':
-    resolution: {integrity: sha512-JRgY90Sz8DDtPMsaDflvPMp9xYk69JZAmbuDvAquUVXKr2gEjqtzGNTTthLfckH0BzBqvnu31gb4a8TGLRe79g==, tarball: https://registry.npmjs.org/@vueuse/shared/-/shared-14.4.0.tgz}
+  '@vueuse/shared@15.0.0':
+    resolution: {integrity: sha512-vbNXhGrbV53xPOMSyOzMHQRvhMgZf7oNDw2RChUetVxwTIEkInQ1joZ9JbT0G3z2n2AJNjvmCWeM9ySYrnvogA==, tarball: https://registry.npmjs.org/@vueuse/shared/-/shared-15.0.0.tgz}
+    engines: {node: '>=22'}
     peerDependencies:
       vue: ^3.5.0
 
@@ -4771,8 +4774,8 @@ snapshots:
       '@jellyfin-vue/i18n': file:packages/i18n(typescript@6.0.3)(vue@3.5.42)
       '@jellyfin-vue/shared': file:packages/shared
       '@jellyfin-vue/ui-toolkit': file:packages/ui-toolkit(i18next@26.4.2)(typescript@6.0.3)(vue@3.5.42)
-      '@jellyfin/sdk': 0.13.0(axios@1.20.0)
-      '@vueuse/core': 14.4.0(vue@3.5.42)
+      '@jellyfin/sdk': 1.0.0(axios@1.20.0)
+      '@vueuse/core': 15.0.0(vue@3.5.42)
       assjs: 0.1.10
       audiomotion-analyzer: 4.5.4
       axios: 1.20.0(debug@4.4.3)
@@ -4819,8 +4822,8 @@ snapshots:
       '@jellyfin-vue/i18n': file:packages/i18n(typescript@6.0.3)(vue@3.5.42)
       '@jellyfin-vue/shared': file:packages/shared
       '@jellyfin-vue/ui-toolkit': file:packages/ui-toolkit(i18next@26.4.2)(typescript@6.0.3)(vue@3.5.42)
-      '@jellyfin/sdk': 0.13.0(axios@1.20.0)
-      '@vueuse/core': 14.4.0(vue@3.5.42)
+      '@jellyfin/sdk': 1.0.0(axios@1.20.0)
+      '@vueuse/core': 15.0.0(vue@3.5.42)
       assjs: 0.1.10
       audiomotion-analyzer: 4.5.4
       axios: 1.20.0(debug@4.4.3)
@@ -4906,7 +4909,7 @@ snapshots:
       '@jellyfin-vue/i18n': file:packages/i18n(typescript@6.0.3)(vue@3.5.42)
       '@jellyfin-vue/shared': file:packages/shared
       '@skirtle/vue-vnode-utils': 0.3.0(vue@3.5.42)
-      '@vueuse/core': 14.4.0(vue@3.5.42)
+      '@vueuse/core': 15.0.0(vue@3.5.42)
       color: 5.0.3
       comlink: 4.4.2
       i18next-vue: 5.4.0(i18next@26.4.2)(vue@3.5.42)
@@ -4918,7 +4921,7 @@ snapshots:
       - vue
       - webpack-plugin-vuetify
 
-  '@jellyfin/sdk@0.13.0(axios@1.20.0)':
+  '@jellyfin/sdk@1.0.0(axios@1.20.0)':
     dependencies:
       axios: 1.20.0(debug@4.4.3)
 
@@ -6046,16 +6049,16 @@ snapshots:
 
   '@vue/shared@3.5.42': {}
 
-  '@vueuse/core@14.4.0(vue@3.5.42)':
+  '@vueuse/core@15.0.0(vue@3.5.42)':
     dependencies:
       '@types/web-bluetooth': 0.0.21
-      '@vueuse/metadata': 14.4.0
-      '@vueuse/shared': 14.4.0(vue@3.5.42)
+      '@vueuse/metadata': 15.0.0
+      '@vueuse/shared': 15.0.0(vue@3.5.42)
       vue: 3.5.42(typescript@6.0.3)
 
-  '@vueuse/metadata@14.4.0': {}
+  '@vueuse/metadata@15.0.0': {}
 
-  '@vueuse/shared@14.4.0(vue@3.5.42)':
+  '@vueuse/shared@15.0.0(vue@3.5.42)':
     dependencies:
       vue: 3.5.42(typescript@6.0.3)
 
