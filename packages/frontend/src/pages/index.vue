@@ -37,6 +37,8 @@ import { useTranslation } from 'i18next-vue';
 import { isNil } from '@jellyfin-vue/shared/validation';
 import { CardShapes, fetchIndexPage, getShapeFromCollectionType } from '#/utils/items.ts';
 import { usePageTitle } from '#/composables/page-title.ts';
+import { userSettings } from '#/store/settings/user.ts';
+import { orderItemsById } from '#/utils/ordering.ts';
 
 definePage({
   meta: {
@@ -48,6 +50,7 @@ definePage({
 });
 
 interface HomeSection {
+  id: string;
   title: string;
   libraryId: string;
   shape: CardShapes;
@@ -67,6 +70,7 @@ const latestMediaSections = computed(() => {
       && !excludeViewTypes.has(userView.CollectionType)
     ) {
       return {
+        id: `latestmedia:${userView.Id ?? ''}`,
         title: t('latestLibrary', { libraryName: userView.Name }),
         libraryId: userView.Id ?? '',
         shape: getShapeFromCollectionType(userView.CollectionType),
@@ -76,40 +80,58 @@ const latestMediaSections = computed(() => {
   }).filter((i): i is HomeSection => !isNil(i));
 });
 
+/**
+ * Resolves a stored home section id to one or more renderable sections.
+ */
+function getConfiguredHomeSections(id: string): HomeSection[] {
+  switch (id) {
+    case 'smalllibrarytiles': {
+      return [{
+        id,
+        title: t('libraries'),
+        libraryId: '',
+        shape: CardShapes.Thumb,
+        type: 'libraries'
+      }];
+    }
+    case 'librarybuttons': {
+      return [{
+        id,
+        title: t('libraries'),
+        libraryId: '',
+        shape: CardShapes.Square,
+        type: 'libraries'
+      }];
+    }
+    case 'resumevideo': {
+      return [{
+        id,
+        title: t('continueWatching'),
+        libraryId: '',
+        shape: CardShapes.Thumb,
+        type: 'resumevideo'
+      }];
+    }
+    case 'nextup': {
+      return [{
+        id,
+        title: t('nextUp'),
+        libraryId: '',
+        shape: CardShapes.Thumb,
+        type: 'nextup'
+      }];
+    }
+    case 'latestmedia': {
+      return latestMediaSections.value;
+    }
+    default: {
+      return [];
+    }
+  }
+}
+
 const homeSections = computed<HomeSection[]>(() => {
-  return [
-    /**
-     * Library tiles
-     */
-    {
-      title: t('libraries'),
-      libraryId: '',
-      shape: CardShapes.Thumb,
-      type: 'libraries'
-    },
-    /**
-     * Resume video
-     */
-    {
-      title: t('continueWatching'),
-      libraryId: '',
-      shape: CardShapes.Thumb,
-      type: 'resumevideo'
-    },
-    /**
-     * Next up
-     */
-    {
-      title: t('nextUp'),
-      libraryId: '',
-      shape: CardShapes.Thumb,
-      type: 'nextup'
-    },
-    /**
-     * Latest media
-     */
-    ...latestMediaSections.value
-  ];
+  return userSettings.homeSections.value.flatMap(id => getConfiguredHomeSections(id));
 });
 
 /**
@@ -118,7 +140,7 @@ const homeSections = computed<HomeSection[]>(() => {
 function getHomeSectionContent(section: HomeSection): BaseItemDto[] {
   switch (section.type) {
     case 'libraries': {
-      return views.value;
+      return orderItemsById(views.value, userSettings.libraryOrder.value);
     }
     case 'resumevideo': {
       return resumeVideo.value;
