@@ -164,6 +164,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/settings/home-screen': RouteRecordInfo<
+      '/settings/home-screen',
+      '/settings/home-screen',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/settings/logs-and-activity': RouteRecordInfo<
       '/settings/logs-and-activity',
       '/settings/logs-and-activity',
@@ -373,6 +380,14 @@ declare module 'vue-router/auto-routes' {
     'src/pages/settings/devices.vue': {
       routes:
         | '/settings/devices'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/settings/home-screen.vue': {
+      routes:
+        | '/settings/home-screen'
       views:
         | never
       pathParamNames:
