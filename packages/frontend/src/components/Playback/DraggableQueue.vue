@@ -1,8 +1,9 @@
 <template>
-  <span ref="container">
-    <template
-      v-for="(item, index) of playbackManager.queue.value"
-      :key="item.Id">
+  <JDraggableList
+    :items="playbackManager.queue.value"
+    :item-key="(item: any) => item.Id ?? item.Name ?? ''"
+    @reorder="onReorder">
+    <template #default="{ item, index }">
       <JHover v-slot="{ isHovering }">
         <VListItem
           :title="item.Name ?? ''"
@@ -38,29 +39,20 @@
         </VListItem>
       </JHover>
     </template>
-  </span>
+  </JDraggableList>
 </template>
 
 <script setup lang="ts">
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import Sortable from 'sortablejs';
-import { watch, useTemplateRef, onScopeDispose } from 'vue';
-import { isNumber } from '@jellyfin-vue/shared/validation';
 import { playbackManager } from '#/store/playback-manager.ts';
 
-let sortable: Sortable | undefined;
-const container = useTemplateRef('container');
-
 /**
- * Destroys the sortable instance
+ * Reorder the queue
  */
-function destroy(): void {
-  if (!sortable) {
-    return;
+function onReorder(event: { item: BaseItemDto; newIndex: number }): void {
+  if (event.item.Id) {
+    playbackManager.changeItemPosition(event.item.Id, event.newIndex);
   }
-
-  sortable.destroy();
-  sortable = undefined;
 }
 
 /**
@@ -77,28 +69,4 @@ function getArtists(item: BaseItemDto): string | undefined {
   return item.Artists ? item.Artists.join(', ') : undefined;
 }
 
-watch(container, () => {
-  destroy();
-
-  if (container.value) {
-    sortable = new Sortable(container.value, {
-      animation: 500,
-      delay: 0,
-      dragoverBubble: true,
-      onUpdate(e): void {
-        const oldIndex = e.oldIndex;
-
-        if (isNumber(oldIndex)) {
-          const item = playbackManager.queue.value[oldIndex];
-
-          if (item?.Id && isNumber(e.newIndex)) {
-            playbackManager.changeItemPosition(item.Id, e.newIndex);
-          }
-        }
-      }
-    });
-  }
-});
-
-onScopeDispose(() => destroy());
 </script>
