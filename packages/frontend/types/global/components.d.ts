@@ -45,6 +45,7 @@ declare module 'vue' {
     ItemsCarousel: typeof import('./../../src/components/Layout/Carousel/Item/ItemsCarousel.vue')['default']
     ItemsCarouselTitle: typeof import('./../../src/components/Layout/Carousel/Item/ItemsCarouselTitle.vue')['default']
     JApp: typeof import('@jellyfin-vue/ui-toolkit/components')['JApp']
+    JDraggableList: typeof import('@jellyfin-vue/ui-toolkit/components')['JDraggableList']
     JFileUpload: typeof import('@jellyfin-vue/ui-toolkit/components')['JFileUpload']
     JFooter: typeof import('@jellyfin-vue/ui-toolkit/components')['JFooter']
     JHover: typeof import('@jellyfin-vue/ui-toolkit/components')['JHover']
