@@ -3,6 +3,7 @@
     v-bind="$attrs"
     icon
     :color="playbackManager.isShuffling.value ? 'primary' : undefined"
+    :aria-label="$t('shuffle')"
     @click="playbackManager.toggleShuffle">
     <JIcon
       v-bind="$attrs"
