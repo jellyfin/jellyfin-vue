@@ -3,6 +3,7 @@
     v-bind="$attrs"
     icon
     :disabled="!playbackManager.nextItem.value"
+    :aria-label="$t('nextTrack')"
     @click="playbackManager.setNextItem">
     <JIcon
       v-bind="$attrs"
