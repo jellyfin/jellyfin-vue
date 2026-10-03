@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex align-center justify-center volume-slider">
+  <div class="volume-slider uno-flex uno-items-center uno-justify-center">
     <VBtn
       icon
       size="small"

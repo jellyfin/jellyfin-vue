@@ -1,15 +1,15 @@
 <template>
   <div
     :class="`swiper-section-${uuid}`"
-    style="width: 100%">
+    class="uno-w-full">
     <VCol
       v-show="items && items.length"
       class="swiper-section">
-      <div class="d-flex ma-2">
+      <div class="uno-m-2 uno-flex">
         <h1
           class="text-h6 text-sm-h5 header"
           :class="{ 'header-white-mode': !theme.current.value.dark }">
-          <span class="pl-4">{{ title }}</span>
+          <span class="uno-pl-4">{{ title }}</span>
         </h1>
         <VSpacer />
         <VBtn
