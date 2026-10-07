@@ -3,6 +3,7 @@
     v-bind="$attrs"
     icon
     :loading="playbackManager.isBuffering.value"
+    :aria-label="playbackManager.isPaused.value ? $t('play') : $t('pause')"
     @click.passive="playbackManager.playPause">
     <JIcon
       v-bind="$attrs"

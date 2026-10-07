@@ -3,6 +3,7 @@
     v-bind="$attrs"
     icon
     :color="playbackManager.isRepeating.value ? 'primary' : undefined"
+    :aria-label="playbackManager.repeatMode.value === RepeatMode.RepeatOne ? $t('repeatOne') : $t('repeat')"
     @click.passive="playbackManager.toggleRepeatMode">
     <JIcon
       v-bind="$attrs"
