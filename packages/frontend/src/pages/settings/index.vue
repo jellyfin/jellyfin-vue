@@ -142,7 +142,7 @@ const userItems = computed<MenuOptions[]>(() => {
       icon: 'i-mdi:home',
       name: t('homeScreen'),
       description: t('homeScreenSettingsDescription'),
-      link: undefined
+      link: '/settings/home-screen'
     },
     {
       icon: 'i-mdi:play-pause',
