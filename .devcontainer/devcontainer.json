@@ -25,7 +25,7 @@
     "unshallow": "git fetch --unshallow || true"
   },
   "postAttachCommand": {
-    "install-extensions": "cat .vscode/extensions.json | jq -r .recommendations[] | xargs -n 1 code --install-extension"
+    "install-extensions": "bash .devcontainer/install-extensions.sh"
   },
   "hostRequirements": { "cpus": 4, "memory": "8gb" }
 }
