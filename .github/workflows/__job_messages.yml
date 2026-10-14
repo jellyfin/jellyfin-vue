@@ -26,6 +26,9 @@ on:
         required: false
         type: string
         default: "CFPages-deployment"
+    secrets:
+      JF_BOT_TOKEN:
+        required: false
 
 env:
   CF_PAGES_DEPLOYMENT_URL: https://jf-vue.pages.dev

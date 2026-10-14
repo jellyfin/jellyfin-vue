@@ -23,6 +23,9 @@ jobs:
         with:
           ref: ${{ inputs.commit }}
           show-progress: false
+          persist-credentials: false
+          # Untrusted fork code runs here: keep the caller's permissions and secrets minimal. See https://gh.io/securely-using-pull_request_target
+          allow-unsafe-pr-checkout: true
 
       - name: Initialize CodeQL 🛠️
         uses: github/codeql-action/init@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2 # v4.38.2
