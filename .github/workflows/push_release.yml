@@ -15,20 +15,26 @@ on:
     paths-ignore:
       - '**/*.md'
 
+permissions: {}
+
 jobs:
   automation:
     name: Automation 🎛️
     if: ${{ github.repository == 'jellyfin/jellyfin-vue' }}
-    uses: ./.github/workflows/__automation.yml
+    uses: $/.github/workflows/__automation.yml
     permissions:
       contents: read
       pull-requests: write
 
   main:
     name: ${{ github.event_name == 'push' && 'Unstable 🚀⚠️' || 'Stable 🏷️✅' }}
-    uses: ./.github/workflows/__package.yml
-    secrets: inherit
-    # Needed for attestation publication
+    uses: $/.github/workflows/__package.yml
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+    # Inherited by the jobs of __package.yml (see the PERMISSIONS note there):
+    # id-token, attestations and artifact-metadata are needed for attestation publication,
+    # packages for pushing the Docker images to GHCR in docker_merge
     permissions:
       id-token: write
       attestations: write
@@ -43,7 +49,7 @@ jobs:
 
   codeql:
     name: GitHub CodeQL 🔬
-    uses: ./.github/workflows/__codeql.yml
+    uses: $/.github/workflows/__codeql.yml
     permissions:
       actions: read
       contents: read
@@ -54,13 +60,16 @@ jobs:
   deploy:
     name: Deploy 🚀
     if: ${{ github.repository == 'jellyfin/jellyfin-vue' }}
-    uses: ./.github/workflows/__deploy.yml
+    uses: $/.github/workflows/__deploy.yml
     needs:
       - main
     permissions:
       contents: read
       deployments: write
-    secrets: inherit
+    secrets:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      JF_BOT_TOKEN: ${{ secrets.JF_BOT_TOKEN }}
     with:
       branch: ${{ github.ref_name }}
       comment: false
