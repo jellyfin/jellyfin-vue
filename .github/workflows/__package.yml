@@ -89,7 +89,7 @@ jobs:
         if: ${{ matrix.platform == 'ubuntu' }}
         run: |
           sudo apt update -qq
-          sudo apt install -y --no-install-recommends $(cat apt_packages)
+          xargs -a apt_packages sudo apt install -y --no-install-recommends
 
       - name: Build application 🛠️
         run: corepack pnpm build
@@ -126,7 +126,7 @@ jobs:
     steps:
       - name: Get current date ⌛
         id: date
-        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+        run: echo "date=$(date +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
 
       - name: Parse commit hash ⚙️
         if: ${{ inputs.commit != '' }}
@@ -134,7 +134,7 @@ jobs:
         env:
           COMMIT: ${{ inputs.commit }}
         run: |
-          echo "sha=${COMMIT::7}" >> $GITHUB_OUTPUT
+          echo "sha=${COMMIT::7}" >> "$GITHUB_OUTPUT"
 
       - name: Generate tags 🏷️
         env:
@@ -180,18 +180,22 @@ jobs:
             TG+="ghcr.io/${REGISTRY_IMAGE}:${COMMIT_TAG}.${STEP_DATE}.${STEP_SHA}"$'\n'
           fi
           
-          echo "tags<<EOF" >> $GITHUB_ENV
-          echo -e "$TG" | sed '/^$/d' >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+          {
+            echo "tags<<EOF"
+            echo -e "$TG" | sed '/^$/d'
+            echo "EOF"
+          } >> "$GITHUB_ENV"
 
       - name: Generate platform array 🖥️📝
         env:
           ARCHITECTURES: ${{ env.REQUESTED_ARCHITECTURES }}
         run: |
           PARSED_ARRAY=$(echo "$ARCHITECTURES" | jq '. | map("linux/" + .) | .[]' | tr -d '"')
-          echo "platforms<<EOF" >> $GITHUB_ENV
-          echo "$PARSED_ARRAY" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+          {
+            echo "platforms<<EOF"
+            echo "$PARSED_ARRAY"
+            echo "EOF"
+          } >> "$GITHUB_ENV"
 
       - name: Generate cache array 💾📝
         env:
@@ -199,9 +203,11 @@ jobs:
           IMAGE: ${{ env.REGISTRY_IMAGE }}
         run: |
           PARSED_ARRAY=$(echo "$ARCHITECTURES" | jq --arg image "$IMAGE" '. | map("type=local,mode=min,src=/tmp/" + $image + "/cache/buildx-" + .) | .[]' | tr -d '"')
-          echo "caches<<EOF" >> $GITHUB_ENV
-          echo "$PARSED_ARRAY" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+          {
+            echo "caches<<EOF"
+            echo "$PARSED_ARRAY"
+            echo "EOF"
+          } >> "$GITHUB_ENV"
 
   docker:
     name: Docker image for ${{ matrix.platform }} 💿🐳
@@ -296,8 +302,8 @@ jobs:
         run: |
           docker load < docker_image.tar
           IMAGE_SHA=$(docker images --filter=reference='${{ env.REGISTRY_IMAGE }}' -q | head -n 1)
-          ASSETS=$(docker inspect $IMAGE_SHA --format='{{range .Config.Env}}{{println .}}{{end}}' | grep ^ASSETS= | cut -d '=' -f2-)
-          docker cp $(docker create --name jf $IMAGE_SHA):$ASSETS/ ./dist
+          ASSETS=$(docker inspect "$IMAGE_SHA" --format='{{range .Config.Env}}{{println .}}{{end}}' | grep ^ASSETS= | cut -d '=' -f2-)
+          docker cp "$(docker create --name jf "$IMAGE_SHA"):$ASSETS/" ./dist
 
       - name: Upload client artifact ⬆️💻
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1

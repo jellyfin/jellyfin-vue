@@ -51,20 +51,23 @@ jobs:
           WORKFLOW_RUN: ${{ !inputs.in_progress && format('**[View build logs](https://github.com/{0}/actions/runs/{1})**', github.repository, github.run_id) || '' }}
         # EOF is needed for multiline environment variables in a GitHub Actions context
         run: |
-          echo "## Cloudflare Pages deployment" > $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| **Latest commit**       	| <code>${COMMIT::7}</code>     |" >> $GITHUB_STEP_SUMMARY
-          echo "|-------------------------	|:----------------------------:	|" >> $GITHUB_STEP_SUMMARY
-          echo "| **Status**              	| $DEPLOY_STATUS                |" >> $GITHUB_STEP_SUMMARY
-          echo "| **Preview URL**         	| $PREVIEW_URL                  |" >> $GITHUB_STEP_SUMMARY
-          echo "| **Preview alias**         | $PREVIEW_ALIAS                |" >> $GITHUB_STEP_SUMMARY
-          echo "| **Type**         	        | $DEPLOYMENT_TYPE              |" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "$WORKFLOW_RUN" >> $GITHUB_STEP_SUMMARY
-          COMPOSED_MSG=$(cat $GITHUB_STEP_SUMMARY)
-          echo "msg<<EOF" >> $GITHUB_ENV
-          echo "$COMPOSED_MSG" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+          {
+            echo "## Cloudflare Pages deployment"
+            echo ""
+            echo "| **Latest commit**       	| <code>${COMMIT::7}</code>     |"
+            echo "|-------------------------	|:----------------------------:	|"
+            echo "| **Status**              	| $DEPLOY_STATUS                |"
+            echo "| **Preview URL**         	| $PREVIEW_URL                  |"
+            echo "| **Preview alias**         | $PREVIEW_ALIAS                |"
+            echo "| **Type**         	        | $DEPLOYMENT_TYPE              |"
+            echo ""
+            echo "$WORKFLOW_RUN"
+          } > "$GITHUB_STEP_SUMMARY"
+          {
+            echo "msg<<EOF"
+            cat "$GITHUB_STEP_SUMMARY"
+            echo "EOF"
+          } >> "$GITHUB_ENV"
 
       - name: Push comment to Pull Request 🔼
         uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b # v3.0.1
