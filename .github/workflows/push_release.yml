@@ -32,7 +32,9 @@ jobs:
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-    # Needed for attestation publication
+    # Inherited by the jobs of __package.yml (see the PERMISSIONS note there):
+    # id-token, attestations and artifact-metadata are needed for attestation publication,
+    # packages for pushing the Docker images to GHCR in docker_merge
     permissions:
       id-token: write
       attestations: write

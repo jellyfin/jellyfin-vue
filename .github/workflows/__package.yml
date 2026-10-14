@@ -1,3 +1,9 @@
+# PERMISSIONS: jobs in this workflow must not declare write permissions. GitHub validates nested jobs'
+# permissions against every caller, even for jobs that are skipped by their `if`, and the callers grant different ones:
+# - pull_request.yml: only `contents: read`. Fork code runs here, so attestations and docker_merge are skipped.
+# - push_release.yml: `contents: read`, `id-token`, `attestations` and `artifact-metadata` (for attestations)
+#   and `packages` (for docker_merge), all as `write`.
+# Jobs without a `permissions` block inherit the caller's ones; use `permissions: {}` or read-only scopes to restrict them.
 name: Packaging 📦
 
 on:
@@ -76,20 +82,21 @@ jobs:
           node-version: 24
           check-latest: true
 
-      - name: Setup Rust Toolchain and cache 🦀
-        uses: actions-rust-lang/setup-rust-toolchain@ecabd13d1c56bd1345c230e542e9144811ad706f # v2.0.0
-        with:
-          cache-key: tauri-${{ runner.os }}
-          cache-workspaces: ${{ env.WORKING_DIR }}
+      - parallel:
+          - name: Setup Rust Toolchain and cache 🦀
+            uses: actions-rust-lang/setup-rust-toolchain@ecabd13d1c56bd1345c230e542e9144811ad706f # v2.0.0
+            with:
+              cache-key: tauri-${{ runner.os }}
+              cache-workspaces: ${{ env.WORKING_DIR }}
 
-      - name: Install npm dependencies 📦
-        run: corepack pnpm ci
+          - name: Install npm dependencies 📦
+            run: corepack pnpm ci
 
-      - name: Install Linux dependencies 📦🐧
-        if: ${{ matrix.platform == 'ubuntu' }}
-        run: |
-          sudo apt update -qq
-          xargs -a apt_packages sudo apt install -y --no-install-recommends
+          - name: Install Linux dependencies 📦🐧
+            if: ${{ matrix.platform == 'ubuntu' }}
+            run: |
+              sudo apt update -qq
+              xargs -a apt_packages sudo apt install -y --no-install-recommends
 
       - name: Build application 🛠️
         run: corepack pnpm build
@@ -220,10 +227,12 @@ jobs:
 
     env:
       ARTIFACT_NAME: docker_image-linux_${{ matrix.platform }}
+      FRONTEND_ARTIFACT_NAME: frontend
 
     steps:
       - name: Checkout ⬇️
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        background: true
         with:
           ref: ${{ inputs.commit || github.sha }}
           show-progress: false
@@ -240,6 +249,9 @@ jobs:
           cache-binary: false
           cleanup: false
           version: latest
+
+      - name: Wait for checkout ⏳
+        wait-all:
 
       - name: Build images 🛠️
         uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
@@ -261,74 +273,65 @@ jobs:
       - name: Upload Docker image as artifact ⬆️📦
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         id: artifact
+        background: true
         with:
           compression-level: 0
           name: ${{ env.ARTIFACT_NAME }}
-          path: docker_image.tar          
+          path: docker_image.tar
 
       - name: Upload cache artifact ⬆️⚙️
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         if: ${{ inputs.push }}
+        background: true
         with:
           compression-level: 0
           name: buildx-${{ matrix.platform }}
           path: |
             /tmp/${{ env.REGISTRY_IMAGE }}/cache/${{ matrix.platform }}
 
-      - name: Create provenance attestation 🔏
-        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
-        # Only attest what gets published. Pull request code must never be attested with this repository's identity
-        if: ${{ github.event_name == 'push' || github.event_name == 'release' }}
-        continue-on-error: true
-        with:
-          subject-name: ${{ env.ARTIFACT_NAME }}
-          subject-digest: sha256:${{ steps.artifact.outputs.artifact-digest }}
-
-  frontend:
-    name: Publish frontend artifact 🚀
-    runs-on: ubuntu-latest
-    needs: 
-      - docker
-    env:
-      ARTIFACT_NAME: frontend
-
-    steps:         
-      - name: Download Docker image artifact 📦⬇️
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          name: docker_image-linux_amd64
-
       - name: Extract built client from Docker image 🗜️
+        if: ${{ matrix.platform == 'amd64' }}
         run: |
           docker load < docker_image.tar
-          IMAGE_SHA=$(docker images --filter=reference='${{ env.REGISTRY_IMAGE }}' -q | head -n 1)
+          IMAGE_SHA=$(docker images --filter=reference="$REGISTRY_IMAGE" -q | head -n 1)
           ASSETS=$(docker inspect "$IMAGE_SHA" --format='{{range .Config.Env}}{{println .}}{{end}}' | grep ^ASSETS= | cut -d '=' -f2-)
           docker cp "$(docker create --name jf "$IMAGE_SHA"):$ASSETS/" ./dist
 
       - name: Upload client artifact ⬆️💻
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        id: artifact
+        if: ${{ matrix.platform == 'amd64' }}
+        id: frontend_artifact
         with:
           compression-level: 0
-          name: ${{ env.ARTIFACT_NAME }}
+          name: ${{ env.FRONTEND_ARTIFACT_NAME }}
           path: dist
 
-      - name: Create provenance attestation 🔏
-        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
-        # Only attest what gets published. Pull request code must never be attested with this repository's identity
-        if: ${{ github.event_name == 'push' || github.event_name == 'release' }}
-        continue-on-error: true
-        with:
-          subject-name: ${{ env.ARTIFACT_NAME }}
-          subject-digest: sha256:${{ steps.artifact.outputs.artifact-digest }}
+      - name: Wait for uploads ⏳
+        wait-all:
+
+      - parallel:
+          - name: Create provenance attestation 🔏
+            uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+            # Only attest what gets published. Pull request code must never be attested with this repository's identity
+            if: ${{ github.event_name == 'push' || github.event_name == 'release' }}
+            continue-on-error: true
+            with:
+              subject-name: ${{ env.ARTIFACT_NAME }}
+              subject-digest: sha256:${{ steps.artifact.outputs.artifact-digest }}
+
+          - name: Create client provenance attestation 🔏
+            uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+            # Only attest what gets published. Pull request code must never be attested with this repository's identity
+            if: ${{ (github.event_name == 'push' || github.event_name == 'release') && matrix.platform == 'amd64' }}
+            continue-on-error: true
+            with:
+              subject-name: ${{ env.FRONTEND_ARTIFACT_NAME }}
+              subject-digest: sha256:${{ steps.frontend_artifact.outputs.artifact-digest }}
 
   docker_merge:
     name: Merge Docker images 💿🐳
     runs-on: ubuntu-latest
     if: ${{ inputs.push }}
-    permissions: 
-      contents: read
-      packages: write
     needs:
       - docker
       - docker_inputs
@@ -336,12 +339,14 @@ jobs:
     steps:
       - name: Download cache artifacts 📦⬇️
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        background: true
         with:
           pattern: buildx-*
           path: /tmp/${{ env.REGISTRY_IMAGE }}/cache/
   
       - name: Checkout ⬇️
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        background: true
         with:
           ref: ${{ inputs.commit || github.sha }}
           show-progress: false
@@ -357,6 +362,7 @@ jobs:
           cleanup: false
           version: latest
 
+      # Logins must run sequentially: both update the same Docker config file
       - name: Login to Docker Hub 🔑
         uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
         with:
@@ -369,6 +375,9 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Wait for checkout and cache download ⏳
+        wait-all:
 
       - name: Create multiplatform image ${{ inputs.push && 'and push 🛠️⬆️' || '🛠️' }} 
         uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
