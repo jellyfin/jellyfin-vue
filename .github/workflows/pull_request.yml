@@ -1,3 +1,10 @@
+# SECURITY: pull_request_target runs fork code automatically, in the base repository context
+# (see https://gh.io/securely-using-pull_request_target). Jobs that check out and run PR code
+# (build, quality_checks, codeql) must never get secrets, write permissions (other than codeql's
+# security-events) or a write-capable cache-mode. The jobs that do get secrets (push-comment,
+# deploy and the label/semantic checks) must never check out or run PR code.
+#
+# pull_request_target is used instead to simplify the workflow definitions and reduce duplication.
 name: Pull Request 📥
 
 concurrency:
@@ -5,15 +12,18 @@ concurrency:
   cancel-in-progress: true
 
 on:
-  pull_request_target:
+  pull_request_target: # zizmor: ignore[dangerous-triggers] see the SECURITY note above
   merge_group:
+
+permissions: {}
 
 jobs:
   push-comment:
     name: Create comments ✍️
-    if: ${{ always() && !cancelled() && github.repository == 'jellyfin/jellyfin-vue' }}
-    uses: ./.github/workflows/__job_messages.yml
-    secrets: inherit
+    if: ${{ always() && !cancelled() && github.repository == 'jellyfin/jellyfin-vue' && github.event_name == 'pull_request_target' }}
+    uses: $/.github/workflows/__job_messages.yml
+    secrets:
+      JF_BOT_TOKEN: ${{ secrets.JF_BOT_TOKEN }}
     with:
       commit: ${{ github.event.pull_request.head.sha }}
       in_progress: true
@@ -22,7 +32,7 @@ jobs:
   automation:
     name: Automation 🎛️
     if: ${{ always() && !cancelled() && github.repository == 'jellyfin/jellyfin-vue' }}
-    uses: ./.github/workflows/__automation.yml
+    uses: $/.github/workflows/__automation.yml
     permissions:
       contents: read
       pull-requests: write
@@ -58,50 +68,45 @@ jobs:
   build:
     name: Build 🏗️
     if: ${{ always() && !cancelled() }}
-    uses: ./.github/workflows/__package.yml
-    # Needed for attestation publication
+    uses: $/.github/workflows/__package.yml
     permissions:
-      id-token: write
-      attestations: write
-      artifact-metadata: write
       contents: read
-      packages: write
     with:
       commit: ${{ github.event.pull_request.head.sha }}
 
   quality_checks:
     name: Quality checks 👌🧪
     if: ${{ always() && !cancelled() }}
-    uses: ./.github/workflows/__quality_checks.yml
-    permissions: {}
-    secrets: {}
+    uses: $/.github/workflows/__quality_checks.yml
     with:
       commit: ${{ github.event.pull_request.head.sha }}
 
   codeql:
     name: GitHub CodeQL 🔬
     if: ${{ always() && !cancelled() }}
-    uses: ./.github/workflows/__codeql.yml
+    uses: $/.github/workflows/__codeql.yml
     permissions:
       contents: read
       security-events: write
-    secrets: {}
     with:
       commit: ${{ github.event.pull_request.head.sha }}
 
   deploy:
     name: Deploy 🚀
-    uses: ./.github/workflows/__deploy.yml
-    if: ${{ always() && !cancelled() && github.repository == 'jellyfin/jellyfin-vue' }}
+    uses: $/.github/workflows/__deploy.yml
+    if: ${{ always() && !cancelled() && github.repository == 'jellyfin/jellyfin-vue' && github.event_name == 'pull_request_target' }}
     needs:
       - push-comment
       - build
     permissions:
       contents: read
       deployments: write
-    secrets: inherit
+    secrets:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      JF_BOT_TOKEN: ${{ secrets.JF_BOT_TOKEN }}
     with:
-      # If the PR is from the master branch of a fork, append the fork's name to the branch name
-      branch: ${{ github.event.pull_request.head.repo.full_name != github.repository && github.event.pull_request.head.ref == 'master' && format('{0}/{1}', github.event.pull_request.head.repo.full_name, github.event.pull_request.head.ref) || github.event.pull_request.head.ref }}
+      # Fork branch names are attacker-controlled: use the PR number as the preview alias
+      branch: ${{ github.event.pull_request.head.repo.full_name != github.repository && format('pr-{0}', github.event.pull_request.number) || github.event.pull_request.head.ref }}
       comment: true
       commit: ${{ github.event.pull_request.head.sha }}

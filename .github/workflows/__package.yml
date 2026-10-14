@@ -20,6 +20,11 @@ on:
         required: false
         type: string
         default: '["amd64", "arm64"]'
+    secrets:
+      DOCKERHUB_USERNAME:
+        required: false
+      DOCKERHUB_TOKEN:
+        required: false
 
 env:
   REGISTRY_IMAGE: jellyfin/jellyfin-vue
@@ -61,6 +66,9 @@ jobs:
         with:
           ref: ${{ inputs.commit || github.sha }}
           show-progress: false
+          persist-credentials: false
+          # Untrusted fork code runs here: keep the caller's permissions and secrets minimal. See https://gh.io/securely-using-pull_request_target
+          allow-unsafe-pr-checkout: true
 
       - name: Setup node environment ⚙️
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
@@ -96,6 +104,8 @@ jobs:
 
       - name: Create provenance attestation 🔏
         uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        # Only attest what gets published. Pull request code must never be attested with this repository's identity
+        if: ${{ github.event_name == 'push' || github.event_name == 'release' }}
         continue-on-error: true
         with:
           subject-name: ${{ env.ARTIFACT_NAME }}
@@ -211,6 +221,9 @@ jobs:
         with:
           ref: ${{ inputs.commit || github.sha }}
           show-progress: false
+          persist-credentials: false
+          # Untrusted fork code runs here: keep the caller's permissions and secrets minimal. See https://gh.io/securely-using-pull_request_target
+          allow-unsafe-pr-checkout: true
 
       - name: Configure QEMU ⚙️
         uses: docker/setup-qemu-action@99012661954931238ded8c8b007157a8430204e1 # v4.4.0
@@ -218,6 +231,7 @@ jobs:
       - name: Configure Docker Buildx ⚙️
         uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
         with:
+          cache-binary: false
           cleanup: false
           version: latest
 
@@ -257,6 +271,8 @@ jobs:
 
       - name: Create provenance attestation 🔏
         uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        # Only attest what gets published. Pull request code must never be attested with this repository's identity
+        if: ${{ github.event_name == 'push' || github.event_name == 'release' }}
         continue-on-error: true
         with:
           subject-name: ${{ env.ARTIFACT_NAME }}
@@ -293,6 +309,8 @@ jobs:
 
       - name: Create provenance attestation 🔏
         uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        # Only attest what gets published. Pull request code must never be attested with this repository's identity
+        if: ${{ github.event_name == 'push' || github.event_name == 'release' }}
         continue-on-error: true
         with:
           subject-name: ${{ env.ARTIFACT_NAME }}
@@ -321,6 +339,7 @@ jobs:
         with:
           ref: ${{ inputs.commit || github.sha }}
           show-progress: false
+          persist-credentials: false
 
       - name: Configure QEMU ⚙️
         uses: docker/setup-qemu-action@99012661954931238ded8c8b007157a8430204e1 # v4.4.0
@@ -328,6 +347,7 @@ jobs:
       - name: Configure Docker Buildx ⚙️
         uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
         with:
+          cache-binary: false
           cleanup: false
           version: latest
 
