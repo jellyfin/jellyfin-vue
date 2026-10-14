@@ -11,25 +11,6 @@ on:
 permissions: {}
 
 jobs:
-  dependency-review:
-    name: Vulnerable dependencies 🔎
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          ref: ${{ inputs.commit }}
-          show-progress: false
-          persist-credentials: false
-          # Untrusted fork code runs here: keep the caller's permissions and secrets minimal. See https://gh.io/securely-using-pull_request_target
-          allow-unsafe-pr-checkout: true
-
-      - name: Scan
-        uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
-        with:
-          base-ref: ${{ github.event.pull_request.base.sha || 'master' }}
-          head-ref: ${{ github.event.pull_request.head.sha || github.ref }}
-
   quality:
     name: Run ${{ matrix.command }} 🕵️‍♂️
     runs-on: ubuntu-latest
@@ -66,29 +47,9 @@ jobs:
       - name: Run ${{ matrix.command }} ⚙️
         run: corepack pnpm ${{ matrix.command }}
 
-  commits_checks:
-    name: Commit linting 💬✅
-    runs-on: ubuntu-slim
-
-    steps:
-      - name: Checkout ⬇️
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          ref: ${{ inputs.commit }}
-          show-progress: false
-          persist-credentials: false
-          # Untrusted fork code runs here: keep the caller's permissions and secrets minimal. See https://gh.io/securely-using-pull_request_target
-          allow-unsafe-pr-checkout: true
-
-      - name: Check if all commits comply with the specification
-        uses: webiny/action-conventional-commits@7f91b1595ca1951cdb671ddc9f07a49081ec5b69 # v1.4.2
-
-      - name: Check for merge commits
-        run: |
-          git log --merges --oneline | grep -q "^" && exit 1 || exit 0
-
-  actionlint:
-    name: GitHub Actions lint 🧹
+  static:
+    name: Static checks 🔎
+    # zizmor and actionlint run through Docker
     runs-on: ubuntu-latest
 
     steps:
@@ -101,28 +62,27 @@ jobs:
           # Untrusted fork code runs here: keep the caller's permissions and secrets minimal. See https://gh.io/securely-using-pull_request_target
           allow-unsafe-pr-checkout: true
 
-      - name: Lint workflows 🔎
-        uses: docker://rhysd/actionlint:1.7.12@sha256:b1934ee5f1c509618f2508e6eb47ee0d3520686341fec936f3b79331f9315667
-        with:
-          args: -color
+      - parallel:
+          - name: Scan for vulnerable dependencies 🔎
+            uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
+            with:
+              base-ref: ${{ github.event.pull_request.base.sha || 'master' }}
+              head-ref: ${{ github.event.pull_request.head.sha || github.ref }}
 
-  zizmor:
-    name: GitHub Actions security 🌈
-    # zizmor runs through Docker
-    runs-on: ubuntu-latest
+          - name: Check if all commits comply with the specification 💬
+            uses: webiny/action-conventional-commits@7f91b1595ca1951cdb671ddc9f07a49081ec5b69 # v1.4.2
 
-    steps:
-      - name: Checkout ⬇️
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          ref: ${{ inputs.commit }}
-          show-progress: false
-          persist-credentials: false
-          # Untrusted fork code runs here: keep the caller's permissions and secrets minimal. See https://gh.io/securely-using-pull_request_target
-          allow-unsafe-pr-checkout: true
+          - name: Check for merge commits 💬
+            run: |
+              git log --merges --oneline | grep -q "^" && exit 1 || exit 0
 
-      - name: Audit workflows 🔎
-        uses: zizmorcore/zizmor-action@cc914d7f3750a2d13d75c7f184a1060aa0e9d482 # v0.6.4
-        with:
-          advanced-security: false
-          annotations: true
+          - name: Lint workflows 🧹
+            uses: docker://rhysd/actionlint:1.7.12@sha256:b1934ee5f1c509618f2508e6eb47ee0d3520686341fec936f3b79331f9315667
+            with:
+              args: -color
+
+          - name: Audit workflows 🌈
+            uses: zizmorcore/zizmor-action@cc914d7f3750a2d13d75c7f184a1060aa0e9d482 # v0.6.4
+            with:
+              advanced-security: false
+              annotations: true

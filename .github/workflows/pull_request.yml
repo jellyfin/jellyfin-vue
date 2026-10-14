@@ -37,33 +37,29 @@ jobs:
       contents: read
       pull-requests: write
 
-  semantic-commits:
+  pr-metadata:
+    name: Pull Request metadata 📚🏷️
     if: ${{ always() && !cancelled() && github.repository == 'jellyfin/jellyfin-vue' }}
     runs-on: ubuntu-slim
-    name: Semantic Pull Request 📚
-    steps:
-      - name: Validate PR title 👌
-        uses: amannn/action-semantic-pull-request@48f256284bd46cdaab1048c3721360e808335d50 # v6.1.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.JF_BOT_TOKEN }}
-        with:
-          subjectPattern: ^(?![A-Z]).+$
-          subjectPatternError: |
-            The subject "{subject}" found in the pull request title "{title}"
-            didn't match the configured pattern. Please ensure that the subject
-            doesn't start with an uppercase character.
-
-  label:
-    name: Labeling 🏷️
-    if: ${{ always() && !cancelled() && github.repository == 'jellyfin/jellyfin-vue'}}
-    runs-on: ubuntu-slim
 
     steps:
-      - name: Label depending on modified files
-        uses: actions/labeler@bf12e9b00b37c5c0ca2b87b79b2daf7891dbda13 # v7.0.0
-        with:
-          sync-labels: true
-          repo-token: ${{ secrets.JF_BOT_TOKEN }}
+      - parallel:
+          - name: Validate PR title 👌
+            uses: amannn/action-semantic-pull-request@48f256284bd46cdaab1048c3721360e808335d50 # v6.1.1
+            env:
+              GITHUB_TOKEN: ${{ secrets.JF_BOT_TOKEN }}
+            with:
+              subjectPattern: ^(?![A-Z]).+$
+              subjectPatternError: |
+                The subject "{subject}" found in the pull request title "{title}"
+                didn't match the configured pattern. Please ensure that the subject
+                doesn't start with an uppercase character.
+
+          - name: Label depending on modified files 🏷️
+            uses: actions/labeler@bf12e9b00b37c5c0ca2b87b79b2daf7891dbda13 # v7.0.0
+            with:
+              sync-labels: true
+              repo-token: ${{ secrets.JF_BOT_TOKEN }}
 
   build:
     name: Build 🏗️

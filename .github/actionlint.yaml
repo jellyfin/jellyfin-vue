@@ -4,3 +4,6 @@ paths:
     ignore:
       # actionlint doesn't support GitHub's self-repository syntax yet: https://github.blog/changelog/2026-07-30-reference-same-repository-actions-with-self-repository-syntax/
       - 'reusable workflow call "\$/'
+      # actionlint doesn't support parallel steps yet: https://github.blog/changelog/2026-06-25-actions-steps-can-now-be-run-in-parallel/
+      - 'unexpected key "(background|parallel|wait|wait-all|cancel)" for step'
+      - 'step must run script with "run" section or run action with "uses" section'
