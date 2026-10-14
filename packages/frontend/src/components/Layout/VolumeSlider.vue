@@ -3,6 +3,7 @@
     <VBtn
       icon
       size="small"
+      :aria-label="playbackManager.isMuted.value ? $t('unmute') : $t('mute')"
       @click="playbackManager.toggleMute">
       <JIcon :class="icon" />
     </VBtn>

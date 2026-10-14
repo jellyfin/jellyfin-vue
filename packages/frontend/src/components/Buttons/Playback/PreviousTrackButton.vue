@@ -2,6 +2,7 @@
   <VBtn
     v-bind="$attrs"
     icon
+    :aria-label="$t('previousTrack')"
     @click.passive="() => playbackManager.setPreviousItem()"
     @dblclick.passive="() => playbackManager.setPreviousItem(true)">
     <JIcon

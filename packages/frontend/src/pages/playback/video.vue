@@ -14,16 +14,26 @@
       <div class="osd-top pt-s pl-s pr-s">
         <div class="uno-flex uno-items-center uno-px-4 uno-py-2">
           <div class="uno-flex">
-            <VBtn
-              icon
-              @click="playbackManager.stop">
-              <JIcon class="i-mdi:close" />
-            </VBtn>
-            <VBtn
-              icon
-              @click="playerElement.toggleFullscreenVideoPlayer">
-              <JIcon class="i-mdi:chevron-down" />
-            </VBtn>
+            <JTooltip
+              position="top"
+              :text="$t('stop')">
+              <VBtn
+                icon
+                :aria-label="$t('stop')"
+                @click="playbackManager.stop">
+                <JIcon class="i-mdi:close" />
+              </VBtn>
+            </JTooltip>
+            <JTooltip
+              position="top"
+              :text="$t('minimizePlayer')">
+              <VBtn
+                icon
+                :aria-label="$t('minimizePlayer')"
+                @click="playerElement.toggleFullscreenVideoPlayer">
+                <JIcon class="i-mdi:chevron-down" />
+              </VBtn>
+            </JTooltip>
           </div>
           <div class="uno-ml-auto uno-flex">
             <CastButton />
@@ -85,13 +95,18 @@
                 v-model="subtitleSelectionButtonOpened" />
               <PlaybackSettingsButton
                 v-model="playbackSettingsButtonOpened" />
-              <VBtn
-                v-if="mediaControls.supportsPictureInPicture"
-                class="uno-self-center"
-                icon
-                @click="mediaControls.togglePictureInPicture">
-                <JIcon class="i-mdi:picture-in-picture-bottom-right" />
-              </VBtn>
+              <JTooltip
+                position="top"
+                :text="$t('pictureInPicture')">
+                <VBtn
+                  v-if="mediaControls.supportsPictureInPicture"
+                  class="uno-self-center"
+                  icon
+                  :aria-label="$t('pictureInPicture')"
+                  @click="mediaControls.togglePictureInPicture">
+                  <JIcon class="i-mdi:picture-in-picture-bottom-right" />
+                </VBtn>
+              </JTooltip>
               <JTooltip
                 position="top"
                 :text="$t('fullScreen')">
@@ -99,6 +114,7 @@
                   v-if="fullscreen.isSupported"
                   class="uno-self-center"
                   icon
+                  :aria-label="$t('fullScreen')"
                   @click="fullscreen.toggle">
                   <JIcon
                     :class="{
