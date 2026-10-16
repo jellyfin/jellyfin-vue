@@ -5,7 +5,7 @@
       :to="logoLink">
       <JImg
         :alt="$t('logo')"
-        class="mb-2"
+        class="uno-mb-2"
         data-swiper-parallax="-300"
         :style="{
           'max-width': $vuetify.display.mdAndUp ? '50%' : '40%',
@@ -16,20 +16,20 @@
     <RouterLink
       v-else-if="itemLink && titleString"
       data-swiper-parallax="-300"
-      class="link text-truncate text-h4 d-block text-sm-h3 text-sm-h2"
+      class="link text-h4 text-sm-h3 text-sm-h2 uno-block uno-truncate"
       :to="itemLink">
       {{ titleString }}
     </RouterLink>
     <p
       v-if="subtitle"
       data-swiper-parallax="-200"
-      class="text-truncate text-h6">
+      class="text-h6 uno-truncate">
       {{ subtitle }}
     </p>
     <h2
       v-if="item.Taglines && item.Taglines.length"
       data-swiper-parallax="-200"
-      class="text-truncate">
+      class="uno-truncate">
       {{ item.Taglines[0] }}
     </h2>
   </div>

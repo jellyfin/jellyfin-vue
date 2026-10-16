@@ -20,15 +20,15 @@
         </div>
         <div :class="useResponsiveClasses('slide-content')">
           <VContainer
-            class="align-end mx-md-10 mt-md-5 py-md-4 align-sm-center align-md-start">
+            class="mx-md-10 mt-md-5 py-md-4 align-sm-center align-md-start uno-items-end">
             <VRow>
               <VCol
                 cols="12"
                 sm="8"
                 md="6"
                 xl="5"
-                class="py-md-4 py-0">
-                <p class="text-truncate mb-2 my-2 text-overline">
+                class="py-md-4 uno-py-0">
+                <p class="text-overline uno-my-2 uno-truncate">
                   <slot name="referenceText" />
                 </p>
                 <ItemsCarouselTitle :item="item" />
@@ -38,7 +38,7 @@
                   runtime
                   rating
                   tracks
-                  class="mb-3"
+                  class="uno-mb-3"
                   data-swiper-parallax="-100" />
                 <PlayButton
                   :item="item"

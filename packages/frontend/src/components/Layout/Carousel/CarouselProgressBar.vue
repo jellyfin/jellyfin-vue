@@ -37,9 +37,9 @@ const display = useDisplay();
 
 const defaultBarClasses = Object.freeze([
   'progress',
-  'd-flex',
-  'align-center',
-  'justify-center'
+  'uno-flex',
+  'uno-items-center',
+  'uno-justify-center'
 ]);
 const expand = computed(() => hoverable && !display.mobile.value);
 const animDuration = computed(() => (duration / 1000).toString() + 's');

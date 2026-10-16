@@ -1,7 +1,7 @@
 <template>
   <JTooltip position="bottom">
     <VBtn
-      class="align-self-center ma-1"
+      class="uno-m-1 uno-self-center"
       icon
       size="small"
       variant="elevated"

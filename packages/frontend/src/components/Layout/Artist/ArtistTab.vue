@@ -3,9 +3,9 @@
     v-for="release in releases"
     :key="release.Id"
     no-gutters
-    class="my-6">
+    class="uno-my-6!">
     <VCol cols="12">
-      <div class="d-flex flex-column">
+      <div class="uno-flex uno-flex-col">
         <VRow>
           <VCol
             lg="2"
@@ -14,7 +14,7 @@
               :item="release"
               overlay />
           </VCol>
-          <VCol class="py-2">
+          <VCol class="uno-py-2">
             <div class="text-subtitle-1 text--secondary font-weight-medium">
               {{ release.ProductionYear }}
             </div>
@@ -32,7 +32,7 @@
         </VRow>
         <VRow
           v-if="$vuetify.display.mdAndUp"
-          class="my-2">
+          class="uno-my-2!">
           <VCol>
             <TrackList
               :tracks="tracksByRelease.get(release.Id) ?? []"
