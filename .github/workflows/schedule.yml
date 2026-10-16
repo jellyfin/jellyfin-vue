@@ -5,10 +5,12 @@ on:
     - cron: 30 7 * * 6
   workflow_dispatch:
 
+permissions: {}
+
 jobs:
   codeql:
     name: GitHub CodeQL 🔬
-    uses: ./.github/workflows/__codeql.yml
+    uses: $/.github/workflows/__codeql.yml
     permissions:
       actions: read
       contents: read
