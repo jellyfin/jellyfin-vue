@@ -36,7 +36,7 @@
     "@jellyfin-vue/i18n": "workspace:*",
     "@jellyfin-vue/shared": "workspace:*",
     "@jellyfin-vue/ui-toolkit": "workspace:*",
-    "@jellyfin/sdk": "0.13.0",
+    "@jellyfin/sdk": "1.0.0",
     "@vueuse/core": "catalog:runtime",
     "assjs": "0.1.10",
     "audiomotion-analyzer": "4.5.4",
