@@ -24,7 +24,7 @@
           </span>
         </JOverlay>
         <JOverlay
-          v-if="overlay && hasFinePointer"
+          v-if="overlay && canHover"
           hover
           scrim
           class="uno-flex uno-justify-center">
@@ -62,7 +62,7 @@
 <script setup lang="ts">
 import { useAttrs, computed } from 'vue';
 import { isNil } from '@jellyfin-vue/shared/validation';
-import { hasFinePointer } from '#/store/index.ts';
+import { canHover } from '#/store/index.ts';
 import type { CardShapes } from '#/utils/items.ts';
 
 const { shape, progress, overlay, to, margin } = defineProps<{
