@@ -69,12 +69,11 @@
 import {
   BaseItemKind, SortOrder
 } from '@jellyfin/sdk/lib/generated-client';
-import { getArtistsApi } from '@jellyfin/sdk/lib/utils/api/artists-api';
-import { getGenresApi } from '@jellyfin/sdk/lib/utils/api/genres-api';
-import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
-import { getMusicGenresApi } from '@jellyfin/sdk/lib/utils/api/music-genres-api';
-import { getPersonsApi } from '@jellyfin/sdk/lib/utils/api/persons-api';
-import { getStudiosApi } from '@jellyfin/sdk/lib/utils/api/studios-api';
+import { getArtistApi } from '@jellyfin/sdk/lib/utils/api/artist-api';
+import { getGenreApi } from '@jellyfin/sdk/lib/utils/api/genre-api';
+import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
+import { getPersonApi } from '@jellyfin/sdk/lib/utils/api/person-api';
+import { getStudioApi } from '@jellyfin/sdk/lib/utils/api/studio-api';
 import { computed, onBeforeMount, ref, shallowRef } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import { useRoute } from 'vue-router';
@@ -123,7 +122,7 @@ function onChangeFilter(changedFilters: Filters): void {
   filters.value = changedFilters;
 }
 
-const { data: libraryQuery } = await useBaseItem(getItemsApi, 'getItems')(() => ({
+const { data: libraryQuery } = await useBaseItem(getLibraryApi, 'getItems')(() => ({
   ids: [route.params.itemId]
 }));
 const library = computed(() => libraryQuery.value[0]!);
@@ -178,22 +177,20 @@ const parentId = computed(() => library.value.Id);
 const methods = computed(() => {
   switch (viewType.value) {
     case 'MusicArtist': {
-      return [getArtistsApi, 'getArtists'] as const;
+      return [getArtistApi, 'getArtists'] as const;
     }
     case 'Person': {
-      return [getPersonsApi, 'getPersons'] as const;
+      return [getPersonApi, 'getPersons'] as const;
     }
-    case 'Genre': {
-      return [getGenresApi, 'getGenres'] as const;
-    }
+    case 'Genre':
     case 'MusicGenre': {
-      return [getMusicGenresApi, 'getMusicGenres'] as const;
+      return [getGenreApi, 'getGenres'] as const;
     }
     case 'Studio': {
-      return [getStudiosApi, 'getStudios'] as const;
+      return [getStudioApi, 'getStudios'] as const;
     }
     default: {
-      return [getItemsApi, 'getItems'] as const;
+      return [getLibraryApi, 'getItems'] as const;
     }
   }
 });

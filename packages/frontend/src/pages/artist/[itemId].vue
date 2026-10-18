@@ -157,9 +157,7 @@ import {
   SortOrder,
   type BaseItemDto
 } from '@jellyfin/sdk/lib/generated-client';
-import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
-import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { msToTicks } from '#/utils/time.ts';
@@ -182,21 +180,21 @@ const [
   { data: appearances },
   { data: musicVideos }
 ] = await Promise.all([
-  useBaseItem(getUserLibraryApi, 'getItem')(() => ({
+  useBaseItem(getLibraryApi, 'getItem')(() => ({
     itemId: route.params.itemId
   })),
   useBaseItem(getLibraryApi, 'getSimilarItems')(() => ({
     itemId: route.params.itemId,
     limit: 5
   })),
-  useBaseItem(getItemsApi, 'getItems')(() => ({
+  useBaseItem(getLibraryApi, 'getItems')(() => ({
     albumArtistIds: [route.params.itemId],
     sortBy,
     sortOrder: [SortOrder.Descending],
     recursive: true,
     includeItemTypes: [BaseItemKind.MusicAlbum]
   })),
-  useBaseItem(getItemsApi, 'getItems')(() => ({
+  useBaseItem(getLibraryApi, 'getItems')(() => ({
     contributingArtistIds: [route.params.itemId],
     excludeItemIds: [route.params.itemId],
     sortBy,
@@ -204,7 +202,7 @@ const [
     recursive: true,
     includeItemTypes: [BaseItemKind.MusicAlbum]
   })),
-  useBaseItem(getItemsApi, 'getItems')(() => ({
+  useBaseItem(getLibraryApi, 'getItems')(() => ({
     artistIds: [route.params.itemId],
     sortBy,
     sortOrder: [SortOrder.Descending],
@@ -214,7 +212,7 @@ const [
 ]);
 
 const all_tracks = await Promise.all(discography.value.map(album =>
-  useBaseItem(getItemsApi, 'getItems')(() => ({
+  useBaseItem(getLibraryApi, 'getItems')(() => ({
     parentId: album.Id,
     sortBy: ['SortName'],
     sortOrder: [SortOrder.Ascending]

@@ -4,9 +4,6 @@
       v-model="allowRemoteAccess"
       :label="t('allowRemoteAccess')"
       :disabled="loading" />
-    <VCheckbox
-      v-model="enableUPNP"
-      :label="t('enableUPNP')" />
     <VBtn
       color="secondary"
       variant="elevated"
@@ -39,7 +36,6 @@ const emit = defineEmits<{
 const { t } = useTranslation();
 
 const allowRemoteAccess = ref(false);
-const enableUPNP = ref(false);
 const loading = ref(false);
 
 /**
@@ -55,8 +51,7 @@ async function setRemoteAccess(): Promise<void> {
   try {
     await getStartupApi(api).setRemoteAccess({
       startupRemoteAccessDto: {
-        EnableRemoteAccess: allowRemoteAccess.value,
-        EnableAutomaticPortMapping: enableUPNP.value
+        EnableRemoteAccess: allowRemoteAccess.value
       }
     });
 

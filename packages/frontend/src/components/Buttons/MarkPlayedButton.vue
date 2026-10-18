@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { getPlaystateApi } from '@jellyfin/sdk/lib/utils/api/playstate-api';
+import { getUserDataApi } from '@jellyfin/sdk/lib/utils/api/user-data-api';
 import { computed, ref } from 'vue';
 import { canMarkWatched } from '#/utils/items.ts';
 import { useApi } from '#/composables/apis.ts';
@@ -29,7 +29,7 @@ const methodToExecute = ref<'markPlayedItem' | 'markUnplayedItem' | undefined>()
  * The websocket will automatically update the item in the store, so no need
  * to do manual modification here
  */
-const { loading } = await useApi(getPlaystateApi, methodToExecute, { skipCache: { request: true }, globalLoading: false })(() => ({
+const { loading } = await useApi(getUserDataApi, methodToExecute, { skipCache: { request: true }, globalLoading: false })(() => ({
   itemId: item.Id ?? ''
 }));
 

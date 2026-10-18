@@ -105,9 +105,7 @@
 
 <script setup lang="ts">
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
-import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { useRoute } from 'vue-router';
-import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { SortOrder } from '@jellyfin/sdk/lib/generated-client';
 import { getItemDetailsLink } from '#/utils/items.ts';
 import { useBaseItem } from '#/composables/apis.ts';
@@ -117,14 +115,14 @@ import { useItemPageTitle } from '#/composables/page-title.ts';
 const route = useRoute('/musicalbum/[itemId]');
 
 const [{ data: item }, { data: relatedItems }, { data: tracks }] = await Promise.all([
-  useBaseItem(getUserLibraryApi, 'getItem')(() => ({
+  useBaseItem(getLibraryApi, 'getItem')(() => ({
     itemId: route.params.itemId
   })),
   useBaseItem(getLibraryApi, 'getSimilarItems')(() => ({
     itemId: route.params.itemId,
     limit: 5
   })),
-  useBaseItem(getItemsApi, 'getItems')(() => ({
+  useBaseItem(getLibraryApi, 'getItems')(() => ({
     parentId: route.params.itemId,
     sortBy: ['SortName'],
     sortOrder: [SortOrder.Ascending]

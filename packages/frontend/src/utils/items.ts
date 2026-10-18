@@ -9,10 +9,9 @@ import {
   type BaseItemPerson,
   type MediaStream
 } from '@jellyfin/sdk/lib/generated-client';
-import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
-import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
-import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
-import { getUserViewsApi } from '@jellyfin/sdk/lib/utils/api/user-views-api';
+import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
+import { getShowApi } from '@jellyfin/sdk/lib/utils/api/show-api';
+import { getUserViewApi } from '@jellyfin/sdk/lib/utils/api/user-view-api';
 import type { ComputedRef } from 'vue';
 import type { RouteNamedMap } from 'vue-router/auto-routes';
 import { isNil } from '@jellyfin-vue/shared/validation';
@@ -530,7 +529,7 @@ export async function getItemSeasonDownloadMap(
 
   const episodes
     = (
-      await remote.sdk.newUserApi(getItemsApi).getItems({
+      await remote.sdk.newUserApi(getLibraryApi).getItems({
         userId: remote.auth.currentUserId.value,
         parentId: seasonId,
         fields: [ItemFields.Overview, ItemFields.CanDownload, ItemFields.Path]
@@ -564,7 +563,7 @@ export async function getItemSeriesDownloadMap(
 
   const seasons
     = (
-      await remote.sdk.newUserApi(getTvShowsApi).getSeasons({
+      await remote.sdk.newUserApi(getShowApi).getSeasons({
         userId: remote.auth.currentUserId.value,
         seriesId: seriesId
       })
@@ -629,10 +628,10 @@ interface IndexPageQueries {
  */
 export async function fetchIndexPage(): Promise<IndexPageQueries> {
   const latestPerLibrary = new Map<BaseItemDto['Id'], ComputedRef<BaseItemDto[]>>();
-  const { data: views } = await useBaseItem(getUserViewsApi, 'getUserViews')();
+  const { data: views } = await useBaseItem(getUserViewApi, 'getUserViews')();
   const latestItems = views.value.map((view) => {
     return (async () => {
-      const { data } = await useBaseItem(getUserLibraryApi, 'getLatestMedia')(() => ({
+      const { data } = await useBaseItem(getLibraryApi, 'getLatestMedia')(() => ({
         parentId: view.Id
       }));
 
@@ -641,11 +640,11 @@ export async function fetchIndexPage(): Promise<IndexPageQueries> {
   });
 
   const itemPromises = [
-    useBaseItem(getItemsApi, 'getResumeItems')(() => ({
+    useBaseItem(getLibraryApi, 'getResumeItems')(() => ({
       mediaTypes: ['Video']
     })),
-    useBaseItem(getUserLibraryApi, 'getLatestMedia')(),
-    useBaseItem(getTvShowsApi, 'getNextUp')()
+    useBaseItem(getLibraryApi, 'getLatestMedia')(),
+    useBaseItem(getShowApi, 'getNextUp')()
   ];
 
   const results = (await Promise.all([

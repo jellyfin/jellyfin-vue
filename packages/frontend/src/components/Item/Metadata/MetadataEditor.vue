@@ -226,10 +226,9 @@ import {
   type BaseItemDto,
   type BaseItemPerson
 } from '@jellyfin/sdk/lib/generated-client';
-import { getGenresApi } from '@jellyfin/sdk/lib/utils/api/genres-api';
+import { getGenreApi } from '@jellyfin/sdk/lib/utils/api/genre-api';
 import { getItemUpdateApi } from '@jellyfin/sdk/lib/utils/api/item-update-api';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
-import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { AxiosError } from 'axios';
 import { format, formatISO } from 'date-fns';
 import { computed, ref, shallowRef } from 'vue';
@@ -316,7 +315,7 @@ const tagLine = computed({
  */
 async function getData(): Promise<void> {
   const itemInfo = (
-    await remote.sdk.newUserApi(getUserLibraryApi).getItem({
+    await remote.sdk.newUserApi(getLibraryApi).getItem({
       userId: remote.auth.currentUserId.value,
       itemId: itemId
     })
@@ -371,7 +370,7 @@ async function getData(): Promise<void> {
 async function getGenres(parentId: string): Promise<void> {
   genres.value
     = (
-      await remote.sdk.newUserApi(getGenresApi).getGenres({
+      await remote.sdk.newUserApi(getGenreApi).getGenres({
         parentId
       })
     ).data.Items?.map(index => index.Name).filter(

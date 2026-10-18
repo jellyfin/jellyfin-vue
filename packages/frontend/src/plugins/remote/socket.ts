@@ -1,6 +1,7 @@
 import { useWebSocket } from '@vueuse/core';
 import { destr } from 'destr';
 import { computed, watch } from 'vue';
+import { AUTHORIZATION_PARAMETER } from '@jellyfin/sdk/lib/constants';
 import { isNil, sealed } from '@jellyfin-vue/shared/validation';
 import auth from './auth.ts';
 import sdk from './sdk/index.ts';
@@ -24,7 +25,7 @@ class RemotePluginSocket {
     }
 
     const socketParameters = new URLSearchParams({
-      api_key: auth.currentUserToken.value,
+      [AUTHORIZATION_PARAMETER]: auth.currentUserToken.value,
       deviceId: sdk.deviceInfo.id
     }).toString();
 

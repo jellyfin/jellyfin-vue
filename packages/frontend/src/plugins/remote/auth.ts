@@ -3,7 +3,7 @@ import {
   VersionOutdatedIssue,
   VersionUnsupportedIssue
 } from '@jellyfin/sdk';
-import type { UserDto, PublicSystemInfo, BrandingOptions } from '@jellyfin/sdk/lib/generated-client';
+import type { UserDto, PublicSystemInfo, BrandingOptionsDto } from '@jellyfin/sdk/lib/generated-client';
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
 import { getBrandingApi } from '@jellyfin/sdk/lib/utils/api/branding-api';
 import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
@@ -17,7 +17,7 @@ import { BaseState } from '#/store/super/base-state.ts';
 export interface ServerInfo extends BetterOmit<PublicSystemInfo, 'LocalAddress'> {
   PublicAddress: string;
   isDefault: boolean;
-  BrandingOptions: BrandingOptions;
+  BrandingOptions: BrandingOptionsDto;
   PublicUsers: UserDto[];
 }
 

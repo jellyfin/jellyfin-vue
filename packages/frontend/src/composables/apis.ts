@@ -521,7 +521,7 @@ function _sharedInternalLogic<T extends Record<K, (...args: any[]) => any>, K ex
  * Here's an usage example. **Request parameters must be passed as getters (like props on watchers)**:
  *
  * ```ts
- * const { loading, data: item } = await useBaseItem(getUserLibraryApi, 'getItem')(() => {
+ * const { loading, data: item } = await useBaseItem(getLibraryApi, 'getItem')(() => {
  *   ...the request parameters
  * });
  * ```

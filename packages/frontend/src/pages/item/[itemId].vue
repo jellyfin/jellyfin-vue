@@ -301,9 +301,7 @@ import type {
   BaseItemPerson,
   MediaSourceInfo
 } from '@jellyfin/sdk/lib/generated-client';
-import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
-import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { getItemDetailsLink, getMediaStreams, getMergedCrew } from '#/utils/items.ts';
@@ -319,19 +317,19 @@ const [
   { data: relatedItems },
   { data: childItems }
 ] = await Promise.all([
-  useBaseItem(getUserLibraryApi, 'getItem')(() => ({
+  useBaseItem(getLibraryApi, 'getItem')(() => ({
     itemId: route.params.itemId
   })),
   useBaseItem(getLibraryApi, 'getSimilarItems')(() => ({
     itemId: route.params.itemId,
     limit: 12
   })),
-  useBaseItem(getItemsApi, 'getItems')(() => ({
+  useBaseItem(getLibraryApi, 'getItems')(() => ({
     parentId: route.params.itemId
   }))
 ]);
 
-const { data: currentSeries } = await useBaseItem(getUserLibraryApi, 'getItem')(() => ({
+const { data: currentSeries } = await useBaseItem(getLibraryApi, 'getItem')(() => ({
   itemId: item.value.SeriesId ?? ''
 }));
 

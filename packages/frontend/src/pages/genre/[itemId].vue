@@ -51,8 +51,7 @@ import {
   SortOrder,
   type BaseItemKind
 } from '@jellyfin/sdk/lib/generated-client';
-import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
-import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
+import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { isStr } from '@jellyfin-vue/shared/validation';
@@ -73,10 +72,10 @@ const includeItemTypes = computed<BaseItemKind[]>(() => {
 });
 
 const [{ data: genre }, { data: genres }] = await Promise.all([
-  useBaseItem(getUserLibraryApi, 'getItem')(() => ({
+  useBaseItem(getLibraryApi, 'getItem')(() => ({
     itemId
   })),
-  useBaseItem(getItemsApi, 'getItems')(() => ({
+  useBaseItem(getLibraryApi, 'getItems')(() => ({
     genreIds: [itemId],
     includeItemTypes: includeItemTypes.value,
     recursive: true,

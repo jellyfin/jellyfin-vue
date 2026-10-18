@@ -5,7 +5,6 @@
  * read their documentation for more information.
  */
 import { ImageType, ItemFields } from '@jellyfin/sdk/lib/generated-client';
-import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { toRaw, watch } from 'vue';
 import { isArray, isObj, sealed } from '@jellyfin-vue/shared/validation';
@@ -103,7 +102,7 @@ class ApiStore {
     const existingIds = await apiDb.getExistingIds(itemIds);
 
     if (existingIds.length) {
-      const { data } = await remote.sdk.newUserApi(getItemsApi).getItems({
+      const { data } = await remote.sdk.newUserApi(getLibraryApi).getItems({
         userId: remote.auth.currentUserId.value,
         ids: existingIds,
         fields: apiEnums.fields as ItemFields[],

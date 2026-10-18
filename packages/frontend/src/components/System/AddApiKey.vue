@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { getApiKeyApi } from '@jellyfin/sdk/lib/utils/api/api-key-api';
+import { getAuthenticationApi } from '@jellyfin/sdk/lib/utils/api/authentication-api';
 import { computed, ref } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import { useDisplay } from 'vuetify';
@@ -74,7 +74,7 @@ async function addApiKey(): Promise<void> {
   loading.value = true;
 
   try {
-    await remote.sdk.newUserApi(getApiKeyApi).createKey({
+    await remote.sdk.newUserApi(getAuthenticationApi).createKey({
       app: newKeyAppName.value
     });
 
