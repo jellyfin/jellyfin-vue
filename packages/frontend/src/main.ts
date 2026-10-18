@@ -5,6 +5,10 @@
  * - Object.groupBy: ES2024 https://caniuse.com/mdn-javascript_builtins_object_groupby
  */
 import '@jellyfin-vue/i18n';
+/**
+ * Necessary to ensure the user's locale is fully loaded before mounting the app
+ */
+import '#/store/settings/client.ts';
 import { createApp } from 'vue';
 import { routes } from 'vue-router/auto-routes';
 import i18next from 'i18next';

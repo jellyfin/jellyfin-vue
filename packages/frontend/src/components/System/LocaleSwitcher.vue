@@ -19,7 +19,7 @@
             :key="index"
             :value="item === i18next.language"
             :title="getLocaleNativeName(item) ?? `${$t('unknown')} (${item})`"
-            @click="async () => await i18next.changeLanguage(item)" />
+            @click="clientSettings.locale.value = item" />
         </VList>
       </VMenu>
     </VBtn>

@@ -1,5 +1,4 @@
 import type { AxiosError } from 'axios';
-import type { Class } from 'type-fest';
 import { isArray, isObject } from '@vue/shared';
 
 /**
@@ -83,9 +82,13 @@ export { isArray } from '@vue/shared';
 /**
  * Seals a class
  *
+ * TODO: Using structural type instead of type-fest Class' type, because
+ * it does not support private/protected constructors.
+ * Report and fix upstream.
+ *
  * @type TypeScript Decorator
  */
-export function sealed(constructor: Class<unknown, unknown[]>): void {
+export function sealed(constructor: { prototype: unknown }): void {
   Object.seal(constructor);
   Object.seal(constructor.prototype);
 }

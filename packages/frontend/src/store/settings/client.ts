@@ -44,16 +44,36 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState, KeysOfUnion<C
   /**
    * == METHODS ==
    */
-  private readonly _updateLocale = (): void => {
+  private readonly _updateLocale = async (): Promise<void> => {
     const targetLocale = isNil(this.locale.value) ? this._BROWSER_LANGUAGE.value : this.locale.value;
 
     if (targetLocale) {
       vuetify.locale.current.value = targetLocale;
-      void i18next.changeLanguage(targetLocale);
+      await i18next.changeLanguage(targetLocale);
     }
   };
 
-  public constructor() {
+  /**
+   * Creates the store, ensuring the user's locale is fully loaded before resolving
+   */
+  public static async create(): Promise<ClientSettingsStore> {
+    const store = new ClientSettingsStore();
+
+    await store._updateLocale();
+
+    /**
+     * Registered after the initial load to avoid racing with it. It's immediate so that
+     * changes that happened while loading (e.g. server sync, other tabs) are not lost
+     */
+    watchImmediate(
+      [store._BROWSER_LANGUAGE, store.locale],
+      store._updateLocale
+    );
+
+    return store;
+  }
+
+  private constructor() {
     super({
       defaultState: () => ({
         locale: undefined
@@ -62,18 +82,11 @@ class ClientSettingsStore extends SyncedStore<ClientSettingsState, KeysOfUnion<C
       resetOnLogout: true,
       persistenceType: 'localStorage'
     });
-    /**
-     * == WATCHERS ==
-     */
 
     /**
-     * Locale change
+     * Full initialization logic (initial locale load and watchers) is inside the create() method
      */
-    watchImmediate(
-      [this._BROWSER_LANGUAGE, this.locale],
-      this._updateLocale
-    );
   }
 }
 
-export const clientSettings = new ClientSettingsStore();
+export const clientSettings = await ClientSettingsStore.create();
