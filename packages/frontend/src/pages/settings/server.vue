@@ -74,7 +74,7 @@
 <script setup lang="ts">
 import { onScopeDispose, shallowRef, watch } from 'vue';
 import { getLocalizationApi } from '@jellyfin/sdk/lib/utils/api/localization-api';
-import { getConfigurationApi } from '@jellyfin/sdk/lib/utils/api/configuration-api';
+import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
 import { getBrandingApi } from '@jellyfin/sdk/lib/utils/api/branding-api';
 import { SomeItemSelectedRule } from '@jellyfin-vue/shared/validation';
 import { watchDeep } from '@vueuse/core';
@@ -89,19 +89,19 @@ const [
   { data: brandingSettings }
 ] = await Promise.all([
   useApi(getLocalizationApi, 'getLocalizationOptions')(),
-  useApi(getConfigurationApi, 'getConfiguration')(),
+  useApi(getSystemApi, 'getConfiguration')(),
   useApi(getBrandingApi, 'getBrandingOptions')()
 ]);
 
 const { loading: l1 } = await useApi(
-  getConfigurationApi,
+  getSystemApi,
   () => signal.value ? 'updateConfiguration' : undefined,
   { skipCache: { request: true }, globalLoading: false }
 )(() => ({
   serverConfiguration: serverSettings.value
 }));
 const { loading: l2 } = await useApi(
-  getConfigurationApi,
+  getSystemApi,
   () => signal.value ? 'updateNamedConfiguration' : undefined,
   { skipCache: { request: true }, globalLoading: false }
 )(() => ({

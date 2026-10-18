@@ -89,7 +89,6 @@
 import {
   LogLevel
 } from '@jellyfin/sdk/lib/generated-client';
-import { getActivityLogApi } from '@jellyfin/sdk/lib/utils/api/activity-log-api';
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
 import { format, formatRelative, parseJSON } from 'date-fns';
 import { useTranslation } from 'i18next-vue';
@@ -194,6 +193,6 @@ function getLogFileLink(name: string): string | undefined {
 
 const [{ data: logs }, { data: activityList }] = await Promise.all([
   useApi(getSystemApi, 'getServerLogs')(),
-  useApi(getActivityLogApi, 'getLogEntries')()
+  useApi(getSystemApi, 'getLogEntries')()
 ]);
 </script>

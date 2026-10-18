@@ -12,10 +12,10 @@ import {
   type BaseItemDto
 } from '@jellyfin/sdk/lib/generated-client';
 import { getInstantMixApi } from '@jellyfin/sdk/lib/utils/api/instant-mix-api';
-import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
+import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getMediaInfoApi } from '@jellyfin/sdk/lib/utils/api/media-info-api';
-import { getPlaystateApi } from '@jellyfin/sdk/lib/utils/api/playstate-api';
-import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
+import { getSessionApi } from '@jellyfin/sdk/lib/utils/api/session-api';
+import { getShowApi } from '@jellyfin/sdk/lib/utils/api/show-api';
 import { computedAsync, watchThrottled } from '@vueuse/core';
 import { computed, watch, watchEffect } from 'vue';
 import { isNil, sealed } from '@jellyfin-vue/shared/validation';
@@ -346,7 +346,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    */
   private readonly _reportPlaybackProgress = async (): Promise<void> => {
     if (!isNil(this.currentTime.value) && !isNil(this.currentItem.value)) {
-      await remote.sdk.newUserApi(getPlaystateApi).reportPlaybackProgress({
+      await remote.sdk.newUserApi(getSessionApi).reportPlaybackProgress({
         playbackProgressInfo: {
           ItemId: this.currentItem.value.Id,
           PlaySessionId: this._state.value.playSessionId,
@@ -365,7 +365,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     sessionId = this._state.value.playSessionId,
     currentTime = this.currentTime.value
   ): Promise<void> => {
-    await remote.sdk.newUserApi(getPlaystateApi).reportPlaybackStopped({
+    await remote.sdk.newUserApi(getSessionApi).reportPlaybackStopped({
       playbackStopInfo: {
         ItemId: itemId,
         PlaySessionId: sessionId,
@@ -378,7 +378,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    * Report playback start to the server. Used by the "Now playing" statistics in other clients.
    */
   private readonly _reportPlaybackStart = async (itemId: string): Promise<void> => {
-    await remote.sdk.newUserApi(getPlaystateApi).reportPlaybackStart({
+    await remote.sdk.newUserApi(getSessionApi).reportPlaybackStart({
       playbackStartInfo: {
         CanSeek: true,
         ItemId: itemId,
@@ -706,7 +706,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       || item.Type === BaseItemKind.MusicGenre
       || item.IsFolder
     ) {
-      const { data: response } = await useBaseItem(getItemsApi, 'getItems')(() => ({
+      const { data: response } = await useBaseItem(getLibraryApi, 'getItems')(() => ({
         ids,
         artistIds,
         filters: [ItemFilter.IsNotFolder],
@@ -724,7 +724,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       /**
        * If autoplay is enabled and we have a seriesId, get the rest of the episodes
        */
-      const { data: response } = await useBaseItem(getTvShowsApi, 'getEpisodes')(() => ({
+      const { data: response } = await useBaseItem(getShowApi, 'getEpisodes')(() => ({
         seriesId: item.SeriesId!,
         isMissing: false,
         startItemId: item.Id

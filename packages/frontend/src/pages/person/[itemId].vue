@@ -170,9 +170,7 @@ import {
   BaseItemKind,
   SortOrder
 } from '@jellyfin/sdk/lib/generated-client';
-import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
-import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { format } from 'date-fns';
 import { computed, shallowRef } from 'vue';
 import { useRoute } from 'vue-router';
@@ -194,35 +192,35 @@ const [
   { data: books },
   { data: photos }
 ] = await Promise.all([
-  useBaseItem(getUserLibraryApi, 'getItem')(() => ({
+  useBaseItem(getLibraryApi, 'getItem')(() => ({
     itemId: route.params.itemId
   })),
   useBaseItem(getLibraryApi, 'getSimilarItems')(() => ({
     itemId: route.params.itemId,
     limit: 5
   })),
-  useBaseItem(getItemsApi, 'getItems')(() => ({
+  useBaseItem(getLibraryApi, 'getItems')(() => ({
     personIds: [route.params.itemId],
     sortBy,
     sortOrder: [SortOrder.Descending],
     recursive: true,
     includeItemTypes: [BaseItemKind.Movie]
   })),
-  useBaseItem(getItemsApi, 'getItems')(() => ({
+  useBaseItem(getLibraryApi, 'getItems')(() => ({
     personIds: [route.params.itemId],
     sortBy,
     sortOrder: [SortOrder.Descending],
     recursive: true,
     includeItemTypes: [BaseItemKind.Series]
   })),
-  useBaseItem(getItemsApi, 'getItems')(() => ({
+  useBaseItem(getLibraryApi, 'getItems')(() => ({
     personIds: [route.params.itemId],
     sortBy,
     sortOrder: [SortOrder.Descending],
     recursive: true,
     includeItemTypes: [BaseItemKind.Book]
   })),
-  useBaseItem(getItemsApi, 'getItems')(() => ({
+  useBaseItem(getLibraryApi, 'getItems')(() => ({
     personIds: [route.params.itemId],
     sortBy,
     sortOrder: [SortOrder.Descending],

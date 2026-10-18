@@ -56,7 +56,7 @@ import type {
   BaseItemDto,
   MetadataRefreshMode
 } from '@jellyfin/sdk/lib/generated-client';
-import { getItemRefreshApi } from '@jellyfin/sdk/lib/utils/api/item-refresh-api';
+import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { computed, ref } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import { TaskType, taskManager } from '#/store/task-manager.ts';
@@ -127,7 +127,7 @@ async function refreshMetadata(): Promise<void> {
   try {
     loading.value = true;
 
-    await remote.sdk.newUserApi(getItemRefreshApi).refreshItem({
+    await remote.sdk.newUserApi(getLibraryApi).refreshItem({
       itemId: item.Id,
       metadataRefreshMode: refreshMode.value,
       imageRefreshMode: refreshMode.value,

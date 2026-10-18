@@ -187,11 +187,9 @@ import type {
   BaseItemPerson
 } from '@jellyfin/sdk/lib/generated-client';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
-import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
-import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
+import { getShowApi } from '@jellyfin/sdk/lib/utils/api/show-api';
 import { getItemDetailsLink, getMergedCrew } from '#/utils/items.ts';
 import { useBaseItem } from '#/composables/apis.ts';
 import { useItemBackdrop } from '#/composables/backdrop.ts';
@@ -200,20 +198,20 @@ import { useItemPageTitle } from '#/composables/page-title.ts';
 const route = useRoute('/series/[itemId]');
 
 const [{ data: item }, { data: relatedItems }, { data: seasons }] = await Promise.all([
-  useBaseItem(getUserLibraryApi, 'getItem')(() => ({
+  useBaseItem(getLibraryApi, 'getItem')(() => ({
     itemId: route.params.itemId
   })),
   useBaseItem(getLibraryApi, 'getSimilarItems')(() => ({
     itemId: route.params.itemId,
     limit: 5
   })),
-  useBaseItem(getTvShowsApi, 'getSeasons')(() => ({
+  useBaseItem(getShowApi, 'getSeasons')(() => ({
     seriesId: route.params.itemId
   }))
 ]);
 
 const seasonsData = await Promise.all(seasons.value.map(s =>
-  useBaseItem(getItemsApi, 'getItems')(() => ({
+  useBaseItem(getLibraryApi, 'getItems')(() => ({
     parentId: s.Id
   }))
 ));

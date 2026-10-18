@@ -108,14 +108,14 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { useTranslation } from 'i18next-vue';
-import { getUserViewsApi } from '@jellyfin/sdk/lib/utils/api/user-views-api';
+import { getUserViewApi } from '@jellyfin/sdk/lib/utils/api/user-view-api';
 import { userSettings } from '#/store/settings/user.ts';
 import { useBaseItem } from '#/composables/apis.ts';
 import { getLibraryIcon } from '#/utils/items.ts';
 import { orderItemsById } from '#/utils/ordering.ts';
 
 const { t } = useTranslation();
-const { data: views } = await useBaseItem(getUserViewsApi, 'getUserViews')();
+const { data: views } = await useBaseItem(getUserViewApi, 'getUserViews')();
 
 const homeSectionLabels: Record<string, string> = {
   smalllibrarytiles: t('myMedia'),

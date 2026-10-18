@@ -1,5 +1,5 @@
 import type { DisplayPreferencesDto } from '@jellyfin/sdk/lib/generated-client';
-import { getDisplayPreferencesApi } from '@jellyfin/sdk/lib/utils/api/display-preferences-api';
+import { getDisplayPreferenceApi } from '@jellyfin/sdk/lib/utils/api/display-preference-api';
 import destr from 'destr';
 import { deepEqual } from 'fast-equals';
 import { computed, EffectScope, watch } from 'vue';
@@ -39,7 +39,7 @@ export abstract class SyncedStore<
    */
   private readonly _fetchDisplayPreferences = async (): Promise<DisplayPreferencesDto> => {
     const response = await remote.sdk
-      .newUserApi(getDisplayPreferencesApi)
+      .newUserApi(getDisplayPreferenceApi)
       .getDisplayPreferences({
         displayPreferencesId: this._storeKey,
         userId: remote.auth.currentUserId.value,
@@ -51,7 +51,7 @@ export abstract class SyncedStore<
 
   private readonly _updateDisplayPreferences = async (newDisplayPreferences: DisplayPreferencesDto): Promise<void> => {
     await remote.sdk
-      .newUserApi(getDisplayPreferencesApi)
+      .newUserApi(getDisplayPreferenceApi)
       .updateDisplayPreferences({
         displayPreferencesId: this._storeKey,
         userId: remote.auth.currentUserId.value,

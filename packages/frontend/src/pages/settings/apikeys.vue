@@ -103,7 +103,7 @@
 
 <script setup lang="ts">
 import type { AuthenticationInfo } from '@jellyfin/sdk/lib/generated-client';
-import { getApiKeyApi } from '@jellyfin/sdk/lib/utils/api/api-key-api';
+import { getAuthenticationApi } from '@jellyfin/sdk/lib/utils/api/authentication-api';
 import { formatRelative, parseJSON } from 'date-fns';
 import { computed, ref } from 'vue';
 import { useTranslation } from 'i18next-vue';
@@ -159,7 +159,7 @@ async function revokeApiKey(token: string): Promise<void> {
   loading.value = true;
 
   try {
-    await remote.sdk.newUserApi(getApiKeyApi).revokeKey({
+    await remote.sdk.newUserApi(getAuthenticationApi).revokeKey({
       key: token
     });
 
@@ -182,7 +182,7 @@ async function revokeAllApiKeys(): Promise<void> {
   try {
     for (const key of apiKeys.value) {
       if (key.AccessToken) {
-        await remote.sdk.newUserApi(getApiKeyApi).revokeKey({
+        await remote.sdk.newUserApi(getAuthenticationApi).revokeKey({
           key: key.AccessToken
         });
       }
@@ -204,7 +204,7 @@ async function revokeAllApiKeys(): Promise<void> {
 async function refreshApiKeys(): Promise<void> {
   try {
     apiKeys.value
-      = (await remote.sdk.newUserApi(getApiKeyApi).getKeys()).data.Items ?? [];
+      = (await remote.sdk.newUserApi(getAuthenticationApi).getKeys()).data.Items ?? [];
   } catch (error) {
     apiKeys.value = [];
     console.error(error);

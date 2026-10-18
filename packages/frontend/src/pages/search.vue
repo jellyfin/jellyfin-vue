@@ -72,8 +72,8 @@
 
 <script setup lang="ts">
 import { BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
-import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
-import { getPersonsApi } from '@jellyfin/sdk/lib/utils/api/persons-api';
+import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
+import { getPersonApi } from '@jellyfin/sdk/lib/utils/api/person-api';
 import { computedAsync, refDebounced } from '@vueuse/core';
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -104,7 +104,7 @@ const [
   { data: itemSearch },
   { data: peopleSearch }]
   = await Promise.all([
-    useBaseItem(getItemsApi, itemSearchMethod, {
+    useBaseItem(getLibraryApi, itemSearchMethod, {
       skipCache: { request: true }
     })(() => ({
       searchTerm: searchDebounced.value,
@@ -119,7 +119,7 @@ const [
       ],
       recursive: true
     })),
-    useBaseItem(getPersonsApi, peopleSearchMethod, {
+    useBaseItem(getPersonApi, peopleSearchMethod, {
       skipCache: { request: true }
     })(() => ({
       searchTerm: searchDebounced.value

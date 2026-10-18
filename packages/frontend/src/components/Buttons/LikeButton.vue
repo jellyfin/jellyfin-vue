@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
+import { getUserDataApi } from '@jellyfin/sdk/lib/utils/api/user-data-api';
 import { computed, ref } from 'vue';
 import { useApi } from '#/composables/apis.ts';
 
@@ -23,7 +23,7 @@ const { size = 'small', item } = defineProps<{ item: BaseItemDto; size?: string 
  * to do manual modification here
  */
 const methodToExecute = ref<'markFavoriteItem' | 'unmarkFavoriteItem' | undefined>();
-const { loading } = await useApi(getUserLibraryApi, methodToExecute, { skipCache: { request: true }, globalLoading: false })(() => ({
+const { loading } = await useApi(getUserDataApi, methodToExecute, { skipCache: { request: true }, globalLoading: false })(() => ({
   itemId: item.Id ?? ''
 }));
 
