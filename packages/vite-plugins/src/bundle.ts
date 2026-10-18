@@ -98,78 +98,83 @@ export function JBundleChunking(): Plugin {
   return {
     name: 'Jellyfin_Vue:bundle_chunking',
     enforce: 'pre',
-    config: () => ({
-      build: {
-        rollupOptions: {
-          output: {
-            strictExecutionOrder: true,
-            /**
-             * This is the first thing that should be debugged when there are issues
-             * with the bundle.
-             */
-            codeSplitting: {
-              groups: [
-                {
-                  /**
-                   * Split each vendor in its own chunk
-                   */
-                  name: (id) => {
-                    const normalizedId = id.replaceAll('\\', '/');
-                    const nodeModulesPrefix = 'node_modules/';
-                    const nodeModulesIndex = normalizedId.lastIndexOf(nodeModulesPrefix);
+    config: (config) => {
+      const assetsDir = config.build?.assetsDir ?? 'assets';
 
-                    if (nodeModulesIndex === -1) {
-                      return;
-                    }
+      return {
+        build: {
+          rollupOptions: {
+            output: {
+              strictExecutionOrder: true,
+              /**
+               * This is the first thing that should be debugged when there are issues
+               * with the bundle.
+               */
+              codeSplitting: {
+                groups: [
+                  {
+                    /**
+                     * Split each vendor in its own chunk
+                     */
+                    name: (id) => {
+                      const normalizedId = id.replaceAll('\\', '/');
+                      const nodeModulesPrefix = 'node_modules/';
+                      const nodeModulesIndex = normalizedId.lastIndexOf(nodeModulesPrefix);
 
-                    const packageName = normalizedId.slice(nodeModulesIndex + nodeModulesPrefix.length).split('/', 1)[0];
+                      if (nodeModulesIndex === -1) {
+                        return;
+                      }
 
-                    if (!packageName) {
-                      return;
-                    }
+                      const packageName = normalizedId.slice(nodeModulesIndex + nodeModulesPrefix.length).split('/', 1)[0];
 
-                    return `vendor/${packageName.replace('@', '')}`;
+                      if (!packageName) {
+                        return;
+                      }
+
+                      return `vendor/${packageName.replace('@', '')}`;
+                    },
+                    priority: 10,
+                    debugName: 'vendor'
                   },
-                  priority: 10
-                },
-                {
-                  /**
-                   * Split Vuetify localization into separate chunk
-                   */
-                  name: 'localization/vendor/vuetify',
-                  test: /virtual:.*locales[\\/]vuetify/,
-                  priority: 9
-                },
-                {
-                  /**
-                   * Split Date-fns localization into separate chunk
-                   */
-                  name: 'localization/vendor/date-fns',
-                  test: /virtual:.*locales[\\/]date-fns/,
-                  priority: 9
-                },
-                {
-                  /**
-                   * Split i18next resources into separate chunks
-                   */
-                  name: (id) => {
-                    if (!(id.includes('virtual:') || id.includes('i18next/resources'))) {
-                      return;
-                    }
-
-                    const targetPath = basename(id.split('/').at(-1)!);
-                    const isIndex = targetPath === 'resources';
-
-                    return isIndex ? 'localization' : `localization/strings/${targetPath}`;
+                  {
+                    /**
+                     * Split Vuetify localization into separate chunk
+                     */
+                    name: 'localization/vendor/vuetify',
+                    test: /virtual:.*locales[\\/]vuetify/,
+                    priority: 9
                   },
-                  priority: 8
-                }
-              ]
+                  {
+                    /**
+                     * Split Date-fns localization into separate chunk
+                     */
+                    name: 'localization/vendor/date-fns',
+                    test: /virtual:.*locales[\\/]date-fns/,
+                    priority: 9
+                  },
+                  {
+                    /**
+                     * Split the i18next resources index into a separate chunk.
+                     *
+                     * The strings of each locale are dynamically imported, so they're
+                     * already split in their own chunk. Capturing them in a group would make
+                     * Rolldown generate a facade chunk that just re-exports the group, so we only
+                     * rename them in chunkFileNames instead.
+                     */
+                    name: 'localization',
+                    test: /virtual:i18next[\\/]resources$/,
+                    priority: 8
+                  }
+                ]
+              },
+              chunkFileNames: chunk => /virtual:i18next[\\/]resources[\\/]/.test(chunk.facadeModuleId ?? '')
+                ? `${assetsDir}/localization/strings/[name]-[hash].js`
+                : `${assetsDir}/[name]-[hash].js`
             }
           }
         }
-      }
-    })
+      };
+    }
   };
 }
 
