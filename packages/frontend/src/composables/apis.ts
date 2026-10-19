@@ -6,7 +6,6 @@ import {
   computed,
   effectScope,
   getCurrentScope,
-  inject,
   isRef,
   shallowRef,
   toValue,
@@ -18,7 +17,7 @@ import {
   type MaybeRef,
   type ShallowRef
 } from 'vue';
-import { until, watchDeep, whenever } from '@vueuse/core';
+import { until, watchDeep } from '@vueuse/core';
 import type { IsEqual, Exact, Writable } from 'type-fest';
 import { isArray, isFunc, isNil } from '@jellyfin-vue/shared/validation';
 import i18next from 'i18next';
@@ -28,7 +27,6 @@ import { useSnackbar } from '#/composables/use-snackbar.ts';
 import { remote } from '#/plugins/remote/index.ts';
 import { isConnectedToServer } from '#/store/index.ts';
 import { apiEnums, apiStore, lastUpdatedIds } from '#/store/dbs/api/index.ts';
-import { JView_isRouting } from '#/store/keys.ts';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type OmittedKeys = 'fields' | 'userId' | 'enableImages' | 'enableTotalRecordCount' | 'enableImageTypes';
@@ -309,18 +307,6 @@ function setupEffects<T extends Record<K, (...args: any[]) => any>, K extends ke
       watch(methodName, runNormally);
     }
   });
-
-  /**
-   * If we're routing, the effects of this composable are no longer useful, so we stop them
-   * to avoid accidental data fetching (e.g due to route param changes)
-   */
-  const isRouting = inject(JView_isRouting);
-
-  if (!isNil(isRouting)) {
-    whenever(isRouting, () => scope.stop(),
-      { once: true, flush: 'sync' }
-    );
-  }
 }
 
 /**

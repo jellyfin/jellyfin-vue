@@ -4,7 +4,6 @@
     :color="transparentAppBar ? 'transparent' : undefined"
     density="compact"
     flat>
-    <LoadingIndicator />
     <VAppBarNavIcon
       v-if="$vuetify.display.mobile"
       @click="navigationDrawer = !navigationDrawer" />
@@ -60,11 +59,9 @@ import { computed, inject, type Ref } from 'vue';
 import { windowScroll, isConnectedToServer, transparencyEffects } from '#/store/index.ts';
 import { themeSettings } from '#/store/settings/theme.ts';
 import { remote } from '#/plugins/remote/index.ts';
-import { JView_isRouting } from '#/store/keys.ts';
 
 const { y } = windowScroll;
-const isRouting = inject(JView_isRouting);
-const transparentAppBar = computed(previous => isRouting?.value ? previous : transparencyEffects.value && y.value < 10);
+const transparentAppBar = computed(() => transparencyEffects.value && y.value < 10);
 
 /**
  * Cycle between the different color schemas

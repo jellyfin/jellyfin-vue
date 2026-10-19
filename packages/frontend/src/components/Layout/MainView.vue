@@ -3,10 +3,7 @@
     :name="route.meta.layout.transition.enter ?? defaultTransition"
     :mode="defaultTransitionMode ?? route.meta.layout.transition.mode"
     skip-pausing>
-    <Suspense
-      :suspensible="!root"
-      @pending="resolved = false"
-      @resolve=" resolved = true">
+    <Suspense :suspensible="!root">
       <div
         :key="root ? route.meta.layout.name ?? 'default' : route.name"
         class="uno-h-full">
@@ -14,7 +11,8 @@
           :is="root ? getLayoutComponent(route.meta.layout.name) : comp">
           <MainView
             v-if="root"
-            v-bind="$props" />
+            :comp
+            :route />
           <slot v-else />
         </Component>
       </div>
@@ -28,14 +26,13 @@
 </template>
 
 <script lang="ts">
-import { onErrorCaptured, shallowRef, type Component, watch, computed, provide, useId, ref, inject } from 'vue';
+import { effectScope, getCurrentInstance, onErrorCaptured, onScopeDispose, shallowRef, watch, type Component } from 'vue';
 import type { RouteLocationNormalizedGeneric, RouteMeta } from 'vue-router';
-import { isNil } from '@jellyfin-vue/shared/validation';
-import { usePausableEffect } from '@jellyfin-vue/ui-toolkit/composables/use-pausable-effect.ts';
+import { onRouteRendered } from 'vue-router/experimental';
+import { pauseTree } from '@jellyfin-vue/ui-toolkit/composables/use-pausable-effect.ts';
 import DefaultLayout from '#/layouts/default.vue';
 import FullPageLayout from '#/layouts/fullpage.vue';
 import ServerLayout from '#/layouts/server.vue';
-import { JView_isRouting } from '#/store/keys.ts';
 import { router } from '#/plugins/router/index.ts';
 
 /**
@@ -58,42 +55,52 @@ function getLayoutComponent(layout: RouteMeta['layout']['name']): Component {
 const defaultTransition = 'slide-x-reverse';
 const defaultTransitionMode = 'out-in';
 const apploaded = shallowRef(false);
-const isRouting = shallowRef(false);
-const _resolveStatus = ref<Record<string, boolean>>({});
-const allResolved = computed(() => Object.values(_resolveStatus.value).every(Boolean));
-const mustBePaused = computed(() => !allResolved.value || isRouting.value);
-
-watch(() => router.currentRoute.value.name, () => isRouting.value = true);
-watch(allResolved, () => isRouting.value = false);
 </script>
 
 <script setup lang="ts">
-const { comp, route } = defineProps<{
+const { comp, route, root } = defineProps<{
   comp: Component;
   route: RouteLocationNormalizedGeneric;
+  /**
+   * The root view renders the layout and the nested view, which renders the page
+   */
+  root?: boolean;
 }>();
 
-const id = useId();
-const root = isNil(inject(JView_isRouting));
-
-const resolved = computed({
-  get: () => _resolveStatus.value[id] ?? false,
-  set(newVal) {
-    _resolveStatus.value[id] = newVal;
-
-    if (root && newVal) {
-      apploaded.value = true;
-    }
-  }
-});
-
 if (root) {
-  provide(JView_isRouting, mustBePaused);
-  usePausableEffect(mustBePaused);
+  const view = getCurrentInstance()!;
+  let resume: (() => void) | undefined;
+  const unfreeze = () => {
+    resume?.();
+    resume = undefined;
+  };
+
+  /**
+   * Until the new page is rendered, the view must keep displaying the leaving page as is, so we pause the DOM patching
+   * and the effects of everything that is being displayed. The new page still gets rendered, since the components
+   * in between receive it through forced updates from their parents, which aren't affected by pausing.
+   *
+   * Changes to the same route (like params or query changes) must remain reactive, since they don't render a new page.
+   *
+   * The watcher runs in its own scope, so it's not paused alongside the view.
+   */
+  const routeScope = effectScope(true);
+
+  routeScope.run(() => {
+    watch(() => router.currentRoute.value.name, () => {
+      resume ??= pauseTree(view);
+    }, { flush: 'sync' });
+  });
+  onScopeDispose(() => routeScope.stop());
+
+  onRouteRendered(() => {
+    unfreeze();
+    apploaded.value = true;
+  });
   onErrorCaptured((e, instance, info) => {
     console.error('[Jellyfin] Error captured in MainView:', e, instance, info);
-    resolved.value = true;
-    isRouting.value = false;
+    unfreeze();
+    apploaded.value = true;
   });
 }
 </script>

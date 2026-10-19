@@ -7,7 +7,7 @@
     floating
     class="pa-s"
     :color="
-      transparentLayout && !$vuetify.display.mobile ? 'transparent' : undefined
+      transparencyEffects && !$vuetify.display.mobile ? 'transparent' : undefined
     ">
     <VList nav>
       <VListItem
@@ -47,12 +47,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, type Ref } from 'vue';
+import { inject, type Ref } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import type { RouteNamedMap } from 'vue-router/auto-routes';
 import type { getLibraryIcon } from '#/utils/items.ts';
 import { transparencyEffects } from '#/store/index.ts';
-import { JView_isRouting } from '#/store/keys.ts';
 
 export interface DrawerItem {
   icon: ReturnType<typeof getLibraryIcon>;
@@ -68,8 +67,6 @@ const { order, drawerItems } = defineProps<{
 const { t } = useTranslation();
 
 const drawer = inject<Ref<boolean>>('NavigationDrawer');
-const isRouting = inject(JView_isRouting);
-const transparentLayout = computed(previous => isRouting?.value ? previous : transparencyEffects.value);
 
 const items = [
   {

@@ -2,8 +2,7 @@
   <VProgressLinear
     :active="isLoading"
     indeterminate
-    absolute
-    location="top"
+    class="uno-top-0 uno-z-2000 !uno-fixed"
     color="primary" />
 </template>
 
