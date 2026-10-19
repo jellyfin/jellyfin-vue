@@ -17,11 +17,7 @@ export const router = createRouter({
     jsonConfig.routerMode === 'history'
       ? createWebHistory()
       : createWebHashHistory(),
-  routes: [],
-  /**
-   * TODO: Fix this, so it only scrolls to the top once suspense resolves
-   */
-  scrollBehavior: (_to, _from, savedPosition) => savedPosition ?? { top: 0 }
+  routes: []
 });
 
 /**

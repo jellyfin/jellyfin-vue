@@ -10,6 +10,11 @@ import '@jellyfin-vue/i18n';
  */
 import '#/store/settings/client.ts';
 import { createApp } from 'vue';
+import {
+  ScrollRestoration,
+  SCROLL_RESTORATION_CAPTURE_DEFAULT,
+  SCROLL_RESTORATION_RESTORE_DEFAULT
+} from 'vue-router/experimental';
 import { routes } from 'vue-router/auto-routes';
 import i18next from 'i18next';
 import I18NextVue from 'i18next-vue';
@@ -42,6 +47,12 @@ for (const route of routes) {
 
 app.use(remote);
 app.use(I18NextVue, { i18next });
+app.use(ScrollRestoration, {
+  router,
+  capture: SCROLL_RESTORATION_CAPTURE_DEFAULT,
+  restore: SCROLL_RESTORATION_RESTORE_DEFAULT,
+  storageKeyPrefix: 'vue:scroll:'
+});
 app.use(router);
 app.use(vuetify);
 app.directive('hide', hideDirective);

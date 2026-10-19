@@ -17,6 +17,7 @@
 
 <script setup lang="ts">
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
+import { useScrollRestoration } from 'vue-router/experimental';
 import { computed, provide, ref, watch } from 'vue';
 import { useDisplay } from 'vuetify';
 import type { DrawerItem } from '#/components/Layout/Navigation/NavigationDrawer.vue';
@@ -24,6 +25,8 @@ import { playbackManager } from '#/store/playback-manager.ts';
 import { userSettings } from '#/store/settings/user.ts';
 import { fetchIndexPage, getLibraryIcon } from '#/utils/items.ts';
 import { orderItemsById } from '#/utils/ordering.ts';
+
+useScrollRestoration();
 
 const display = useDisplay();
 const navDrawer = ref(!display.mobile.value);
