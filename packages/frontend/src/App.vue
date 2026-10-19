@@ -4,8 +4,10 @@
     :loading>
     <Backdrop />
     <VApp>
+      <LoadingIndicator />
       <RouterView v-slot="{ Component, route }">
         <MainView
+          root
           :comp="Component"
           :route="route" />
       </RouterView>

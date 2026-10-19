@@ -1,5 +1,4 @@
 <template>
-  <LoadingIndicator />
   <JMain class="uno-h-full">
     <slot />
   </JMain>
