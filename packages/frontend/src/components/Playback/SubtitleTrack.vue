@@ -1,8 +1,8 @@
 <template>
   <div
-    class="uno-absolute uno-bottom-0 uno-left-0 uno-w-full uno-text-center">
+    class="uno-text-center uno-w-full uno-bottom-0 uno-left-0 uno-absolute">
     <span
-      class="uno-inline-block uno-pb-10px uno-color-white"
+      class="uno-color-subtitle uno-pb-10px uno-inline-block"
       :class="{ 'stroked': subtitleSettings.state.value.stroke }"
       :style="subtitleStyle">
       <template v-if="preview">

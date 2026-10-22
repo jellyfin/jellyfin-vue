@@ -11,15 +11,14 @@
         cursor: progress;
       </template>
       <template v-for="(value, key) in currentColors">
-        --j-theme-color-{{ key }}: {{ Color(value).rgb().array().join(', ') }};
-        --j-theme-color-{{ key }}-text: lch(from rgb(var(--j-theme-color-{{ key }})) calc((49.44 - l) * infinity) 0 0);
+        --j-theme-color-{{ key }}: {{ value }};
       </template>
         --j-font-family: '{{ theme.typography }}';
         --j-theme-transition-duration: {{ theme.transitionDuration }}s;
         --j-border-opacity: 0.12;
         --j-border-color: 255, 255, 255;
         color-scheme: {{ theme.isDark ? 'dark' : 'light' }} only;
-        color: var(--j-theme-color-background-text);
+        color: contrast-color(var(--j-theme-color-background));
       }
     </component>
     <!-- eslint-enable vue/require-component-is vue/html-indent -->
@@ -31,13 +30,9 @@
 /**
  * TODO: Investigate or propose an RFC to allow style tags inside SFCs
  */
-/**
- * The text color is calculated using: https://codepen.io/devongovett/pen/QwLbRrW and https://x.com/devongovett/status/1863733091409461256
- */
 import { computed } from 'vue';
 import type { ColorPalette } from '@jellyfin-vue/configs/uno/colors';
 import { watchImmediate } from '@vueuse/core';
-import Color from 'color';
 
 const { theme, loading } = defineProps<{
   theme: {

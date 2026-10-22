@@ -13,20 +13,20 @@
         'uno-min-h-84 uno-flex uno-flex-col uno-items-center uno-justify-center',
         'uno-border-2 uno-border-dashed uno-rounded-xl uno-p-8 uno-text-center uno-bg-transparent',
         dragging
-          ? 'uno-border-blue-500 uno-bg-blue-50'
-          : 'uno-border-gray-300 hover:uno-border-gray-400 uno-bg-gray-50'
+          ? 'uno-border-primary'
+          : 'uno-border-current/30 hover:uno-border-current/50'
       ]"
       @dragover.prevent="onDragOver"
       @dragleave="onDragLeave"
       @drop.prevent="onDrop">
       <div class="uno-flex uno-flex-col uno-items-center uno-text-center">
-        <JIcon class="i-mdi:cloud-upload uno-text-5xl uno-text-gray" />
+        <JIcon class="i-mdi:cloud-upload uno-text-5xl uno-text-current/60" />
         <div>
           <div class="uno-font-bold uno-text-3xl uno-mt-4">
             {{ t('dragAndDropFileHere') }}
           </div>
-          <div class="uno-flex uno-items-center uno-gap-4 uno-text-sm uno-text-gray-500 uno-w-full uno-justify-center uno-my-6">
-            <div class="uno-flex-1 uno-border-t uno-border-gray-300 uno-w-[100%]" />
+          <div class="uno-flex uno-items-center uno-gap-4 uno-text-sm uno-text-current/60 uno-w-full uno-justify-center uno-my-6">
+            <div class="uno-flex-1 uno-border-t uno-border-current/30 uno-w-[100%]" />
           </div>
         </div>
 
@@ -55,24 +55,23 @@
 
     <div
       v-if="errorMessage"
-      class="uno-mt-2 uno-text-red">
+      class="uno-mt-2 uno-text-error">
       {{ errorMessage }}
     </div>
     <div
       v-if="file && type === 'dropzone'"
       class="uno-flex uno-items-center uno-gap-4 uno-p-3 uno-rounded-lg uno-border
-      uno-border-gray-200 uno-bg-transparent uno-mt-6
-      dark:uno-border-gray-700">
+      uno-border-current/20 uno-bg-transparent uno-mt-6">
       <img
         v-if="preview"
         :alt="t('preview')"
         :src="preview"
-        class="uno-w-12 uno-h-12 uno-object-cover uno-rounded-md uno-border uno-border-gray-200 dark:uno-border-gray-700">
+        class="uno-w-12 uno-h-12 uno-object-cover uno-rounded-md uno-border uno-border-current/20">
       <div>
-        <div class="uno-font-medium uno-text-gray-900 dark:uno-text-gray-100 uno-break-all">
+        <div class="uno-font-medium uno-break-all">
           {{ file.name }}
         </div>
-        <div class="uno-text-gray-700 dark:uno-text-gray-100 uno-break-all">
+        <div class="uno-text-current/80 uno-break-all">
           {{ file.type }}
         </div>
       </div>
@@ -86,7 +85,7 @@
     </div>
     <div
       v-else-if="file && type === 'button'">
-      <div class="uno-font-medium uno-mt-2 uno-ml-2 uno-text-gray-900 dark:uno-text-gray-100 uno-break-all">
+      <div class="uno-font-medium uno-mt-2 uno-ml-2 uno-break-all">
         {{ file.name }}
       </div>
     </div>

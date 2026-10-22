@@ -1,7 +1,7 @@
 <template>
   <div
     ref="videoContainerRef"
-    class="uno-absolute uno-bottom-8 uno-right-8 uno-w-100">
+    class="uno-w-100 uno-bottom-8 uno-right-8 uno-absolute">
     <JOverlay
       scrim
       hover

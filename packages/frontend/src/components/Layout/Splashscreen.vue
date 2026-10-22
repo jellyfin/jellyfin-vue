@@ -9,7 +9,7 @@
     <JTransition
       name="slide-y-reverse"
       appear>
-      <div class="uno-fixed uno-bottom-25 uno-w-full uno-flex uno-flex-col uno-items-center uno-gap-5">
+      <div class="uno-flex uno-flex-col uno-gap-5 uno-w-full uno-items-center uno-bottom-25 uno-fixed">
         <JProgressCircular
           class="uno-w-20"
           indeterminate />

@@ -2,7 +2,7 @@
   <JAnchor
     v-if="$slots.content || text"
     :position
-    class="uno-transition-opacity uno-bg-tooltip uno-bg-opacity-80 uno-pointer-events-none uno-rounded uno-text-sm uno-px-2 uno-py-1"
+    class="uno-transition-opacity uno-bg-tooltip/80 uno-pointer-events-none uno-rounded uno-text-sm uno-px-2 uno-py-1"
     role="tooltip"
     :class="{
       'uno-opacity-0': !hoverComp?.isHovering,

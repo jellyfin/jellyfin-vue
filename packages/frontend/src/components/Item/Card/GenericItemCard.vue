@@ -13,12 +13,12 @@
       <div
         :class="shape"
         class="elevation-2 uno-bg-menu">
-        <JSlot class="align-center card-content uno-h-full uno-w-full uno-flex uno-justify-center !uno-m-0">
+        <JSlot class="align-center card-content uno-flex uno-h-full uno-w-full uno-justify-center !uno-m-0">
           <slot name="image" />
         </JSlot>
         <JOverlay
           v-if="$slots['upper-content']?.({}).length"
-          class="uno-top-0 uno-p-2">
+          class="uno-p-2 uno-top-0">
           <span class="uno-flex uno-items-center">
             <slot name="upper-content" />
           </span>
@@ -31,7 +31,7 @@
           <span class="uno-self-center">
             <slot name="center-content" />
           </span>
-          <span class="uno-absolute uno-bottom-0 uno-right-0 uno-m-2">
+          <span class="uno-m-2 uno-bottom-0 uno-right-0 uno-absolute">
             <slot name="bottom-content" />
           </span>
         </JOverlay>
@@ -47,7 +47,7 @@
     </Component>
     <div
       v-if="$slots.title || ($slots.title && $slots.subtitle)"
-      class="uno-mt-2 uno-overflow-hidden uno-text-ellipsis uno-px-1 uno-text-center uno-text-nowrap">
+      class="uno-mt-2 uno-px-1 uno-text-center uno-text-nowrap uno-text-ellipsis uno-overflow-hidden">
       <a class="font-weight-medium text-truncate uno-block">
         <slot name="title" />
       </a>

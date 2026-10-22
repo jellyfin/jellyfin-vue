@@ -17,7 +17,7 @@
 
       <VDivider />
       <VCardText
-        class="uno-flex uno-items-center uno-justify-center uno-text-center">
+        class="uno-text-center uno-flex uno-items-center uno-justify-center">
         <JSafeHtml :html="state.text" />
       </VCardText>
       <VCardActions class="uno-items-center uno-justify-center">

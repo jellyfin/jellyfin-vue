@@ -90,7 +90,7 @@ const enterFromClass = computed(() => {
 });
 
 /* Equivalent to *-enter-active class */
-const baseTransform = '!uno-transform-origin-center !uno-transform-gpu';
+const baseTransform = '!uno-transform-origin-center !uno-translate-z-0';
 const enterActiveClass = computed(() => {
   switch (name) {
     case 'slide-x-reverse':

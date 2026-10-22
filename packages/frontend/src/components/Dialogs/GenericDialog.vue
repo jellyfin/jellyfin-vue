@@ -41,7 +41,7 @@
       <VDivider v-if="$slots.actions" />
       <VCardActions
         v-if="$slots.actions"
-        class="uno-flex uno-items-center uno-pa-3"
+        class="uno-pa-3 uno-flex uno-items-center"
         :class="{
           'uno-justify-end': !$vuetify.display.mobile,
           'uno-justify-center': $vuetify.display.mobile
