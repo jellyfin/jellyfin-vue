@@ -8,26 +8,20 @@
       ref="probeRef"
       class="uno-pointer-events-none uno-invisible uno-z--1 uno-place-self-stretch"
       :class="gridClass">
-      <slot :item="items[0]" />
+      <slot
+        v-if="items.length"
+        :item="items[0]!" />
     </Component>
-    <template v-if="visibleItemsLength">
-      <template
-        v-for="comp_index in visibleItemsLength"
-        :key="getKey?.(items[visibleItems[comp_index - 1]!.index] as T)">
-        <JSlot
-          v-if="
-            visibleItems[comp_index - 1] &&
-              items[visibleItems[comp_index - 1]!.index] &&
-              visibleItems[comp_index - 1]!.style"
-          class="uno-transform-gpu"
-          :class="gridClass"
-          :style="visibleItems[comp_index - 1]!.style">
-          <slot
-            :item="items[visibleItems[comp_index - 1]!.index]!"
-            :index="visibleItems[comp_index - 1]!.index" />
-        </JSlot>
-      </template>
-    </template>
+    <JSlot
+      v-for="entry in renderedItems"
+      :key="getKey?.(entry.item)"
+      class="uno-transform-gpu"
+      :class="gridClass"
+      :style="entry.style">
+      <slot
+        :item="items[entry.index]!"
+        :index="entry.index" />
+    </JSlot>
   </Component>
 </template>
 
@@ -143,6 +137,12 @@ const workerUpdates = shallowRef(0);
 const workerInstance = new JVirtualWorker();
 const worker = wrap<IJVirtualWorker>(workerInstance);
 const cache = new Map<number, InternalItem[]>();
+/**
+ * Incremented every time the cache is cleared, so results from the worker
+ * that were requested before the clear (with outdated measurements or items length)
+ * are discarded instead of being pushed to the new cache.
+ */
+const cacheGeneration = shallowRef(0);
 
 /**
  * == MEASUREMENTS OF THE GRID AREA AND STYLING ==
@@ -209,12 +209,36 @@ const visibleItems = computed<InternalItem[]>((previous) => {
   if (Number.isFinite(workerUpdates.value) && Number.isFinite(scrollEvents.value)) {
     const elems = cache.get(bufferOffset.value) ?? [];
 
-    return elems.length ? elems : previous ?? [];
+    if (elems.length) {
+      return elems;
+    }
+
+    /**
+     * Reuse the previous items while the worker computes the new ones (so no blank space is shown),
+     * but only the ones that still exist after the items array shrinks.
+     */
+    return previous?.filter(({ index }) => index < itemsLength.value) ?? [];
   }
 
   return [];
 });
-const visibleItemsLength = computed(() => visibleItems.value.length);
+/**
+ * Pairs the visible items with their data, so the template never accesses
+ * indexes that don't exist anymore in the items array.
+ */
+const renderedItems = computed(() => {
+  const result: (InternalItem & { item: T })[] = [];
+
+  for (const { index, style } of visibleItems.value) {
+    const item = items[index];
+
+    if (!isNil(item) && style) {
+      result.push({ index, style, item });
+    }
+  }
+
+  return result;
+});
 const scrollParents = computed(() => rootRef.value && getScrollParents(rootRef.value));
 const scrollTargets = computed(() => {
   if (!scrollParents.value) {
@@ -247,11 +271,13 @@ const populateCache = (() => {
    * Only to be used inside populateCache, since nullish checks are skipped here
    */
   async function setCache(offset: number): Promise<void> {
-  /**
-   * Set the cache value rightaway to an empty value.
-   * That way, populateCache loop doesn't fire again
-   * with the same offset before this promise resolves.
-   */
+    const generation = cacheGeneration.value;
+
+    /**
+     * Set the cache value rightaway to an empty value.
+     * That way, populateCache loop doesn't fire again
+     * with the same offset before this promise resolves.
+     */
     cache.set(offset, []);
 
     const values = await worker.getVisibleIndexes(
@@ -265,7 +291,7 @@ const populateCache = (() => {
      * old data might be pushed instead, so we avoid it here.
      */
     globalThis.requestAnimationFrame(() => {
-      if (cache.size === 0) {
+      if (generation !== cacheGeneration.value) {
         return;
       }
 
@@ -340,6 +366,7 @@ watch(() => scrollTo, () => {
 watch([bufferLength, resizeMeasurement, itemsLength, bufferOffset], (val, oldVal) => {
   if (val[0] !== oldVal[0] || val[1] !== oldVal[1] || val[2] !== oldVal[2]) {
     cache.clear();
+    cacheGeneration.value++;
   }
 
   populateCache();
