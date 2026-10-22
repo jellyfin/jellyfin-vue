@@ -8,7 +8,7 @@
       <VCol
         md="6"
         class="uno-pb-4 uno-pt-0">
-        <h3 class="uno-mb-2 uno-text-lg uno-font-bold">
+        <h3 class="uno-text-lg uno-font-bold uno-mb-2">
           {{ $t('serverSettingsGeneral') }}
         </h3>
 
@@ -29,7 +29,7 @@
           v-model="serverSettings.QuickConnectAvailable"
           :label="$t('enableQuickConnect')" />
 
-        <h3 class="uno-mb-2 uno-text-lg uno-font-bold">
+        <h3 class="uno-text-lg uno-font-bold uno-mb-2">
           {{ $t('serverSettingsPaths') }}
         </h3>
 
@@ -41,7 +41,7 @@
           v-model="serverSettings.MetadataPath"
           :label="$t('metadataPath')" />
 
-        <h3 class="uno-mb-2 uno-text-lg uno-font-bold">
+        <h3 class="uno-text-lg uno-font-bold uno-mb-2">
           {{ $t('serverSettingsBranding') }}
         </h3>
 
@@ -53,7 +53,7 @@
           v-model="brandingSettings.SplashscreenEnabled"
           :label="$t('enableSplashScreen')" />
 
-        <h3 class="uno-mb-2 uno-text-lg uno-font-bold">
+        <h3 class="uno-text-lg uno-font-bold uno-mb-2">
           {{ $t('serverSettingsPerformance') }}
         </h3>
 

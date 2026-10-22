@@ -4,8 +4,8 @@
     :class="{
       'uno-opacity-0 hover:media-mouse:uno-opacity-100': hover,
       'uno-opacity-100': !hover,
-      'uno-bg-background uno-bg-opacity-50': scrim,
-      'uno-bg-opacity-0 uno-opacity-0 hover:media-mouse:uno-opacity-100 hover:media-mouse:uno-bg-opacity-50': hover && scrim
+      'uno-bg-background/50': scrim,
+      'uno-bg-background/0 uno-opacity-0 hover:media-mouse:uno-opacity-100 hover:media-mouse:uno-bg-background/50': hover && scrim
     }"
     v-bind="getBaseProps($attrs)">
     <slot />
@@ -27,7 +27,7 @@ const { hover, scrim } = defineProps<{
   hover?: boolean;
   /**
    * Whether the overlay has a scrim effect. You can override the opacity level
-   * by passing a custom uno-bg-opacity-* class.
+   * by passing a background class with a different opacity modifier.
    */
   scrim?: boolean;
 }>();

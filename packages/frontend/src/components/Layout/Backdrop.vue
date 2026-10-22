@@ -9,7 +9,7 @@
       :style="{
         opacity,
       }"
-      class="uno-fixed uno-h-screen uno-w-screen uno-transition-opacity" />
+      class="uno-h-screen uno-w-screen uno-transition-opacity uno-fixed" />
   </JTransition>
 </template>
 

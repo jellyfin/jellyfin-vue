@@ -11,7 +11,7 @@
         <div class="uno-mb-10 uno-flex uno-flex-col sm:uno-flex-row">
           <UserImage :size="190" />
           <div class="sm:uno-ml-10">
-            <div class="uno-mb-7 uno-ml-2 uno-mt-6 uno-text-4xl sm:uno-mt-0">
+            <div class="uno-text-4xl uno-mb-7 uno-ml-2 uno-mt-6 sm:uno-mt-0">
               {{ remote.auth.currentUser.value?.Name }}
             </div>
             <div class="uno-flex uno-flex-col sm:uno-flex-row">

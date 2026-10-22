@@ -51,7 +51,16 @@ class ThemeSettingsStore extends SyncedStore<ThemeSettingsState, 'typography'> {
 
   public readonly isAutoTheme = computed(() => isNil(this._state.value.darkMode));
   public readonly currentThemeIsDark = computed(() => this.currentTheme.value === this._dark);
-  public readonly colors = computed(() => this._state.value.colors);
+
+  /**
+   * The stored palettes (which might come from the server) are merged with the defaults,
+   * so colors added after they were saved are always available
+   */
+  public readonly colors = computed(() => ({
+    dark: { ...darkColors(), ...this._state.value.colors.dark },
+    light: { ...lightColors(), ...this._state.value.colors.light }
+  }));
+
   public readonly transitionDuration = computed(() => this._state.value.transitionDuration ?? 0.3);
   public readonly currentTypography = computed(() => {
     if (this._state.value.typography === 'system') {

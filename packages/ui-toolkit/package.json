@@ -23,7 +23,6 @@
     "@jellyfin-vue/shared": "workspace:*",
     "@skirtle/vue-vnode-utils": "0.3.0",
     "@vueuse/core": "catalog:runtime",
-    "color": "5.0.3",
     "i18next-vue": "catalog:runtime",
     "vuetify": "catalog:runtime"
   },

@@ -1,18 +1,18 @@
 <template>
   <div
     ref="videoContainerRef"
-    class="fill-height uno-flex uno-justify-center uno-bg-black !uno-h-screen"
+    class="fill-height uno-bg-player uno-flex uno-justify-center !uno-h-screen"
     :class="{ 'uno-cursor-none': !overlay }"
     @mousemove.passive="handleMouseMove"
     @touchend.passive="handleMouseMove">
     <JOverlay
-      class="uno-h-full uno-flex uno-flex-col uno-items-center uno-justify-between"
+      class="uno-flex uno-flex-col uno-h-full uno-items-center uno-justify-between"
       :class="{
         'uno-opacity-100': overlay,
         'uno-opacity-0': !overlay
       }">
       <div class="osd-top pt-s pl-s pr-s">
-        <div class="uno-flex uno-items-center uno-px-4 uno-py-2">
+        <div class="uno-px-4 uno-py-2 uno-flex uno-items-center">
           <div class="uno-flex">
             <VBtn
               icon
@@ -34,7 +34,7 @@
         <div class="uno-p-4">
           <TimeSlider />
           <div
-            class="uno-relative uno-flex uno-items-stretch uno-justify-between">
+            class="uno-flex uno-items-stretch uno-justify-between uno-relative">
             <div
               v-if="$vuetify.display.mdAndUp"
               class="video-title uno-mr-auto uno-flex uno-flex-col uno-items-start uno-justify-center">
@@ -184,6 +184,7 @@ watch(staticOverlay, (val) => {
 .osd-bottom {
   width: 100%;
   padding: 8px;
+  color: contrast-color(var(--j-theme-color-background));
 }
 
 .osd-bottom > div,
@@ -196,22 +197,22 @@ watch(staticOverlay, (val) => {
   padding-bottom: 5em;
   background: linear-gradient(
     to bottom,
-    rgb(var(--j-theme-color-background), 0.75) 0%,
-    rgb(var(--j-theme-color-background), 0.74) 8.1%,
-    rgb(var(--j-theme-color-background), 0.714) 15.5%,
-    rgb(var(--j-theme-color-background), 0.672) 22.5%,
-    rgb(var(--j-theme-color-background), 0.618) 29%,
-    rgb(var(--j-theme-color-background), 0.556) 35.3%,
-    rgb(var(--j-theme-color-background), 0.486) 41.2%,
-    rgb(var(--j-theme-color-background), 0.412) 47.1%,
-    rgb(var(--j-theme-color-background), 0.338) 52.9%,
-    rgb(var(--j-theme-color-background), 0.264) 58.8%,
-    rgb(var(--j-theme-color-background), 0.194) 64.7%,
-    rgb(var(--j-theme-color-background), 0.132) 71%,
-    rgb(var(--j-theme-color-background), 0.078) 77.5%,
-    rgb(var(--j-theme-color-background), 0.036) 84.5%,
-    rgb(var(--j-theme-color-background), 0.01) 91.9%,
-    rgb(var(--j-theme-color-background), 0) 100%
+    rgb(from var(--j-theme-color-background) r g b / 0.75) 0%,
+    rgb(from var(--j-theme-color-background) r g b / 0.74) 8.1%,
+    rgb(from var(--j-theme-color-background) r g b / 0.714) 15.5%,
+    rgb(from var(--j-theme-color-background) r g b / 0.672) 22.5%,
+    rgb(from var(--j-theme-color-background) r g b / 0.618) 29%,
+    rgb(from var(--j-theme-color-background) r g b / 0.556) 35.3%,
+    rgb(from var(--j-theme-color-background) r g b / 0.486) 41.2%,
+    rgb(from var(--j-theme-color-background) r g b / 0.412) 47.1%,
+    rgb(from var(--j-theme-color-background) r g b / 0.338) 52.9%,
+    rgb(from var(--j-theme-color-background) r g b / 0.264) 58.8%,
+    rgb(from var(--j-theme-color-background) r g b / 0.194) 64.7%,
+    rgb(from var(--j-theme-color-background) r g b / 0.132) 71%,
+    rgb(from var(--j-theme-color-background) r g b / 0.078) 77.5%,
+    rgb(from var(--j-theme-color-background) r g b / 0.036) 84.5%,
+    rgb(from var(--j-theme-color-background) r g b / 0.01) 91.9%,
+    rgb(from var(--j-theme-color-background) r g b / 0) 100%
   );
 }
 
@@ -219,22 +220,22 @@ watch(staticOverlay, (val) => {
   padding-top: 6em;
   background: linear-gradient(
     to top,
-    rgb(var(--j-theme-color-background), 0.75) 0%,
-    rgb(var(--j-theme-color-background), 0.74) 8.1%,
-    rgb(var(--j-theme-color-background), 0.714) 15.5%,
-    rgb(var(--j-theme-color-background), 0.672) 22.5%,
-    rgb(var(--j-theme-color-background), 0.618) 29%,
-    rgb(var(--j-theme-color-background), 0.556) 35.3%,
-    rgb(var(--j-theme-color-background), 0.486) 41.2%,
-    rgb(var(--j-theme-color-background), 0.412) 47.1%,
-    rgb(var(--j-theme-color-background), 0.338) 52.9%,
-    rgb(var(--j-theme-color-background), 0.264) 58.8%,
-    rgb(var(--j-theme-color-background), 0.194) 64.7%,
-    rgb(var(--j-theme-color-background), 0.132) 71%,
-    rgb(var(--j-theme-color-background), 0.078) 77.5%,
-    rgb(var(--j-theme-color-background), 0.036) 84.5%,
-    rgb(var(--j-theme-color-background), 0.01) 91.9%,
-    rgb(var(--j-theme-color-background), 0) 100%
+    rgb(from var(--j-theme-color-background) r g b / 0.75) 0%,
+    rgb(from var(--j-theme-color-background) r g b / 0.74) 8.1%,
+    rgb(from var(--j-theme-color-background) r g b / 0.714) 15.5%,
+    rgb(from var(--j-theme-color-background) r g b / 0.672) 22.5%,
+    rgb(from var(--j-theme-color-background) r g b / 0.618) 29%,
+    rgb(from var(--j-theme-color-background) r g b / 0.556) 35.3%,
+    rgb(from var(--j-theme-color-background) r g b / 0.486) 41.2%,
+    rgb(from var(--j-theme-color-background) r g b / 0.412) 47.1%,
+    rgb(from var(--j-theme-color-background) r g b / 0.338) 52.9%,
+    rgb(from var(--j-theme-color-background) r g b / 0.264) 58.8%,
+    rgb(from var(--j-theme-color-background) r g b / 0.194) 64.7%,
+    rgb(from var(--j-theme-color-background) r g b / 0.132) 71%,
+    rgb(from var(--j-theme-color-background) r g b / 0.078) 77.5%,
+    rgb(from var(--j-theme-color-background) r g b / 0.036) 84.5%,
+    rgb(from var(--j-theme-color-background) r g b / 0.01) 91.9%,
+    rgb(from var(--j-theme-color-background) r g b / 0) 100%
   );
 }
 

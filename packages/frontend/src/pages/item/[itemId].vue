@@ -28,13 +28,13 @@
             class="text-h6 font-weight-heavy"
             :class="{'uno-text-center': !$vuetify.display.mdAndUp }">
             <RouterLink
-              class="link uno-mt-1 uno-block uno-truncate uno-p-0 uno-font-medium"
+              class="link uno-font-medium uno-mt-1 uno-p-0 uno-block uno-truncate"
               :to="getItemDetailsLink(currentSeries)">
               {{ currentSeries.Name }}
             </RouterLink>
           </h3>
           <div
-            class="text-h4 text-caption uno-mt-2 uno-font-medium"
+            class="text-h4 text-caption uno-font-medium uno-mt-2"
             :class="{ 'uno-text-center': !$vuetify.display.mdAndUp }">
             <MediaInfo
               :item="item"
@@ -75,7 +75,7 @@
               <VCol
                 :cols="12"
                 :sm="2"
-                class="uno-truncate uno-px-0">
+                class="uno-px-0 uno-truncate">
                 <label class="text--secondary">{{ $t('genres') }}</label>
               </VCol>
               <VCol
@@ -103,7 +103,7 @@
               <VCol
                 :cols="12"
                 :sm="2"
-                class="mt-sm-3 py-sm-0 uno-truncate uno-px-0">
+                class="mt-sm-3 py-sm-0 uno-px-0 uno-truncate">
                 <label class="text--secondary">{{ $t('directing') }}</label>
               </VCol>
               <VCol
@@ -130,7 +130,7 @@
               <VCol
                 :cols="12"
                 :sm="2"
-                class="mt-sm-3 py-sm-0 uno-truncate uno-px-0">
+                class="mt-sm-3 py-sm-0 uno-px-0 uno-truncate">
                 <label class="text--secondary">{{ $t('writing') }}</label>
               </VCol>
               <VCol
@@ -160,7 +160,7 @@
                 <VCol
                   :cols="12"
                   :sm="2"
-                  class="mt-sm-3 py-sm-0 uno-truncate uno-px-0">
+                  class="mt-sm-3 py-sm-0 uno-px-0 uno-truncate">
                   <label class="text--secondary">{{ $t('version') }}</label>
                 </VCol>
                 <VCol
@@ -180,7 +180,7 @@
                 <VCol
                   :cols="12"
                   :sm="2"
-                  class="mt-sm-3 py-sm-0 uno-truncate uno-px-0">
+                  class="mt-sm-3 py-sm-0 uno-px-0 uno-truncate">
                   <label class="text--secondary">{{ $t('video') }}</label>
                 </VCol>
                 <VCol
@@ -201,7 +201,7 @@
                 <VCol
                   :cols="12"
                   :sm="2"
-                  class="mt-sm-3 py-sm-0 uno-truncate uno-px-0">
+                  class="mt-sm-3 py-sm-0 uno-px-0 uno-truncate">
                   <label class="text--secondary">{{ $t('audio') }}</label>
                 </VCol>
                 <VCol
@@ -222,7 +222,7 @@
                 <VCol
                   :cols="12"
                   :sm="2"
-                  class="mt-sm-3 py-sm-0 uno-truncate uno-px-0">
+                  class="mt-sm-3 py-sm-0 uno-px-0 uno-truncate">
                   <label class="text--secondary">{{ $t('subtitles') }}</label>
                 </VCol>
                 <VCol

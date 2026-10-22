@@ -416,9 +416,6 @@ importers:
       '@types/sortablejs':
         specifier: 1.15.9
         version: 1.15.9
-      '@unocss/reset':
-        specifier: 66.11.0
-        version: 66.11.0
       '@vitejs/plugin-vue':
         specifier: 6.0.10
         version: 6.0.10(vite@8.3.5)(vue@3.5.44)
@@ -503,9 +500,6 @@ importers:
       '@vueuse/core':
         specifier: catalog:runtime
         version: 15.0.0(vue@3.5.44)
-      color:
-        specifier: 5.0.3
-        version: 5.0.3
       i18next-vue:
         specifier: catalog:runtime
         version: 5.4.0(i18next@26.5.10)(vue@3.5.44)
@@ -1940,9 +1934,6 @@ packages:
   '@unocss/preset-wind@66.11.0':
     resolution: {integrity: sha512-LBDVrr/YWrQ8vT0bSJlLCINFEg6loSUMlFFM2e8R45NJ5SGlxPz534nOrAbunsewu1bIcqXMZTvhKW6pXS/Rbw==, tarball: https://registry.npmjs.org/@unocss/preset-wind/-/preset-wind-66.11.0.tgz}
 
-  '@unocss/reset@66.11.0':
-    resolution: {integrity: sha512-QyXwD3bOzi/zZBW8jte9ierrx5+iPXQjPUdiSqyAaJd+RxajZQV9m9lKiadWwn8pV082mc2b4y4Acvi5lLTTWg==, tarball: https://registry.npmjs.org/@unocss/reset/-/reset-66.11.0.tgz}
-
   '@unocss/rollup@66.11.0':
     resolution: {integrity: sha512-8/EkVkJUHTH27f6oNtMT22FPSl+edNpFGTYYgpF9N+CCUcMKCGTuifF0Svb72ILOpTCKhq+PP3/HPMfb5faI3A==, tarball: https://registry.npmjs.org/@unocss/rollup/-/rollup-66.11.0.tgz}
     peerDependencies:
@@ -2450,22 +2441,6 @@ packages:
   ci-info@4.4.0:
     resolution: {integrity: sha512-77PSwercCZU2Fc4sX94eF8k8Pxte6JAwL4/ICZLFjJLqegs7kCuAsqqj/70NQF6TvDpgFjkubQB2FW2ZZddvQg==, tarball: https://registry.npmjs.org/ci-info/-/ci-info-4.4.0.tgz}
     engines: {node: '>=8'}
-
-  color-convert@3.1.3:
-    resolution: {integrity: sha512-fasDH2ont2GqF5HpyO4w0+BcewlhHEZOFn9c1ckZdHpJ56Qb7MHhH/IcJZbBGgvdtwdwNbLvxiBEdg336iA9Sg==, tarball: https://registry.npmjs.org/color-convert/-/color-convert-3.1.3.tgz}
-    engines: {node: '>=14.6'}
-
-  color-name@2.1.1:
-    resolution: {integrity: sha512-p2FdgwVx1a9yWBHP2wI0VgShkDpgN4kZISkxdNipGBJWpa5G6b04OINlVWCyJj0JmfvcPrgqt95E9k8yvaOJFg==, tarball: https://registry.npmjs.org/color-name/-/color-name-2.1.1.tgz}
-    engines: {node: '>=12.20'}
-
-  color-string@2.1.4:
-    resolution: {integrity: sha512-Bb6Cq8oq0IjDOe8wJmi4JeNn763Xs9cfrBcaylK1tPypWzyoy2G3l90v9k64kjphl/ZJjPIShFztenRomi8WTg==, tarball: https://registry.npmjs.org/color-string/-/color-string-2.1.4.tgz}
-    engines: {node: '>=18'}
-
-  color@5.0.3:
-    resolution: {integrity: sha512-ezmVcLR3xAVp8kYOm4GS45ZLLgIE6SPAFoduLr6hTDajwb3KZ2F46gulK3XpcwRFb5KKGCSezCBAY4Dw4HsyXA==, tarball: https://registry.npmjs.org/color/-/color-5.0.3.tgz}
-    engines: {node: '>=18'}
 
   colord@2.10.0:
     resolution: {integrity: sha512-AidJptpBJmjTclAp9BkLwJi0T93fo5epJnbaZslpg6QVzpHjAiveF55mE9AcUJiGMqRHgMDY8soMsQtuNYMHfw==, tarball: https://registry.npmjs.org/colord/-/colord-2.10.0.tgz}
@@ -5500,8 +5475,6 @@ snapshots:
       '@unocss/core': 66.11.0
       '@unocss/preset-wind3': 66.11.0
 
-  '@unocss/reset@66.11.0': {}
-
   '@unocss/rollup@66.11.0(rolldown@1.2.15)':
     dependencies:
       '@jridgewell/remapping': 2.3.5
@@ -6032,21 +6005,6 @@ snapshots:
       semver: 7.8.5
 
   ci-info@4.4.0: {}
-
-  color-convert@3.1.3:
-    dependencies:
-      color-name: 2.1.1
-
-  color-name@2.1.1: {}
-
-  color-string@2.1.4:
-    dependencies:
-      color-name: 2.1.1
-
-  color@5.0.3:
-    dependencies:
-      color-convert: 3.1.3
-      color-string: 2.1.4
 
   colord@2.10.0: {}
 

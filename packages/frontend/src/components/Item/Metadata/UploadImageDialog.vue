@@ -27,7 +27,7 @@
       </VCardText>
       <VDivider class="uno-mt-6" />
       <VCardActions
-        class="uno-mt-2 uno-flex uno-items-center uno-pa-3"
+        class="uno-mt-2 uno-pa-3 uno-flex uno-items-center"
         :class="{
           'uno-justify-end': !$vuetify.display.mobile,
           'uno-justify-center': $vuetify.display.mobile

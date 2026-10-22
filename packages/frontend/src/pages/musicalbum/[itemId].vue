@@ -28,7 +28,7 @@
             </RouterLink>
           </h2>
           <div
-            class="text-caption text-h4 uno-mt-2 uno-font-medium"
+            class="text-caption text-h4 uno-font-medium uno-mt-2"
             :class="{ 'uno-text-center': !$vuetify.display.mdAndUp }">
             <MediaInfo
               :item="item"
@@ -61,7 +61,7 @@
               <VCol
                 :cols="12"
                 :sm="2"
-                class="uno-truncate uno-px-0">
+                class="uno-px-0 uno-truncate">
                 <label class="text--secondary">{{ $t('genres') }}</label>
               </VCol>
               <VCol

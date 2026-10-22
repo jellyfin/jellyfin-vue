@@ -15,7 +15,7 @@
                 rounded />
             </template>
             <template #title>
-              <VListItemTitle class="uno-transform-none uno-text-base uno-font-normal uno-tracking-wide">
+              <VListItemTitle class="uno-text-base uno-tracking-wide uno-font-normal uno-transform-none">
                 {{ auth.currentUser.value.Name }}
               </VListItemTitle>
             </template>

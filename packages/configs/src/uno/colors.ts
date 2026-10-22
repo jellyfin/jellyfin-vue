@@ -11,7 +11,9 @@ export const lightColors = () => ({
   success: '#4CAF50',
   thumb: '#000000',
   warning: '#FB8C00',
-  surface: '#f5f5f5'
+  surface: '#f5f5f5',
+  player: '#000000',
+  subtitle: '#FFFFFF'
 });
 
 export const darkColors = () => ({
@@ -29,7 +31,9 @@ export const darkColors = () => ({
   secondary: '#2f3951',
   success: '#4CAF50',
   thumb: '#252e41',
-  warning: '#FB8C00'
+  warning: '#FB8C00',
+  player: '#000000',
+  subtitle: '#FFFFFF'
 });
 
 export type ColorPalette = keyof ReturnType<typeof lightColors> & keyof ReturnType<typeof darkColors>;

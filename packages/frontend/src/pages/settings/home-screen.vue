@@ -18,7 +18,7 @@
           tag="div"
           @reorder="reorderHomeSections">
           <template #default="{ item, index }">
-            <div class="home-section-drag-handle home-section-row uno-mt-2 uno-flex uno-cursor-grab uno-items-center uno-gap-2 uno-rounded uno-px-2 uno-py-1">
+            <div class="home-section-drag-handle home-section-row uno-mt-2 uno-px-2 uno-py-1 uno-rounded uno-flex uno-gap-2 uno-cursor-grab uno-items-center">
               <JIcon
                 class="i-mdi:folder uno-flex-none"
                 aria-hidden="true" />
@@ -49,7 +49,7 @@
             </div>
           </template>
         </JDraggableList>
-        <div class="uno-mt-6 uno-flex uno-items-center uno-gap-2">
+        <div class="uno-mt-6 uno-flex uno-gap-2 uno-items-center">
           <VSelect
             v-model="newHomeSection"
             variant="outlined"
@@ -66,7 +66,7 @@
             <JIcon class="i-mdi:plus-circle-outline" />
           </VBtn>
         </div>
-        <h2 class="uno-mt-8 uno-text-lg">
+        <h2 class="uno-text-lg uno-mt-8">
           {{ t('libraries') }}
         </h2>
         <JDraggableList
@@ -76,7 +76,7 @@
           tag="div"
           @reorder="reorderLibraries">
           <template #default="{ item, index }">
-            <div class="library-drag-handle home-section-row uno-mt-2 uno-flex uno-cursor-grab uno-items-center uno-gap-2 uno-rounded uno-px-2 uno-py-1">
+            <div class="library-drag-handle home-section-row uno-mt-2 uno-px-2 uno-py-1 uno-rounded uno-flex uno-gap-2 uno-cursor-grab uno-items-center">
               <JIcon
                 :class="item.icon"
                 aria-hidden="true" />

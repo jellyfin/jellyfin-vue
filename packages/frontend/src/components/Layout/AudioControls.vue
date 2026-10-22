@@ -8,13 +8,13 @@
           playbackManager.isAudio.value &&
           !isNil(playbackManager.currentItem.value)
       "
-      class="uno-select-none uno-bg-surface">
+      class="uno-bg-surface uno-select-none">
       <VContainer fluid>
         <VRow class="uno-m-0">
           <VCol
             cols="9"
             md="3"
-            class="uno-flex uno-flex-row uno-p-0">
+            class="uno-p-0 uno-flex uno-flex-row">
             <RouterLink :to="'/playback/music'">
               <div class="img uno-h-20 uno-w-20">
                 <BlurhashImage :item="playbackManager.currentItem.value" />
@@ -27,7 +27,7 @@
                   :to="getItemDetailsLink(playbackManager.currentItem.value)"
                   custom>
                   <span
-                    class="uno-h-fit uno-cursor-pointer uno-truncate uno-color-inherit uno-decoration-none"
+                    class="uno-color-inherit uno-decoration-none uno-h-fit uno-cursor-pointer uno-truncate"
                     @click="navigate">
                     {{ playbackManager.currentItem.value?.Name }}
                   </span>
@@ -45,7 +45,7 @@
                       :to="getItemDetailsLink(artist, 'MusicArtist')"
                       custom>
                       <span
-                        class="uno-transform-none uno-cursor-pointer uno-truncate uno-text-xs uno-color-inherit uno-font-normal uno-leading-7 uno-tracking-wide uno-decoration-none"
+                        class="uno-text-xs uno-color-inherit uno-leading-7 uno-tracking-wide uno-font-normal uno-decoration-none uno-cursor-pointer uno-truncate uno-transform-none"
                         @click="navigate">
                         {{ artist.Name }}
                       </span>
@@ -57,7 +57,7 @@
           </VCol>
           <VCol
             cols="6"
-            class="uno-hidden uno-p-0 uno-min-[960px]:inline">
+            class="uno-p-0 uno-hidden uno-min-[960px]:inline">
             <div class="uno-flex uno-flex-col uno-justify-center">
               <div class="uno-flex uno-items-center uno-justify-center">
                 <ShuffleButton class="uno-mx-1" />
@@ -89,7 +89,7 @@
           </VCol>
           <VCol
             cols="3"
-            class="uno-flex uno-items-center uno-justify-end uno-p-0 uno-min-[960px]:hidden">
+            class="uno-p-0 uno-flex uno-items-center uno-justify-end uno-min-[960px]:hidden">
             <PlayPauseButton class="uno-mx-1" />
             <NextTrackButton class="uno-mx-1" />
             <RepeatButton
