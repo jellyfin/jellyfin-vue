@@ -119,7 +119,6 @@
   "enableQuickConnect": "啟用快速連接",
   "enableSplashScreen": "啟用啟動畫面",
   "enableSubtitles": "自訂字幕樣式",
-  "enableUPNP": "啟用UPnP",
   "endsAt": "終止時間: {{time}}",
   "failedSyncingUserSettings": "無法同步使用者設定",
   "failedToChangeImage": "無法修改圖片",

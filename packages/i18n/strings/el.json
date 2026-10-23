@@ -104,7 +104,6 @@
   "dlnaSettingsDescription": "Διαμορφώστε τις ρυθμίσεις και το προφίλ DLNA",
   "editMetadata": "Επεξεργασία μεταδεδομένων",
   "editPerson": "Επεξεργασία ατόμου",
-  "enableUPNP": "Ενεργοποίηση UPnP",
   "endsAt": "Τελειώνει στις {{time}}",
   "eps": "ΕPs",
   "failedSyncingUserSettings": "Δεν είναι δυνατός ο συγχρονισμός των ρυθμίσεων χρήστη",

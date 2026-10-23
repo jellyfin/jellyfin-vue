@@ -104,7 +104,6 @@
   "dlnaSettingsDescription": "Määritä DLNA -asetukset ja profiili",
   "editMetadata": "Muokkaa metatietoja",
   "editPerson": "Muokkaa henkilöä",
-  "enableUPNP": "Ota UPnP käyttöön",
   "endsAt": "Päättyy {{time}}",
   "eps": "EP:t",
   "failedSyncingUserSettings": "Käyttäjätietoja ei voida synkronoida",
