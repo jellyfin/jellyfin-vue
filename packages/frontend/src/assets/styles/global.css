@@ -1,6 +1,10 @@
 * {
   font-family: var(--j-font-family), sans-serif, system-ui !important;
   backface-visibility: hidden;
+}
+
+html,
+body {
   overscroll-behavior: none;
 }
 
