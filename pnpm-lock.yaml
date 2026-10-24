@@ -186,8 +186,8 @@ catalogs:
       specifier: 4.4.0
       version: 4.4.0
     i18next:
-      specifier: 26.4.7
-      version: 26.4.7
+      specifier: 26.5.6
+      version: 26.5.6
     i18next-vue:
       specifier: 5.4.0
       version: 5.4.0
@@ -326,8 +326,8 @@ importers:
         specifier: 5.3.0
         version: 5.3.0
       '@iconify/json':
-        specifier: 2.2.544
-        version: 2.2.544
+        specifier: 2.2.546
+        version: 2.2.546
       '@jellyfin-vue/i18n':
         specifier: workspace:*
         version: link:../i18n
@@ -368,8 +368,8 @@ importers:
         specifier: 2.0.5
         version: 2.0.5
       dexie:
-        specifier: 4.4.6
-        version: 4.4.6
+        specifier: 4.4.7
+        version: 4.4.7
       fast-equals:
         specifier: 6.2.1
         version: 6.2.1
@@ -378,10 +378,10 @@ importers:
         version: 1.7.3
       i18next:
         specifier: catalog:runtime
-        version: 26.4.7(typescript@6.0.3)
+        version: 26.5.6(typescript@6.0.3)
       i18next-vue:
         specifier: catalog:runtime
-        version: 5.4.0(i18next@26.4.7)(vue@3.5.44)
+        version: 5.4.0(i18next@26.5.6)(vue@3.5.44)
       libpgs:
         specifier: 0.9.0
         version: 0.9.0
@@ -445,7 +445,7 @@ importers:
         version: 4.4.0
       i18next:
         specifier: catalog:runtime
-        version: 26.4.7(typescript@6.0.3)
+        version: 26.5.6(typescript@6.0.3)
       vuetify:
         specifier: catalog:runtime
         version: 3.11.3(typescript@6.0.3)(vue@3.5.44)
@@ -511,7 +511,7 @@ importers:
         version: 4.4.2
       i18next-vue:
         specifier: catalog:runtime
-        version: 5.4.0(i18next@26.4.7)(vue@3.5.44)
+        version: 5.4.0(i18next@26.5.6)(vue@3.5.44)
       vuetify:
         specifier: catalog:runtime
         version: 3.11.3(typescript@6.0.3)(vue@3.5.44)
@@ -1022,8 +1022,8 @@ packages:
     resolution: {integrity: sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ==, tarball: https://registry.npmjs.org/@humanwhocodes/retry/-/retry-0.4.3.tgz}
     engines: {node: '>=18.18'}
 
-  '@iconify/json@2.2.544':
-    resolution: {integrity: sha512-xsG0R+cohL1LagZc7Fr2zWMLRDDGb7tbQJ2ZhM8iL4itCvA6HhKx7UjuCjz6KnuBcQr1jkIiI3vXd7uZpd+yfQ==, tarball: https://registry.npmjs.org/@iconify/json/-/json-2.2.544.tgz}
+  '@iconify/json@2.2.546':
+    resolution: {integrity: sha512-a1XXUeHotmg1R1bMFXhBZWWDl6uiAh0MzO9jfr3JT/EDkoJcFJZBqzpauFKPsbN5cDZEqBSZrsRWdFEW7skD0g==, tarball: https://registry.npmjs.org/@iconify/json/-/json-2.2.546.tgz}
 
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==, tarball: https://registry.npmjs.org/@iconify/types/-/types-2.0.0.tgz}
@@ -2610,8 +2610,8 @@ packages:
       cac:
         optional: true
 
-  dexie@4.4.6:
-    resolution: {integrity: sha512-hJP/BO6mjB+tX6hToIO1kmxYLNmun90wYbfcoAoLpKEyDYal/k33dg0TAfoUe2TDsbbLoVIzljJ3BN2UbR5EOg==, tarball: https://registry.npmjs.org/dexie/-/dexie-4.4.6.tgz}
+  dexie@4.4.7:
+    resolution: {integrity: sha512-wemFiCl3DTCnfzyqepUTX1ugbYbkTrw3aEZOG7YjAOUoEQB5g5PrEywPzk5JpbX/SxqQ9IvjUpxCDIEjoOWEfA==, tarball: https://registry.npmjs.org/dexie/-/dexie-4.4.7.tgz}
 
   doctypes@1.1.0:
     resolution: {integrity: sha512-LLBi6pEqS6Do3EKQ3J0NqHWV5hhb78Pi8vvESYwyOy2c31ZEZVdtitdzsQsKb7878PEERhzUk0ftqGhG6Mz+pQ==, tarball: https://registry.npmjs.org/doctypes/-/doctypes-1.1.0.tgz}
@@ -3034,8 +3034,8 @@ packages:
       i18next: '>=23'
       vue: ^3.4.38
 
-  i18next@26.4.7:
-    resolution: {integrity: sha512-p/3hqy6EcuqRs6wNwBYwGGC1fzBJSMxV9zMuN814ab/7QjdZbXfjXwuPZdQbngX6KDOTxM01uUiZyqmMB8ghZg==, tarball: https://registry.npmjs.org/i18next/-/i18next-26.4.7.tgz}
+  i18next@26.5.6:
+    resolution: {integrity: sha512-GFWrDwGmYhOQS3bKvjA2Ir2ob9ScEdyY1UbeQJ10jyVACGQ6XxmDYqC/lxEj/IPEJlPQYNRnYffDET6TM8mnFg==, tarball: https://registry.npmjs.org/i18next/-/i18next-26.5.6.tgz}
     peerDependencies:
       typescript: ^5 || ^6 || ^7
     peerDependenciesMeta:
@@ -4734,7 +4734,7 @@ snapshots:
 
   '@humanwhocodes/retry@0.4.3': {}
 
-  '@iconify/json@2.2.544':
+  '@iconify/json@2.2.546':
     dependencies:
       '@iconify/types': 2.0.0
       pathe: 2.0.3
@@ -6151,7 +6151,7 @@ snapshots:
       - ocache
       - srvx
 
-  dexie@4.4.6: {}
+  dexie@4.4.7: {}
 
   doctypes@1.1.0: {}
 
@@ -6622,12 +6622,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  i18next-vue@5.4.0(i18next@26.4.7)(vue@3.5.44):
+  i18next-vue@5.4.0(i18next@26.5.6)(vue@3.5.44):
     dependencies:
-      i18next: 26.4.7(typescript@6.0.3)
+      i18next: 26.5.6(typescript@6.0.3)
       vue: 3.5.44(typescript@6.0.3)
 
-  i18next@26.4.7(typescript@6.0.3):
+  i18next@26.5.6(typescript@6.0.3):
     optionalDependencies:
       typescript: 6.0.3
 
