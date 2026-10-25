@@ -335,10 +335,10 @@ export function getContentSize(
 export function getScrollToInfo(scrollParents: ScrollParents, rootEl: HTMLElement, resizeMeasurement: ResizeMeasurement, scrollTo: number) {
   const computedStyle = globalThis.getComputedStyle(rootEl);
 
-  const gridPaddingTop = Number(computedStyle.getPropertyValue('padding-top')) || 0;
-  const gridBoarderTop = Number(computedStyle.getPropertyValue('border-top')) || 0;
-  const gridPaddingLeft = Number(computedStyle.getPropertyValue('padding-left')) || 0;
-  const gridBoarderLeft = Number(computedStyle.getPropertyValue('border-left')) || 0;
+  const gridPaddingTop = fromPx(computedStyle.getPropertyValue('padding-top'));
+  const gridBoarderTop = fromPx(computedStyle.getPropertyValue('border-top-width'));
+  const gridPaddingLeft = fromPx(computedStyle.getPropertyValue('padding-left'));
+  const gridBoarderLeft = fromPx(computedStyle.getPropertyValue('border-left-width'));
 
   const leftToGridContainer = rootEl instanceof HTMLElement
     && scrollParents.horizontal instanceof HTMLElement
