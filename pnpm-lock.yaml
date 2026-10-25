@@ -506,9 +506,6 @@ importers:
       color:
         specifier: 5.0.3
         version: 5.0.3
-      comlink:
-        specifier: catalog:runtime
-        version: 4.4.2
       i18next-vue:
         specifier: catalog:runtime
         version: 5.4.0(i18next@26.5.10)(vue@3.5.44)

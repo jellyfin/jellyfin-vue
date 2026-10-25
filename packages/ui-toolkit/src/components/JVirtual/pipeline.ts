@@ -3,6 +3,7 @@
  */
 
 import type { StyleValue } from 'vue';
+import { fromPx, toPx } from '#/util/helpers.ts';
 
 interface ScrollParents {
   vertical: Element;
@@ -103,14 +104,17 @@ export function getScrollParents(
 }
 
 /**
- * Gets the gap and spacing between grid elements, alongside the flow of the grid
+ * Gets the gap and spacing between grid elements, alongside the flow of the grid.
+ *
+ * The computed gaps are resolved to px (or 'normal', which is 0 for grids). Percentage gaps are kept
+ * as percentages by getComputedStyle, so they aren't supported and are treated as 0.
  */
 export function getGridMeasurement(rootEl: Element): GridMeasurement {
   const computedStyle = globalThis.getComputedStyle(rootEl);
 
   return {
-    rowGap: Number(computedStyle.getPropertyValue('row-gap')) || 0,
-    colGap: Number(computedStyle.getPropertyValue('column-gap')) || 0,
+    rowGap: fromPx(computedStyle.getPropertyValue('row-gap')),
+    colGap: fromPx(computedStyle.getPropertyValue('column-gap')),
     flow: computedStyle.getPropertyValue('grid-auto-flow') as 'column' | 'row',
     columns: computedStyle.getPropertyValue('grid-template-columns').split(' ').length,
     rows: computedStyle.getPropertyValue('grid-template-rows').split(' ').length
@@ -260,6 +264,47 @@ export function getItemOffsetByIndex(
   }
 
   return { x, y };
+}
+
+/**
+ * Gets the items that must be visible in the grid based on the buffer measurements.
+ *
+ * The buffer always spans whole lines (rows or columns, depending on the flow of the grid),
+ * so it never starts or ends in the middle of a line. When approaching the end of the grid,
+ * the buffer is moved back so the amount of rendered lines stays the same, avoiding destroying DOM nodes
+ * that would be needed again if the user reverses the scroll (only the missing items of a partial
+ * last line are left out).
+ *
+ * Every item is positioned with the standalone translate property (2D, so items aren't promoted to their
+ * own compositing layer), which doesn't interfere with any transform of the item's content.
+ */
+export function getVisibleIndexes(
+  bufferMeta: BufferMeta,
+  resizeMeasurement: ResizeMeasurement,
+  collectionLength: number
+): InternalItem[] {
+  const { bufferedOffset, bufferedLength } = bufferMeta;
+  const crosswiseLines = Math.max(
+    1,
+    isHorizontallyScrolled(resizeMeasurement) ? resizeMeasurement.rows : resizeMeasurement.columns
+  );
+  const lines = Math.ceil(bufferedLength / crosswiseLines);
+  const totalLines = Math.ceil(collectionLength / crosswiseLines);
+  const firstLine = Math.max(0, Math.min(Math.floor(bufferedOffset / crosswiseLines), totalLines - lines));
+  const first = firstLine * crosswiseLines;
+  const last = Math.min(collectionLength, (firstLine + lines) * crosswiseLines);
+  const result: InternalItem[] = [];
+
+  for (let index = first; index < last; index++) {
+    const { x, y } = getItemOffsetByIndex(index, resizeMeasurement);
+
+    result.push({
+      index,
+      style: { translate: `${toPx(x)} ${toPx(y)}` }
+    });
+  }
+
+  return result;
 }
 
 /**
