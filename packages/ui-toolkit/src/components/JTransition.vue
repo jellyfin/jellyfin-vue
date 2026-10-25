@@ -1,7 +1,7 @@
 <template>
   <component
     :is="group ? TransitionGroup : VTransition"
-    :duration="forcedDisable || disabled ? 0 : undefined"
+    :duration="isDisabled ? 0 : undefined"
     :enter-from-class
     :enter-active-class
     :leave-active-class="enterActiveClass"
@@ -61,9 +61,22 @@ const { name = 'fade', group, disabled, skipPausing } = defineProps<Props>();
 const VTransition = Transition as unknown as DefineComponent<TransitionProps>;
 const leaving = shallowRef(false);
 const onNoLeave = () => leaving.value = false;
+/**
+ * When disabled, no transition classes are applied: otherwise, their CSS transitions would start anyway
+ * and keep running after the classes are removed. The duration of 0 still ends the transition
+ * in the next tick, like a regular one (css: false would end it synchronously instead, which
+ * breaks out-in transitions like MainView's).
+ *
+ * An empty string is used since Vue applies its default classes (v-enter-from...) for undefined values.
+ */
+const isDisabled = computed(() => forcedDisable.value || disabled);
 
 /* Equivalent to *-enter-from class */
 const enterFromClass = computed(() => {
+  if (isDisabled.value) {
+    return '';
+  }
+
   switch (name) {
     case 'slide-x': {
       return '!-uno-translate-x-4 !uno-opacity-0';
@@ -92,6 +105,10 @@ const enterFromClass = computed(() => {
 /* Equivalent to *-enter-active class */
 const baseTransform = '!uno-transform-origin-center !uno-translate-z-0';
 const enterActiveClass = computed(() => {
+  if (isDisabled.value) {
+    return '';
+  }
+
   switch (name) {
     case 'slide-x-reverse':
     case 'slide-y-reverse':
