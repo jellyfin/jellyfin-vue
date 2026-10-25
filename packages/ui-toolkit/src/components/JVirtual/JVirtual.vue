@@ -15,7 +15,6 @@
     <JSlot
       v-for="entry in renderedItems"
       :key="getKey?.(entry.item)"
-      class="uno-transform-gpu"
       :class="gridClass"
       :style="entry.style">
       <slot
@@ -36,10 +35,8 @@ import {
   shallowRef,
   watch,
   type StyleValue,
-  useTemplateRef,
-  onScopeDispose
+  useTemplateRef
 } from 'vue';
-import { releaseProxy, wrap } from 'comlink';
 import { isNil, isUndef } from '@jellyfin-vue/shared/validation';
 import {
   getBufferMeta,
@@ -47,10 +44,9 @@ import {
   getResizeMeasurement,
   getScrollParents,
   getScrollToInfo,
+  getVisibleIndexes,
   type InternalItem
 } from './pipeline.ts';
-import type { IJVirtualWorker } from './j-virtual.worker.ts';
-import JVirtualWorker from './j-virtual.worker.ts?worker';
 import { windowSize } from '#/store/index.ts';
 import JSlot from '#/components/JSlot.vue';
 import { toPx } from '#/util/helpers.ts';
@@ -112,8 +108,12 @@ const {
    */
   grid?: boolean;
   /**
-   * Updates the content by using the index as key. This is useful in case the inner content
-   * doesn't react properly to changes in the data.
+   * Gets the key of every item. When it's passed, every rendered instance is bound to its item
+   * (instances are mounted when their item enters the buffer and unmounted when it leaves it),
+   * which is useful when the inner content doesn't react properly to changes in its data.
+   *
+   * When it's not passed, the rendered instances are reused by position: scrolling just updates
+   * the data of the existing instances.
    */
   getKey?: (item: T) => unknown;
 }>();
@@ -129,20 +129,6 @@ const probeRef = useTemplateRef<HTMLElement>('probeRef');
  */
 const itemRect = shallowRef<DOMRectReadOnly>();
 const scrollEvents = shallowRef(0);
-const workerUpdates = shallowRef(0);
-
-/**
- * == NON REACTIVE STATE ==
- */
-const workerInstance = new JVirtualWorker();
-const worker = wrap<IJVirtualWorker>(workerInstance);
-const cache = new Map<number, InternalItem[]>();
-/**
- * Incremented every time the cache is cleared, so results from the worker
- * that were requested before the clear (with outdated measurements or items length)
- * are discarded instead of being pushed to the new cache.
- */
-const cacheGeneration = shallowRef(0);
 
 /**
  * == MEASUREMENTS OF THE GRID AREA AND STYLING ==
@@ -150,7 +136,7 @@ const cacheGeneration = shallowRef(0);
  * Vue to track for changes. If we don't do this, Vue will not track the dependencies
  * correctly.
  */
-const gridClass = computed(() => grid ? 'j-virtual-grid-area' : undefined);
+const gridClass = computed(() => grid ? 'uno-row-start-1 uno-col-start-1' : undefined);
 const itemsLength = computed(() => items.length);
 const resizeMeasurement = computed(() => {
   return rootRef.value
@@ -206,21 +192,25 @@ const bufferMeta = computed(() => {
 const bufferLength = computed(() => Math.ceil(bufferMeta.value?.bufferedLength ?? 0));
 const bufferOffset = computed(() => Math.ceil(bufferMeta.value?.bufferedOffset ?? 0));
 const visibleItems = computed<InternalItem[]>((previous) => {
-  if (Number.isFinite(workerUpdates.value) && Number.isFinite(scrollEvents.value)) {
-    const elems = cache.get(bufferOffset.value) ?? [];
-
-    if (elems.length) {
-      return elems;
-    }
-
-    /**
-     * Reuse the previous items while the worker computes the new ones (so no blank space is shown),
-     * but only the ones that still exist after the items array shrinks.
-     */
-    return previous?.filter(({ index }) => index < itemsLength.value) ?? [];
+  /**
+   * While the grid (or any of its ancestors) is hidden, the probe measures 0 and the buffer can't be
+   * computed (with a gap, it would cover thousands of items). The current items are kept until it's shown again.
+   */
+  if (!itemRect.value?.width || !itemRect.value.height) {
+    return previous ?? [];
   }
 
-  return [];
+  if (isUndef(resizeMeasurement.value)
+    || !Number.isFinite(bufferLength.value)
+    || !Number.isFinite(bufferOffset.value)) {
+    return [];
+  }
+
+  return getVisibleIndexes(
+    { bufferedLength: bufferLength.value, bufferedOffset: bufferOffset.value },
+    resizeMeasurement.value,
+    itemsLength.value
+  );
 });
 /**
  * Pairs the visible items with their data, so the template never accesses
@@ -265,78 +255,12 @@ useResizeObserver(probeRef, (entries) => {
   itemRect.value = entries[0]?.contentRect;
 });
 
-const populateCache = (() => {
-  /**
-   * Sets the cache
-   * Only to be used inside populateCache, since nullish checks are skipped here
-   */
-  async function setCache(offset: number): Promise<void> {
-    const generation = cacheGeneration.value;
-
-    /**
-     * Set the cache value rightaway to an empty value.
-     * That way, populateCache loop doesn't fire again
-     * with the same offset before this promise resolves.
-     */
-    cache.set(offset, []);
-
-    const values = await worker.getVisibleIndexes(
-      { bufferedLength: bufferLength.value, bufferedOffset: offset },
-      resizeMeasurement.value!,
-      itemsLength.value
-    );
-
-    /**
-     * If the WebWorker operation was running in the middle of a cache clear,
-     * old data might be pushed instead, so we avoid it here.
-     */
-    globalThis.requestAnimationFrame(() => {
-      if (generation !== cacheGeneration.value) {
-        return;
-      }
-
-      cache.set(offset, values);
-      workerUpdates.value++;
-    });
-  }
-
-  /**
-   * Handles all the logic for caching the virtual scrolling items and
-   * the interaction with the worker.
-   *
-   * We cache the items to avoid the extra overhead of sending the items
-   * to the worker when scrolling fast. We cache 2 times the buffer length
-   */
-  return function (): void {
-    if (!(!isUndef(resizeMeasurement.value)
-      && Number.isFinite(bufferLength.value)
-      && Number.isFinite(bufferOffset.value))) {
-      return;
-    }
-
-    const area = bufferLength.value * 2;
-    const start = Math.max(1, bufferOffset.value - area);
-    const finish = bufferOffset.value + area;
-
-    /**
-     * We always populate 0 first, so there's no blank space shown at the beginning
-     * or when scrolling to top after a resize in the bottom area.
-     */
-    if (!cache.has(0)) {
-      void setCache(0);
-    }
-
-    for (let i = finish; i >= start && !cache.has(i); i--) {
-    /**
-     * Fire all the operations concurrently, no need to await them
-     */
-      void setCache(i);
-    }
-  };
-})();
-
+/**
+ * The browser dispatches scroll events once per frame, right before the animation frame callbacks,
+ * so the update is applied directly (scheduling another animation frame doesn't batch anything else)
+ */
 useEventListener(scrollTargets, 'scroll', () => {
-  globalThis.requestAnimationFrame(() => scrollEvents.value++);
+  scrollEvents.value++;
 }, {
   passive: true,
   capture: true
@@ -359,27 +283,4 @@ watch(() => scrollTo, () => {
 
   target.scrollTo({ top, left, behavior: 'smooth' });
 });
-
-/**
- * Populate and reset the cache according to the current buffer state
- */
-watch([bufferLength, resizeMeasurement, itemsLength, bufferOffset], (val, oldVal) => {
-  if (val[0] !== oldVal[0] || val[1] !== oldVal[1] || val[2] !== oldVal[2]) {
-    cache.clear();
-    cacheGeneration.value++;
-  }
-
-  populateCache();
-});
-
-onScopeDispose(() => {
-  worker[releaseProxy]();
-  workerInstance.terminate();
-});
 </script>
-
-<style scoped>
-:deep(.j-virtual-grid-area) {
-  grid-area: 1/1;
-}
-</style>
