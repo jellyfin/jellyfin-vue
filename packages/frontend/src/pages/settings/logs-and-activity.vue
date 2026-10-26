@@ -68,7 +68,7 @@
                 </VAvatar>
               </template>
               <template #append>
-                <VListItemSubtitle class="text-capitalize-first-letter">
+                <VListItemSubtitle class="first-letter:uno-uppercase">
                   {{ getFormattedActivityDate(activity.Date) }}
                 </VListItemSubtitle>
               </template>

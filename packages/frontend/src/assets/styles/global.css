@@ -1,11 +1,6 @@
 * {
   font-family: var(--j-font-family), sans-serif, system-ui !important;
   backface-visibility: hidden;
-  overscroll-behavior: none;
-}
-
-body {
-  scrollbar-gutter: stable both-edges;
 }
 
 /* Custom utility classes */
@@ -39,8 +34,4 @@ body {
 
 .pb-s {
   padding-bottom: env(safe-area-inset-bottom);
-}
-
-.text-capitalize-first-letter::first-letter {
-  text-transform: uppercase;
 }
