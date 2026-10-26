@@ -62,11 +62,11 @@
   "devDependencies": {
     "@jellyfin-vue/configs": "workspace:*",
     "@jellyfin-vue/vite-plugins": "workspace:*",
-    "@rollup/plugin-virtual": "3.0.2",
+    "@rollup/plugin-virtual": "3.0.3",
     "@types/sortablejs": "1.15.9",
     "@unocss/reset": "66.11.0",
     "@vitejs/plugin-vue": "6.0.10",
-    "browserslist": "4.29.3",
+    "browserslist": "4.29.4",
     "lightningcss": "1.33.0",
     "unplugin-vue-components": "catalog:development",
     "vite-plugin-vue-devtools": "8.2.1"
