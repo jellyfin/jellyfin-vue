@@ -267,6 +267,7 @@
   "noResultsFound": "Il n'y a rien ici",
   "noServerConnection": "Aucune connexion au serveur",
   "noWebSocketConnection": "Perte partielle de connexion au serveur (aucun WebSocket disponible)",
+  "none": "Aucun",
   "normal": "Normale",
   "notifications": "Notifications",
   "notificationsSettingsDescription": "Gérer et configurer les notifications envoyées par ce serveur",
