@@ -5,6 +5,7 @@ import {
   useMediaQuery,
   useNetwork,
   useNow,
+  usePointer,
   useDocumentVisibility,
   useWindowScroll
 } from '@vueuse/core';
@@ -66,6 +67,17 @@ export const hasFinePointer = useMediaQuery('(any-pointer:fine)');
  * Whether the user is using a pointer with low precision (like touch)
  */
 export const hasTouch = useMediaQuery('(any-pointer:coarse)');
+/**
+ * Type of the pointer that was used last (mouse, pen or touch). It's null until the first interaction.
+ * Unlike the media queries above, it follows the input device actually in use on devices
+ * that have several (like touchscreen laptops or tablets with a mouse)
+ */
+const { pointerType: lastPointerType } = usePointer();
+/**
+ * Whether the user can hover over elements with the pointer that is currently in use (mouse or pen),
+ * so UI that is only reachable through hover is not displayed (and doesn't intercept taps) while using touch
+ */
+export const canHover = computed(() => hasFinePointer.value && lastPointerType.value !== 'touch');
 
 /**
  * Track if there's HDR support in the screen
