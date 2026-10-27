@@ -3,7 +3,6 @@
     class="uno-absolute uno-top-0 uno-left-0 uno-inset-0 uno-z-50 uno-transition-opacity"
     :class="{
       'uno-opacity-0 hover:media-mouse:uno-opacity-100': hover,
-      'uno-opacity-100': !hover,
       'uno-bg-background/50': scrim,
       'uno-bg-background/0 uno-opacity-0 hover:media-mouse:uno-opacity-100 hover:media-mouse:uno-bg-background/50': hover && scrim
     }"
