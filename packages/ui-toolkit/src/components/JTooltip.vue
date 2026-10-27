@@ -4,7 +4,7 @@
     :position
     :open="hoverComp?.isHovering && !pressed"
     :offset="10"
-    class="uno-bg-tooltip/80 uno-pointer-events-none uno-rounded uno-text-sm uno-px-2 uno-py-1"
+    class="uno-bg-tooltip/80 uno-pointer-events-none uno-rounded-sm uno-text-sm uno-px-2 uno-py-1"
     role="tooltip">
     <template #content>
       <slot name="content">

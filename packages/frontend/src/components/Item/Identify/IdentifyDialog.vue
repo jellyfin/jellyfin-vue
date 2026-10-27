@@ -21,9 +21,9 @@
     </template>
 
     <VCardText
-      class="pa-0 flex-grow-1 px-2"
+      class="pa-0 px-2 uno-grow-1"
       :class="{
-        'd-flex': !$vuetify.display.mobile,
+        'uno-flex': !$vuetify.display.mobile,
         'flex-row': !$vuetify.display.mobile
       }">
       <VWindow
@@ -53,7 +53,7 @@
           <VCheckbox
             v-if="searchResults"
             v-model="replaceImage"
-            class="mt-2 d-flex"
+            class="mt-2 !uno-flex"
             color="primary">
             <template #append>
               {{ $t('replaceExistingImages') }}

@@ -29,7 +29,7 @@
 
     <VCardText
       v-if="selectedMediaSource"
-      class="d-flex flex-grow-1 flex-column pa-3">
+      class="flex-column pa-3 uno-flex uno-grow-1">
       <template v-if="(selectedMediaSource.MediaStreams?.length ?? 0) > 0">
         <VTabs
           v-model="currentTab"
@@ -127,9 +127,9 @@
     </VCardText>
     <VCardText
       v-else
-      class="pa-0 flex-grow-1 pb-8"
+      class="pa-0 pb-8 uno-grow-1"
       :class="{
-        'd-flex': !$vuetify.display.mobile,
+        'uno-flex': !$vuetify.display.mobile,
         'flex-row': !$vuetify.display.mobile
       }">
       <h2 class="no-media">

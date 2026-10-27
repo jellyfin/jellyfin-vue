@@ -50,7 +50,7 @@
       </VCardText>
       <VDivider />
       <VCardActions
-        class="d-flex align-center pa-3"
+        class="align-center pa-3 uno-flex"
         :class="{
           'justify-end': !$vuetify.display.mobile,
           'justify-center': $vuetify.display.mobile

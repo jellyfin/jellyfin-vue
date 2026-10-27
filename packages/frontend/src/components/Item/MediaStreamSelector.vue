@@ -6,7 +6,7 @@
     density="comfortable"
     hide-details
     single-line
-    class="text-truncate uno-text-capitalize"
+    class="text-truncate uno-capitalize"
     :items="selectItems">
     <template #selection="{ item }">
       {{ item.raw.selection }}

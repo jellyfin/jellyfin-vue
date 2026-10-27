@@ -2,7 +2,7 @@
   <VCard
     v-if="metadata"
     height="100%"
-    class="d-flex flex-column metadata-editor">
+    class="flex-column metadata-editor !uno-flex">
     <VCardTitle>{{ t('editMetadata') }}</VCardTitle>
     <VCardSubtitle class="pb-3">
       {{ metadata.Path }}
@@ -11,9 +11,9 @@
     <VDivider />
 
     <VCardText
-      class="pa-0 flex-grow-1"
+      class="pa-0 uno-grow-1"
       :class="{
-        'd-flex': !$vuetify.display.mobile,
+        'uno-flex': !$vuetify.display.mobile,
         'flex-row': !$vuetify.display.mobile
       }">
       <VTabs
@@ -195,7 +195,7 @@
 
     <VDivider />
     <VCardActions
-      class="d-flex align-center pa-3"
+      class="align-center pa-3 uno-flex"
       :class="{
         'justify-end': !$vuetify.display.mobile,
         'justify-center': $vuetify.display.mobile
