@@ -366,7 +366,7 @@
   "search": "Paieška",
   "searchMissingMetadata": "Ieškoti trūkstamų metaduomenų",
   "searchNoResults": "Rezultatų nerasta",
-  "seasonEpisode": "Sezonas {{seasonNumber}}, Epizodas {{episodeNumber}}",
+  "seasonEpisode": "Sezonas {{seasonNumber}}, Serija {{episodeNumber}}",
   "seasonEpisodeAbbrev": "S{{seasonNumber}} E{{episodeNumber}}",
   "seconds": "{{count}} sekundė| {{count}} sekundžių",
   "selectServer": "Pasirinkite serverį",
