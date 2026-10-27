@@ -13,6 +13,18 @@ const themeColors = Object.fromEntries(
   ])
 );
 
+/**
+ * Points of CSS's ease-in-out timing function (cubic-bezier(0.42, 0, 0.58, 1)), sampled in 15 steps.
+ * Gradients can't ease between their color stops natively yet, so scrims are approximated with these points.
+ */
+const easeInOutPoints = Array.from({ length: 16 }, (_, index) => {
+  const t = index / 15;
+  const bezier = (p1: number, p2: number) => (3 * ((1 - t) ** 2) * t * p1) + (3 * (1 - t) * (t ** 2) * p2) + (t ** 3);
+
+  return { position: bezier(0.42, 0.58), progress: bezier(0, 1) };
+});
+const scrimDirections = { t: 'top', r: 'right', b: 'bottom', l: 'left' };
+
 export const defaultConfig = defineConfig<Theme>({
   content: {
     pipeline: {
@@ -39,7 +51,35 @@ export const defaultConfig = defineConfig<Theme>({
     transformerVariantGroup()
   ],
   rules: [
-    ['uno-duration-default', { 'transition-duration': 'var(--j-theme-transition-duration)' }]
+    ['uno-duration-default', { 'transition-duration': 'var(--j-theme-transition-duration)' }],
+    [
+      /^bg-scrim-to-([trbl])-([^/]+)(?:\/(\d+))?$/,
+      ([, direction, color, opacity = '100']) => {
+        /**
+         * Scrim: a theme color that fades to transparent towards the given side with an ease-in-out curve,
+         * which avoids the visible edge of a linear fade. Like the theme backgrounds, it also sets
+         * the text color with the best contrast against the color.
+         *
+         * For example, uno-bg-scrim-to-b-background/75 starts with the background color at 75% opacity
+         * on the top and fades out towards the bottom.
+         */
+        if (!direction || !color || !Object.hasOwn(themeColors, color)) {
+          return;
+        }
+
+        const stops = easeInOutPoints.map(({ position, progress }) => {
+          const alpha = Math.round(Number(opacity) * (1 - progress) * 10) / 1000;
+
+          return `rgb(from var(--j-theme-color-${color}) r g b / ${alpha}) ${Math.round(position * 1000) / 10}%`;
+        });
+
+        return {
+          'background-image': `linear-gradient(to ${scrimDirections[direction as keyof typeof scrimDirections]}, ${stops.join(', ')})`,
+          'color': `contrast-color(var(--j-theme-color-${color}))`
+        };
+      },
+      { prefix: 'uno-' }
+    ]
   ],
   shortcuts: [
     [
