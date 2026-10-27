@@ -345,7 +345,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    * Report current item playback progress to server
    */
   private readonly _reportPlaybackProgress = async (): Promise<void> => {
-    if (!isNil(this.currentTime.value) && !isNil(this.currentItem.value)) {
+    if (!isNil(this.currentTime.value) && !isNil(this.currentItem.value) && !isNil(remote.auth.currentUser.value)) {
       await remote.sdk.newUserApi(getSessionApi).reportPlaybackProgress({
         playbackProgressInfo: {
           ItemId: this.currentItem.value.Id,
@@ -365,6 +365,10 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     sessionId = this._state.value.playSessionId,
     currentTime = this.currentTime.value
   ): Promise<void> => {
+    if (isNil(remote.auth.currentUser.value)) {
+      return;
+    }
+
     await remote.sdk.newUserApi(getSessionApi).reportPlaybackStopped({
       playbackStopInfo: {
         ItemId: itemId,

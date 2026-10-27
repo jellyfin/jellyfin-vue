@@ -9,6 +9,7 @@ import { getBrandingApi } from '@jellyfin/sdk/lib/utils/api/branding-api';
 import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
 import { computed } from 'vue';
 import { isAxiosError, isNil, sealed } from '@jellyfin-vue/shared/validation';
+import { PromiseQueue } from '@jellyfin-vue/shared/promises';
 import i18next from 'i18next';
 import SDK, { useOneTimeAPI } from './sdk/sdk-utils.ts';
 import { useSnackbar } from '#/composables/use-snackbar.ts';
@@ -39,6 +40,8 @@ class RemotePluginAuth extends BaseState<AuthState> {
     beforeLogout: [] as MaybePromise<void>[],
     afterLogout: [] as MaybePromise<void>[]
   };
+
+  private readonly _teardownQueue = new PromiseQueue();
 
   public readonly servers = computed(() => this._state.value.servers);
   public readonly currentServer = computed(() => this._state.value.servers[this._state.value.currentServerIndex]);
@@ -258,13 +261,19 @@ class RemotePluginAuth extends BaseState<AuthState> {
    * @param skipRequest - Skips the request and directly removes the user from the store
    */
   public readonly logoutCurrentUser = async (skipRequest = false): Promise<void> => {
-    if (isNil(this.currentUser.value) || isNil(this.currentServer.value)) {
+    const user = this.currentUser.value;
+    const server = this.currentServer.value;
+
+    if (isNil(user) || isNil(server)) {
       return;
     }
 
-    await this._runCallbacks(this._callbacks.beforeLogout);
-    await this.logoutUser(this.currentUser.value, this.currentServer.value, skipRequest);
+    /**
+     * Started before clearing the state, so the callbacks still use the user's API
+     */
+    const beforeLogout = this._runCallbacks(this._callbacks.beforeLogout);
 
+    void this._teardownQueue.add(async () => await beforeLogout);
     this._state.value.currentUserIndex = -1;
     /**
      * We need this so the callbacks are run after all the dependencies are updated
@@ -273,6 +282,7 @@ class RemotePluginAuth extends BaseState<AuthState> {
     globalThis.requestAnimationFrame(() =>
       globalThis.setTimeout(() => void this._runCallbacks(this._callbacks.afterLogout), 0)
     );
+    await this.logoutUser(user, server, skipRequest);
   };
 
   /**
@@ -287,17 +297,7 @@ class RemotePluginAuth extends BaseState<AuthState> {
     server: ServerInfo,
     skipRequest = false
   ): Promise<void> => {
-    try {
-      if (!skipRequest) {
-        await useOneTimeAPI(
-          server.PublicAddress,
-          this._getUserAccessToken(user)
-        ).logout();
-      }
-    } catch (error) {
-      console.error(error);
-    }
-
+    const accessToken = this._getUserAccessToken(user);
     const storeUser = this._state.value.users.find(u => u.Id === user.Id);
 
     if (!isNil(storeUser)) {
@@ -310,6 +310,19 @@ class RemotePluginAuth extends BaseState<AuthState> {
     if (!isNil(user.Id)) {
       delete this._state.value.accessTokens[user.Id];
     }
+
+    await this._teardownQueue.add(async () => {
+      try {
+        if (!skipRequest) {
+          await useOneTimeAPI(
+            server.PublicAddress,
+            accessToken
+          ).logout();
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    });
   };
 
   /**
