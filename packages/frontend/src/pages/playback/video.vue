@@ -11,8 +11,8 @@
         'uno-opacity-100': overlay,
         'uno-opacity-0': !overlay
       }">
-      <div class="osd-top pt-s pl-s pr-s">
-        <div class="uno-px-4 uno-py-2 uno-flex uno-items-center">
+      <div class="uno-pb-[5em] uno-pl-[max(8px,env(safe-area-inset-left))] uno-pr-[max(8px,env(safe-area-inset-right))] uno-pt-[max(8px,env(safe-area-inset-top))] uno-w-full uno-bg-scrim-to-b-background/75">
+        <div class="uno-m-auto uno-px-4 uno-py-2 uno-flex uno-max-w-[175vh] uno-items-center">
           <div class="uno-flex">
             <VBtn
               icon
@@ -30,14 +30,14 @@
           </div>
         </div>
       </div>
-      <div class="pl-s pr-s osd-bottom pb-s">
-        <div class="uno-p-4">
+      <div class="uno-pb-[max(8px,env(safe-area-inset-bottom))] uno-pl-[max(8px,env(safe-area-inset-left))] uno-pr-[max(8px,env(safe-area-inset-right))] uno-pt-[6em] uno-w-full uno-bg-scrim-to-t-background/75">
+        <div class="uno-m-auto uno-p-4 uno-max-w-[175vh]">
           <TimeSlider />
           <div
             class="uno-flex uno-items-stretch uno-justify-between uno-relative">
             <div
               v-if="$vuetify.display.mdAndUp"
-              class="video-title uno-mr-auto uno-flex uno-flex-col uno-items-start uno-justify-center">
+              class="uno-mr-auto uno-flex uno-flex-col uno-h-[6em] uno-max-w-[40vw] uno-items-start uno-justify-center">
               <template
                 v-if="
                   playbackManager.currentlyPlayingType.value ===
@@ -70,7 +70,7 @@
               </span>
             </div>
             <div
-              class="player-controls justify-md-center uno-flex uno-items-center uno-justify-start">
+              class="justify-md-center uno-flex uno-size-full uno-items-center uno-left-0 uno-top-0 uno-justify-start uno-absolute">
               <PreviousTrackButton class="uno-mx-1" />
               <PlayPauseButton class="uno-mx-1" />
               <NextTrackButton class="uno-mx-1" />
@@ -178,77 +178,3 @@ watch(staticOverlay, (val) => {
   }
 });
 </script>
-
-<style scoped>
-.osd-top,
-.osd-bottom {
-  width: 100%;
-  padding: 8px;
-  color: contrast-color(var(--j-theme-color-background));
-}
-
-.osd-bottom > div,
-.osd-top > div {
-  max-width: 175vh;
-  margin: auto;
-}
-
-.osd-top {
-  padding-bottom: 5em;
-  background: linear-gradient(
-    to bottom,
-    rgb(from var(--j-theme-color-background) r g b / 0.75) 0%,
-    rgb(from var(--j-theme-color-background) r g b / 0.74) 8.1%,
-    rgb(from var(--j-theme-color-background) r g b / 0.714) 15.5%,
-    rgb(from var(--j-theme-color-background) r g b / 0.672) 22.5%,
-    rgb(from var(--j-theme-color-background) r g b / 0.618) 29%,
-    rgb(from var(--j-theme-color-background) r g b / 0.556) 35.3%,
-    rgb(from var(--j-theme-color-background) r g b / 0.486) 41.2%,
-    rgb(from var(--j-theme-color-background) r g b / 0.412) 47.1%,
-    rgb(from var(--j-theme-color-background) r g b / 0.338) 52.9%,
-    rgb(from var(--j-theme-color-background) r g b / 0.264) 58.8%,
-    rgb(from var(--j-theme-color-background) r g b / 0.194) 64.7%,
-    rgb(from var(--j-theme-color-background) r g b / 0.132) 71%,
-    rgb(from var(--j-theme-color-background) r g b / 0.078) 77.5%,
-    rgb(from var(--j-theme-color-background) r g b / 0.036) 84.5%,
-    rgb(from var(--j-theme-color-background) r g b / 0.01) 91.9%,
-    rgb(from var(--j-theme-color-background) r g b / 0) 100%
-  );
-}
-
-.osd-bottom {
-  padding-top: 6em;
-  background: linear-gradient(
-    to top,
-    rgb(from var(--j-theme-color-background) r g b / 0.75) 0%,
-    rgb(from var(--j-theme-color-background) r g b / 0.74) 8.1%,
-    rgb(from var(--j-theme-color-background) r g b / 0.714) 15.5%,
-    rgb(from var(--j-theme-color-background) r g b / 0.672) 22.5%,
-    rgb(from var(--j-theme-color-background) r g b / 0.618) 29%,
-    rgb(from var(--j-theme-color-background) r g b / 0.556) 35.3%,
-    rgb(from var(--j-theme-color-background) r g b / 0.486) 41.2%,
-    rgb(from var(--j-theme-color-background) r g b / 0.412) 47.1%,
-    rgb(from var(--j-theme-color-background) r g b / 0.338) 52.9%,
-    rgb(from var(--j-theme-color-background) r g b / 0.264) 58.8%,
-    rgb(from var(--j-theme-color-background) r g b / 0.194) 64.7%,
-    rgb(from var(--j-theme-color-background) r g b / 0.132) 71%,
-    rgb(from var(--j-theme-color-background) r g b / 0.078) 77.5%,
-    rgb(from var(--j-theme-color-background) r g b / 0.036) 84.5%,
-    rgb(from var(--j-theme-color-background) r g b / 0.01) 91.9%,
-    rgb(from var(--j-theme-color-background) r g b / 0) 100%
-  );
-}
-
-.player-controls {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.video-title {
-  max-width: 40vw;
-  height: 6em;
-}
-</style>
