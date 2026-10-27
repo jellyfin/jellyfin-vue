@@ -66,7 +66,7 @@
                 <LikeButton :item="track" />
               </td>
               <td>
-                <div class="d-flex align-center">
+                <div class="align-center uno-flex">
                   <span>{{ track.Name }}</span>
                   <div
                     v-if="

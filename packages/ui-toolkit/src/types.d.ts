@@ -31,6 +31,9 @@ export interface JAnchorProps {
    * one with enough room for it. Floating content (like tooltips or menus) mustn't use it: any ancestor with overflow,
    * transforms or containment would clip it or leave it without room to be placed where it should.
    *
+   * It has no z-index of its own, so positioned siblings with one (like JOverlay's 50) are painted over it.
+   * Pass a z-index class if it must stay on top of them, keeping it below the app bar's (1006).
+   *
    * @default false
    */
   inPlace?: boolean;

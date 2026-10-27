@@ -3,7 +3,7 @@
     <div
       v-for="i in pages"
       :key="`progress-key-${i}`"
-      :class="useResponsiveClasses('progress-bar uno-cursor-pointer')"
+      :class="useResponsiveClasses('progress-bar uno-cursor-pointer uno-grow-1')"
       @click.capture="emit('progressClicked', i - 1)">
       <div
         :class="useResponsiveClasses(barClasses[i - 1])"
@@ -37,9 +37,7 @@ const display = useDisplay();
 
 const defaultBarClasses = Object.freeze([
   'progress',
-  'uno-flex',
-  'uno-items-center',
-  'uno-justify-center'
+  'uno-grow-1'
 ]);
 const expand = computed(() => hoverable && !display.mobile.value);
 const animDuration = computed(() => (duration / 1000).toString() + 's');
@@ -83,7 +81,6 @@ const barClasses = computed(() =>
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-grow: 1;
 }
 
 .progress-bar:hover .expand.progress {
@@ -95,7 +92,6 @@ const barClasses = computed(() =>
 .progress {
   height: 2px;
   transition: height 0.25s;
-  flex-grow: 1;
   border-radius: 4px;
   margin: 0 3px;
   display: block;

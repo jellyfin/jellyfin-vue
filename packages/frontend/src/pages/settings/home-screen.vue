@@ -18,7 +18,7 @@
           tag="div"
           @reorder="reorderHomeSections">
           <template #default="{ item, index }">
-            <div class="home-section-drag-handle home-section-row uno-mt-2 uno-px-2 uno-py-1 uno-rounded uno-flex uno-gap-2 uno-cursor-grab uno-items-center">
+            <div class="home-section-drag-handle home-section-row uno-mt-2 uno-px-2 uno-py-1 uno-rounded-sm uno-flex uno-gap-2 uno-cursor-grab uno-items-center">
               <JIcon
                 class="i-mdi:folder uno-flex-none"
                 aria-hidden="true" />
@@ -76,7 +76,7 @@
           tag="div"
           @reorder="reorderLibraries">
           <template #default="{ item, index }">
-            <div class="library-drag-handle home-section-row uno-mt-2 uno-px-2 uno-py-1 uno-rounded uno-flex uno-gap-2 uno-cursor-grab uno-items-center">
+            <div class="library-drag-handle home-section-row uno-mt-2 uno-px-2 uno-py-1 uno-rounded-sm uno-flex uno-gap-2 uno-cursor-grab uno-items-center">
               <JIcon
                 :class="item.icon"
                 aria-hidden="true" />

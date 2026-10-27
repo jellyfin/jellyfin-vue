@@ -1,7 +1,7 @@
 <template>
   <JHover v-slot="{ isHovering }">
     <div
-      class="ma-2 d-flex flex-column pointer"
+      class="ma-2 flex-column pointer uno-flex"
       @click="$emit('connect', user)">
       <VBtn
         :active="isHovering"

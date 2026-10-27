@@ -26,7 +26,7 @@
         v-model="replace"
         :label="t('replaceExistingImages')" />
       <VCardActions
-        class="d-flex align-center"
+        class="align-center uno-flex"
         :class="{
           'justify-end': !$vuetify.display.mobile,
           'justify-center': $vuetify.display.mobile
