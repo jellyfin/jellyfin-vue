@@ -23,9 +23,9 @@
                 v-else
                 class="i-mdi:drag-horizontal" />
             </VListItemAction>
-            <VAvatar>
+            <JAvatar>
               <BlurhashImage :item="item" />
-            </VAvatar>
+            </JAvatar>
           </template>
           <template #append>
             <LikeButton

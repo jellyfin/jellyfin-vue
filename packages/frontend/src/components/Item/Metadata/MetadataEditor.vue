@@ -139,9 +139,9 @@
               :title="t('addNewPerson')"
               @click="onPersonAdd">
               <template #append>
-                <VAvatar>
+                <JAvatar>
                   <JIcon class="i-mdi:plus-circle" />
-                </VAvatar>
+                </JAvatar>
               </template>
             </VListItem>
             <VListItem
@@ -151,8 +151,8 @@
               :subtitle="(item.Role || item.Type) ?? undefined"
               @click="onPersonEdit(item)">
               <template #prepend>
-                <VAvatar>
-                  <JImg
+                <JAvatar>
+                  <JAvatarImage
                     v-if="item.Id && item.PrimaryImageTag"
                     :alt="$t('person')"
                     :src="
@@ -160,18 +160,16 @@
                         item.Id,
                         ImageType.Primary
                       )
-                    ">
-                    <template #placeholder>
-                      <JIcon
-                        class="bg-grey-darken-3 i-mdi:account" />
-                    </template>
-                  </JImg>
-                </VAvatar>
+                    " />
+                  <JAvatarFallback>
+                    <JIcon class="i-mdi:account" />
+                  </JAvatarFallback>
+                </JAvatar>
               </template>
               <template #append>
-                <VAvatar @click.stop="onPersonDel(i)">
+                <JAvatar @click.stop="onPersonDel(i)">
                   <JIcon class="i-mdi:delete" />
-                </VAvatar>
+                </JAvatar>
               </template>
             </VListItem>
           </VList>

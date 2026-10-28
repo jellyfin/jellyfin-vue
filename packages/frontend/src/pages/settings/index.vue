@@ -54,9 +54,9 @@
               :to="userItem.link"
               :disabled="!userItem.link">
               <template #prepend>
-                <VAvatar>
+                <JAvatar>
                   <JIcon :class="userItem.icon" />
-                </VAvatar>
+                </JAvatar>
               </template>
               <VListItemTitle>
                 {{ userItem.name }}
@@ -85,9 +85,9 @@
                 :to="adminItem.link"
                 :disabled="!adminItem.link">
                 <template #prepend>
-                  <VAvatar>
+                  <JAvatar>
                     <JIcon :class="adminItem.icon" />
-                  </VAvatar>
+                  </JAvatar>
                 </template>
                 <VListItemTitle>
                   {{ adminItem.name }}

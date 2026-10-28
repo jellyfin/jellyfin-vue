@@ -22,11 +22,9 @@
           :title="relatedItem.Name ?? ''"
           :subtitle="relatedItem.ProductionYear ?? ''">
           <template #prepend>
-            <VAvatar>
-              <VAvatar color="card">
-                <BlurhashImage :item="relatedItem" />
-              </VAvatar>
-            </VAvatar>
+            <JAvatar color="card">
+              <BlurhashImage :item="relatedItem" />
+            </JAvatar>
           </template>
         </VListItem>
       </div>

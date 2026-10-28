@@ -10,9 +10,9 @@
         :subtitle="item.Role || item.Type || ''"
         :to="getItemDetailsLink(item, 'Person')">
         <template #prepend>
-          <VAvatar color="card">
+          <JAvatar color="card">
             <BlurhashImage :item="item" />
-          </VAvatar>
+          </JAvatar>
         </template>
       </VListItem>
     </div>

@@ -1,35 +1,26 @@
 <template>
-  <VAvatar
+  <JAvatar
     :size="size">
-    <JImg
-      :src="getUserImageUrl(user ?? remote.auth.currentUser.value)"
-      :alt="$t('userImage')">
-      <template #placeholder>
-        <VAvatar
-          color="primary"
-          :size="size">
-          <JIcon
-            class="i-mdi:account" />
-        </VAvatar>
-      </template>
-    </JImg>
-  </VAvatar>
+    <JAvatarImage
+      v-if="imageSrc"
+      :src="imageSrc"
+      :alt="$t('userImage')" />
+    <JAvatarFallback class="uno-bg-primary">
+      <JIcon class="i-mdi:account" />
+    </JAvatarFallback>
+  </JAvatar>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
 import type { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { remote } from '#/plugins/remote/index.ts';
 import { getUserImageUrl } from '#/utils/images.ts';
 
-/**
- * TODO: In reality, rounded is unnecessary since it can be passed as fallthrough,
- * but it needs to be here since VAvatar expects a truly boolean and fallthroughs are passed as strings.
- * It also can't be passed as a prop, it needs to not specify a prop for it to work properly
- * in AppBar's button.
- */
-const { user, size = 64, rounded } = defineProps<{
+const { user, size = 64 } = defineProps<{
   user?: UserDto;
   size?: number;
-  rounded?: boolean;
 }>();
+
+const imageSrc = computed(() => getUserImageUrl(user ?? remote.auth.currentUser.value));
 </script>

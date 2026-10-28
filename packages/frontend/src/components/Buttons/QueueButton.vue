@@ -16,14 +16,14 @@
           <VList>
             <VListItem :title="sourceText">
               <template #prepend>
-                <VAvatar>
+                <JAvatar>
                   <BlurhashImage
                     v-if="playbackManager.initiator.value"
                     :item="playbackManager.initiator.value" />
                   <JIcon
                     v-else
                     :class="modeIcon" />
-                </VAvatar>
+                </JAvatar>
               </template>
               <template #subtitle>
                 {{ getTotalEndsAtTime(playbackManager.queue.value) }} -

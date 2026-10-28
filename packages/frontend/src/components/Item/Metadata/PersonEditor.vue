@@ -9,20 +9,17 @@
       <VCardText class="pa-3">
         <VRow>
           <VCol cols="4">
-            <VAvatar
-              size="160"
+            <JAvatar
+              :size="120"
               class="ml-2">
-              <JImg
-                :src="
-                  person?.Id && getItemImageUrl(person.Id, ImageType.Primary)
-                "
-                :alt="$t('person')">
-                <template #placeholder>
-                  <JIcon
-                    class="bg-grey-darken-3 i-mdi:account" />
-                </template>
-              </JImg>
-            </VAvatar>
+              <JAvatarImage
+                v-if="person?.Id"
+                :src="getItemImageUrl(person.Id, ImageType.Primary)"
+                :alt="$t('person')" />
+              <JAvatarFallback>
+                <JIcon class="i-mdi:account" />
+              </JAvatarFallback>
+            </JAvatar>
           </VCol>
           <VCol>
             <VForm
