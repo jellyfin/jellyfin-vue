@@ -1,6 +1,9 @@
 export { default as JVirtual } from './JVirtual/JVirtual.vue';
 
 export { default as JApp } from './JApp.vue';
+export { default as JAvatar } from './JAvatar/JAvatar.vue';
+export { default as JAvatarFallback } from './JAvatar/JAvatarFallback.vue';
+export { default as JAvatarImage } from './JAvatar/JAvatarImage.vue';
 export { default as JFileUpload } from './JFileUpload.vue';
 export { default as JDraggableList } from './JDraggableList.vue';
 export { default as JFooter } from './JFooter.vue';

@@ -24,6 +24,7 @@
     "@skirtle/vue-vnode-utils": "0.3.0",
     "@vueuse/core": "catalog:runtime",
     "i18next-vue": "catalog:runtime",
+    "reka-ui": "catalog:runtime",
     "vuetify": "catalog:runtime"
   },
   "devDependencies": {
