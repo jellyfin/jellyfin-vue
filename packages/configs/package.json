@@ -24,6 +24,7 @@
     "@eslint/js": "10.0.1",
     "@eslint/json": "2.1.1",
     "@storybook/addon-a11y": "10.6.3",
+    "@storybook/addon-docs": "10.6.3",
     "@storybook/vue3": "10.6.3",
     "@storybook/vue3-vite": "10.6.3",
     "@stylistic/eslint-plugin": "5.10.0",

@@ -11,7 +11,6 @@
         icon>
         <UserImage
           :user="user"
-          rounded
           :size="128" />
       </VBtn>
       <a class="text-center link text-subtitle-1 mt-2">

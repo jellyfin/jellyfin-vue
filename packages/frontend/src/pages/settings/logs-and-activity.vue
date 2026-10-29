@@ -63,9 +63,11 @@
               :title="activity.Name"
               :subtitle="activity.ShortOverview ?? undefined">
               <template #prepend>
-                <VAvatar :color="getColorFromSeverity(activity.Severity)">
-                  <JIcon :class="getIconFromActivityType(activity.Type)" />
-                </VAvatar>
+                <JAvatar :color="getColorFromSeverity(activity.Severity)">
+                  <JIcon
+                    class="uno-text-white"
+                    :class="getIconFromActivityType(activity.Type)" />
+                </JAvatar>
               </template>
               <template #append>
                 <VListItemSubtitle class="first-letter:uno-uppercase">
@@ -89,10 +91,10 @@
 import {
   LogLevel
 } from '@jellyfin/sdk/lib/generated-client';
+import type { ColorPalette } from '@jellyfin-vue/configs/uno/colors';
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
 import { format, formatRelative, parseJSON } from 'date-fns';
 import { useTranslation } from 'i18next-vue';
-import { useTheme } from 'vuetify';
 import { remote } from '#/plugins/remote/index.ts';
 import { useDateFns } from '#/composables/use-datefns.ts';
 import { useApi } from '#/composables/apis.ts';
@@ -107,33 +109,32 @@ definePage({
 });
 
 const { t } = useTranslation();
-const theme = useTheme();
 
 /**
  * Return a UI colour given log severity
  */
-function getColorFromSeverity(severity: LogLevel | undefined): string {
+function getColorFromSeverity(severity: LogLevel | undefined): ColorPalette {
   switch (severity) {
     case LogLevel.Trace: {
-      return theme.current.value.colors.success;
+      return 'success';
     }
     case LogLevel.Debug: {
-      return theme.current.value.colors.accent;
+      return 'accent';
     }
     case LogLevel.Information: {
-      return theme.current.value.colors.info;
+      return 'info';
     }
     case LogLevel.Warning: {
-      return theme.current.value.colors.warning;
+      return 'warning';
     }
     case LogLevel.Error: {
-      return theme.current.value.colors.error;
+      return 'error';
     }
     case LogLevel.Critical: {
-      return theme.current.value.colors.secondary;
+      return 'secondary';
     }
     default: {
-      return theme.current.value.colors.primary;
+      return 'primary';
     }
   }
 }

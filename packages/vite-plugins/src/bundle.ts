@@ -53,7 +53,11 @@ export function JBundleAnalysis(): Plugin {
                 circularDependency: true
               },
               onwarn: (warning) => {
-                if (warning.code === 'CIRCULAR_DEPENDENCY') {
+                const isExternalCycle = warning.ids?.every(
+                  id => normalizePath(id).includes('/node_modules/')
+                );
+
+                if (warning.code === 'CIRCULAR_DEPENDENCY' && !isExternalCycle) {
                   warnings.push(warning);
                 }
               }

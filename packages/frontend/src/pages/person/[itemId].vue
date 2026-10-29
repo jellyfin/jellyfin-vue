@@ -9,12 +9,11 @@
           cols="6"
           sm="3">
           <VResponsive aspect-ratio="1">
-            <VAvatar
+            <JAvatar
               color="card"
-              size="100%"
-              class="elevation-2">
+              class="elevation-2 uno-h-full! uno-w-full!">
               <BlurhashImage :item="item" />
-            </VAvatar>
+            </JAvatar>
           </VResponsive>
         </VCol>
         <VCol

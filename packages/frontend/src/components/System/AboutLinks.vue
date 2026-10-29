@@ -8,9 +8,9 @@
         rel="noreferrer noopener"
         target="_blank">
         <template #prepend>
-          <VAvatar>
+          <JAvatar>
             <JIcon :class="linkItem.icon" />
-          </VAvatar>
+          </JAvatar>
         </template>
         <VListItemTitle>
           {{ linkItem.name }}

@@ -3,6 +3,14 @@
   backface-visibility: hidden;
 }
 
+/*
+ * VListItem gives a 16px prepend spacer only to direct `.v-avatar` children.
+ * Recognise JAvatar by its stable slot marker until VListItem is migrated away from Vuetify.
+ */
+.v-list-item__prepend > [data-slot='avatar'] + .v-list-item__spacer {
+  width: 1rem;
+}
+
 /* Custom utility classes */
 
 .link {

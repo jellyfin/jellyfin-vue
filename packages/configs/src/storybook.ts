@@ -4,17 +4,19 @@ export default {
   stories: ['./stories/**/*.stories.ts'],
   addons: [
     '@chromatic-com/storybook',
-    '@storybook/addon-a11y'
+    '@storybook/addon-a11y',
+    '@storybook/addon-docs'
   ],
   framework: {
     name: '@storybook/vue3-vite',
-    options: {}
+    options: {
+      docgen: 'vue-component-meta'
+    }
   },
   core: {
     builder: {
       name: '@storybook/builder-vite',
       options: {
-        docgen: 'vue-component-meta',
         viteConfigPath: undefined as undefined | string
       }
     }
@@ -24,7 +26,7 @@ export default {
     // @ts-expect-error - Incorrect type in Vite config, but this is a temporal workaround regardless
     const vueDocgenIndex = config.plugins?.findIndex(({ name }) => name === 'storybook:vue-docgen-plugin');
 
-    if (vueDocgenIndex) {
+    if (vueDocgenIndex !== undefined && vueDocgenIndex !== -1) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       config.plugins?.splice(vueDocgenIndex, 1);
     }

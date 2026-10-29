@@ -30,6 +30,7 @@ catalogs:
     i18next: 26.5.10
     i18next-vue: 5.4.0
     vuetify: 3.11.3
+    reka-ui: 2.10.5
   development:
     find-up-simple: 1.0.1
     unplugin-vue-components: 32.1.0
