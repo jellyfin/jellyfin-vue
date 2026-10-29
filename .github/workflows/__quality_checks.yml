@@ -21,6 +21,7 @@ jobs:
           - lint
           - test
           - check:types
+          - i18n:check
           # Checks for dependency cycles in the bundle and in the monorepo setup
           - analyze:cycles
           - 'pnpm i --lockfile-only --config.disallow-workspace-cycles=true'
