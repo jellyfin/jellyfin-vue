@@ -102,13 +102,28 @@
       "rangeStrategy": "replace"
     },
     {
+      "description": "On a new Node LTS major, move both bounds of the engines range (>=24.11.0 <25.0.0 -> >=26.13.0 <27.0.0). 'widen' would only raise the upper bound and 'replace' would drop the lower one.",
       "matchPackageNames": [
         "node"
       ],
       "matchDepTypes": [
         "engines"
       ],
-      "rangeStrategy": "widen"
+      "rangeStrategy": "bump"
+    },
+    {
+      "description": "Keep the engines minimum at the first LTS release of the major: 'bump' would otherwise raise it on every in-range release.",
+      "matchPackageNames": [
+        "node"
+      ],
+      "matchDepTypes": [
+        "engines"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "enabled": false
     }
   ],
   "customManagers": [
