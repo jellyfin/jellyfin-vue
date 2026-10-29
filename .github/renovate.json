@@ -102,13 +102,34 @@
       "rangeStrategy": "replace"
     },
     {
+      "description": "engines.node is handled by the custom manager below: the npm manager can't move both bounds of a '>=x <y' range ('widen' only raises the upper one, 'replace' drops the lower one and 'bump' falls back to 'widen').",
+      "matchManagers": [
+        "npm"
+      ],
       "matchPackageNames": [
         "node"
       ],
       "matchDepTypes": [
         "engines"
       ],
-      "rangeStrategy": "widen"
+      "enabled": false
+    },
+    {
+      "description": "Keep the engines.node minimum at the first LTS release of the major, so only new LTS majors update it.",
+      "matchManagers": [
+        "custom.regex"
+      ],
+      "matchPackageNames": [
+        "node"
+      ],
+      "matchDepTypes": [
+        "engines"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "enabled": false
     }
   ],
   "customManagers": [
@@ -125,6 +146,21 @@
       "datasourceTemplate": "node",
       "versioningTemplate": "node",
       "autoReplaceStringTemplate": "setup_{{{newValue}}}.x"
+    },
+    {
+      "customType": "regex",
+      "description": "Bump the Node LTS range in engines (>=24.11.0 <25.0.0 -> >=26.13.0 <27.0.0): the minimum is tracked as an exact version and the maximum is derived from its major.",
+      "managerFilePatterns": [
+        "package.json"
+      ],
+      "matchStrings": [
+        "\"node\":\\s*\">=(?<currentValue>\\d+\\.\\d+\\.\\d+) <\\d+\\.0\\.0\""
+      ],
+      "depNameTemplate": "node",
+      "depTypeTemplate": "engines",
+      "datasourceTemplate": "node",
+      "versioningTemplate": "node",
+      "autoReplaceStringTemplate": "\"node\": \">={{{newValue}}} <{{add newMajor 1}}.0.0\""
     }
   ],
   "postUpdateOptions": [
