@@ -14,20 +14,6 @@
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
   "editor.defaultFormatter": "dbaeumer.vscode-eslint",
-  "i18n-ally.keystyle": "flat",
-  "i18n-ally.sortKeys": true,
-  "i18n-ally.sourceLanguage": "en",
-  "i18n-ally.includeSubfolders": false,
-  "i18n-ally.fullReloadOnChanged": true,
-  "i18n-ally.extract.autoDetect": true,
-  "i18n-ally.annotations": false,
-  "i18n-ally.localesPaths": [
-    "packages/i18n/strings"
-  ],
-  "i18n-ally.enabledFrameworks": [
-    "i18next",
-    "vue-sfc"
-  ],
   "eslint.validate": [
     "vue",
     "javascript",
@@ -48,5 +34,6 @@
   "vue.inlayHints.vBindShorthand": true,
   "vue.inlayHints.optionsWrapper": true,
   "vue.inlayHints.destructuredProps": true,
-  "js/ts.tsserver.experimental.enableProjectDiagnostics": true
+  "js/ts.tsserver.experimental.enableProjectDiagnostics": true,
+  "x18n.annotations": false
 }

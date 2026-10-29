@@ -6,7 +6,7 @@
     "eamodio.gitlens",
     "vue.volar",
     "dbaeumer.vscode-eslint",
-    "lokalise.i18n-ally",
+    "antfu.x18n",
     "ryanluker.vscode-coverage-gutters",
     "yoavbls.pretty-ts-errors"
   ],

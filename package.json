@@ -16,6 +16,7 @@
   "scripts": {
     "analyze:cycles": "pnpm -r --if-present --no-bail analyze:cycles",
     "check:types": "pnpm -r --if-present --no-bail check:types",
+    "i18n:check": "pnpm -r --if-present --no-bail i18n:check",
     "lint": "pnpm -r --if-present --no-bail lint",
     "lint:fix": "pnpm -r --if-present --no-bail lint:fix",
     "test": "pnpm -r --if-present --no-bail test"

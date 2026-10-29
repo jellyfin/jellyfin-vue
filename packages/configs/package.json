@@ -8,7 +8,8 @@
     "./utils": "./src/utils.ts",
     "./uno": "./src/uno/index.ts",
     "./uno/colors": "./src/uno/colors.ts",
-    "./storybook": "./src/storybook.ts"
+    "./storybook": "./src/storybook.ts",
+    "./x18n": "./src/x18n.ts"
   },
   "scripts": {
     "check:types": "vue-tsc",
@@ -28,6 +29,8 @@
     "@stylistic/eslint-plugin": "5.10.0",
     "@types/node": "26.6.5",
     "@unocss/eslint-config": "66.11.0",
+    "@x18n/cli": "0.1.2",
+    "@x18n/core": "0.1.2",
     "eslint": "10.13.0",
     "eslint-config-flat-gitignore": "2.4.0",
     "eslint-import-resolver-typescript": "4.4.5",
