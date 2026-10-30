@@ -6,22 +6,7 @@
     :enter-active-class
     :leave-active-class="enterActiveClass"
     :leave-to-class="enterFromClass"
-    v-bind="$attrs"
-    @before-leave="(...args) => {
-      leaving = true;
-      // @ts-expect-error - Incorrect typings
-      $attrs.onBeforeLeave?.(...args);
-    }"
-    @after-leave="(...args) => {
-      onNoLeave();
-      // @ts-expect-error - Incorrect typings
-      $attrs.onAfterLeave?.(...args);
-    }"
-    @leave-cancelled="(...args) => {
-      onNoLeave();
-      // @ts-expect-error - Incorrect typings
-      $attrs.onLeaveCancelled?.(...args);
-    }">
+    v-bind="$attrs">
     <!-- Transition only supports a single child, so we handle a possible misuse here wrapping if necessary -->
     <span v-if="$slots.default?.({})?.length > 1 && !group">
       <slot />
@@ -31,9 +16,8 @@
 </template>
 
 <script lang="ts">
-import { Transition, TransitionGroup, type TransitionProps, shallowRef, computed, type DefineComponent } from 'vue';
+import { Transition, TransitionGroup, type TransitionProps, computed, type DefineComponent } from 'vue';
 import { prefersNoMotion, isSlow } from '#/store/index.ts';
-import { usePausableEffect } from '#/composables/use-pausable-effect.ts';
 
 interface Props {
   name?: 'fade' | 'rotated-zoom' | 'slide-y' | 'slide-y-reverse' | 'slide-x' | 'slide-x-reverse';
@@ -45,10 +29,6 @@ interface Props {
    * If the transition should be disabled
    */
   disabled?: boolean;
-  /**
-   * Don't stop patching the DOM while transitioning
-   */
-  skipPausing?: boolean;
 }
 
 export type JTransitionProps = TransitionProps & Props;
@@ -56,11 +36,9 @@ const forcedDisable = computed(() => prefersNoMotion.value || isSlow.value);
 </script>
 
 <script setup lang="ts">
-const { name = 'fade', group, disabled, skipPausing } = defineProps<Props>();
+const { name = 'fade', group, disabled } = defineProps<Props>();
 // https://github.com/vuejs/language-tools/issues/4814#issuecomment-2336324561
 const VTransition = Transition as unknown as DefineComponent<TransitionProps>;
-const leaving = shallowRef(false);
-const onNoLeave = () => leaving.value = false;
 /**
  * When disabled, no transition classes are applied: otherwise, their CSS transitions would start anyway
  * and keep running after the classes are removed. The duration of 0 still ends the transition
@@ -127,8 +105,4 @@ const enterActiveClass = computed(() => {
     }
   }
 });
-
-if (!skipPausing) {
-  usePausableEffect(leaving);
-}
 </script>

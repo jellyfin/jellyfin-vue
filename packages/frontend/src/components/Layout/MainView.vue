@@ -1,8 +1,7 @@
 <template>
   <JTransition
     :name="route.meta.layout.transition.enter ?? defaultTransition"
-    :mode="defaultTransitionMode ?? route.meta.layout.transition.mode"
-    skip-pausing>
+    :mode="defaultTransitionMode ?? route.meta.layout.transition.mode">
     <Suspense :suspensible="!root">
       <div
         :key="root ? route.matched[0]?.name : route.name"
@@ -29,10 +28,10 @@
 </template>
 
 <script lang="ts">
-import { effectScope, getCurrentInstance, inject, onErrorCaptured, onScopeDispose, provide, shallowRef, watch, type Component, type InjectionKey } from 'vue';
+import { effectScope, inject, onErrorCaptured, onScopeDispose, provide, shallowRef, watch, type Component, type InjectionKey } from 'vue';
 import type { RouteLocationNormalizedGeneric } from 'vue-router';
 import { onRouteRendered, useScrollRestoration } from 'vue-router/experimental';
-import { pauseTree } from '@jellyfin-vue/ui-toolkit/composables/use-pausable-effect.ts';
+import { usePausableEffect } from '@jellyfin-vue/ui-toolkit/composables/use-pausable-effect.ts';
 import { router } from '#/plugins/router/index.ts';
 
 const defaultTransition = 'slide-x-reverse';
@@ -55,19 +54,17 @@ const { comp, route, root } = defineProps<{
 }>();
 
 if (root) {
-  const view = getCurrentInstance()!;
-  let resume: (() => void) | undefined;
+  const frozen = shallowRef(false);
   const unfreeze = () => {
-    resume?.();
-    resume = undefined;
+    frozen.value = false;
   };
 
   /**
    * Until the new page is rendered, the view must keep displaying the leaving page as is, so we pause the DOM patching
-   * and the effects of everything that is being displayed. The new page still gets rendered, since the components
-   * in between receive it through forced updates from their parents, which aren't affected by pausing. That's why
-   * the nested RouterView receives the route as a prop: otherwise it would only react to it through its own
-   * (paused) effects.
+   * and the effects of everything that is being displayed, except the components that opt out with usePausableEffect
+   * (like the playback controls). The new page still gets rendered, since the components in between receive it through
+   * forced updates from their parents, which aren't affected by pausing. That's why the nested RouterView receives the
+   * route as a prop: otherwise it would only react to it through its own (paused) effects.
    *
    * Changes to the same route (like params or query changes) must remain reactive, since they don't render a new page.
    *
@@ -77,10 +74,11 @@ if (root) {
 
   routeScope.run(() => {
     watch(() => router.currentRoute.value.name, () => {
-      resume ??= pauseTree(view);
+      frozen.value = true;
     }, { flush: 'sync' });
   });
   onScopeDispose(() => routeScope.stop());
+  usePausableEffect(frozen);
 
   provide(unfreezeKey, unfreeze);
   onErrorCaptured((e, instance, info) => {

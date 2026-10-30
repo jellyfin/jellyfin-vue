@@ -51,6 +51,12 @@
 </template>
 
 <script setup lang="ts">
+import { usePausableEffect } from '@jellyfin-vue/ui-toolkit/composables/use-pausable-effect.ts';
 import { playbackManager } from '#/store/playback-manager.ts';
 import { playerElement, videoContainerRef } from '#/store/player-element.ts';
+
+/**
+ * The controls must keep reflecting the playback while the view is frozen during navigations
+ */
+usePausableEffect(false);
 </script>
