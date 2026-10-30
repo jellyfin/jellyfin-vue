@@ -10,32 +10,32 @@ import { remote } from '#/plugins/remote/index.ts';
 import { jsonConfig } from '#/utils/external-config.ts';
 import { useSnackbar } from '#/composables/use-snackbar.ts';
 
-const serverAddUrl = '/server/add';
-const serverSelectUrl = '/server/select';
-const serverLoginUrl = '/server/login';
-const serverWizard = '/wizard';
-const serverPages = new Set<keyof RouteNamedMap>([serverAddUrl, serverSelectUrl, serverLoginUrl, serverWizard]);
+const serverAddPage = '/(server)/server/add';
+const serverSelectPage = '/(server)/server/select';
+const serverLoginPage = '/(server)/server/login';
+const serverWizardPage = '/(server)/wizard';
+const serverPages = new Set<keyof RouteNamedMap>([serverAddPage, serverSelectPage, serverLoginPage, serverWizardPage]);
 
 /**
  * Gets the best server page based on the current state.
  * Note that the final page rendered might differ from the best one here
  * in the loginGuard
  */
-async function _getBestServerPage(): Promise<Nullish<keyof RouteNamedMap>> {
+async function _getBestServerPage(): Promise<Nullish<typeof serverAddPage | typeof serverSelectPage | typeof serverWizardPage>> {
   if (jsonConfig.defaultServerURLs.length && isNil(remote.auth.currentServer.value)) {
     await until(remote.auth.currentServer).toBeTruthy({ flush: 'pre' });
   }
 
   if (!remote.auth.addedServers.value) {
-    return serverAddUrl;
+    return serverAddPage;
   }
 
   if (isNil(remote.auth.currentServer.value)) {
-    return serverSelectUrl;
+    return serverSelectPage;
   }
 
   if (!remote.auth.currentServer.value.StartupWizardCompleted) {
-    return serverWizard;
+    return serverWizardPage;
   }
 }
 
@@ -49,7 +49,7 @@ export const loginGuard = async (
    * Do not allow the server selection pages if `allowServerSelection` is false in config.json,
    * but do allow the login page.
    */
-  if (!jsonConfig.allowServerSelection && (toServerPages && to.name !== serverLoginUrl)) {
+  if (!jsonConfig.allowServerSelection && (toServerPages && to.name !== serverLoginPage)) {
     return false;
   }
 
@@ -67,7 +67,7 @@ export const loginGuard = async (
   const shouldRedirect = !isNil(res) || shouldBlockToApp || shouldRedirectToHome;
 
   if (shouldRedirect) {
-    const name = loggedIn ? '/' : res ?? serverLoginUrl;
+    const name = loggedIn ? '/(default)/' : res ?? serverLoginPage;
 
     if (to.name !== name) {
       return {

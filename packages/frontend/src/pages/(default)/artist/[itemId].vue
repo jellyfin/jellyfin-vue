@@ -169,7 +169,7 @@ import { useItemPageTitle } from '#/composables/page-title.ts';
 const SINGLE_MAX_LENGTH_MS = 600_000;
 const EP_MAX_LENGTH_MS = 1_800_000;
 
-const route = useRoute('/artist/[itemId]');
+const route = useRoute('/(default)/artist/[itemId]');
 
 const activeTab = ref(0);
 

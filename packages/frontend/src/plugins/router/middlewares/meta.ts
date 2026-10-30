@@ -17,20 +17,21 @@ const reactiveMeta = ref(defaultMeta());
 /**
  * This middleware handles the meta property between routes
  *
- * The layout of the destination page needs to exist before the route
- * is accessed. This is why we need the following block in pages:
+ * The layout of a page is given by the route group it lives in: the component of the group
+ * (e.g. src/pages/(server).vue) is the parent route of all the pages in it (src/pages/(server)/*).
+ *
+ * The properties that need to be resolved before the component is instantiated (i.e, the admin
+ * property, so the correct redirection is done, or the page transitions) need the following block in pages:
  *
  * definePage({
  *  meta: {
  *   layout: {
- *      name: 'server',
- *     transition: {}
+ *     transition: {
+ *       enter: 'slide-y-reverse'
+ *     }
  *    }
  *  }
  *});
- *
- * That block is also needed when a property needs to be resolved before
- * the component is instantiated (i.e, the admin property, so the correct redirection is done)
  *
  * That populates the meta property through Vite at build time, so the router
  * instantiation looks like this: https://router.vuejs.org/guide/advanced/meta.html#route-meta-fields

@@ -101,15 +101,6 @@ import { usePageTitle } from '#/composables/page-title.ts';
 import { useSnackbar } from '#/composables/use-snackbar.ts';
 import { isConnectedToServer } from '#/store/index.ts';
 
-definePage({
-  meta: {
-    layout: {
-      name: 'server',
-      transition: {}
-    }
-  }
-});
-
 const { t } = useTranslation();
 
 usePageTitle(() => t('login'));

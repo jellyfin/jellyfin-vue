@@ -97,15 +97,6 @@ import { useRouter } from 'vue-router';
 import { useSnackbar } from '#/composables/use-snackbar.ts';
 import { remote } from '#/plugins/remote/index.ts';
 
-definePage({
-  meta: {
-    layout: {
-      name: 'server',
-      transition: {}
-    }
-  }
-});
-
 const { t } = useTranslation();
 const router = useRouter();
 
