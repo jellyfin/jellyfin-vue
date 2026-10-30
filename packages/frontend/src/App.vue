@@ -6,7 +6,7 @@
     <VApp>
       <LoadingIndicator />
       <RouterView v-slot="{ Component, route }">
-        <MainView
+        <RouteTransition
           root
           :comp="Component"
           :route="route" />

@@ -43,7 +43,7 @@ const VTransition = Transition as unknown as DefineComponent<TransitionProps>;
  * When disabled, no transition classes are applied: otherwise, their CSS transitions would start anyway
  * and keep running after the classes are removed. The duration of 0 still ends the transition
  * in the next tick, like a regular one (css: false would end it synchronously instead, which
- * breaks out-in transitions like MainView's).
+ * breaks out-in transitions like RouteTransition's).
  *
  * An empty string is used since Vue applies its default classes (v-enter-from...) for undefined values.
  */

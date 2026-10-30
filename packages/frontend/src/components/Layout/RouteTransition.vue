@@ -11,7 +11,7 @@
             v-if="root"
             v-slot="{ Component: page }"
             :route>
-            <MainView
+            <RouteTransition
               :comp="page"
               :route />
           </RouterView>
@@ -40,7 +40,7 @@ const apploaded = shallowRef(false);
 /**
  * The root view pauses the displayed tree, while the nested view knows when the new page has been rendered
  */
-const unfreezeKey: InjectionKey<() => void> = Symbol('MainView unfreeze');
+const unfreezeKey: InjectionKey<() => void> = Symbol('RouteTransition unfreeze');
 </script>
 
 <script setup lang="ts">
@@ -82,7 +82,7 @@ if (root) {
 
   provide(unfreezeKey, unfreeze);
   onErrorCaptured((e, instance, info) => {
-    console.error('[Jellyfin] Error captured in MainView:', e, instance, info);
+    console.error('[Jellyfin] Error captured in RouteTransition:', e, instance, info);
     unfreeze();
     apploaded.value = true;
   });
