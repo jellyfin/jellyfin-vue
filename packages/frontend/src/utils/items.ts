@@ -348,33 +348,33 @@ export function getItemDetailsLink(
   let routeName: keyof RouteNamedMap;
 
   if (!isPerson(item) && isLibrary(item)) {
-    routeName = '/library/[itemId]';
+    routeName = '/(default)/library/[itemId]';
   } else {
     const type = overrideType ?? item.Type;
 
     switch (type) {
       case 'Series': {
-        routeName = '/series/[itemId]';
+        routeName = '/(default)/series/[itemId]';
         break;
       }
       case 'Person': {
-        routeName = '/person/[itemId]';
+        routeName = '/(default)/person/[itemId]';
         break;
       }
       case 'MusicArtist': {
-        routeName = '/artist/[itemId]';
+        routeName = '/(default)/artist/[itemId]';
         break;
       }
       case 'MusicAlbum': {
-        routeName = '/musicalbum/[itemId]';
+        routeName = '/(default)/musicalbum/[itemId]';
         break;
       }
       case 'Genre': {
-        routeName = '/genre/[itemId]';
+        routeName = '/(default)/genre/[itemId]';
         break;
       }
       default: {
-        routeName = '/item/[itemId]';
+        routeName = '/(default)/item/[itemId]';
         break;
       }
     }

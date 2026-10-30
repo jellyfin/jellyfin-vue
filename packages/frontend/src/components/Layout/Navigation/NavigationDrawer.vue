@@ -49,14 +49,14 @@
 <script setup lang="ts">
 import { inject, type Ref } from 'vue';
 import { useTranslation } from 'i18next-vue';
-import type { RouteNamedMap } from 'vue-router/auto-routes';
+import type { RouteLocationAsString } from 'vue-router';
 import type { getLibraryIcon } from '#/utils/items.ts';
 import { transparencyEffects } from '#/store/index.ts';
 
 export interface DrawerItem {
   icon: ReturnType<typeof getLibraryIcon>;
   title: string;
-  to: keyof RouteNamedMap;
+  to: RouteLocationAsString;
 }
 
 const { order, drawerItems } = defineProps<{

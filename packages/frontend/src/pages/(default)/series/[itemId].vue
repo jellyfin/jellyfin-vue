@@ -195,7 +195,7 @@ import { useBaseItem } from '#/composables/apis.ts';
 import { useItemBackdrop } from '#/composables/backdrop.ts';
 import { useItemPageTitle } from '#/composables/page-title.ts';
 
-const route = useRoute('/series/[itemId]');
+const route = useRoute('/(default)/series/[itemId]');
 
 const [{ data: item }, { data: relatedItems }, { data: seasons }] = await Promise.all([
   useBaseItem(getLibraryApi, 'getItem')(() => ({

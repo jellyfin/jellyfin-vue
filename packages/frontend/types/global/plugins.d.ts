@@ -11,7 +11,6 @@ interface RouteTransitionPayload {
 }
 
 interface LayoutPayload {
-  readonly name?: 'default' | 'fullpage' | 'server';
   transparent?: boolean;
   transition: RouteTransitionPayload;
 }

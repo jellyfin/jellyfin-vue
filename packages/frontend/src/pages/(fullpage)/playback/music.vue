@@ -102,7 +102,6 @@ definePage({
   beforeEnter: playbackGuard,
   meta: {
     layout: {
-      name: 'fullpage',
       transition: {
         enter: 'slide-y-reverse',
         leave: 'slide-y'

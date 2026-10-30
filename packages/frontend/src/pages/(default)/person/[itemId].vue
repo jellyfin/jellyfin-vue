@@ -180,7 +180,7 @@ import { useBaseItem } from '#/composables/apis.ts';
 import { useItemBackdrop } from '#/composables/backdrop.ts';
 import { useItemPageTitle } from '#/composables/page-title.ts';
 
-const route = useRoute('/person/[itemId]');
+const route = useRoute('/(default)/person/[itemId]');
 
 const activeTab = shallowRef(4);
 

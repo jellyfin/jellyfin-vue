@@ -20,15 +20,6 @@
 import { useTranslation } from 'i18next-vue';
 import { usePageTitle } from '#/composables/page-title.ts';
 
-definePage({
-  meta: {
-    layout: {
-      name: 'server',
-      transition: {}
-    }
-  }
-});
-
 const { t } = useTranslation();
 
 usePageTitle(() => t('addServer'));

@@ -77,7 +77,7 @@ import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
 import type { UserApiUpdateUserPasswordRequest } from '@jellyfin/sdk/lib/generated-client/api/user-api';
 import type { ImageApiPostUserImageRequest } from '@jellyfin/sdk/lib/generated-client/api/image-api';
 import type { AxiosRequestConfig } from 'axios';
-import { useConfirmDialog } from '../../composables/use-confirm-dialog';
+import { useConfirmDialog } from '#/composables/use-confirm-dialog.ts';
 import { remote } from '#/plugins/remote/index.ts';
 import { useSnackbar } from '#/composables/use-snackbar.ts';
 

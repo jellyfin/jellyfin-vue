@@ -344,7 +344,7 @@ interface CurrentUser {
 }
 
 const { t } = useTranslation();
-const route = useRoute('/settings/users/[id]');
+const route = useRoute('/(default)/settings/users/[id]');
 const router = useRouter();
 
 const loading = ref<boolean>(false);

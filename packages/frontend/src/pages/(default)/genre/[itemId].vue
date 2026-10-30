@@ -59,7 +59,7 @@ import { useResponsiveClasses } from '#/composables/use-responsive-classes.ts';
 import { useBaseItem } from '#/composables/apis.ts';
 import { useItemPageTitle } from '#/composables/page-title.ts';
 
-const route = useRoute('/genre/[itemId]');
+const route = useRoute('/(default)/genre/[itemId]');
 
 const { itemId } = route.params;
 

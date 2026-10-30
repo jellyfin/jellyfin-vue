@@ -82,7 +82,7 @@ import type { Filters } from '#/components/Buttons/FilterButton.vue';
 import { useItemPageTitle } from '#/composables/page-title.ts';
 
 const { t } = useTranslation();
-const route = useRoute('/library/[itemId]');
+const route = useRoute('/(default)/library/[itemId]');
 
 const lazyLoadLimit = 50;
 const initialId = route.params.itemId;
