@@ -107,8 +107,14 @@
 
 <script setup lang="ts">
 import { isNil } from '@jellyfin-vue/shared/validation';
+import { usePausableEffect } from '@jellyfin-vue/ui-toolkit/composables/use-pausable-effect.ts';
 import { playbackManager } from '#/store/playback-manager.ts';
 import { getItemDetailsLink } from '#/utils/items.ts';
+
+/**
+ * The controls must keep reflecting the playback while the view is frozen during navigations
+ */
+usePausableEffect(false);
 </script>
 
 <style scoped>
