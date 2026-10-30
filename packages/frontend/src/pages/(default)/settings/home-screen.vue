@@ -122,7 +122,7 @@ const homeSectionLabels: Record<string, string> = {
   librarybuttons: t('myMediaSmall'),
   latestmedia: t('recentlyAddedMedia'),
   nextup: t('nextUp'),
-  resumevideo: t('continueWatching'),
+  resume: t('continueWatching'),
   livetv: t('liveTv'),
   resumeaudio: t('continueListening'),
   resumebook: t('continueReading'),
@@ -132,7 +132,7 @@ const homeSectionLabels: Record<string, string> = {
 const addableHomeSectionIds = [
   'smalllibrarytiles',
   'librarybuttons',
-  'resumevideo',
+  'resume',
   'nextup',
   'latestmedia'
 ] as const;
@@ -152,13 +152,12 @@ const availableHomeSections = computed(() => {
 });
 const orderedLibraryModels = computed(() =>
   orderItemsById(views.value, userSettings.libraryOrder.value)
-    .flatMap(library => library.Id
-      ? [{
-          id: library.Id,
-          icon: getLibraryIcon(library.CollectionType),
-          value: library.Name ?? ''
-        }]
-      : [])
+    .filter((library) => Boolean(library.Id))
+    .map(library => ({
+      id: library.Id,
+      icon: getLibraryIcon(library.CollectionType),
+      value: library.Name ?? ''
+    }))
 );
 
 /**

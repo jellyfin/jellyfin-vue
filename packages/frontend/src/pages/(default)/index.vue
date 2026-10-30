@@ -10,8 +10,8 @@
     </ItemsCarousel>
     <VContainer class="sections-after-header">
       <VRow
-        v-for="(homeSection, index) in homeSections"
-        :key="`homeSection-${index}`">
+        v-for="homeSection in homeSections"
+        :key="homeSection.id">
         <SwiperSection
           :title="homeSection.title"
           :items="getHomeSectionContent(homeSection)"
@@ -54,7 +54,7 @@ interface HomeSection {
   title: string;
   libraryId: string;
   shape: CardShapes;
-  type: 'libraries' | 'resumevideo' | 'nextup' | 'latestmedia';
+  type: 'libraries' | 'resume' | 'nextup' | 'latestmedia';
 }
 
 const { t } = useTranslation();
@@ -103,13 +103,13 @@ function getConfiguredHomeSections(id: string): HomeSection[] {
         type: 'libraries'
       }];
     }
-    case 'resumevideo': {
+    case 'resume': {
       return [{
         id,
         title: t('continueWatching'),
         libraryId: '',
         shape: CardShapes.Thumb,
-        type: 'resumevideo'
+        type: 'resume'
       }];
     }
     case 'nextup': {
@@ -142,7 +142,7 @@ function getHomeSectionContent(section: HomeSection): BaseItemDto[] {
     case 'libraries': {
       return orderItemsById(views.value, userSettings.libraryOrder.value);
     }
-    case 'resumevideo': {
+    case 'resume': {
       return resumeVideo.value;
     }
     case 'nextup': {
