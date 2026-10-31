@@ -55,6 +55,7 @@
       "groupName": "tauri"
     },
     {
+      "description": "A packageRule rather than lockFileMaintenance.groupName, so it comes after the tauri group and its lock files aren't split into another branch.",
       "matchUpdateTypes": [
         "lockFileMaintenance"
       ],
@@ -71,35 +72,16 @@
       "groupName": "pnpm"
     },
     {
-      "matchManagers": [
-        "dockerfile"
-      ],
-      "enabled": false
-    },
-    {
-      "matchManagers": [
-        "dockerfile"
-      ],
-      "matchPackageNames": [
-        "node"
-      ],
-      "enabled": true,
-      "versionCompatibility": "^(?<version>[^-]+)(?<compatibility>-.*)?$"
-    },
-    {
+      "description": "versioning: the Docker image would use docker versioning otherwise, which proposes new majors before they become LTS. versionCompatibility: node versioning can't parse the -slim suffix of the Docker tag. rangeStrategy: keeps the major-only values (setup-node, NodeSource) unpinned. separateMajorMinor: overrides the one set by the ci group, so setup-node doesn't get its own branch.",
       "matchPackageNames": [
         "node",
         "actions/node-versions"
       ],
       "versioning": "node",
+      "versionCompatibility": "^(?<version>[^-]+)(?<compatibility>-.*)?$",
+      "rangeStrategy": "replace",
+      "separateMajorMinor": true,
       "groupName": "node"
-    },
-    {
-      "matchPackageNames": [
-        "node",
-        "actions/node-versions"
-      ],
-      "rangeStrategy": "replace"
     },
     {
       "description": "engines.node is handled by the custom manager below: the npm manager can't move both bounds of a '>=x <y' range ('widen' only raises the upper one, 'replace' drops the lower one and 'bump' falls back to 'widen').",
@@ -115,7 +97,7 @@
       "enabled": false
     },
     {
-      "description": "Keep the engines.node minimum at the first LTS release of the major, so only new LTS majors update it.",
+      "description": "Keeps the engines.node minimum at the first LTS release of its major.",
       "matchManagers": [
         "custom.regex"
       ],
@@ -135,7 +117,7 @@
   "customManagers": [
     {
       "customType": "regex",
-      "description": "Bump the NodeSource major pinned in the devcontainer Dockerfile (setup_XX.x). Version-only bump: the hosted Renovate GitHub App can't run postUpgradeTasks to verify the NodeSource repo URL exists for the new major before opening the PR (that requires self-hosted Renovate with an admin-configured allowedCommands).",
+      "description": "Version-only bump: the hosted Renovate GitHub App can't run postUpgradeTasks to verify the NodeSource repo URL exists for the new major before opening the PR (that requires self-hosted Renovate with an admin-configured allowedCommands).",
       "managerFilePatterns": [
         ".devcontainer/Dockerfile"
       ],
@@ -143,13 +125,11 @@
         "setup_(?<currentValue>\\d+)\\.x"
       ],
       "depNameTemplate": "node",
-      "datasourceTemplate": "node",
-      "versioningTemplate": "node",
+      "datasourceTemplate": "node-version",
       "autoReplaceStringTemplate": "setup_{{{newValue}}}.x"
     },
     {
       "customType": "regex",
-      "description": "Bump the Node LTS range in engines (>=24.11.0 <25.0.0 -> >=26.13.0 <27.0.0): the minimum is tracked as an exact version and the maximum is derived from its major.",
       "managerFilePatterns": [
         "package.json"
       ],
@@ -158,8 +138,7 @@
       ],
       "depNameTemplate": "node",
       "depTypeTemplate": "engines",
-      "datasourceTemplate": "node",
-      "versioningTemplate": "node",
+      "datasourceTemplate": "node-version",
       "autoReplaceStringTemplate": "\"node\": \">={{{newValue}}} <{{add newMajor 1}}.0.0\""
     }
   ],
@@ -171,11 +150,9 @@
   "prHourlyLimit": 0,
   "osvVulnerabilityAlerts": true,
   "vulnerabilityAlerts": {
-    "enabled": true,
     "groupName": "vulnerable",
-    "labels": [
-      "security",
-      "dependencies"
+    "addLabels": [
+      "security"
     ],
     "separateMajorMinor": false,
     "vulnerabilityFixStrategy": "highest"
@@ -198,7 +175,6 @@
   "rangeStrategy": "pin",
   "lockFileMaintenance": {
     "enabled": true,
-    "groupName": "lockfiles",
     "schedule": [
       "every month"
     ]
