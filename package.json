@@ -21,12 +21,12 @@
     "lint:fix": "pnpm -r --if-present --no-bail lint:fix",
     "test": "pnpm -r --if-present --no-bail test"
   },
-  "packageManager": "pnpm@12.15.0",
+  "packageManager": "pnpm@12.16.1",
   "engines": {
     "node": ">=24.11.0 <25.0.0",
-    "pnpm": "12.15.0"
+    "pnpm": "12.16.1"
   },
   "devDependencies": {
-    "pnpm": "12.15.0"
+    "pnpm": "12.16.1"
   }
 }

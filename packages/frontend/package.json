@@ -65,7 +65,7 @@
     "@rollup/plugin-virtual": "3.0.3",
     "@types/sortablejs": "1.15.9",
     "@vitejs/plugin-vue": "6.0.10",
-    "browserslist": "4.29.4",
+    "browserslist": "4.29.5",
     "lightningcss": "1.33.0",
     "unplugin-vue-components": "catalog:development",
     "vite-plugin-vue-devtools": "8.2.1"
