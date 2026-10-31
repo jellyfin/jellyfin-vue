@@ -1,6 +1,6 @@
 ## This dockerfile builds the client entirely in a Docker context
 
-FROM node:24-slim AS build
+FROM node:26-slim AS build
 WORKDIR /app
 
 # Bring in the whole workspace source in one go.

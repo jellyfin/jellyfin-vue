@@ -729,11 +729,6 @@ packages:
   '@colordx/core@7.3.0':
     resolution: {integrity: sha512-LVzTTPhX7wpy7TkGjouA9zbbCBIw92RGm7ZQqSKFE0oYE3sMx2FGXz90eVpgw7k/+wrrY+qJ86nHXifZWMS5jA==, tarball: https://registry.npmjs.org/@colordx/core/-/core-7.3.0.tgz}
 
-  '@devframes/agentic@1.0.0':
-    resolution: {integrity: sha512-NlMXWCd3mksT12Qt3hGfvYHbTTl2oAnvYl5HYLpmmW2XjHR3xgKQF9UBn627ZxukxoswN78DdrmzB7gN0M7G3Q==, tarball: https://registry.npmjs.org/@devframes/agentic/-/agentic-1.0.0.tgz}
-    peerDependencies:
-      devframe: 1.0.0
-
   '@devframes/agentic@1.2.5':
     resolution: {integrity: sha512-2bVZFxGD7C+U1y0vkesUnLWHtrU3qD/Gq/Ri+aWkpXhDe/0EQ64ODA9gxCqFunUvJZ5z1rFvP1XLRLfUiSpvGg==, tarball: https://registry.npmjs.org/@devframes/agentic/-/agentic-1.2.5.tgz}
     peerDependencies:
@@ -1063,24 +1058,12 @@ packages:
   '@keyv/serialize@1.1.1':
     resolution: {integrity: sha512-dXn3FZhPv0US+7dtJsIi2R+c7qWYiReoEh5zUntWCf4oSpMNib8FDhSoed6m3QyZdx5hK7iLFkYk3rNxwt8vTA==, tarball: https://registry.npmjs.org/@keyv/serialize/-/serialize-1.1.1.tgz}
 
-  '@modelcontextprotocol/client@2.0.0':
-    resolution: {integrity: sha512-8f1OghQ2rjzIOfqgUCP+8GiUWqRs89njoWLNqAe8kWmDePv3s1fZXseej+QXemssEuuOvLLmLO/kqM3IQHtISw==, tarball: https://registry.npmjs.org/@modelcontextprotocol/client/-/client-2.0.0.tgz}
-    engines: {node: '>=20'}
-
   '@modelcontextprotocol/client@2.4.0':
     resolution: {integrity: sha512-LgrD2OphHuG12vfKFKz6SOnq7bKHQmhGJIAYdD+MZBn2npHEyry6uD8zvktodtl5CQM85MO0anUyD9JwmUmxww==, tarball: https://registry.npmjs.org/@modelcontextprotocol/client/-/client-2.4.0.tgz}
     engines: {node: '>=20'}
 
-  '@modelcontextprotocol/core@2.0.0':
-    resolution: {integrity: sha512-pJCEwGG7Lfr/+PQp9ZTwKXNeO5wzbfKL7H3MYpCorM4oFBoQrdjnBgEoqG+RjhsvS1FKrDbKux+M1HhlnGWqcA==, tarball: https://registry.npmjs.org/@modelcontextprotocol/core/-/core-2.0.0.tgz}
-    engines: {node: '>=20'}
-
   '@modelcontextprotocol/core@2.4.0':
     resolution: {integrity: sha512-z8QBKqdfXLPzkLQuG4xp8hrVEMm1PZ1IgxMN2sMbJiFiAKOWXnAzogXn2W4aqIBlP1ea6U5yiqVquvUNM1Cj6Q==, tarball: https://registry.npmjs.org/@modelcontextprotocol/core/-/core-2.4.0.tgz}
-    engines: {node: '>=20'}
-
-  '@modelcontextprotocol/server@2.0.0':
-    resolution: {integrity: sha512-YhHWdHfpFMQfd0prsEnxKeS3Qz3ytIGmsS0sth4KDjnacIT7hxk6hXHkJ9KysxlkvTM+WZAtQbbcUhdoP4Hvtw==, tarball: https://registry.npmjs.org/@modelcontextprotocol/server/-/server-2.0.0.tgz}
     engines: {node: '>=20'}
 
   '@modelcontextprotocol/server@2.4.0':
@@ -2763,18 +2746,6 @@ packages:
   devalue@5.9.4:
     resolution: {integrity: sha512-sPAT4pztbu6586/hrhOnMKS17IJrvg12mXiSPSS3W5qDeN2RGgvZ0diZCm31dBbnevfVmujNO3IM2wrS4Y2Rhg==, tarball: https://registry.npmjs.org/devalue/-/devalue-5.9.4.tgz}
 
-  devframe@1.2.5:
-    resolution: {integrity: sha512-7txhfBgFafXHN/KIyP/M6F1W5WF1VPypoB4mZtZEa4KM8n1Y57EtnVm281Y3cg7SHti/PtfCtmmmtDh/k/CS3g==, tarball: https://registry.npmjs.org/devframe/-/devframe-1.2.5.tgz}
-    hasBin: true
-    peerDependencies:
-      '@devframes/agentic': 1.2.5
-      cac: ^7.0.0
-    peerDependenciesMeta:
-      '@devframes/agentic':
-        optional: true
-      cac:
-        optional: true
-
   devframe@1.2.6:
     resolution: {integrity: sha512-mHzcm6ADzXgRMWdoSX+5PjwhmwAuC3SpDPi3+URznlpzxJF6tXwy5h1xr82zPKju38EVtdnYRnnP4hZwLK01vA==, tarball: https://registry.npmjs.org/devframe/-/devframe-1.2.6.tgz}
     hasBin: true
@@ -3240,10 +3211,6 @@ packages:
 
   ignore@7.0.14:
     resolution: {integrity: sha512-wCBiZ77u1tuWde6G/nfOtLaCTYcFDU5yCzARzK10y+rLhzYoL7a7yEemcopcc2Mzow7gZOIjnV2ym1NYmdiJOQ==, tarball: https://registry.npmjs.org/ignore/-/ignore-7.0.14.tgz}
-    engines: {node: '>= 4'}
-
-  ignore@7.0.8:
-    resolution: {integrity: sha512-YYNsSlXBjMk92SKnkwvB5LOVSa6OznlFUGcsvrFgNJbJCd0M1XKeFVRc8ZByeCqz32FivYNHJVooLmdqrmvp/Q==, tarball: https://registry.npmjs.org/ignore/-/ignore-7.0.8.tgz}
     engines: {node: '>= 4'}
 
   import-meta-resolve@4.2.0:
@@ -4714,17 +4681,6 @@ snapshots:
 
   '@colordx/core@7.3.0': {}
 
-  '@devframes/agentic@1.0.0(crossws@0.4.12)(devframe@1.2.5)':
-    dependencies:
-      '@modelcontextprotocol/client': 2.0.0
-      '@modelcontextprotocol/server': 2.0.0
-      devframe: 1.2.5(@devframes/agentic@1.0.0)(cac@7.1.0)(srvx@1.0.5)
-      h3: 2.0.3(crossws@0.4.12)
-      pathe: 2.0.3
-    transitivePeerDependencies:
-      - crossws
-      - ocache
-
   '@devframes/agentic@1.2.5(crossws@0.4.12)(devframe@1.2.6)':
     dependencies:
       '@modelcontextprotocol/client': 2.4.0
@@ -4896,11 +4852,11 @@ snapshots:
 
   '@eslint/config-inspector@3.5.0(crossws@0.4.12)(eslint@10.13.0)(srvx@1.0.5)':
     dependencies:
-      '@devframes/agentic': 1.0.0(crossws@0.4.12)(devframe@1.2.5)
+      '@devframes/agentic': 1.2.5(crossws@0.4.12)(devframe@1.2.6)
       ansis: 4.4.0
       cac: 7.1.0
       chokidar: 5.0.0
-      devframe: 1.2.5(@devframes/agentic@1.0.0)(cac@7.1.0)(srvx@1.0.5)
+      devframe: 1.2.6(@devframes/agentic@1.2.5)(cac@7.1.0)(srvx@1.0.5)
       eslint: 10.13.0(jiti@2.7.0)
       jiti: 2.7.0
       tinyglobby: 0.2.17
@@ -5006,16 +4962,6 @@ snapshots:
 
   '@keyv/serialize@1.1.1': {}
 
-  '@modelcontextprotocol/client@2.0.0':
-    dependencies:
-      '@modelcontextprotocol/core': 2.0.0
-      cross-spawn: 7.0.6
-      eventsource: 3.0.7
-      eventsource-parser: 3.1.1
-      jose: 6.2.12
-      pkce-challenge: 5.0.1
-      zod: 4.6.1
-
   '@modelcontextprotocol/client@2.4.0':
     dependencies:
       '@modelcontextprotocol/core': 2.4.0
@@ -5026,17 +4972,8 @@ snapshots:
       pkce-challenge: 5.0.1
       zod: 4.6.1
 
-  '@modelcontextprotocol/core@2.0.0':
-    dependencies:
-      zod: 4.6.1
-
   '@modelcontextprotocol/core@2.4.0':
     dependencies:
-      zod: 4.6.1
-
-  '@modelcontextprotocol/server@2.0.0':
-    dependencies:
-      '@modelcontextprotocol/core': 2.0.0
       zod: 4.6.1
 
   '@modelcontextprotocol/server@2.4.0':
@@ -5592,7 +5529,7 @@ snapshots:
       '@typescript-eslint/utils': 8.72.0(eslint@10.13.0)(typescript@6.0.3)
       '@typescript-eslint/visitor-keys': 8.72.0
       eslint: 10.13.0(jiti@2.7.0)
-      ignore: 7.0.8
+      ignore: 7.0.14
       natural-compare: 1.4.0
       ts-api-utils: 2.5.0(typescript@6.0.3)
       typescript: 6.0.3
@@ -5738,7 +5675,7 @@ snapshots:
       '@unocss/core': 66.11.0
       '@unocss/language-server': 66.11.0
       '@unocss/rule-utils': 66.11.0
-      devframe: 1.2.5(@devframes/agentic@1.2.5)(cac@7.1.0)(srvx@1.0.5)
+      devframe: 1.2.6(@devframes/agentic@1.2.5)(cac@7.1.0)(srvx@1.0.5)
       tinyglobby: 0.2.17
       unplugin-utils: 0.3.2
     transitivePeerDependencies:
@@ -6513,32 +6450,6 @@ snapshots:
 
   devalue@5.9.4: {}
 
-  devframe@1.2.5(@devframes/agentic@1.0.0)(cac@7.1.0)(srvx@1.0.5):
-    dependencies:
-      crossws: 0.4.12(srvx@1.0.5)
-      h3: 2.0.3(crossws@0.4.12)
-      nostics: 1.3.0
-      pathe: 2.0.3
-    optionalDependencies:
-      '@devframes/agentic': 1.0.0(crossws@0.4.12)(devframe@1.2.5)
-      cac: 7.1.0
-    transitivePeerDependencies:
-      - ocache
-      - srvx
-
-  devframe@1.2.5(@devframes/agentic@1.2.5)(cac@7.1.0)(srvx@1.0.5):
-    dependencies:
-      crossws: 0.4.12(srvx@1.0.5)
-      h3: 2.0.3(crossws@0.4.12)
-      nostics: 1.3.0
-      pathe: 2.0.3
-    optionalDependencies:
-      '@devframes/agentic': 1.2.5(crossws@0.4.12)(devframe@1.2.6)
-      cac: 7.1.0
-    transitivePeerDependencies:
-      - ocache
-      - srvx
-
   devframe@1.2.6(@devframes/agentic@1.2.5)(cac@7.1.0)(srvx@1.0.5):
     dependencies:
       crossws: 0.4.12(srvx@1.0.5)
@@ -7047,8 +6958,6 @@ snapshots:
   ignore@5.3.2: {}
 
   ignore@7.0.14: {}
-
-  ignore@7.0.8: {}
 
   import-meta-resolve@4.2.0: {}
 
