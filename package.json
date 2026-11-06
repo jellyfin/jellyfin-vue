@@ -23,7 +23,7 @@
   },
   "packageManager": "pnpm@12.15.0",
   "engines": {
-    "node": ">=24.11.0 <25.0.0",
+    "node": ">=26.13.0 <27.0.0",
     "pnpm": "12.15.0"
   },
   "devDependencies": {
