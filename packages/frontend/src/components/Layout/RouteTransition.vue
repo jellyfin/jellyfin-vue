@@ -5,7 +5,8 @@
     <Suspense :suspensible="!root">
       <div
         :key="root ? route.matched[0]?.name : route.name"
-        class="uno-h-full">
+        class="uno-h-full"
+        :class="{ 'uno-flex uno-flex-col uno-grow-1': root }">
         <Component :is="comp">
           <RouterView
             v-if="root"
@@ -48,7 +49,9 @@ const { comp, route, root } = defineProps<{
   comp: Component;
   route: RouteLocationNormalizedGeneric;
   /**
-   * The root view renders the layout (the route group's component) and the nested view, which renders the page
+   * The root view renders the layout (the route group's component) and the nested view, which renders the page.
+   * The root view's container is a flex column, so the layout's main content fills the screen and its footer stays
+   * at the bottom of short pages.
    */
   root?: boolean;
 }>();

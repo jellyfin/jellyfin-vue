@@ -1,5 +1,5 @@
 <template>
-  <JMain class="uno-h-full">
+  <JMain>
     <slot />
   </JMain>
   <JFooter class="uno-pa-2">

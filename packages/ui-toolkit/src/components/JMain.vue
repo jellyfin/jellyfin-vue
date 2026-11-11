@@ -1,7 +1,7 @@
 <template>
   <main
     class="uno-max-w-full uno-grow-1 uno-shrink-0 uno-basis-auto uno-transition-all j-main"
-    :style="[mainStyles, ...style]">
+    :style="mainStyles">
     <slot />
   </main>
 </template>
@@ -10,14 +10,9 @@
 /**
  * TODO: CSS still depends on Vuetify, remove scoped styles after removal
  */
-import { ref, provide } from 'vue';
 import { useLayout } from 'vuetify';
-import { JMain_style } from '#/store/keys.ts';
 
-const style = ref([]);
 const { mainStyles } = useLayout();
-
-provide(JMain_style, style);
 </script>
 
 <style scoped>

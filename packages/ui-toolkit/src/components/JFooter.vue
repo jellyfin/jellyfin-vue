@@ -1,39 +1,25 @@
 <template>
   <footer
-    ref="footerRef"
-    class="uno-fixed uno-bottom-0 uno-z-2000"
-    :style="{
-      left,
-      width: `calc(100% - ${left})`,
-    }"
+    class="uno-sticky uno-bottom-0 uno-z-2000"
+    :style="{ marginLeft: left }"
     v-bind="getBaseProps($attrs)">
     <slot />
   </footer>
 </template>
 
 <script setup lang="ts">
-import { useResizeObserver } from '@vueuse/core';
-import { computed, shallowRef, useTemplateRef } from 'vue';
+/**
+ * @component
+ * Sticky footer: it takes its own space at the end of the page, so it never covers the main content. It must come
+ * after the main content, inside a flex column where the main content grows (like the layouts' container), so it
+ * also stays at the bottom of short pages.
+ */
+import { computed } from 'vue';
 import { useLayout } from 'vuetify';
 import { getBaseProps } from '#/util/props.ts';
-import { useLayoutStyle } from '#/composables/use-layout-style.ts';
-import { toPx } from '#/util/helpers.ts';
-
-const el = useTemplateRef('footerRef');
-const height = shallowRef('0');
-
-useResizeObserver(el, (entries) => {
-  globalThis.setTimeout(() => {
-    const entry = entries[0];
-
-    height.value = toPx(entry!.contentRect.height);
-  }, 0);
-});
-
-useLayoutStyle(() => ({ 'padding-bottom': height.value }));
 
 /**
- * TODO: Remove this once Vuetify is removed. This component currently causes overflow in login pages
+ * TODO: Remove this once Vuetify is removed
  */
 const { mainStyles } = useLayout();
 const left = computed(() => mainStyles.value['--v-layout-left']);
