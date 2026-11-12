@@ -29,6 +29,7 @@ import {
   PROBE_RETRY_DELAY_SECONDS,
   PROBE_TIMEOUT_MS
 } from './constants.ts';
+import { dependencies } from '#/package.json';
 
 /**
  * Container formats the probe understands. Named formats only (never `ALL_FORMATS`) so the rest of mediabunny
@@ -126,13 +127,38 @@ export interface ProbeStats {
 }
 
 /**
- * The outcome of a probe. `cacheable` says whether the outcome depends only on the file (and can be stored
- * until the file changes) or on the network or the server's state at that moment.
- *
- * A track missing from `video` or `audio` never means the stream does not exist: mediabunny skips some
- * stream types (for example unknown MPEG-TS stream types), so missing tracks are evaluated from the server's data.
+ * The version of the shape of {@link ProbeResult} and of what the probe derives from mediabunny's answers (the
+ * container MIME type, `containerImpliesCodec`, `pcm`, which failures are cacheable): bump it whenever either changes,
+ * so the results stored by an older client are read again. Results stored before it existed carry none.
  */
-export type ProbeResult
+export const PROBE_FORMAT_VERSION = 1;
+
+/**
+ * The version of mediabunny results are read with, as the client's own package pins it: a newer mediabunny may read a
+ * file an older one could not, or read it differently
+ */
+export const PROBE_READER_VERSION: string = dependencies.mediabunny;
+
+/**
+ * What every probe result carries about the code that read it
+ */
+interface ProbeResultVersions {
+  /**
+   * {@link PROBE_FORMAT_VERSION} when it was read
+   */
+  readonly formatVersion: number;
+  /**
+   * {@link PROBE_READER_VERSION} when it was read
+   */
+  readonly readerVersion: string;
+}
+
+const PROBE_RESULT_VERSIONS: ProbeResultVersions = { formatVersion: PROBE_FORMAT_VERSION, readerVersion: PROBE_READER_VERSION };
+
+/**
+ * What a probe found, or why it failed (see {@link ProbeResult})
+ */
+type ProbeOutcome
   = | {
     readonly status: 'ok';
     readonly cacheable: true;
@@ -165,6 +191,23 @@ export type ProbeResult
   };
 
 /**
+ * The outcome of a probe, with the versions of the code that read it. `cacheable` says whether the outcome depends only
+ * on the file (and can be stored until the file changes) or on the network or the server's state at that moment.
+ *
+ * A track missing from `video` or `audio` never means the stream does not exist: mediabunny skips some
+ * stream types (for example unknown MPEG-TS stream types), so missing tracks are evaluated from the server's data.
+ */
+export type ProbeResult = ProbeResultVersions & ProbeOutcome;
+
+/**
+ * Whether a stored probe result was read by this version of the probe and of mediabunny. Any other (a result of an older
+ * shape, or a failure an older mediabunny could not read past) counts as missing: the file is probed again.
+ */
+export function isCurrentProbe(result: Partial<ProbeResultVersions>): boolean {
+  return result.formatVersion === PROBE_FORMAT_VERSION && result.readerVersion === PROBE_READER_VERSION;
+}
+
+/**
  * Options of {@link probeMediaSource}
  */
 export interface ProbeOptions {
@@ -188,6 +231,15 @@ export interface ProbeOptions {
  * `budget-exceeded` is not one: how much is read depends on the link speed and on the engine's read-ahead.
  */
 const DETERMINISTIC_FAILURES = new Set<ProbeFailureReason>(['parse-error']);
+
+/**
+ * Whether a result that is not stored is still not worth probing again this session: a probe that ran out of its byte
+ * budget (a file whose index lies too far, a declared stream mediabunny scans the whole file for) would read the whole
+ * budget again on every verdict, on the same link and engine, to the same end
+ */
+export function isRememberedForSession(result: ProbeResult): boolean {
+  return result.status === 'failed' && result.reason === 'budget-exceeded';
+}
 
 /**
  * Thrown inside the request pipeline to stop mediabunny when the probe must end
@@ -477,23 +529,23 @@ class ProbeSession {
     if (this.stopReason) {
       const { reason, detail } = this.stopReason;
 
-      return { status: 'failed', reason, detail, cacheable: DETERMINISTIC_FAILURES.has(reason), stats };
+      return { ...PROBE_RESULT_VERSIONS, status: 'failed', reason, detail, cacheable: DETERMINISTIC_FAILURES.has(reason), stats };
     }
 
     if (error instanceof UnsupportedInputFormatError) {
-      return { status: 'unsupported-container', cacheable: true, stats };
+      return { ...PROBE_RESULT_VERSIONS, status: 'unsupported-container', cacheable: true, stats };
     }
 
     if (this.lastNetworkError !== undefined && error === this.lastNetworkError) {
       const detail = error instanceof Error ? error.name : 'Network error';
 
-      return { status: 'failed', reason: 'network', detail, cacheable: false, stats };
+      return { ...PROBE_RESULT_VERSIONS, status: 'failed', reason: 'network', detail, cacheable: false, stats };
     }
 
     // The message may contain the URL, which carries the access token
     const detail = error instanceof Error ? error.message.replaceAll(url, '<url>') : String(error);
 
-    return { status: 'failed', reason: 'parse-error', detail, cacheable: true, stats };
+    return { ...PROBE_RESULT_VERSIONS, status: 'failed', reason: 'parse-error', detail, cacheable: true, stats };
   };
 
   public constructor(byteBudget: number, private readonly _size?: number) {
@@ -552,7 +604,7 @@ export async function probeMediaSource(url: string, options: ProbeOptions = {}):
 
     const result = await Promise.race([readInput(input), stopped]);
 
-    return { status: 'ok', cacheable: true, ...result, stats: session.stats };
+    return { ...PROBE_RESULT_VERSIONS, status: 'ok', cacheable: true, ...result, stats: session.stats };
   } catch (error) {
     return session.toResult(error, url);
   } finally {

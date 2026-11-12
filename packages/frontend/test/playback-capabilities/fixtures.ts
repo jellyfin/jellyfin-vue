@@ -4,7 +4,7 @@
  * the vocabulary mediabunny uses.
  */
 import type { MediaSourceInfo, MediaStream } from '@jellyfin/sdk/lib/generated-client';
-import type { ProbedAudioTrack, ProbedVideoTrack, ProbeResult } from '#/utils/playback-capabilities/probe.ts';
+import { PROBE_FORMAT_VERSION, PROBE_READER_VERSION, type ProbedAudioTrack, type ProbedVideoTrack, type ProbeResult } from '#/utils/playback-capabilities/probe.ts';
 import type { SubtitleRenderer } from '#/utils/playback-capabilities/subtitles.ts';
 
 /**
@@ -144,6 +144,8 @@ export function probeOk(
   containerImpliesCodec = false
 ): ProbeResult {
   return {
+    formatVersion: PROBE_FORMAT_VERSION,
+    readerVersion: PROBE_READER_VERSION,
     status: 'ok',
     cacheable: true,
     containerMime,

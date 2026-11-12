@@ -74,6 +74,20 @@ export const PROBE_MAX_RETRIES = 1;
 export const PROBE_RETRY_DELAY_SECONDS = 0.5;
 
 /**
+ * Longest wait for a probe before a playback is negotiated without it (from the server's data alone). The probe
+ * goes on until {@link PROBE_TIMEOUT_MS} and its result is stored for the next playback.
+ *
+ * Origin: measured in the app (Chrome with network throttling, 16 test files, nothing stored yet), from the first
+ * range request of the probe to the PlaybackInfo request: at most 0.12 s locally, 0.23 s at 20 Mbit/s and 20 ms of
+ * latency, 0.89 s at 5 Mbit/s and 50 ms, 2.9 s at 1.5 Mbit/s and 150 ms (an MKV needing two windows). At 1.5 Mbit/s
+ * the playback then took 0.7 to 17 s to start (median 3.3 s), so waiting the whole {@link PROBE_TIMEOUT_MS} could
+ * hold playback for longer than starting it takes. Three seconds covers every measured probe and adds at most about
+ * one median start on the slowest link measured; a file whose probe needs more is decided from the server's data the
+ * first time only.
+ */
+export const PROBE_PLAYBACK_WAIT_MS = 3000;
+
+/**
  * == RUNTIME SUPERVISION ==
  */
 

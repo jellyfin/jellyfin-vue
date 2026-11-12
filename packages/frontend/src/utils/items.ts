@@ -7,6 +7,7 @@ import {
   ItemSortBy,
   type BaseItemDto,
   type BaseItemPerson,
+  type MediaSourceInfo,
   type MediaStream
 } from '@jellyfin/sdk/lib/generated-client';
 import { AUTHORIZATION_PARAMETER } from '@jellyfin/sdk/lib/constants';
@@ -497,6 +498,41 @@ export function getItemIdFromSourceIndex(
   const mediaSource = item.MediaSources?.[sourceIndex];
 
   return (mediaSource ? mediaSource.Id : item.Id) ?? '';
+}
+
+/**
+ * The URL of the original file of a media source, as the server stores it (`Static=true`), authenticated in the
+ * query so it can be used where no header can be set (media elements, range requests without preflight).
+ *
+ * @param mediaSource - The media source to play
+ * @param mediaType - The media type of the item the media source belongs to
+ * @param parameters - Extra query parameters
+ */
+export function getStaticStreamUrl(
+  mediaSource: MediaSourceInfo,
+  mediaType: 'Video' | 'Audio',
+  parameters: Record<string, string> = {}
+): string | undefined {
+  const serverAddress = remote.sdk.api?.basePath;
+  const userToken = remote.auth.currentUserToken.value;
+
+  if (!serverAddress || !userToken || !mediaSource.Id || !mediaSource.Container) {
+    return;
+  }
+
+  const query = new URLSearchParams({
+    Static: String(true),
+    mediaSourceId: mediaSource.Id,
+    /**
+     * `ApiKey` is the query parameter every supported server accepts: `api_key` only works
+     * when legacy authorization is enabled on the server, which is off by default since 12.0
+     */
+    [AUTHORIZATION_PARAMETER]: userToken,
+    Tag: mediaSource.ETag ?? '',
+    ...parameters
+  }).toString();
+
+  return `${serverAddress}/${mediaType === 'Video' ? 'Videos' : 'Audio'}/${mediaSource.Id}/stream.${mediaSource.Container}?${query}`;
 }
 
 /**

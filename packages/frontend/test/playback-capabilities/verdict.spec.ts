@@ -11,7 +11,7 @@ import {
   videoStream
 } from './fixtures.ts';
 import type { CapabilityAnswer, CapabilityOracle } from '#/utils/playback-capabilities/oracle.ts';
-import type { ProbeResult } from '#/utils/playback-capabilities/probe.ts';
+import { PROBE_FORMAT_VERSION, PROBE_READER_VERSION, type ProbeResult } from '#/utils/playback-capabilities/probe.ts';
 import {
   computeVerdict,
   getNextFloor,
@@ -871,7 +871,15 @@ describe('probe matching and fallbacks', () => {
   });
 
   test('a failed probe is the same as no probe', async () => {
-    const failed: ProbeResult = { status: 'failed', reason: 'network', detail: 'TypeError', cacheable: false, stats: { requests: 1, bytes: 0, durationMs: 1 } };
+    const failed: ProbeResult = {
+      formatVersion: PROBE_FORMAT_VERSION,
+      readerVersion: PROBE_READER_VERSION,
+      status: 'failed',
+      reason: 'network',
+      detail: 'TypeError',
+      cacheable: false,
+      stats: { requests: 1, bytes: 0, durationMs: 1 }
+    };
     const verdict = await verdictFor({ source: mkvItem('ac3').source, probe: failed }, fullBrowser);
 
     expect(verdict.method).toBe('TranscodeVideo');
