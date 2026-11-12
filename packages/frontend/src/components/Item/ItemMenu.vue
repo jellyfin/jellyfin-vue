@@ -201,12 +201,18 @@ const pushToBottomOfQueueAction = {
     );
   }
 };
+/**
+ * The version of the menu refers to the item itself, so it only makes sense
+ * when the item is played (not when it's a folder whose children are played)
+ */
+const playbackMediaSourceIndex = computed(() => item.IsFolder ? undefined : mediaSourceIndex);
 const playFromBeginningAction = {
   title: t('playFromBeginning'),
   icon: 'i-mdi:replay',
   action: async (): Promise<void> => {
     await playbackManager.play({
-      item: item
+      item: item,
+      mediaSourceIndex: playbackMediaSourceIndex.value
     });
   }
 };
@@ -216,6 +222,7 @@ const shuffleAction = {
   action: async (): Promise<void> => {
     await playbackManager.play({
       item: item,
+      mediaSourceIndex: playbackMediaSourceIndex.value,
       initiator: item,
       startShuffled: true
     });
