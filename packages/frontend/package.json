@@ -54,6 +54,7 @@
     "libpgs": "0.9.0",
     "sortablejs": "1.15.7",
     "swiper": "14.3.0",
+    "unique-names-generator": "4.7.1",
     "uuid": "14.0.3",
     "vue": "catalog:runtime",
     "vue-router": "5.4.0",

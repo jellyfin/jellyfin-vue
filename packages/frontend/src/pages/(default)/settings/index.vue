@@ -7,30 +7,53 @@
         md="5"
         lg="4"
         class="uno-py-4">
-        <div
-          v-if="
-            remote.auth.currentServer.value &&
-              $remote.auth.currentUser?.value?.Policy?.IsAdministrator
-          ">
+        <div v-if="remote.auth.currentServer.value">
           <JImg
             class="uno-h-25"
             src="/icon.svg"
             :alt="$t('jellyfinLogo')" />
           <VTable class="information uno-mb-4 uno-pb-2">
             <tbody>
+              <template v-if="$remote.auth.currentUser.value?.Policy?.IsAdministrator">
+                <tr>
+                  <td>{{ $t('server') }}</td>
+                  <td>{{ remote.auth.currentServer.value?.ServerName }}</td>
+                </tr>
+                <tr>
+                  <td>{{ $t('serverVersion') }}</td>
+                  <td>{{ remote.auth.currentServer.value?.Version }}</td>
+                </tr>
+                <tr>
+                  <td>{{ $t('vueClientVersion') }}</td>
+                  <CommitLink v-if="commit_hash" />
+                  <td v-else>
+                    {{ clientVersion }}
+                  </td>
+                </tr>
+              </template>
               <tr>
-                <td>{{ $t('server') }}</td>
-                <td>{{ remote.auth.currentServer.value?.ServerName }}</td>
-              </tr>
-              <tr>
-                <td>{{ $t('serverVersion') }}</td>
-                <td>{{ remote.auth.currentServer.value?.Version }}</td>
-              </tr>
-              <tr>
-                <td>{{ $t('vueClientVersion') }}</td>
-                <CommitLink v-if="commit_hash" />
-                <td v-else>
-                  {{ clientVersion }}
+                <td colspan="2">
+                  <VForm @submit.prevent="saveDeviceName">
+                    <VTextField
+                      v-model="deviceName"
+                      :label="$t('deviceName')"
+                      variant="outlined"
+                      density="compact"
+                      class="uno-py-2"
+                      hide-details="auto"
+                      :counter="DEVICE_NAME_MAX_LENGTH"
+                      :rules="deviceNameRules">
+                      <template #append>
+                        <VBtn
+                          type="submit"
+                          color="primary"
+                          variant="flat"
+                          :disabled="!canSaveDeviceName">
+                          {{ $t('save') }}
+                        </VBtn>
+                      </template>
+                    </VTextField>
+                  </VForm>
                 </td>
               </tr>
             </tbody>
@@ -112,10 +135,15 @@
 
 <script setup lang="ts">
 import { commit_hash } from 'virtual:commit';
-import { computed } from 'vue';
+import { computed, shallowRef } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import type { RouteLocationRaw } from 'vue-router';
 import { remote } from '#/plugins/remote/index.ts';
+import {
+  DEVICE_NAME_MAX_LENGTH,
+  setDeviceName,
+  validateDeviceName
+} from '#/plugins/remote/sdk/sdk-utils.ts';
 import { version as clientVersion } from '#/package.json';
 import { usePageTitle } from '#/composables/page-title.ts';
 
@@ -129,6 +157,40 @@ interface MenuOptions {
 }
 
 usePageTitle(() => t('settings'));
+
+const deviceName = shallowRef(remote.sdk.deviceInfo.name);
+const deviceNameRules = [
+  (v: string): true | string => {
+    switch (validateDeviceName(v.trim())) {
+      case 'empty': {
+        return t('required');
+      }
+      case 'tooLong': {
+        return t('mustBeAtMostCharacters', { max: DEVICE_NAME_MAX_LENGTH });
+      }
+      case 'invalidCharacters': {
+        return t('containsInvalidCharacters');
+      }
+      default: {
+        return true;
+      }
+    }
+  }
+];
+const canSaveDeviceName = computed(() =>
+  deviceName.value.trim() !== remote.sdk.deviceInfo.name
+  && deviceNameRules.every(rule => rule(deviceName.value) === true)
+);
+
+/**
+ * Saves the new device name. The app is reloaded afterwards, so the new name is used in all the
+ * requests from now on.
+ */
+function saveDeviceName(): void {
+  if (canSaveDeviceName.value) {
+    setDeviceName(deviceName.value);
+  }
+}
 
 const userItems = computed<MenuOptions[]>(() => {
   return [
