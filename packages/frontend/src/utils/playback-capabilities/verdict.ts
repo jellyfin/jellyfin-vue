@@ -135,6 +135,20 @@ export interface VerdictInput {
   readonly probe?: ProbeResult;
   readonly oracle: CapabilityOracle;
   readonly environment: VerdictEnvironment;
+  /**
+   * The media type of the item the source belongs to (see {@link getItemType}); undefined follows the streams
+   */
+  readonly mediaType?: 'Video' | 'Audio';
+}
+
+/**
+ * The type of item the server sees: the item's media type when known, since the server treats a video item as a video
+ * whatever its streams (measured on Jellyfin 12.4 with an audio-only file in a movie library: Audio profiles got neither
+ * direct play nor a transcoding URL, Video profiles got its HLS output, and without the permission to transcode video a
+ * progressive stream instead), otherwise whether it has a video stream
+ */
+function getItemType(input: VerdictInput, hasVideo: boolean): 'Video' | 'Audio' {
+  return input.mediaType ?? (hasVideo ? 'Video' : 'Audio');
 }
 
 /**
@@ -146,10 +160,15 @@ export interface SupportedTarget extends TranscodeTarget {
 
 /**
  * What happens to a stream: copied as it is, or encoded to the first of `targets` the server can produce
- * (all of them decodable by the browser, in order of preference)
+ * (all of them decodable by the browser, in order of preference).
+ *
+ * A copied stream of a video carries the same targets as `fallback`: the server may still refuse to copy it
+ * (measured on Jellyfin 12.4: a streaming bitrate below the source's, a codec its HLS output cannot carry) and then
+ * encodes it to the first codec of the request's list it can produce. Audio items have none: the server takes a
+ * single codec for them.
  */
 export type StreamPlan
-  = | { readonly index: number; readonly action: 'copy' }
+  = | { readonly index: number; readonly action: 'copy'; readonly fallback?: readonly SupportedTarget[] }
     | { readonly index: number; readonly action: 'transcode'; readonly targets: readonly SupportedTarget[] };
 
 /**
@@ -194,6 +213,10 @@ export interface Verdict {
    * The source's quality, used to break ties between versions
    */
   readonly quality: { readonly width?: number; readonly height?: number; readonly bitrate?: number };
+  /**
+   * The type of item the server sees (see {@link getItemType}), which decides the type of the profiles it takes
+   */
+  readonly mediaType?: 'Video' | 'Audio';
 }
 
 /**
@@ -373,8 +396,8 @@ function candidatesFor(source: MediaSourceInfo, context: StreamContext, mode: De
  */
 function getOutputSize(context: StreamContext, caps: RequestCaps): { width: number; height: number } {
   const probedVideo = context.probed?.type === 'video' ? context.probed : undefined;
-  const width = context.stream.Width ?? probedVideo?.width ?? caps.maxWidth;
-  const height = context.stream.Height ?? probedVideo?.height ?? caps.maxHeight;
+  const width = getKnownValue(context.stream.Width) ?? getKnownValue(probedVideo?.width) ?? caps.maxWidth;
+  const height = getKnownValue(context.stream.Height) ?? getKnownValue(probedVideo?.height) ?? caps.maxHeight;
   const scale = Math.min(1, caps.maxWidth / width, caps.maxHeight / height);
 
   return { width: Math.round(width * scale), height: Math.round(height * scale) };
@@ -388,7 +411,7 @@ async function findVideoTargets(oracle: CapabilityOracle, context: StreamContext
   const params = {
     ...getOutputSize(context, caps),
     bitrate: caps.maxBitrate,
-    framerate: stream.RealFrameRate ?? stream.AverageFrameRate ?? FALLBACK_FRAME_RATE
+    framerate: getKnownValue(stream.RealFrameRate) ?? getKnownValue(stream.AverageFrameRate) ?? FALLBACK_FRAME_RATE
   };
   const answers = await Promise.all(VIDEO_TRANSCODE_TARGETS.map(async target =>
     oracle.query(getVideoTargetCandidate(target, params))));
@@ -405,7 +428,7 @@ async function findVideoTargets(oracle: CapabilityOracle, context: StreamContext
  */
 async function findAudioTargets(oracle: CapabilityOracle, context: StreamContext): Promise<TargetSet> {
   const probedAudio = context.probed?.type === 'audio' ? context.probed : undefined;
-  const sourceChannels = context.stream.Channels ?? probedAudio?.channels ?? STEREO_CHANNELS;
+  const sourceChannels = getKnownValue(context.stream.Channels) ?? getKnownValue(probedAudio?.channels) ?? STEREO_CHANNELS;
   const wanted = Math.min(sourceChannels, MAX_TRANSCODE_AUDIO_CHANNELS);
   const results = await Promise.all(AUDIO_TRANSCODE_TARGETS.map(async (target) => {
     const kept = await oracle.query(getAudioTargetCandidate(target, { channels: wanted }));
@@ -656,9 +679,9 @@ async function getPlan(evaluation: Evaluation, rung: PlaybackRung): Promise<Rung
 }
 
 /**
- * Whether the quality mode or the user policy forbid a playable rung
+ * Whether the quality mode or the user policy forbid a playable rung of an item of the given type
  */
-function getRejection(environment: VerdictEnvironment, rung: PlaybackRung, plan: RungPlan): RungRejection | undefined {
+function getRejection(environment: VerdictEnvironment, rung: PlaybackRung, itemType: 'Video' | 'Audio', plan: RungPlan): RungRejection | undefined {
   const { policy } = environment;
 
   if (environment.quality.type === 'original' && rung !== 'DirectPlay' && rung !== 'Remux') {
@@ -671,7 +694,7 @@ function getRejection(environment: VerdictEnvironment, rung: PlaybackRung, plan:
    * may transcode the item's media type: without that permission it answers a progressive stream in the source's
    * container instead, even for a remux (verified on Jellyfin 12.4)
    */
-  const hlsAllowed = policy[plan.video === undefined ? 'EnableAudioPlaybackTranscoding' : 'EnableVideoPlaybackTranscoding'] !== false;
+  const hlsAllowed = policy[itemType === 'Audio' ? 'EnableAudioPlaybackTranscoding' : 'EnableVideoPlaybackTranscoding'] !== false;
   const allowed = {
     DirectPlay: true,
     Remux: hlsAllowed && policy.EnablePlaybackRemuxing !== false,
@@ -711,9 +734,9 @@ function getQuality(evaluation: Evaluation): Verdict['quality'] {
   const { source } = evaluation.input;
 
   return {
-    width: evaluation.video?.stream.Width ?? undefined,
-    height: evaluation.video?.stream.Height ?? undefined,
-    bitrate: source.Bitrate ?? evaluation.video?.stream.BitRate ?? evaluation.audio?.stream.BitRate ?? undefined
+    width: getKnownValue(evaluation.video?.stream.Width),
+    height: getKnownValue(evaluation.video?.stream.Height),
+    bitrate: getKnownValue(source.Bitrate) ?? getKnownValue(evaluation.video?.stream.BitRate) ?? getKnownValue(evaluation.audio?.stream.BitRate)
   };
 }
 
@@ -727,8 +750,29 @@ function getOptimisticVerdict(source: MediaSourceInfo): Verdict {
     smooth: true,
     unverified: true,
     signature: `unverified:${source.Id ?? source.Path ?? ''}`,
-    quality: { bitrate: source.Bitrate ?? undefined }
+    quality: { bitrate: getKnownValue(source.Bitrate) }
   };
+}
+
+/**
+ * Adds the fallback targets to the copied streams of a video's plan (see {@link StreamPlan})
+ */
+async function withFallbacks(evaluation: Evaluation, plan: RungPlan): Promise<Pick<RungPlan, 'video' | 'audio'>> {
+  if (!plan.video) {
+    return plan;
+  }
+
+  const withFallback = async (stream: StreamPlan | undefined, findTargets: () => Promise<TargetSet | undefined>) => {
+    const targets = stream?.action === 'copy' ? (await findTargets())?.targets : undefined;
+
+    return targets?.length ? { ...stream, fallback: targets } as StreamPlan : stream;
+  };
+  const [video, audio] = await Promise.all([
+    withFallback(plan.video, evaluation.videoTargets),
+    withFallback(plan.audio, evaluation.audioTargets)
+  ]);
+
+  return { video, audio };
 }
 
 /**
@@ -748,12 +792,17 @@ export async function computeVerdict(input: VerdictInput): Promise<Verdict> {
   const { minRung, reasons } = getRequirements(evaluation);
   const evaluatedVerified = [evaluation.videoFile, evaluation.videoMs, evaluation.audioFile, evaluation.audioMs]
     .every(support => support?.verified !== false);
-  const common = { subtitle: evaluation.subtitle, signature: evaluation.signature, quality: getQuality(evaluation) };
+  const common = {
+    subtitle: evaluation.subtitle,
+    signature: evaluation.signature,
+    quality: getQuality(evaluation),
+    mediaType: getItemType(input, videoStream !== undefined)
+  };
   const rejections = new Set<RungRejection>();
 
   for (const rung of PLAYBACK_RUNGS.slice(minRung)) {
     const plan = await getPlan(evaluation, rung);
-    const rejection = plan ? getRejection(environment, rung, plan) : 'browser';
+    const rejection = plan ? getRejection(environment, rung, common.mediaType, plan) : 'browser';
 
     if (!plan || rejection) {
       rejections.add(rejection ?? 'browser');
@@ -761,6 +810,7 @@ export async function computeVerdict(input: VerdictInput): Promise<Verdict> {
     }
 
     const unverified = !evaluatedVerified || !plan.verified;
+    const { video, audio } = await withFallbacks(evaluation, plan);
     const finalReasons: VerdictReason[] = [
       ...reasons,
       ...getRejectionReasons(rejections, false),
@@ -774,8 +824,8 @@ export async function computeVerdict(input: VerdictInput): Promise<Verdict> {
       reasons: [...new Set(finalReasons)],
       smooth: plan.smooth,
       unverified,
-      video: plan.video,
-      audio: plan.audio,
+      video,
+      audio,
       maxAudioChannels: plan.audio?.action === 'transcode' ? plan.audio.targets[0]?.channels : undefined,
       qualityCap: plan.video?.action === 'transcode' ? evaluation.qualityCap : undefined
     };

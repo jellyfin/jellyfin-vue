@@ -147,6 +147,59 @@ describe('real values from the stream, with fallbacks', () => {
     expect(members).toMatchObject(expected ?? {});
   });
 
+  const unknownAsZero: [string, MediaStream, CandidateOptions, Partial<VideoConfiguration & AudioConfiguration>][] = [
+    [
+      'a real frame rate of 0 is unknown: the average frame rate is used',
+      videoStream({ RealFrameRate: 0, AverageFrameRate: 50 }),
+      {},
+      { framerate: 50 }
+    ],
+    [
+      'frame rates of 0 are unknown: the documented constant is used (decodingInfo rejects a frame rate of 0)',
+      videoStream({ RealFrameRate: 0, AverageFrameRate: 0 }),
+      {},
+      { framerate: FALLBACK_FRAME_RATE }
+    ],
+    [
+      'a video bitrate of 0 is unknown: the source bitrate is used',
+      videoStream({ BitRate: 0 }),
+      { source: { Bitrate: 3_000_000 } },
+      { bitrate: 3_000_000 }
+    ],
+    [
+      'bitrates of 0 are unknown: the documented constant is used',
+      videoStream({ BitRate: 0 }),
+      { source: { Bitrate: 0 } },
+      { bitrate: FALLBACK_BITRATE }
+    ],
+    [
+      'a size of 0 is unknown: the probed size is used',
+      videoStream({ Width: 0, Height: 0 }),
+      { probed: probedVideo({ width: 1280, height: 720 }), containerMime: 'video/mp4' },
+      { width: 1280, height: 720 }
+    ],
+    [
+      'channels and a sample rate of 0 are unknown: the probed ones are used',
+      audioStream({ Channels: 0, SampleRate: 0 }),
+      { probed: probedAudio({ channels: 6, sampleRate: 44_100 }), containerMime: 'video/mp4' },
+      { channels: '6', samplerate: 44_100 }
+    ]
+  ];
+
+  test.each(unknownAsZero)('%s', (_, stream, options, expected) => {
+    const members = firstMembers(stream, options);
+
+    expect(members).toMatchObject(expected);
+  });
+
+  test('negative values are unknown too, and an audio member nobody knows is left out', () => {
+    const members = firstMembers(audioStream({ Channels: -1, SampleRate: -1, BitRate: -1 }));
+
+    expect(members).not.toHaveProperty('channels');
+    expect(members).not.toHaveProperty('samplerate');
+    expect(members).not.toHaveProperty('bitrate');
+  });
+
   test('audio never borrows the bitrate of the whole source (it is optional for audio)', () => {
     const members = firstMembers(audioStream({ BitRate: undefined }), { source: { Bitrate: 30_000_000 } });
 

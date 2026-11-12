@@ -330,8 +330,8 @@ function getGenericCodecs(stream: MediaStream): string[] {
 function getVideoMembers(input: StreamCandidatesInput): Omit<VideoConfiguration, 'contentType'> | undefined {
   const { stream, source } = input;
   const probed = input.probed?.type === 'video' ? input.probed : undefined;
-  const width = stream.Width ?? probed?.width;
-  const height = stream.Height ?? probed?.height;
+  const width = getKnownValue(stream.Width) ?? getKnownValue(probed?.width);
+  const height = getKnownValue(stream.Height) ?? getKnownValue(probed?.height);
 
   if (!width || !height) {
     return;
@@ -340,8 +340,8 @@ function getVideoMembers(input: StreamCandidatesInput): Omit<VideoConfiguration,
   return {
     width,
     height,
-    bitrate: stream.BitRate ?? source.Bitrate ?? FALLBACK_BITRATE,
-    framerate: stream.RealFrameRate ?? stream.AverageFrameRate ?? FALLBACK_FRAME_RATE,
+    bitrate: getKnownValue(stream.BitRate) ?? getKnownValue(source.Bitrate) ?? FALLBACK_BITRATE,
+    framerate: getKnownValue(stream.RealFrameRate) ?? getKnownValue(stream.AverageFrameRate) ?? FALLBACK_FRAME_RATE,
     ...getHdrFields(stream, probed)
   };
 }
@@ -353,13 +353,14 @@ function getVideoMembers(input: StreamCandidatesInput): Omit<VideoConfiguration,
 function getAudioMembers(input: StreamCandidatesInput): Omit<AudioConfiguration, 'contentType'> {
   const { stream } = input;
   const probed = input.probed?.type === 'audio' ? input.probed : undefined;
-  const channels = stream.Channels ?? probed?.channels;
-  const samplerate = stream.SampleRate ?? probed?.sampleRate;
+  const channels = getKnownValue(stream.Channels) ?? getKnownValue(probed?.channels);
+  const samplerate = getKnownValue(stream.SampleRate) ?? getKnownValue(probed?.sampleRate);
+  const bitrate = getKnownValue(stream.BitRate);
 
   return {
     ...(channels && { channels: String(channels) }),
     ...(samplerate && { samplerate }),
-    ...(stream.BitRate && { bitrate: stream.BitRate })
+    ...(bitrate && { bitrate })
   };
 }
 

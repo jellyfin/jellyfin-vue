@@ -180,6 +180,14 @@ export const STEREO_CHANNELS = 2;
 export const FALLBACK_FRAME_RATE = 30;
 
 /**
+ * Bitrate assumed in browser queries when neither the stream nor the media source report one.
+ *
+ * Origin: the value Jellyfin itself assumes in that case (`StreamBuilder.IsBitrateLimitExceeded`,
+ * "If we don't know the item bitrate, then force a transcode if requested max bitrate is under 40 mbps").
+ */
+export const FALLBACK_BITRATE = 40_000_000;
+
+/**
  * The block size a reported frame height may have been rounded up to: a video fits a level of {@link QUALITY_LADDER}
  * when its short side is at most the level's height rounded up to a multiple of it (1088 is a 1080 video, 1104 is not).
  * The long side does not count: a 1998x1080 or 4096x2160 video is a 1080 or a 2160 one, only wider than the box.
@@ -192,10 +200,12 @@ export const FALLBACK_FRAME_RATE = 30;
 export const CODED_SIZE_ALIGNMENT = 16;
 
 /**
- * Bitrate assumed when neither the stream nor the media source report one.
+ * `MaxStreamingBitrate` sent when the video is not encoded (nothing caps it): no limit in practice, so the server
+ * neither refuses direct play nor encodes a stream it was asked to copy.
  *
- * Origin: the value Jellyfin itself assumes in that case (`StreamBuilder.IsBitrateLimitExceeded`,
- * "If we don't know the item bitrate, then force a transcode if requested max bitrate is under 40 mbps").
- * Using the same number keeps the browser query and the server negotiation consistent.
+ * Origin: the largest value Jellyfin 12.4 accepts (the field is an Int32; 2^31 and above are rejected with HTTP 400,
+ * measured). Measured with .strm sources: a 59 Mbit/s file was copied with it and encoded under 40 Mbit/s; null, which
+ * also lifts the limit, made the server size its own fallback encodes as if the video had no bitrate (an AVI it could
+ * not copy came out at 416x234 instead of 640x360), and 0 or -1 put VideoBitrate=64000 in transcoding URLs.
  */
-export const FALLBACK_BITRATE = 40_000_000;
+export const UNLIMITED_STREAMING_BITRATE = 2 ** 31 - 1;
