@@ -383,6 +383,14 @@ const currentSource = computed({
 });
 
 /**
+ * This page is reused when navigating between items (the route is the same), so the version
+ * picked for the previous item must be discarded: it isn't one of the versions of this one.
+ */
+watch(() => item.value.Id, () => {
+  selectedSource.value = undefined;
+});
+
+/**
  * Track indexes belong to one version: go back to the server defaults when it changes
  */
 watch(() => currentSource.value.Id, () => {
