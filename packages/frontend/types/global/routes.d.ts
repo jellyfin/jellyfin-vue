@@ -53,6 +53,7 @@ declare module 'vue-router/auto-routes' {
       | '/(default)/settings/devices'
       | '/(default)/settings/home-screen'
       | '/(default)/settings/logs-and-activity'
+      | '/(default)/settings/playback'
       | '/(default)/settings/server'
       | '/(default)/settings/subtitles'
       | '/(default)/settings/users/'
@@ -174,6 +175,13 @@ declare module 'vue-router/auto-routes' {
     '/(default)/settings/logs-and-activity': RouteRecordInfo<
       '/(default)/settings/logs-and-activity',
       '/settings/logs-and-activity',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/(default)/settings/playback': RouteRecordInfo<
+      '/(default)/settings/playback',
+      '/settings/playback',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -306,6 +314,7 @@ declare module 'vue-router/auto-routes' {
         | '/(default)/settings/devices'
         | '/(default)/settings/home-screen'
         | '/(default)/settings/logs-and-activity'
+        | '/(default)/settings/playback'
         | '/(default)/settings/server'
         | '/(default)/settings/subtitles'
         | '/(default)/settings/users/'
@@ -447,6 +456,14 @@ declare module 'vue-router/auto-routes' {
     'src/pages/(default)/settings/logs-and-activity.vue': {
       routes:
         | '/(default)/settings/logs-and-activity'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/(default)/settings/playback.vue': {
+      routes:
+        | '/(default)/settings/playback'
       views:
         | never
       pathParamNames:

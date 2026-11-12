@@ -210,7 +210,7 @@ const userItems = computed<MenuOptions[]>(() => {
       icon: 'i-mdi:play-pause',
       name: t('playback'),
       description: t('playbackSettingsDescription'),
-      link: undefined
+      link: '/settings/playback'
     },
     {
       icon: 'i-mdi:disc-player',
