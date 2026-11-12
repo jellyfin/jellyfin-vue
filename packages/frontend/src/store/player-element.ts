@@ -64,23 +64,25 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched' |
   private readonly _cleanups = new Set<() => void>();
   private _asssub: ASSSUB | undefined;
   private _pgssub: PgsRenderer | undefined;
+  /**
+   * If the Fullscreen API isn't supported, the media element can only go fullscreen through
+   * the browser's own UI (like Safari iOS), where a custom subtitle overlay can't be rendered.
+   *
+   * Created once: calling useFullscreen inside a computed would register new listeners on every evaluation.
+   */
+  private readonly _isFullscreenSupported = useFullscreen().isSupported;
 
   /**
    * Logic for applying custom subtitle track.
    *
    * Returns false if subtitle delivery method isn't external
-   * or if device is iOS/Android.
+   * or if the custom overlay can't be displayed in fullscreen.
    */
   private readonly _useCustomSubtitleTrack = computed(() =>
-    !isNil(playbackManager.currentSubtitleTrack)
+    !isNil(playbackManager.currentSubtitleTrack.value)
     && subtitleSettings.state.value.enabled
-    && playbackManager.currentSubtitleTrack.value?.DeliveryMethod === SubtitleDeliveryMethod.External
-    /**
-     * If useFullscreen isn't supported we can assume the media player is Safari iOS
-     * in this case we wouldn't apply a custom subtitle track, since it cannot
-     * be rendered in Safari iOS's fullscreen element
-     */
-    && useFullscreen().isSupported.value
+    && playbackManager.currentSubtitleTrack.value.DeliveryMethod === SubtitleDeliveryMethod.External
+    && this._isFullscreenSupported.value
   );
 
   public readonly currentItemParsedSubtitleTracks = computed(() =>
