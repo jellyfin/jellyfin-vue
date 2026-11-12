@@ -74,6 +74,24 @@ function isVtt(track: PlaybackTrack): boolean {
   return track.format !== undefined && NATIVE_SUBTITLE_FORMATS.includes(track.format);
 }
 
+/**
+ * Everything the subtitles on screen depend on: applying them again for the same target would only draw the same
+ * thing again (and fetch the subtitle file again)
+ */
+interface SubtitleTarget {
+  element: HTMLMediaElement;
+  container: HTMLDivElement;
+  /**
+   * The selected subtitle, how it's drawn and, for native tracks, the media source URL: the `<track>`
+   * elements are re-created for every new source, while the renderers keep drawing over the same element
+   */
+  key: string;
+  /**
+   * Whether the subtitle is drawn by a renderer over a video whose size isn't known yet (no metadata)
+   */
+  awaitsVideoSize: boolean;
+}
+
 export const videoContainerRef = shallowRef<HTMLDivElement>();
 
 /**
@@ -92,6 +110,10 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched'> 
    * is stopped instead of being left drawing
    */
   private _subtitleGeneration = 0;
+  /**
+   * What the subtitles were last applied for (see `_getSubtitleTarget`), until they're disposed
+   */
+  private _appliedSubtitle: SubtitleTarget | undefined;
   /**
    * If the Fullscreen API isn't supported, the media element can only go fullscreen through
    * the browser's own UI (like Safari iOS), where a custom subtitle overlay can't be rendered.
@@ -306,27 +328,76 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched'> 
   };
 
   /**
+   * What the current subtitle would be applied for. Undefined while there's no video container: the
+   * subtitles are drawn over the media element inside it, and they're applied once it's mounted.
+   */
+  private readonly _getSubtitleTarget = (): SubtitleTarget | undefined => {
+    const element = mediaElementRef.value;
+    const container = videoContainerRef.value;
+
+    if (!element || !container) {
+      return;
+    }
+
+    const track = this.currentExternalSubtitleTrack.value;
+    const native = track !== undefined && isVtt(track);
+
+    return {
+      element,
+      container,
+      key: JSON.stringify([
+        track?.index,
+        track?.src,
+        this._useCustomSubtitleTrack.value,
+        native ? playbackManager.currentSourceUrl.value : undefined
+      ]),
+      awaitsVideoSize: track !== undefined && !native && element instanceof HTMLVideoElement && element.videoWidth === 0
+    };
+  };
+
+  /**
    * Applies the current subtitle from the playbackManager store
    *
    * It first disables every text track and stops the subtitle renderers, then shows the selected
    * subtitle by the format it's delivered in: WebVTT natively (or in the custom overlay), anything
-   * else with the subtitle renderer that declares the format
+   * else with the subtitle renderer that declares the format.
+   *
+   * It does nothing if the subtitles are already applied for the same target, so it can be called
+   * whenever something they depend on may have changed.
    */
   public readonly applyCurrentSubtitle = async (): Promise<void> => {
-    if (!mediaElementRef.value) {
+    const target = this._getSubtitleTarget();
+    const applied = this._appliedSubtitle;
+
+    if (
+      !target
+      || (applied?.element === target.element && applied.container === target.container && applied.key === target.key)
+    ) {
       return;
     }
 
     /**
      * Clear VTT and SSA subs first
      */
-    for (const textTrack of mediaElementRef.value.textTracks) {
+    for (const textTrack of target.element.textTracks) {
       if (textTrack.mode !== 'disabled') {
         textTrack.mode = 'disabled';
       }
     }
 
     this._clear();
+
+    /**
+     * A renderer lays the subtitles out for the size of the video when it's created (assjs takes its layout
+     * resolution from `videoWidth`/`videoHeight`, or from the element's box before the metadata, and then stretches
+     * the subtitles to the video's aspect): it's created once the size is known. The media element's `loadeddata`
+     * applies the subtitles again (see `PlayerElement.vue`).
+     */
+    if (target.awaitsVideoSize) {
+      return;
+    }
+
+    this._appliedSubtitle = target;
 
     await nextTick();
 
@@ -348,6 +419,7 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched'> 
    */
   private readonly _clear = () => {
     this._subtitleGeneration++;
+    this._appliedSubtitle = undefined;
 
     for (const func of this._cleanups) {
       func();
@@ -402,18 +474,18 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched'> 
 
     /**
      * Watches the identity of the track (not the stream objects, which are replaced whenever
-     * the item data is refreshed) and the way it must be rendered
+     * the item data is refreshed) and the way it must be rendered.
+     *
+     * The container is watched through a getter: a shallow ref among the sources would make Vue run
+     * the callback whenever any source is re-evaluated, even with the same values (for example, when
+     * the item data is refreshed after the playback start is reported).
      */
     watch([
       () => playbackManager.currentSubtitleTrack.value?.Index,
       () => this.currentExternalSubtitleTrack.value?.src,
       this._useCustomSubtitleTrack,
-      videoContainerRef
-    ], async (newVal) => {
-      if (newVal[3]) {
-        await this.applyCurrentSubtitle();
-      }
-    }, { flush: 'post' });
+      () => videoContainerRef.value
+    ], this.applyCurrentSubtitle, { flush: 'post' });
   }
 }
 
