@@ -5,12 +5,12 @@
     </template>
     <template #actions>
       <VBtn
-        v-if="devices.length"
+        v-if="deletableDeviceIds.length"
         color="error"
         variant="elevated"
         class="ml-a"
         :loading="loading"
-        @click="deleteAllDevices">
+        @click="confirmDelete = 'all'">
         {{ t('deleteAll') }}
       </VBtn>
       <VBtn
@@ -40,7 +40,7 @@
           <tbody>
             <tr
               v-for="device in devices"
-              :key="device.Id ?? undefined">
+              :key="`${device.Id}|${device.LastUserId}`">
               <td
                 v-for="{ value } in headers"
                 :key="value">
@@ -57,7 +57,7 @@
               <td>
                 <VBtn
                   color="error"
-                  :disabled="loading"
+                  :disabled="loading || device.Id === remote.sdk.deviceInfo.id"
                   @click="confirmDelete = device.Id ?? undefined">
                   {{ t('delete') }}
                 </VBtn>
@@ -138,31 +138,59 @@ const headers = computed<{ text: string; value: keyof DeviceInfoDto }[]>(() => [
 ]);
 
 /**
- * Deletes all remembered devices
+ * Ids of the devices that can be deleted: all of them except the one in use, since deleting it
+ * revokes its access token, ending the user's own session. The server lists one row per user
+ * signed in on a device, so an id can appear more than once, and deleting it removes every row.
  */
-async function deleteAllDevices(): Promise<void> {
-  loading.value = true;
+const deletableDeviceIds = computed(() => [
+  ...new Set(
+    devices.value
+      .map(device => device.Id)
+      .filter((id): id is string => !!id && id !== remote.sdk.deviceInfo.id)
+  )
+]);
 
+/**
+ * Fetches the list of devices again, so it reflects what's on the server
+ */
+async function refreshDevices(): Promise<void> {
   try {
-    for (const device of devices.value) {
-      if (device.Id || remote.sdk.deviceInfo.id === device.Id) {
-        await remote.sdk
-          .newUserApi(getDeviceApi)
-          .deleteDevice({ id: [device.Id] });
-      }
-    }
-
-    useSnackbar(t('deleteAllDevicesSuccess'), 'success');
-
     devices.value
       = (await remote.sdk.newUserApi(getDeviceApi).getDevices()).data.Items
         ?? [];
   } catch (error) {
-    useSnackbar(t('deleteAllDevicesError'), 'error');
     console.error(error);
-  } finally {
-    loading.value = false;
   }
+}
+
+/**
+ * Deletes all remembered devices, except the one in use.
+ *
+ * Every deletion is attempted even if some fail, and the list is refreshed afterwards,
+ * so it doesn't keep showing devices that were already deleted.
+ */
+async function deleteAllDevices(): Promise<void> {
+  loading.value = true;
+
+  let failed = false;
+
+  for (const id of deletableDeviceIds.value) {
+    try {
+      await remote.sdk.newUserApi(getDeviceApi).deleteDevice({ id: [id] });
+    } catch (error) {
+      failed = true;
+      console.error(error);
+    }
+  }
+
+  if (failed) {
+    useSnackbar(t('deleteAllDevicesError'), 'error');
+  } else {
+    useSnackbar(t('deleteAllDevicesSuccess'), 'success');
+  }
+
+  await refreshDevices();
+  loading.value = false;
 }
 
 /**
@@ -175,16 +203,13 @@ async function deleteDevice(deviceId: string): Promise<void> {
     await remote.sdk.newUserApi(getDeviceApi).deleteDevice({ id: [deviceId] });
 
     useSnackbar(t('deleteDeviceSuccess'), 'success');
-
-    devices.value
-      = (await remote.sdk.newUserApi(getDeviceApi).getDevices()).data.Items
-        ?? [];
   } catch (error) {
     useSnackbar(t('deleteDeviceError'), 'error');
     console.error(error);
-  } finally {
-    loading.value = false;
   }
+
+  await refreshDevices();
+  loading.value = false;
 }
 
 /**
