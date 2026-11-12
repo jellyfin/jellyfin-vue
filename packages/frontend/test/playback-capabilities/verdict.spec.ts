@@ -768,6 +768,64 @@ describe('probe matching and fallbacks', () => {
   });
 });
 
+describe('the file a direct play question is about', () => {
+  /**
+   * An oracle that records the file each question was asked about, and supports everything
+   */
+  function recordingOracle() {
+    const files = new Map<string, string | undefined>();
+    const oracle: CapabilityOracle = {
+      clear: () => {
+        // Nothing to forget
+      },
+      query: (config, context) => {
+        const contentType = config.video?.contentType ?? config.audio?.contentType ?? '';
+
+        files.set(`${config.type} ${contentType}`, context?.fileType);
+
+        return Promise.resolve({ supported: true, smooth: true, powerEfficient: true });
+      }
+    };
+
+    return { files, oracle };
+  }
+
+  /**
+   * Computes a verdict with the recording oracle
+   */
+  async function filesAskedFor(item: { source: MediaSourceInfo; probe?: ProbeResult }) {
+    const { files, oracle } = recordingOracle();
+
+    await computeVerdict({ source: item.source, probe: item.probe, oracle, environment: defaultEnvironment });
+
+    return files;
+  }
+
+  test('the audio of a probed video file is asked about together with the file\'s own MIME type', async () => {
+    const files = await filesAskedFor(mkvItem('opus'));
+
+    expect(files.get(`file ${T.opusMkv}`)).toBe('video/x-matroska');
+  });
+
+  test('the video of a probed file too', async () => {
+    const files = await filesAskedFor(mkvItem('opus'));
+
+    expect(files.get(`file ${T.h264Mkv}`)).toBe('video/x-matroska');
+  });
+
+  test('media source questions are not about a file', async () => {
+    const files = await filesAskedFor(mkvItem('opus'));
+
+    expect(files.get(`media-source ${T.opusMp4}`)).toBeUndefined();
+  });
+
+  test('without a probe the real file type is unknown, so none is given', async () => {
+    const files = await filesAskedFor({ source: mkvItem('opus').source });
+
+    expect(files.values().every(fileType => fileType === undefined)).toBe(true);
+  });
+});
+
 describe('signature: what the failure memory remembers', () => {
   test('it is made of the container MIME and the codec strings of the evaluated streams', async () => {
     const verdict = await verdictFor(mp4Item(), fullBrowser);

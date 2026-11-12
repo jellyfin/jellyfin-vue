@@ -11,12 +11,13 @@
  */
 
 /**
- * Maximum time to wait for one `navigator.mediaCapabilities.decodingInfo` answer before treating the
- * configuration as unsupported. Some WebViews never settle the promise.
+ * Maximum time to wait for one `navigator.mediaCapabilities.decodingInfo` answer before asking the engine's other
+ * native API (`canPlayType` / `isTypeSupported`, see `oracle.ts`) instead. Some WebViews never settle the promise.
  *
  * Origin: measured (161 questions per engine, desktop Linux): the slowest answer took 15 ms in WebKit 27.2,
  * 5 ms in Firefox 159 and 2.3 ms in Chrome 157. One second is a wide margin for slow devices and still bounds the
- * wait when the API never answers (questions are asked in parallel, so a verdict waits one timeout at most).
+ * wait when the API never answers (questions are asked in parallel, so each round of questions of a verdict waits one
+ * timeout at most, then the other API, which answers at once).
  */
 export const ORACLE_QUERY_TIMEOUT_MS = 1000;
 

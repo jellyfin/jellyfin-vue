@@ -23,7 +23,7 @@ import {
   getVideoTargetCandidate,
   type DecodingMode
 } from './media-config.ts';
-import type { CapabilityOracle } from './oracle.ts';
+import type { CapabilityOracle, QueryContext } from './oracle.ts';
 import type { ProbedTrack, ProbeResult } from './probe.ts';
 import {
   exceedsLevel,
@@ -285,12 +285,12 @@ const NOT_SUPPORTED: Support = { supported: false, smooth: false, verified: true
  * Asks the oracle about candidate configurations: supported if any is. An empty list cannot be checked and is
  * optimistically supported.
  */
-async function evaluate(oracle: CapabilityOracle, configs: MediaDecodingConfiguration[]): Promise<Support> {
+async function evaluate(oracle: CapabilityOracle, configs: MediaDecodingConfiguration[], context?: QueryContext): Promise<Support> {
   if (configs.length === 0) {
     return { supported: true, smooth: true, verified: false };
   }
 
-  const answers = await Promise.all(configs.map(async config => oracle.query(config)));
+  const answers = await Promise.all(configs.map(async config => oracle.query(config, context)));
   const first = answers.find(answer => answer.supported);
 
   return first ? { supported: true, smooth: first.smooth, verified: true } : NOT_SUPPORTED;
@@ -476,10 +476,13 @@ async function evaluateSource(input: VerdictInput, videoStream?: MediaStream, au
   const streams = source.MediaStreams ?? [];
   const video = videoStream ? getContext(streams, videoStream, input.probe) : undefined;
   const audio = audioStream ? getContext(streams, audioStream, input.probe) : undefined;
+  // Direct play questions are about the probed file, whose MIME type the oracle's fallback may need
+  const askFile = (context: StreamContext) =>
+    evaluate(oracle, candidatesFor(source, context, 'file'), { fileType: context.containerMime });
   // An external audio file is not part of the file, so it never plays as part of it
-  const audioFileQuestion = audio?.stream.IsExternal ? NOT_SUPPORTED : audio && evaluate(oracle, candidatesFor(source, audio, 'file'));
+  const audioFileQuestion = audio?.stream.IsExternal ? NOT_SUPPORTED : audio && askFile(audio);
   const [videoFile, videoMs, audioFile, audioMs] = await Promise.all([
-    video && evaluate(oracle, candidatesFor(source, video, 'file')),
+    video && askFile(video),
     video && evaluate(oracle, candidatesFor(source, video, 'media-source')),
     audioFileQuestion,
     audio && evaluate(oracle, candidatesFor(source, audio, 'media-source'))

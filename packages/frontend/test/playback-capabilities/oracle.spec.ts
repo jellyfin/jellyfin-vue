@@ -96,7 +96,7 @@ describe('createOracle: memoised, de-duplicated, never rejects', () => {
     expect(calls).toHaveLength(2);
   });
 
-  test('a rejection (for example the TypeError of an invalid configuration) means unsupported', async () => {
+  test('without a fallback, a rejection (the engine refused the question) means unsupported', async () => {
     const oracle = createOracle(() => Promise.reject(new TypeError('Invalid codecs')));
     const answer = await oracle.query(video('video/mp4; codecs="a,b"'));
 
@@ -123,6 +123,85 @@ describe('createOracle: memoised, de-duplicated, never rejects', () => {
   });
 });
 
+describe('createOracle: an engine that refuses a question is asked through its other native API', () => {
+  const refused = () => Promise.reject(new TypeError('Type error'));
+  const notSupported: CapabilityAnswer = { supported: false, smooth: false, powerEfficient: false };
+
+  test('a rejection asks the fallback with the same configuration', async () => {
+    const { calls, query: fallback } = countingQuery();
+    const oracle = createOracle(refused, { fallback });
+    const config = video('audio/mpeg; codecs="mp3"');
+    const answer = await oracle.query(config);
+
+    expect([answer, calls]).toEqual([yes, [config]]);
+  });
+
+  test('a resolved "unsupported" is final: the fallback is never asked', async () => {
+    const { calls, query: fallback } = countingQuery();
+    const oracle = createOracle(() => Promise.resolve(notSupported), { fallback });
+    const answer = await oracle.query(video('audio/flac; codecs="flac"'));
+
+    expect([answer, calls.length]).toEqual([UNSUPPORTED, 0]);
+  });
+
+  test('a fallback that rejects too means unsupported', async () => {
+    const oracle = createOracle(refused, { fallback: refused });
+    const answer = await oracle.query(video('video/x-matroska; codecs="avc1.64001e"'));
+
+    expect(answer).toEqual(UNSUPPORTED);
+  });
+
+  test('the fallback\'s answer is remembered like any other', async () => {
+    const { calls, query: fallback } = countingQuery();
+    const oracle = createOracle(refused, { fallback });
+
+    await oracle.query(video('audio/wav; codecs="1"'));
+    await oracle.query(video('audio/wav; codecs="1"'));
+
+    expect(calls).toHaveLength(1);
+  });
+});
+
+describe('createOracle: the file a stream question is about reaches the fallback only', () => {
+  const refused = () => Promise.reject(new TypeError('Type error'));
+  const audioOfMatroska: MediaDecodingConfiguration = { type: 'file', audio: { contentType: 'audio/x-matroska; codecs="opus"' } };
+  const ofMatroskaVideo = { fileType: 'video/x-matroska' };
+
+  test('when the engine refuses the question, the fallback receives the file\'s MIME type', async () => {
+    const contexts: unknown[] = [];
+    const oracle = createOracle(refused, {
+      fallback: (_config, context) => {
+        contexts.push(context);
+
+        return Promise.resolve(yes);
+      }
+    });
+
+    await oracle.query(audioOfMatroska, ofMatroskaVideo);
+
+    expect(contexts).toEqual([ofMatroskaVideo]);
+  });
+
+  test('a resolved "unsupported" stays final whatever the file', async () => {
+    const { calls, query: fallback } = countingQuery();
+    const oracle = createOracle(() => Promise.resolve(UNSUPPORTED), { fallback });
+    const answer = await oracle.query(audioOfMatroska, ofMatroskaVideo);
+
+    expect([answer, calls.length]).toEqual([UNSUPPORTED, 0]);
+  });
+
+  test('the same stream question about two different files is remembered separately', async () => {
+    const { calls, query: fallback } = countingQuery();
+    const oracle = createOracle(refused, { fallback });
+
+    await oracle.query(audioOfMatroska, ofMatroskaVideo);
+    await oracle.query(audioOfMatroska, { fileType: 'audio/x-matroska' });
+    await oracle.query(audioOfMatroska, ofMatroskaVideo);
+
+    expect(calls).toHaveLength(2);
+  });
+});
+
 describe('createOracle: browsers that never answer', () => {
   beforeEach(() => {
     vi.useFakeTimers();
@@ -132,11 +211,67 @@ describe('createOracle: browsers that never answer', () => {
     vi.useRealTimers();
   });
 
-  test('a question without answer within the timeout counts as unsupported', async () => {
+  test('a question without answer within the timeout is asked to the engine\'s other native API', async () => {
+    const { calls, query: fallback } = countingQuery();
+    const oracle = createOracle(neverAnswers, { timeoutMs: 1000, fallback });
+    const config = video('video/mp4');
+    const pending = oracle.query(config);
+
+    await vi.advanceTimersByTimeAsync(1000);
+
+    const answer = await pending;
+
+    expect([answer, calls]).toEqual([yes, [config]]);
+  });
+
+  test('the fallback\'s answer to a timed out question is remembered: neither API is asked again', async () => {
+    const { calls: browserCalls, query } = countingQuery(neverAnswers);
+    const { calls: fallbackCalls, query: fallback } = countingQuery();
+    const oracle = createOracle(query, { timeoutMs: 1000, fallback });
+    const first = oracle.query(video('video/mp4'));
+
+    await vi.advanceTimersByTimeAsync(1000);
+    await first;
+
+    const second = await oracle.query(video('video/mp4'));
+
+    expect([second, browserCalls.length, fallbackCalls.length]).toEqual([yes, 1, 1]);
+  });
+
+  test('the file a timed out question is about reaches the fallback', async () => {
+    const contexts: unknown[] = [];
+    const oracle = createOracle(neverAnswers, {
+      timeoutMs: 1000,
+      fallback: (_config, context) => {
+        contexts.push(context);
+
+        return Promise.resolve(yes);
+      }
+    });
+    const pending = oracle.query(video('video/x-matroska; codecs="avc1.64001e"'), { fileType: 'video/x-matroska' });
+
+    await vi.advanceTimersByTimeAsync(1000);
+    await pending;
+
+    expect(contexts).toEqual([{ fileType: 'video/x-matroska' }]);
+  });
+
+  test('without a fallback, a question without answer within the timeout counts as unsupported', async () => {
     const oracle = createOracle(neverAnswers, { timeoutMs: 1000 });
     const pending = oracle.query(video('video/mp4'));
 
     await vi.advanceTimersByTimeAsync(1000);
+
+    const answer = await pending;
+
+    expect(answer).toEqual(UNSUPPORTED);
+  });
+
+  test('a fallback that does not answer either counts as unsupported once its own timeout is over', async () => {
+    const oracle = createOracle(neverAnswers, { timeoutMs: 1000, fallback: neverAnswers });
+    const pending = oracle.query(video('video/mp4'));
+
+    await vi.advanceTimersByTimeAsync(2000);
 
     const answer = await pending;
 
@@ -177,7 +312,7 @@ describe('createOracle: browsers that never answer', () => {
   });
 });
 
-describe('createFallbackQuery: only for engines without mediaCapabilities', () => {
+describe('createFallbackQuery: questions decodingInfo refuses, and engines without mediaCapabilities', () => {
   const canPlayType = (type: string) => type.includes('avc1') ? 'probably' : '';
   const isTypeSupported = (type: string) => type.includes('hvc1');
 
@@ -221,5 +356,70 @@ describe('createFallbackQuery: only for engines without mediaCapabilities', () =
     const answer = await query({ type: 'file', audio: { contentType: 'audio/mp4; codecs="mp4a.40.2"' } });
 
     expect(answer.supported).toBe(true);
+  });
+});
+
+describe('createFallbackQuery: canPlayType asks about a file, so a stream of a video file is also asked with the file\'s real MIME type', () => {
+  /**
+   * Like WebKit on Linux: its canPlayType knows Matroska only as video/x-matroska
+   */
+  const matroskaAsVideoOnly = (asked: string[]) => (type: string) => {
+    asked.push(type);
+
+    return type.startsWith('video/x-matroska') ? 'probably' : '';
+  };
+  const audioOfMatroska: MediaDecodingConfiguration = { type: 'file', audio: { contentType: 'audio/x-matroska; codecs="opus"' } };
+
+  test('when the stream\'s own MIME type is not playable, the file\'s MIME type is asked with the same codec', async () => {
+    const asked: string[] = [];
+    const query = createFallbackQuery({ canPlayType: matroskaAsVideoOnly(asked) });
+    const answer = await query(audioOfMatroska, { fileType: 'video/x-matroska' });
+
+    expect([answer.supported, asked]).toEqual([true, ['audio/x-matroska; codecs="opus"', 'video/x-matroska; codecs="opus"']]);
+  });
+
+  test('a stream the engine plays under its own MIME type is not asked again', async () => {
+    const asked: string[] = [];
+    const query = createFallbackQuery({ canPlayType: (type) => {
+      asked.push(type);
+
+      return 'probably';
+    } });
+
+    await query(audioOfMatroska, { fileType: 'video/x-matroska' });
+
+    expect(asked).toEqual(['audio/x-matroska; codecs="opus"']);
+  });
+
+  test('without the file\'s MIME type only the stream\'s own MIME type is asked', async () => {
+    const asked: string[] = [];
+    const query = createFallbackQuery({ canPlayType: matroskaAsVideoOnly(asked) });
+    const answer = await query(audioOfMatroska);
+
+    expect([answer, asked]).toEqual([UNSUPPORTED, ['audio/x-matroska; codecs="opus"']]);
+  });
+
+  test('a file whose MIME type is the stream\'s own is not asked twice', async () => {
+    const asked: string[] = [];
+    const query = createFallbackQuery({ canPlayType: matroskaAsVideoOnly(asked) });
+
+    await query(audioOfMatroska, { fileType: 'audio/x-matroska' });
+
+    expect(asked).toEqual(['audio/x-matroska; codecs="opus"']);
+  });
+
+  test('media source playback has no file: the file\'s MIME type is ignored', async () => {
+    const asked: string[] = [];
+    const query = createFallbackQuery({
+      canPlayType: () => 'probably',
+      isTypeSupported: (type) => {
+        asked.push(type);
+
+        return false;
+      }
+    });
+    const answer = await query({ type: 'media-source', audio: { contentType: 'audio/mp4; codecs="opus"' } }, { fileType: 'video/x-matroska' });
+
+    expect([answer, asked]).toEqual([UNSUPPORTED, ['audio/mp4; codecs="opus"']]);
   });
 });
