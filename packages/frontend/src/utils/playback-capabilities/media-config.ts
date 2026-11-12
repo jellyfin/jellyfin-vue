@@ -69,6 +69,14 @@ export interface AudioTargetParams {
 type StreamKind = 'video' | 'audio';
 
 /**
+ * A stream property (channels, sample rate, frame rate, bitrate, width, height) when it is known: a positive number.
+ * The server and the probe report 0, a negative number or nothing for what they do not know.
+ */
+export function getKnownValue(value: number | null | undefined): number | undefined {
+  return typeof value === 'number' && value > 0 ? value : undefined;
+}
+
+/**
  * == COLOUR METADATA -> HDR FIELDS (item 5 of the plan's fixed inventory) ==
  *
  * Vocabularies: mediabunny uses WebCodecs names (`pq`, `hlg`, `bt2020`, `smpte432`...), the server uses
