@@ -25,7 +25,8 @@
     "reset": "git clean -fxd",
     "serve": "vite preview --configLoader runner",
     "start": "vite --configLoader runner",
-    "storybook": "storybook dev -p 6006 --config-dir storybook --no-open"
+    "storybook": "storybook dev -p 6006 --config-dir storybook --no-open",
+    "test": "vitest run"
   },
   "browserslist": [
     "defaults and supports es6-module"
