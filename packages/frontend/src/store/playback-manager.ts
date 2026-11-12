@@ -31,6 +31,7 @@ import { msToTicks } from '#/utils/time.ts';
 import { mediaControls, mediaElementRef } from '#/store/index.ts';
 import { CommonStore } from '#/store/super/common-store.ts';
 import { runGenericWorkerFunc } from '#/plugins/workers/index.ts';
+import { findQueueItem, getQueueRemoval } from '#/utils/playback-queue.ts';
 
 /**
  * == INTERFACES AND TYPES ==
@@ -144,8 +145,14 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   });
 
   public readonly currentItemId = computed(() => this._state.value.queue[this.currentItemIndex.value ?? -1]);
+  /**
+   * The items of the queue are fetched asynchronously, so for a moment they might be those of the queue before its
+   * last change: the current item is found by its id (see `findQueueItem`). A change that keeps it in the queue
+   * (shuffle, moving items, "play next", removing another item) thus never makes it undefined, which would stop its
+   * playback and start it again from the beginning.
+   */
   public readonly currentItem = computed<BaseItemDto | undefined>(() =>
-    this.queue.value[this.currentItemIndex.value ?? -1]
+    findQueueItem(this.queue.value, this.currentItemId.value, this.currentItemIndex.value)
   );
 
   public readonly currentMediaSourceIndex = computed(() => this._state.value.mediaSourceIndexes.source);
@@ -246,30 +253,63 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   });
 
   /**
+   * PlaybackInfo response for the current item and media source. While a new request is in flight,
+   * the previous response is kept only if it was obtained for the same item and media source
+   * (so a re-negotiation doesn't interrupt playback), never one obtained for a previous item.
+   */
+  private readonly _currentPlaybackInfo = computed(() => {
+    const playbackInfo = this._playbackInfo.value;
+
+    if (
+      playbackInfo?.itemId === this._currentItemDataId.value
+      && playbackInfo?.mediaSourceId === this._currentMediaSourceId.value
+    ) {
+      return playbackInfo;
+    }
+  });
+
+  /**
+   * Primitive keys of the current item and media source. Computed refs only trigger their
+   * dependents when their value changes, unlike the item objects, which are replaced on every refresh.
+   *
+   * They must be defined before `_playbackInfo`: computedAsync evaluates as soon as it's created.
+   */
+  private readonly _currentItemDataId = computed(() => this.currentItem.value?.Id);
+  private readonly _currentItemMediaType = computed(() => this.currentItem.value?.MediaType);
+  private readonly _currentMediaSourceId = computed(() => this.currentMediaSource.value?.Id);
+
+  /**
    * PlaybackInfo response of the server, alongside the item and media source it was requested for
    */
   private readonly _playbackInfo = computedAsync(async (
   ) => {
-    const item = this.currentItem.value;
-    const mediaSource = this.currentMediaSource.value;
+    /**
+     * Only primitive values are read here: the item objects are replaced every time their data is
+     * refreshed (for example, when the server notifies changes in the user data, like right after
+     * the playback start is reported) and depending on them would re-negotiate the playback,
+     * getting a new play session and reloading the stream.
+     */
+    const itemId = this._currentItemDataId.value;
+    const mediaType = this._currentItemMediaType.value;
+    const mediaSourceId = this._currentMediaSourceId.value;
     const userId = remote.auth.currentUserId.value;
 
-    if (item?.Id && mediaSource?.Id && userId) {
+    if (itemId && mediaSourceId && userId) {
       const { data } = await remote.sdk.newUserApi(getMediaInfoApi).getPostedPlaybackInfo({
-        itemId: item.Id,
+        itemId,
         userId,
         autoOpenLiveStream: true,
         maxStreamingBitrate: this._state.value.maxStreamingBitrate,
         playbackInfoDto: { DeviceProfile: playbackProfile },
-        mediaSourceId: mediaSource.Id,
+        mediaSourceId,
         audioStreamIndex: this._state.value.mediaSourceIndexes.audio,
         subtitleStreamIndex: this._state.value.mediaSourceIndexes.subtitle
       });
 
       return {
-        itemId: item.Id,
-        mediaSourceId: mediaSource.Id,
-        mediaType: item.MediaType,
+        itemId,
+        mediaSourceId,
+        mediaType,
         data
       };
     }
@@ -283,23 +323,13 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   }
   );
 
-  /**
-   * PlaybackInfo response for the current item and media source. While a new request is in flight,
-   * the previous response is kept only if it was obtained for the same item and media source
-   * (so a re-negotiation doesn't interrupt playback), never one obtained for a previous item.
-   */
-  private readonly _currentPlaybackInfo = computed(() => {
-    const playbackInfo = this._playbackInfo.value;
-
-    if (
-      playbackInfo?.itemId === this.currentItem.value?.Id
-      && playbackInfo?.mediaSourceId === this.currentMediaSource.value?.Id
-    ) {
-      return playbackInfo;
-    }
-  });
-
   public readonly currentSourceUrl = computed(() => this.getItemPlaybackUrl());
+
+  /**
+   * The fetched item at an index of the queue, found by its id (see `currentItem`)
+   */
+  private readonly _getQueueItem = (index: number | undefined): BaseItemDto | undefined =>
+    findQueueItem(this.queue.value, isNil(index) ? undefined : this._state.value.queue[index], index);
 
   private readonly _previousItemIndex = computed(() => {
     if (this.isRepeatingAll.value && this._state.value.currentItemIndex === 0) {
@@ -311,7 +341,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     }
   });
 
-  public readonly previousItem = computed(() => this.queue.value[this._previousItemIndex.value ?? -1]);
+  public readonly previousItem = computed(() => this._getQueueItem(this._previousItemIndex.value));
 
   private readonly _nextItemIndex = computed(() => {
     if (this.isRepeatingAll.value && this._state.value.currentItemIndex === this.queueLength.value - 1) {
@@ -323,7 +353,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     }
   });
 
-  public readonly nextItem = computed(() => this.queue.value[this._nextItemIndex.value ?? -1]);
+  public readonly nextItem = computed(() => this._getQueueItem(this._nextItemIndex.value));
 
   /**
    * Get the types of the currently playing item
@@ -433,9 +463,33 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     this._state.value.queue.push(...translatedItem);
   };
 
+  /**
+   * Removes an item from the queue (see `getQueueRemoval`). The queue is replaced, not mutated (see `addToQueue`), and
+   * the current item keeps playing at its new index. If it's the one removed, the item that followed it plays, or the
+   * playback stops when none did.
+   */
   public readonly removeFromQueue = (itemId: string): void => {
-    if (this.queueHasItem(itemId)) {
-      this._state.value.queue.splice(this._state.value.queue.indexOf(itemId), 1);
+    const removal = getQueueRemoval(this._state.value.queue, this._state.value.currentItemIndex, itemId, this.isRepeatingAll.value);
+
+    if (!removal) {
+      return;
+    }
+
+    if (removal.currentRemoved && isNil(removal.index)) {
+      this.stop();
+
+      return;
+    }
+
+    const original = this._state.value.originalQueue;
+
+    this._state.value.queue = removal.queue;
+    // While shuffling, turning shuffle off must not bring the item back
+    this._state.value.originalQueue = original.includes(itemId) ? original.toSpliced(original.indexOf(itemId), 1) : original;
+    this._state.value.currentItemIndex = removal.index;
+
+    if (removal.currentRemoved) {
+      this.currentTime.value = 0;
     }
   };
 
