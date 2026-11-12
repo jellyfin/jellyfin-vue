@@ -149,7 +149,24 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   );
 
   public readonly currentMediaSourceIndex = computed(() => this._state.value.mediaSourceIndexes.source);
+  /**
+   * Media source of the current item, as found in the /Items DTO. The server computes that DTO
+   * without any device profile, so its device specific fields (`SupportsDirectPlay`, `TranscodingUrl`,
+   * subtitle `DeliveryMethod`...) say nothing about this client: use it only for static metadata
+   * (like the list of streams). Use `currentNegotiatedMediaSource` to decide how to play.
+   */
   public readonly currentMediaSource = computed(() => this.currentItem.value?.MediaSources?.[this.currentMediaSourceIndex.value ?? 0]);
+  /**
+   * Media source negotiated with the server for this device: `MediaSources[0]` of the PlaybackInfo
+   * response. It's the only one that carries the device specific decisions of the server
+   * (`SupportsDirectPlay`, `SupportsDirectStream`, `SupportsTranscoding`, `TranscodingUrl`,
+   * `TranscodingSubProtocol`, `TranscodingContainer`, `DefaultAudioStreamIndex`,
+   * `DefaultSubtitleStreamIndex` and the `DeliveryMethod`/`DeliveryUrl` of the subtitle streams),
+   * so everything that decides how to play the current item must read them from here.
+   *
+   * Undefined until the server answers for the current item and version.
+   */
+  public readonly currentNegotiatedMediaSource = computed(() => this._currentPlaybackInfo.value?.data.MediaSources?.[0]);
   public readonly currentVideoTrack = computed({
     get: () => {
       if (!isNil(this._state.value.mediaSourceIndexes.video)
@@ -228,24 +245,33 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     }
   });
 
-  private readonly _currentPlaybackInfo = computedAsync(async (
+  /**
+   * PlaybackInfo response of the server, alongside the item and media source it was requested for
+   */
+  private readonly _playbackInfo = computedAsync(async (
   ) => {
-    if (this.currentItem.value?.Id
-      && this.currentMediaSource.value?.Id
-      && remote.auth.currentUserId.value
-    ) {
-      return (
-        await remote.sdk.newUserApi(getMediaInfoApi).getPostedPlaybackInfo({
-          itemId: this.currentItem.value.Id,
-          userId: remote.auth.currentUserId.value,
-          autoOpenLiveStream: true,
-          maxStreamingBitrate: this._state.value.maxStreamingBitrate,
-          playbackInfoDto: { DeviceProfile: playbackProfile },
-          mediaSourceId: this.currentMediaSource.value.Id,
-          audioStreamIndex: this._state.value.mediaSourceIndexes.audio,
-          subtitleStreamIndex: this._state.value.mediaSourceIndexes.subtitle
-        })
-      ).data;
+    const item = this.currentItem.value;
+    const mediaSource = this.currentMediaSource.value;
+    const userId = remote.auth.currentUserId.value;
+
+    if (item?.Id && mediaSource?.Id && userId) {
+      const { data } = await remote.sdk.newUserApi(getMediaInfoApi).getPostedPlaybackInfo({
+        itemId: item.Id,
+        userId,
+        autoOpenLiveStream: true,
+        maxStreamingBitrate: this._state.value.maxStreamingBitrate,
+        playbackInfoDto: { DeviceProfile: playbackProfile },
+        mediaSourceId: mediaSource.Id,
+        audioStreamIndex: this._state.value.mediaSourceIndexes.audio,
+        subtitleStreamIndex: this._state.value.mediaSourceIndexes.subtitle
+      });
+
+      return {
+        itemId: item.Id,
+        mediaSourceId: mediaSource.Id,
+        mediaType: item.MediaType,
+        data
+      };
     }
   },
   undefined,
@@ -257,9 +283,23 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   }
   );
 
-  public readonly currentSourceUrl = computed(() =>
-    this.getItemPlaybackUrl(this._currentPlaybackInfo.value?.MediaSources?.[0])
-  );
+  /**
+   * PlaybackInfo response for the current item and media source. While a new request is in flight,
+   * the previous response is kept only if it was obtained for the same item and media source
+   * (so a re-negotiation doesn't interrupt playback), never one obtained for a previous item.
+   */
+  private readonly _currentPlaybackInfo = computed(() => {
+    const playbackInfo = this._playbackInfo.value;
+
+    if (
+      playbackInfo?.itemId === this.currentItem.value?.Id
+      && playbackInfo?.mediaSourceId === this.currentMediaSource.value?.Id
+    ) {
+      return playbackInfo;
+    }
+  });
+
+  public readonly currentSourceUrl = computed(() => this.getItemPlaybackUrl());
 
   private readonly _previousItemIndex = computed(() => {
     if (this.isRepeatingAll.value && this._state.value.currentItemIndex === 0) {
@@ -292,14 +332,6 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   public readonly currentlyPlayingType = computed(() => this.currentItem.value?.Type);
   public readonly isVideo = computed(() => this.currentlyPlayingMediaType.value === 'Video');
   public readonly isAudio = computed(() => this.currentlyPlayingMediaType.value === 'Audio');
-
-  /**
-   * Get the media type of the currently playing item
-   */
-  private readonly _currentlyPlayingMediaType = computedAsync(async () =>
-    (await apiStore.getItemById(this.currentItemId.value))
-      ?.MediaType
-  );
 
   /**
    * Get current's item audio tracks
@@ -751,10 +783,13 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    * - Otherwise, the stream described by `TranscodingUrl`. This is a remux when the server
    *   also set `SupportsDirectStream` (which is true for direct play too, so it can't be used
    *   to pick the static URL) and a transcode otherwise.
+   *
+   * Only the negotiated media source (from the PlaybackInfo response) has these decisions,
+   * which is what's used by default.
    */
   public readonly getItemPlaybackUrl = (
-    mediaSource = this.currentMediaSource.value,
-    mediaType = this._currentlyPlayingMediaType.value
+    mediaSource = this.currentNegotiatedMediaSource.value,
+    mediaType = this._currentPlaybackInfo.value?.mediaType
   ): string | undefined => {
     if (
       remote.sdk.api?.basePath
@@ -968,10 +1003,14 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     /**
      * Set play session id when the playback info is updated
      */
-    watch(this._currentPlaybackInfo, () => {
-      this._state.value.playSessionId = this._currentPlaybackInfo.value?.PlaySessionId;
+    watch(this._currentPlaybackInfo, (playbackInfo) => {
+      if (!playbackInfo) {
+        return;
+      }
 
-      if (this._currentPlaybackInfo.value?.ErrorCode) {
+      this._state.value.playSessionId = playbackInfo.data.PlaySessionId;
+
+      if (playbackInfo.data.ErrorCode) {
         this._state.value.status = PlaybackStatus.Error;
       }
     });

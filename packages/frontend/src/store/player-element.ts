@@ -73,25 +73,40 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched' |
   private readonly _isFullscreenSupported = useFullscreen().isSupported;
 
   /**
+   * The current subtitle stream, as negotiated with the server for this device: unlike the
+   * streams of the /Items DTO, it has the delivery data (`DeliveryMethod` and `DeliveryUrl`).
+   */
+  private readonly _currentNegotiatedSubtitleStream = computed(() =>
+    playbackManager.currentNegotiatedMediaSource.value?.MediaStreams?.find(
+      stream =>
+        stream.Type === MediaStreamType.Subtitle
+        && stream.Index === playbackManager.currentSubtitleTrack.value?.Index
+    )
+  );
+
+  /**
    * Logic for applying custom subtitle track.
    *
    * Returns false if subtitle delivery method isn't external
    * or if the custom overlay can't be displayed in fullscreen.
    */
   private readonly _useCustomSubtitleTrack = computed(() =>
-    !isNil(playbackManager.currentSubtitleTrack.value)
-    && subtitleSettings.state.value.enabled
-    && playbackManager.currentSubtitleTrack.value.DeliveryMethod === SubtitleDeliveryMethod.External
+    subtitleSettings.state.value.enabled
+    && this._currentNegotiatedSubtitleStream.value?.DeliveryMethod === SubtitleDeliveryMethod.External
     && this._isFullscreenSupported.value
   );
 
+  /**
+   * Subtitle tracks that can be displayed, with their delivery data taken from the
+   * media source negotiated with the server.
+   */
   public readonly currentItemParsedSubtitleTracks = computed(() =>
   /**
    * TODO: There is currently a bug in Jellyfin server when adding external subtitles
    * may play the incorrect subtitle
    * https://github.com/jellyfin/jellyfin/issues/13198
    */
-    playbackManager.currentMediaSource.value?.MediaStreams?.filter(
+    playbackManager.currentNegotiatedMediaSource.value?.MediaStreams?.filter(
       sub =>
         sub.Type === MediaStreamType.Subtitle
         && (sub.DeliveryMethod === SubtitleDeliveryMethod.Encode
