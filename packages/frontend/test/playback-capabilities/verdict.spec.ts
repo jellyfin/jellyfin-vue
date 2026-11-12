@@ -10,10 +10,13 @@ import {
   subtitleStream,
   videoStream
 } from './fixtures.ts';
+import { AUDIO_TRANSCODE_TARGETS } from '#/utils/playback-capabilities/constants.ts';
+import { getAudioTargetCandidate } from '#/utils/playback-capabilities/media-config.ts';
 import type { CapabilityAnswer, CapabilityOracle } from '#/utils/playback-capabilities/oracle.ts';
 import { PROBE_FORMAT_VERSION, PROBE_READER_VERSION, type ProbeResult } from '#/utils/playback-capabilities/probe.ts';
 import {
   computeVerdict,
+  getMediaSourceQuestions,
   getNextFloor,
   isMoreExpensive,
   type PlaybackMethod,
@@ -409,6 +412,54 @@ describe('video transcode: video unsupported in both modes', () => {
     const askedTargets = oracle.asked.filter(config => config.video?.contentType === T.h264Target);
 
     expect(askedTargets.map(config => config.type)).toEqual(['media-source']);
+  });
+});
+
+describe('fallback of a copied stream: what the server encodes it to if it refuses the copy', () => {
+  const codecs = (plan: Verdict['video']) => plan?.action === 'copy' ? plan.fallback?.map(target => target.codec) : undefined;
+
+  test('a remuxed video\'s copied streams carry the targets the browser decodes, in order', async () => {
+    const verdict = await verdictFor(mkvItem(), noMatroskaBrowser);
+
+    expect([verdict.method, codecs(verdict.video), codecs(verdict.audio)]).toEqual(['Remux', ['h264', 'av1', 'vp9'], ['aac', 'opus']]);
+  });
+
+  test('direct play too: the server can still refuse the file and fall back to its HLS output', async () => {
+    const verdict = await verdictFor(mp4Item(), fullBrowser);
+
+    expect([verdict.method, codecs(verdict.video), codecs(verdict.audio)]).toEqual(['DirectPlay', ['h264', 'av1', 'vp9'], ['aac', 'opus']]);
+  });
+
+  test('the copied video of an audio transcode and the copied audio of a video transcode carry theirs', async () => {
+    const audioEncoded = await verdictFor(mkvItem('ac3'), fullBrowser);
+    const videoEncoded = await verdictFor(hevcMkvItem(), fullBrowser);
+
+    expect([codecs(audioEncoded.video), codecs(videoEncoded.audio)]).toEqual([['h264', 'av1', 'vp9'], ['aac', 'opus']]);
+  });
+
+  test('only the targets the browser decodes: none is assumed', async () => {
+    const browser = { ...noMatroskaBrowser, ms: (noMatroskaBrowser.ms ?? []).filter(type => type !== T.h264Target && type !== T.aacTarget) };
+    const verdict = await verdictFor(mkvItem('opus'), browser);
+
+    expect([verdict.method, codecs(verdict.video), codecs(verdict.audio)]).toEqual(['Remux', ['av1', 'vp9'], ['opus']]);
+  });
+
+  test('a stream none of whose targets the browser decodes has no fallback', async () => {
+    // The AAC target is the AAC-LC stream's own media source question, so only the video lacks decodable targets
+    const browser = { file: [], ms: [T.h264Mp4, T.aacMp4] };
+    const verdict = await verdictFor(mkvItem(), browser);
+
+    expect([verdict.method, verdict.video, codecs(verdict.audio)]).toEqual(['Remux', { index: 0, action: 'copy' }, ['aac']]);
+  });
+
+  test('music has none: the server takes a single codec for audio items', async () => {
+    const track = {
+      source: mediaSource([audioStream({ Index: 0, Codec: 'flac', CodecTag: undefined })], { Container: 'flac', DefaultAudioStreamIndex: 0 }),
+      probe: probeOk('audio/flac', [], [probedAudio({ codec: 'flac', codecString: 'flac', internalCodecId: undefined })])
+    };
+    const verdict = await verdictFor(track, { file: [], ms: [T.flacMp4, T.aacTarget] });
+
+    expect([verdict.method, verdict.audio]).toEqual(['Remux', { index: 0, action: 'copy' }]);
   });
 });
 
@@ -971,5 +1022,53 @@ describe('signature: what the failure memory remembers', () => {
     const b = await verdictFor(mkvItem('opus'), fullBrowser);
 
     expect(a.signature).not.toBe(b.signature);
+  });
+});
+
+describe('getMediaSourceQuestions: what the verdict asks about one stream through media source playback', () => {
+  /**
+   * The questions about the audio transcoding targets, which the verdict also asks for the fallback of copied streams
+   */
+  const audioTargetQuestions = new Set(AUDIO_TRANSCODE_TARGETS.flatMap(target =>
+    [1, 2, 3, 4, 5, 6].map(channels => JSON.stringify(getAudioTargetCandidate(target, { channels })))));
+
+  /**
+   * The media source questions the verdict asked about the stream with a content type matching `pattern`
+   */
+  async function askedThroughMediaSource(item: { source: MediaSourceInfo; probe?: ProbeResult }, pattern: RegExp) {
+    const oracle = fakeOracle(fullBrowser);
+
+    await computeVerdict({ source: item.source, probe: item.probe, oracle, environment: defaultEnvironment });
+
+    return oracle.asked.filter(config => config.type === 'media-source'
+      && pattern.test(config.video?.contentType ?? config.audio?.contentType ?? '')
+      && !audioTargetQuestions.has(JSON.stringify(config)));
+  }
+
+  test('for a probed audio stream, exactly the questions the verdict asks', async () => {
+    const item = mkvItem('opus');
+    const expected = await askedThroughMediaSource(item, /^audio\/mp4; codecs="opus"$/);
+
+    expect(getMediaSourceQuestions(item.source, 1, item.probe)).toEqual(expected);
+  });
+
+  test('for a probed video stream with two HEVC prefixes, both questions', async () => {
+    const item = hevcMkvItem();
+    const expected = await askedThroughMediaSource(item, /^video\/mp4; codecs="(?:hvc1|hev1)/);
+
+    expect([getMediaSourceQuestions(item.source, 0, item.probe), expected.length]).toEqual([expected, 2]);
+  });
+
+  test('without a probe, the generic questions from the server\'s names', async () => {
+    const { source } = mkvItem('ac3');
+    const expected = await askedThroughMediaSource({ source }, /^audio\/mp4; codecs="ac3"$/);
+
+    expect(getMediaSourceQuestions(source, 1)).toEqual(expected);
+  });
+
+  test('a stream that is not in the source has no questions', () => {
+    const { source, probe } = mkvItem('aac');
+
+    expect(getMediaSourceQuestions(source, 7, probe)).toEqual([]);
   });
 });

@@ -413,6 +413,22 @@ function candidatesFor(source: MediaSourceInfo, context: StreamContext, mode: De
 }
 
 /**
+ * The configurations the verdict asks about one stream of a source for media source playback (the stream copied
+ * into the server's HLS output), so a caller that sees that path fail for the stream can learn it
+ *
+ * @param source - The media source the verdict was computed for
+ * @param streamIndex - Absolute `MediaStream.Index` of a video or audio stream of the source
+ * @param probe - The probe result the verdict was computed with
+ */
+export function getMediaSourceQuestions(source: MediaSourceInfo, streamIndex: number, probe?: ProbeResult): MediaDecodingConfiguration[] {
+  const streams = source.MediaStreams ?? [];
+  const stream = streams.find(candidate =>
+    candidate.Index === streamIndex && (candidate.Type === 'Video' || candidate.Type === 'Audio'));
+
+  return stream ? candidatesFor(source, getContext(streams, stream, probe), 'media-source') : [];
+}
+
+/**
  * The size the server would encode the video at: the source scaled down to fit the caps, keeping its aspect ratio
  */
 function getOutputSize(context: StreamContext, caps: RequestCaps): { width: number; height: number } {
@@ -758,6 +774,27 @@ async function getPlan(evaluation: Evaluation, rung: PlaybackRung): Promise<Rung
 }
 
 /**
+ * Adds the fallback targets to the copied streams of a video's plan (see {@link StreamPlan})
+ */
+async function withFallbacks(evaluation: Evaluation, plan: RungPlan): Promise<Pick<RungPlan, 'video' | 'audio'>> {
+  if (!plan.video) {
+    return plan;
+  }
+
+  const withFallback = async (stream: StreamPlan | undefined, findTargets: () => Promise<TargetSet | undefined>) => {
+    const targets = stream?.action === 'copy' ? (await findTargets())?.targets : undefined;
+
+    return targets?.length ? { ...stream, fallback: targets } as StreamPlan : stream;
+  };
+  const [video, audio] = await Promise.all([
+    withFallback(plan.video, evaluation.videoTargets),
+    withFallback(plan.audio, evaluation.audioTargets)
+  ]);
+
+  return { video, audio };
+}
+
+/**
  * Whether the quality mode or the user policy forbid a playable rung of an item of the given type
  */
 function getRejection(environment: VerdictEnvironment, rung: PlaybackRung, itemType: 'Video' | 'Audio', plan: RungPlan): RungRejection | undefined {
@@ -783,27 +820,6 @@ function getRejection(environment: VerdictEnvironment, rung: PlaybackRung, itemT
   }[rung];
 
   return allowed ? undefined : 'policy';
-}
-
-/**
- * Adds the fallback targets to the copied streams of a video's plan (see {@link StreamPlan})
- */
-async function withFallbacks(evaluation: Evaluation, plan: RungPlan): Promise<Pick<RungPlan, 'video' | 'audio'>> {
-  if (!plan.video) {
-    return plan;
-  }
-
-  const withFallback = async (stream: StreamPlan | undefined, findTargets: () => Promise<TargetSet | undefined>) => {
-    const targets = stream?.action === 'copy' ? (await findTargets())?.targets : undefined;
-
-    return targets?.length ? { ...stream, fallback: targets } as StreamPlan : stream;
-  };
-  const [video, audio] = await Promise.all([
-    withFallback(plan.video, evaluation.videoTargets),
-    withFallback(plan.audio, evaluation.audioTargets)
-  ]);
-
-  return { video, audio };
 }
 
 /**
