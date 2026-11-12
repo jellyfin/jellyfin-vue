@@ -37,7 +37,7 @@
                   :media-streams="playbackManager.currentItemAudioTracks.value"
                   type="Audio"
                   :default-stream-index="playbackManager.currentAudioTrack.value?.Index"
-                  @input="playbackManager.currentAudioTrack.value = $event ?? -1" />
+                  @input="playbackManager.currentAudioTrack.value = $event" />
               </VCol>
             </VRow>
             <VRow
@@ -54,7 +54,7 @@
                   :default-stream-index="
                     playbackManager.currentSubtitleTrack.value?.Index
                   "
-                  @input="playbackManager.currentSubtitleTrack.value = $event ?? -1" />
+                  @input="playbackManager.currentSubtitleTrack.value = $event" />
               </VCol>
             </VRow>
             <VRow align="center">

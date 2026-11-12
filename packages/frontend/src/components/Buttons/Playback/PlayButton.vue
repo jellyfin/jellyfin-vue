@@ -57,6 +57,10 @@ const {
   iconOnly?: boolean;
   fab?: boolean;
   shuffle?: boolean;
+  /**
+   * Tracks explicitly chosen for this item, as absolute `MediaStream.Index` values.
+   * Leave them undefined to let the server pick the defaults; `-1` disables the subtitles.
+   */
   videoTrackIndex?: number;
   audioTrackIndex?: number;
   subtitleTrackIndex?: number;

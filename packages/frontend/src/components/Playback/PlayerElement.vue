@@ -21,8 +21,8 @@
           @loadeddata="onLoadedData">
           <track
             v-for="sub in playerElement.currentItemVttParsedSubtitleTracks.value"
-            :key="`${playbackManager.currentSourceUrl.value}-${sub.srcIndex}`"
-            :data-src-index="String(sub.srcIndex)"
+            :key="`${playbackManager.currentSourceUrl.value}-${sub.index}`"
+            :data-stream-index="String(sub.index)"
             kind="subtitles"
             :label="sub.label"
             :srclang="sub.srcLang"

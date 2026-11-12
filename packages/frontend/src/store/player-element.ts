@@ -39,7 +39,11 @@ interface PlaybackTrack {
   label: string;
   src?: string;
   srcLang?: string;
-  srcIndex: number;
+  /**
+   * Absolute `MediaStream.Index` of the stream, the same numbering used by the playback manager.
+   * `-1` is used for the "no subtitles" entry of the menus.
+   */
+  index: number;
   type: SubtitleDeliveryMethod;
   codec?: string;
 }
@@ -112,12 +116,6 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched' |
         && (sub.DeliveryMethod === SubtitleDeliveryMethod.Encode
           || sub.DeliveryMethod === SubtitleDeliveryMethod.External)
     )
-      .map(
-        (stream, index) => ({
-          srcIndex: index,
-          ...stream
-        })
-      )
       .map(sub => ({
         label: sub.DisplayTitle ?? 'Undefined',
         src:
@@ -127,7 +125,7 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched' |
             : undefined,
         srcLang: sub.Language ?? undefined,
         type: sub.DeliveryMethod ?? SubtitleDeliveryMethod.Drop,
-        srcIndex: sub.srcIndex,
+        index: sub.Index ?? -1,
         codec: sub.Codec?.toLowerCase()
       }))
   );
@@ -143,7 +141,7 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched' |
 
   public readonly currentExternalSubtitleTrack = computedAsync(async () => {
     const el = this.currentItemExternalParsedSubtitleTracks.value?.find(
-      sub => sub.srcIndex === playbackManager.currentSubtitleTrack.value?.Index
+      sub => sub.index === playbackManager.currentSubtitleTrack.value?.Index
     ) as SubtitleExternalTrack;
 
     if (this._useCustomSubtitleTrack.value) {
@@ -179,15 +177,15 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched' |
   );
 
   private readonly _usingVtt = computed(() =>
-    this.currentItemVttParsedSubtitleTracks.value?.some(s => s.srcIndex === playbackManager.currentSubtitleTrack.value?.Index)
+    this.currentItemVttParsedSubtitleTracks.value?.some(s => s.index === playbackManager.currentSubtitleTrack.value?.Index)
   );
 
   private readonly _usingAss = computed(() =>
-    this.currentItemAssParsedSubtitleTracks.value?.some(s => s.srcIndex === playbackManager.currentSubtitleTrack.value?.Index)
+    this.currentItemAssParsedSubtitleTracks.value?.some(s => s.index === playbackManager.currentSubtitleTrack.value?.Index)
   );
 
   private readonly _usingPgs = computed(() =>
-    this.currentItemPgsParsedSubtitleTracks.value?.some(s => s.srcIndex === playbackManager.currentSubtitleTrack.value?.Index)
+    this.currentItemPgsParsedSubtitleTracks.value?.some(s => s.index === playbackManager.currentSubtitleTrack.value?.Index)
   );
 
   /**
@@ -288,7 +286,7 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched' |
        * Use the TextTrack of the <track> element rendered for this subtitle instead.
        */
       const trackElement = [...mediaElementRef.value.querySelectorAll('track')].find(
-        el => el.dataset.srcIndex === String(subtitleTrack.srcIndex)
+        el => el.dataset.streamIndex === String(subtitleTrack.index)
       );
 
       if (trackElement) {

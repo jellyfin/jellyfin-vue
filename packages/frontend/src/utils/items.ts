@@ -462,7 +462,10 @@ export function getItemRuntime(item: BaseItemDto): number {
 }
 
 /**
- * Filters the media streams based on the wanted type
+ * Filters the media streams based on the wanted type.
+ *
+ * The streams keep their absolute `Index` (their position among all the streams of the
+ * media source), which is the only numbering the server understands.
  *
  * @param mediaStreams - Media streams to filter among
  * @param streamType - Stream type such as "audio" or "subtitles"
@@ -472,13 +475,7 @@ export function getMediaStreams(
   mediaStreams: MediaStream[],
   streamType: string
 ): MediaStream[] {
-  return mediaStreams.filter(mediaStream => mediaStream.Type === streamType)
-    .map(
-      (stream, index) => ({
-        ...stream,
-        Index: index
-      })
-    );
+  return mediaStreams.filter(mediaStream => mediaStream.Type === streamType);
 }
 
 /**

@@ -61,6 +61,13 @@ export enum InitMode {
 interface PlaybackManagerState {
   status: PlaybackStatus;
   currentItemIndex?: number;
+  /**
+   * Version (index in `MediaSources`) and tracks explicitly chosen by the user.
+   * Track indexes are absolute `MediaStream.Index` values, the numbering the server uses.
+   * `undefined` means "not chosen": the server picks the default according to the user's
+   * settings, and that choice is adopted as the current track once the server answers.
+   * For subtitles, `-1` means "no subtitles".
+   */
   mediaSourceIndexes: {
     source?: number;
     video?: number;
@@ -174,46 +181,27 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    * Undefined until the server answers for the current item and version.
    */
   public readonly currentNegotiatedMediaSource = computed(() => this._currentPlaybackInfo.value?.data.MediaSources?.[0]);
+  /**
+   * Current tracks. They're read and written as absolute `MediaStream.Index` values
+   * (see `PlaybackManagerState.mediaSourceIndexes` for the meaning of `undefined` and `-1`).
+   *
+   * When the user didn't choose a track, the current one is the one the server picked for
+   * this device (`DefaultAudioStreamIndex`/`DefaultSubtitleStreamIndex` of the negotiated
+   * media source), so the UI shows what is actually being played.
+   */
   public readonly currentVideoTrack = computed({
-    get: () => {
-      if (!isNil(this._state.value.mediaSourceIndexes.video)
-      ) {
-        return this.currentMediaSource.value?.MediaStreams?.find(
-          stream =>
-            stream.Type === MediaStreamType.Video
-            && stream.Index === this._state.value.mediaSourceIndexes.video
-        );
-      }
-    },
-    set: (newIndex: number) => this._state.value.mediaSourceIndexes.video = newIndex
+    get: () => this._findStream(MediaStreamType.Video, this._state.value.mediaSourceIndexes.video),
+    set: (newIndex: number | undefined) => this._state.value.mediaSourceIndexes.video = newIndex
   });
 
   public readonly currentAudioTrack = computed({
-    get: () => {
-      if (!isNil(this._state.value.mediaSourceIndexes.audio)
-      ) {
-        return this.currentMediaSource.value?.MediaStreams?.find(
-          stream =>
-            stream.Type === MediaStreamType.Audio
-            && stream.Index === this._state.value.mediaSourceIndexes.audio
-        );
-      }
-    },
-    set: (newIndex: number) => this._state.value.mediaSourceIndexes.audio = newIndex
+    get: () => this._findStream(MediaStreamType.Audio, this._currentAudioStreamIndex.value),
+    set: (newIndex: number | undefined) => this._state.value.mediaSourceIndexes.audio = newIndex
   });
 
   public readonly currentSubtitleTrack = computed({
-    get: () => {
-      if (!isNil(this._state.value.mediaSourceIndexes.subtitle)
-      ) {
-        return this.currentMediaSource.value?.MediaStreams?.find(
-          stream =>
-            stream.Type === MediaStreamType.Subtitle
-            && stream.Index === this._state.value.mediaSourceIndexes.subtitle
-        );
-      }
-    },
-    set: (newIndex: number) => this._state.value.mediaSourceIndexes.subtitle = newIndex
+    get: () => this._findStream(MediaStreamType.Subtitle, this._currentSubtitleStreamIndex.value),
+    set: (newIndex: number | undefined) => this._state.value.mediaSourceIndexes.subtitle = newIndex
   });
 
   /**
@@ -322,6 +310,37 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     }
   }
   );
+
+  /**
+   * Absolute index of the audio stream being played: the one chosen by the user or,
+   * if none, the one picked by the server. Undefined while unknown.
+   */
+  private readonly _currentAudioStreamIndex = computed(() =>
+    this._state.value.mediaSourceIndexes.audio
+    ?? this.currentNegotiatedMediaSource.value?.DefaultAudioStreamIndex
+    ?? undefined
+  );
+
+  /**
+   * Absolute index of the subtitle stream being played: the one chosen by the user or,
+   * if none, the one picked by the server. `-1` when there are no subtitles.
+   */
+  private readonly _currentSubtitleStreamIndex = computed(() => {
+    const index = this._state.value.mediaSourceIndexes.subtitle
+      ?? this.currentNegotiatedMediaSource.value?.DefaultSubtitleStreamIndex;
+
+    return isNil(index) || index < 0 ? -1 : index;
+  });
+
+  /**
+   * Finds a stream of the current media source by its absolute index
+   */
+  private readonly _findStream = (type: MediaStreamType, index?: number) =>
+    isNil(index)
+      ? undefined
+      : this.currentMediaSource.value?.MediaStreams?.find(
+          stream => stream.Type === type && stream.Index === index
+        );
 
   public readonly currentSourceUrl = computed(() => this.getItemPlaybackUrl());
 

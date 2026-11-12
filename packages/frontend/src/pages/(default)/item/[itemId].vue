@@ -194,6 +194,7 @@
                       getMediaStreams(currentSource.MediaStreams, 'Video')
                     "
                     type="Video"
+                    :default-stream-index="currentVideoTrack"
                     @input="(trackIndex) => (currentVideoTrack = trackIndex)" />
                 </VCol>
               </VRow>
@@ -215,6 +216,9 @@
                       getMediaStreams(currentSource.MediaStreams, 'Audio')
                     "
                     type="Audio"
+                    :default-stream-index="
+                      currentAudioTrack ?? currentSource.DefaultAudioStreamIndex ?? undefined
+                    "
                     @input="(trackIndex) => (currentAudioTrack = trackIndex)" />
                 </VCol>
               </VRow>
@@ -236,6 +240,9 @@
                       getMediaStreams(currentSource.MediaStreams, 'Subtitle')
                     "
                     type="Subtitle"
+                    :default-stream-index="
+                      currentSubtitleTrack ?? currentSource.DefaultSubtitleStreamIndex ?? undefined
+                    "
                     @input="
                       (trackIndex) => (currentSubtitleTrack = trackIndex)
                     " />
@@ -302,7 +309,7 @@ import type {
   MediaSourceInfo
 } from '@jellyfin/sdk/lib/generated-client';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { getItemDetailsLink, getMediaStreams, getMergedCrew } from '#/utils/items.ts';
 import { getItemizedSelect } from '#/utils/forms.ts';
@@ -334,6 +341,12 @@ const { data: currentSeries } = await useBaseItem(getLibraryApi, 'getItem')(() =
 }));
 
 const selectedSource = ref<MediaSourceInfo>();
+/**
+ * Tracks explicitly chosen by the user, as absolute `MediaStream.Index` values.
+ * `undefined` means "not chosen": the server picks the default according to the user's
+ * settings (the selectors display that default, from the media source of the DTO).
+ * For subtitles, `-1` means "no subtitles".
+ */
 const currentVideoTrack = ref<number>();
 const currentAudioTrack = ref<number>();
 const currentSubtitleTrack = ref<number>();
@@ -367,6 +380,15 @@ const currentSource = computed({
   set(newValue) {
     selectedSource.value = newValue;
   }
+});
+
+/**
+ * Track indexes belong to one version: go back to the server defaults when it changes
+ */
+watch(() => currentSource.value.Id, () => {
+  currentVideoTrack.value = undefined;
+  currentAudioTrack.value = undefined;
+  currentSubtitleTrack.value = undefined;
 });
 
 useItemPageTitle(item);

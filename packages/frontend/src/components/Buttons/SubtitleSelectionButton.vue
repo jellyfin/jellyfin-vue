@@ -22,13 +22,13 @@
         <VList class="uno-overflow-hidden">
           <VListItem
             v-for="track of tracks"
-            :key="track.srcIndex"
+            :key="track.index"
             :title="track.label"
             @click="
-              playbackManager.currentSubtitleTrack.value = track.srcIndex
+              playbackManager.currentSubtitleTrack.value = track.index
             ">
             <template
-              v-if="track.srcIndex === playbackManager.currentSubtitleTrack.value?.Index"
+              v-if="track.index === (playbackManager.currentSubtitleTrack.value?.Index ?? -1)"
               #prepend>
               <JIcon class="i-mdi:check uno-w-10" />
             </template>
@@ -50,13 +50,17 @@ const menuModel = defineModel<boolean>();
 
 const { t } = useTranslation();
 
+/**
+ * Subtitle tracks, identified by their absolute `MediaStream.Index`, plus the
+ * "disabled" entry (`-1`, which means "no subtitles" for the playback manager)
+ */
 const tracks = computed(() => {
   const subs = playerElement.currentItemParsedSubtitleTracks.value;
 
   return [
     {
       label: t('disabled'),
-      srcIndex: -1,
+      index: -1,
       type: SubtitleDeliveryMethod.External
     },
     ...(subs ?? [])

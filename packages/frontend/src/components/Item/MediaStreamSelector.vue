@@ -28,20 +28,33 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, capitalize } from 'vue';
+import { computed, capitalize } from 'vue';
 import type { MediaStream } from '@jellyfin/sdk/lib/generated-client';
 import { useTranslation } from 'i18next-vue';
-import { watchImmediate } from '@vueuse/core';
-import { isNil } from '@jellyfin-vue/shared/validation';
 import { getLocaleName } from '#/utils/i18n.ts';
 
+/**
+ * Track indexes are always the absolute `MediaStream.Index` of the streams.
+ *
+ * The selected stream is controlled by the parent: the component displays `defaultStreamIndex`
+ * and only emits `input` when the user picks a stream, so displaying the default
+ * (or following changes of it) never counts as an explicit choice.
+ */
 const { mediaStreams, type, defaultStreamIndex } = defineProps<{
   mediaStreams: MediaStream[];
   type: string;
+  /**
+   * Index of the stream to display as selected. For subtitles, a missing value or `-1`
+   * displays "disabled". For video and audio, a missing value displays the stream flagged
+   * as default (or the first one).
+   */
   defaultStreamIndex?: number;
 }>();
 const emit = defineEmits<{
-  input: [newIndex?: number];
+  /**
+   * Index of the stream picked by the user, or `-1` when the subtitles are disabled.
+   */
+  input: [newIndex: number];
 }>();
 const { t, i18next } = useTranslation();
 
@@ -114,37 +127,20 @@ const selectItems = computed(() =>
 );
 
 /**
- * Default index to use (null if none because of V-Select empty value)
+ * Index displayed as selected (null if none, because that's VSelect's empty value)
  */
-// eslint-disable-next-line unicorn/no-null
-const trackIndex = ref<number | null>(defaultStreamIndex ?? mediaStreams.find(track => track.IsDefault)?.Index ?? null);
+const trackIndex = computed({
+  get: () => {
+    const stream = mediaStreams.find(track => track.Index === defaultStreamIndex)
+      ?? (type === 'Subtitle'
+        ? undefined
+        : mediaStreams.find(track => track.IsDefault) ?? mediaStreams[0]);
 
-/**
- * Check if Type is Video or Audio and trackIndex is null then set trackIndex as this.selectItems[0].value
- */
-if (
-  (type === 'Video' || type === 'Audio')
-  && isNil(trackIndex.value)
-  && selectItems.value[0]
-) {
-  // eslint-disable-next-line unicorn/no-null
-  trackIndex.value = selectItems.value[0].value ?? null;
-}
-
-watchImmediate(
-  trackIndex,
-  (newValue) => {
-    emit('input', newValue ?? undefined);
+    // eslint-disable-next-line unicorn/no-null
+    return stream?.Index ?? null;
+  },
+  set: (newIndex: number | null | undefined) => {
+    emit('input', newIndex ?? -1);
   }
-);
-
-watch(
-  () => defaultStreamIndex,
-  (newValue) => {
-    if (newValue !== trackIndex.value) {
-      // eslint-disable-next-line unicorn/no-null
-      trackIndex.value = newValue ?? null;
-    }
-  }
-);
+});
 </script>
