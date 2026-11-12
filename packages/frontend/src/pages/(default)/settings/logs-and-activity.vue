@@ -89,6 +89,7 @@
 import {
   LogLevel
 } from '@jellyfin/sdk/lib/generated-client';
+import { AUTHORIZATION_PARAMETER } from '@jellyfin/sdk/lib/constants';
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
 import { format, formatRelative, parseJSON } from 'date-fns';
 import { useTranslation } from 'i18next-vue';
@@ -186,9 +187,20 @@ function getFormattedLogDate(date: string | undefined): string | undefined {
  * Creates a link to the given type of log file
  */
 function getLogFileLink(name: string): string | undefined {
-  return remote.sdk.api?.basePath && remote.auth.currentUserToken.value
-    ? `${remote.sdk.api.basePath}/System/Logs/Log?name=${name}&api_key=${remote.auth.currentUserToken.value}`
-    : undefined;
+  if (!remote.sdk.api?.basePath || !remote.auth.currentUserToken.value) {
+    return;
+  }
+
+  /**
+   * `ApiKey` is the query parameter every supported server accepts: `api_key` only works
+   * when legacy authorization is enabled on the server, which is off by default since 12.0
+   */
+  const parameters = new URLSearchParams({
+    name,
+    [AUTHORIZATION_PARAMETER]: remote.auth.currentUserToken.value
+  }).toString();
+
+  return `${remote.sdk.api.basePath}/System/Logs/Log?${parameters}`;
 }
 
 const [{ data: logs }, { data: activityList }] = await Promise.all([

@@ -12,6 +12,7 @@ import {
   PlayMethod,
   type BaseItemDto
 } from '@jellyfin/sdk/lib/generated-client';
+import { AUTHORIZATION_PARAMETER } from '@jellyfin/sdk/lib/constants';
 import { getInstantMixApi } from '@jellyfin/sdk/lib/utils/api/instant-mix-api';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getMediaInfoApi } from '@jellyfin/sdk/lib/utils/api/media-info-api';
@@ -976,7 +977,11 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
         Static: String(true),
         mediaSourceId: mediaSource.Id,
         deviceId: remote.sdk.deviceInfo.id,
-        api_key: remote.auth.currentUserToken.value,
+        /**
+         * `api_key` only works when legacy authorization is enabled on the server (off by
+         * default since 12.0). `ApiKey` is accepted by every supported server.
+         */
+        [AUTHORIZATION_PARAMETER]: remote.auth.currentUserToken.value,
         Tag: mediaSource.ETag ?? '',
         LiveStreamId: mediaSource.LiveStreamId ?? ''
       };

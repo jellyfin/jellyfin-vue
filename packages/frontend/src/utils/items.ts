@@ -9,6 +9,7 @@ import {
   type BaseItemPerson,
   type MediaStream
 } from '@jellyfin/sdk/lib/generated-client';
+import { AUTHORIZATION_PARAMETER } from '@jellyfin/sdk/lib/constants';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getShowApi } from '@jellyfin/sdk/lib/utils/api/show-api';
 import { getUserViewApi } from '@jellyfin/sdk/lib/utils/api/user-view-api';
@@ -511,7 +512,15 @@ export function getItemDownloadUrl(itemId: string): string | undefined {
     return undefined;
   }
 
-  return `${serverAddress}/Items/${itemId}/Download?api_key=${userToken}`;
+  /**
+   * `ApiKey` is the query parameter every supported server accepts: `api_key` only works
+   * when legacy authorization is enabled on the server, which is off by default since 12.0
+   */
+  const parameters = new URLSearchParams({
+    [AUTHORIZATION_PARAMETER]: userToken
+  }).toString();
+
+  return `${serverAddress}/Items/${itemId}/Download?${parameters}`;
 }
 
 /**
