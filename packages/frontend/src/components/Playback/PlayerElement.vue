@@ -200,18 +200,22 @@ watch(playbackManager.currentSourceUrl,
      */
     await nextTick();
 
-    if (
+    if (mediaElementRef.value && !newUrl) {
+      /**
+       * Unload the previous item, so the player doesn't keep (or restart) its playback.
+       * This is the way the HTML spec recommends: setting `src` to a placeholder would
+       * make the browser request it and fail with a media error.
+       */
+      mediaElementRef.value.removeAttribute('src');
+      mediaElementRef.value.load();
+    } else if (
       mediaElementRef.value
-      && (!newUrl
-        || playbackManager.currentMediaSource.value?.SupportsDirectPlay
+      && (playbackManager.currentMediaSource.value?.SupportsDirectPlay
         || !hls)
     ) {
       /**
        * Without hls.js (no MediaSource nor ManagedMediaSource available), HLS is left to the
        * browser's native support.
-       *
-       * We stringify undefined instead of skipping this block when there's no new source url,
-       * so the player doesn't restart playback of the previous item
        */
       mediaElementRef.value.src = String(newUrl);
     } else if (
