@@ -262,6 +262,16 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched'> 
         { resampling: 'video_width' }
       );
 
+      /**
+       * assjs only starts rendering on the element's `play`/`playing` events, and has no method to
+       * start it otherwise. The renderer is usually created while the media is already playing
+       * (the subtitle file is fetched asynchronously, or the track is chosen during playback), so it
+       * would stay empty until the next pause and resume: replay the event for it.
+       */
+      if (!mediaElementRef.value.paused) {
+        mediaElementRef.value.dispatchEvent(new Event('playing'));
+      }
+
       this._cleanups.add(() => {
         this._asssub?.destroy();
         this._asssub = undefined;
