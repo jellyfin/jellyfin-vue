@@ -685,6 +685,41 @@ describe('audio-only items (music) follow the same rules without video', () => {
   });
 });
 
+describe('the media type of the item, which decides how the server treats it', () => {
+  const audioOnly = () => ({
+    source: mediaSource([audioStream({ Index: 0 })], { Container: 'mp4' }),
+    probe: probeOk('video/mp4', [], [probedAudio()])
+  });
+
+  test('a video item without a video stream (an audio-only file in a video library) is a video for the server', async () => {
+    const verdict = await verdictFor(audioOnly(), fullBrowser, { mediaType: 'Video' });
+
+    expect(verdict).toMatchObject({ method: 'DirectPlay', mediaType: 'Video' });
+    expect(verdict.video).toBeUndefined();
+  });
+
+  test('so its rungs above direct play need the permission to transcode video, like any video\'s', async () => {
+    const verdict = await verdictFor(audioOnly(), { file: [], ms: fullBrowser.ms }, {
+      mediaType: 'Video',
+      environment: { policy: { EnableVideoPlaybackTranscoding: false, EnableAudioPlaybackTranscoding: true } }
+    });
+
+    expect(verdict).toMatchObject({ method: 'Unplayable', reasons: ['ContainerUnsupported', 'NotAllowedByPolicy'] });
+  });
+
+  test('music is music', async () => {
+    const verdict = await verdictFor(audioOnly(), fullBrowser, { mediaType: 'Audio' });
+
+    expect(verdict.mediaType).toBe('Audio');
+  });
+
+  test('without the media type, the streams tell', async () => {
+    const [video, music] = await Promise.all([verdictFor(mp4Item(), fullBrowser), verdictFor(audioOnly(), fullBrowser)]);
+
+    expect([video.mediaType, music.mediaType]).toEqual(['Video', 'Audio']);
+  });
+});
+
 describe('no stream metadata at all (live TV, .strm, remote)', () => {
   test('the verdict is an optimistic direct play, flagged as unverified', async () => {
     const verdict = await verdictFor({ source: mediaSource([], { Container: 'strm', MediaStreams: [] }) }, { file: [], ms: [] });

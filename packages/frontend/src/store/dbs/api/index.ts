@@ -13,6 +13,7 @@ import { useSessionStorage } from '@vueuse/core';
 import type { IApiDatabase } from './apidb.worker.ts';
 import ApiDatabase from './apidb.worker.ts?worker';
 import { remote } from '#/plugins/remote/index.ts';
+import type { ProbeResult } from '#/utils/playback-capabilities/probe.ts';
 
 /**
  * Contains all the enums used in the API as array constants
@@ -116,6 +117,39 @@ class ApiStore {
         this._notifyUpdates(existingIds);
       }
     }
+  };
+
+  /**
+   * == MEDIA PROBES ==
+   * Probe results are stored next to the items they belong to and deleted with them.
+   */
+
+  /**
+   * Gets the stored probe result of a media source, if it was computed for its current `ETag`
+   */
+  public readonly getMediaProbe = async (
+    itemId: string,
+    mediaSourceId: string,
+    etag: string | null | undefined
+  ): Promise<ProbeResult | undefined> => await apiDb.getMediaProbe(itemId, mediaSourceId, etag);
+
+  /**
+   * Stores the probe result of a media source of a stored item, if it does not depend on the network
+   *
+   * @returns Whether the result was stored
+   */
+  public readonly mediaProbeAdd = async (
+    itemId: string,
+    mediaSourceId: string,
+    etag: string | null | undefined,
+    result: ProbeResult
+  ): Promise<boolean> => await apiDb.mediaProbeAdd(itemId, mediaSourceId, etag, toRaw(result));
+
+  /**
+   * Forgets every stored probe result ("forget learned compatibility")
+   */
+  public readonly mediaProbesClear = async (): Promise<void> => {
+    await apiDb.mediaProbesClear();
   };
 
   public constructor() {
