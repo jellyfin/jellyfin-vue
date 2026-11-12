@@ -745,6 +745,13 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     return request.map(i => i.Id!);
   };
 
+  /**
+   * Builds the URL that plays a media source, following the decision of the server:
+   * - `SupportsDirectPlay`: the original file, as is (static URL).
+   * - Otherwise, the stream described by `TranscodingUrl`. This is a remux when the server
+   *   also set `SupportsDirectStream` (which is true for direct play too, so it can't be used
+   *   to pick the static URL) and a transcode otherwise.
+   */
   public readonly getItemPlaybackUrl = (
     mediaSource = this.currentMediaSource.value,
     mediaType = this._currentlyPlayingMediaType.value
@@ -753,7 +760,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       remote.sdk.api?.basePath
       && remote.auth.currentUserToken.value
       && mediaType
-      && mediaSource?.SupportsDirectStream
+      && mediaSource?.SupportsDirectPlay
       && mediaSource.Type
       && mediaSource.Id
       && mediaSource.Container
@@ -777,7 +784,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       return `${remote.sdk.api.basePath}/${mediaType}/${mediaSource.Id}/stream.${mediaSource.Container}?${parameters}`;
     }
 
-    if (remote.sdk.api?.basePath && mediaSource?.SupportsTranscoding && mediaSource.TranscodingUrl) {
+    if (remote.sdk.api?.basePath && !mediaSource?.SupportsDirectPlay && mediaSource?.TranscodingUrl) {
       return `${remote.sdk.api.basePath}${mediaSource.TranscodingUrl}`;
     }
   };
