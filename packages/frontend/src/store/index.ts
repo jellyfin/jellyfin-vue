@@ -80,9 +80,23 @@ const { pointerType: lastPointerType } = usePointer();
 export const canHover = computed(() => hasFinePointer.value && lastPointerType.value !== 'touch');
 
 /**
- * Track if there's HDR support in the screen
+ * Media queries that match on an HDR display: video planes and the whole display
  */
-export const hasHDRDisplay = useMediaQuery('(video-dynamic-range:high)');
+const HDR_DISPLAY_QUERIES = ['(video-dynamic-range: high)', '(dynamic-range: high)'] as const;
+const hdrDisplayMatches = HDR_DISPLAY_QUERIES.map(query => useMediaQuery(query));
+/**
+ * An engine that does not understand a media query serialises it as `not all`
+ */
+const hdrDisplayDetectable = HDR_DISPLAY_QUERIES.some(query => matchMedia(query).media !== 'not all');
+
+/**
+ * Whether the display the window is on is HDR. It follows the window to other displays.
+ * Undefined when the engine understands none of the HDR media queries, so it cannot tell.
+ */
+export const hasHDRDisplay = computed(() => hdrDisplayDetectable
+  ? hdrDisplayMatches.some(matches => matches.value)
+  : undefined
+);
 
 /**
  * Whether the layout must use transparency effects
