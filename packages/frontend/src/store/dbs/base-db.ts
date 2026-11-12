@@ -137,6 +137,11 @@ export abstract class BaseDb extends Dexie {
       const table = this.table(tableName);
 
       table.hook('reading', (obj) => {
+        // Dexie also runs this hook for keys that are not found: they must stay undefined
+        if (obj === undefined) {
+          return obj;
+        }
+
         const instance = new EntityClass(this);
 
         return Object.assign(instance, obj);

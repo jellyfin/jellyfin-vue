@@ -132,7 +132,7 @@ class ApiDatabase extends BaseDb {
     }
 
     return await this.transaction('rw', this.items, this.mediaProbes, async () => {
-      // Checked by key: the `reading` hook turns a missing row into an empty entity
+      // Checked by key, without reading the whole item
       if (await this.items.where(':id').equals(itemId).count() === 0) {
         return false;
       }
