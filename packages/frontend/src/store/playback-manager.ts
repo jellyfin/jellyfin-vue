@@ -103,6 +103,10 @@ interface ReportedPlayback {
   itemId: string;
   mediaSourceId?: string | null;
   playSessionId?: string | null;
+  /**
+   * Last position reached while this item was the current one, in seconds
+   */
+  position?: number;
 }
 
 /**
@@ -522,12 +526,11 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   /**
    * Report playback stopped to the server. Used by the "Now playing" statistics in other clients.
    *
-   * It ends the playback that was reported as started, with its own ids, even if the state
-   * already moved to another item.
+   * It ends the playback that was reported as started, with its own ids and the last position
+   * it reached, even if the state already moved to another item (and reset the current time).
+   * The server relies on that position to mark the item as played and to save the resume point.
    */
-  private readonly _reportPlaybackStopped = async (
-    currentTime = this.currentTime.value
-  ): Promise<void> => {
+  private readonly _reportPlaybackStopped = async (): Promise<void> => {
     const playback = this._reportedPlayback;
 
     this._reportedPlayback = undefined;
@@ -541,7 +544,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
         ItemId: playback.itemId,
         MediaSourceId: playback.mediaSourceId,
         PlaySessionId: playback.playSessionId,
-        PositionTicks: msToTicks((currentTime || 0) * 1000)
+        PositionTicks: msToTicks((playback.position ?? 0) * 1000)
       }
     });
   };
@@ -550,7 +553,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    * Report playback start to the server. Used by the "Now playing" statistics in other clients.
    */
   private readonly _reportPlaybackStart = async (playback: ReportedPlayback): Promise<void> => {
-    this._reportedPlayback = playback;
+    this._reportedPlayback = { ...playback, position: this.currentTime.value };
 
     await remote.sdk.newUserApi(getSessionApi).reportPlaybackStart({
       playbackStartInfo: this._getPlaybackReportInfo(playback)
@@ -761,7 +764,8 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     const volume = this.currentVolume.value;
 
     /**
-     * Reported before resetting the state, so it gets the time reached
+     * Reported before resetting the state, which would report it again for the item change
+     * (that second report is skipped, since there's no reported playback left by then)
      */
     void this._reportPlaybackStopped();
     this._reset();
@@ -1080,7 +1084,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       }
     });
     watch(this.status,
-      async (newValue, oldValue) => {
+      (newValue, oldValue) => {
         const remove
           = newValue === PlaybackStatus.Error
             || newValue === PlaybackStatus.Stopped;
@@ -1115,8 +1119,6 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
               );
             }
           }
-
-          await this._reportPlaybackProgress();
         }
       }
     );
@@ -1150,13 +1152,24 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     watch(this.currentItemId,
       async (_, oldValue) => {
         if (oldValue) {
-          /**
-           * We pass the currentTime to ensure the playback stop is reported with the correct time and not 0
-           */
-          await this._reportPlaybackStopped(this.currentTime.value);
+          await this._reportPlaybackStopped();
         }
       }
     );
+
+    /**
+     * Keep the position reached by the reported playback. Changing the current item resets the
+     * current time synchronously, before any regular watcher runs, so the stop report can't read
+     * it then. This watcher is synchronous so it sees the item change before the time reset,
+     * and doesn't record the reset as the position of the previous item.
+     */
+    watch(this.currentTime, (time) => {
+      const playback = this._reportedPlayback;
+
+      if (!isNil(playback) && playback.itemId === this.currentItemId.value) {
+        playback.position = time;
+      }
+    }, { flush: 'sync' });
 
     /**
      * Report the playback start when the server answers the PlaybackInfo request of the
@@ -1185,7 +1198,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       };
 
       if (this._reportedPlayback?.itemId === playback.itemId) {
-        this._reportedPlayback = playback;
+        this._reportedPlayback = { ...playback, position: this._reportedPlayback.position };
         await this._reportPlaybackProgress();
       } else {
         await this._reportPlaybackStart(playback);
