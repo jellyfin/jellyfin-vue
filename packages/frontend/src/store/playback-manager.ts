@@ -9,6 +9,7 @@ import {
   ItemFilter,
   ItemSortBy,
   MediaStreamType,
+  PlayMethod,
   type BaseItemDto
 } from '@jellyfin/sdk/lib/generated-client';
 import { getInstantMixApi } from '@jellyfin/sdk/lib/utils/api/instant-mix-api';
@@ -85,7 +86,6 @@ interface PlaybackManagerState {
   repeatMode: RepeatMode;
   queue: string[];
   originalQueue: string[];
-  playSessionId?: string | null;
   playbackInitiatorId?: BaseItemDto['Id'];
   playbackInitMode: InitMode;
   playbackSpeed: number;
@@ -94,6 +94,15 @@ interface PlaybackManagerState {
    * media source to fit within it. Undefined means source quality.
    */
   maxStreamingBitrate?: number;
+}
+
+/**
+ * Playback of an item as reported to the server
+ */
+interface ReportedPlayback {
+  itemId: string;
+  mediaSourceId?: string | null;
+  playSessionId?: string | null;
 }
 
 /**
@@ -109,6 +118,12 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    * Amount of time to wait between playback reports
    */
   private readonly _progressReportInterval = 3500;
+  /**
+   * Playback reported to the server as started (and not stopped yet). The progress and stop
+   * reports use its ids, so the stop of an item carries its own play session even after the
+   * state moved on to the next item.
+   */
+  private _reportedPlayback: ReportedPlayback | undefined;
   /**
    * == GETTERS AND SETTERS ==
    */
@@ -357,6 +372,17 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   });
 
   /**
+   * How the server decided to play the current item. Remuxes are reported as transcodes.
+   */
+  private readonly _currentPlayMethod = computed(() => {
+    const mediaSource = this.currentNegotiatedMediaSource.value;
+
+    if (mediaSource) {
+      return mediaSource.SupportsDirectPlay ? PlayMethod.DirectPlay : PlayMethod.Transcode;
+    }
+  });
+
+  /**
    * Stores a track chosen by the user for the current item. Choices made for other
    * items are discarded, since they don't apply to this one.
    *
@@ -460,37 +486,61 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    * == ACTIONS ==
    */
   /**
-   * Report current item playback progress to server
+   * Data shared by the start and progress reports of a playback
+   */
+  private readonly _getPlaybackReportInfo = (playback: ReportedPlayback) => ({
+    CanSeek: true,
+    ItemId: playback.itemId,
+    MediaSourceId: playback.mediaSourceId,
+    PlaySessionId: playback.playSessionId,
+    PlayMethod: this._currentPlayMethod.value,
+    AudioStreamIndex: this._currentAudioStreamIndex.value,
+    SubtitleStreamIndex: this._currentSubtitleStreamIndex.value,
+    IsPaused: this.isPaused.value,
+    PositionTicks: msToTicks(this.currentTime.value * 1000)
+  });
+
+  /**
+   * Report current item playback progress to server. Only done once its start was reported.
    */
   private readonly _reportPlaybackProgress = async (): Promise<void> => {
-    if (!isNil(this.currentTime.value) && !isNil(this.currentItem.value) && !isNil(remote.auth.currentUser.value)) {
-      await remote.sdk.newUserApi(getSessionApi).reportPlaybackProgress({
-        playbackProgressInfo: {
-          ItemId: this.currentItem.value.Id,
-          PlaySessionId: this._state.value.playSessionId,
-          IsPaused: this.isPaused.value,
-          PositionTicks: Math.round(msToTicks(this.currentTime.value * 1000))
-        }
-      });
+    const playback = this._reportedPlayback;
+
+    if (
+      !playback
+      || playback.itemId !== this.currentItemId.value
+      || isNil(remote.auth.currentUser.value)
+    ) {
+      return;
     }
+
+    await remote.sdk.newUserApi(getSessionApi).reportPlaybackProgress({
+      playbackProgressInfo: this._getPlaybackReportInfo(playback)
+    });
   };
 
   /**
    * Report playback stopped to the server. Used by the "Now playing" statistics in other clients.
+   *
+   * It ends the playback that was reported as started, with its own ids, even if the state
+   * already moved to another item.
    */
   private readonly _reportPlaybackStopped = async (
-    itemId = this.currentItemId.value,
-    sessionId = this._state.value.playSessionId,
     currentTime = this.currentTime.value
   ): Promise<void> => {
-    if (isNil(remote.auth.currentUser.value)) {
+    const playback = this._reportedPlayback;
+
+    this._reportedPlayback = undefined;
+
+    if (!playback || isNil(remote.auth.currentUser.value)) {
       return;
     }
 
     await remote.sdk.newUserApi(getSessionApi).reportPlaybackStopped({
       playbackStopInfo: {
-        ItemId: itemId,
-        PlaySessionId: sessionId,
+        ItemId: playback.itemId,
+        MediaSourceId: playback.mediaSourceId,
+        PlaySessionId: playback.playSessionId,
         PositionTicks: msToTicks((currentTime || 0) * 1000)
       }
     });
@@ -499,16 +549,11 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   /**
    * Report playback start to the server. Used by the "Now playing" statistics in other clients.
    */
-  private readonly _reportPlaybackStart = async (itemId: string): Promise<void> => {
+  private readonly _reportPlaybackStart = async (playback: ReportedPlayback): Promise<void> => {
+    this._reportedPlayback = playback;
+
     await remote.sdk.newUserApi(getSessionApi).reportPlaybackStart({
-      playbackStartInfo: {
-        CanSeek: true,
-        ItemId: itemId,
-        PlaySessionId: this._state.value.playSessionId,
-        MediaSourceId: this.currentMediaSource.value?.Id,
-        AudioStreamIndex: this._state.value.mediaSourceIndexes.audio,
-        SubtitleStreamIndex: this._state.value.mediaSourceIndexes.subtitle
-      }
+      playbackStartInfo: this._getPlaybackReportInfo(playback)
     });
   };
 
@@ -713,15 +758,14 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   };
 
   public readonly stop = (): void => {
-    const sessionId = (this._state.value.playSessionId ?? '');
-    const time = Number(this.currentTime.value);
-    const itemId = (this.currentItem.value?.Id ?? '');
-    const volume = Number(this.currentVolume.value);
+    const volume = this.currentVolume.value;
 
+    /**
+     * Reported before resetting the state, so it gets the time reached
+     */
+    void this._reportPlaybackStopped();
     this._reset();
     this.currentVolume.value = volume;
-
-    void this._reportPlaybackStopped(itemId, sessionId, time);
   };
 
   /**
@@ -962,7 +1006,6 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
         repeatMode: RepeatMode.RepeatNone,
         queue: [],
         originalQueue: [],
-        playSessionId: undefined,
         playbackInitiatorId: undefined,
         playbackInitMode: InitMode.Unknown,
         playbackSpeed: 1,
@@ -1101,35 +1144,51 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
      * == Server interaction ==
      */
     /**
-     * Report stop for the old item and start for the new one
+     * Report stop for the old item. The start of the new one is reported once
+     * the server answers the PlaybackInfo request for it (see below)
      */
     watch(this.currentItemId,
-      async (newValue, oldValue) => {
+      async (_, oldValue) => {
         if (oldValue) {
           /**
            * We pass the currentTime to ensure the playback stop is reported with the correct time and not 0
            */
-          await this._reportPlaybackStopped(oldValue, undefined, this.currentTime.value);
-        }
-
-        if (newValue) {
-          await this._reportPlaybackStart(newValue);
+          await this._reportPlaybackStopped(this.currentTime.value);
         }
       }
     );
 
     /**
-     * Set play session id when the playback info is updated
+     * Report the playback start when the server answers the PlaybackInfo request of the
+     * current item, so the report carries its play session, play method and tracks.
+     * Later answers for the same item (re-negotiations, like after changing the quality or
+     * the tracks) carry a new play session, which is passed on with a progress report.
+     *
+     * The reported playback is cleared whenever the current item changes or the playback
+     * stops, so an answer for an item without it is always a new playback.
      */
-    watch(this._currentPlaybackInfo, (playbackInfo) => {
+    watch(this._currentPlaybackInfo, async (playbackInfo) => {
       if (!playbackInfo) {
         return;
       }
 
-      this._state.value.playSessionId = playbackInfo.data.PlaySessionId;
-
       if (playbackInfo.data.ErrorCode) {
         this._state.value.status = PlaybackStatus.Error;
+
+        return;
+      }
+
+      const playback: ReportedPlayback = {
+        itemId: playbackInfo.itemId,
+        mediaSourceId: playbackInfo.data.MediaSources?.[0]?.Id ?? playbackInfo.mediaSourceId,
+        playSessionId: playbackInfo.data.PlaySessionId
+      };
+
+      if (this._reportedPlayback?.itemId === playback.itemId) {
+        this._reportedPlayback = playback;
+        await this._reportPlaybackProgress();
+      } else {
+        await this._reportPlaybackStart(playback);
       }
     });
 
@@ -1144,9 +1203,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
      * Report playback stop when closing the tab
      */
     globalThis.addEventListener('beforeunload', () => {
-      if (this.currentItemId.value) {
-        void this._reportPlaybackStopped(this.currentItemId.value);
-      }
+      void this._reportPlaybackStopped();
     });
 
     /**
@@ -1191,7 +1248,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
      */
     remote.auth.onBeforeLogout(
       async () => {
-        await this._reportPlaybackStopped(this.currentItemId.value);
+        await this._reportPlaybackStopped();
         this._reset();
       }
     );
