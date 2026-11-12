@@ -169,18 +169,22 @@ function onHlsEror(_event: typeof Hls.Events.ERROR, data: ErrorData): void {
   }
 }
 
-watch(mediaElementRef, () => {
+watch(mediaElementRef, (el) => {
   detachHls();
   void webAudioQueue.add(() => detachWebAudio());
 
-  if (mediaElementRef.value) {
+  if (el) {
     if (playbackManager.isVideo.value && hls) {
-      hls.attachMedia(mediaElementRef.value);
+      hls.attachMedia(el);
       hls.on(Events.ERROR, onHlsEror);
     }
 
     if (playbackManager.isAudio.value) {
-      void webAudioQueue.add(() => attachWebAudio(mediaElementRef.value));
+      /**
+       * The queue runs the task later: pass the element that triggered this callback,
+       * not whatever the ref holds by then
+       */
+      void webAudioQueue.add(() => attachWebAudio(el));
     }
   }
 });
