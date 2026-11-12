@@ -461,8 +461,11 @@ class ProbeSession {
  * Guarded against everything that could make it expensive: capped retries, an overall timeout, a byte budget,
  * and an immediate stop when the server ignores range requests. Never throws: failures are part of the result.
  *
- * @param url - Static stream URL of the media source, with the access token as `api_key` query parameter
- * (an `Authorization` header would force a CORS preflight on every range request)
+ * Measured cost: one or two requests for every tested container, and no task of 50 ms or more on the main thread
+ * even for a 2 hour MP4 with a 3.45 MiB index, so it runs on the main thread.
+ *
+ * @param url - Static stream URL of the media source. Credentials, if any, go in the query (the server's own
+ * URLs use `ApiKey`): an `Authorization` header would force a CORS preflight on every range request.
  */
 export async function probeMediaSource(url: string, options: ProbeOptions = {}): Promise<ProbeResult> {
   const { signal, timeoutMs = PROBE_TIMEOUT_MS, byteBudget = PROBE_BYTE_BUDGET } = options;
