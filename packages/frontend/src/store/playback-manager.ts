@@ -102,6 +102,11 @@ interface PlaybackManagerState {
 interface ReportedPlayback {
   itemId: string;
   mediaSourceId?: string | null;
+  /**
+   * Live stream opened by the server for this playback (Live TV). The server only closes it
+   * (releasing the tuner) when the stop report carries it.
+   */
+  liveStreamId?: string | null;
   playSessionId?: string | null;
   /**
    * Last position reached while this item was the current one, in seconds
@@ -496,6 +501,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     CanSeek: true,
     ItemId: playback.itemId,
     MediaSourceId: playback.mediaSourceId,
+    LiveStreamId: playback.liveStreamId,
     PlaySessionId: playback.playSessionId,
     PlayMethod: this._currentPlayMethod.value,
     AudioStreamIndex: this._currentAudioStreamIndex.value,
@@ -543,6 +549,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       playbackStopInfo: {
         ItemId: playback.itemId,
         MediaSourceId: playback.mediaSourceId,
+        LiveStreamId: playback.liveStreamId,
         PlaySessionId: playback.playSessionId,
         PositionTicks: msToTicks((playback.position ?? 0) * 1000)
       }
@@ -1194,6 +1201,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       const playback: ReportedPlayback = {
         itemId: playbackInfo.itemId,
         mediaSourceId: playbackInfo.data.MediaSources?.[0]?.Id ?? playbackInfo.mediaSourceId,
+        liveStreamId: playbackInfo.data.MediaSources?.[0]?.LiveStreamId,
         playSessionId: playbackInfo.data.PlaySessionId
       };
 
