@@ -6,6 +6,7 @@ import {
   probedAudio,
   probedVideo,
   probeOk,
+  RENDERERS,
   subtitleStream,
   videoStream
 } from './fixtures.ts';
@@ -119,7 +120,8 @@ const defaultEnvironment: VerdictEnvironment = {
   canSelectAudioTrack: false,
   quality: { type: 'auto' },
   policy: {},
-  minimumRung: noFloor
+  minimumRung: noFloor,
+  subtitleRenderers: RENDERERS
 };
 
 /**

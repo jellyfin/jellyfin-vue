@@ -1,9 +1,8 @@
 import { describe, expect, test } from 'vitest';
 import type { MediaStream } from '@jellyfin/sdk/lib/generated-client';
-import { subtitleStream as subtitle } from './fixtures.ts';
+import { RENDERERS, subtitleStream as subtitle } from './fixtures.ts';
 import {
   classifySubtitle,
-  DEFAULT_SUBTITLE_RENDERERS,
   getSubtitleDelivery,
   getSubtitleProfiles,
   type SubtitleClass,
@@ -11,11 +10,11 @@ import {
 } from '#/utils/playback-capabilities/subtitles.ts';
 
 const extendedRegistry: SubtitleRenderer[] = [
-  ...DEFAULT_SUBTITLE_RENDERERS,
+  ...RENDERERS,
   { name: 'vobsub-renderer', formats: ['dvdsub', 'ASS'] }
 ];
 
-describe('classifySubtitle: the four classes', () => {
+describe('classifySubtitle: the four classes, with a registry of ASS/SSA and PGS renderers', () => {
   const cases: [string, MediaStream, SubtitleClass][] = [
     ['WebVTT is rendered natively by the browser', subtitle('webvtt', true), 'native'],
     ['the short vtt name is native too', subtitle('vtt', true), 'native'],
@@ -34,7 +33,7 @@ describe('classifySubtitle: the four classes', () => {
   ];
 
   test.each(cases)('%s', (_, stream, expected) => {
-    const result = classifySubtitle(stream);
+    const result = classifySubtitle(stream, RENDERERS);
 
     expect(result).toBe(expected);
   });
@@ -48,8 +47,8 @@ describe('classifySubtitle: external versus embedded does not matter', () => {
   ];
 
   test.each(cases)('%s', (_, codec, isText, expected) => {
-    const external = classifySubtitle(subtitle(codec, isText, { IsExternal: true }));
-    const embedded = classifySubtitle(subtitle(codec, isText, { IsExternal: false }));
+    const external = classifySubtitle(subtitle(codec, isText, { IsExternal: true }), RENDERERS);
+    const embedded = classifySubtitle(subtitle(codec, isText, { IsExternal: false }), RENDERERS);
 
     expect([external, embedded]).toEqual([expected, expected]);
   });
@@ -64,7 +63,7 @@ describe('classifySubtitle: streams the server cannot deliver externally', () =>
   ];
 
   test.each(cases)('%s', (_, stream, expected) => {
-    const result = classifySubtitle(stream);
+    const result = classifySubtitle(stream, RENDERERS);
 
     expect(result).toBe(expected);
   });
@@ -81,12 +80,6 @@ describe('classifySubtitle: the renderer registry is data the renderers\' owner 
     const result = classifySubtitle(stream, registry);
 
     expect(result).toBe(expected);
-  });
-
-  test('the default registry declares what the app renders today: ASS/SSA and PGS', () => {
-    const formats = DEFAULT_SUBTITLE_RENDERERS.flatMap(renderer => renderer.formats);
-
-    expect(new Set(formats)).toEqual(new Set(['ass', 'ssa', 'pgssub']));
   });
 });
 
@@ -107,14 +100,14 @@ describe('getSubtitleDelivery', () => {
 
 describe('getSubtitleProfiles: what is declared to the server', () => {
   test('declares WebVTT and every registry format', () => {
-    const formats = new Set(getSubtitleProfiles().map(profile => profile.Format));
-    const expected = ['vtt', ...DEFAULT_SUBTITLE_RENDERERS.flatMap(renderer => renderer.formats)];
+    const formats = new Set(getSubtitleProfiles(RENDERERS).map(profile => profile.Format));
+    const expected = ['vtt', ...RENDERERS.flatMap(renderer => renderer.formats)];
 
     expect(expected.filter(format => !formats.has(format))).toEqual([]);
   });
 
   test('everything is delivered as an external file, never Embed or Hls', () => {
-    const methods = new Set(getSubtitleProfiles().map(profile => profile.Method));
+    const methods = new Set(getSubtitleProfiles(RENDERERS).map(profile => profile.Method));
 
     expect(methods).toEqual(new Set(['External']));
   });

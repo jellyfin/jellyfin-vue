@@ -1,7 +1,6 @@
 import { describe, expect, test } from 'vitest';
 import type { MediaSourceInfo, MediaStream, ProfileCondition } from '@jellyfin/sdk/lib/generated-client';
-import { audioStream, mediaSource, subtitleStream, videoStream } from './fixtures.ts';
-import { DEFAULT_SUBTITLE_RENDERERS } from '#/utils/playback-capabilities/subtitles.ts';
+import { audioStream, mediaSource, RENDERERS, subtitleStream, videoStream } from './fixtures.ts';
 import {
   buildOptimisticRequest,
   buildPlaybackRequest,
@@ -10,10 +9,6 @@ import {
 import type { PlaybackMethod, Verdict } from '#/utils/playback-capabilities/verdict.ts';
 import { UNLIMITED_STREAMING_BITRATE } from '#/utils/playback-capabilities/constants.ts';
 
-/**
- * The subtitle renderer registry the requests are built with
- */
-const RENDERERS = DEFAULT_SUBTITLE_RENDERERS;
 const h264 = { codec: 'h264', codecString: 'avc1.640028' };
 const vp9 = { codec: 'vp9', codecString: 'vp09.00.40.08' };
 const aac = { codec: 'aac', codecString: 'mp4a.40.2', channels: 6 };
@@ -69,14 +64,14 @@ const transcodeBoth = verdict('TranscodeVideo', {
 });
 
 describe('direct play', () => {
-  const { deviceProfile, options } = buildPlaybackRequest(verdict('DirectPlay'), hevcMkv());
+  const { deviceProfile, options } = buildPlaybackRequest(verdict('DirectPlay'), hevcMkv(), RENDERERS);
 
   test('one direct play profile with exactly the source\'s container token and the streams\' codec names', () => {
     expect(deviceProfile.DirectPlayProfiles).toEqual([{ Type: 'Video', Container: 'mkv', VideoCodec: 'hevc', AudioCodec: 'ac3' }]);
   });
 
   test('the container is the source\'s own token list, never an alias', () => {
-    const request = buildPlaybackRequest(verdict('DirectPlay'), hevcMkv({ Container: 'mov,mp4,m4a' }));
+    const request = buildPlaybackRequest(verdict('DirectPlay'), hevcMkv({ Container: 'mov,mp4,m4a' }), RENDERERS);
 
     expect(request.deviceProfile.DirectPlayProfiles?.[0]?.Container).toBe('mov,mp4,m4a');
   });
@@ -98,14 +93,14 @@ describe('direct play', () => {
 
 describe('the streaming bitrate when the source has none', () => {
   test('there is no limit in practice, since nothing is known to stay under', () => {
-    const { options } = buildPlaybackRequest(verdict('DirectPlay'), hevcMkv({ Bitrate: undefined }));
+    const { options } = buildPlaybackRequest(verdict('DirectPlay'), hevcMkv({ Bitrate: undefined }), RENDERERS);
 
     expect(options.MaxStreamingBitrate).toBe(UNLIMITED_STREAMING_BITRATE);
   });
 });
 
 describe('remux', () => {
-  const { deviceProfile, options } = buildPlaybackRequest(verdict('Remux'), hevcMkv());
+  const { deviceProfile, options } = buildPlaybackRequest(verdict('Remux'), hevcMkv(), RENDERERS);
 
   test('no direct play profile and direct play disabled', () => {
     expect([deviceProfile.DirectPlayProfiles, options.EnableDirectPlay]).toEqual([[], false]);
@@ -149,7 +144,7 @@ describe('remux', () => {
 });
 
 describe('audio transcode', () => {
-  const { deviceProfile, options } = buildPlaybackRequest(transcodeAudio, hevcMkv());
+  const { deviceProfile, options } = buildPlaybackRequest(transcodeAudio, hevcMkv(), RENDERERS);
   const [profile] = deviceProfile.TranscodingProfiles ?? [];
 
   test('the video codec list has the source codec (copied) after its targets, the audio list only the targets, in order', () => {
@@ -199,7 +194,7 @@ describe('audio transcode', () => {
 });
 
 describe('video transcode', () => {
-  const { deviceProfile, options } = buildPlaybackRequest(transcodeVideo, hevcMkv());
+  const { deviceProfile, options } = buildPlaybackRequest(transcodeVideo, hevcMkv(), RENDERERS);
   const [profile] = deviceProfile.TranscodingProfiles ?? [];
 
   test('the source video codec is absent from the list, which holds only the targets, in order', () => {
@@ -234,7 +229,7 @@ describe('video transcode', () => {
   });
 
   test('when the audio is encoded too, its list holds only the targets and copy is not allowed', () => {
-    const request = buildPlaybackRequest(transcodeBoth, hevcMkv());
+    const request = buildPlaybackRequest(transcodeBoth, hevcMkv(), RENDERERS);
 
     expect([request.deviceProfile.TranscodingProfiles?.[0]?.AudioCodec, request.options.AllowAudioStreamCopy, request.options.MaxAudioChannels])
       .toEqual(['aac', false, 2]);
@@ -243,26 +238,26 @@ describe('video transcode', () => {
 
 describe('stream indexes and subtitles', () => {
   test('the selected audio and subtitle are sent by absolute index, with the media source id', () => {
-    const { options } = buildPlaybackRequest(verdict('DirectPlay', { subtitle: { index: 2, class: 'server-text', delivery: 'External' } }), hevcMkv());
+    const { options } = buildPlaybackRequest(verdict('DirectPlay', { subtitle: { index: 2, class: 'server-text', delivery: 'External' } }), hevcMkv(), RENDERERS);
 
     expect(options).toMatchObject({ AudioStreamIndex: 1, SubtitleStreamIndex: 2, MediaSourceId: 'source-id' });
   });
 
   test('without a subtitle, -1 is sent so the server does not pick one', () => {
-    const { options } = buildPlaybackRequest(verdict('DirectPlay'), hevcMkv());
+    const { options } = buildPlaybackRequest(verdict('DirectPlay'), hevcMkv(), RENDERERS);
 
     expect(options.SubtitleStreamIndex).toBe(-1);
   });
 
   test('a burn-in subtitle is sent like any other: the server burns it because no profile delivers it', () => {
-    const request = buildPlaybackRequest({ ...transcodeVideo, subtitle: { index: 3, class: 'burn-in', delivery: 'Encode' } }, hevcMkv());
+    const request = buildPlaybackRequest({ ...transcodeVideo, subtitle: { index: 3, class: 'burn-in', delivery: 'Encode' } }, hevcMkv(), RENDERERS);
     const formats = request.deviceProfile.SubtitleProfiles?.map(profile => profile.Format);
 
     expect([request.options.SubtitleStreamIndex, formats?.includes('dvdsub')]).toEqual([3, false]);
   });
 
   test('the subtitle profiles are the external ones of the renderer registry', () => {
-    const { deviceProfile } = buildPlaybackRequest(verdict('DirectPlay'), hevcMkv());
+    const { deviceProfile } = buildPlaybackRequest(verdict('DirectPlay'), hevcMkv(), RENDERERS);
     const methods = new Set(deviceProfile.SubtitleProfiles?.map(profile => profile.Method));
 
     expect([...methods]).toEqual(['External']);
@@ -276,7 +271,7 @@ describe('Dolby Vision without a compatible base layer', () => {
   ]);
 
   test('when the video is copied, the client declares Dolby Vision so the server keeps it as such', () => {
-    const { deviceProfile } = buildPlaybackRequest(verdict('Remux'), dovi());
+    const { deviceProfile } = buildPlaybackRequest(verdict('Remux'), dovi(), RENDERERS);
 
     expect(deviceProfile.CodecProfiles).toEqual([{
       Type: 'Video',
@@ -286,7 +281,7 @@ describe('Dolby Vision without a compatible base layer', () => {
   });
 
   test('other video declares nothing when copied', () => {
-    const { deviceProfile } = buildPlaybackRequest(verdict('Remux'), hevcMkv());
+    const { deviceProfile } = buildPlaybackRequest(verdict('Remux'), hevcMkv(), RENDERERS);
 
     expect(deviceProfile.CodecProfiles).toEqual([]);
   });
@@ -298,7 +293,8 @@ describe('music uses audio profiles', () => {
   test('direct play', () => {
     const { deviceProfile } = buildPlaybackRequest(
       { ...verdict('DirectPlay'), video: undefined, audio: { index: 0, action: 'copy' } },
-      track
+      track,
+      RENDERERS
     );
 
     expect(deviceProfile.DirectPlayProfiles).toEqual([{ Type: 'Audio', Container: 'flac', AudioCodec: 'flac' }]);
@@ -317,7 +313,8 @@ describe('music uses audio profiles', () => {
   test('audio transcode', () => {
     const { deviceProfile } = buildPlaybackRequest(
       { ...verdict('TranscodeAudio'), video: undefined, audio: { index: 0, action: 'transcode', targets: [aac] }, maxAudioChannels: 2 },
-      track
+      track,
+      RENDERERS
     );
 
     expect(deviceProfile.TranscodingProfiles).toEqual([
@@ -383,7 +380,7 @@ describe('a video item without a video stream (an audio-only file in a video lib
 
 describe('an unplayable verdict', () => {
   test('asks for nothing: everything is disabled', () => {
-    const { options } = buildPlaybackRequest(verdict('Unplayable'), hevcMkv());
+    const { options } = buildPlaybackRequest(verdict('Unplayable'), hevcMkv(), RENDERERS);
 
     expect(options).toMatchObject({ EnableDirectPlay: false, EnableTranscoding: false });
   });
@@ -391,7 +388,7 @@ describe('an unplayable verdict', () => {
 
 describe('buildOptimisticRequest: no stream metadata at all', () => {
   test('direct play of whatever the source is, with the source\'s container token', () => {
-    const { deviceProfile, options } = buildOptimisticRequest(mediaSource([], { Container: 'ts', MediaStreams: [] }), 'Video');
+    const { deviceProfile, options } = buildOptimisticRequest(mediaSource([], { Container: 'ts', MediaStreams: [] }), 'Video', RENDERERS);
 
     expect([deviceProfile.DirectPlayProfiles, options.EnableDirectPlay]).toEqual([
       [{ Type: 'Video', Container: 'ts' }],
@@ -400,7 +397,7 @@ describe('buildOptimisticRequest: no stream metadata at all', () => {
   });
 
   test('an audio item gets an audio profile: the server only matches direct play profiles of the item\'s type', () => {
-    const { deviceProfile } = buildOptimisticRequest(mediaSource([], { Container: 'mp3', MediaStreams: [] }), 'Audio');
+    const { deviceProfile } = buildOptimisticRequest(mediaSource([], { Container: 'mp3', MediaStreams: [] }), 'Audio', RENDERERS);
 
     expect(deviceProfile.DirectPlayProfiles).toEqual([{ Type: 'Audio', Container: 'mp3' }]);
   });

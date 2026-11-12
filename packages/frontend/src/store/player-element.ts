@@ -4,9 +4,6 @@
  * In the other part, playbackManager is suited to handle the playback state in
  * an agnostic way, regardless of where the media is being played (remotely or locally)
  */
-import ASSSUB from 'assjs';
-import { PgsRenderer } from 'libpgs';
-import pgssubWorker from 'libpgs/dist/libpgs.worker.js?url';
 import { computed, nextTick, shallowRef, watch } from 'vue';
 import { SubtitleDeliveryMethod } from '@jellyfin/sdk/lib/generated-client/models/subtitle-delivery-method';
 import { computedAsync, useFullscreen } from '@vueuse/core';
@@ -20,6 +17,8 @@ import { remote } from '#/plugins/remote/index.ts';
 import type { ParsedSubtitleTrack } from '#/plugins/workers/generic/subtitles.ts';
 import { runGenericWorkerFunc } from '#/plugins/workers/index.ts';
 import { subtitleSettings } from '#/store/settings/subtitle.ts';
+import { NATIVE_SUBTITLE_FORMATS } from '#/utils/playback-capabilities/subtitles.ts';
+import { getSubtitleRenderer } from '#/utils/subtitle-renderers.ts';
 
 /**
  * == INTERFACES AND TYPES ==
@@ -67,24 +66,11 @@ function getSubtitleDeliveryFormat(deliveryUrl: string, codec?: string): string 
 }
 
 /**
- * Whether the subtitle is delivered as WebVTT (rendered natively or by the custom overlay)
+ * Whether the subtitle is delivered as WebVTT (rendered natively or by the custom overlay).
+ * Any other delivered format is drawn by the subtitle renderer that declares it.
  */
 function isVtt(track: PlaybackTrack): boolean {
-  return track.format === 'vtt';
-}
-
-/**
- * Whether the subtitle is delivered as SubStation Alpha (rendered by assjs)
- */
-function isAss(track: PlaybackTrack): boolean {
-  return track.format === 'ass' || track.format === 'ssa';
-}
-
-/**
- * Whether the subtitle is delivered as PGS (rendered by libpgs)
- */
-function isPgs(track: PlaybackTrack): boolean {
-  return track.format === 'pgssub';
+  return track.format !== undefined && NATIVE_SUBTITLE_FORMATS.includes(track.format);
 }
 
 export const videoContainerRef = shallowRef<HTMLDivElement>();
@@ -100,8 +86,11 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched'> 
    */
   private readonly _fullscreenVideoRoute = '/playback/video';
   private readonly _cleanups = new Set<() => void>();
-  private _asssub: ASSSUB | undefined;
-  private _pgssub: PgsRenderer | undefined;
+  /**
+   * Incremented whenever the subtitle resources are disposed, so a renderer that finishes starting after that
+   * is stopped instead of being left drawing
+   */
+  private _subtitleGeneration = 0;
   /**
    * If the Fullscreen API isn't supported, the media element can only go fullscreen through
    * the browser's own UI (like Safari iOS), where a custom subtitle overlay can't be rendered.
@@ -229,77 +218,24 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched'> 
     }
   };
 
-  private readonly _fetchSubtitleTrack = async (trackSrc: string) => {
-    const axios = remote.sdk.api?.axiosInstance;
-
-    return {
-      [trackSrc]: (await axios!.get(trackSrc)).data as string
-    };
-  };
-
   /**
-   * Applies SSA (SubStation Alpha) subtitles to the media element.
+   * Draws the subtitle with the renderer of the registry that declares its delivered format
    */
-  private readonly _applySsaSubtitles = async (): Promise<void> => {
-    if (!(mediaElementRef.value
-      && this.currentExternalSubtitleTrack.value
-      && (mediaElementRef.value instanceof HTMLVideoElement))) {
+  private readonly _applyRendererSubtitles = async (track: PlaybackExternalTrack): Promise<void> => {
+    const renderer = getSubtitleRenderer(track.format);
+    const video = mediaElementRef.value;
+
+    if (!renderer || !(video instanceof HTMLVideoElement)) {
       return;
     }
 
-    this._clear();
+    const generation = this._subtitleGeneration;
+    const stop = await renderer.render(video, track.src);
 
-    const trackSrc = this.currentExternalSubtitleTrack.value.src;
-    const subtitleTrackPayload = await this._fetchSubtitleTrack(trackSrc);
-
-    if (subtitleTrackPayload[trackSrc]) {
-      /**
-       * video_width works better with ultrawide monitors
-       */
-      this._asssub = new ASSSUB(
-        subtitleTrackPayload[trackSrc],
-        mediaElementRef.value,
-        { resampling: 'video_width' }
-      );
-
-      /**
-       * assjs only starts rendering on the element's `play`/`playing` events, and has no method to
-       * start it otherwise. The renderer is usually created while the media is already playing
-       * (the subtitle file is fetched asynchronously, or the track is chosen during playback), so it
-       * would stay empty until the next pause and resume: replay the event for it.
-       */
-      if (!mediaElementRef.value.paused) {
-        mediaElementRef.value.dispatchEvent(new Event('playing'));
-      }
-
-      this._cleanups.add(() => {
-        this._asssub?.destroy();
-        this._asssub = undefined;
-      });
-    }
-  };
-
-  private readonly _applyPgsSubtitles = (): void => {
-    const trackSrc = this.currentExternalSubtitleTrack.value?.src;
-
-    if (trackSrc) {
-      if (
-        !this._pgssub
-        && mediaElementRef.value instanceof HTMLVideoElement
-      ) {
-        this._pgssub = new PgsRenderer({
-          video: mediaElementRef.value,
-          subUrl: trackSrc,
-          workerUrl: pgssubWorker
-        });
-
-        this._cleanups.add(() => {
-          this._pgssub?.dispose();
-          this._pgssub = undefined;
-        });
-      } else if (this._pgssub) {
-        this._pgssub.loadFromUrl(trackSrc);
-      }
+    if (generation === this._subtitleGeneration) {
+      this._cleanups.add(stop);
+    } else {
+      stop();
     }
   };
 
@@ -337,9 +273,9 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched'> 
   /**
    * Applies the current subtitle from the playbackManager store
    *
-   * It first disables all the VTT and SSA subtitles
-   * then filters the streams by codec and passes
-   * to the function to apply that codec
+   * It first disables every text track and stops the subtitle renderers, then shows the selected
+   * subtitle by the format it's delivered in: WebVTT natively (or in the custom overlay), anything
+   * else with the subtitle renderer that declares the format
    */
   public readonly applyCurrentSubtitle = async (): Promise<void> => {
     if (!mediaElementRef.value) {
@@ -365,14 +301,10 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched'> 
      */
     const track = this.currentExternalSubtitleTrack.value;
 
-    if (track) {
-      if (isPgs(track)) {
-        this._applyPgsSubtitles();
-      } else if (isVtt(track)) {
-        this._applyVttSubtitles();
-      } else if (isAss(track)) {
-        await this._applySsaSubtitles();
-      }
+    if (track && isVtt(track)) {
+      this._applyVttSubtitles();
+    } else if (track) {
+      await this._applyRendererSubtitles(track);
     }
   };
 
@@ -380,6 +312,8 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched'> 
    * Disposes all the subtitle resources
    */
   private readonly _clear = () => {
+    this._subtitleGeneration++;
+
     for (const func of this._cleanups) {
       func();
     }

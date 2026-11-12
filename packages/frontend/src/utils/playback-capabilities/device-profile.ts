@@ -23,7 +23,7 @@ import type {
 import { UNLIMITED_STREAMING_BITRATE } from './constants.ts';
 import { getKnownValue } from './media-config.ts';
 import type { RequestCaps } from './quality.ts';
-import { DEFAULT_SUBTITLE_RENDERERS, getSubtitleProfiles, type SubtitleRenderer } from './subtitles.ts';
+import { getSubtitleProfiles, type SubtitleRenderer } from './subtitles.ts';
 import type { PlaybackMethod, StreamPlan, Verdict } from './verdict.ts';
 
 /**
@@ -182,12 +182,12 @@ function getMaxStreamingBitrate(verdict: Verdict): number {
  *
  * @param verdict - The verdict for the source, computed with the same tracks
  * @param source - The media source the verdict is about
- * @param renderers - The subtitle renderer registry
+ * @param renderers - The subtitle renderer registry the verdict was computed with
  */
 export function buildPlaybackRequest(
   verdict: Verdict,
   source: MediaSourceInfo,
-  renderers: readonly SubtitleRenderer[] = DEFAULT_SUBTITLE_RENDERERS
+  renderers: readonly SubtitleRenderer[]
 ): PlaybackRequest {
   const video = verdict.video ? findStream(source, 'Video', verdict.video.index) : undefined;
   const audio = verdict.audio ? findStream(source, 'Audio', verdict.audio.index) : undefined;
@@ -255,7 +255,7 @@ export function buildPlaybackRequest(
 export function buildOptimisticRequest(
   source: MediaSourceInfo,
   type: Extract<DlnaProfileType, 'Video' | 'Audio'>,
-  renderers: readonly SubtitleRenderer[] = DEFAULT_SUBTITLE_RENDERERS
+  renderers: readonly SubtitleRenderer[]
 ): PlaybackRequest {
   const maxStreamingBitrate = UNLIMITED_STREAMING_BITRATE;
 

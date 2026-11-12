@@ -122,7 +122,10 @@ export interface VerdictEnvironment {
    * The learned minimum method for a signature; the verdict never starts below it
    */
   readonly minimumRung: LearnedFloor;
-  readonly subtitleRenderers?: readonly SubtitleRenderer[];
+  /**
+   * The subtitle renderers the player ships (see `subtitles.ts`)
+   */
+  readonly subtitleRenderers: readonly SubtitleRenderer[];
 }
 
 /**

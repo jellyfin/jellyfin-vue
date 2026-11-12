@@ -5,6 +5,16 @@
  */
 import type { MediaSourceInfo, MediaStream } from '@jellyfin/sdk/lib/generated-client';
 import type { ProbedAudioTrack, ProbedVideoTrack, ProbeResult } from '#/utils/playback-capabilities/probe.ts';
+import type { SubtitleRenderer } from '#/utils/playback-capabilities/subtitles.ts';
+
+/**
+ * A subtitle renderer registry like the one the app ships (ASS/SSA and PGS). The app's own registry is declared
+ * with its renderers, which need a browser: the engine only ever receives it as data.
+ */
+export const RENDERERS: readonly SubtitleRenderer[] = [
+  { name: 'assjs', formats: ['ass', 'ssa'] },
+  { name: 'libpgs', formats: ['pgssub'] }
+];
 
 /**
  * A video stream, H.264 640x360 at 25 fps by default

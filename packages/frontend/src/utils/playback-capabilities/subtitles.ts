@@ -2,6 +2,10 @@
  * Subtitle capabilities. Browsers have no API to ask about subtitle formats, so the capability is
  * "the app brings a renderer for it": WebVTT is native, a few formats have client renderers, the server converts
  * the remaining text formats to WebVTT, and everything else has to be burnt into the video.
+ *
+ * The renderer registry is not declared here: the code that owns the renderers declares it (with the formats
+ * each one draws) and passes it to every function of this module, so what is declared to the server and what the
+ * player draws can never disagree.
  */
 import type { MediaStream, SubtitleDeliveryMethod, SubtitleProfile } from '@jellyfin/sdk/lib/generated-client';
 
@@ -28,15 +32,6 @@ export interface SubtitleRenderer {
 export const NATIVE_SUBTITLE_FORMATS: readonly string[] = ['vtt', 'webvtt'];
 
 /**
- * The renderers the app ships today. Their owner (the player) can pass an extended list to every function of
- * this module.
- */
-export const DEFAULT_SUBTITLE_RENDERERS: readonly SubtitleRenderer[] = [
-  { name: 'assjs', formats: ['ass', 'ssa'] },
-  { name: 'libpgs', formats: ['pgssub'] }
-];
-
-/**
  * Lowercased, de-duplicated list of the formats the registry declares
  */
 function getRendererFormats(renderers: readonly SubtitleRenderer[]): string[] {
@@ -52,7 +47,7 @@ function getRendererFormats(renderers: readonly SubtitleRenderer[]): string[] {
  */
 export function classifySubtitle(
   stream: MediaStream,
-  renderers: readonly SubtitleRenderer[] = DEFAULT_SUBTITLE_RENDERERS
+  renderers: readonly SubtitleRenderer[]
 ): SubtitleClass {
   // Only an explicit `false` blocks: an absent field means the server did not say
   if (stream.SupportsExternalStream === false) {
@@ -91,7 +86,7 @@ export function getSubtitleDelivery(subtitleClass: SubtitleClass): SubtitleDeliv
  * @param renderers - The renderer registry
  */
 export function getSubtitleProfiles(
-  renderers: readonly SubtitleRenderer[] = DEFAULT_SUBTITLE_RENDERERS
+  renderers: readonly SubtitleRenderer[]
 ): SubtitleProfile[] {
   const formats = new Set([...NATIVE_SUBTITLE_FORMATS, ...getRendererFormats(renderers)]);
 
