@@ -36,6 +36,10 @@ export interface StreamCandidatesInput {
    * The probed container MIME type, without parameters
    */
   readonly containerMime?: string;
+  /**
+   * Whether the probed container's MIME type implies its codec (see `ProbeResult`)
+   */
+  readonly containerImpliesCodec?: boolean;
   readonly mode: DecodingMode;
 }
 
@@ -377,11 +381,22 @@ export function getStreamCandidates(input: StreamCandidatesInput): MediaDecoding
    * For Dolby Vision without a compatible base layer, the base layer string must not be offered:
    * it would be reported as supported and play with wrong colours
    */
-  const codecs = kind === 'video' && isDolbyVisionOnly(input.stream)
+  const dolbyVisionOnly = kind === 'video' && isDolbyVisionOnly(input.stream);
+  const exactCodecs = dolbyVisionOnly ? undefined : getExactCodecs(probed, input.mode);
+  const codecs = dolbyVisionOnly
     ? getDolbyVisionCodecs(input.stream, probed)
-    : getExactCodecs(probed, input.mode) ?? getGenericCodecs(input.stream);
+    : exactCodecs ?? getGenericCodecs(input.stream);
   const containers = getContainers(kind, input);
   const contentTypes = containers.flatMap(container => codecs.map(codec => `${container}; codecs="${codec}"`));
+
+  /**
+   * A container whose MIME type implies its codec must be asked without parameters (Media Capabilities, and
+   * Chromium enforces it): the bare container MIME goes after the exact candidate. Only with an exact candidate,
+   * only for the file itself.
+   */
+  if (input.mode === 'file' && input.containerImpliesCodec && exactCodecs) {
+    contentTypes.push(...containers);
+  }
 
   if (kind === 'video') {
     const members = getVideoMembers({ ...input, probed });

@@ -130,12 +130,14 @@ export function probedAudio(extra: Partial<ProbedAudioTrack> = {}): ProbedAudioT
 export function probeOk(
   containerMime: string,
   video: ProbedVideoTrack[],
-  audio: ProbedAudioTrack[]
+  audio: ProbedAudioTrack[],
+  containerImpliesCodec = false
 ): ProbeResult {
   return {
     status: 'ok',
     cacheable: true,
     containerMime,
+    containerImpliesCodec,
     video,
     audio,
     stats: { requests: 1, bytes: 1000, durationMs: 10 }

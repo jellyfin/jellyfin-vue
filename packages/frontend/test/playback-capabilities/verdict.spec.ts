@@ -647,6 +647,24 @@ describe('audio-only items (music) follow the same rules without video', () => {
     probe: probeOk(mime, [], [probedAudio({ codec, codecString, internalCodecId: undefined })])
   });
 
+  const impliedFlac = () => {
+    const item = track('flac', 'flac', 'audio/flac', 'flac');
+
+    return { ...item, probe: probeOk('audio/flac', [], [probedAudio({ codec: 'flac', codecString: 'flac', internalCodecId: undefined })], true) };
+  };
+
+  test('a FLAC file in a browser that only accepts its bare MIME type (the codec is implied) is played directly', async () => {
+    const verdict = await verdictFor(impliedFlac(), { file: ['audio/flac'], ms: [T.flacMp4] });
+
+    expect(verdict.method).toBe('DirectPlay');
+  });
+
+  test('without the probe saying the codec is implied, the bare MIME type is never asked', async () => {
+    const verdict = await verdictFor(track('flac', 'flac', 'audio/flac', 'flac'), { file: ['audio/flac'], ms: [T.flacMp4] });
+
+    expect(verdict.method).toBe('Remux');
+  });
+
   test('a playable MP3 is played directly', async () => {
     const verdict = await verdictFor(track('mp3', 'mp3', 'audio/mpeg', 'mp3'), fullBrowser);
 

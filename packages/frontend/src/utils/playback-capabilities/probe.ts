@@ -139,6 +139,13 @@ export type ProbeResult
      * The container's MIME type, without parameters (for example `video/mp4`)
      */
     readonly containerMime: string;
+    /**
+     * Whether the container's MIME type implies its codec, so the browser must be asked about it without a
+     * `codecs` parameter (MP3, FLAC, ADTS, WAVE). Detected from mediabunny: the input format stores a single
+     * untimed elementary stream (`supportsTimestampedMediaData` is false), its MIME type carries no `codecs`
+     * parameter, and the codec of every track is known.
+     */
+    readonly containerImpliesCodec: boolean;
     readonly video: readonly ProbedVideoTrack[];
     readonly audio: readonly ProbedAudioTrack[];
     readonly stats: ProbeStats;
@@ -230,7 +237,7 @@ async function readTrackBase(track: InputTrack) {
  * Reads the container MIME type and every track of the input
  */
 async function readInput(input: Input) {
-  const [mimeType, tracks] = await Promise.all([input.getMimeType(), input.getTracks()]);
+  const [mimeType, tracks, format] = await Promise.all([input.getMimeType(), input.getTracks(), input.getFormat()]);
   const video: ProbedVideoTrack[] = [];
   const audio: ProbedAudioTrack[] = [];
 
@@ -273,6 +280,10 @@ async function readInput(input: Input) {
 
   return {
     containerMime: mimeType.split(';', 1)[0]!.trim().toLowerCase(),
+    containerImpliesCodec: !format.supportsTimestampedMediaData
+      && !mimeType.includes(';')
+      && tracks.length > 0
+      && [...video, ...audio].every(track => track.codecString !== undefined),
     video,
     audio
   };

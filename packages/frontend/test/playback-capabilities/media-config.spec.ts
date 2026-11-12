@@ -15,6 +15,7 @@ import { FALLBACK_BITRATE, FALLBACK_FRAME_RATE } from '#/utils/playback-capabili
 interface CandidateOptions {
   probed?: ProbedTrack;
   containerMime?: string;
+  containerImpliesCodec?: boolean;
   mode?: DecodingMode;
   source?: Partial<MediaSourceInfo>;
 }
@@ -28,6 +29,7 @@ function candidates(stream: MediaStream, options: CandidateOptions = {}): MediaD
     stream,
     probed: options.probed,
     containerMime: options.containerMime,
+    containerImpliesCodec: options.containerImpliesCodec,
     mode: options.mode ?? 'file'
   });
 }
@@ -254,6 +256,14 @@ const contentTypeCases: [string, string, MediaStream, CandidateOptions, string[]
   ['media-source', 'audio keeps the exact string inside audio/mp4', audioStream({ Codec: 'ac3', Channels: 6 }), { probed: probedAudio({ codec: 'ac3', codecString: 'ac-3', internalCodecId: 'A_AC3', channels: 6 }), containerMime: 'video/x-matroska', mode: 'media-source' }, ['audio/mp4; codecs="ac-3"']],
   ['media-source', 'QuickTime is only asked as MP4', videoStream(), { probed: probedVideo(), containerMime: 'video/quicktime', mode: 'media-source' }, ['video/mp4; codecs="avc1.64001e"']],
 
+  // Containers whose MIME type implies the codec: Media Capabilities wants them asked without parameters
+  ['implied codec', 'an MP3 file is asked with its exact string and then with the bare container MIME', audioStream({ Index: 0, Codec: 'mp3', CodecTag: undefined }), { probed: probedAudio({ codec: 'mp3', codecString: 'mp3', internalCodecId: undefined }), containerMime: 'audio/mpeg', containerImpliesCodec: true, source: { Container: 'mp3' } }, ['audio/mpeg; codecs="mp3"', 'audio/mpeg']],
+  ['implied codec', 'a FLAC file too', audioStream({ Index: 0, Codec: 'flac', CodecTag: undefined }), { probed: probedAudio({ codec: 'flac', codecString: 'flac', internalCodecId: undefined }), containerMime: 'audio/flac', containerImpliesCodec: true, source: { Container: 'flac' } }, ['audio/flac; codecs="flac"', 'audio/flac']],
+  ['implied codec', 'a PCM WAVE file gets its format tag candidate and then the bare MIME', pcm, { probed: probedPcm(1), containerMime: 'audio/wav', containerImpliesCodec: true, source: { Container: 'wav' } }, ['audio/wav; codecs="1"', 'audio/wav']],
+  ['implied codec', 'never for a container that can hold several codecs (the probe says it does not imply the codec)', audioStream(), { probed: probedAudio(), containerMime: 'audio/mp4', containerImpliesCodec: false }, ['audio/mp4; codecs="mp4a.40.2"']],
+  ['implied codec', 'never through media-source, where the container is always MP4', audioStream({ Index: 0, Codec: 'mp3', CodecTag: undefined }), { probed: probedAudio({ codec: 'mp3', codecString: 'mp3', internalCodecId: undefined }), containerMime: 'audio/mpeg', containerImpliesCodec: true, mode: 'media-source' }, ['audio/mp4; codecs="mp3"']],
+  ['implied codec', 'never without an exact string to go with it (a stream the probe did not see)', audioStream({ Index: 0, Codec: 'mp3', CodecTag: undefined }), { containerMime: 'audio/mpeg', containerImpliesCodec: true, source: { Container: 'mp3' } }, ['audio/mpeg; codecs="mp3"']],
+
   // Dolby Vision without a compatible base layer
   ['Dolby Vision', 'HEVC with a dvh1 sample entry is asked as dvh1.<profile>.<level> and never as plain HEVC', dovi({ CodecTag: 'dvh1' }), { probed: probedVideo({ codec: 'hevc', codecString: 'hev1.2.4.L153.B0', internalCodecId: 'dvh1' }), containerMime: 'video/mp4' }, ['video/mp4; codecs="dvh1.05.06"']],
   ['Dolby Vision', 'HEVC with a dvhe tag is asked as dvhe', dovi({ CodecTag: 'dvhe' }), { containerMime: 'video/mp4' }, ['video/mp4; codecs="dvhe.05.06"']],
@@ -262,7 +272,7 @@ const contentTypeCases: [string, string, MediaStream, CandidateOptions, string[]
   ['Dolby Vision', 'the same Dolby Vision string is used through media-source', dovi({ CodecTag: 'dvh1' }), { containerMime: 'video/mp4', mode: 'media-source' }, ['video/mp4; codecs="dvh1.05.06"']]
 ];
 
-describe.each(['exact', 'HEVC', 'PCM', 'QuickTime', 'generic', 'media-source', 'Dolby Vision'])('content types: %s', (group) => {
+describe.each(['exact', 'HEVC', 'PCM', 'QuickTime', 'generic', 'media-source', 'implied codec', 'Dolby Vision'])('content types: %s', (group) => {
   const cases = contentTypeCases.filter(([caseGroup]) => caseGroup === group).map(([, ...rest]) => rest);
 
   test.each(cases)('%s', (_, stream, options, expected) => {

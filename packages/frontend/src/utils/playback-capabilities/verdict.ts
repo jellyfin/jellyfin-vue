@@ -235,6 +235,7 @@ interface StreamContext {
   readonly stream: MediaStream;
   readonly probed?: ProbedTrack;
   readonly containerMime?: string;
+  readonly containerImpliesCodec?: boolean;
 }
 
 /**
@@ -381,7 +382,12 @@ function getContext(streams: MediaStream[], stream: MediaStream, probe: ProbeRes
   const tracks: readonly ProbedTrack[] = stream.Type === 'Video' ? probe.video : probe.audio;
   const trusted = embedded.length === tracks.length && embedded.every((candidate, index) => !contradicts(candidate, tracks[index]!));
 
-  return { stream, probed: trusted ? tracks[embedded.indexOf(stream)] : undefined, containerMime: probe.containerMime };
+  return {
+    stream,
+    probed: trusted ? tracks[embedded.indexOf(stream)] : undefined,
+    containerMime: probe.containerMime,
+    containerImpliesCodec: probe.containerImpliesCodec
+  };
 }
 
 /**
