@@ -62,13 +62,16 @@ interface PlaybackManagerState {
   status: PlaybackStatus;
   currentItemIndex?: number;
   /**
-   * Version (index in `MediaSources`) and tracks explicitly chosen by the user.
+   * Version (index in `MediaSources`) and tracks explicitly chosen by the user for the item
+   * `itemId`. They only apply while that item is the current one: they're not carried over
+   * to the rest of the queue, whose items have their own versions and streams.
    * Track indexes are absolute `MediaStream.Index` values, the numbering the server uses.
    * `undefined` means "not chosen": the server picks the default according to the user's
    * settings, and that choice is adopted as the current track once the server answers.
    * For subtitles, `-1` means "no subtitles".
    */
   mediaSourceIndexes: {
+    itemId?: string;
     source?: number;
     video?: number;
     audio?: number;
@@ -162,7 +165,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     findQueueItem(this.queue.value, this.currentItemId.value, this.currentItemIndex.value)
   );
 
-  public readonly currentMediaSourceIndex = computed(() => this._state.value.mediaSourceIndexes.source);
+  public readonly currentMediaSourceIndex = computed(() => this._currentSelection.value?.source);
   /**
    * Media source of the current item, as found in the /Items DTO. The server computes that DTO
    * without any device profile, so its device specific fields (`SupportsDirectPlay`, `TranscodingUrl`,
@@ -190,18 +193,24 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    * media source), so the UI shows what is actually being played.
    */
   public readonly currentVideoTrack = computed({
-    get: () => this._findStream(MediaStreamType.Video, this._state.value.mediaSourceIndexes.video),
-    set: (newIndex: number | undefined) => this._state.value.mediaSourceIndexes.video = newIndex
+    get: () => this._findStream(MediaStreamType.Video, this._currentSelection.value?.video),
+    set: (newIndex: number | undefined) => {
+      this._select('video', newIndex);
+    }
   });
 
   public readonly currentAudioTrack = computed({
     get: () => this._findStream(MediaStreamType.Audio, this._currentAudioStreamIndex.value),
-    set: (newIndex: number | undefined) => this._state.value.mediaSourceIndexes.audio = newIndex
+    set: (newIndex: number | undefined) => {
+      this._select('audio', newIndex);
+    }
   });
 
   public readonly currentSubtitleTrack = computed({
     get: () => this._findStream(MediaStreamType.Subtitle, this._currentSubtitleStreamIndex.value),
-    set: (newIndex: number | undefined) => this._state.value.mediaSourceIndexes.subtitle = newIndex
+    set: (newIndex: number | undefined) => {
+      this._select('subtitle', newIndex);
+    }
   });
 
   /**
@@ -267,6 +276,18 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   private readonly _currentMediaSourceId = computed(() => this.currentMediaSource.value?.Id);
 
   /**
+   * Version and tracks explicitly chosen by the user, if they were chosen for the current item.
+   * Also defined before `_playbackInfo`, which reads it.
+   */
+  private readonly _currentSelection = computed(() => {
+    const selection = this._state.value.mediaSourceIndexes;
+
+    if (!isNil(selection.itemId) && selection.itemId === this.currentItemId.value) {
+      return selection;
+    }
+  });
+
+  /**
    * PlaybackInfo response of the server, alongside the item and media source it was requested for
    */
   private readonly _playbackInfo = computedAsync(async (
@@ -290,8 +311,11 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
         maxStreamingBitrate: this._state.value.maxStreamingBitrate,
         playbackInfoDto: { DeviceProfile: playbackProfile },
         mediaSourceId,
-        audioStreamIndex: this._state.value.mediaSourceIndexes.audio,
-        subtitleStreamIndex: this._state.value.mediaSourceIndexes.subtitle
+        /**
+         * Undefined (not chosen) is omitted, so the server picks its default
+         */
+        audioStreamIndex: this._currentSelection.value?.audio,
+        subtitleStreamIndex: this._currentSelection.value?.subtitle
       });
 
       return {
@@ -316,7 +340,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    * if none, the one picked by the server. Undefined while unknown.
    */
   private readonly _currentAudioStreamIndex = computed(() =>
-    this._state.value.mediaSourceIndexes.audio
+    this._currentSelection.value?.audio
     ?? this.currentNegotiatedMediaSource.value?.DefaultAudioStreamIndex
     ?? undefined
   );
@@ -326,11 +350,24 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    * if none, the one picked by the server. `-1` when there are no subtitles.
    */
   private readonly _currentSubtitleStreamIndex = computed(() => {
-    const index = this._state.value.mediaSourceIndexes.subtitle
+    const index = this._currentSelection.value?.subtitle
       ?? this.currentNegotiatedMediaSource.value?.DefaultSubtitleStreamIndex;
 
     return isNil(index) || index < 0 ? -1 : index;
   });
+
+  /**
+   * Stores a track chosen by the user for the current item. Choices made for other
+   * items are discarded, since they don't apply to this one.
+   *
+   * The state is written once: `_playbackInfo` re-runs synchronously on every change.
+   */
+  private readonly _select = (track: 'video' | 'audio' | 'subtitle', index?: number) => {
+    this._state.value.mediaSourceIndexes = {
+      ...(this._currentSelection.value ?? { itemId: this.currentItemId.value }),
+      [track]: index
+    };
+  };
 
   /**
    * Finds a stream of the current media source by its absolute index
@@ -547,10 +584,17 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
 
       this._state.value.status = PlaybackStatus.Buffering;
       this._state.value.queue = await this.translateItemsForPlayback(item);
-      this._state.value.mediaSourceIndexes.source = mediaSourceIndex;
-      this._state.value.mediaSourceIndexes.video = videoTrackIndex;
-      this._state.value.mediaSourceIndexes.audio = audioTrackIndex;
-      this._state.value.mediaSourceIndexes.subtitle = subtitleTrackIndex;
+      /**
+       * The version and tracks refer to the streams of `item` itself, so they only apply to it
+       * (and never when it's a folder, since it isn't part of the queue)
+       */
+      this._state.value.mediaSourceIndexes = {
+        itemId: item.Id,
+        source: mediaSourceIndex,
+        video: videoTrackIndex,
+        audio: audioTrackIndex,
+        subtitle: subtitleTrackIndex
+      };
       this._state.value.currentItemIndex = startFromIndex;
 
       if (startShuffled) {
@@ -904,6 +948,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
         status: PlaybackStatus.Stopped,
         currentItemIndex: undefined,
         mediaSourceIndexes: {
+          itemId: undefined,
           source: undefined,
           video: undefined,
           audio: undefined,
