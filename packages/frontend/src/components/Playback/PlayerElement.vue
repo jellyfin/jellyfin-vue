@@ -37,7 +37,8 @@
 <script setup lang="ts">
 import Hls, { ErrorTypes, Events, type ErrorData } from 'hls.js';
 import HlsWorkerUrl from 'hls.js/dist/hls.worker.js?url';
-import { computed, nextTick, onScopeDispose, watch } from 'vue';
+import { MediaStreamProtocol } from '@jellyfin/sdk/lib/generated-client';
+import { computed, onScopeDispose, watch } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import { isNil } from '@jellyfin-vue/shared/validation';
 import { PromiseQueue } from '@jellyfin-vue/shared/promises';
@@ -50,6 +51,14 @@ import { playbackManager } from '#/store/playback-manager.ts';
 import { playerElement, videoContainerRef } from '#/store/player-element.ts';
 import { getImageInfo } from '#/utils/images.ts';
 import { subtitleSettings } from '#/store/settings/subtitle.ts';
+
+interface PlaybackSource {
+  url: string;
+  /**
+   * Whether the source must be played through hls.js instead of the media element's `src`
+   */
+  useHls: boolean;
+}
 
 const { t } = useTranslation();
 const webAudioQueue = new PromiseQueue();
@@ -80,15 +89,104 @@ const posterUrl = computed(() =>
 );
 
 /**
- * Detaches HLS instance after playback is done
+ * How the current source must be loaded. It's decided only from the media source negotiated
+ * with the server, for audio and video alike:
+ * - Direct play: the original file, through the element's `src`.
+ * - Transcode or remux delivered as HLS (`TranscodingSubProtocol` is `hls`): through hls.js when
+ *   it's available. Otherwise (no MediaSource nor ManagedMediaSource), through `src`, relying on
+ *   the browser's native HLS support.
+ * - Any other transcode (a progressive HTTP stream): through `src`.
+ */
+const playbackSource = computed<PlaybackSource | undefined>(() => {
+  const url = playbackManager.currentSourceUrl.value;
+  const mediaSource = playbackManager.currentNegotiatedMediaSource.value;
+
+  if (url && mediaSource) {
+    return {
+      url,
+      useHls: !isNil(hls)
+        && !mediaSource.SupportsDirectPlay
+        && mediaSource.TranscodingSubProtocol === MediaStreamProtocol.Hls
+    };
+  }
+});
+
+/**
+ * Callback for when HLS.js gets an error
+ */
+function onHlsError(_event: typeof Hls.Events.ERROR, data: ErrorData): void {
+  if (data.fatal && hls) {
+    switch (data.type) {
+      case ErrorTypes.NETWORK_ERROR: {
+        // Try to recover network error
+        useSnackbar(t('networkError'), 'error');
+        console.error('fatal network error encountered, try to recover');
+        hls.startLoad();
+        break;
+      }
+      case ErrorTypes.MEDIA_ERROR: {
+        useSnackbar(t('mediaError'), 'error');
+        console.error('fatal media error encountered, try to recover');
+        hls.recoverMediaError();
+        break;
+      }
+      default: {
+        /**
+         * Can't recover from unknown errors
+         */
+        useSnackbar(t('cantPlayItem'), 'error');
+        playbackManager.stop();
+        break;
+      }
+    }
+  }
+}
+
+hls?.on(Events.ERROR, onHlsError);
+
+/**
+ * Detaches hls.js from the media element it's attached to, if any.
+ * hls.js also removes its MediaSource from the element when detaching.
  */
 function detachHls(): void {
-  if (!hls) {
+  if (!hls?.media) {
     return;
   }
 
+  hls.stopLoad();
   hls.detachMedia();
-  hls.off(Events.ERROR, onHlsEror);
+}
+
+/**
+ * Loads the source in the media element (or unloads the element if there's no source),
+ * attaching hls.js only while the source needs it.
+ */
+function loadSource(el: HTMLMediaElement, source?: PlaybackSource): void {
+  if (source?.useHls && hls) {
+    if (hls.media === el) {
+      hls.loadSource(source.url);
+    } else {
+      detachHls();
+      hls.loadSource(source.url);
+      hls.attachMedia(el);
+    }
+
+    return;
+  }
+
+  detachHls();
+
+  if (source) {
+    el.src = source.url;
+  } else if (el.hasAttribute('src')) {
+    /**
+     * Unload the previous item, so the player doesn't keep (or restart) its playback.
+     * This is the way the HTML spec recommends: setting `src` to a placeholder would
+     * make the browser request it and fail with a media error.
+     */
+    el.removeAttribute('src');
+    el.load();
+  }
 }
 
 /**
@@ -109,7 +207,10 @@ async function detachWebAudio(): Promise<void> {
 }
 
 /**
- * Resumes WebAudio when playback is in place
+ * Resumes WebAudio when playback is in place.
+ *
+ * It works the same whether the element plays a URL or a MediaSource attached by hls.js:
+ * the source node takes the output of the element in both cases.
  */
 async function attachWebAudio(el: HTMLMediaElement): Promise<void> {
   const { context, sourceNode } = mediaWebAudio;
@@ -139,97 +240,43 @@ async function onLoadedData(): Promise<void> {
 }
 
 /**
- * Callback for when HLS.js gets an error
+ * Every new audio element gets its own WebAudio graph, after the previous one is closed
  */
-function onHlsEror(_event: typeof Hls.Events.ERROR, data: ErrorData): void {
-  if (data.fatal && hls) {
-    switch (data.type) {
-      case ErrorTypes.NETWORK_ERROR: {
-        // Try to recover network error
-        useSnackbar(t('networkError'), 'error');
-        console.error('fatal network error encountered, try to recover');
-        hls.startLoad();
-        break;
-      }
-      case ErrorTypes.MEDIA_ERROR: {
-        useSnackbar(t('mediaError'), 'error');
-        console.error('fatal media error encountered, try to recover');
-        hls.recoverMediaError();
-        break;
-      }
-      default: {
-        /**
-         * Can't recover from unknown errors
-         */
-        useSnackbar(t('cantPlayItem'), 'error');
-        playbackManager.stop();
-        break;
-      }
-    }
-  }
-}
-
 watch(mediaElementRef, (el) => {
-  detachHls();
   void webAudioQueue.add(() => detachWebAudio());
 
-  if (el) {
-    if (playbackManager.isVideo.value && hls) {
-      hls.attachMedia(el);
-      hls.on(Events.ERROR, onHlsEror);
-    }
-
-    if (playbackManager.isAudio.value) {
-      /**
-       * The queue runs the task later: pass the element that triggered this callback,
-       * not whatever the ref holds by then
-       */
-      void webAudioQueue.add(() => attachWebAudio(el));
-    }
+  if (el instanceof HTMLAudioElement) {
+    /**
+     * The queue runs the task later: pass the element that triggered this callback,
+     * not whatever the ref holds by then
+     */
+    void webAudioQueue.add(() => attachWebAudio(el));
   }
 });
 
-watch(playbackManager.currentSourceUrl,
-  async (newUrl) => {
-    if (hls) {
-      hls.stopLoad();
-    }
-
-    /**
-     * Ensure element is mounted before setting the source.
-     */
-    await nextTick();
-
-    if (mediaElementRef.value && !newUrl) {
-      /**
-       * Unload the previous item, so the player doesn't keep (or restart) its playback.
-       * This is the way the HTML spec recommends: setting `src` to a placeholder would
-       * make the browser request it and fail with a media error.
-       */
-      mediaElementRef.value.removeAttribute('src');
-      mediaElementRef.value.load();
-    } else if (
-      mediaElementRef.value
-      && (playbackManager.currentMediaSource.value?.SupportsDirectPlay
-        || !hls)
-    ) {
-      /**
-       * Without hls.js (no MediaSource nor ManagedMediaSource available), HLS is left to the
-       * browser's native support.
-       */
-      mediaElementRef.value.src = String(newUrl);
-    } else if (
-      hls
-      && playbackManager.isVideo.value
-      && newUrl
-    ) {
-      /**
-       * We need to check if HLS.js can handle transcoded audio to remove the video check
-       */
-      hls.loadSource(newUrl);
-    }
+/**
+ * (Re)loads the source when it changes or when the media element is replaced
+ * (switching between audio and video items mounts a different element)
+ */
+watch([mediaElementRef, playbackSource], ([el, source], [oldEl, oldSource]) => {
+  /**
+   * Re-negotiations that keep the same URL (for example, changing the subtitle track while
+   * playing the original file) must not reload the media
+   */
+  if (
+    el === oldEl
+    && source?.url === oldSource?.url
+    && source?.useHls === oldSource?.useHls
+  ) {
+    return;
   }
-);
+
+  if (el) {
+    loadSource(el, source);
+  } else {
+    detachHls();
+  }
+});
 
 onScopeDispose(() => {
   detachHls();
