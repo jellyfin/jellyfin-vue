@@ -18,6 +18,7 @@
             'uno-object-fill uno-w-screen': playerElement.state.value.isStretched,
             'uno-h-full uno-max-h-100vh': playbackManager.isVideo.value
           }"
+          @loadedmetadata="onLoadedMetadata"
           @loadeddata="onLoadedData">
           <track
             v-for="sub in playerElement.currentItemVttParsedSubtitleTracks.value"
@@ -225,6 +226,15 @@ async function attachWebAudio(el: HTMLMediaElement): Promise<void> {
   sourceNode.value = context.value.createMediaElementSource(el);
   await context.value.resume();
   sourceNode.value.connect(context.value.destination);
+}
+
+/**
+ * Called by the media element once it knows the tracks of what it loaded
+ */
+function onLoadedMetadata(event: Event): void {
+  if (event.target instanceof HTMLMediaElement) {
+    playerElement.applyAudioTrack(event.target);
+  }
 }
 
 /**

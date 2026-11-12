@@ -17,6 +17,7 @@ import { remote } from '#/plugins/remote/index.ts';
 import type { ParsedSubtitleTrack } from '#/plugins/workers/generic/subtitles.ts';
 import { runGenericWorkerFunc } from '#/plugins/workers/index.ts';
 import { subtitleSettings } from '#/store/settings/subtitle.ts';
+import { recordAudioTrackSwitchingFailure } from '#/store/playback-capabilities.ts';
 import { NATIVE_SUBTITLE_FORMATS } from '#/utils/playback-capabilities/subtitles.ts';
 import { getSubtitleRenderer } from '#/utils/subtitle-renderers.ts';
 
@@ -219,6 +220,40 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched'> 
   };
 
   /**
+   * Makes the media element play the selected audio track of a file it plays directly. Only possible when the
+   * element exposes `audioTracks` and the list matches the file's audio streams one to one, in order: if it
+   * doesn't, the element can't be trusted to switch tracks, which is recorded so a secondary track is remuxed
+   * from now on (re-negotiating the current playback if it needs it).
+   *
+   * Remuxes and transcodes carry only the selected audio track, so there's nothing to switch there.
+   *
+   * @param el - The media element, once it has loaded the file's metadata
+   */
+  public readonly applyAudioTrack = (el: HTMLMediaElement): void => {
+    // `audioTracks` isn't in TypeScript's DOM library
+    const { audioTracks } = el as HTMLMediaElement & { audioTracks?: Iterable<{ enabled: boolean }> & { length: number } };
+    const negotiated = playbackManager.currentNegotiatedMediaSource.value;
+    const selected = playbackManager.currentAudioTrack.value?.Index;
+
+    if (!audioTracks || !negotiated || isNil(selected) || playbackManager.currentPlaybackMethod.value !== 'DirectPlay') {
+      return;
+    }
+
+    const fileAudio = negotiated.MediaStreams?.filter(
+      stream => stream.Type === MediaStreamType.Audio && !stream.IsExternal
+    ) ?? [];
+    const position = fileAudio.findIndex(stream => stream.Index === selected);
+
+    if (position !== -1 && audioTracks.length === fileAudio.length) {
+      for (const [index, track] of [...audioTracks].entries()) {
+        track.enabled = index === position;
+      }
+    } else if (position > 0) {
+      recordAudioTrackSwitchingFailure();
+    }
+  };
+
+  /**
    * Draws the subtitle with the renderer of the registry that declares its delivered format
    */
   private readonly _applyRendererSubtitles = async (track: PlaybackExternalTrack): Promise<void> => {
@@ -339,6 +374,21 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched'> 
         await this.toggleFullscreenVideoPlayer();
       }
     );
+
+    /**
+     * Choosing another audio track while the file plays directly keeps its URL, so the element
+     * isn't reloaded (and doesn't load the metadata again): switch the track on it
+     */
+    watch([
+      () => playbackManager.currentAudioTrack.value?.Index,
+      playbackManager.currentPlaybackMethod
+    ], () => {
+      const el = mediaElementRef.value;
+
+      if (el && el.readyState >= HTMLMediaElement.HAVE_METADATA) {
+        this.applyAudioTrack(el);
+      }
+    }, { flush: 'post' });
 
     /**
      * We need to destroy the subtitle renderers (assjs and libpgs) so their canvas

@@ -5,7 +5,7 @@
  * session learned belongs to the user and the server it was learned with: it is forgotten when either changes.
  */
 import type { BaseItemDto, MediaSourceInfo, MediaStream } from '@jellyfin/sdk/lib/generated-client';
-import { shallowReactive, watch } from 'vue';
+import { computed, shallowReactive, shallowRef, watch } from 'vue';
 import { PROBE_PLAYBACK_WAIT_MS } from '#/utils/playback-capabilities/constants.ts';
 import { createBrowserOracle } from '#/utils/playback-capabilities/oracle.ts';
 import { isCurrentProbe, isRememberedForSession, probeMediaSource, type ProbeResult } from '#/utils/playback-capabilities/probe.ts';
@@ -59,10 +59,18 @@ export const capabilityOracle = createBrowserOracle();
 const learnedFloors = shallowReactive(new Map<string, PlaybackMethod>());
 
 /**
- * Whether the media element can switch the audio track of a file it plays directly: it exposes `audioTracks`
- * (feature detection)
+ * Whether the media element was seen exposing an audio track list that does not match the file's audio streams
+ * this session, so it cannot be trusted to switch audio tracks
  */
-export const canSelectAudioTrack = 'audioTracks' in HTMLMediaElement.prototype;
+const audioTrackSwitchingFailed = shallowRef(false);
+
+/**
+ * Whether the media element can switch the audio track of a file it plays directly: it exposes `audioTracks`
+ * (feature detection) and that list was never seen not matching a file's audio streams
+ */
+export const canSelectAudioTrack = computed(() =>
+  'audioTracks' in HTMLMediaElement.prototype && !audioTrackSwitchingFailed.value
+);
 
 /**
  * The learned floors of this session, as the verdict's environment expects them
@@ -85,12 +93,21 @@ export function recordPlaybackOutcome(verdict: Pick<Verdict, 'method' | 'signatu
 }
 
 /**
- * Forgets what this session learned about what this client plays: the oracle's answers and the learned floors. The
- * stored probe results stay: they are about files.
+ * Records that the media element exposed an audio track list that does not match the audio streams of the file
+ * it plays, so it cannot switch to the selected one: from now on, a secondary audio track is remuxed
+ */
+export function recordAudioTrackSwitchingFailure(): void {
+  audioTrackSwitchingFailed.value = true;
+}
+
+/**
+ * Forgets what this session learned about what this client plays: the oracle's answers, the learned floors and what was
+ * seen of the media element. The stored probe results stay: they are about files.
  */
 function forgetSessionMemory(): void {
   capabilityOracle.clear();
   learnedFloors.clear();
+  audioTrackSwitchingFailed.value = false;
 }
 
 /**
@@ -119,6 +136,35 @@ watch([() => remote.auth.currentServer.value?.Id, () => remote.auth.currentUserI
 const pendingProbes = new Map<string, Promise<ProbeResult | undefined>>();
 
 /**
+ * Counts the times the stored probe results were forgotten: a probe that started before the last time does not store
+ * its result (see {@link readProbe})
+ */
+const probeGeneration = { current: 0 };
+
+/**
+ * Probe results being written to the database, which forgetting waits for
+ */
+const pendingProbeStores = new Set<Promise<boolean>>();
+
+/**
+ * Results that are not stored but not probed again this session either (see `isRememberedForSession`), by the key of
+ * {@link pendingProbes}. Memory only: a reload probes them again.
+ */
+const sessionProbes = new Map<string, ProbeResult>();
+
+/**
+ * Forgets the stored probe results, also those of the probes still running or being stored, so the files are probed
+ * again: the probes in flight are left to their verdicts, but no later verdict waits for them and none stores its result
+ */
+async function forgetStoredProbes(): Promise<void> {
+  probeGeneration.current++;
+  pendingProbes.clear();
+  sessionProbes.clear();
+  await Promise.allSettled(pendingProbeStores);
+  await apiStore.mediaProbesClear();
+}
+
+/**
  * The user policy flags the verdict depends on
  */
 function getPlaybackPolicy(): PlaybackPolicy {
@@ -133,16 +179,17 @@ function getPlaybackPolicy(): PlaybackPolicy {
 
 /**
  * What the verdict depends on that may change during a playback and has to re-negotiate it: the playback
- * settings and the user's policy. Learned floors are not here: they belong to one verdict's signature (see
- * {@link minimumRung}). The HDR display is not here either: moving the window to another display must not
- * interrupt a playback.
+ * settings, the user's policy and what was learned about the media element. Learned floors are not here: they
+ * belong to one verdict's signature (see {@link minimumRung}). The HDR display is not here either: moving the
+ * window to another display must not interrupt a playback.
  */
 export const renegotiatingEnvironment = [
   () => playbackSettings.quality.value,
   () => playbackSettings.hdrMode.value,
   () => getPlaybackPolicy().EnableVideoPlaybackTranscoding,
   () => getPlaybackPolicy().EnableAudioPlaybackTranscoding,
-  () => getPlaybackPolicy().EnablePlaybackRemuxing
+  () => getPlaybackPolicy().EnablePlaybackRemuxing,
+  () => canSelectAudioTrack.value
 ] as const;
 
 /**
@@ -154,7 +201,7 @@ export function getVerdictEnvironment(video?: MediaStream): VerdictEnvironment {
   return {
     hdrDisplay: hasHDRDisplay.value,
     hdrMode: playbackSettings.hdrMode.value,
-    canSelectAudioTrack,
+    canSelectAudioTrack: canSelectAudioTrack.value,
     quality: playbackSettings.getQualityMode(video),
     policy: getPlaybackPolicy(),
     minimumRung,
@@ -278,35 +325,6 @@ async function getProbe(item: BaseItemDto, source: MediaSourceInfo, waitMs: numb
   } finally {
     clearTimeout(timer);
   }
-}
-
-/**
- * Counts the times the stored probe results were forgotten: a probe that started before the last time does not store
- * its result (see {@link readProbe})
- */
-const probeGeneration = { current: 0 };
-
-/**
- * Probe results being written to the database, which forgetting waits for
- */
-const pendingProbeStores = new Set<Promise<boolean>>();
-
-/**
- * Results that are not stored but not probed again this session either (see `isRememberedForSession`), by the key of
- * {@link pendingProbes}. Memory only: a reload probes them again.
- */
-const sessionProbes = new Map<string, ProbeResult>();
-
-/**
- * Forgets the stored probe results, also those of the probes still running or being stored, so the files are probed
- * again: the probes in flight are left to their verdicts, but no later verdict waits for them and none stores its result
- */
-async function forgetStoredProbes(): Promise<void> {
-  probeGeneration.current++;
-  pendingProbes.clear();
-  sessionProbes.clear();
-  await Promise.allSettled(pendingProbeStores);
-  await apiStore.mediaProbesClear();
 }
 
 /**
