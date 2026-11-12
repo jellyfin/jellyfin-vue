@@ -281,8 +281,19 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched' |
      * Check if client is able to display custom subtitle track
      * otherwise show default subtitle track
      */
-    if (!this._useCustomSubtitleTrack.value && !isNil(mediaElementRef.value.textTracks[subtitleTrack.srcIndex])) {
-      mediaElementRef.value.textTracks[subtitleTrack.srcIndex].mode = 'showing';
+    if (!this._useCustomSubtitleTrack.value) {
+      /**
+       * Only the VTT tracks are rendered as <track> elements and the browser can add its own
+       * in-band text tracks, so positions in `textTracks` don't match the ones of our subtitle list.
+       * Use the TextTrack of the <track> element rendered for this subtitle instead.
+       */
+      const trackElement = [...mediaElementRef.value.querySelectorAll('track')].find(
+        el => el.dataset.srcIndex === String(subtitleTrack.srcIndex)
+      );
+
+      if (trackElement) {
+        trackElement.track.mode = 'showing';
+      }
     }
   };
 

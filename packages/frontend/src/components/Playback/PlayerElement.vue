@@ -22,6 +22,7 @@
           <track
             v-for="sub in playerElement.currentItemVttParsedSubtitleTracks.value"
             :key="`${playbackManager.currentSourceUrl.value}-${sub.srcIndex}`"
+            :data-src-index="String(sub.srcIndex)"
             kind="subtitles"
             :label="sub.label"
             :srclang="sub.srcLang"
