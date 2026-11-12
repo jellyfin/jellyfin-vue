@@ -25,6 +25,7 @@ import {
 import {
   PROBE_BYTE_BUDGET,
   PROBE_MAX_RETRIES,
+  PROBE_RANGE_WINDOW,
   PROBE_RETRY_DELAY_SECONDS,
   PROBE_TIMEOUT_MS
 } from './constants.ts';
@@ -173,6 +174,13 @@ export interface ProbeOptions {
   readonly signal?: AbortSignal;
   readonly timeoutMs?: number;
   readonly byteBudget?: number;
+  /**
+   * The size of the file in bytes, as the server reports it (`MediaSourceInfo.Size`). A cross-origin response hides
+   * `Content-Range` from the page (it is not a CORS-safelisted header, and Jellyfin 12.4 does not expose it, measured),
+   * so without it mediabunny takes the file size from `Content-Length`, which for a range window is the window's: a
+   * file larger than one window would read as cut at its end.
+   */
+  readonly size?: number;
 }
 
 /**
@@ -290,6 +298,39 @@ async function readInput(input: Input) {
 }
 
 /**
+ * The headers mediabunny reads from a range response: the response's own, with the `Content-Range` CORS hides rebuilt
+ * from the file's size, when known, the start of the range asked for and the response's `Content-Length`
+ */
+function getRangeHeaders(response: Response, requestHeaders: Headers, size: number | undefined): Headers {
+  const headers = new Headers(response.headers);
+  const start = /^bytes=(\d+)-/.exec(requestHeaders.get('Range') ?? '')?.[1];
+  const length = Number(headers.get('Content-Length'));
+
+  if (response.status === 206 && !headers.has('Content-Range') && size !== undefined && start !== undefined && length > 0) {
+    headers.set('Content-Range', `bytes ${start}-${Number(start) + length - 1}/${size}`);
+  }
+
+  return headers;
+}
+
+/**
+ * Turns mediabunny's open-ended range (`bytes=N-`) into a window of {@link PROBE_RANGE_WINDOW} bytes, so its
+ * read-ahead stops at the end of the window unless the parser still needs data
+ */
+function getWindowedHeaders(headers: HeadersInit | undefined): Headers {
+  const result = new Headers(headers);
+  const openEnded = /^bytes=(\d+)-$/.exec(result.get('Range') ?? '');
+
+  if (openEnded) {
+    const start = Number(openEnded[1]);
+
+    result.set('Range', `bytes=${start}-${start + PROBE_RANGE_WINDOW - 1}`);
+  }
+
+  return result;
+}
+
+/**
  * Cancels a response body that will not be read, ignoring errors
  */
 async function discardBody(response: Response): Promise<void> {
@@ -318,7 +359,7 @@ class ProbeSession {
   /**
    * Wraps the response body so every byte is counted against the budget
    */
-  private readonly _countBody = (response: Response, body: ReadableStream<Uint8Array>): Response => {
+  private readonly _countBody = (response: Response, body: ReadableStream<Uint8Array>, headers: Headers): Response => {
     const reader = body.getReader();
     const counted = new ReadableStream<Uint8Array>({
       pull: async (streamController) => {
@@ -350,7 +391,7 @@ class ProbeSession {
     return withOriginalMetadata(new Response(counted, {
       status: response.status,
       statusText: response.statusText,
-      headers: response.headers
+      headers
     }), response);
   };
 
@@ -402,10 +443,12 @@ class ProbeSession {
     this.requests++;
 
     let response: Response;
+    const headers = getWindowedHeaders(init?.headers);
 
     try {
       response = await fetch(input, {
         ...init,
+        headers,
         signal: init?.signal ? AbortSignal.any([init.signal, this.controller.signal]) : this.controller.signal
       });
     } catch (error) {
@@ -422,7 +465,7 @@ class ProbeSession {
       throw this.end('http-error', `HTTP ${response.status}`);
     }
 
-    return response.body ? this._countBody(response, response.body) : response;
+    return response.body ? this._countBody(response, response.body, getRangeHeaders(response, headers, this._size)) : response;
   };
 
   /**
@@ -453,7 +496,7 @@ class ProbeSession {
     return { status: 'failed', reason: 'parse-error', detail, cacheable: true, stats };
   };
 
-  public constructor(byteBudget: number) {
+  public constructor(byteBudget: number, private readonly _size?: number) {
     this._byteBudget = byteBudget;
   }
 
@@ -469,18 +512,19 @@ class ProbeSession {
 /**
  * Reads the container and the codec strings of every track of a media file over HTTP.
  *
- * Guarded against everything that could make it expensive: capped retries, an overall timeout, a byte budget,
- * and an immediate stop when the server ignores range requests. Never throws: failures are part of the result.
+ * Guarded against everything that could make it expensive: bounded range windows, capped retries, an overall
+ * timeout, a byte budget, and an immediate stop when the server ignores range requests. Never throws: failures are
+ * part of the result.
  *
- * Measured cost: one or two requests for every tested container, and no task of 50 ms or more on the main thread
- * even for a 2 hour MP4 with a 3.45 MiB index, so it runs on the main thread.
+ * Measured cost: one to four requests for every tested container, at most 5.8 MB read for a 2 hour MP4 with a
+ * 3.45 MiB index, and no task of 50 ms or more on the main thread, so it runs on the main thread.
  *
  * @param url - Static stream URL of the media source. Credentials, if any, go in the query (the server's own
  * URLs use `ApiKey`): an `Authorization` header would force a CORS preflight on every range request.
  */
 export async function probeMediaSource(url: string, options: ProbeOptions = {}): Promise<ProbeResult> {
-  const { signal, timeoutMs = PROBE_TIMEOUT_MS, byteBudget = PROBE_BYTE_BUDGET } = options;
-  const session = new ProbeSession(byteBudget);
+  const { signal, timeoutMs = PROBE_TIMEOUT_MS, byteBudget = PROBE_BYTE_BUDGET, size } = options;
+  const session = new ProbeSession(byteBudget, size);
   const onCallerAbort = () => session.end('aborted', 'The probe was cancelled');
   const timer = setTimeout(() => session.end('timeout', `No result after ${timeoutMs} ms`), timeoutMs);
   const input = new Input({

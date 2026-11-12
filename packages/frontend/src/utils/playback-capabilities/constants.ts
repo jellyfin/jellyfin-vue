@@ -28,23 +28,34 @@ export const ORACLE_QUERY_TIMEOUT_MS = 1000;
 /**
  * Maximum wall time of one probe, from the first request to the parsed metadata.
  *
- * Origin: measured on a local server, every test container was probed in at most 153 ms (WebKit, 2 hour MP4
- * with a 3.45 MiB index at the end, 10 runs). Over slow links the time is dominated by the bytes: the whole
- * {@link PROBE_BYTE_BUDGET} takes about 13.4 s at 20 Mbit/s, so above that speed the budget, not the clock, ends a
- * pathological probe. A timeout is not cached: the next visit probes again.
+ * Origin: measured on a local server with the range windows below, every test container was probed in at most
+ * 58 ms in Chromium, Firefox and WebKit (worst: 2 hour MP4 with a 3.45 MiB index at the end). Over slow links the
+ * time is dominated by the bytes: the whole {@link PROBE_BYTE_BUDGET} takes about 15 s at 9 Mbit/s, so above that
+ * speed the budget, not the clock, ends a pathological probe. A timeout is not cached: the next visit probes again.
  */
 export const PROBE_TIMEOUT_MS = 15_000;
 
 /**
+ * Size of the byte ranges the probe asks for. mediabunny asks for open-ended ranges (`bytes=N-`) and reads
+ * ahead up to 8 MiB per sequential reader; bounding each request makes a reader stop at the end of its window
+ * unless the parser still needs more, in which case it asks for the next window.
+ *
+ * Origin: measured (3 runs per file and engine). Without windows WebKit read up to 21.9 MB (and the server sent
+ * up to 44.9 MB) to probe the 2 hour files, against at most 5.8 MB in Chromium. With 2 MiB windows WebKit reads at
+ * most 5.8 MB and no engine puts more than 7.4 MB on the wire, at the cost of one more request for files with
+ * multi-MiB indexes. 1 MiB windows read slightly less but need two to three more requests for the same files;
+ * 4 MiB windows let WebKit read up to 7.9 MB.
+ */
+export const PROBE_RANGE_WINDOW = 2 * 2 ** 20;
+
+/**
  * Maximum number of bytes a probe may read before giving up.
  *
- * Origin: measured. Chromium and Firefox read at most 5.05 MB for the largest test file (2 hour MP4, 3.45 MiB index
- * at the end, 10 runs each). WebKit reads ahead much further on a fast link: up to 22.1 MB for the same file,
- * because mediabunny's network prefetch grows up to 8 MiB per sequential reader and WebKit hands over large
- * chunks. 32 MiB keeps that read-ahead within budget with a margin; a file that needs more is not worth probing
- * before playback.
+ * Origin: measured with {@link PROBE_RANGE_WINDOW}: the most any engine read was 5.8 MB (WebKit, 2 hour MP4 with a
+ * 3.45 MiB index at the end). A probe reads what the parser needs plus at most one window per reader, so 16 MiB
+ * still admits indexes of about 12 MiB; a file that needs more is not worth probing before playback.
  */
-export const PROBE_BYTE_BUDGET = 32 * 2 ** 20;
+export const PROBE_BYTE_BUDGET = 16 * 2 ** 20;
 
 /**
  * Maximum retries of a failed probe request (network errors only: HTTP errors are never retried by mediabunny).
