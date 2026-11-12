@@ -59,6 +59,10 @@ interface PlaybackSource {
    * Whether the source must be played through hls.js instead of the media element's `src`
    */
   useHls: boolean;
+  /**
+   * Item the source plays
+   */
+  itemId?: string;
 }
 
 const { t } = useTranslation();
@@ -107,7 +111,8 @@ const playbackSource = computed<PlaybackSource | undefined>(() => {
       url,
       useHls: !isNil(hls)
         && !mediaSource.SupportsDirectPlay
-        && mediaSource.TranscodingSubProtocol === MediaStreamProtocol.Hls
+        && mediaSource.TranscodingSubProtocol === MediaStreamProtocol.Hls,
+      itemId: playbackManager.currentItemId.value
     };
   }
 });
@@ -273,7 +278,22 @@ watch([mediaElementRef, playbackSource], ([el, source], [oldEl, oldSource]) => {
   }
 
   if (el) {
+    /**
+     * A new source for the item that the element is already playing comes from a re-negotiation
+     * (quality, audio or subtitle change). Loading it resets the element to the start, so
+     * playback must resume where it was. Setting the time on the element right after loading
+     * the new source makes it the default playback start position of the new load (and what
+     * the element reports as its current time until then, which the time ref picks up).
+     */
+    const resumeAt = el === oldEl && source && oldSource && source.itemId === oldSource.itemId
+      ? el.currentTime
+      : undefined;
+
     loadSource(el, source);
+
+    if (resumeAt) {
+      el.currentTime = resumeAt;
+    }
   } else {
     detachHls();
   }
