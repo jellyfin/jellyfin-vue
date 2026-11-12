@@ -597,6 +597,16 @@ function getMethodOrder(method: PlaybackMethod): number {
 }
 
 /**
+ * Whether a method is above another one in the ladder (`Unplayable` is above every rung)
+ *
+ * @param method - The method to compare
+ * @param than - The method it is compared with
+ */
+export function isMoreExpensive(method: PlaybackMethod, than: PlaybackMethod): boolean {
+  return getMethodOrder(method) > getMethodOrder(than);
+}
+
+/**
  * The method one step up the ladder (`Unplayable` after the last rung)
  */
 function getNextMethod(rung: PlaybackRung): PlaybackMethod {

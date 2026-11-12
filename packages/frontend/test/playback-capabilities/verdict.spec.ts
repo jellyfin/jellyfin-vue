@@ -15,6 +15,7 @@ import type { ProbeResult } from '#/utils/playback-capabilities/probe.ts';
 import {
   computeVerdict,
   getNextFloor,
+  isMoreExpensive,
   type PlaybackMethod,
   type Verdict,
   type VerdictEnvironment,
@@ -707,6 +708,22 @@ describe('getNextFloor: every caller records what it learned the same way', () =
     const floor = getNextFloor(verdict, outcome, current);
 
     expect(floor).toBe(expected);
+  });
+});
+
+describe('isMoreExpensive: the order of the methods, so callers compare them the way the floors do', () => {
+  const cases: [string, PlaybackMethod, PlaybackMethod, boolean][] = [
+    ['a remux costs more than direct play', 'Remux', 'DirectPlay', true],
+    ['an audio transcode costs more than a remux', 'TranscodeAudio', 'Remux', true],
+    ['a video transcode costs more than an audio transcode', 'TranscodeVideo', 'TranscodeAudio', true],
+    ['unplayable is above every rung', 'Unplayable', 'TranscodeVideo', true],
+    ['a method does not cost more than itself', 'Remux', 'Remux', false],
+    ['direct play does not cost more than a remux', 'DirectPlay', 'Remux', false],
+    ['no rung costs more than unplayable', 'TranscodeVideo', 'Unplayable', false]
+  ];
+
+  test.each(cases)('%s', (_, method, than, expected) => {
+    expect(isMoreExpensive(method, than)).toBe(expected);
   });
 });
 
