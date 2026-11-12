@@ -37,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-import Hls, { ErrorTypes, Events, type ErrorData } from 'hls.js';
+import Hls, { ErrorDetails, ErrorTypes, Events, type ErrorData } from 'hls.js';
 import HlsWorkerUrl from 'hls.js/dist/hls.worker.js?url';
 import { MediaStreamProtocol } from '@jellyfin/sdk/lib/generated-client';
 import { computed, onScopeDispose, watch } from 'vue';
@@ -119,6 +119,16 @@ const playbackSource = computed<PlaybackSource | undefined>(() => {
 });
 
 /**
+ * Media errors that mean the stream's codecs can't be played through media source here: hls.js couldn't create
+ * the buffers for them. Recovering would fail the same way forever.
+ */
+const CODEC_ERRORS = new Set<ErrorData['details']>([
+  ErrorDetails.MANIFEST_INCOMPATIBLE_CODECS_ERROR,
+  ErrorDetails.BUFFER_INCOMPATIBLE_CODECS_ERROR,
+  ErrorDetails.BUFFER_ADD_CODEC_ERROR
+]);
+
+/**
  * Callback for when HLS.js gets an error
  */
 function onHlsError(_event: typeof Hls.Events.ERROR, data: ErrorData): void {
@@ -132,6 +142,12 @@ function onHlsError(_event: typeof Hls.Events.ERROR, data: ErrorData): void {
         break;
       }
       case ErrorTypes.MEDIA_ERROR: {
+        if (CODEC_ERRORS.has(data.details)) {
+          console.error(`media source playback failed (${data.details}), playing it another way`);
+          void playbackManager.reportMediaSourceFailure();
+          break;
+        }
+
         useSnackbar(t('mediaError'), 'error');
         console.error('fatal media error encountered, try to recover');
         hls.recoverMediaError();

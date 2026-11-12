@@ -29,6 +29,7 @@ import { apiStore } from '#/store/dbs/api/index.ts';
 import {
   getMediaSourceVerdict,
   minimumRung,
+  recordMediaSourceFailure,
   recordPlaybackOutcome,
   renegotiatingEnvironment
 } from '#/store/playback-capabilities.ts';
@@ -592,6 +593,21 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
         this._state.value.status = PlaybackStatus.Error;
         useSnackbar(i18next.t('cantPlayItem'), 'error');
       }
+    }
+  };
+
+  /**
+   * Reports that the player could not play the negotiated stream through media source playback because of a
+   * codec error: it could not even create the buffer for it, so retrying is pointless. What failed is learned
+   * (see `recordMediaSourceFailure`), which negotiates the playback again another way.
+   */
+  public readonly reportMediaSourceFailure = async (): Promise<void> => {
+    const negotiation = this._currentNegotiation.value;
+    const item = this.currentItem.value;
+    const mediaSource = this.currentMediaSource.value;
+
+    if (negotiation && !negotiation.failure && item && mediaSource) {
+      await recordMediaSourceFailure(item, mediaSource, negotiation.verdict);
     }
   };
 

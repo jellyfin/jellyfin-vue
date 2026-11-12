@@ -7,10 +7,16 @@
 import type { BaseItemDto, MediaSourceInfo, MediaStream } from '@jellyfin/sdk/lib/generated-client';
 import { computed, shallowReactive, shallowRef, watch } from 'vue';
 import { PROBE_PLAYBACK_WAIT_MS } from '#/utils/playback-capabilities/constants.ts';
-import { createBrowserOracle } from '#/utils/playback-capabilities/oracle.ts';
+import {
+  createBrowserOracle,
+  getConfigurationKey,
+  UNSUPPORTED,
+  type CapabilityOracle
+} from '#/utils/playback-capabilities/oracle.ts';
 import { isCurrentProbe, isRememberedForSession, probeMediaSource, type ProbeResult } from '#/utils/playback-capabilities/probe.ts';
 import {
   computeVerdict,
+  getMediaSourceQuestions,
   getNextFloor,
   type LearnedFloor,
   type PlaybackMethod,
@@ -47,10 +53,26 @@ export interface MediaSourceVerdictOptions {
   readonly probeWaitMs?: number;
 }
 
+const browserOracle = createBrowserOracle();
+
 /**
- * The app's only capability oracle, so every verdict shares its memoised answers
+ * Questions answered "supported" by the browser that playback proved wrong this session (see
+ * {@link recordMediaSourceFailure}), by configuration key
  */
-export const capabilityOracle = createBrowserOracle();
+const disprovenAnswers = shallowReactive(new Set<string>());
+
+/**
+ * The app's only capability oracle, so every verdict shares its memoised answers: the browser's, except for the
+ * answers playback disproved this session
+ */
+export const capabilityOracle: CapabilityOracle = {
+  query: async (config, context) =>
+    disprovenAnswers.has(getConfigurationKey(config)) ? UNSUPPORTED : browserOracle.query(config, context),
+  clear: () => {
+    browserOracle.clear();
+    disprovenAnswers.clear();
+  }
+};
 
 /**
  * The learned floor of each stream signature (see {@link LearnedFloor}). Memory only: it is lost on reload.
@@ -101,8 +123,40 @@ export function recordAudioTrackSwitchingFailure(): void {
 }
 
 /**
- * Forgets what this session learned about what this client plays: the oracle's answers, the learned floors and what was
- * seen of the media element. The stored probe results stay: they are about files.
+ * Records that the media source playback of a negotiated stream failed with a codec error (the player could not
+ * even create the buffer for it), although the browser said it plays. With one stream copied into the server's
+ * output, that stream's media source answers are disproved for the session, so its next verdict encodes it; with
+ * both copied (a remux), which one failed is unknown, so it counts as a failure of the remux, whose next rung
+ * encodes the audio. Encoded streams are not suspects: their targets were checked before being asked for.
+ *
+ * @param item - The item the media source belongs to
+ * @param source - The media source the verdict was computed for
+ * @param verdict - The verdict the playback was negotiated with
+ */
+export async function recordMediaSourceFailure(
+  item: BaseItemDto,
+  source: MediaSourceInfo,
+  verdict: Pick<Verdict, 'method' | 'signature' | 'video' | 'audio'>
+): Promise<void> {
+  const copied = [verdict.video, verdict.audio].filter(plan => plan?.action === 'copy');
+
+  if (copied.length === 1 && copied[0]) {
+    // The questions the next verdict will ask: with the probe it will find stored
+    const probe = item.Id && source.Id ? await getStoredProbe(item.Id, source) : undefined;
+    const questions = getMediaSourceQuestions(source, copied[0].index, probe);
+
+    for (const config of questions) {
+      disprovenAnswers.add(getConfigurationKey(config));
+    }
+  } else if (verdict.method !== 'Unplayable' && verdict.method !== 'DirectPlay') {
+    recordPlaybackOutcome(verdict, { failedAt: verdict.method });
+  }
+}
+
+/**
+ * Forgets what this session learned about what this client plays: the oracle's answers (also those playback
+ * disproved), the learned floors and what was seen of the media element. The stored probe results stay: they are
+ * about files.
  */
 function forgetSessionMemory(): void {
   capabilityOracle.clear();
@@ -179,7 +233,7 @@ function getPlaybackPolicy(): PlaybackPolicy {
 
 /**
  * What the verdict depends on that may change during a playback and has to re-negotiate it: the playback
- * settings, the user's policy and what was learned about the media element. Learned floors are not here: they
+ * settings, the user's policy and what was learned about the media element and the browser's answers. Learned floors are not here: they
  * belong to one verdict's signature (see {@link minimumRung}). The HDR display is not here either: moving the
  * window to another display must not interrupt a playback.
  */
@@ -189,7 +243,8 @@ export const renegotiatingEnvironment = [
   () => getPlaybackPolicy().EnableVideoPlaybackTranscoding,
   () => getPlaybackPolicy().EnableAudioPlaybackTranscoding,
   () => getPlaybackPolicy().EnablePlaybackRemuxing,
-  () => canSelectAudioTrack.value
+  () => canSelectAudioTrack.value,
+  () => disprovenAnswers.size
 ] as const;
 
 /**
@@ -218,6 +273,20 @@ function hasFile(source: MediaSourceInfo): boolean {
 }
 
 /**
+ * The stored probe result of a media source for its current version, if any, and if this version of the probe and
+ * of mediabunny read it (see `isCurrentProbe`): any other is probed again, and the new result replaces it
+ */
+async function getStoredProbe(itemId: string, source: MediaSourceInfo): Promise<ProbeResult | undefined> {
+  try {
+    const stored = source.Id ? await apiStore.getMediaProbe(itemId, source.Id, source.ETag) : undefined;
+
+    return stored && isCurrentProbe(stored) ? stored : undefined;
+  } catch {
+    // Without the stored result, the file is probed again
+  }
+}
+
+/**
  * Reads the probe result of a file: the stored one for its current version, or a new probe of its static stream,
  * which is stored if it depends only on the file, or else remembered for the session if it is not worth probing again
  * (see {@link sessionProbes}), unless something was forgotten since the probe started (see {@link forgetStoredProbes})
@@ -231,17 +300,9 @@ async function readProbe(
   key: string
 ): Promise<ProbeResult | undefined> {
   const generation = probeGeneration.current;
-  let stored: ProbeResult | undefined;
+  const stored = await getStoredProbe(itemId, source);
 
-  try {
-    stored = await apiStore.getMediaProbe(itemId, source.Id, source.ETag);
-  } catch {
-    // Without the stored result, the file is probed again
-  }
-
-  // Only a result this version of the probe and of mediabunny read counts (see `isCurrentProbe`): any other is probed
-  // again, and the new result replaces it
-  if (stored && isCurrentProbe(stored)) {
+  if (stored) {
     return stored;
   }
 
