@@ -59,7 +59,7 @@ export type PlaybackMethod = PlaybackRung | 'Unplayable';
  * - `ExceedsQuality`: the video is larger than the chosen quality
  * - `SecondaryAudioTrack`: the selected audio is not the file's first audio track and the player cannot switch
  * - `ExternalAudioTrack`: the selected audio is an external file the server has to mux in
- * - `FailedBefore`: this combination of streams already failed this session with a cheaper method
+ * - `FailedBefore`: a cheaper method is known not to work for these streams (it failed, or the server needed more)
  * - `NotSmooth`: the browser says the chosen path will not play smoothly
  * - `NotAllowedByQuality` / `NotAllowedByPolicy`: a cheaper method was possible but not allowed
  * - `NoDecodableTarget`: the browser decodes none of the transcoding targets
@@ -87,9 +87,18 @@ export type VerdictReason
 export type PlaybackPolicy = Pick<UserPolicy, 'EnableVideoPlaybackTranscoding' | 'EnableAudioPlaybackTranscoding' | 'EnablePlaybackRemuxing'>;
 
 /**
- * Whether a combination of streams (by its {@link Verdict.signature}) already failed this session with a method
+ * The minimum method known to be needed for a combination of streams (by its {@link Verdict.signature}),
+ * learned this session; `Unplayable` when every rung failed. See {@link getNextFloor}.
  */
-export type FailureMemory = (signature: string, method: PlaybackRung) => boolean;
+export type LearnedFloor = (signature: string) => PlaybackMethod | undefined;
+
+/**
+ * What a caller learned about a verdict: the playback failed at a rung, or the server chose another method
+ * than the verdict's (as read by `deriveActualMethod`)
+ */
+export type PlaybackOutcome
+  = | { readonly failedAt: PlaybackRung }
+    | { readonly actualMethod: PlaybackMethod };
 
 /**
  * Everything about the client the verdict depends on, as plain values
@@ -109,7 +118,10 @@ export interface VerdictEnvironment {
   readonly canSelectAudioTrack: boolean;
   readonly quality: QualityMode;
   readonly policy: PlaybackPolicy;
-  readonly hasFailed: FailureMemory;
+  /**
+   * The learned minimum method for a signature; the verdict never starts below it
+   */
+  readonly minimumRung: LearnedFloor;
   readonly subtitleRenderers?: readonly SubtitleRenderer[];
 }
 
@@ -575,20 +587,67 @@ function getAudioRequirements(evaluation: Evaluation): [PlaybackRung, VerdictRea
 }
 
 /**
+ * The position of a method in the ladder: the rungs in order, then `Unplayable`
+ */
+function getMethodOrder(method: PlaybackMethod): number {
+  return method === 'Unplayable' ? PLAYBACK_RUNGS.length : PLAYBACK_RUNGS.indexOf(method);
+}
+
+/**
+ * The method one step up the ladder (`Unplayable` after the last rung)
+ */
+function getNextMethod(rung: PlaybackRung): PlaybackMethod {
+  return PLAYBACK_RUNGS[PLAYBACK_RUNGS.indexOf(rung) + 1] ?? 'Unplayable';
+}
+
+/**
+ * The learned floor after an outcome, so every caller records it the same way. Floors only rise:
+ * - the playback failed at a rung: the floor becomes the next rung (`Unplayable` after the last one)
+ * - the server chose a more expensive method than the verdict's: the floor becomes that method
+ * - the server could not play it at all: like a failure at the verdict's method
+ * - the server chose the same or a cheaper method, or the verdict was unplayable: nothing is learned
+ *
+ * @param verdict - The verdict the playback was negotiated with
+ * @param outcome - What happened
+ * @param current - The floor stored so far for the verdict's signature
+ * @returns The floor to store for the verdict's signature
+ */
+export function getNextFloor(
+  verdict: Pick<Verdict, 'method'>,
+  outcome: PlaybackOutcome,
+  current?: PlaybackMethod
+): PlaybackMethod | undefined {
+  let learned: PlaybackMethod | undefined;
+
+  if ('failedAt' in outcome) {
+    learned = getNextMethod(outcome.failedAt);
+  } else if (verdict.method !== 'Unplayable') {
+    if (outcome.actualMethod === 'Unplayable') {
+      learned = getNextMethod(verdict.method);
+    } else if (getMethodOrder(outcome.actualMethod) > getMethodOrder(verdict.method)) {
+      learned = outcome.actualMethod;
+    }
+  }
+
+  if (learned === undefined) {
+    return current;
+  }
+
+  return current !== undefined && getMethodOrder(current) >= getMethodOrder(learned) ? current : learned;
+}
+
+/**
  * The lowest rung the streams require, with the reasons
  */
 function getRequirements(evaluation: Evaluation): { minRung: number; reasons: VerdictReason[] } {
   const requirements = [...getVideoRequirements(evaluation), ...getAudioRequirements(evaluation)];
-  const failed = PLAYBACK_RUNGS.filter(rung => evaluation.input.environment.hasFailed(evaluation.signature, rung));
-  const rungs = [
-    0,
-    ...requirements.map(([rung]) => PLAYBACK_RUNGS.indexOf(rung)),
-    ...failed.map(rung => PLAYBACK_RUNGS.indexOf(rung) + 1)
-  ];
+  const floor = evaluation.input.environment.minimumRung(evaluation.signature);
+  const floorRung = floor === undefined ? 0 : getMethodOrder(floor);
+  const rungs = [0, ...requirements.map(([rung]) => getMethodOrder(rung)), floorRung];
 
   return {
     minRung: Math.max(...rungs),
-    reasons: [...requirements.map(([, reason]) => reason), ...(failed.length > 0 ? ['FailedBefore' as const] : [])]
+    reasons: [...requirements.map(([, reason]) => reason), ...(floorRung > 0 ? ['FailedBefore' as const] : [])]
   };
 }
 
@@ -714,6 +773,27 @@ function getRejection(environment: VerdictEnvironment, rung: PlaybackRung, itemT
 }
 
 /**
+ * Adds the fallback targets to the copied streams of a video's plan (see {@link StreamPlan})
+ */
+async function withFallbacks(evaluation: Evaluation, plan: RungPlan): Promise<Pick<RungPlan, 'video' | 'audio'>> {
+  if (!plan.video) {
+    return plan;
+  }
+
+  const withFallback = async (stream: StreamPlan | undefined, findTargets: () => Promise<TargetSet | undefined>) => {
+    const targets = stream?.action === 'copy' ? (await findTargets())?.targets : undefined;
+
+    return targets?.length ? { ...stream, fallback: targets } as StreamPlan : stream;
+  };
+  const [video, audio] = await Promise.all([
+    withFallback(plan.video, evaluation.videoTargets),
+    withFallback(plan.audio, evaluation.audioTargets)
+  ]);
+
+  return { video, audio };
+}
+
+/**
  * The reasons that explain the rungs skipped on the way up
  */
 function getRejectionReasons(rejections: Set<RungRejection>, unplayable: boolean): VerdictReason[] {
@@ -759,27 +839,6 @@ function getOptimisticVerdict(source: MediaSourceInfo): Verdict {
     signature: `unverified:${source.Id ?? source.Path ?? ''}`,
     quality: { bitrate: getKnownValue(source.Bitrate) }
   };
-}
-
-/**
- * Adds the fallback targets to the copied streams of a video's plan (see {@link StreamPlan})
- */
-async function withFallbacks(evaluation: Evaluation, plan: RungPlan): Promise<Pick<RungPlan, 'video' | 'audio'>> {
-  if (!plan.video) {
-    return plan;
-  }
-
-  const withFallback = async (stream: StreamPlan | undefined, findTargets: () => Promise<TargetSet | undefined>) => {
-    const targets = stream?.action === 'copy' ? (await findTargets())?.targets : undefined;
-
-    return targets?.length ? { ...stream, fallback: targets } as StreamPlan : stream;
-  };
-  const [video, audio] = await Promise.all([
-    withFallback(plan.video, evaluation.videoTargets),
-    withFallback(plan.audio, evaluation.audioTargets)
-  ]);
-
-  return { video, audio };
 }
 
 /**

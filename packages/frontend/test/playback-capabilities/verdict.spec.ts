@@ -13,6 +13,7 @@ import type { CapabilityAnswer, CapabilityOracle } from '#/utils/playback-capabi
 import type { ProbeResult } from '#/utils/playback-capabilities/probe.ts';
 import {
   computeVerdict,
+  getNextFloor,
   type PlaybackMethod,
   type Verdict,
   type VerdictEnvironment,
@@ -105,13 +106,20 @@ const freeBrowser: FakeBrowser = {
   ms: [T.opusMp4, T.av1Target, T.vp9Target, T.opusTarget]
 };
 
+/**
+ * Nothing learned yet for any signature
+ */
+function noFloor(_signature: string): PlaybackMethod | undefined {
+  return;
+}
+
 const defaultEnvironment: VerdictEnvironment = {
   hdrDisplay: undefined,
   hdrMode: 'auto',
   canSelectAudioTrack: false,
   quality: { type: 'auto' },
   policy: {},
-  hasFailed: () => false
+  minimumRung: noFloor
 };
 
 /**
@@ -618,35 +626,85 @@ describe('user policy', () => {
   });
 });
 
-describe('session failure memory', () => {
-  const cases: [string, PlaybackMethod, PlaybackMethod][] = [
-    ['failed at direct play: starts at remux', 'DirectPlay', 'Remux'],
-    ['failed at remux: starts at audio transcode', 'Remux', 'TranscodeAudio'],
-    ['failed at audio transcode: starts at video transcode', 'TranscodeAudio', 'TranscodeVideo'],
-    ['failed at video transcode: nothing is left', 'TranscodeVideo', 'Unplayable']
+describe('learned floor: the minimum rung known to be needed for these streams', () => {
+  const rungs: [string, PlaybackMethod, PlaybackMethod][] = [
+    ['a floor of remux starts at remux', 'Remux', 'Remux'],
+    ['a floor of audio transcode starts at audio transcode', 'TranscodeAudio', 'TranscodeAudio'],
+    ['a floor of video transcode starts at video transcode', 'TranscodeVideo', 'TranscodeVideo'],
+    ['a floor of unplayable means nothing is left', 'Unplayable', 'Unplayable']
   ];
 
-  test.each(cases)('%s', async (_, failedAt, expected) => {
-    const verdict = await verdictFor(mp4Item(), fullBrowser, {
-      environment: { hasFailed: (_signature, method) => method === failedAt }
-    });
+  test.each(rungs)('%s', async (_, floor, expected) => {
+    const verdict = await verdictFor(mp4Item(), fullBrowser, { environment: { minimumRung: () => floor } });
 
     expect([verdict.method, verdict.reasons.includes('FailedBefore')]).toEqual([expected, true]);
   });
 
-  test('the memory is asked with the verdict\'s own signature', async () => {
+  test('a Remux verdict that the server turned into a video encode goes straight to video transcode next time', async () => {
+    const first = await verdictFor(mkvItem(), noMatroskaBrowser);
+    const floor = getNextFloor(first, { actualMethod: 'TranscodeVideo' });
+    const next = await verdictFor(mkvItem(), noMatroskaBrowser, { environment: { minimumRung: () => floor } });
+
+    expect([first.method, floor, next.method]).toEqual(['Remux', 'TranscodeVideo', 'TranscodeVideo']);
+  });
+
+  test('a floor never lowers a verdict below what the browser answers require', async () => {
+    const verdict = await verdictFor(mkvItem('ac3'), fullBrowser, { environment: { minimumRung: () => 'Remux' } });
+
+    expect(verdict.method).toBe('TranscodeAudio');
+  });
+
+  test('a floor above what the quality mode allows is unplayable, because of the quality', async () => {
+    const verdict = await verdictFor(mp4Item(), fullBrowser, {
+      environment: { minimumRung: () => 'TranscodeVideo', quality: { type: 'original' } }
+    });
+
+    expect(verdict).toMatchObject({ method: 'Unplayable', reasons: ['FailedBefore', 'NotAllowedByQuality'] });
+  });
+
+  test('a floor above what the user policy allows is unplayable, because of the policy', async () => {
+    const verdict = await verdictFor(mp4Item(), fullBrowser, {
+      environment: { minimumRung: () => 'TranscodeVideo', policy: { EnableVideoPlaybackTranscoding: false } }
+    });
+
+    expect(verdict).toMatchObject({ method: 'Unplayable', reasons: ['FailedBefore', 'NotAllowedByPolicy'] });
+  });
+
+  test('the floor is looked up with the verdict\'s own signature', async () => {
     const asked = new Set<string>();
     const verdict = await verdictFor(mp4Item(), fullBrowser, {
       environment: {
-        hasFailed: (signature) => {
+        minimumRung: (signature) => {
           asked.add(signature);
 
-          return false;
+          return noFloor(signature);
         }
       }
     });
 
     expect([...asked]).toEqual([verdict.signature]);
+  });
+});
+
+describe('getNextFloor: every caller records what it learned the same way', () => {
+  const remux = { method: 'Remux' } as const;
+  const cases: [string, Pick<Verdict, 'method'>, Parameters<typeof getNextFloor>[1], PlaybackMethod | undefined, PlaybackMethod | undefined][] = [
+    ['a runtime failure at direct play raises the floor to remux', { method: 'DirectPlay' }, { failedAt: 'DirectPlay' }, undefined, 'Remux'],
+    ['a runtime failure at remux raises it to audio transcode', remux, { failedAt: 'Remux' }, undefined, 'TranscodeAudio'],
+    ['a runtime failure at audio transcode raises it to video transcode', { method: 'TranscodeAudio' }, { failedAt: 'TranscodeAudio' }, undefined, 'TranscodeVideo'],
+    ['a runtime failure at video transcode leaves nothing', { method: 'TranscodeVideo' }, { failedAt: 'TranscodeVideo' }, undefined, 'Unplayable'],
+    ['a server that chose a more expensive method sets the floor to that method', remux, { actualMethod: 'TranscodeVideo' }, undefined, 'TranscodeVideo'],
+    ['a server that chose the same method teaches nothing', remux, { actualMethod: 'Remux' }, undefined, undefined],
+    ['a server that chose a cheaper method teaches nothing', remux, { actualMethod: 'DirectPlay' }, undefined, undefined],
+    ['a server that cannot play it at all is a failure at the verdict\'s method', remux, { actualMethod: 'Unplayable' }, undefined, 'TranscodeAudio'],
+    ['floors only rise', { method: 'DirectPlay' }, { failedAt: 'DirectPlay' }, 'TranscodeVideo', 'TranscodeVideo'],
+    ['an unplayable verdict teaches nothing', { method: 'Unplayable' }, { actualMethod: 'Unplayable' }, 'Remux', 'Remux']
+  ];
+
+  test.each(cases)('%s', (_, verdict, outcome, current, expected) => {
+    const floor = getNextFloor(verdict, outcome, current);
+
+    expect(floor).toBe(expected);
   });
 });
 
