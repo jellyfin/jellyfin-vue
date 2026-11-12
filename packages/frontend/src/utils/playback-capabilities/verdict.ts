@@ -26,7 +26,7 @@ import {
 import type { CapabilityOracle, QueryContext } from './oracle.ts';
 import type { ProbedTrack, ProbeResult } from './probe.ts';
 import {
-  exceedsLevel,
+  exceedsQuality,
   getModeLevel,
   getRequestCaps,
   getTranscodeLevel,
@@ -538,9 +538,7 @@ function getVideoRequirements(evaluation: Evaluation): [PlaybackRung, VerdictRea
     requirements.push(['TranscodeVideo', 'HdrOnSdrDisplay']);
   }
 
-  const modeLevel = getModeLevel(environment.quality);
-
-  if (modeLevel !== undefined && exceedsLevel(video.stream, modeLevel)) {
+  if (exceedsQuality(video.stream, environment.quality)) {
     requirements.push(['TranscodeVideo', 'ExceedsQuality']);
   }
 

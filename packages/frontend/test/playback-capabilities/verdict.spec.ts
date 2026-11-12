@@ -521,6 +521,29 @@ describe('quality cap', () => {
 
     expect(verdict).toMatchObject({ method: 'TranscodeVideo', qualityCap: { maxBitrate: 2_500_000, maxWidth: 854, maxHeight: 480 } });
   });
+
+  const heavyFullHd = () => {
+    const item = fullHd();
+    const streams = (item.source.MediaStreams ?? []).map(stream => stream.Type === 'Video' ? { ...stream, BitRate: 40_000_000 } : stream);
+
+    return { ...item, source: { ...item.source, MediaStreams: streams, Bitrate: 40_128_000 } };
+  };
+
+  test('automatic at the source\'s own level encodes a source whose bitrate is above the level\'s, at the ladder bitrate', async () => {
+    const verdict = await verdictFor(heavyFullHd(), fullBrowser, { environment: { quality: { type: 'auto', level: 1080 } } });
+
+    expect(verdict).toMatchObject({
+      method: 'TranscodeVideo',
+      reasons: ['ExceedsQuality'],
+      qualityCap: { maxBitrate: 8_000_000, maxWidth: 1920, maxHeight: 1080 }
+    });
+  });
+
+  test('a fixed level equal to the source does not force anything, whatever its bitrate', async () => {
+    const verdict = await verdictFor(heavyFullHd(), fullBrowser, { environment: { quality: { type: 'fixed', level: 1080 } } });
+
+    expect(verdict.method).toBe('DirectPlay');
+  });
 });
 
 describe('quality mode "original": only direct play and remux', () => {
