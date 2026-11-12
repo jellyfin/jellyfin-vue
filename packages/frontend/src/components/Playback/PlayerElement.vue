@@ -203,7 +203,8 @@ watch(playbackManager.currentSourceUrl,
         || !hls)
     ) {
       /**
-       * For the video case, Safari iOS doesn't support hls.js but supports native HLS.
+       * Without hls.js (no MediaSource nor ManagedMediaSource available), HLS is left to the
+       * browser's native support.
        *
        * We stringify undefined instead of skipping this block when there's no new source url,
        * so the player doesn't restart playback of the previous item

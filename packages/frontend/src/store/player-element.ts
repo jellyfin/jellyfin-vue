@@ -340,7 +340,8 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched' |
     );
 
     /**
-     * We need to destroy JASSUB so the canvas can be recreated in the other view
+     * We need to destroy the subtitle renderers (assjs and libpgs) so their canvas
+     * can be recreated in the other view
      */
     watch(videoContainerRef, () => {
       if (!videoContainerRef.value) {
