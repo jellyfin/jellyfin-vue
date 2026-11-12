@@ -28,12 +28,8 @@ import { subtitleSettings } from '#/store/settings/subtitle.ts';
  * TODO: Provide option for the user to select if subtitles should be rendered by the browser or transcoded in server
  * That option must take into account if transcoding is enabled in server (and user has permission to use it as well)
  */
-interface SubtitleExternalTrack extends PlaybackExternalTrack {
-  parsed?: ParsedSubtitleTrack;
-}
 interface PlayerElementState {
   isStretched: boolean;
-  currentExternalSubtitleTrack?: SubtitleExternalTrack;
 }
 interface PlaybackTrack {
   label: string;
@@ -46,11 +42,49 @@ interface PlaybackTrack {
   index: number;
   type: SubtitleDeliveryMethod;
   codec?: string;
+  /**
+   * Format the server delivers the subtitle in (like `vtt`, `ass` or `pgssub`), which is what
+   * decides how it's rendered. It can differ from the codec of the stream: for example, the
+   * server converts SubRip and other text subtitles to WebVTT.
+   */
+  format?: string;
 }
 
 export interface PlaybackExternalTrack extends PlaybackTrack {
   src: string;
   codec: string;
+}
+
+/**
+ * Gets the format of a subtitle delivered externally. The server builds the delivery URL
+ * as `.../Stream.<format>`, so it's taken from its extension, falling back to the codec.
+ */
+function getSubtitleDeliveryFormat(deliveryUrl: string, codec?: string): string | undefined {
+  const fileName = new URL(deliveryUrl, location.href).pathname.split('/').at(-1) ?? '';
+  const extension = fileName.includes('.') ? fileName.split('.').at(-1) : undefined;
+
+  return extension?.toLowerCase() ?? codec;
+}
+
+/**
+ * Whether the subtitle is delivered as WebVTT (rendered natively or by the custom overlay)
+ */
+function isVtt(track: PlaybackTrack): boolean {
+  return track.format === 'vtt';
+}
+
+/**
+ * Whether the subtitle is delivered as SubStation Alpha (rendered by assjs)
+ */
+function isAss(track: PlaybackTrack): boolean {
+  return track.format === 'ass' || track.format === 'ssa';
+}
+
+/**
+ * Whether the subtitle is delivered as PGS (rendered by libpgs)
+ */
+function isPgs(track: PlaybackTrack): boolean {
+  return track.format === 'pgssub';
 }
 
 export const videoContainerRef = shallowRef<HTMLDivElement>();
@@ -59,7 +93,7 @@ export const videoContainerRef = shallowRef<HTMLDivElement>();
  * == CLASS CONSTRUCTOR ==
  */
 @sealed
-class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched' | 'currentExternalSubtitleTrack'> {
+class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched'> {
   /**
    * == NON REACTIVE STATE ==
    * Reactive state is defined in the super() constructor
@@ -116,18 +150,24 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched' |
         && (sub.DeliveryMethod === SubtitleDeliveryMethod.Encode
           || sub.DeliveryMethod === SubtitleDeliveryMethod.External)
     )
-      .map(sub => ({
-        label: sub.DisplayTitle ?? 'Undefined',
-        src:
-          sub.DeliveryMethod === SubtitleDeliveryMethod.External
-          && remote.sdk.api?.basePath && sub.DeliveryUrl
-            ? `${remote.sdk.api.basePath}${sub.DeliveryUrl}`
+      .map((sub) => {
+        const codec = sub.Codec?.toLowerCase();
+        const deliveryUrl = sub.DeliveryMethod === SubtitleDeliveryMethod.External
+          ? sub.DeliveryUrl ?? undefined
+          : undefined;
+
+        return {
+          label: sub.DisplayTitle ?? 'Undefined',
+          src: remote.sdk.api?.basePath && deliveryUrl
+            ? `${remote.sdk.api.basePath}${deliveryUrl}`
             : undefined,
-        srcLang: sub.Language ?? undefined,
-        type: sub.DeliveryMethod ?? SubtitleDeliveryMethod.Drop,
-        index: sub.Index ?? -1,
-        codec: sub.Codec?.toLowerCase()
-      }))
+          srcLang: sub.Language ?? undefined,
+          type: sub.DeliveryMethod ?? SubtitleDeliveryMethod.Drop,
+          index: sub.Index ?? -1,
+          codec,
+          format: deliveryUrl ? getSubtitleDeliveryFormat(deliveryUrl, codec) : undefined
+        };
+      })
   );
 
   /**
@@ -135,57 +175,47 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched' |
    */
   public readonly currentItemExternalParsedSubtitleTracks = computed(() =>
     this.currentItemParsedSubtitleTracks.value?.filter(
-      sub => !isNil(sub.codec) && !isNil(sub.src)
+      (sub): sub is typeof sub & PlaybackExternalTrack => !isNil(sub.codec) && !isNil(sub.src)
     )
   );
 
-  public readonly currentExternalSubtitleTrack = computedAsync(async () => {
-    const el = this.currentItemExternalParsedSubtitleTracks.value?.find(
+  /**
+   * The selected subtitle track, if it's delivered externally (so it's rendered by the client)
+   */
+  public readonly currentExternalSubtitleTrack = computed(() =>
+    this.currentItemExternalParsedSubtitleTracks.value?.find(
       sub => sub.index === playbackManager.currentSubtitleTrack.value?.Index
-    ) as SubtitleExternalTrack;
+    )
+  );
 
-    if (this._useCustomSubtitleTrack.value) {
-      const data = await runGenericWorkerFunc('parseVttFile')(el.src);
+  /**
+   * Parsed cues of the selected subtitle track, for the custom overlay. Only WebVTT is parsed:
+   * ASS and PGS tracks have their own renderers.
+   */
+  private readonly _parsedSubtitleTrack = computedAsync(async () => {
+    const track = this.currentExternalSubtitleTrack.value;
 
-      el.parsed = data;
+    if (track && isVtt(track) && this._useCustomSubtitleTrack.value) {
+      return {
+        src: track.src,
+        parsed: await runGenericWorkerFunc('parseVttFile')(track.src)
+      };
     }
-
-    return el;
   });
 
+  /**
+   * Cues to display in the custom subtitle overlay, only while they belong
+   * to the selected track (they're parsed asynchronously)
+   */
+  public readonly currentParsedSubtitleTrack = computed<ParsedSubtitleTrack | undefined>(() =>
+    this._useCustomSubtitleTrack.value
+    && this._parsedSubtitleTrack.value?.src === this.currentExternalSubtitleTrack.value?.src
+      ? this._parsedSubtitleTrack.value?.parsed
+      : undefined
+  );
+
   public readonly currentItemVttParsedSubtitleTracks = computed(() =>
-    this.currentItemExternalParsedSubtitleTracks.value?.filter(
-      sub =>
-        sub.codec === 'vtt'
-        || sub.codec === 'srt'
-        || sub.codec === 'subrip'
-    )
-  );
-
-  public readonly currentItemAssParsedSubtitleTracks = computed(() =>
-    this.currentItemExternalParsedSubtitleTracks.value?.filter(
-      sub =>
-        sub.codec === 'ass'
-        || sub.codec === 'ssa'
-    )
-  );
-
-  public readonly currentItemPgsParsedSubtitleTracks = computed(() =>
-    this.currentItemExternalParsedSubtitleTracks.value?.filter(
-      sub => sub.codec === 'pgssub'
-    )
-  );
-
-  private readonly _usingVtt = computed(() =>
-    this.currentItemVttParsedSubtitleTracks.value?.some(s => s.index === playbackManager.currentSubtitleTrack.value?.Index)
-  );
-
-  private readonly _usingAss = computed(() =>
-    this.currentItemAssParsedSubtitleTracks.value?.some(s => s.index === playbackManager.currentSubtitleTrack.value?.Index)
-  );
-
-  private readonly _usingPgs = computed(() =>
-    this.currentItemPgsParsedSubtitleTracks.value?.some(s => s.index === playbackManager.currentSubtitleTrack.value?.Index)
+    this.currentItemExternalParsedSubtitleTracks.value?.filter(sub => isVtt(sub))
   );
 
   /**
@@ -246,7 +276,6 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched' |
       if (
         !this._pgssub
         && mediaElementRef.value instanceof HTMLVideoElement
-        && this.currentExternalSubtitleTrack.value
       ) {
         this._pgssub = new PgsRenderer({
           video: mediaElementRef.value,
@@ -322,14 +351,16 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched' |
 
     /**
      * If selected external track exists,
-     * check which subtitle codec is being used and apply
+     * check the format it's delivered in and apply
      */
-    if (this.currentExternalSubtitleTrack.value) {
-      if (this._usingPgs.value) {
+    const track = this.currentExternalSubtitleTrack.value;
+
+    if (track) {
+      if (isPgs(track)) {
         this._applyPgsSubtitles();
-      } else if (this._usingVtt.value) {
+      } else if (isVtt(track)) {
         this._applyVttSubtitles();
-      } else if (this._usingAss.value) {
+      } else if (isAss(track)) {
         await this._applySsaSubtitles();
       }
     }
@@ -375,8 +406,17 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched' |
       }
     }, { flush: 'sync' });
 
-    watch([playbackManager.currentSubtitleTrack, videoContainerRef], async (newVal) => {
-      if (newVal[1]) {
+    /**
+     * Watches the identity of the track (not the stream objects, which are replaced whenever
+     * the item data is refreshed) and the way it must be rendered
+     */
+    watch([
+      () => playbackManager.currentSubtitleTrack.value?.Index,
+      () => this.currentExternalSubtitleTrack.value?.src,
+      this._useCustomSubtitleTrack,
+      videoContainerRef
+    ], async (newVal) => {
+      if (newVal[3]) {
         await this.applyCurrentSubtitle();
       }
     }, { flush: 'post' });

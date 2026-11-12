@@ -29,7 +29,7 @@
             :src="sub.src">
         </Component>
         <SubtitleTrack
-          v-if="subtitleSettings.state.value.enabled && playerElement.currentExternalSubtitleTrack.value?.parsed" />
+          v-if="subtitleSettings.state.value.enabled && playerElement.currentParsedSubtitleTrack.value" />
       </div>
     </Teleport>
   </template>
