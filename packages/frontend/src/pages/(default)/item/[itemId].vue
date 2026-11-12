@@ -54,8 +54,8 @@
               :item="item"
               :media-source-index="currentSourceIndex"
               :video-track-index="currentVideoTrack"
-              :audio-track-index="currentAudioTrack"
-              :subtitle-track-index="currentSubtitleTrack" />
+              :audio-track-index="displayedAudioTrack"
+              :subtitle-track-index="displayedSubtitleTrack" />
             <LikeButton
               :item="item"
               class="uno-mr-2" />
@@ -216,9 +216,7 @@
                       getMediaStreams(currentSource.MediaStreams, 'Audio')
                     "
                     type="Audio"
-                    :default-stream-index="
-                      currentAudioTrack ?? currentSource.DefaultAudioStreamIndex ?? undefined
-                    "
+                    :default-stream-index="displayedAudioTrack"
                     @input="(trackIndex) => (currentAudioTrack = trackIndex)" />
                 </VCol>
               </VRow>
@@ -240,9 +238,7 @@
                       getMediaStreams(currentSource.MediaStreams, 'Subtitle')
                     "
                     type="Subtitle"
-                    :default-stream-index="
-                      currentSubtitleTrack ?? currentSource.DefaultSubtitleStreamIndex ?? undefined
-                    "
+                    :default-stream-index="displayedSubtitleTrack"
                     @input="
                       (trackIndex) => (currentSubtitleTrack = trackIndex)
                     " />
@@ -343,13 +339,24 @@ const { data: currentSeries } = await useBaseItem(getLibraryApi, 'getItem')(() =
 const selectedSource = ref<MediaSourceInfo>();
 /**
  * Tracks explicitly chosen by the user, as absolute `MediaStream.Index` values.
- * `undefined` means "not chosen": the server picks the default according to the user's
- * settings (the selectors display that default, from the media source of the DTO).
- * For subtitles, `-1` means "no subtitles".
+ * `undefined` means "not chosen". For subtitles, `-1` means "no subtitles".
  */
 const currentVideoTrack = ref<number>();
 const currentAudioTrack = ref<number>();
 const currentSubtitleTrack = ref<number>();
+/**
+ * Tracks the selectors display, which are also the ones requested when playing from this page:
+ * the user's choice or, if none, the defaults of the media source (computed by the server from
+ * the user's settings and remembered selections). They're sent explicitly because the server
+ * doesn't always pick the same default when asked for playback info (seen with external
+ * subtitles), and what the page shows must be what plays.
+ */
+const displayedAudioTrack = computed(() =>
+  currentAudioTrack.value ?? currentSource.value.DefaultAudioStreamIndex ?? undefined
+);
+const displayedSubtitleTrack = computed(() =>
+  currentSubtitleTrack.value ?? currentSource.value.DefaultSubtitleStreamIndex ?? -1
+);
 
 const crew = computed<BaseItemPerson[]>(() =>
   getMergedCrew(item.value.People ?? [])
