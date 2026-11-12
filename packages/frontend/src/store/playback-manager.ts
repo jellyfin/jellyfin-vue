@@ -10,25 +10,42 @@ import {
   ItemSortBy,
   MediaStreamType,
   PlayMethod,
-  type BaseItemDto
+  type BaseItemDto,
+  type PlaybackInfoResponse
 } from '@jellyfin/sdk/lib/generated-client';
-import { AUTHORIZATION_PARAMETER } from '@jellyfin/sdk/lib/constants';
 import { getInstantMixApi } from '@jellyfin/sdk/lib/utils/api/instant-mix-api';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getMediaInfoApi } from '@jellyfin/sdk/lib/utils/api/media-info-api';
 import { getSessionApi } from '@jellyfin/sdk/lib/utils/api/session-api';
 import { getShowApi } from '@jellyfin/sdk/lib/utils/api/show-api';
 import { computedAsync, watchThrottled } from '@vueuse/core';
-import { computed, watch, watchEffect } from 'vue';
+import { computed, shallowRef, watch, watchEffect } from 'vue';
 import { isNil, sealed } from '@jellyfin-vue/shared/validation';
 import i18next from 'i18next';
 import { useBaseItem } from '#/composables/apis.ts';
 import { useSnackbar } from '#/composables/use-snackbar.ts';
 import { remote } from '#/plugins/remote/index.ts';
 import { apiStore } from '#/store/dbs/api/index.ts';
+import {
+  getMediaSourceVerdict,
+  minimumRung,
+  recordPlaybackOutcome,
+  renegotiatingEnvironment
+} from '#/store/playback-capabilities.ts';
+import { playbackSettings } from '#/store/settings/playback.ts';
 import { getImageInfo } from '#/utils/images.ts';
-import { getItemRuntime } from '#/utils/items.ts';
-import playbackProfile from '#/utils/playback-profiles/index.ts';
+import { getItemRuntime, getStaticStreamUrl } from '#/utils/items.ts';
+import {
+  buildOptimisticRequest,
+  buildPlaybackRequest,
+  deriveActualMethod
+} from '#/utils/playback-capabilities/device-profile.ts';
+import {
+  isMoreExpensive,
+  type PlaybackMethod,
+  type Verdict
+} from '#/utils/playback-capabilities/verdict.ts';
+import { SUBTITLE_RENDERERS } from '#/utils/subtitle-renderers.ts';
 import { msToTicks } from '#/utils/time.ts';
 import { mediaControls, mediaElementRef } from '#/store/index.ts';
 import { CommonStore } from '#/store/super/common-store.ts';
@@ -90,12 +107,41 @@ interface PlaybackManagerState {
   playbackInitiatorId?: BaseItemDto['Id'];
   playbackInitMode: InitMode;
   playbackSpeed: number;
-  /**
-   * Maximum streaming bitrate in bps. When set, the server transcodes the
-   * media source to fit within it. Undefined means source quality.
-   */
-  maxStreamingBitrate?: number;
 }
+
+/**
+ * The negotiation of a playback with the server: the verdict it was based on and the server's answer
+ */
+interface Negotiation {
+  itemId: string;
+  mediaSourceId: string;
+  mediaType: 'Video' | 'Audio';
+  verdict: Verdict;
+  /**
+   * The PlaybackInfo answer. Undefined when nothing was requested, because the verdict was unplayable.
+   */
+  data?: PlaybackInfoResponse;
+  /**
+   * The method the server chose (see `deriveActualMethod`), `Unplayable` without a playable answer
+   */
+  actualMethod: PlaybackMethod;
+  /**
+   * Why it must not be played, if it mustn't: nothing can play it (`unplayable`), or the server's answer
+   * encodes something, which quality mode Original forbids (`quality`)
+   */
+  failure?: 'unplayable' | 'quality';
+}
+
+/**
+ * The play method reported to the server for each method
+ */
+const PLAY_METHODS: Readonly<Record<PlaybackMethod, PlayMethod | undefined>> = {
+  DirectPlay: PlayMethod.DirectPlay,
+  Remux: PlayMethod.DirectStream,
+  TranscodeAudio: PlayMethod.Transcode,
+  TranscodeVideo: PlayMethod.Transcode,
+  Unplayable: undefined
+};
 
 /**
  * Playback of an item as reported to the server
@@ -134,6 +180,19 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    * state moved on to the next item.
    */
   private _reportedPlayback: ReportedPlayback | undefined;
+  /**
+   * Identifies the latest negotiation started: the answer of an older one is dropped
+   */
+  private _negotiationId = 0;
+  /**
+   * The latest negotiation, for whatever item and version it was started
+   */
+  private readonly _negotiation = shallowRef<Negotiation>();
+  /**
+   * Incremented to negotiate the current playback again although none of its inputs changed (a learned floor
+   * rose above the method being played)
+   */
+  private readonly _renegotiations = shallowRef(0);
   /**
    * == GETTERS AND SETTERS ==
    */
@@ -206,9 +265,28 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    * `DefaultSubtitleStreamIndex` and the `DeliveryMethod`/`DeliveryUrl` of the subtitle streams),
    * so everything that decides how to play the current item must read them from here.
    *
-   * Undefined until the server answers for the current item and version.
+   * Undefined until the server answers for the current item and version, and when the answer must not
+   * be played (see `currentPlaybackFailure`).
    */
-  public readonly currentNegotiatedMediaSource = computed(() => this._currentPlaybackInfo.value?.data.MediaSources?.[0]);
+  public readonly currentNegotiatedMediaSource = computed(() => {
+    const negotiation = this._currentNegotiation.value;
+
+    return negotiation?.failure ? undefined : negotiation?.data?.MediaSources?.[0];
+  });
+
+  /**
+   * The verdict the current playback was negotiated with: how this client expected to play it, and why
+   */
+  public readonly currentVerdict = computed(() => this._currentNegotiation.value?.verdict);
+  /**
+   * How the server decided to play the current item (see `deriveActualMethod`)
+   */
+  public readonly currentPlaybackMethod = computed(() => this._currentNegotiation.value?.actualMethod);
+  /**
+   * Why the current item can't be played, if it can't: nothing can play it (`unplayable`), or it would
+   * have to be encoded, which quality mode Original forbids (`quality`)
+   */
+  public readonly currentPlaybackFailure = computed(() => this._currentNegotiation.value?.failure);
   /**
    * Current tracks. They're read and written as absolute `MediaStream.Index` values
    * (see `PlaybackManagerState.mediaSourceIndexes` for the meaning of `undefined` and `-1`).
@@ -275,34 +353,31 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   });
 
   /**
-   * PlaybackInfo response for the current item and media source. While a new request is in flight,
-   * the previous response is kept only if it was obtained for the same item and media source
-   * (so a re-negotiation doesn't interrupt playback), never one obtained for a previous item.
-   */
-  private readonly _currentPlaybackInfo = computed(() => {
-    const playbackInfo = this._playbackInfo.value;
-
-    if (
-      playbackInfo?.itemId === this._currentItemDataId.value
-      && playbackInfo?.mediaSourceId === this._currentMediaSourceId.value
-    ) {
-      return playbackInfo;
-    }
-  });
-
-  /**
    * Primitive keys of the current item and media source. Computed refs only trigger their
    * dependents when their value changes, unlike the item objects, which are replaced on every refresh.
-   *
-   * They must be defined before `_playbackInfo`: computedAsync evaluates as soon as it's created.
    */
   private readonly _currentItemDataId = computed(() => this.currentItem.value?.Id);
   private readonly _currentItemMediaType = computed(() => this.currentItem.value?.MediaType);
   private readonly _currentMediaSourceId = computed(() => this.currentMediaSource.value?.Id);
 
   /**
+   * The negotiation of the current item and media source. While a new negotiation is in progress,
+   * the previous one is kept only if it was made for the same item and media source (so a
+   * re-negotiation doesn't interrupt playback), never one made for a previous item.
+   */
+  private readonly _currentNegotiation = computed(() => {
+    const negotiation = this._negotiation.value;
+
+    if (
+      negotiation?.itemId === this._currentItemDataId.value
+      && negotiation?.mediaSourceId === this._currentMediaSourceId.value
+    ) {
+      return negotiation;
+    }
+  });
+
+  /**
    * Version and tracks explicitly chosen by the user, if they were chosen for the current item.
-   * Also defined before `_playbackInfo`, which reads it.
    */
   private readonly _currentSelection = computed(() => {
     const selection = this._state.value.mediaSourceIndexes;
@@ -311,54 +386,6 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       return selection;
     }
   });
-
-  /**
-   * PlaybackInfo response of the server, alongside the item and media source it was requested for
-   */
-  private readonly _playbackInfo = computedAsync(async (
-  ) => {
-    /**
-     * Only primitive values are read here: the item objects are replaced every time their data is
-     * refreshed (for example, when the server notifies changes in the user data, like right after
-     * the playback start is reported) and depending on them would re-negotiate the playback,
-     * getting a new play session and reloading the stream.
-     */
-    const itemId = this._currentItemDataId.value;
-    const mediaType = this._currentItemMediaType.value;
-    const mediaSourceId = this._currentMediaSourceId.value;
-    const userId = remote.auth.currentUserId.value;
-
-    if (itemId && mediaSourceId && userId) {
-      const { data } = await remote.sdk.newUserApi(getMediaInfoApi).getPostedPlaybackInfo({
-        itemId,
-        userId,
-        autoOpenLiveStream: true,
-        maxStreamingBitrate: this._state.value.maxStreamingBitrate,
-        playbackInfoDto: { DeviceProfile: playbackProfile },
-        mediaSourceId,
-        /**
-         * Undefined (not chosen) is omitted, so the server picks its default
-         */
-        audioStreamIndex: this._currentSelection.value?.audio,
-        subtitleStreamIndex: this._currentSelection.value?.subtitle
-      });
-
-      return {
-        itemId,
-        mediaSourceId,
-        mediaType,
-        data
-      };
-    }
-  },
-  undefined,
-  {
-    onError: () => {
-      this._state.value.status = PlaybackStatus.Error;
-      useSnackbar(i18next.t('cantPlayItem'), 'error');
-    }
-  }
-  );
 
   /**
    * Absolute index of the audio stream being played: the one chosen by the user or,
@@ -382,21 +409,20 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   });
 
   /**
-   * How the server decided to play the current item. Remuxes are reported as transcodes.
+   * How the server decided to play the current item, as reported to it: a remux (nothing encoded) is
+   * a direct stream
    */
   private readonly _currentPlayMethod = computed(() => {
-    const mediaSource = this.currentNegotiatedMediaSource.value;
+    const method = this.currentNegotiatedMediaSource.value ? this.currentPlaybackMethod.value : undefined;
 
-    if (mediaSource) {
-      return mediaSource.SupportsDirectPlay ? PlayMethod.DirectPlay : PlayMethod.Transcode;
-    }
+    return method ? PLAY_METHODS[method] : undefined;
   });
 
   /**
    * Stores a track chosen by the user for the current item. Choices made for other
    * items are discarded, since they don't apply to this one.
    *
-   * The state is written once: `_playbackInfo` re-runs synchronously on every change.
+   * The state is written once, so the negotiation runs once for the change.
    */
   private readonly _select = (track: 'video' | 'audio' | 'subtitle', index?: number) => {
     this._state.value.mediaSourceIndexes = {
@@ -481,20 +507,118 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   });
 
   /**
-   * Maximum streaming bitrate in bps. Undefined means source quality.
-   * Changing this re-requests the playback info, transparently reloading the
-   * source at the current playback time.
-   */
-  public readonly maxStreamingBitrate = computed({
-    get: () => this._state.value.maxStreamingBitrate,
-    set: (newBitrate: number | undefined) => {
-      this._state.value.maxStreamingBitrate = newBitrate;
-    }
-  });
-
-  /**
    * == ACTIONS ==
    */
+  /**
+   * Negotiates the playback of the current item and media source with the selected tracks: computes the
+   * verdict and, unless nothing can play, asks the server for exactly that. Only the latest negotiation is
+   * kept: the answer of an older one that arrives later is dropped.
+   *
+   * Reads the item objects without depending on them: they're replaced every time their data is refreshed
+   * (for example, when the server notifies changes in the user data right after the playback start is
+   * reported), and re-negotiating then would get a new play session and reload the stream.
+   */
+  private readonly _negotiate = async (): Promise<void> => {
+    const id = ++this._negotiationId;
+    const item = this.currentItem.value;
+    const mediaSource = this.currentMediaSource.value;
+    const userId = remote.auth.currentUserId.value;
+    const mediaType = item?.MediaType;
+
+    if (!item?.Id || !mediaSource?.Id || !userId || (mediaType !== 'Video' && mediaType !== 'Audio')) {
+      this._negotiation.value = undefined;
+
+      return;
+    }
+
+    try {
+      const selection = this._currentSelection.value;
+      const verdict = await getMediaSourceVerdict(item, mediaSource, {
+        videoStreamIndex: selection?.video,
+        audioStreamIndex: selection?.audio,
+        subtitleStreamIndex: selection?.subtitle
+      });
+
+      if (id !== this._negotiationId) {
+        return;
+      }
+
+      const negotiation = { itemId: item.Id, mediaSourceId: mediaSource.Id, mediaType, verdict };
+
+      // Nothing is requested that would make the server start a transcode no one can play
+      if (verdict.method === 'Unplayable') {
+        this._negotiation.value = { ...negotiation, actualMethod: 'Unplayable', failure: 'unplayable' };
+
+        return;
+      }
+
+      // A source without any stream metadata (live TV, .strm, remote) is played directly, blindly
+      const request = verdict.video || verdict.audio
+        ? buildPlaybackRequest(verdict, mediaSource, SUBTITLE_RENDERERS)
+        : buildOptimisticRequest(mediaSource, mediaType, SUBTITLE_RENDERERS);
+      const { data } = await remote.sdk.newUserApi(getMediaInfoApi).getPostedPlaybackInfo({
+        itemId: item.Id,
+        playbackInfoDto: {
+          ...request.options,
+          DeviceProfile: request.deviceProfile,
+          UserId: userId,
+          AutoOpenLiveStream: true
+        }
+      });
+
+      if (id !== this._negotiationId) {
+        return;
+      }
+
+      const negotiated = data.ErrorCode ? undefined : data.MediaSources?.[0];
+      const actualMethod = negotiated ? deriveActualMethod(negotiated) : 'Unplayable';
+      const encodes = actualMethod === 'TranscodeAudio' || actualMethod === 'TranscodeVideo';
+      let failure: Negotiation['failure'];
+
+      if (actualMethod === 'Unplayable') {
+        failure = 'unplayable';
+      } else if (encodes && playbackSettings.quality.value === 'original') {
+        failure = 'quality';
+      }
+
+      // The next verdict for these streams starts at the method the server needed
+      if (isMoreExpensive(actualMethod, verdict.method)) {
+        recordPlaybackOutcome(verdict, { actualMethod });
+      }
+
+      this._negotiation.value = { ...negotiation, data, actualMethod, failure };
+    } catch {
+      if (id === this._negotiationId) {
+        this._state.value.status = PlaybackStatus.Error;
+        useSnackbar(i18next.t('cantPlayItem'), 'error');
+      }
+    }
+  };
+
+  /**
+   * Stops the transcode of a play session of this device on the server, instead of letting it time out
+   */
+  private readonly _stopTranscode = async (playSessionId: string): Promise<void> => {
+    const api = remote.sdk.api;
+
+    if (!api) {
+      return;
+    }
+
+    try {
+      /**
+       * Not in the SDK: the server leaves its HLS endpoints out of the OpenAPI description. The SDK only
+       * authenticates its own requests, so the header is set here.
+       */
+      await api.axiosInstance.delete(`${api.basePath}/Videos/ActiveEncodings`, {
+        params: { deviceId: remote.sdk.deviceInfo.id, playSessionId },
+        headers: { Authorization: api.authorizationHeader }
+      });
+    } catch {
+      // The server ends it by itself when it times out
+    }
+  };
+
   /**
    * Data shared by the start and progress reports of a playback
    */
@@ -953,47 +1077,21 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   /**
    * Builds the URL that plays a media source, following the decision of the server:
    * - `SupportsDirectPlay`: the original file, as is (static URL).
-   * - Otherwise, the stream described by `TranscodingUrl`. This is a remux when the server
-   *   also set `SupportsDirectStream` (which is true for direct play too, so it can't be used
-   *   to pick the static URL) and a transcode otherwise.
+   * - Otherwise, the stream described by `TranscodingUrl`: a remux or a transcode (see
+   *   `deriveActualMethod`), always delivered as HLS since that's what the request asks for.
    *
    * Only the negotiated media source (from the PlaybackInfo response) has these decisions,
    * which is what's used by default.
    */
   public readonly getItemPlaybackUrl = (
     mediaSource = this.currentNegotiatedMediaSource.value,
-    mediaType = this._currentPlaybackInfo.value?.mediaType
+    mediaType = this._currentNegotiation.value?.mediaType
   ): string | undefined => {
-    if (
-      remote.sdk.api?.basePath
-      && remote.auth.currentUserToken.value
-      && mediaType
-      && mediaSource?.SupportsDirectPlay
-      && mediaSource.Type
-      && mediaSource.Id
-      && mediaSource.Container
-    ) {
-      const directOptions: Record<string, string> = {
-        Static: String(true),
-        mediaSourceId: mediaSource.Id,
+    if (mediaType && mediaSource?.SupportsDirectPlay) {
+      return getStaticStreamUrl(mediaSource, mediaType, {
         deviceId: remote.sdk.deviceInfo.id,
-        /**
-         * `api_key` only works when legacy authorization is enabled on the server (off by
-         * default since 12.0). `ApiKey` is accepted by every supported server.
-         */
-        [AUTHORIZATION_PARAMETER]: remote.auth.currentUserToken.value,
-        Tag: mediaSource.ETag ?? '',
         LiveStreamId: mediaSource.LiveStreamId ?? ''
-      };
-
-      const parameters = new URLSearchParams(directOptions).toString();
-
-      if (mediaType === 'Video') {
-        // @ts-expect-error - There's an API mismatch here
-        mediaType = 'Videos';
-      }
-
-      return `${remote.sdk.api.basePath}/${mediaType}/${mediaSource.Id}/stream.${mediaSource.Container}?${parameters}`;
+      });
     }
 
     if (remote.sdk.api?.basePath && !mediaSource?.SupportsDirectPlay && mediaSource?.TranscodingUrl) {
@@ -1024,8 +1122,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
         originalQueue: [],
         playbackInitiatorId: undefined,
         playbackInitMode: InitMode.Unknown,
-        playbackSpeed: 1,
-        maxStreamingBitrate: undefined
+        playbackSpeed: 1
       })
     });
     /**
@@ -1184,6 +1281,61 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     }, { flush: 'sync' });
 
     /**
+     * Negotiate the playback whenever what it depends on changes: the item and version, the
+     * selected tracks, the settings and policy the verdict depends on, and a learned floor above
+     * the method being played (see below). Only primitive values are watched, so refreshing the
+     * item data doesn't re-negotiate. Every source is a getter or a computed: a shallow ref among
+     * them would make Vue run the callback whenever any source is re-evaluated, even with the same
+     * values.
+     */
+    watch([
+      this._currentItemDataId,
+      this._currentItemMediaType,
+      this._currentMediaSourceId,
+      () => remote.auth.currentUserId.value,
+      () => this._currentSelection.value?.video,
+      () => this._currentSelection.value?.audio,
+      () => this._currentSelection.value?.subtitle,
+      ...renegotiatingEnvironment,
+      () => this._renegotiations.value
+    ], this._negotiate, { immediate: true });
+
+    /**
+     * When a playback teaches that the streams being played need more than the method the
+     * server is using (for example, the media element can't switch to the selected audio track),
+     * negotiate again: the new verdict starts at the learned floor.
+     */
+    watch(() => {
+      const negotiation = this._currentNegotiation.value;
+      const floor = negotiation ? minimumRung(negotiation.verdict.signature) : undefined;
+
+      return negotiation !== undefined && floor !== undefined && isMoreExpensive(floor, negotiation.actualMethod);
+    }, (raised) => {
+      if (raised) {
+        this._renegotiations.value++;
+      }
+    });
+
+    /**
+     * A re-negotiation of the same item replaces the play session: stop the server's transcode of
+     * the previous one, which would otherwise go on until it times out. It runs once the new source
+     * was handed to the player, so the old stream is no longer read.
+     */
+    watch(this._currentNegotiation, (negotiation, previous) => {
+      const previousSession = previous?.data?.PlaySessionId;
+
+      if (
+        previousSession
+        && previous.itemId === negotiation?.itemId
+        && previous.actualMethod !== 'DirectPlay'
+        && !previous.failure
+        && previousSession !== negotiation.data?.PlaySessionId
+      ) {
+        void this._stopTranscode(previousSession);
+      }
+    }, { flush: 'post' });
+
+    /**
      * Report the playback start when the server answers the PlaybackInfo request of the
      * current item, so the report carries its play session, play method and tracks.
      * Later answers for the same item (re-negotiations, like after changing the quality or
@@ -1192,22 +1344,23 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
      * The reported playback is cleared whenever the current item changes or the playback
      * stops, so an answer for an item without it is always a new playback.
      */
-    watch(this._currentPlaybackInfo, async (playbackInfo) => {
-      if (!playbackInfo) {
+    watch(this._currentNegotiation, async (negotiation) => {
+      if (!negotiation) {
         return;
       }
 
-      if (playbackInfo.data.ErrorCode) {
+      if (negotiation.failure || !negotiation.data) {
         this._state.value.status = PlaybackStatus.Error;
+        useSnackbar(i18next.t('cantPlayItem'), 'error');
 
         return;
       }
 
       const playback: ReportedPlayback = {
-        itemId: playbackInfo.itemId,
-        mediaSourceId: playbackInfo.data.MediaSources?.[0]?.Id ?? playbackInfo.mediaSourceId,
-        liveStreamId: playbackInfo.data.MediaSources?.[0]?.LiveStreamId,
-        playSessionId: playbackInfo.data.PlaySessionId
+        itemId: negotiation.itemId,
+        mediaSourceId: negotiation.data.MediaSources?.[0]?.Id ?? negotiation.mediaSourceId,
+        liveStreamId: negotiation.data.MediaSources?.[0]?.LiveStreamId,
+        playSessionId: negotiation.data.PlaySessionId
       };
 
       if (this._reportedPlayback?.itemId === playback.itemId) {

@@ -19,7 +19,7 @@
               </VCol>
               <VCol :cols="8">
                 <VSelect
-                  v-model="maxStreamingBitrate"
+                  v-model="quality"
                   density="comfortable"
                   :items="qualityItems"
                   item-title="title"
@@ -99,28 +99,52 @@ import { useTranslation } from 'i18next-vue';
 import { isObj, isStr, isUndef } from '@jellyfin-vue/shared/validation';
 import { playbackManager } from '#/store/playback-manager.ts';
 import { playerElement } from '#/store/player-element.ts';
+import { playbackSettings } from '#/store/settings/playback.ts';
+import { getQualityMenu, type QualityMenuEntry } from '#/utils/playback-capabilities/quality.ts';
 
 const menuModel = defineModel<boolean>();
 const { t } = useTranslation();
 
 /**
- * Streaming quality presets. `0` means source quality; any other
- * value is the maximum streaming bitrate in bps passed to the server.
+ * The video stream being played (undefined for music)
  */
-const qualityItems = computed(() => [
-  { title: t('original'), value: 0 },
-  { title: '1080p - 20 Mbps', value: 20_000_000 },
-  { title: '1080p - 10 Mbps', value: 10_000_000 },
-  { title: '720p - 8 Mbps', value: 8_000_000 },
-  { title: '720p - 4 Mbps', value: 4_000_000 },
-  { title: '480p - 3 Mbps', value: 3_000_000 },
-  { title: '480p - 1.5 Mbps', value: 1_500_000 },
-  { title: '360p - 720 kbps', value: 720_000 }
-]);
-const maxStreamingBitrate = computed({
-  get: () => playbackManager.maxStreamingBitrate.value ?? 0,
-  set: (val: number) => {
-    playbackManager.maxStreamingBitrate.value = val || undefined;
+const playingVideo = computed(() => {
+  const index = playbackManager.currentVerdict.value?.video?.index;
+
+  return playbackManager.currentMediaSource.value?.MediaStreams?.find(
+    stream => stream.Type === 'Video' && stream.Index === index
+  );
+});
+
+/**
+ * Automatic, Original and the levels available for the file being played
+ */
+const qualityItems = computed(() => getQualityMenu(playingVideo.value).map((entry) => {
+  let title: string;
+
+  if (entry === 'auto') {
+    title = t('auto');
+  } else if (entry === 'original') {
+    title = t('original');
+  } else {
+    title = t('qualityLevel', { height: entry });
+  }
+
+  return { title, value: entry };
+}));
+
+/**
+ * The quality the file is played at, written as the preferred quality (the same one the settings page sets).
+ * A preferred resolution above the file's own shows as the file's level, which is what it means for this file.
+ */
+const quality = computed({
+  get: (): QualityMenuEntry => {
+    const mode = playbackSettings.getQualityMode(playingVideo.value);
+
+    return mode.type === 'fixed' ? mode.level : mode.type;
+  },
+  set: (entry: QualityMenuEntry) => {
+    playbackSettings.quality.value = entry;
   }
 });
 
