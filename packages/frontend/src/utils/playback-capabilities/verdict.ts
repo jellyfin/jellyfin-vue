@@ -795,31 +795,46 @@ async function withFallbacks(evaluation: Evaluation, plan: RungPlan): Promise<Pi
 }
 
 /**
- * Whether the quality mode or the user policy forbid a playable rung of an item of the given type
+ * Why the quality mode or the user policy forbid a rung, if they do
+ *
+ * @param environment - The quality mode and the user policy
+ * @param rung - The rung to check
+ * @param streams - Whether the media has video, and whether the rung encodes the audio
+ * @returns `quality`, `policy` or undefined when the rung is allowed
  */
-function getRejection(environment: VerdictEnvironment, rung: PlaybackRung, itemType: 'Video' | 'Audio', plan: RungPlan): RungRejection | undefined {
+export function getRungRejection(
+  environment: Pick<VerdictEnvironment, 'quality' | 'policy'>,
+  rung: PlaybackRung,
+  streams: { readonly video: boolean; readonly encodesAudio: boolean }
+): Exclude<RungRejection, 'browser'> | undefined {
   const { policy } = environment;
 
   if (environment.quality.type === 'original' && rung !== 'DirectPlay' && rung !== 'Remux') {
     return 'quality';
   }
 
-  const encodesAudio = plan.audio?.action === 'transcode';
   /**
    * Every rung above direct play goes through the server's HLS output, which the server only serves to users who
    * may transcode the item's media type: without that permission it answers a progressive stream in the source's
    * container instead, even for a remux (verified on Jellyfin 12.4)
    */
-  const hlsAllowed = policy[itemType === 'Audio' ? 'EnableAudioPlaybackTranscoding' : 'EnableVideoPlaybackTranscoding'] !== false;
+  const hlsAllowed = policy[streams.video ? 'EnableVideoPlaybackTranscoding' : 'EnableAudioPlaybackTranscoding'] !== false;
   const allowed = {
     DirectPlay: true,
     Remux: hlsAllowed && policy.EnablePlaybackRemuxing !== false,
     TranscodeAudio: hlsAllowed && policy.EnableAudioPlaybackTranscoding !== false,
     TranscodeVideo: policy.EnableVideoPlaybackTranscoding !== false
-      && (!encodesAudio || policy.EnableAudioPlaybackTranscoding !== false)
+      && (!streams.encodesAudio || policy.EnableAudioPlaybackTranscoding !== false)
   }[rung];
 
   return allowed ? undefined : 'policy';
+}
+
+/**
+ * Whether the quality mode or the user policy forbid a playable rung of an item of the given type
+ */
+function getRejection(environment: VerdictEnvironment, rung: PlaybackRung, itemType: 'Video' | 'Audio', plan: RungPlan): RungRejection | undefined {
+  return getRungRejection(environment, rung, { video: itemType === 'Video', encodesAudio: plan.audio?.action === 'transcode' });
 }
 
 /**
