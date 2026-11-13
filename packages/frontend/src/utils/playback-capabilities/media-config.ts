@@ -369,6 +369,33 @@ function getAudioMembers(input: StreamCandidatesInput): Omit<AudioConfiguration,
 }
 
 /**
+ * The codec strings of a stream, best first, and whether they are the file's own (read by the probe)
+ */
+function getCodecChoice(input: StreamCandidatesInput): { codecs: string[]; exact: boolean } {
+  const kind: StreamKind = input.stream.Type === 'Video' ? 'video' : 'audio';
+  const probed = input.probed?.type === kind ? input.probed : undefined;
+
+  /**
+   * For Dolby Vision without a compatible base layer, the base layer string must not be offered:
+   * it would be reported as supported and play with wrong colours
+   */
+  if (kind === 'video' && isDolbyVisionOnly(input.stream)) {
+    return { codecs: getDolbyVisionCodecs(input.stream, probed), exact: false };
+  }
+
+  const exactCodecs = getExactCodecs(probed, input.mode);
+
+  return exactCodecs ? { codecs: exactCodecs, exact: true } : { codecs: getGenericCodecs(input.stream), exact: false };
+}
+
+/**
+ * The codec strings a stream is asked about, best first (see {@link getStreamCandidates})
+ */
+export function getStreamCodecStrings(input: StreamCandidatesInput): string[] {
+  return getCodecChoice(input).codecs;
+}
+
+/**
  * Ordered candidate configurations for one video or audio stream. Each one asks about exactly one codec of one
  * stream (several codecs in `codecs` is a `TypeError` by specification).
  *
@@ -377,15 +404,7 @@ function getAudioMembers(input: StreamCandidatesInput): Omit<AudioConfiguration,
 export function getStreamCandidates(input: StreamCandidatesInput): MediaDecodingConfiguration[] {
   const kind: StreamKind = input.stream.Type === 'Video' ? 'video' : 'audio';
   const probed = input.probed?.type === kind ? input.probed : undefined;
-  /**
-   * For Dolby Vision without a compatible base layer, the base layer string must not be offered:
-   * it would be reported as supported and play with wrong colours
-   */
-  const dolbyVisionOnly = kind === 'video' && isDolbyVisionOnly(input.stream);
-  const exactCodecs = dolbyVisionOnly ? undefined : getExactCodecs(probed, input.mode);
-  const codecs = dolbyVisionOnly
-    ? getDolbyVisionCodecs(input.stream, probed)
-    : exactCodecs ?? getGenericCodecs(input.stream);
+  const { codecs, exact } = getCodecChoice(input);
   const containers = getContainers(kind, input);
   const contentTypes = containers.flatMap(container => codecs.map(codec => `${container}; codecs="${codec}"`));
 
@@ -394,7 +413,7 @@ export function getStreamCandidates(input: StreamCandidatesInput): MediaDecoding
    * Chromium enforces it): the bare container MIME goes after the exact candidate. Only with an exact candidate,
    * only for the file itself.
    */
-  if (input.mode === 'file' && input.containerImpliesCodec && exactCodecs) {
+  if (input.mode === 'file' && input.containerImpliesCodec && exact) {
     contentTypes.push(...containers);
   }
 

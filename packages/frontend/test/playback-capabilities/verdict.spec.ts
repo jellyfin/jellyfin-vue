@@ -1301,3 +1301,18 @@ describe('getMediaSourceQuestions: what the verdict asks about one stream throug
     expect(getMediaSourceQuestions(source, 7, probe)).toEqual([]);
   });
 });
+
+describe('codecs: what the verdict names of each stream, for display', () => {
+  test('a probed file: the codec strings read from the file', async () => {
+    const verdict = await verdictFor(mp4Item(), fullBrowser);
+
+    expect(verdict.codecs).toEqual({ video: 'avc1.64001e', audio: 'mp4a.40.2' });
+  });
+
+  test('a file that was not probed: the server\'s names, as the browser was asked about them', async () => {
+    const verdict = await verdictFor({ source: mp4Item().source }, fullBrowser);
+
+    expect(verdict.codecs?.video).toBeTypeOf('string');
+    expect(verdict.signature).toContain(verdict.codecs?.video);
+  });
+});

@@ -72,15 +72,12 @@ const stream = computed(() => {
     return hlsStream;
   }
 
-  const types = playbackManager.currentVerdict.value?.signature.split('|') ?? [];
-  const codecOf = (type?: string) => /codecs="([^"]+)"/.exec(type ?? '')?.[1];
-  const video = types.find(type => type.startsWith('video/'));
-  const audio = types.find(type => type.startsWith('audio/'));
+  const codecs = playbackManager.currentVerdict.value?.codecs;
 
   return {
     container: playbackManager.currentNegotiatedMediaSource.value?.Container ?? undefined,
-    video: codecOf(video),
-    audio: codecOf(audio)
+    video: codecs?.video,
+    audio: codecs?.audio
   };
 });
 

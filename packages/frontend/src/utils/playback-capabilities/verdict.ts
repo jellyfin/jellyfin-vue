@@ -20,6 +20,7 @@ import {
   getHdrFields,
   getKnownValue,
   getStreamCandidates,
+  getStreamCodecStrings,
   getVideoTargetCandidate,
   type DecodingMode,
   type VideoTargetParams
@@ -226,9 +227,14 @@ export interface Verdict {
    */
   readonly qualityCap?: RequestCaps;
   /**
-   * The evaluated streams (container MIME + codec strings), the key of the session failure memory
+   * The evaluated streams (container MIME + codec strings), the key of the session failure memory. Opaque: read
+   * {@link Verdict.codecs} for what it names.
    */
   readonly signature: string;
+  /**
+   * The codec string of each evaluated stream, as first asked about for the file (undefined for a stream nobody knows)
+   */
+  readonly codecs?: { readonly video?: string; readonly audio?: string };
   /**
    * The source's quality, used to break ties between versions
    */
@@ -295,6 +301,7 @@ interface Evaluation {
   readonly audioFile?: Support;
   readonly audioMs?: Support;
   readonly signature: string;
+  readonly codecs: NonNullable<Verdict['codecs']>;
   readonly qualityCap?: RequestCaps;
   readonly videoTargets: () => Promise<TargetSet | undefined>;
   readonly audioTargets: () => Promise<TargetSet | undefined>;
@@ -518,6 +525,13 @@ function getStreamSignature(source: MediaSourceInfo, context: StreamContext | un
 }
 
 /**
+ * The codec string a stream is first asked about for the file
+ */
+function getFirstCodecString(source: MediaSourceInfo, context: StreamContext | undefined): string | undefined {
+  return context ? getStreamCodecStrings({ source, ...context, mode: 'file' })[0] : undefined;
+}
+
+/**
  * Evaluates the selected streams of a source in both modes
  */
 async function evaluateSource(input: VerdictInput, videoStream?: MediaStream, audioStream?: MediaStream): Promise<Evaluation> {
@@ -551,6 +565,7 @@ async function evaluateSource(input: VerdictInput, videoStream?: MediaStream, au
     audioFile,
     audioMs,
     signature: [getStreamSignature(source, video), getStreamSignature(source, audio)].filter(Boolean).join('|'),
+    codecs: { video: getFirstCodecString(source, video), audio: getFirstCodecString(source, audio) },
     qualityCap,
     videoTargets: lazy(async () => video && qualityCap ? findVideoTargets(oracle, getVideoTargetParams(video, qualityCap)) : undefined),
     audioTargets: lazy(async () => audio ? findAudioTargets(oracle, getChannels(audio)) : undefined)
@@ -1016,6 +1031,7 @@ export async function computeVerdict(input: VerdictInput): Promise<Verdict> {
   const common = {
     subtitle: evaluation.subtitle,
     signature: evaluation.signature,
+    codecs: evaluation.codecs,
     quality: getQuality(evaluation),
     mediaType: getItemType(input, videoStream !== undefined)
   };
