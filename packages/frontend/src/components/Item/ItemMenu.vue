@@ -200,7 +200,7 @@ const playNextAction = {
   title: t('playNext'),
   icon: 'i-mdi:play-speed',
   action: async (): Promise<void> => {
-    await playbackManager.playNext(item);
+    await playbackManager.playNext(item, playedSelection.value);
     useSnackbar(t('itemPlayNext'), 'success');
   }
 };
@@ -265,7 +265,7 @@ const addToQueueAction = {
   title: t('addToQueue'),
   icon: 'i-mdi:playlist-plus',
   action: async (): Promise<void> => {
-    await playbackManager.addToQueue(item);
+    await playbackManager.addToQueue(item, playedSelection.value);
     useSnackbar(t('addedToQueue'), 'success');
   }
 };

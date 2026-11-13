@@ -1,6 +1,7 @@
 /**
  * Rules of the playback queue that don't depend on the store: which fetched item is the current one, where items
- * go when they are removed or played next, what "previous" does, and what happens with an item that can't be played.
+ * go when they are removed or played next, what "previous" does, what happens with an item that can't be played, and
+ * which version a queued item keeps.
  *
  * The queue is a list of item ids. The items themselves are fetched asynchronously, so right after the ids change the
  * fetched items may still be those of the previous list: anything that reads them must find them by id.
@@ -150,4 +151,64 @@ export function getUnplayableItemStep(
  */
 export function goesToPreviousItem(previousIndex: number | undefined, queueLength: number, goBack: boolean): boolean {
   return goBack && !isNil(previousIndex) && previousIndex >= 0 && previousIndex < queueLength;
+}
+
+/**
+ * A version and tracks chosen by the user for one item. The version is kept by its id (`sourceId`; `source` is the
+ * index it was chosen with); tracks are absolute `MediaStream.Index` values, `-1` for "no subtitles".
+ */
+export interface ItemSelection {
+  readonly source?: number;
+  readonly sourceId?: string;
+  readonly video?: number;
+  readonly audio?: number;
+  readonly subtitle?: number;
+}
+
+/**
+ * What a queued item keeps for when it becomes the current one: the version (and the tracks chosen with it) picked
+ * for that very item, since an explicit version is valid for the item it was chosen for. Nothing for a folder, whose
+ * children are queued (the choice refers to the folder's own streams), and nothing without a chosen version (the
+ * tracks belong to a version).
+ *
+ * @param item - The item queued, as the choice was made on it
+ * @param choice - The version, as an index in the item's `MediaSources`, and tracks
+ */
+export function getQueuedSelection(
+  item: { readonly Id?: string | null; readonly IsFolder?: boolean | null; readonly MediaSources?: readonly { readonly Id?: string | null }[] | null },
+  choice: { readonly mediaSourceIndex?: number; readonly videoTrackIndex?: number; readonly audioTrackIndex?: number; readonly subtitleTrackIndex?: number } | undefined
+): ItemSelection | undefined {
+  const index = choice?.mediaSourceIndex;
+
+  if (item.IsFolder || !item.Id || isNil(index)) {
+    return;
+  }
+
+  return {
+    source: index,
+    sourceId: item.MediaSources?.[index]?.Id ?? undefined,
+    video: choice?.videoTrackIndex,
+    audio: choice?.audioTrackIndex,
+    subtitle: choice?.subtitleTrackIndex
+  };
+}
+
+/**
+ * What an item keeps once the user picked a track for it in the player: its tracks as they are now and the version it
+ * plays. It replaces what was stored for the item (see `getQueuedSelection`), so the queue coming back to the item plays
+ * what the user last picked, not what its page had.
+ *
+ * @param selection - The item's tracks after the pick
+ * @param version - The version it plays: its index in `MediaSources` and its id
+ * @returns Undefined while the version played is not known
+ */
+export function getPlayedSelection(
+  selection: { readonly video?: number; readonly audio?: number; readonly subtitle?: number },
+  version: { readonly index?: number; readonly id?: string | null }
+): ItemSelection | undefined {
+  if (isNil(version.index) || version.index < 0 || isNil(version.id)) {
+    return;
+  }
+
+  return { source: version.index, sourceId: version.id, video: selection.video, audio: selection.audio, subtitle: selection.subtitle };
 }

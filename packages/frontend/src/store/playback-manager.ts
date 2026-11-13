@@ -54,11 +54,14 @@ import { getMethodChange, getVerdictLabel, type MethodLabel } from '#/utils/play
 import { getItemRuntime, getStaticStreamUrl } from '#/utils/items.ts';
 import {
   findQueueItem,
+  getPlayedSelection,
   getPlayNextQueue,
+  getQueuedSelection,
   getQueueRemoval,
   getUnplayableItemStep,
   goesToPreviousItem,
-  isUnplayableItem
+  isUnplayableItem,
+  type ItemSelection
 } from '#/utils/playback-queue.ts';
 import { PREFETCH_BUFFER_AHEAD_S } from '#/utils/playback-capabilities/constants.ts';
 import { buildPlaybackRequest, deriveActualMethod } from '#/utils/playback-capabilities/device-profile.ts';
@@ -108,6 +111,16 @@ export enum InitMode {
   ShuffleItem = 3
 }
 
+/**
+ * Version (as an index in the item's `MediaSources`) and tracks chosen for an item that is played or queued
+ */
+interface QueueChoice {
+  mediaSourceIndex?: number;
+  videoTrackIndex?: number;
+  audioTrackIndex?: number;
+  subtitleTrackIndex?: number;
+}
+
 interface PlaybackManagerState {
   status: PlaybackStatus;
   currentItemIndex?: number;
@@ -143,6 +156,12 @@ interface PlaybackManagerState {
   repeatMode: RepeatMode;
   queue: string[];
   originalQueue: string[];
+  /**
+   * Version and tracks chosen for items of the queue (on their page, when they were played, played next or added to
+   * the queue), by item id (see `getQueuedSelection`). Each applies when its item becomes the current one, as if it
+   * had been chosen then (`mediaSourceIndexes`).
+   */
+  queuedSelections: Record<string, ItemSelection>;
   playbackInitiatorId?: BaseItemDto['Id'];
   playbackInitMode: InitMode;
   playbackSpeed: number;
@@ -468,10 +487,31 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    * The state is written once, so the negotiation runs once for the change.
    */
   private readonly _select = (track: 'video' | 'audio' | 'subtitle', index?: number) => {
-    this._state.value.mediaSourceIndexes = {
+    const selection = {
       ...(this._currentSelection.value ?? { itemId: this.currentItemId.value }),
       [track]: index
     };
+    const itemId = this.currentItemId.value;
+    // What the user picks in the player replaces what was stored for the item: coming back to it plays the same
+    const played = getPlayedSelection(selection, { index: this.currentMediaSourceIndex.value, id: this.currentMediaSource.value?.Id });
+
+    this._state.value = {
+      ...this._state.value,
+      mediaSourceIndexes: selection,
+      ...(itemId && played && { queuedSelections: { ...this._state.value.queuedSelections, [itemId]: played } })
+    };
+  };
+
+  /**
+   * Changes the queue and the position of the current item as one step. Written one after the other, the current item
+   * (a computed of both) would name, between the two writes, an item that isn't the current one, and the synchronous
+   * watchers would act on it: the stored selection of a queued item would land on another item, and the playback page
+   * would leave when the position was past the end of the shorter queue.
+   */
+  private readonly _setQueueState = (
+    changes: Partial<Pick<PlaybackManagerState, 'queue' | 'currentItemIndex' | 'originalQueue' | 'isShuffling' | 'queuedSelections'>>
+  ): void => {
+    this._state.value = { ...this._state.value, ...changes };
   };
 
   /**
@@ -586,6 +626,18 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     console.warn(`The playback goes on as it was: trying to improve it gave ${outcome === 'failed' ? 'no answer' : 'nothing playable'}`);
 
     return true;
+  };
+
+  /**
+   * Keeps the version and tracks chosen for an item that is queued, for when it becomes the current one (see
+   * `getQueuedSelection`)
+   */
+  private readonly _keepQueuedSelection = (item: BaseItemDto, choice?: QueueChoice): void => {
+    const selection = getQueuedSelection(item, choice);
+
+    if (item.Id && selection) {
+      this._state.value.queuedSelections = { ...this._state.value.queuedSelections, [item.Id]: selection };
+    }
   };
 
   /**
@@ -1392,10 +1444,11 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    * items are fetched by a computed that only tracks the queue property (the ids reach the database query as a raw
    * array), so a mutation in place would never fetch the added items.
    */
-  public readonly addToQueue = async (item: BaseItemDto): Promise<void> => {
+  public readonly addToQueue = async (item: BaseItemDto, choice?: QueueChoice): Promise<void> => {
     const translatedItem = await this.translateItemsForPlayback(item);
 
     this._state.value.queue = [...this._state.value.queue, ...translatedItem];
+    this._keepQueuedSelection(item, choice);
   };
 
   /**
@@ -1418,10 +1471,15 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
 
     const original = this._state.value.originalQueue;
 
-    this._state.value.queue = removal.queue;
-    // While shuffling, turning shuffle off must not bring the item back
-    this._state.value.originalQueue = original.includes(itemId) ? original.toSpliced(original.indexOf(itemId), 1) : original;
-    this._state.value.currentItemIndex = removal.index;
+    this._setQueueState({
+      queue: removal.queue,
+      currentItemIndex: removal.index,
+      // While shuffling, turning shuffle off must not bring the item back
+      originalQueue: original.includes(itemId) ? original.toSpliced(original.indexOf(itemId), 1) : original,
+      ...(!removal.queue.includes(itemId) && {
+        queuedSelections: Object.fromEntries(Object.entries(this._state.value.queuedSelections).filter(([id]) => id !== itemId))
+      })
+    });
 
     if (removal.currentRemoved) {
       this.currentTime.value = 0;
@@ -1466,20 +1524,31 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       this._state.value.status = PlaybackStatus.Buffering;
       // A new playback decides its versions again, also for items played before
       this._resolvedSource.value = undefined;
-      this._state.value.queue = await this.translateItemsForPlayback(item);
+
+      const queue = await this.translateItemsForPlayback(item);
+      const selection = getQueuedSelection(item, { mediaSourceIndex, videoTrackIndex, audioTrackIndex, subtitleTrackIndex });
+
       /**
-       * The version and tracks refer to the streams of `item` itself, so they only apply to it
-       * (and never when it's a folder, since it isn't part of the queue)
+       * Written in one step, on the state as it is after the wait (a write started before it would land on a state
+       * object that may have been replaced meanwhile; see `_setQueueState`): the queue, the position, and the version
+       * and tracks chosen for `item`. They refer to the streams of `item` itself, so they only apply to it (and never
+       * when it's a folder, since it isn't part of the queue), and are kept for the item too, so they apply again when
+       * the queue comes back to it.
        */
-      this._state.value.mediaSourceIndexes = {
-        itemId: item.Id,
-        source: mediaSourceIndex,
-        sourceId: isNil(mediaSourceIndex) ? undefined : item.MediaSources?.[mediaSourceIndex]?.Id ?? undefined,
-        video: videoTrackIndex,
-        audio: audioTrackIndex,
-        subtitle: subtitleTrackIndex
+      this._state.value = {
+        ...this._state.value,
+        queue,
+        currentItemIndex: startFromIndex,
+        mediaSourceIndexes: {
+          itemId: item.Id,
+          source: mediaSourceIndex,
+          sourceId: isNil(mediaSourceIndex) ? undefined : item.MediaSources?.[mediaSourceIndex]?.Id ?? undefined,
+          video: videoTrackIndex,
+          audio: audioTrackIndex,
+          subtitle: subtitleTrackIndex
+        },
+        queuedSelections: item.Id && selection ? { [item.Id]: selection } : {}
       };
-      this._state.value.currentItemIndex = startFromIndex;
 
       if (startShuffled) {
         await this.toggleShuffle(false);
@@ -1511,12 +1580,13 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    *
    * @param item
    */
-  public readonly playNext = async (item: BaseItemDto): Promise<void> => {
+  public readonly playNext = async (item: BaseItemDto, choice?: QueueChoice): Promise<void> => {
     const translatedItem = await this.translateItemsForPlayback(item);
     const newQueue = getPlayNextQueue(this._state.value.queue, this.currentItemIndex.value, translatedItem);
 
     if (newQueue) {
       this.setNewQueue(newQueue);
+      this._keepQueuedSelection(item, choice);
     }
   };
 
@@ -1571,10 +1641,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       return;
     }
 
-    const newIndex = queue.indexOf(this.currentItemId.value);
-
-    this._state.value.queue = queue;
-    this._state.value.currentItemIndex = newIndex;
+    this._setQueueState({ queue, currentItemIndex: queue.indexOf(this.currentItemId.value) });
   };
 
   public readonly changeItemPosition = (
@@ -1635,15 +1702,17 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   public readonly toggleShuffle = async (preserveCurrentItem = true): Promise<void> => {
     if (!isNil(this.currentItemId.value)) {
       if (this._state.value.isShuffling) {
-        this._state.value.currentItemIndex = this._state.value.originalQueue.indexOf(this.currentItemId.value);
-        this._state.value.queue = this._state.value.originalQueue;
-        this._state.value.originalQueue = [];
-        this._state.value.isShuffling = false;
+        this._setQueueState({
+          queue: this._state.value.originalQueue,
+          currentItemIndex: this._state.value.originalQueue.indexOf(this.currentItemId.value),
+          originalQueue: [],
+          isShuffling: false
+        });
       } else {
         const shuffled_queue
           = await runGenericWorkerFunc('shuffle')(this._state.value.queue) as string[];
 
-        this._state.value.originalQueue = this._state.value.queue;
+        const originalQueue = this._state.value.queue;
 
         if (preserveCurrentItem) {
           const itemIndex = shuffled_queue.indexOf(this.currentItemId.value);
@@ -1652,9 +1721,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
           shuffled_queue.unshift(this.currentItemId.value);
         }
 
-        this._state.value.queue = shuffled_queue;
-        this._state.value.currentItemIndex = 0;
-        this._state.value.isShuffling = true;
+        this._setQueueState({ originalQueue, queue: shuffled_queue, currentItemIndex: 0, isShuffling: true });
       }
     }
   };
@@ -1820,6 +1887,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
         repeatMode: RepeatMode.RepeatNone,
         queue: [],
         originalQueue: [],
+        queuedSelections: {},
         playbackInitiatorId: undefined,
         playbackInitMode: InitMode.Unknown,
         playbackSpeed: 1
@@ -1965,6 +2033,18 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
         }
       }
     );
+
+    /**
+     * A queued item with a version chosen for it (see `queuedSelections`) plays that version when it becomes the
+     * current one. Synchronous, so the version resolution and the negotiation of the new item already see it.
+     */
+    watch(this.currentItemId, (itemId) => {
+      const selection = itemId ? this._state.value.queuedSelections[itemId] : undefined;
+
+      if (itemId && selection && this._state.value.mediaSourceIndexes.itemId !== itemId) {
+        this._state.value.mediaSourceIndexes = { itemId, ...selection };
+      }
+    }, { flush: 'sync' });
 
     /**
      * Keep the position reached by the reported playback. Changing the current item resets the

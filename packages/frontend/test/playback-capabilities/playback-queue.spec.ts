@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { findQueueItem, getPlayNextQueue, getQueueRemoval, getUnplayableItemStep, goesToPreviousItem, isUnplayableItem } from '#/utils/playback-queue.ts';
+import { findQueueItem, getPlayNextQueue, getQueuedSelection, getQueueRemoval, getUnplayableItemStep, goesToPreviousItem, isUnplayableItem } from '#/utils/playback-queue.ts';
 
 const items = (...ids: string[]) => ids.map(Id => ({ Id }));
 
@@ -161,5 +161,27 @@ describe('goesToPreviousItem', () => {
   test('nothing current, or an index out of the queue: it starts again', () => {
     expect(goesToPreviousItem(undefined, 3, true)).toBe(false);
     expect(goesToPreviousItem(3, 3, true)).toBe(false);
+  });
+});
+
+describe('getQueuedSelection', () => {
+  const item = { Id: 'm', MediaSources: [{ Id: 'v1080' }, { Id: 'v720' }, { Id: 'v480' }] };
+
+  test('the version chosen for the item, by its id, with the tracks chosen with it', () => {
+    expect(getQueuedSelection(item, { mediaSourceIndex: 2, audioTrackIndex: 3, subtitleTrackIndex: -1 }))
+      .toEqual({ source: 2, sourceId: 'v480', video: undefined, audio: 3, subtitle: -1 });
+  });
+
+  test('nothing without a chosen version: the tracks belong to a version', () => {
+    expect(getQueuedSelection(item, { audioTrackIndex: 3 })).toBeUndefined();
+    expect(getQueuedSelection(item, undefined)).toBeUndefined();
+  });
+
+  test('nothing for a folder: the choice refers to its own streams, not to the children that are queued', () => {
+    expect(getQueuedSelection({ ...item, IsFolder: true }, { mediaSourceIndex: 1 })).toBeUndefined();
+  });
+
+  test('a version the item does not have keeps no id, so it is not played as another one', () => {
+    expect(getQueuedSelection(item, { mediaSourceIndex: 7 })).toEqual({ source: 7, sourceId: undefined, video: undefined, audio: undefined, subtitle: undefined });
   });
 });
