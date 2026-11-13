@@ -10,7 +10,9 @@
  * failure ladder as the element's own, and there is no network estimate: Automatic only moves down on stalls.
  *
  * They also tell the playback manager once the playback works (`playbackManager.reportPlaybackWorked`): a hard failure
- * afterwards is about the file or the moment, not the browser.
+ * afterwards is about the file or the moment, not the browser. A source the element loads itself (a direct play, or
+ * HLS played natively) that stops answering is a network error, not a codec failure: it is loaded again a bounded
+ * number of times, then the playback stops with an error (see `onLoadTrouble`).
  */
 import type Hls from 'hls.js';
 import { ErrorDetails, Events, PlaylistLevelType, type BufferCodecsData, type FragBufferedData } from 'hls.js';
@@ -32,6 +34,9 @@ import {
   DROPPED_FRAMES_CONSECUTIVE_WINDOWS,
   DROPPED_FRAMES_WINDOW_MS,
   HLS_MEDIA_ERROR_RECOVERIES,
+  MEDIA_RESOURCE_CHECK_TIMEOUT_MS,
+  NETWORK_LONG_STALL_MS,
+  STARVED_BUFFER_AHEAD_S,
   SUPERVISOR_SAMPLE_MS
 } from '#/utils/playback-capabilities/constants.ts';
 import {
@@ -53,11 +58,14 @@ import {
 import {
   getBufferedAhead,
   isNotSmooth,
+  NO_NETWORK_ATTEMPTS,
   startNetworkMemory,
   stepFrameProgress,
   stepNetwork,
+  stepNetworkRecovery,
   type FrameProgress,
   type FrameWindow,
+  type NetworkAttempts,
   type NetworkEvent,
   type NetworkMemory
 } from '#/utils/playback-capabilities/runtime-signals.ts';
@@ -119,7 +127,8 @@ interface SourceRun {
 }
 
 /**
- * What the supervisors remember about the loads of the source being played (one URL) for what a failure teaches
+ * What the supervisors remember about the loads of the source being played (one URL) for what a failure teaches and for
+ * the element's network recovery
  */
 interface LoadRun {
   url?: string;
@@ -136,12 +145,84 @@ interface LoadRun {
    */
   advanceFrom?: number;
   advanceAs?: string;
+  /**
+   * The element's own load failures, as `stepNetworkRecovery` counts them, since the playback last got past the
+   * position the last one happened at (`failedAt`)
+   */
+  attempts: NetworkAttempts;
+  failedAt?: number;
+  /**
+   * Whether a new load of the recovery has not started playing yet: its own seeks (to where the playback was, and the
+   * player's resume) are not the user's
+   */
+  reloading?: boolean;
+  /**
+   * Whether a load trouble is being handled: its check is in flight or its new load is scheduled
+   */
+  handling: boolean;
+  timer?: ReturnType<typeof setTimeout>;
+  /**
+   * Since when the media time has not advanced while playing, with the time and the end of the buffer it is compared
+   * with (see `watchStillTime`)
+   */
+  still?: { mediaTime: number; bufferedEnd: number; since: number };
 }
 
 /**
  * Playbacks (by key) that were already warned about not being smooth
  */
 const warnedNotSmooth = new Set<string>();
+
+/**
+ * What a check of a source the element loads itself found (see {@link checkResource})
+ */
+type ResourceAnswer = 'answers' | 'fails' | 'unauthorized';
+
+/**
+ * Whether a source the media element loads itself answers: its first byte is asked for, like the element asks for
+ * ranges (anonymous CORS, credentials only in the URL), and it answers only once that byte arrives: a connection that
+ * stopped without closing can still send the headers of a new request and nothing more. No byte in
+ * {@link MEDIA_RESOURCE_CHECK_TIMEOUT_MS}, a network error or an error status are `fails`; 401, the server refusing the
+ * session, is `unauthorized`.
+ */
+async function checkResource(url: string): Promise<ResourceAnswer> {
+  try {
+    // The wait covers the headers and the first byte: aborting it also errors the body
+    const response = await fetch(url, {
+      headers: { Range: 'bytes=0-0' },
+      cache: 'no-store',
+      signal: AbortSignal.timeout(MEDIA_RESOURCE_CHECK_TIMEOUT_MS)
+    });
+
+    if (!response.ok) {
+      void response.body?.cancel();
+
+      return response.status === 401 ? 'unauthorized' : 'fails';
+    }
+
+    if (!response.body) {
+      return 'answers';
+    }
+
+    const reader = response.body.getReader();
+    const { value } = await reader.read();
+
+    void reader.cancel();
+
+    return value && value.byteLength > 0 ? 'answers' : 'fails';
+  } catch {
+    return 'fails';
+  }
+}
+
+/**
+ * Where the element's buffer ends: the end of its last buffered range (0 when nothing is buffered)
+ */
+function getBufferedEnd(el: HTMLMediaElement): number {
+  const { buffered } = el;
+
+  return buffered.length > 0 ? buffered.end(buffered.length - 1) : 0;
+}
 
 /**
  * A new run for a source
@@ -171,7 +252,7 @@ function getTargetEntry(state: AutoState, video: VideoInfo): RunningQuality {
  */
 export function usePlaybackSupervisors(hls: Hls | undefined) {
   let run = newRun();
-  let loadRun: LoadRun = { worked: false };
+  let loadRun: LoadRun = { worked: false, attempts: NO_NETWORK_ATTEMPTS, handling: false };
 
   // The network estimate is remembered for the session: a new player starts from it
   if (hls && sessionNetworkEstimate.value) {
@@ -502,7 +583,8 @@ export function usePlaybackSupervisors(hls: Hls | undefined) {
    */
   const currentLoadRun = (): LoadRun => {
     if (loadRun.url !== run.url) {
-      loadRun = { url: run.url, worked: false };
+      clearTimeout(loadRun.timer);
+      loadRun = { url: run.url, worked: false, attempts: NO_NETWORK_ATTEMPTS, handling: false };
     }
 
     return loadRun;
@@ -519,12 +601,218 @@ export function usePlaybackSupervisors(hls: Hls | undefined) {
       || (quality ? quality.totalVideoFrames > run.framesAtLoad : el.videoWidth > 0 && !('requestVideoFrameCallback' in el));
   };
 
-  useEventListener(mediaElementRef, 'error', (event: Event) => {
-    const code = event.target instanceof HTMLMediaElement ? event.target.error?.code : undefined;
+  /**
+   * Whether the element loads the source itself (a direct play, or HLS played natively), instead of hls.js feeding it
+   */
+  const loadsItself = (el: HTMLMediaElement): boolean => !hls?.media || hls.media !== el;
 
-    if (code === MediaError.MEDIA_ERR_DECODE || code === MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED) {
+  /**
+   * A load trouble of a source the element loads itself: `MediaError` 4 (`unsupported`), 2 (`network`), the element
+   * telling that data stopped coming while it starves (`stalled`), or the media time standing still with no data arriving
+   * (`still`, see `watchStillTime`). A resource that does not answer gives a 4 before the
+   * metadata is known (the HTML specification sends it to the same steps as an unsupported format) and a 2 after it,
+   * and a connection cut in the middle may give no error at all (measured: WebKit waited 150 s; Chrome fired `stalled`
+   * after 1.2 s and MediaError 2 after 19 s), so whether the resource answers is checked first (see
+   * {@link checkResource}):
+   * - it answers: a 4 is a media error, which the failure ladder learns; a 2 was the connection, which is back; a stall
+   * is a slow network, which the element waits for; but in a direct play, a time that stood still with no data arriving
+   * means the connection the element holds went silent without closing (a network switch, a NAT or a proxy dropping it)
+   * while new requests are served: it is loaded again, like a network error. Not for HLS played natively: its URL is a
+   * playlist, and a still time is the playhead waiting for a segment a transcode slower than real time has not made yet
+   * (a segment that hangs while the playlist answers stays undetected there)
+   * - it does not: it's the network or the server, which says nothing about the browser. Nothing is learned
+   * A network error is loaded again where it was, a bounded number of times like hls.js's network errors in the player
+   * (`stepNetworkRecovery`: a 4 counts as a manifest that never loaded, the rest as a stream that stopped), then the
+   * playback stops with an error. A 401 means the session is gone: it stops at once. Once started, a recovery always
+   * ends without waiting for the element to raise anything else (see `watchRecovery`).
+   */
+  const onLoadTrouble = async (el: HTMLMediaElement, trouble: 'unsupported' | 'network' | 'stalled' | 'still'): Promise<void> => {
+    const state = currentLoadRun();
+
+    if (!state.url || run.acted || state.handling) {
+      return;
+    }
+
+    state.handling = true;
+    // A trouble during a new load of the recovery replaces its watch
+    clearTimeout(state.timer);
+
+    const position = el.currentTime;
+    const answer = await checkResource(state.url);
+
+    // The playback moved on meanwhile (another source or element, or the player closed)
+    if (currentLoadRun() !== state || mediaElementRef.value !== el) {
+      state.handling = false;
+
+      return;
+    }
+
+    // A direct play holds one long download of the resource: what can fail while the resource answers is that download
+    const ownDownloadFailed = trouble === 'still' && playbackManager.currentPlaybackMethod.value === 'DirectPlay';
+
+    if (answer === 'answers' && trouble !== 'network' && !ownDownloadFailed) {
+      state.handling = false;
+
+      if (trouble === 'unsupported') {
+        onMediaError();
+      } else if (state.failedAt !== undefined) {
+        // A recovery under way keeps watching its new load (its watch was replaced when this trouble started)
+        watchRecovery(el, state);
+      }
+
+      return;
+    }
+
+    const failure = trouble === 'unsupported' ? 'manifest' : 'stream';
+    const { recovery, attempts } = stepNetworkRecovery(state.attempts, failure);
+
+    if (answer === 'unauthorized' || recovery.action === 'stop') {
+      console.error(`the media could not be loaded from the server (${trouble}, ${answer}) after ${state.attempts[failure]} attempts`);
+      useSnackbar(i18next.t('playbackNetworkFailed'), 'error');
+      playbackManager.stop();
+
+      return;
+    }
+
+    if (state.attempts.manifest + state.attempts.stream === 0) {
+      useSnackbar(i18next.t('networkError'), 'error');
+    }
+
+    console.error(`the media stopped loading (${trouble}), trying again in ${recovery.delayMs} ms`);
+    state.attempts = attempts;
+    state.failedAt = position;
+    state.timer = setTimeout(() => {
+      state.handling = false;
+
+      if (currentLoadRun() !== state || mediaElementRef.value !== el) {
+        return;
+      }
+
+      state.reloading = true;
+      el.load();
+      // The new load starts where the playback was
+      el.currentTime = position;
+      watchRecovery(el, state);
+    }, recovery.delayMs);
+  };
+
+  /**
+   * Watches a new load of a recovery, so every recovery ends in bounded time, playing again or stopped with the error.
+   * Playing on past the position that failed ends the recovery (see the `timeupdate` listener), and so does a load that
+   * has what it needs to play while the user keeps the playback paused. Otherwise, a load whose buffer did not grow during
+   * {@link MEDIA_RESOURCE_CHECK_TIMEOUT_MS} is another failure of the stream; one whose buffer grows is catching up, and
+   * is watched again. Nothing else can be relied on: a new load can hang with no event at all (measured: Chrome kept a
+   * reload of a direct play paused at `readyState` 1, no error, through a connection that stopped without closing), a
+   * new load is paused until it can autoplay, which `stalled` ignores, and an engine can report data it does not play
+   * (measured: Firefox kept `readyState` 4 with the time stuck).
+   */
+  const watchRecovery = (el: HTMLMediaElement, state: LoadRun): void => {
+    const bufferedEnd = getBufferedEnd(el);
+
+    state.timer = setTimeout(() => {
+      if (currentLoadRun() !== state || mediaElementRef.value !== el || state.failedAt === undefined) {
+        return;
+      }
+
+      if (playbackManager.isPaused.value && el.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) {
+        state.attempts = NO_NETWORK_ATTEMPTS;
+        state.failedAt = undefined;
+        // Kept paused, it does not fire `playing`
+        state.reloading = false;
+
+        return;
+      }
+
+      if (getBufferedEnd(el) > bufferedEnd) {
+        watchRecovery(el, state);
+
+        return;
+      }
+
+      void onLoadTrouble(el, 'network');
+    }, MEDIA_RESOURCE_CHECK_TIMEOUT_MS);
+  };
+
+  useEventListener(mediaElementRef, 'error', (event: Event) => {
+    const el = event.target;
+    const code = el instanceof HTMLMediaElement ? el.error?.code : undefined;
+
+    if (el instanceof HTMLMediaElement && loadsItself(el)
+      && (code === MediaError.MEDIA_ERR_NETWORK || code === MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED)) {
+      void onLoadTrouble(el, code === MediaError.MEDIA_ERR_NETWORK ? 'network' : 'unsupported');
+    } else if (code === MediaError.MEDIA_ERR_DECODE || code === MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED) {
       onMediaError();
     }
+  });
+
+  /**
+   * Whether the element starves: too little data to go on, as it reports it or as its buffer shows it (see
+   * `watchStillTime`)
+   */
+  const isStarving = (el: HTMLMediaElement): boolean => el.readyState < HTMLMediaElement.HAVE_FUTURE_DATA
+    || getBufferedAhead(el.buffered, el.currentTime) < STARVED_BUFFER_AHEAD_S;
+
+  /**
+   * Whether the media time stood still while playing, with no data arriving, for {@link NETWORK_LONG_STALL_MS}: then the
+   * playback is stuck whatever the element says (measured: Firefox, through a connection that stopped without closing,
+   * kept `readyState` 4 with the time stuck, fired `stalled` only before the buffer ran out, and raised no error). The
+   * resource is checked (`still`, see `onLoadTrouble`): if it does not answer, the network or the server failed; if it
+   * answers, the connection the element holds is what failed. Either way the source is loaded again where it was, within
+   * the bounded recovery. Only while the element starves: it reports too little data to go on (`readyState` below
+   * `HAVE_FUTURE_DATA`, what Chrome and WebKit report when stuck), or it has less than {@link STARVED_BUFFER_AHEAD_S}
+   * buffered ahead (Firefox keeps `readyState` 4 with the time stuck); a time stuck with plenty of data ahead (a full
+   * read-ahead) is not the network's doing. Not while paused, seeking or ended; not while the buffer grows (a slow network
+   * the element waits for: zero bytes in that time is longer than the HTML specification's own wait before `stalled`,
+   * about three seconds); not while a trouble is handled or a recovery is under way, which watch themselves.
+   */
+  const watchStillTime = (): void => {
+    const el = mediaElementRef.value;
+    const state = currentLoadRun();
+
+    if (!el || !state.url || !loadsItself(el) || el.paused || el.seeking || el.ended || run.acted
+      || state.handling || state.failedAt !== undefined
+      || !isStarving(el)) {
+      state.still = undefined;
+
+      return;
+    }
+
+    const now = performance.now();
+    const mediaTime = el.currentTime;
+    const bufferedEnd = getBufferedEnd(el);
+    const { still } = state;
+
+    if (still?.mediaTime !== mediaTime || bufferedEnd > still.bufferedEnd) {
+      state.still = { mediaTime, bufferedEnd, since: now };
+    } else if (now - still.since >= NETWORK_LONG_STALL_MS) {
+      state.still = undefined;
+      void onLoadTrouble(el, 'still');
+    }
+  };
+
+  useIntervalFn(watchStillTime, SUPERVISOR_SAMPLE_MS);
+  useEventListener(mediaElementRef, 'stalled', (event: Event) => {
+    const el = event.target;
+
+    if (el instanceof HTMLMediaElement && loadsItself(el) && !el.paused && el.readyState < HTMLMediaElement.HAVE_FUTURE_DATA) {
+      void onLoadTrouble(el, 'stalled');
+    }
+  });
+  /**
+   * A seek of the user starts a new stretch of playback: the recovery of the previous one is over, and a trouble of the
+   * new stretch gets the whole allowance (the allowance is there so that one stretch never retries without end; seeking
+   * takes the user). Not while a trouble is handled, and not the recovery's own seeks.
+   */
+  useEventListener(mediaElementRef, 'seeking', () => {
+    const state = currentLoadRun();
+
+    if (state.failedAt !== undefined && !state.handling && !state.reloading) {
+      state.attempts = NO_NETWORK_ATTEMPTS;
+      state.failedAt = undefined;
+    }
+  });
+  useEventListener(mediaElementRef, 'playing', () => {
+    currentLoadRun().reloading = false;
   });
   useEventListener(mediaElementRef, ['loadstart', 'seeking'], () => {
     currentLoadRun().advanceFrom = undefined;
@@ -532,14 +820,27 @@ export function usePlaybackSupervisors(hls: Hls | undefined) {
   /**
    * Tells the playback manager once the playback works with the streams it was negotiated with: the time advanced
    * while playing (not by a seek) and, for video, a frame was presented; again when a renegotiation changes the streams
-   * and keeps the URL
+   * and keeps the URL. Also ends the element's network recovery once the playback played on past the position that
+   * failed for {@link NETWORK_LONG_STALL_MS}, as long as it takes to notice a stall: a new load that plays a moment and
+   * gets stuck again is the same failure (measured: Chrome, with every connection of the element going silent after
+   * 50 kB, was loaded again 22 times in 150 s, 0.4 s further each time, when any progress ended the recovery).
    */
   useEventListener(mediaElementRef, 'timeupdate', (event: Event) => {
     const el = event.target;
     const state = currentLoadRun();
+
+    if (!(el instanceof HTMLMediaElement) || !state.url || el.seeking) {
+      return;
+    }
+
+    if (state.failedAt !== undefined && el.currentTime >= state.failedAt + NETWORK_LONG_STALL_MS / 1000) {
+      state.attempts = NO_NETWORK_ATTEMPTS;
+      state.failedAt = undefined;
+    }
+
     const signature = playbackManager.currentVerdict.value?.signature;
 
-    if (!(el instanceof HTMLMediaElement) || !state.url || el.seeking || (state.worked && state.workedAs === signature) || el.paused) {
+    if ((state.worked && state.workedAs === signature) || el.paused) {
       return;
     }
 

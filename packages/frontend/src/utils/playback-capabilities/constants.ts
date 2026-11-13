@@ -182,6 +182,17 @@ export const HLS_MEDIA_ERROR_RECOVERIES = 1;
 export const BUFFER_POSITION_TOLERANCE_S = 0.1;
 
 /**
+ * Below this much buffered ahead of the current time, in seconds, a media element whose time stands still is starving
+ * even though it reports enough data to play (`readyState` of `HAVE_FUTURE_DATA` or more): an element can stop with data
+ * buffered that it cannot play yet.
+ *
+ * Origin: measured with a direct play whose connection went silent, at the stuck position: Chrome had 0.69 s buffered
+ * ahead and reported `readyState` 2, WebKit 2.85 s and 2, Firefox 0.24 s and 4. `readyState` tells it in Chrome and
+ * WebKit; for Firefox, 1 s is four times what it kept, and far below a full read-ahead, which holds many seconds.
+ */
+export const STARVED_BUFFER_AHEAD_S = 1;
+
+/**
  * Media time that may pass after a load started without any video frame presented before the video counts as
  * producing no frames, which is a hard failure. Once a frame was presented, no wait for the next one counts.
  *
@@ -316,6 +327,17 @@ export const HLS_STREAM_RESUMES = 1;
  * Origin: the first step of hls.js 1.7.3's own backoff (`retryDelayMs: 1000` in its load policies).
  */
 export const HLS_NETWORK_RECOVERY_DELAY_MS = 1000;
+
+/**
+ * The longest wait for the answer to the request that checks whether a source the media element loads itself (a direct
+ * play, or HLS played natively) still answers after a load failure, in milliseconds; no byte in time counts as not
+ * answering. The same attempts as hls.js's network errors follow (see {@link HLS_MANIFEST_RELOADS}). Also the longest
+ * wait for a new load of that recovery to have data to play: one that has none by then fails again.
+ *
+ * Origin: hls.js 1.7.3's longest wait for the first byte of a playlist or a fragment (`maxTimeToFirstByteMs` of its
+ * `playlistLoadPolicy` and `fragLoadPolicy`) before it counts the load as failed.
+ */
+export const MEDIA_RESOURCE_CHECK_TIMEOUT_MS = 10_000;
 
 /**
  * == QUALITY LADDER ==
