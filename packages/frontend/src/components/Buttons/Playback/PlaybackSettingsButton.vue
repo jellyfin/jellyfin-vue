@@ -24,7 +24,27 @@
                   :items="qualityItems"
                   item-title="title"
                   item-value="value"
-                  hide-details />
+                  data-quality-menu=""
+                  hide-details>
+                  <template #selection="{ item }">
+                    <span :data-quality-selection="String(item.raw.value)">
+                      {{ item.raw.title }}
+                      <span
+                        v-if="item.raw.subtitle"
+                        class="uno-opacity-70"
+                        data-running-quality="">
+                        · {{ item.raw.subtitle }}
+                      </span>
+                    </span>
+                  </template>
+                  <template #item="{ item, props: templateProps }">
+                    <VListItem
+                      v-bind="templateProps"
+                      :title="item.raw.title"
+                      :subtitle="item.raw.subtitle"
+                      :data-quality-entry="String(item.raw.value)" />
+                  </template>
+                </VSelect>
               </VCol>
             </VRow>
             <VRow align="center">
@@ -73,7 +93,9 @@
                   @update:focused="onFocus" />
               </VCol>
             </VRow>
-            <VRow align="center">
+            <VRow
+              v-if="playbackManager.isVideo.value"
+              align="center">
               <VCol :cols="4">
                 <label>{{ $t('stretch') }}</label>
               </VCol>
@@ -87,6 +109,29 @@
               </VCol>
             </VRow>
           </VCardText>
+          <VDivider />
+          <VList density="compact">
+            <VListItem
+              :title="$t('tryAnotherMethod')"
+              :subtitle="nextMethodText"
+              :disabled="!playbackManager.currentFailureStep.value || !nextMethod"
+              :data-next-method="nextMethod ?? ''"
+              data-try-another-method=""
+              @click="tryAnotherMethod">
+              <template #prepend>
+                <JIcon class="i-mdi:swap-horizontal uno-mr-4" />
+              </template>
+            </VListItem>
+            <VListItem
+              v-if="blockedBy === 'quality'"
+              :title="$t('switchToAutomatic')"
+              data-switch-to-automatic=""
+              @click="switchToAutomatic">
+              <template #prepend>
+                <JIcon class="i-mdi:auto-mode uno-mr-4" />
+              </template>
+            </VListItem>
+          </VList>
         </VCard>
       </VMenu>
     </VBtn>
@@ -101,36 +146,46 @@ import { playbackManager } from '#/store/playback-manager.ts';
 import { playerElement } from '#/store/player-element.ts';
 import { playbackSettings } from '#/store/settings/playback.ts';
 import { getQualityMenu, type QualityMenuEntry } from '#/utils/playback-capabilities/quality.ts';
+import { getNoOtherMethodText, getPlaybackMethodName } from '#/utils/playback-labels.ts';
 
 const menuModel = defineModel<boolean>();
 const { t } = useTranslation();
 
 /**
- * The video stream being played (undefined for music)
+ * The name of a quality menu entry
  */
-const playingVideo = computed(() => {
-  const index = playbackManager.currentVerdict.value?.video?.index;
+function getEntryTitle(entry: QualityMenuEntry): string {
+  if (entry === 'auto') {
+    return t('auto');
+  }
 
-  return playbackManager.currentMediaSource.value?.MediaStreams?.find(
-    stream => stream.Type === 'Video' && stream.Index === index
-  );
+  return entry === 'original' ? t('original') : t('qualityLevel', { height: entry });
+}
+
+/**
+ * The video stream of the version being played that the quality applies to: the one picked or, if none, the first one
+ * (as the negotiation takes it), also while nothing plays because of a failure (an unplayable verdict has no video
+ * plan). Undefined for music.
+ */
+const videoStream = computed(() => {
+  const streams = playbackManager.currentMediaSource.value?.MediaStreams?.filter(stream => stream.Type === 'Video') ?? [];
+  const picked = playbackManager.currentVideoTrack.value?.Index;
+
+  return streams.find(stream => stream.Index === picked) ?? streams[0];
 });
 
 /**
- * Automatic, Original and the levels available for the file being played
+ * Automatic, Original and one entry per level available for the file being played (only Automatic and Original for
+ * music). Automatic shows, as its subtitle, the entry equivalent to what it is running.
  */
-const qualityItems = computed(() => getQualityMenu(playingVideo.value).map((entry) => {
-  let title: string;
+const qualityItems = computed(() => getQualityMenu(videoStream.value).map((entry) => {
+  const running = playbackManager.currentRunningQuality.value;
 
-  if (entry === 'auto') {
-    title = t('auto');
-  } else if (entry === 'original') {
-    title = t('original');
-  } else {
-    title = t('qualityLevel', { height: entry });
-  }
-
-  return { title, value: entry };
+  return {
+    title: getEntryTitle(entry),
+    subtitle: entry === 'auto' && running !== undefined && quality.value === 'auto' ? getEntryTitle(running) : undefined,
+    value: entry
+  };
 }));
 
 /**
@@ -139,7 +194,7 @@ const qualityItems = computed(() => getQualityMenu(playingVideo.value).map((entr
  */
 const quality = computed({
   get: (): QualityMenuEntry => {
-    const mode = playbackSettings.getQualityMode(playingVideo.value);
+    const mode = playbackSettings.getQualityMode(videoStream.value);
 
     return mode.type === 'fixed' ? mode.level : mode.type;
   },
@@ -147,6 +202,55 @@ const quality = computed({
     playbackSettings.quality.value = entry;
   }
 });
+
+/**
+ * The method "try another method" would move to, if any
+ */
+const nextMethod = computed(() => {
+  const step = playbackManager.currentFailureStep.value;
+
+  return step && step.learn !== 'nothing' ? step.next : undefined;
+});
+
+/**
+ * What forbids the methods after the current one, when one is left on the ladder but none is allowed: the quality mode
+ * (Original only allows the original file) or the user policy
+ */
+const blockedBy = computed(() => {
+  const step = playbackManager.currentFailureStep.value;
+
+  return step && step.learn !== 'nothing' && !step.next ? step.blockedBy : undefined;
+});
+
+/**
+ * The way out of quality mode Original when it forbids the other methods, as its error notice offers
+ */
+function switchToAutomatic(): void {
+  menuModel.value = false;
+  playbackSettings.quality.value = 'auto';
+}
+
+/**
+ * The method being used, or why no other one can be tried. The next method isn't named: the verdict skips the rungs
+ * the browser can't decode, so the rung after the current one isn't necessarily the one that will be used.
+ */
+const nextMethodText = computed(() => {
+  const current = playbackManager.currentPlaybackMethod.value;
+
+  if (!nextMethod.value || !current) {
+    return getNoOtherMethodText(t, blockedBy.value);
+  }
+
+  return t('currentPlaybackMethod', { method: getPlaybackMethodName(t, current) });
+});
+
+/**
+ * The user says the playback doesn't work (like silent audio, which no engine reports): one rung down the ladder
+ */
+function tryAnotherMethod(): void {
+  menuModel.value = false;
+  void playbackManager.reportPlaybackFailure('manual');
+}
 
 const defaultPlaybackSpeeds = Object.freeze([0.5, 0.75, 1, 1.25, 1.5, 2]);
 const playbackItems = computed(() => defaultPlaybackSpeeds.map(speed => ({

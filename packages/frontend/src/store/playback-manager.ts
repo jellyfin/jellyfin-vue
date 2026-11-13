@@ -46,7 +46,7 @@ import {
 } from '#/store/playback-quality.ts';
 import { playbackSettings } from '#/store/settings/playback.ts';
 import { getImageInfo } from '#/utils/images.ts';
-import { getPlaybackMethodName } from '#/utils/playback-labels.ts';
+import { getNoOtherMethodText, getPlaybackMethodName } from '#/utils/playback-labels.ts';
 import { getItemRuntime, getStaticStreamUrl } from '#/utils/items.ts';
 import { findQueueItem, getQueueRemoval } from '#/utils/playback-queue.ts';
 import { PREFETCH_BUFFER_AHEAD_S } from '#/utils/playback-capabilities/constants.ts';
@@ -996,7 +996,10 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
         }
       });
     } else if (negotiation.verdict.reasons.includes('FailedBefore') && negotiation.verdict.method === 'Unplayable') {
-      dismiss = useSnackbar(t('everyPlaybackMethodFailed'), 'error');
+      // The methods left failed, or the policy forbids them: the menu says the same in this state
+      const blockedBy = negotiation.verdict.reasons.includes('NotAllowedByPolicy') ? 'policy' : undefined;
+
+      dismiss = useSnackbar(getNoOtherMethodText(t, blockedBy, true), 'error');
     } else if (negotiation.data && !getAnswerSource(negotiation.data)) {
       // The server answered without a media source: nothing was learned from it, and asking again may work
       dismiss = useSnackbar(t('cantPlayItem'), 'error', {

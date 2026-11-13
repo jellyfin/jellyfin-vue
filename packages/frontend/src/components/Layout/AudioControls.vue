@@ -74,6 +74,7 @@
             class="uno-hidden uno-items-center uno-justify-end uno-min-[960px]:flex">
             <LikeButton :item="playbackManager.currentItem.value" />
             <QueueButton />
+            <PlaybackSettingsButton />
             <div class="uno-hidden uno-min-[1920px]:block">
               <VolumeSlider />
             </div>

@@ -64,3 +64,25 @@ export function getPlaybackChangeReasonName(t: Translate, reason: PlaybackChange
     }
   }
 }
+
+/**
+ * Why no other playback method can be tried, in words: the quality mode (Original only allows the original file) or the
+ * user's policy forbids the ones left, or none is left. The player's menu and the notice shown when a playback can't go
+ * on take it from here, so they say the same in the same state.
+ *
+ * @param blockedBy - What forbids the methods left; undefined when none is left
+ * @param ended - For the notice of a playback that ended: with nothing forbidden, every method was tried and failed
+ */
+export function getNoOtherMethodText(t: Translate, blockedBy: 'quality' | 'policy' | undefined, ended = false): string {
+  switch (blockedBy) {
+    case 'quality': {
+      return t('noOtherMethodInOriginalQuality');
+    }
+    case 'policy': {
+      return t('noOtherMethodAllowed');
+    }
+    case undefined: {
+      return t(ended ? 'everyPlaybackMethodFailed' : 'noOtherPlaybackMethod');
+    }
+  }
+}
