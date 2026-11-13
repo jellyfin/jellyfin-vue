@@ -1158,10 +1158,15 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   };
 
   public readonly queueHasItem = (itemId: string): boolean => this._state.value.queue.includes(itemId);
+  /**
+   * Adds an item (or the items of a folder) at the end of the queue. The queue is replaced, not mutated: the queue's
+   * items are fetched by a computed that only tracks the queue property (the ids reach the database query as a raw
+   * array), so a mutation in place would never fetch the added items.
+   */
   public readonly addToQueue = async (item: BaseItemDto): Promise<void> => {
     const translatedItem = await this.translateItemsForPlayback(item);
 
-    this._state.value.queue.push(...translatedItem);
+    this._state.value.queue = [...this._state.value.queue, ...translatedItem];
   };
 
   /**
