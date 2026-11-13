@@ -21,7 +21,7 @@ import type {
   TranscodeReason,
   TranscodingProfile
 } from '@jellyfin/sdk/lib/generated-client';
-import { UNLIMITED_STREAMING_BITRATE } from './constants.ts';
+import { TRANSCODE_VIDEO_BIT_DEPTH, TRANSCODE_VIDEO_RANGE, UNLIMITED_STREAMING_BITRATE } from './constants.ts';
 import { getKnownValue } from './media-config.ts';
 import type { RequestCaps } from './quality.ts';
 import { getSubtitleProfiles, type SubtitleRenderer } from './subtitles.ts';
@@ -111,8 +111,8 @@ function getTargetConditions(caps: RequestCaps | undefined): ProfileCondition[] 
     ({ Condition, Property, Value: String(Value), IsRequired: false });
 
   return [
-    condition('VideoRangeType', 'EqualsAny', 'SDR'),
-    condition('VideoBitDepth', 'LessThanEqual', 8),
+    condition('VideoRangeType', 'EqualsAny', TRANSCODE_VIDEO_RANGE),
+    condition('VideoBitDepth', 'LessThanEqual', TRANSCODE_VIDEO_BIT_DEPTH),
     ...(caps
       ? [
           condition('Width', 'LessThanEqual', caps.maxWidth),

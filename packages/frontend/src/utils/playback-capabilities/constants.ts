@@ -154,6 +154,15 @@ export const DROPPED_FRAMES_CONSECUTIVE_WINDOWS = 2;
 export const SUPERVISOR_SAMPLE_MS = 1000;
 
 /**
+ * Times hls.js is asked to recover from a fatal media error (`recoverMediaError`) before the failure moves down the
+ * failure ladder.
+ *
+ * Origin: owner decision (plan, "Supervisores en runtime": a fatal media error of hls.js after one
+ * `recoverMediaError` is a hard failure).
+ */
+export const HLS_MEDIA_ERROR_RECOVERIES = 1;
+
+/**
  * Media time that may pass after a load started without any video frame presented before the video counts as
  * producing no frames, which is a hard failure. Once a frame was presented, no wait for the next one counts.
  *
@@ -261,6 +270,17 @@ export interface QualityLadderEntry {
 }
 
 /**
+ * Time a cap Automatic moved down from because of buffering stalls is not tried again during the playback, in
+ * milliseconds; it doubles with each step down from that cap.
+ *
+ * Origin: four times {@link NETWORK_UP_HOLD_MS}, the soonest Automatic may move up again after a change. When the
+ * server encodes the upper level slower than real time and the lower one faster, the network estimate at the lower
+ * level keeps the margin, so without a wait the upper level was tried again (a new transcode and a stall each time)
+ * as soon as the margin held: 60 times an hour in hunter C's simulation of that case; with this wait, 5 times.
+ */
+export const NETWORK_RETRY_WAIT_MS = 4 * NETWORK_UP_HOLD_MS;
+
+/**
  * Quality ladder, from highest to lowest. The menu only shows resolutions: the bitrate is internal.
  *
  * Origin: heights decided by the owner (plan, "Calidad"). Widths are the 16:9 frame of each height.
@@ -277,17 +297,6 @@ export const QUALITY_LADDER = [
   { height: 480, width: 854, bitrate: 2_500_000 },
   { height: 360, width: 640, bitrate: 1_000_000 }
 ] as const satisfies readonly QualityLadderEntry[];
-
-/**
- * Time a cap Automatic moved down from because of buffering stalls is not tried again during the playback, in
- * milliseconds; it doubles with each step down from that cap.
- *
- * Origin: four times {@link NETWORK_UP_HOLD_MS}, the soonest Automatic may move up again after a change. When the
- * server encodes the upper level slower than real time and the lower one faster, the network estimate at the lower
- * level keeps the margin, so without a wait the upper level was tried again (a new transcode and a stall each time)
- * as soon as the margin held: 60 times an hour in hunter C's simulation of that case; with this wait, 5 times.
- */
-export const NETWORK_RETRY_WAIT_MS = 4 * NETWORK_UP_HOLD_MS;
 
 /**
  * The block size a reported frame height may have been rounded up to: a video fits a level of {@link QUALITY_LADDER}
@@ -351,6 +360,21 @@ export const VIDEO_TRANSCODE_TARGETS = [
   { codec: 'av1', codecString: 'av01.0.08M.08' },
   { codec: 'vp9', codecString: 'vp09.00.40.08' }
 ] as const satisfies readonly TranscodeTarget[];
+
+/**
+ * What an encoded video must be: standard dynamic range (Jellyfin's `VideoRangeType`) and at most this bit depth. Sent
+ * to the server as conditions of every video target.
+ *
+ * Origin: the codec strings of {@link VIDEO_TRANSCODE_TARGETS} describe 8-bit output, which is what the browser is
+ * asked about; HDR output is not asked for (plan, "Transcodificar vídeo": SDR, 8 bits; the server's tone mapping is
+ * off by default and the client cannot detect it).
+ */
+export const TRANSCODE_VIDEO_RANGE = 'SDR';
+
+/**
+ * See {@link TRANSCODE_VIDEO_RANGE}.
+ */
+export const TRANSCODE_VIDEO_BIT_DEPTH = 8;
 
 /**
  * Audio transcoding targets, in order of preference: AAC first, Opus as the royalty-free fallback.

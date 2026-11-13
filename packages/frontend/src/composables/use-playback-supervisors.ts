@@ -22,7 +22,12 @@ import {
   setAutoState,
   type PlaybackChangeReason
 } from '#/store/playback-quality.ts';
-import { DROPPED_FRAMES_CONSECUTIVE_WINDOWS, DROPPED_FRAMES_WINDOW_MS, SUPERVISOR_SAMPLE_MS } from '#/utils/playback-capabilities/constants.ts';
+import {
+  DROPPED_FRAMES_CONSECUTIVE_WINDOWS,
+  DROPPED_FRAMES_WINDOW_MS,
+  HLS_MEDIA_ERROR_RECOVERIES,
+  SUPERVISOR_SAMPLE_MS
+} from '#/utils/playback-capabilities/constants.ts';
 import {
   getDownStep,
   getSmoothnessStep,
@@ -56,7 +61,7 @@ import {
 interface SourceRun {
   url?: string;
   /**
-   * Media errors hls.js was asked to recover from: only one is
+   * Media errors hls.js was asked to recover from: at most {@link HLS_MEDIA_ERROR_RECOVERIES}
    */
   recoveries: number;
   /**
@@ -263,10 +268,10 @@ export function usePlaybackSupervisors(hls: Hls | undefined) {
     el instanceof HTMLVideoElement && playbackManager.currentVerdict.value?.video !== undefined;
 
   /**
-   * A media error of the element or of hls.js: hls.js is asked to recover once, then it is a hard failure
+   * A media error of the element or of hls.js: hls.js is asked to recover {@link HLS_MEDIA_ERROR_RECOVERIES} times, then it is a hard failure
    */
   const onMediaError = (): void => {
-    if (hls?.media && hls.media === mediaElementRef.value && run.recoveries === 0) {
+    if (hls?.media && hls.media === mediaElementRef.value && run.recoveries < HLS_MEDIA_ERROR_RECOVERIES) {
       run.recoveries++;
       useSnackbar(i18next.t('mediaError'), 'error');
       hls.recoverMediaError();
@@ -516,11 +521,11 @@ export function usePlaybackSupervisors(hls: Hls | undefined) {
    * hls.js reset the media source by itself: its error controller calls `recoverMediaError` for every
    * `MEDIA_SOURCE_REQUIRES_RESET`, fatal or not, before the app hears of the error (hls.js 1.7.3), and its own count of
    * them starts again whenever a fragment buffers, so a segment that cannot be appended reloads the source again and
-   * again. Each reset counts toward the single recovery the app grants hls.js, like one the app asks for, and past it
-   * it's a hard failure. A fatal one also stopped loading: within the bound, loading resumes where the playback was.
+   * again. Each reset counts toward {@link HLS_MEDIA_ERROR_RECOVERIES} like a recovery the app asks for, and past it it's
+   * a hard failure. A fatal one also stopped loading: within the bound, loading resumes where the playback was.
    */
   const onHlsReset = (fatal: boolean): void => {
-    if (run.recoveries === 0) {
+    if (run.recoveries < HLS_MEDIA_ERROR_RECOVERIES) {
       run.recoveries++;
       useSnackbar(i18next.t('mediaError'), 'error');
 
