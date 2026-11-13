@@ -2,13 +2,13 @@ import { describe, expect, test } from 'vitest';
 import {
   exceedsLevel,
   exceedsQuality,
-  getAutoRunningEntry,
   getAvailableLevels,
   getModeLevel,
   getNextHigherLevel,
   getNextLowerLevel,
   getQualityMenu,
   getRequestCaps,
+  getRunningEntry,
   getSourceLevel,
   getTranscodeLevel,
   type QualityLevel,
@@ -16,6 +16,7 @@ import {
   type RequestCaps,
   type VideoInfo
 } from '#/utils/playback-capabilities/quality.ts';
+import type { PlaybackMethod } from '#/utils/playback-capabilities/verdict.ts';
 
 /**
  * Shorthand for a video stream size, with its bitrate when it matters
@@ -131,7 +132,9 @@ describe('exceedsQuality: when a quality mode forces the video to be encoded', (
     ['automatic at a level whose bitrate is above the source\'s does not force', heavy1080, { type: 'auto', level: 2160 }, false],
     ['automatic without a current level never forces', heavy1080, { type: 'auto' }, false],
     ['original never forces', heavy1080, { type: 'original' }, false],
-    ['automatic with an unknown bitrate decides by resolution only', size(1920, 1080), { type: 'auto', level: 1080 }, false]
+    ['automatic with an unknown bitrate decides by resolution only', size(1920, 1080), { type: 'auto', level: 1080 }, false],
+    ['automatic asked to encode the video (playback not smooth) forces it although the source fits', light1080, { type: 'auto', encodeVideo: true }, true],
+    ['automatic asked to encode the video at the source\'s own level forces it whatever the bitrate', light1080, { type: 'auto', level: 1080, encodeVideo: true }, true]
   ];
 
   test.each(cases)('%s', (_, video, mode, expected) => {
@@ -171,16 +174,25 @@ describe('getTranscodeLevel: the level the server encodes at when the video has 
   });
 });
 
-describe('getAutoRunningEntry: Automatic shows the menu entry it is equivalent to', () => {
-  const cases: [string, VideoInfo | undefined, QualityMode & { type: 'auto' }, boolean, 'original' | QualityLevel][] = [
-    ['when the video is not encoded it is running the original', size(1920, 1080), { type: 'auto', level: 720 }, false, 'original'],
-    ['when the video is encoded at a capped level it shows that level', size(1920, 1080), { type: 'auto', level: 720 }, true, 720],
-    ['when the video is encoded without a cap it shows the source\'s own level', size(1920, 1080), { type: 'auto' }, true, 1080],
-    ['music always runs the original', undefined, { type: 'auto' }, false, 'original']
+describe('getRunningEntry: the menu entry equivalent to what is playing, which Automatic shows as its subtitle', () => {
+  const cases: [string, VideoInfo | undefined, PlaybackMethod, QualityLevel | undefined, 'original' | QualityLevel | undefined][] = [
+    ['the original file played directly is Original', size(1920, 1080), 'DirectPlay', undefined, 'original'],
+    ['a remux (every stream copied) is Original too: the Original entry allows it', size(1920, 1080), 'Remux', 720, 'original'],
+    ['a video encoded at a capped level is that level', size(1920, 1080), 'TranscodeVideo', 720, 720],
+    ['a video encoded without a cap is at the source\'s own level', size(1920, 1080), 'TranscodeVideo', undefined, 1080],
+    ['a cap above the source never upscales: it is the source\'s own level', size(1280, 720), 'TranscodeVideo', 1080, 720],
+    [
+      'only the audio encoded is not Original (Original forbids it): it is the source\'s own level, whose entry plays the same',
+      size(1920, 1080), 'TranscodeAudio', undefined, 1080
+    ],
+    ['music played as it is is Original', undefined, 'DirectPlay', undefined, 'original'],
+    ['music with its audio encoded matches no entry (music has no resolutions)', undefined, 'TranscodeAudio', undefined, undefined],
+    ['an encoded video of unknown size matches no entry (its menu has no resolutions)', unknownSize, 'TranscodeVideo', undefined, undefined],
+    ['nothing playable matches no entry', size(1920, 1080), 'Unplayable', undefined, undefined]
   ];
 
-  test.each(cases)('%s', (_, video, mode, videoTranscoded, expected) => {
-    const result = getAutoRunningEntry(video, mode, videoTranscoded);
+  test.each(cases)('%s', (_, video, method, cap, expected) => {
+    const result = getRunningEntry(video, method, cap);
 
     expect(result).toBe(expected);
   });
@@ -228,13 +240,13 @@ describe('the steps of Automatic are expressible: original, the source\'s own le
   test('a 1080p 40 Mbps source steps down 1080, 720, 480, 360, every step encoding the video', () => {
     const steps: QualityLevel[] = [];
     const forced: boolean[] = [];
-    const shown: ('original' | QualityLevel)[] = [];
+    const shown: ('original' | QualityLevel | undefined)[] = [];
     let current = getNextLowerLevel(undefined, heavy1080);
 
     while (current !== undefined) {
       const mode = { type: 'auto', level: current } as const;
       const isForced = exceedsQuality(heavy1080, mode);
-      const entry = getAutoRunningEntry(heavy1080, mode, true);
+      const entry = getRunningEntry(heavy1080, 'TranscodeVideo', current);
 
       steps.push(current);
       forced.push(isForced);
@@ -250,7 +262,7 @@ describe('the steps of Automatic are expressible: original, the source\'s own le
   });
 
   test('before the first step it is running the original', () => {
-    const shown = getAutoRunningEntry(heavy1080, { type: 'auto' }, false);
+    const shown = getRunningEntry(heavy1080, 'DirectPlay');
 
     expect(shown).toBe('original');
   });

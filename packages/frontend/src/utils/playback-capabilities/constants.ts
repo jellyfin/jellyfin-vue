@@ -275,6 +275,36 @@ export const QUALITY_LADDER = [
 ] as const satisfies readonly QualityLadderEntry[];
 
 /**
+ * The block size a reported frame height may have been rounded up to: a video fits a level of {@link QUALITY_LADDER}
+ * when its short side is at most the level's height rounded up to a multiple of it (1088 is a 1080 video, 1104 is not).
+ * The long side does not count: a 1998x1080 or 4096x2160 video is a 1080 or a 2160 one, only wider than the box.
+ *
+ * Origin: the 16x16 macroblock of H.264 (ITU-T H.264, 7.4.2.1.1: a picture is coded in whole macroblocks, and a file
+ * without frame cropping reports the coded size: 1920x1088 for a 1080 encode). It is the largest block among the codecs
+ * whose sizes are coded in blocks (MPEG-2, MPEG-4 Part 2 and VC-1 also use 16x16 macroblocks; HEVC codes sizes in
+ * multiples of its minimum coding block, 8 or more; VP9 and AV1 code the exact size).
+ */
+export const CODED_SIZE_ALIGNMENT = 16;
+
+/**
+ * Frame rate the bitrates of {@link QUALITY_LADDER} are for. Above it, a level asks for its bitrate multiplied by
+ * (frame rate / {@link QUALITY_LADDER_FRAME_RATE}) ^ {@link HIGH_FRAME_RATE_BITRATE_EXPONENT}.
+ *
+ * Origin: Jellyfin's rule for the width of an encode (`ResolutionNormalizer.Normalize`, Jellyfin 12.4) weighs the
+ * output bitrate against width brackets made for "SDR h264 bitrate at 30fps", scaling it by 30 / fps up to 30 fps and by
+ * 1 / sqrt(fps / 30) above; the frame rate is the source's (`MaxFramerate` in the transcoding URL, which the server sets
+ * to the stream's `ReferenceFrameRate`). A bitrate multiplied by sqrt(fps / 30) is thus weighed like the ladder's at
+ * 30 fps, where every level gets its own width bracket. Measured (Chrome, a 3840x2160 60 fps source): with the 30 fps
+ * bitrates the 1440p level came out 1920x1080 and the 1080p level 1280x720.
+ */
+export const QUALITY_LADDER_FRAME_RATE = 30;
+
+/**
+ * See {@link QUALITY_LADDER_FRAME_RATE}: the square root of Jellyfin's `ResolutionNormalizer`.
+ */
+export const HIGH_FRAME_RATE_BITRATE_EXPONENT = 0.5;
+
+/**
  * == TRANSCODING TARGETS ==
  */
 
@@ -336,18 +366,6 @@ export const STEREO_CHANNELS = 2;
 /**
  * == FALLBACKS FOR MISSING STREAM METADATA ==
  */
-
-/**
- * The block size a reported frame height may have been rounded up to: a video fits a level of {@link QUALITY_LADDER}
- * when its short side is at most the level's height rounded up to a multiple of it (1088 is a 1080 video, 1104 is not).
- * The long side does not count: a 1998x1080 or 4096x2160 video is a 1080 or a 2160 one, only wider than the box.
- *
- * Origin: the 16x16 macroblock of H.264 (ITU-T H.264, 7.4.2.1.1: a picture is coded in whole macroblocks, and a file
- * without frame cropping reports the coded size: 1920x1088 for a 1080 encode). It is the largest block among the codecs
- * whose sizes are coded in blocks (MPEG-2, MPEG-4 Part 2 and VC-1 also use 16x16 macroblocks; HEVC codes sizes in
- * multiples of its minimum coding block, 8 or more; VP9 and AV1 code the exact size).
- */
-export const CODED_SIZE_ALIGNMENT = 16;
 
 /**
  * Frame rate used in browser queries when the server reports neither `RealFrameRate` nor `AverageFrameRate`.

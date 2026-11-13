@@ -4,7 +4,8 @@
  * box (maximum width and height) of the level.
  */
 import type { MediaStream } from '@jellyfin/sdk/lib/generated-client';
-import { CODED_SIZE_ALIGNMENT, QUALITY_LADDER } from './constants.ts';
+import { CODED_SIZE_ALIGNMENT, HIGH_FRAME_RATE_BITRATE_EXPONENT, QUALITY_LADDER, QUALITY_LADDER_FRAME_RATE } from './constants.ts';
+import type { PlaybackMethod } from './verdict.ts';
 
 /**
  * One of the ladder's heights (2160, 1440, 1080, 720, 480 or 360)
@@ -13,12 +14,14 @@ export type QualityLevel = typeof QUALITY_LADDER[number]['height'];
 
 /**
  * The quality the user asked for:
- * - `auto`: everything is automatic; `level` is the cap the runtime supervisors currently impose (none at first)
+ * - `auto`: everything is automatic; `level` is the cap the runtime supervisors currently impose (none at first), and
+ * `encodeVideo` means the smoothness supervisor asked for the video to be encoded, at `level` or at the source's own
+ * level, because the original did not play smoothly
  * - `original`: only the original file, played directly or remuxed
  * - `fixed`: the quality is locked to `level`
  */
 export type QualityMode
-  = | { readonly type: 'auto'; readonly level?: QualityLevel }
+  = | { readonly type: 'auto'; readonly level?: QualityLevel; readonly encodeVideo?: boolean }
     | { readonly type: 'original' }
     | { readonly type: 'fixed'; readonly level: QualityLevel };
 
@@ -37,9 +40,10 @@ export interface RequestCaps {
 }
 
 /**
- * The size and bitrate of a video stream, as the server reports them
+ * The size, bitrate and frame rate of a video stream, as the server reports them (`ReferenceFrameRate` is the frame
+ * rate the server itself encodes with)
  */
-export type VideoInfo = Pick<MediaStream, 'Width' | 'Height' | 'BitRate'>;
+export type VideoInfo = Pick<MediaStream, 'Width' | 'Height' | 'BitRate' | 'ReferenceFrameRate'>;
 
 /**
  * Returns the size as positive numbers, or undefined when unknown
@@ -55,6 +59,23 @@ function getKnownSize(video?: VideoInfo): { width: number; height: number } | un
  */
 function getEntry(level: QualityLevel) {
   return QUALITY_LADDER.find(entry => entry.height === level)!;
+}
+
+/**
+ * The bitrate a level asks for: its internal bitrate, which is for {@link QUALITY_LADDER_FRAME_RATE}, raised for a
+ * source of a higher frame rate so that the server still encodes at the level's size (see
+ * {@link QUALITY_LADDER_FRAME_RATE}). Whatever compares a bitrate with a level uses this one.
+ *
+ * @param level - The level
+ * @param video - The source video stream, whose frame rate counts
+ */
+export function getLevelBitrate(level: QualityLevel, video?: VideoInfo): number {
+  const { bitrate } = getEntry(level);
+  const frameRate = video?.ReferenceFrameRate;
+
+  return typeof frameRate === 'number' && frameRate > QUALITY_LADDER_FRAME_RATE
+    ? Math.round(bitrate * (frameRate / QUALITY_LADDER_FRAME_RATE) ** HIGH_FRAME_RATE_BITRATE_EXPONENT)
+    : bitrate;
 }
 
 /**
@@ -117,9 +138,14 @@ export function getQualityMenu(video?: VideoInfo): QualityMenuEntry[] {
  * - a fixed level only looks at resolution: a source that fits it is never encoded, whatever its bitrate
  * - Automatic with a current level also encodes a source whose bitrate is above the level's internal one,
  * since it lowers levels for bandwidth reasons (so "the source's resolution at the ladder bitrate" is a step)
+ * - Automatic asked to encode the video (see {@link QualityMode}) always forces it
  * - Automatic without a level and Original never force anything
  */
 export function exceedsQuality(video: VideoInfo, mode: QualityMode): boolean {
+  if (mode.type === 'auto' && mode.encodeVideo) {
+    return true;
+  }
+
   if (mode.type === 'original' || mode.level === undefined) {
     return false;
   }
@@ -128,7 +154,7 @@ export function exceedsQuality(video: VideoInfo, mode: QualityMode): boolean {
     return true;
   }
 
-  return mode.type === 'auto' && typeof video.BitRate === 'number' && video.BitRate > getEntry(mode.level).bitrate;
+  return mode.type === 'auto' && typeof video.BitRate === 'number' && video.BitRate > getLevelBitrate(mode.level, video);
 }
 
 /**
@@ -149,23 +175,46 @@ export function getTranscodeLevel(video: VideoInfo | undefined, cap?: QualityLev
 }
 
 /**
- * The menu entry equivalent to what "Automatic" is currently running: `original` when the video is not
- * encoded, otherwise the level it is encoded at.
+ * The menu entry equivalent to what is playing: the entry that, chosen instead, would play the same thing. Automatic
+ * shows it as its subtitle.
+ * - the original file played directly or remuxed is `original` (what the Original entry allows)
+ * - an encoded video is the level it is encoded at: the cap, never above the source's own level
+ * - only the audio encoded is not Original (Original forbids it): it is the source's own level, whose entry keeps the
+ * picture as it is and encodes the audio the same way
+ * - undefined when no entry of the menu plays the same thing (music with its audio encoded, an encoded video of unknown
+ * size) or nothing plays
  *
  * @param video - The video stream being played (undefined for music)
- * @param mode - The automatic mode, with the cap currently in place
- * @param videoTranscoded - Whether the server is encoding the video
+ * @param method - The method the server is using
+ * @param cap - The level the video is capped at, if any
  */
-export function getAutoRunningEntry(
+export function getRunningEntry(
   video: VideoInfo | undefined,
-  mode: Extract<QualityMode, { type: 'auto' }>,
-  videoTranscoded: boolean
-): 'original' | QualityLevel {
-  if (!video || !videoTranscoded) {
-    return 'original';
+  method: PlaybackMethod,
+  cap?: QualityLevel
+): Exclude<QualityMenuEntry, 'auto'> | undefined {
+  const levels = getAvailableLevels(video);
+  let level: QualityLevel | undefined;
+
+  switch (method) {
+    case 'DirectPlay':
+    case 'Remux': {
+      return 'original';
+    }
+    case 'TranscodeVideo': {
+      level = video ? getTranscodeLevel(video, cap) : undefined;
+      break;
+    }
+    case 'TranscodeAudio': {
+      level = getSourceLevel(video);
+      break;
+    }
+    case 'Unplayable': {
+      return;
+    }
   }
 
-  return getTranscodeLevel(video, mode.level);
+  return level !== undefined && levels.includes(level) ? level : undefined;
 }
 
 /**
@@ -230,7 +279,7 @@ export function getRequestCaps(level: QualityLevel, video?: VideoInfo): RequestC
   const portrait = size !== undefined && size.height > size.width;
 
   return {
-    maxBitrate: entry.bitrate,
+    maxBitrate: getLevelBitrate(level, video),
     maxWidth: portrait ? entry.height : entry.width,
     maxHeight: portrait ? entry.width : entry.height
   };
