@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { findQueueItem, getQueueRemoval } from '#/utils/playback-queue.ts';
+import { findQueueItem, getPlayNextQueue, getQueueRemoval } from '#/utils/playback-queue.ts';
 
 const items = (...ids: string[]) => ids.map(Id => ({ Id }));
 
@@ -71,5 +71,28 @@ describe('getQueueRemoval', () => {
 
     getQueueRemoval(queue, 1, 'a', false);
     expect(queue).toEqual(['a', 'b']);
+  });
+});
+
+describe('getPlayNextQueue', () => {
+  test('the items go right after the current one', () => {
+    expect(getPlayNextQueue(['a', 'b', 'c', 'd'], 1, ['x', 'y'])).toEqual(['a', 'b', 'x', 'y', 'c', 'd']);
+  });
+
+  test('an item queued before the current one moves right after it', () => {
+    // 'a' before the current 'c': the current item is one position earlier once 'a' leaves
+    expect(getPlayNextQueue(['a', 'b', 'c', 'd', 'e'], 2, ['a'])).toEqual(['b', 'c', 'a', 'd', 'e']);
+  });
+
+  test('an item queued after the current one moves right after it', () => {
+    expect(getPlayNextQueue(['a', 'b', 'c', 'd'], 0, ['d'])).toEqual(['a', 'd', 'b', 'c']);
+  });
+
+  test('the current item stays where it is, also when it is among the items', () => {
+    expect(getPlayNextQueue(['a', 'b', 'c'], 1, ['b', 'x'])).toEqual(['a', 'b', 'x', 'c']);
+  });
+
+  test('without a current item, nothing changes', () => {
+    expect(getPlayNextQueue(['a', 'b'], undefined, ['x'])).toBeUndefined();
   });
 });

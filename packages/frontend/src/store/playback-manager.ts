@@ -52,7 +52,7 @@ import { getImageInfo } from '#/utils/images.ts';
 import { getMethodChangeNotice, getNoOtherMethodText } from '#/utils/playback-labels.ts';
 import { getMethodChange, getVerdictLabel, type MethodLabel } from '#/utils/playback-capabilities/verdict-label.ts';
 import { getItemRuntime, getStaticStreamUrl } from '#/utils/items.ts';
-import { findQueueItem, getQueueRemoval } from '#/utils/playback-queue.ts';
+import { findQueueItem, getPlayNextQueue, getQueueRemoval } from '#/utils/playback-queue.ts';
 import { PREFETCH_BUFFER_AHEAD_S } from '#/utils/playback-capabilities/constants.ts';
 import { buildPlaybackRequest, deriveActualMethod } from '#/utils/playback-capabilities/device-profile.ts';
 import { getFailureStep, type FailureEvidence, type FailureStep, type LessonScope } from '#/utils/playback-capabilities/failure-ladder.ts';
@@ -1443,22 +1443,16 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   };
 
   /**
-   * Adds to the queue the items of a collection item (i.e album, tv show, etc...)
+   * Queues an item (or the items of a collection item, i.e album, tv show, etc...) right after the current one (see
+   * `getPlayNextQueue`)
    *
    * @param item
    */
   public readonly playNext = async (item: BaseItemDto): Promise<void> => {
     const translatedItem = await this.translateItemsForPlayback(item);
+    const newQueue = getPlayNextQueue(this._state.value.queue, this.currentItemIndex.value, translatedItem);
 
-    if (!isNil(this.currentItemIndex.value)) {
-      /**
-       * Removes the elements that already exists and append the new ones next to the currently playing item
-       */
-      const newQueue = this._state.value.queue.filter(
-        index => !translatedItem.includes(index)
-      );
-
-      newQueue.splice(this.currentItemIndex.value + 1, 0, ...translatedItem);
+    if (newQueue) {
       this.setNewQueue(newQueue);
     }
   };

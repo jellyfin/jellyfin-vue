@@ -1,6 +1,6 @@
 /**
- * Rules of the playback queue that don't depend on the store: which fetched item is the current one, and where the
- * current position goes when an item is removed.
+ * Rules of the playback queue that don't depend on the store: which fetched item is the current one, and where items
+ * go when they are removed or played next.
  *
  * The queue is a list of item ids. The items themselves are fetched asynchronously, so right after the ids change the
  * fetched items may still be those of the previous list: anything that reads them must find them by id.
@@ -81,4 +81,28 @@ export function getQueueRemoval(
   }
 
   return { queue: rest, index: repeatAll && rest.length > 0 ? 0 : undefined, currentRemoved: true };
+}
+
+/**
+ * The queue after "play next": the items go right after the current item, which stays where it is. Items that were
+ * queued already are moved there, not repeated.
+ *
+ * @param queue - The queue of item ids (not mutated)
+ * @param index - The index of the current item, if any
+ * @param items - The ids to play next, in order
+ * @returns Undefined without a current item
+ */
+export function getPlayNextQueue(queue: readonly string[], index: number | undefined, items: readonly string[]): string[] | undefined {
+  const current = isNil(index) ? undefined : queue[index];
+
+  if (isNil(current) || isNil(index)) {
+    return;
+  }
+
+  const moved = items.filter(id => id !== current);
+  const isMoved = (id: string) => moved.includes(id);
+  const before = queue.slice(0, index).filter(id => !isMoved(id));
+  const after = queue.slice(index + 1).filter(id => !isMoved(id));
+
+  return [...before, current, ...moved, ...after];
 }
