@@ -45,6 +45,12 @@
                       :data-quality-entry="String(item.raw.value)" />
                   </template>
                 </VSelect>
+                <p
+                  v-if="videoStream && !videoTranscodingAllowed"
+                  class="uno-text-xs uno-text-warning uno-mt-1"
+                  data-policy-hint="quality">
+                  {{ $t('qualityVideoTranscodingNotAllowed') }}
+                </p>
               </VCol>
             </VRow>
             <VRow align="center">
@@ -153,6 +159,7 @@
 import { computed, shallowRef } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import { isObj, isStr, isUndef } from '@jellyfin-vue/shared/validation';
+import { getPlaybackPolicy } from '#/store/playback-capabilities.ts';
 import { playbackManager } from '#/store/playback-manager.ts';
 import { playerElement } from '#/store/player-element.ts';
 import { playbackSettings } from '#/store/settings/playback.ts';
@@ -173,6 +180,11 @@ const videoStream = computed(() => {
 
   return source ? getVideoStream(source, playbackManager.currentVideoTrack.value?.Index) : undefined;
 });
+
+/**
+ * Whether the user policy allows encoding the video, which every level below the file's own needs
+ */
+const videoTranscodingAllowed = computed(() => getPlaybackPolicy().EnableVideoPlaybackTranscoding !== false);
 
 /**
  * Automatic, Original and one entry per level available for the file being played (only Automatic and Original for

@@ -19,6 +19,12 @@
             :label="$t('defaultQuality')"
             :items="qualityItems"
             hide-details />
+          <p
+            v-if="!videoTranscodingAllowed"
+            class="uno-text-sm uno-text-warning uno-mt-2"
+            data-policy-hint="quality">
+            {{ $t('qualityVideoTranscodingNotAllowed') }}
+          </p>
           <dl class="uno-text-sm uno-mt-3 uno-flex uno-flex-col uno-gap-2">
             <div
               v-for="kind in qualityKinds"
@@ -75,6 +81,12 @@
               </template>
             </VRadio>
           </VRadioGroup>
+          <p
+            v-if="!videoTranscodingAllowed"
+            class="uno-text-sm uno-text-warning uno-mt-2"
+            data-policy-hint="hdr">
+            {{ $t('hdrVideoTranscodingNotAllowed') }}
+          </p>
         </section>
 
         <section class="uno-mb-8">
@@ -172,7 +184,7 @@ import { useTranslation } from 'i18next-vue';
 import { remote } from '#/plugins/remote/index.ts';
 import { useSnackbar } from '#/composables/use-snackbar.ts';
 import { playbackSettings, type HdrMode } from '#/store/settings/playback.ts';
-import { forgetLearnedCompatibility } from '#/store/playback-capabilities.ts';
+import { forgetLearnedCompatibility, getPlaybackPolicy } from '#/store/playback-capabilities.ts';
 import { pick } from '#/utils/data-manipulation.ts';
 import { selectionModel } from '#/utils/forms.ts';
 import { getQualityName } from '#/utils/playback-labels.ts';
@@ -197,6 +209,12 @@ const qualityKinds = computed(() => [
   { name: t('original'), description: t('qualityOriginalHelp') },
   { name: t('fixedResolution'), description: t('qualityFixedHelp') }
 ]);
+/**
+ * Lowering the quality (a fixed resolution below the file's, or Automatic adapting to the network) and converting HDR
+ * video for an SDR display both encode the video, which the user policy may forbid: the page says so under those
+ * settings instead of offering them without explanation
+ */
+const videoTranscodingAllowed = computed(() => getPlaybackPolicy().EnableVideoPlaybackTranscoding !== false);
 const hdrModes = computed<{ value: HdrMode; label: string; description: string }[]>(() => [
   { value: 'browser', label: t('hdrModeBrowser'), description: t('hdrModeBrowserHelp') },
   { value: 'display', label: t('hdrModeDisplay'), description: t('hdrModeDisplayHelp') }
