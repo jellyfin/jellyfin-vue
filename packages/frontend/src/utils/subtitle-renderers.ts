@@ -87,7 +87,38 @@ async function renderAss(video: HTMLVideoElement, src: string): Promise<() => vo
     startDrawing();
   }
 
+  /**
+   * assjs stops drawing on `waiting`, but an engine can resume without firing `playing` (measured: WebKit after a
+   * seek, including the one that applies the start position, while the time goes on advancing), which would leave
+   * the subtitles stopped for the rest of the playback. Start drawing again once the time moves after a `waiting`
+   * that no `play` or `playing` followed.
+   */
+  let waitingAt: number | undefined;
+  const onWaiting = (): void => {
+    waitingAt = video.currentTime;
+  };
+  const onResumed = (): void => {
+    waitingAt = undefined;
+  };
+  const onTimeUpdate = (): void => {
+    if (waitingAt === undefined || video.currentTime === waitingAt || video.paused || video.seeking) {
+      return;
+    }
+
+    waitingAt = undefined;
+    startDrawing();
+  };
+
+  video.addEventListener('waiting', onWaiting);
+  video.addEventListener('play', onResumed);
+  video.addEventListener('playing', onResumed);
+  video.addEventListener('timeupdate', onTimeUpdate);
+
   return () => {
+    video.removeEventListener('waiting', onWaiting);
+    video.removeEventListener('play', onResumed);
+    video.removeEventListener('playing', onResumed);
+    video.removeEventListener('timeupdate', onTimeUpdate);
     renderer.destroy();
   };
 }
