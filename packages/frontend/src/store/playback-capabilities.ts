@@ -335,11 +335,22 @@ export function getVerdictEnvironment(video?: MediaStream): VerdictEnvironment {
 }
 
 /**
- * Whether the media source is a file the server can serve byte ranges of. Remote sources, `.strm` files and live
- * streams have no file to read.
+ * Whether the media source can be probed through the server's static stream: a file, or a remote file over HTTP (a
+ * `.strm` or remote source), whose byte ranges the server fetches from the remote (measured on Jellyfin 12.4: 206 with
+ * the requested range forwarded unchanged to the remote, one remote request per request, ended within milliseconds
+ * when the client aborts; the probe read at most 0.7 MB in 2 requests and 1.7 s through a 1.5 Mbit/s link). A remote
+ * that ignores ranges makes the server answer 200, which the probe stops at once. Live streams are never probed.
+ *
+ * A source the server has no stream metadata for (a `.strm` before its first play) is not probed either: nobody knows
+ * which of its streams a probed track would be, so it is played blindly whatever the probe finds.
  */
-function hasFile(source: MediaSourceInfo): boolean {
-  return source.Protocol === 'File' && !source.IsRemote && !source.IsInfiniteStream && !source.RequiresOpening;
+function isProbeable(source: MediaSourceInfo): boolean {
+  const hasStreams = source.MediaStreams?.some(stream => stream.Type === 'Video' || stream.Type === 'Audio') ?? false;
+
+  return (source.Protocol === 'File' || source.Protocol === 'Http')
+    && !source.IsInfiniteStream
+    && !source.RequiresOpening
+    && hasStreams;
 }
 
 /**
@@ -416,7 +427,7 @@ async function getProbe(item: BaseItemDto, source: MediaSourceInfo, waitMs: numb
   const { Id: itemId, MediaType: mediaType } = item;
   const { Id: sourceId } = source;
 
-  if (!itemId || !sourceId || (mediaType !== 'Video' && mediaType !== 'Audio') || !hasFile(source)) {
+  if (!itemId || !sourceId || (mediaType !== 'Video' && mediaType !== 'Audio') || !isProbeable(source)) {
     return;
   }
 
