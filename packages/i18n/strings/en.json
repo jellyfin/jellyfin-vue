@@ -66,6 +66,7 @@
   "clearQueue": "Clear queue and stop playback",
   "clipboardSuccess": "Copied to clipboard",
   "clipboardUnsupported": "Copying to clipboard is unsupported in this browser",
+  "close": "Close",
   "collectionEmpty": "This collection is empty",
   "collections": "Collections",
   "communityRating": "Community rating",
