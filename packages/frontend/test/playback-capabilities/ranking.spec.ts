@@ -5,14 +5,14 @@ import type { PlaybackMethod, Verdict } from '#/utils/playback-capabilities/verd
 /**
  * A verdict with only what ranking looks at
  */
-function verdict(method: PlaybackMethod, options: { smooth?: boolean; height?: number; bitrate?: number } = {}): Verdict {
+function verdict(method: PlaybackMethod, options: { smooth?: boolean; height?: number; bitrate?: number; unverified?: boolean } = {}): Verdict {
   const height = options.height ?? 1080;
 
   return {
     method,
     reasons: [],
     smooth: options.smooth ?? method !== 'Unplayable',
-    unverified: false,
+    unverified: options.unverified ?? false,
     signature: '',
     quality: { width: Math.round(height * 16 / 9), height, bitrate: options.bitrate ?? 8_000_000 }
   };
@@ -49,6 +49,27 @@ describe('penalties, from worst to mildest: unplayable, video transcode, not smo
     const comparison = compareVerdicts(better, worse);
 
     expect(comparison).toBeLessThan(0);
+  });
+});
+
+describe('at the same method, a verified verdict ranks above an attempt (unverified), after every other penalty', () => {
+  const ordered: [string, Verdict, Verdict][] = [
+    ['an attempted direct play loses to a verified one, even of lower quality', verdict('DirectPlay', { unverified: true, height: 2160 }), verdict('DirectPlay', { height: 360 })],
+    ['an attempted video transcode loses to a verified one', verdict('TranscodeVideo', { unverified: true, height: 2160 }), verdict('TranscodeVideo', { height: 360 })],
+    ['an attempted direct play still beats a verified remux', verdict('Remux', { height: 2160 }), verdict('DirectPlay', { unverified: true, height: 360 })],
+    ['an attempted direct play still beats a verified direct play that is not smooth', verdict('DirectPlay', { smooth: false, height: 2160 }), verdict('DirectPlay', { unverified: true, height: 360 })]
+  ];
+
+  test.each(ordered)('%s', (_, worse, better) => {
+    const comparison = compareVerdicts(better, worse);
+
+    expect(comparison).toBeLessThan(0);
+  });
+
+  test('two attempts at the same method go by quality', () => {
+    const best = pickBest([verdict('DirectPlay', { unverified: true, height: 720 }), verdict('DirectPlay', { unverified: true, height: 1080 })]);
+
+    expect(best).toBe(1);
   });
 });
 

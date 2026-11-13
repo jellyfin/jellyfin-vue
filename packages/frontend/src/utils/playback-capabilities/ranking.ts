@@ -2,8 +2,9 @@
  * Orders the versions (media sources) of an item from most to least compatible with this client.
  *
  * Penalties, from worst to mildest: unplayable, video transcode (much worse than everything below), not smooth,
- * audio transcode, remux, none. Each penalty outweighs all the milder ones together. Ties go to the higher
- * quality (resolution, then bitrate) and then to the server's order.
+ * audio transcode, remux, an attempt (a verdict that relies on streams nobody could check, see `verdict.ts`), none.
+ * Each penalty outweighs all the milder ones together, so at the same method a verified verdict ranks above an
+ * attempt. Ties go to the higher quality (resolution, then bitrate) and then to the server's order.
  */
 import type { Verdict } from './verdict.ts';
 
@@ -16,7 +17,8 @@ function getPenalties(verdict: Verdict): number[] {
     verdict.method === 'TranscodeVideo',
     !verdict.smooth,
     verdict.method === 'TranscodeAudio',
-    verdict.method === 'Remux'
+    verdict.method === 'Remux',
+    verdict.unverified
   ].map(Number);
 }
 
