@@ -11,6 +11,7 @@ import {
   videoStream
 } from './fixtures.ts';
 import { AUDIO_TRANSCODE_TARGETS, FALLBACK_FRAME_RATE } from '#/utils/playback-capabilities/constants.ts';
+import { buildPlaybackRequest } from '#/utils/playback-capabilities/device-profile.ts';
 import { getFailureStep } from '#/utils/playback-capabilities/failure-ladder.ts';
 import { getAudioTargetCandidate } from '#/utils/playback-capabilities/media-config.ts';
 import { createFallbackQuery, createOracle, DISPROVED, getConfigurationKey, type CapabilityAnswer, type CapabilityOracle } from '#/utils/playback-capabilities/oracle.ts';
@@ -744,6 +745,88 @@ describe('user policy', () => {
   });
 });
 
+describe('a requirement of the user\'s own preference gives way when the user policy forbids the rung it needs', () => {
+  const noVideoTranscoding: VerdictEnvironment['policy'] = { EnableVideoPlaybackTranscoding: false };
+  const withSize = (item: { source: MediaSourceInfo; probe: ProbeResult }) => ({
+    source: {
+      ...item.source,
+      MediaStreams: (item.source.MediaStreams ?? []).map(stream => stream.Type === 'Video' ? { ...stream, Width: 1920, Height: 1080 } : stream)
+    },
+    probe: item.probe.status === 'ok' ? { ...item.probe, video: item.probe.video.map(track => ({ ...track, width: 1920, height: 1080 })) } : item.probe
+  });
+  const fullHd = () => withSize(mp4Item());
+  const hdr10 = () => {
+    const item = mp4Item({ video: { VideoRange: 'HDR', VideoRangeType: 'HDR10', ColorTransfer: 'smpte2084', ColorPrimaries: 'bt2020' } });
+
+    return { ...item, probe: probeOk('video/mp4', [probedVideo({ colorSpace: { primaries: 'bt2020', transfer: 'pq' }, hdr: true })], [probedAudio()]) };
+  };
+
+  test('a fixed level below the file: the file plays the best allowed way, and the reasons say the level could not be honoured', async () => {
+    const verdict = await verdictFor(fullHd(), fullBrowser, { environment: { quality: { type: 'fixed', level: 720 }, policy: noVideoTranscoding } });
+
+    expect(verdict).toMatchObject({ method: 'DirectPlay', reasons: ['ExceedsQuality', 'PreferenceNotAllowedByPolicy'], video: { action: 'copy' } });
+    expect(verdict.qualityCap).toBeUndefined();
+  });
+
+  test('the HDR display mode on an SDR display: the browser adapts the HDR file, and the reasons say tone mapping could not be honoured', async () => {
+    const verdict = await verdictFor(hdr10(), fullBrowser, { environment: { hdrDisplay: false, hdrMode: 'display', policy: noVideoTranscoding } });
+
+    expect(verdict).toMatchObject({ method: 'DirectPlay', reasons: ['HdrOnSdrDisplay', 'PreferenceNotAllowedByPolicy'] });
+  });
+
+  test('both preferences at once give way together', async () => {
+    const verdict = await verdictFor(withSize(hdr10()), fullBrowser, {
+      environment: { hdrDisplay: false, hdrMode: 'display', quality: { type: 'fixed', level: 720 }, policy: noVideoTranscoding }
+    });
+
+    expect(verdict).toMatchObject({ method: 'DirectPlay', reasons: ['HdrOnSdrDisplay', 'ExceedsQuality', 'PreferenceNotAllowedByPolicy'] });
+  });
+
+  test('a requirement of the file does not give way: a video the browser cannot decode stays unplayable', async () => {
+    const verdict = await verdictFor(withSize(hevcMkvItem()), fullBrowser, {
+      environment: { quality: { type: 'fixed', level: 720 }, policy: noVideoTranscoding }
+    });
+
+    expect(verdict).toMatchObject({ method: 'Unplayable', reasons: ['VideoCodecUnsupported', 'ExceedsQuality', 'NotAllowedByPolicy'] });
+  });
+
+  test('it gives way only down to what the file needs: a file that needs a remux, which the policy forbids too, stays unplayable', async () => {
+    const verdict = await verdictFor(withSize(mkvItem()), noMatroskaBrowser, {
+      environment: { quality: { type: 'fixed', level: 720 }, policy: noVideoTranscoding }
+    });
+
+    expect(verdict).toMatchObject({ method: 'Unplayable', reasons: ['ContainerUnsupported', 'ExceedsQuality', 'NotAllowedByPolicy'] });
+  });
+
+  test('a learned floor is not a preference: it does not give way', async () => {
+    const verdict = await verdictFor(fullHd(), fullBrowser, {
+      environment: { quality: { type: 'fixed', level: 720 }, policy: noVideoTranscoding, getLearnedFloor: () => 'TranscodeVideo' }
+    });
+
+    expect(verdict.method).toBe('Unplayable');
+  });
+
+  test('a cap the runtime supervisors impose in Automatic is not the user\'s preference: it does not give way', async () => {
+    const verdict = await verdictFor(fullHd(), fullBrowser, { environment: { quality: { type: 'auto', level: 720 }, policy: noVideoTranscoding } });
+
+    expect(verdict).toMatchObject({ method: 'Unplayable', reasons: ['ExceedsQuality', 'NotAllowedByPolicy'] });
+  });
+
+  test('quality mode "original" is unchanged: what it forbids is unplayable, with its own reason', async () => {
+    const verdict = await verdictFor(hdr10(), fullBrowser, {
+      environment: { hdrDisplay: false, hdrMode: 'display', quality: { type: 'original' }, policy: noVideoTranscoding }
+    });
+
+    expect(verdict).toMatchObject({ method: 'Unplayable', reasons: ['HdrOnSdrDisplay', 'NotAllowedByQuality'] });
+  });
+
+  test('with the permission the preference is honoured as before', async () => {
+    const verdict = await verdictFor(fullHd(), fullBrowser, { environment: { quality: { type: 'fixed', level: 720 } } });
+
+    expect(verdict).toMatchObject({ method: 'TranscodeVideo', reasons: ['ExceedsQuality'] });
+  });
+});
+
 describe('learned floor: the minimum rung known to be needed for these streams', () => {
   const rungs: [string, PlaybackMethod, PlaybackMethod][] = [
     ['a floor of remux starts at remux', 'Remux', 'Remux'],
@@ -1418,6 +1501,127 @@ describe('probe matching and fallbacks', () => {
     const verdict = await verdictFor({ source, probe }, fullBrowser, { videoStreamIndex: 1 });
 
     expect(verdict.video?.index).toBe(1);
+  });
+});
+
+describe('a selected track that is not in the source falls back to the default one, like the player does', () => {
+  test('an audio index the source does not have: the source\'s default audio is judged and requested, never an empty codec list', async () => {
+    const source = mediaSource([videoStream({ Index: 0 }), audioStream({ Index: 1 }), audioStream({ Index: 2, Codec: 'ac3', CodecTag: undefined, Channels: 6 })], {
+      DefaultAudioStreamIndex: 2
+    });
+    const probe = probeOk('video/mp4', [probedVideo()], [probedAudio(), probedAudio({ codec: 'ac3', codecString: 'ac-3', internalCodecId: 'ac-3', channels: 6 })]);
+    const verdict = await verdictFor({ source, probe }, fullBrowser, { audioStreamIndex: 7 });
+    const request = buildPlaybackRequest(verdict, source, RENDERERS);
+
+    expect(verdict).toMatchObject({ method: 'TranscodeAudio', audio: { index: 2, action: 'transcode' } });
+    expect([request.options.AudioStreamIndex, request.deviceProfile.TranscodingProfiles?.[0]?.AudioCodec]).toEqual([2, 'aac,opus']);
+  });
+
+  test('without a default, the first audio stream', async () => {
+    const source = mediaSource([videoStream({ Index: 0 }), audioStream({ Index: 1 })], { DefaultAudioStreamIndex: undefined });
+    const verdict = await verdictFor({ source, probe: probeOk('video/mp4', [probedVideo()], [probedAudio()]) }, fullBrowser, { audioStreamIndex: 7 });
+
+    expect(verdict.audio?.index).toBe(1);
+  });
+
+  test('a video index the source does not have: its first video is judged, and the request is for a video, not for music', async () => {
+    const item = mp4Item();
+    const verdict = await verdictFor(item, fullBrowser, { videoStreamIndex: 5, mediaType: 'Video' });
+    const request = buildPlaybackRequest(verdict, item.source, RENDERERS);
+
+    expect(verdict).toMatchObject({ method: 'DirectPlay', video: { index: 0 } });
+    expect(request.deviceProfile.DirectPlayProfiles?.[0]?.Type).toBe('Video');
+  });
+});
+
+describe('a probed track is paired with a server stream only when the pairing can be trusted', () => {
+  /**
+   * An MPEG-TS with TrueHD 5.1 (the default) and AC-3 5.1, as Jellyfin 12.4 and mediabunny 1.65 report it (measured):
+   * mediabunny does not surface TrueHD in MPEG-TS, so the probe lists the AC-3 alone
+   */
+  const trueHdAndAc3 = () => ({
+    source: mediaSource([
+      videoStream({ Index: 0, CodecTag: undefined }),
+      audioStream({ Index: 1, Codec: 'truehd', CodecTag: undefined, Profile: undefined, Channels: 6 }),
+      audioStream({ Index: 2, Codec: 'ac3', CodecTag: undefined, Profile: undefined, Channels: 6, IsDefault: false })
+    ], { Container: 'ts', DefaultAudioStreamIndex: 1 }),
+    probe: probeOk('video/mp2t', [probedVideo({ internalCodecId: 27 })], [probedAudio({ codec: 'ac3', codecString: 'ac-3', internalCodecId: 129, channels: 6 })])
+  });
+  // A browser that decodes AC-3 through media source playback and plays no MPEG-TS file
+  const ac3Browser: FakeBrowser = { file: [], ms: [...(fullBrowser.ms ?? []), T.ac3Mp4] };
+
+  test('fewer probed tracks of a type than server streams: the TrueHD is not judged with the AC-3\'s codec string', async () => {
+    const verdict = await verdictFor(trueHdAndAc3(), ac3Browser);
+
+    expect(verdict.codecs?.audio).not.toBe('ac-3');
+    expect(verdict).toMatchObject({ unverified: true, audio: { index: 1, action: 'copy', unverified: true } });
+  });
+
+  test('the streams of that type are asked about as if not probed, still with the probed container', async () => {
+    const oracle = fakeOracle(ac3Browser);
+
+    await computeVerdict({ ...trueHdAndAc3(), oracle, audioStreamIndex: 2, environment: defaultEnvironment });
+
+    const audioTypes = oracle.asked.flatMap(config => config.audio ? [`${config.type} ${config.audio.contentType}`] : []);
+
+    expect(audioTypes).toContain('file audio/mp2t; codecs="ac3"');
+    expect(audioTypes).not.toContain('file audio/mp2t; codecs="ac-3"');
+  });
+
+  test('the other type keeps its pairing: the video is still judged with its probed codec string', async () => {
+    const verdict = await verdictFor(trueHdAndAc3(), ac3Browser);
+
+    expect(verdict.codecs?.video).toBe('avc1.64001e');
+  });
+
+  test('once the attempt is spent, the stream nobody could check is encoded', async () => {
+    const item = trueHdAndAc3();
+    const first = await verdictFor(item, ac3Browser);
+    const verdict = await verdictFor(item, ac3Browser, { environment: { getLearnedFloor: signature => signature === first.signature ? 'TranscodeAudio' : undefined } });
+
+    expect(verdict).toMatchObject({ method: 'TranscodeAudio', audio: { index: 1, action: 'transcode' } });
+  });
+
+  const contradictions: [string, Partial<MediaStream>, Partial<MediaStream>, Parameters<typeof probedVideo>[0], Parameters<typeof probedAudio>[0]][] = [
+    ['the probe reads more channels than the server reports', {}, { Channels: 2 }, {}, { channels: 6 }],
+    ['the probe reads a higher sample rate than the server reports', {}, { SampleRate: 44_100 }, {}, { sampleRate: 48_000 }],
+    ['the dimensions differ by more than the coding block', { Width: 1920, Height: 1080 }, {}, { width: 640, height: 360 }, {}]
+  ];
+
+  test.each(contradictions)('the same counts, but %s: that type is not paired', async (_, video, audio, probedV, probedA) => {
+    const source = mediaSource([videoStream(video), audioStream(audio)]);
+    const probe = probeOk('video/mp4', [probedVideo(probedV)], [probedAudio(probedA)]);
+    const verdict = await verdictFor({ source, probe }, { file: [T.h264Mp4, T.aacMp4], ms: [] });
+    const unpaired = Object.keys(video).length > 0 ? 'video' : 'audio';
+
+    expect(verdict.codecs?.[unpaired]).toBe(unpaired === 'video' ? 'avc1' : 'mp4a');
+  });
+
+  const consistent: [string, Partial<MediaStream>, Partial<MediaStream>, Parameters<typeof probedVideo>[0], Parameters<typeof probedAudio>[0]][] = [
+    ['a height coded in whole 16-pixel blocks (1088 for 1080)', { Width: 1920, Height: 1080 }, {}, { width: 1920, height: 1088 }, {}],
+    ['a decoder that outputs twice the coded sample rate (spectral band replication: the header says 24 kHz)', {}, { SampleRate: 48_000 }, {}, { sampleRate: 24_000 }],
+    ['a decoder that outputs stereo from a mono core (parametric stereo)', {}, { Channels: 2 }, {}, { channels: 1 }],
+    ['a decoder that adds channels to the coded core (DTS-HD 7.1 over a 5.1 core)', {}, { Channels: 8 }, {}, { channels: 6 }],
+    ['a value one side does not know (0 or missing)', { Width: 0, Height: undefined }, { Channels: 0, SampleRate: undefined }, {}, {}]
+  ];
+
+  test.each(consistent)('properties that do not contradict: %s', async (_, video, audio, probedV, probedA) => {
+    const source = mediaSource([videoStream(video), audioStream(audio)]);
+    const probe = probeOk('video/mp4', [probedVideo(probedV)], [probedAudio(probedA)]);
+    const verdict = await verdictFor({ source, probe }, { file: [T.h264Mp4, T.aacMp4], ms: [] });
+
+    expect(verdict.codecs).toEqual({ video: 'avc1.64001e', audio: 'mp4a.40.2' });
+  });
+
+  test('external streams do not count: an external audio file next to the one embedded track keeps the pairing', async () => {
+    const source = mediaSource([
+      videoStream({ Index: 0 }),
+      audioStream({ Index: 1 }),
+      audioStream({ Index: 2, IsExternal: true, Codec: 'ac3', CodecTag: undefined, Channels: 6 })
+    ]);
+    const verdict = await verdictFor({ source, probe: probeOk('video/mp4', [probedVideo()], [probedAudio()]) }, { file: [T.h264Mp4, T.aacMp4], ms: [] });
+
+    expect(verdict).toMatchObject({ method: 'DirectPlay', unverified: false, codecs: { audio: 'mp4a.40.2' } });
   });
 });
 

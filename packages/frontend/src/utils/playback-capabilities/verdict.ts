@@ -3,7 +3,9 @@
  *
  * Rungs, from cheapest to most expensive: direct play < remux < audio transcode < video transcode. The rules
  * decide the lowest rung the streams require; the result is the lowest rung at or above it that the browser can
- * decode, that the quality mode and the user policy allow.
+ * decode, that the quality mode and the user policy allow. A requirement that comes only from the user's own preference
+ * (a fixed quality level, the HDR display mode) gives way when the user policy forbids the rung it needs: the result is
+ * then the lowest allowed rung the rest requires, and its reasons say the preference could not be honoured.
  *
  * A stream nobody could ask the browser about exactly is assumed to play (owner's decision, 2026-11-13): an
  * "unsupported" answer to a question that could not be asked with an exact codec string is no evidence. That is a
@@ -68,9 +70,11 @@ export type PlaybackMethod = PlaybackRung | 'Unplayable';
  * Why a verdict is what it is:
  * - `ContainerUnsupported`: a stream plays through media source playback but not inside the file's container
  * - `VideoCodecUnsupported` / `AudioCodecUnsupported`: the stream does not play in any way
- * - `HdrOnSdrDisplay`: HDR video on an SDR display, tone-mapped by the server
+ * - `HdrOnSdrDisplay`: HDR video on an SDR display, which the HDR display mode has the server tone-map
  * - `SubtitleBurnIn`: the selected subtitle has to be burnt into the video
  * - `ExceedsQuality`: the video is larger than the chosen quality
+ * - `PreferenceNotAllowedByPolicy`: what the user's own preference requires (listed too: `ExceedsQuality` for a fixed
+ * level, `HdrOnSdrDisplay`) needs a rung the user policy forbids, so it gave way to the best method allowed without it
  * - `SecondaryAudioTrack`: the selected audio is not the file's first audio track and the player cannot switch
  * - `ExternalAudioTrack`: the selected audio is an external file the server has to mux in
  * - `FailedBefore`: a cheaper method is known not to work for these streams (it failed, or the server needed more)
@@ -89,6 +93,7 @@ export type VerdictReason
     | 'HdrOnSdrDisplay'
     | 'SubtitleBurnIn'
     | 'ExceedsQuality'
+    | 'PreferenceNotAllowedByPolicy'
     | 'SecondaryAudioTrack'
     | 'ExternalAudioTrack'
     | 'FailedBefore'
@@ -782,16 +787,27 @@ export function getNextFloor(
 }
 
 /**
- * The lowest rung the streams require, with the reasons
+ * Whether a requirement comes only from the user's own preference: the HDR display mode, or a fixed quality level (the
+ * level Automatic runs at is the runtime supervisors' choice, not the user's)
  */
-function getRequirements(evaluation: Evaluation): { minRung: number; reasons: VerdictReason[] } {
+function isPreference(reason: VerdictReason, environment: VerdictEnvironment): boolean {
+  return reason === 'HdrOnSdrDisplay' || (reason === 'ExceedsQuality' && environment.quality.type === 'fixed');
+}
+
+/**
+ * The lowest rung the streams require, with the reasons, and the lowest rung they require without the user's own
+ * preferences (see {@link isPreference})
+ */
+function getRequirements(evaluation: Evaluation): { minRung: number; withoutPreferences: number; reasons: VerdictReason[] } {
+  const { environment } = evaluation.input;
   const requirements = [...getVideoRequirements(evaluation), ...getAudioRequirements(evaluation)];
-  const floor = evaluation.input.environment.getLearnedFloor(evaluation.signature);
+  const floor = environment.getLearnedFloor(evaluation.signature);
   const floorRung = floor === undefined ? 0 : getMethodOrder(floor);
-  const rungs = [0, ...requirements.map(([rung]) => getMethodOrder(rung)), floorRung];
+  const getMinRung = (list: [PlaybackRung, VerdictReason][]) => Math.max(0, floorRung, ...list.map(([rung]) => getMethodOrder(rung)));
 
   return {
-    minRung: Math.max(...rungs),
+    minRung: getMinRung(requirements),
+    withoutPreferences: getMinRung(requirements.filter(([, reason]) => !isPreference(reason, environment))),
     reasons: [...requirements.map(([, reason]) => reason), ...(floorRung > 0 ? ['FailedBefore' as const] : [])]
   };
 }
@@ -1156,6 +1172,66 @@ async function getBlindVerdict(input: VerdictInput): Promise<Verdict> {
 }
 
 /**
+ * The first rung from `from` (included) to `to` (excluded) that plays, with its plan, and why the rungs before it were
+ * not chosen
+ */
+async function findRung(
+  evaluation: Evaluation,
+  from: number,
+  to: number
+): Promise<{ readonly chosen?: { readonly rung: PlaybackRung; readonly plan: RungPlan }; readonly rejections: Set<RungRejection> }> {
+  const rejections = new Set<RungRejection>();
+
+  const rungs = getRungs(from, to, evaluation.video !== undefined);
+  const itemType = getItemType(evaluation.input, evaluation.video !== undefined);
+
+  for (const rung of rungs) {
+    const considered = await considerRung(evaluation.input.environment, rung, itemType, async () => getPlan(evaluation, rung));
+
+    if ('plan' in considered) {
+      return { chosen: { rung, plan: considered.plan }, rejections };
+    }
+
+    rejections.add(considered.rejection);
+  }
+
+  return { rejections };
+}
+
+/**
+ * The verdict of a rung that plays
+ *
+ * @param common - What every verdict of the source carries
+ * @param reasons - The reasons that explain the rung, besides its smoothness and whether it is an attempt
+ */
+async function getPlayableVerdict(
+  evaluation: Evaluation,
+  common: Pick<Verdict, 'subtitle' | 'signature' | 'codecs' | 'quality' | 'onlyDirectPlay' | 'mediaType'>,
+  { rung, plan }: { readonly rung: PlaybackRung; readonly plan: RungPlan },
+  reasons: readonly VerdictReason[]
+): Promise<Verdict> {
+  const unverified = !plan.verified;
+  const { video, audio } = await withFallbacks(evaluation, plan);
+  const finalReasons: VerdictReason[] = [
+    ...reasons,
+    ...(plan.smooth ? [] : ['NotSmooth' as const]),
+    ...(unverified ? ['Unverified' as const] : [])
+  ];
+
+  return {
+    ...common,
+    method: rung,
+    reasons: [...new Set(finalReasons)],
+    smooth: plan.smooth,
+    unverified,
+    video,
+    audio,
+    maxAudioChannels: plan.audio?.action === 'transcode' ? plan.audio.targets[0]?.channels : undefined,
+    qualityCap: plan.video?.action === 'transcode' ? evaluation.qualityCap : undefined
+  };
+}
+
+/**
  * Computes the verdict for one media source. See the module documentation for the rules.
  */
 export async function computeVerdict(input: VerdictInput): Promise<Verdict> {
@@ -1169,7 +1245,7 @@ export async function computeVerdict(input: VerdictInput): Promise<Verdict> {
   }
 
   const evaluation = await evaluateSource(input, videoStream, audioStream);
-  const { minRung, reasons } = getRequirements(evaluation);
+  const { minRung, withoutPreferences, reasons } = getRequirements(evaluation);
   const common = {
     subtitle: evaluation.subtitle,
     signature: evaluation.signature,
@@ -1178,40 +1254,30 @@ export async function computeVerdict(input: VerdictInput): Promise<Verdict> {
     mediaType: getItemType(input, videoStream !== undefined),
     ...getDeliveryMarks(environment)
   };
-  const rejections = new Set<RungRejection>();
+  const { chosen, rejections } = await findRung(evaluation, minRung, PLAYBACK_RUNGS.length);
 
-  const rungs = getRungs(minRung, PLAYBACK_RUNGS.length, evaluation.video !== undefined);
+  if (chosen) {
+    return getPlayableVerdict(evaluation, common, chosen, [...reasons, ...getRejectionReasons(rejections, false)]);
+  }
 
-  for (const rung of rungs) {
-    const considered = await considerRung(environment, rung, common.mediaType, async () => getPlan(evaluation, rung));
+  /**
+   * The user's own preference required more than the rest and the policy forbids it: it gives way to the cheapest rung
+   * the rest requires that is allowed (the rungs at and above the preference's were all rejected already)
+   */
+  if (withoutPreferences < minRung && rejections.has('policy')) {
+    const yielded = await findRung(evaluation, withoutPreferences, minRung);
 
-    if ('rejection' in considered) {
-      rejections.add(considered.rejection);
-      continue;
+    if (yielded.chosen) {
+      return getPlayableVerdict(evaluation, common, yielded.chosen, [
+        ...reasons,
+        'PreferenceNotAllowedByPolicy',
+        ...getRejectionReasons(yielded.rejections, false)
+      ]);
     }
 
-    const { plan } = considered;
-
-    const unverified = !plan.verified;
-    const { video, audio } = await withFallbacks(evaluation, plan);
-    const finalReasons: VerdictReason[] = [
-      ...reasons,
-      ...getRejectionReasons(rejections, false),
-      ...(plan.smooth ? [] : ['NotSmooth' as const]),
-      ...(unverified ? ['Unverified' as const] : [])
-    ];
-
-    return {
-      ...common,
-      method: rung,
-      reasons: [...new Set(finalReasons)],
-      smooth: plan.smooth,
-      unverified,
-      video,
-      audio,
-      maxAudioChannels: plan.audio?.action === 'transcode' ? plan.audio.targets[0]?.channels : undefined,
-      qualityCap: plan.video?.action === 'transcode' ? evaluation.qualityCap : undefined
-    };
+    for (const rejection of yielded.rejections) {
+      rejections.add(rejection);
+    }
   }
 
   return {
