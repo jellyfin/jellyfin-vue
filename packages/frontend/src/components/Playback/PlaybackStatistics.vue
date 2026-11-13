@@ -50,7 +50,7 @@ import { playbackObservations, sessionNetworkEstimate } from '#/store/playback-q
 import { playbackSettings } from '#/store/settings/playback.ts';
 import { getModeLevel } from '#/utils/playback-capabilities/quality.ts';
 import type { PlaybackMethod } from '#/utils/playback-capabilities/verdict.ts';
-import { getPlaybackChangeReasonName, getPlaybackMethodName } from '#/utils/playback-labels.ts';
+import { getPlaybackChangeReasonName, getPlaybackMethodName, getPlayingMethodName } from '#/utils/playback-labels.ts';
 
 const emit = defineEmits<{ close: [] }>();
 const { t } = useTranslation();
@@ -139,6 +139,21 @@ const lastChangeText = computed(() => {
 });
 
 /**
+ * The method the server uses and the one the verdict predicted, in the version selector's words
+ */
+const playingMethodName = computed(() => {
+  const verdict = playbackManager.currentVerdict.value;
+  const method = playbackManager.currentPlaybackMethod.value;
+
+  return verdict && method ? getPlayingMethodName(t, verdict, playbackManager.currentMediaSource.value, method) : '—';
+});
+const predictedMethodName = computed(() => {
+  const verdict = playbackManager.currentVerdict.value;
+
+  return verdict ? getPlayingMethodName(t, verdict, playbackManager.currentMediaSource.value, verdict.method) : '—';
+});
+
+/**
  * The name of a quality menu entry, as the change records it
  */
 function entryName(entry: string): string {
@@ -160,10 +175,7 @@ function formatUnit(value: number, unit: string, fractionDigits: number): string
 const rows = computed(() => [
   {
     label: t('playbackMethod'),
-    value: t('playbackMethodWithPrediction', {
-      method: methodName(playbackManager.currentPlaybackMethod.value),
-      predicted: methodName(playbackManager.currentVerdict.value?.method)
-    })
+    value: t('playbackMethodWithPrediction', { method: playingMethodName.value, predicted: predictedMethodName.value })
   },
   { label: t('mediaInfoFileContainer'), value: stream.value.container ?? '—' },
   { label: t('video'), value: stream.value.video ?? '—' },

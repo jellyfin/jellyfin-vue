@@ -46,7 +46,7 @@ import {
 } from '#/store/playback-quality.ts';
 import { playbackSettings } from '#/store/settings/playback.ts';
 import { getImageInfo } from '#/utils/images.ts';
-import { getNoOtherMethodText, getPlaybackMethodName } from '#/utils/playback-labels.ts';
+import { getNoOtherMethodText, getPlayingMethodName } from '#/utils/playback-labels.ts';
 import { getItemRuntime, getStaticStreamUrl } from '#/utils/items.ts';
 import { findQueueItem, getQueueRemoval } from '#/utils/playback-queue.ts';
 import { PREFETCH_BUFFER_AHEAD_S } from '#/utils/playback-capabilities/constants.ts';
@@ -1054,7 +1054,9 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     };
 
     if (!negotiation.failure && negotiation.actualMethod !== pending.from && playbackSettings.methodChangeNotices.value) {
-      useSnackbar(i18next.t('playbackMethodChanged', { method: getPlaybackMethodName(i18next.t, negotiation.actualMethod) }), 'info');
+      const method = getPlayingMethodName(i18next.t, negotiation.verdict, this.currentMediaSource.value, negotiation.actualMethod);
+
+      useSnackbar(i18next.t('playbackMethodChanged', { method }), 'info');
     }
   };
 

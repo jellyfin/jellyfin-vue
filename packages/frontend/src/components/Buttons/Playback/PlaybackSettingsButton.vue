@@ -157,7 +157,7 @@ import { playbackManager } from '#/store/playback-manager.ts';
 import { playerElement } from '#/store/player-element.ts';
 import { playbackSettings } from '#/store/settings/playback.ts';
 import { getQualityMenu, type QualityMenuEntry } from '#/utils/playback-capabilities/quality.ts';
-import { getNoOtherMethodText, getPlaybackMethodName } from '#/utils/playback-labels.ts';
+import { getNoOtherMethodText, getPlayingMethodName } from '#/utils/playback-labels.ts';
 
 const menuModel = defineModel<boolean>();
 const { t } = useTranslation();
@@ -240,12 +240,13 @@ const blockedBy = computed(() => {
  */
 const nextMethodText = computed(() => {
   const current = playbackManager.currentPlaybackMethod.value;
+  const verdict = playbackManager.currentVerdict.value;
 
-  if (!nextMethod.value || !current) {
+  if (!nextMethod.value || !current || !verdict) {
     return getNoOtherMethodText(t, blockedBy.value);
   }
 
-  return t('currentPlaybackMethod', { method: getPlaybackMethodName(t, current) });
+  return t('currentPlaybackMethod', { method: getPlayingMethodName(t, verdict, playbackManager.currentMediaSource.value, current) });
 });
 
 /**

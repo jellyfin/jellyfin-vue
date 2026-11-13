@@ -2,15 +2,17 @@
  * Names of the playback methods and of the reasons of a change, for the notices, the quality menu and the playback
  * statistics. The translation function is passed in, so components keep their reactive one.
  */
+import type { MediaSourceInfo } from '@jellyfin/sdk/lib/generated-client';
 import type { PlaybackChangeReason } from '#/store/playback-quality.ts';
-import type { PlaybackMethod } from '#/utils/playback-capabilities/verdict.ts';
+import { getVerdictLabel, type MethodLabel } from '#/utils/playback-capabilities/verdict-label.ts';
+import type { PlaybackMethod, Verdict } from '#/utils/playback-capabilities/verdict.ts';
 
 type Translate = (key: string, options?: Record<string, unknown>) => string;
 
 /**
- * The name of a playback method
+ * The name of a playback method, in the words of the version selector
  */
-export function getPlaybackMethodName(t: Translate, method: PlaybackMethod): string {
+export function getPlaybackMethodName(t: Translate, method: MethodLabel): string {
   switch (method) {
     case 'DirectPlay': {
       return t('playbackMethodDirectPlay');
@@ -24,10 +26,25 @@ export function getPlaybackMethodName(t: Translate, method: PlaybackMethod): str
     case 'TranscodeVideo': {
       return t('playbackMethodTranscodeVideo');
     }
+    case 'TranscodeVideoAndAudio': {
+      return t('playbackMethodTranscodeVideoAndAudio');
+    }
     case 'Unplayable': {
       return t('playbackMethodUnplayable');
     }
   }
+}
+
+/**
+ * The name of the method a playback uses: the server's, told apart when a video transcode also encodes the audio
+ * (see `getVerdictLabel`)
+ *
+ * @param verdict - The verdict the playback was negotiated with
+ * @param source - The media source it plays, when known
+ * @param actualMethod - The method the server chose
+ */
+export function getPlayingMethodName(t: Translate, verdict: Verdict, source: MediaSourceInfo | undefined, actualMethod: PlaybackMethod): string {
+  return getPlaybackMethodName(t, source ? getVerdictLabel(verdict, source, actualMethod).method : actualMethod);
 }
 
 /**
