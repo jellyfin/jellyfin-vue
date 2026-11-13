@@ -439,11 +439,21 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched'> 
 
     /**
      * * Move user to the fullscreen page when starting video playback by default
-     * * Move user out of the fullscreen pages when playback is over
+     * * Move user out of the fullscreen page when the item that plays next isn't a video
+     *
+     * When playback is over, the playback page leaves by itself (see usePlayback) and the user may have left
+     * it already: toggling then would go back a second time, or push the page again (its guard rejects it
+     * and shows an error)
      */
     watch(playbackManager.isVideo,
-      async () => {
-        await this.toggleFullscreenVideoPlayer();
+      async (isVideo) => {
+        const isOnFullscreenPage = router.currentRoute.value.fullPath === this._fullscreenVideoRoute;
+
+        if (isVideo && !isOnFullscreenPage) {
+          await router.push(this._fullscreenVideoRoute);
+        } else if (!isVideo && isOnFullscreenPage && !isNil(playbackManager.currentItem.value)) {
+          router.back();
+        }
       }
     );
 
