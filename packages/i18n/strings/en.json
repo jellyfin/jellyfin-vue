@@ -497,6 +497,7 @@
   "stroke": "Stroke",
   "studios": "Studios",
   "subtitleFont": "Subtitle font",
+  "subtitleLoadFailed": "The subtitles couldn't be loaded. Playback goes on without them",
   "subtitleMode": "Subtitle mode",
   "subtitleModeAlways": "Always",
   "subtitleModeAlwaysHelp": "Subtitles in your preferred language are always turned on, whatever the language of the audio. If there are none, forced subtitles are.",

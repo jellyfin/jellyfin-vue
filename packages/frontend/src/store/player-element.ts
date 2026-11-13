@@ -8,8 +8,10 @@ import { computed, nextTick, shallowRef, watch } from 'vue';
 import { SubtitleDeliveryMethod } from '@jellyfin/sdk/lib/generated-client/models/subtitle-delivery-method';
 import { computedAsync, useFullscreen } from '@vueuse/core';
 import { MediaStreamType } from '@jellyfin/sdk/lib/generated-client';
+import i18next from 'i18next';
 import { isNil, sealed } from '@jellyfin-vue/shared/validation';
 import { playbackManager } from './playback-manager.ts';
+import { useSnackbar } from '#/composables/use-snackbar.ts';
 import { mediaElementRef } from '#/store/index.ts';
 import { CommonStore } from '#/store/super/common-store.ts';
 import { router } from '#/plugins/router/index.ts';
@@ -287,7 +289,24 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched'> 
     }
 
     const generation = this._subtitleGeneration;
-    const stop = await renderer.render(video, track.src);
+    let stop: () => void;
+
+    try {
+      stop = await renderer.render(video, track.src);
+    } catch (error) {
+      /**
+       * The subtitle couldn't be loaded (its file didn't download, or the renderer couldn't read it): the playback
+       * goes on without it, the user is told, and it's no longer marked as applied, so selecting it again (or the
+       * next load of the media element) tries again
+       */
+      if (generation === this._subtitleGeneration) {
+        this._appliedSubtitle = undefined;
+        console.error(`the subtitle couldn't be loaded (${String(error)})`);
+        useSnackbar(i18next.t('subtitleLoadFailed'), 'error');
+      }
+
+      return;
+    }
 
     if (generation === this._subtitleGeneration) {
       this._cleanups.add(stop);
