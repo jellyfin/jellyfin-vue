@@ -144,6 +144,105 @@ export const DROPPED_FRAMES_WINDOW_MS = 5000;
 export const DROPPED_FRAMES_CONSECUTIVE_WINDOWS = 2;
 
 /**
+ * How often the runtime supervisors sample the media element, in milliseconds: frames, media time, buffer.
+ *
+ * Origin: five samples per {@link DROPPED_FRAMES_WINDOW_MS} window. Stalls are detected at this granularity, which is
+ * enough: every network stall measured under throttling lasted 0.96 s or more (see {@link NETWORK_STALL_MIN_MS}),
+ * while in 46 normal playbacks (Chrome 157, Chromium 158, Firefox 159, WebKit 27.2; direct play, remux and
+ * transcodes) the media time advanced between every two samples taken 250 ms apart.
+ */
+export const SUPERVISOR_SAMPLE_MS = 1000;
+
+/**
+ * Media time that may pass without a new video frame (`totalVideoFrames`) before the video counts as producing no
+ * frames, which is a hard failure.
+ *
+ * Origin: measured in the same 46 normal playbacks: the first frame was counted by 0.24 s of media time at the latest
+ * and the frame counter never stood still between two samples 250 ms apart while the time advanced. Chrome given an
+ * HEVC file it cannot decode (it claimed it could) counted 0 frames over 11.7 s of media time. Three seconds is twelve
+ * times the slowest first frame.
+ */
+export const FRAMES_STALL_MEDIA_SECONDS = 3;
+
+/**
+ * Buffering stalls shorter than this do not count for the network supervisor, in milliseconds.
+ *
+ * Origin: measured: when the network could not keep up (a 10 Mbit/s file through a 4 Mbit/s link) the stalls lasted
+ * 0.96 to 2 s while playing the file directly and 1 to 6 s through hls.js, so half a second counts all of them; the
+ * waits seen around seeks and starts are shorter (53 ms) and are excluded anyway.
+ */
+export const NETWORK_STALL_MIN_MS = 500;
+
+/**
+ * Stalls within {@link NETWORK_STALL_WINDOW_MS} that make Automatic move down.
+ *
+ * Origin: measured: once the link stopped carrying the stream, stalls came in quick succession (direct play: two
+ * stalls 1.1 s apart once the buffer drained; an encode at 8 Mbit/s through 4 Mbit/s: two stalls 4 s apart), so two
+ * within a minute react within seconds, while a single isolated stall does not change the quality.
+ */
+export const NETWORK_STALL_COUNT = 2;
+
+/**
+ * See {@link NETWORK_STALL_COUNT}, in milliseconds.
+ *
+ * Origin: see {@link NETWORK_STALL_COUNT}.
+ */
+export const NETWORK_STALL_WINDOW_MS = 60_000;
+
+/**
+ * A single stall this long makes Automatic move down while it is still going on, in milliseconds.
+ *
+ * Origin: measured: through hls.js a stream the link cannot carry (720p at 5 Mbit/s through 3 Mbit/s) stalls for 5.8
+ * to 6 s at a time, waiting for each segment; one such stall is reason enough.
+ */
+export const NETWORK_LONG_STALL_MS = 5000;
+
+/**
+ * Share of the network estimate a level may take when Automatic chooses a level by the estimate (moving down, and
+ * at the start of a playback, from the estimate remembered for the session).
+ *
+ * Origin: measured: through a link held at 4 Mbit/s, the estimate of hls.js was 3.98 to 4.08 Mbit/s. The levels'
+ * internal bitrates are for the video: audio (128 kbit/s) and the fMP4 framing add a few percent, so 0.8 leaves about
+ * 20 % of headroom. With it a 4 Mbit/s link runs 480p (2.5 Mbit/s), which then played 85 s without a stall.
+ */
+export const NETWORK_DOWN_FACTOR = 0.8;
+
+/**
+ * The estimate must be at least this many times the bitrate of the next level up before Automatic moves up.
+ *
+ * Origin: the owner asked for a wide hysteresis. Moving down accepts a level up to 1/{@link NETWORK_DOWN_FACTOR} = 1.25
+ * times the estimate; moving up asks for twice its bitrate, so between the two a level stays (a 4 Mbit/s link that runs
+ * 480p never tries 720p, which needs 10 Mbit/s). Measured: after the throttle was lifted Automatic went up one level at
+ * a time to the original and stayed there, without going back down, for the 150 s observed.
+ */
+export const NETWORK_UP_FACTOR = 2;
+
+/**
+ * Buffer ahead of the playback position, in seconds, needed before Automatic moves up.
+ *
+ * Origin: half of hls.js's buffer target (`maxBufferLength`, 30 s in hls.js 1.7). Measured: once the link carried the
+ * level, the buffer passed it within 20 s (480p through 4 Mbit/s: 34 s buffered 18 s after the change).
+ */
+export const NETWORK_UP_MIN_BUFFER_S = 15;
+
+/**
+ * Time the up margin must hold before Automatic moves up, in milliseconds.
+ *
+ * Origin: Jellyfin 12.4 cuts its HLS output in 3 s segments (`#EXT-X-TARGETDURATION:3`, measured), and hls.js updates
+ * its estimate once per segment: 20 s span at least six segment loads.
+ */
+export const NETWORK_UP_SUSTAIN_MS = 20_000;
+
+/**
+ * Time after the last change of level before Automatic may move up, in milliseconds.
+ *
+ * Origin: a change starts a new stream, often a new transcode with an empty buffer: the first segment of an
+ * 8 Mbit/s encode took 20 s through a 4 Mbit/s link. Thirty seconds is hls.js's buffer target. Measured: the up steps
+ * came 31 s apart and none was undone.
+ */
+export const NETWORK_UP_HOLD_MS = 30_000;
+
+/**
  * == QUALITY LADDER ==
  */
 
@@ -239,6 +338,18 @@ export const STEREO_CHANNELS = 2;
  */
 
 /**
+ * The block size a reported frame height may have been rounded up to: a video fits a level of {@link QUALITY_LADDER}
+ * when its short side is at most the level's height rounded up to a multiple of it (1088 is a 1080 video, 1104 is not).
+ * The long side does not count: a 1998x1080 or 4096x2160 video is a 1080 or a 2160 one, only wider than the box.
+ *
+ * Origin: the 16x16 macroblock of H.264 (ITU-T H.264, 7.4.2.1.1: a picture is coded in whole macroblocks, and a file
+ * without frame cropping reports the coded size: 1920x1088 for a 1080 encode). It is the largest block among the codecs
+ * whose sizes are coded in blocks (MPEG-2, MPEG-4 Part 2 and VC-1 also use 16x16 macroblocks; HEVC codes sizes in
+ * multiples of its minimum coding block, 8 or more; VP9 and AV1 code the exact size).
+ */
+export const CODED_SIZE_ALIGNMENT = 16;
+
+/**
  * Frame rate used in browser queries when the server reports neither `RealFrameRate` nor `AverageFrameRate`.
  *
  * Origin: the highest of the common film and TV rates (24, 25, 30): overestimating keeps the `smooth`
@@ -253,18 +364,6 @@ export const FALLBACK_FRAME_RATE = 30;
  * "If we don't know the item bitrate, then force a transcode if requested max bitrate is under 40 mbps").
  */
 export const FALLBACK_BITRATE = 40_000_000;
-
-/**
- * The block size a reported frame height may have been rounded up to: a video fits a level of {@link QUALITY_LADDER}
- * when its short side is at most the level's height rounded up to a multiple of it (1088 is a 1080 video, 1104 is not).
- * The long side does not count: a 1998x1080 or 4096x2160 video is a 1080 or a 2160 one, only wider than the box.
- *
- * Origin: the 16x16 macroblock of H.264 (ITU-T H.264, 7.4.2.1.1: a picture is coded in whole macroblocks, and a file
- * without frame cropping reports the coded size: 1920x1088 for a 1080 encode). It is the largest block among the codecs
- * whose sizes are coded in blocks (MPEG-2, MPEG-4 Part 2 and VC-1 also use 16x16 macroblocks; HEVC codes sizes in
- * multiples of its minimum coding block, 8 or more; VP9 and AV1 code the exact size).
- */
-export const CODED_SIZE_ALIGNMENT = 16;
 
 /**
  * `MaxStreamingBitrate` sent when the video is not encoded (nothing caps it): no limit in practice, so the server
