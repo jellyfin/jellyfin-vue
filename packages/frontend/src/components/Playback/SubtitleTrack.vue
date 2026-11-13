@@ -21,8 +21,9 @@ import { isNil } from '@jellyfin-vue/shared/validation';
 import { subtitleSettings } from '#/store/settings/subtitle.ts';
 import { DEFAULT_TYPOGRAPHY } from '#/store/settings/theme.ts';
 import { playerElement } from '#/store/player-element.ts';
-import type { ParsedSubtitleTrack, Dialogue } from '#/plugins/workers/generic/subtitles.ts';
+import type { Dialogue } from '#/plugins/workers/generic/subtitles.ts';
 import { playbackManager } from '#/store/playback-manager.ts';
+import { findCueIndex } from '#/utils/subtitle-cues.ts';
 
 const { preview } = defineProps<{
   /**
@@ -31,44 +32,26 @@ const { preview } = defineProps<{
   preview?: boolean;
 }>();
 
-/**
- * Update the current subtitle based on the current time of the media element.
- *
- * Loops in the first run (we can't assume that the first run will appear at index 0,
- * since the user can seek to any position) when 'previous' is undefined and then relies in previous
- * to find the next one
- */
-const predicate = (d?: Dialogue) => d && d.start <= playbackManager.currentTime.value && d.end >= playbackManager.currentTime.value;
-const findSubtitle = (dialogue: ParsedSubtitleTrack['dialogue'], start = 0) => {
-  const index = dialogue.slice(start).findIndex(d => predicate(d));
-
-  return index === -1 ? undefined : index + start;
-};
-
 const dialogue = computed(() => playerElement.currentParsedSubtitleTrack.value?.dialogue);
+
+/**
+ * The cue shown at the current time of the media element (see `findCueIndex`). When none covers the time, the index
+ * of the last one shown is kept, so the lookup goes on from it.
+ */
 const currentSubtitle = computed<undefined | { index: number; sub?: Dialogue }>((previous) => {
   if (isNil(dialogue.value)) {
     return;
   }
 
-  const hasPrevious = !isNil(previous);
-  const nextIndex = hasPrevious ? previous.index + 1 : 0;
-  const isNext = hasPrevious && predicate(dialogue.value[nextIndex]);
-  const isCurrent = hasPrevious && predicate(dialogue.value[previous.index]);
+  const index = findCueIndex(dialogue.value, playbackManager.currentTime.value, previous?.index);
 
-  if (isCurrent) {
-    return previous;
-  } else {
-    const newIndex = isNext ? nextIndex : findSubtitle(dialogue.value, nextIndex);
-
-    if (!isNil(newIndex)) {
-      return { index: newIndex, sub: dialogue.value[newIndex] };
-    }
-
-    if (hasPrevious) {
-      return { index: previous.index };
-    }
+  if (index === undefined) {
+    return isNil(previous) ? undefined : { index: previous.index };
   }
+
+  const sub = dialogue.value[index];
+
+  return previous?.index === index && previous.sub === sub ? previous : { index, sub };
 });
 
 const fontFamily = computed(() => {
