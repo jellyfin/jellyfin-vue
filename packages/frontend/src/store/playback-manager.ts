@@ -855,6 +855,45 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   };
 
   /**
+   * Makes a negotiation the current one, unless it must not be played and the playback in progress goes on instead
+   * (see `_keepsPlayback`)
+   *
+   * @param intent - Why it was negotiated
+   */
+  private readonly _applyNegotiation = (intent: RenegotiationIntent, negotiation: Negotiation): void => {
+    this._replacing = false;
+
+    if (!negotiation.failure || !this._keepsPlayback(intent, negotiation, 'unplayable')) {
+      this._negotiation.value = negotiation;
+    }
+  };
+
+  /**
+   * A negotiation got no answer (the request failed): unless the playback in progress goes on (see `_keepsPlayback`),
+   * the user is told, and the change of method under way (a rung of the ladder, "try another method") is dropped, so
+   * the user can try again on the playback that is still there
+   *
+   * @param intent - Why it was negotiated
+   * @param target - What was negotiated
+   */
+  private readonly _onNegotiationError = (intent: RenegotiationIntent, target: Pick<Negotiation, 'itemId' | 'mediaSourceId' | 'key'>): void => {
+    this._replacing = false;
+
+    if (this._keepsPlayback(intent, target, 'failed')) {
+      return;
+    }
+
+    const playing = this._currentNegotiation.value;
+
+    this._state.value.status = PlaybackStatus.Error;
+    useSnackbar(i18next.t('cantPlayItem'), 'error');
+
+    if (playing) {
+      this._dropPendingFailure(playing);
+    }
+  };
+
+  /**
    * Negotiates the playback of the current item and media source with the selected tracks: computes the
    * verdict and, unless nothing can play, asks the server for exactly that. Only the latest negotiation is
    * kept: the answer of an older one that arrives later is dropped.
@@ -877,8 +916,6 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
 
     this._replacing ||= intent === 'replace';
 
-    const effectiveIntent: RenegotiationIntent = this._replacing ? 'replace' : 'improve';
-
     if (!item?.Id || !mediaSource?.Id || !userId || (mediaType !== 'Video' && mediaType !== 'Audio')) {
       this._replacing = false;
       this._negotiation.value = undefined;
@@ -886,6 +923,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       return;
     }
 
+    const effectiveIntent: RenegotiationIntent = this._replacing ? 'replace' : 'improve';
     const key = `${item.Id}|${mediaSource.Id}|${this._playGeneration}`;
     const target = { itemId: item.Id, mediaSourceId: mediaSource.Id, key };
 
@@ -925,11 +963,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       if (verdict.method === 'Unplayable') {
         const failure = verdict.reasons.includes('NotAllowedByQuality') ? 'quality' : 'unplayable';
 
-        this._replacing = false;
-
-        if (!this._keepsPlayback(effectiveIntent, target, 'unplayable')) {
-          this._negotiation.value = { ...negotiation, actualMethod: 'Unplayable', failure };
-        }
+        this._applyNegotiation(effectiveIntent, { ...negotiation, actualMethod: 'Unplayable', failure });
 
         return;
       }
@@ -962,31 +996,10 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
         recordServerChoice(getMediaSourceKey(item.Id, mediaSource.Id), verdict, actualMethod);
       }
 
-      this._replacing = false;
-
-      if (failure && this._keepsPlayback(effectiveIntent, target, 'unplayable')) {
-        return;
-      }
-
-      this._negotiation.value = { ...negotiation, data, actualMethod, failure };
+      this._applyNegotiation(effectiveIntent, { ...negotiation, data, actualMethod, failure });
     } catch {
       if (id === this._negotiationId) {
-        this._replacing = false;
-
-        if (!this._keepsPlayback(effectiveIntent, target, 'failed')) {
-          const playing = this._currentNegotiation.value;
-
-          this._state.value.status = PlaybackStatus.Error;
-          useSnackbar(i18next.t('cantPlayItem'), 'error');
-
-          /**
-           * No answer resolves the change of method under way (a rung of the ladder, "try another method"): it's
-           * dropped, so the user can try again on the playback that is still there
-           */
-          if (playing) {
-            this._dropPendingFailure(playing);
-          }
-        }
+        this._onNegotiationError(effectiveIntent, target);
       }
     }
   };
@@ -1505,10 +1518,10 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
 
   public readonly setNextItem = (): void => {
     // By id: the items of a queue that just changed may still be being fetched (see `currentItem`)
-    if (!isNil(this._state.value.queue[this._nextItemIndex.value ?? -1])) {
-      this.currentItemIndex.value = this._nextItemIndex.value;
-    } else {
+    if (isNil(this._state.value.queue[this._nextItemIndex.value ?? -1])) {
       this.stop();
+    } else {
+      this.currentItemIndex.value = this._nextItemIndex.value;
     }
 
     this.currentTime.value = 0;
