@@ -28,14 +28,15 @@ export interface FrameWindow {
   readonly totalFrames: number;
   readonly droppedFrames: number;
   /**
-   * Whether the whole window was observed playing the same source with the tab visible (no pause, seek or hidden tab)
+   * Whether the whole window was observed playing the same source at normal speed with the tab visible (no pause,
+   * seek, hidden tab or other playback rate)
    */
   readonly valid: boolean;
 }
 
 /**
  * Whether the playback is not smooth: the latest {@link DROPPED_FRAMES_CONSECUTIVE_WINDOWS} windows were all observed
- * while visible and playing, and each dropped more than {@link DROPPED_FRAMES_RATIO} of its frames
+ * while visible and playing at normal speed, and each dropped more than {@link DROPPED_FRAMES_RATIO} of its frames
  *
  * @param windows - The windows observed so far, oldest first
  */
@@ -53,11 +54,14 @@ export function isNotSmooth(windows: readonly FrameWindow[]): boolean {
  */
 
 /**
- * One sample of the media time and the total of video frames
+ * One sample of the media time and of whether the video presented a frame
  */
 export interface FrameProgressSample {
   readonly mediaTime: number;
-  readonly totalFrames: number;
+  /**
+   * Whether a video frame was presented since the element started loading the source
+   */
+  readonly presented: boolean;
   /**
    * Whether the sample can be trusted: the tab is visible (engines stop decoding hidden video) and the element is not
    * seeking
@@ -66,17 +70,19 @@ export interface FrameProgressSample {
 }
 
 /**
- * The frame count last seen and the media time it was first seen at
+ * The media time the count of media time without any frame started at
  */
 export interface FrameProgress {
-  readonly frames: number;
   readonly since: number;
 }
 
 /**
- * Follows the total of video frames: it fires when the media time advanced {@link FRAMES_STALL_MEDIA_SECONDS} since the
- * last new frame (or since the first sample, when there was none). A sample that cannot be trusted, or a media time
- * going backwards (a seek), starts the count again.
+ * Whether the video produces no frames: it fires when, since the load started, no frame was ever presented while the
+ * media time advanced {@link FRAMES_STALL_MEDIA_SECONDS} (a browser that claims a codec it cannot decode plays the time
+ * and the audio, with no picture and no error). Once a frame was presented it never fires for that load: a video with
+ * few frames (stills, slideshows, screen recordings) legitimately goes much longer without a new one, and a decoder
+ * that stops on the way raises a media error. A sample that cannot be trusted, or a media time going backwards (a
+ * seek), starts the count again.
  *
  * @param previous - The progress returned for the previous sample (undefined at first)
  * @param sample - The new sample
@@ -85,12 +91,12 @@ export function stepFrameProgress(
   previous: FrameProgress | undefined,
   sample: FrameProgressSample
 ): { progress: FrameProgress | undefined; stalled: boolean } {
-  if (!sample.valid) {
+  if (!sample.valid || sample.presented) {
     return { progress: undefined, stalled: false };
   }
 
-  if (previous?.frames !== sample.totalFrames || sample.mediaTime < previous.since) {
-    return { progress: { frames: sample.totalFrames, since: sample.mediaTime }, stalled: false };
+  if (!previous || sample.mediaTime < previous.since) {
+    return { progress: { since: sample.mediaTime }, stalled: false };
   }
 
   return { progress: previous, stalled: sample.mediaTime - previous.since >= FRAMES_STALL_MEDIA_SECONDS };
@@ -104,12 +110,20 @@ export function stepFrameProgress(
  * What the network supervisor observes:
  * - `stall`: a buffering stall that was not caused by a seek or by loading a new source, reported while it goes on
  * and when it ends
- * - `sample`: the network estimate (bits per second; undefined when there is none), the buffer ahead of the playback
- * position (seconds) and the bitrate the next level up needs (undefined when there is nothing above)
+ * - `sample`: whether the element is paused, the network estimate (bits per second; undefined when there is none), the
+ * buffer ahead of the playback position (seconds) and the bitrate the next level up needs (undefined when there is
+ * nothing above)
  */
 export type NetworkEvent
   = | { readonly type: 'stall'; readonly startedAt: number; readonly at: number; readonly ended: boolean }
-    | { readonly type: 'sample'; readonly at: number; readonly estimate?: number; readonly bufferAhead: number; readonly upBitrate?: number };
+    | {
+      readonly type: 'sample';
+      readonly at: number;
+      readonly paused: boolean;
+      readonly estimate?: number;
+      readonly bufferAhead: number;
+      readonly upBitrate?: number;
+    };
 
 /**
  * What the network supervisor remembers between events
@@ -143,10 +157,13 @@ export function startNetworkMemory(at: number, reportedStall?: number): NetworkM
 }
 
 /**
- * Whether the estimate and the buffer keep the margin over the next level up
+ * Whether the estimate and the buffer keep the margin over the next level up. A paused playback never does: its buffer
+ * fills while nothing plays, which says nothing about whether the network carries the level, and moving up would
+ * replace the stream (and throw that buffer away) with no one watching.
  */
 function hasUpMargin(event: Extract<NetworkEvent, { type: 'sample' }>): boolean {
-  return event.upBitrate !== undefined
+  return !event.paused
+    && event.upBitrate !== undefined
     && (event.estimate ?? 0) >= NETWORK_UP_FACTOR * event.upBitrate
     && event.bufferAhead >= NETWORK_UP_MIN_BUFFER_S;
 }
@@ -156,8 +173,8 @@ function hasUpMargin(event: Extract<NetworkEvent, { type: 'sample' }>): boolean 
  * - down: {@link NETWORK_STALL_COUNT} stalls of at least {@link NETWORK_STALL_MIN_MS} within
  * {@link NETWORK_STALL_WINDOW_MS}, or one stall that lasts {@link NETWORK_LONG_STALL_MS} (while it goes on)
  * - up: the estimate is at least {@link NETWORK_UP_FACTOR} times the bitrate of the next level and the buffer at least
- * {@link NETWORK_UP_MIN_BUFFER_S} for {@link NETWORK_UP_SUSTAIN_MS} without a stall, and at least
- * {@link NETWORK_UP_HOLD_MS} passed since the last change
+ * {@link NETWORK_UP_MIN_BUFFER_S} for {@link NETWORK_UP_SUSTAIN_MS} without a stall or a pause, and at least
+ * {@link NETWORK_UP_HOLD_MS} passed since the last change: a pause starts the sustain time again from the resume
  * After a decision the memory starts again.
  *
  * @param memory - What was remembered so far

@@ -89,59 +89,69 @@ function runFrames(samples: FrameProgressSample[]): boolean[] {
 }
 
 /**
- * Samples every half second of media time with a fixed frame count (frozen) or a growing one
+ * Samples every half second of media time, each saying whether a frame was presented since the load started
  */
-function timeline(seconds: number, frames: (index: number) => number, from = 0, valid = true): FrameProgressSample[] {
-  return Array.from({ length: (seconds * 2) + 1 }, (_, index) => ({ mediaTime: from + (index / 2), totalFrames: frames(index), valid }));
+function timeline(seconds: number, presented: (index: number) => boolean, from = 0, valid = true): FrameProgressSample[] {
+  return Array.from({ length: (seconds * 2) + 1 }, (_, index) => ({ mediaTime: from + (index / 2), presented: presented(index), valid }));
 }
 
-describe('stepFrameProgress: the total of video frames does not advance while the media time does', () => {
-  test('frames advancing never fire', () => {
-    const fired = runFrames(timeline(FRAMES_STALL_MEDIA_SECONDS * 3, index => index * 12));
+const NEVER = (): boolean => false;
+const ALWAYS = (): boolean => true;
 
-    expect(fired.some(Boolean)).toBe(false);
-  });
-
-  test('no frame at all while the time advances fires once the threshold of media time is reached', () => {
-    const fired = runFrames(timeline(FRAMES_STALL_MEDIA_SECONDS + 1, () => 0));
+describe('stepFrameProgress: no video frame was ever presented since the load started while the media time advanced', () => {
+  test('no frame at all while the time advances (a browser that claimed a codec it cannot decode) fires once the threshold of media time is reached', () => {
+    const fired = runFrames(timeline(FRAMES_STALL_MEDIA_SECONDS + 1, NEVER));
     const firstFired = fired.indexOf(true) / 2;
 
     expect(firstFired).toBe(FRAMES_STALL_MEDIA_SECONDS);
   });
 
-  test('frames that stop advancing fire once the time advanced the threshold since the last new frame', () => {
-    const playing = timeline(2, index => index * 12);
-    const frozen = timeline(FRAMES_STALL_MEDIA_SECONDS + 1, () => 48, 2.5);
-    const fired = runFrames([...playing, ...frozen]);
-    const firedAt = [...playing, ...frozen][fired.indexOf(true)]?.mediaTime;
-
-    expect(firedAt).toBe(2 + FRAMES_STALL_MEDIA_SECONDS);
-  });
-
-  test('a frozen counter while the media time does not advance (paused) does not fire', () => {
-    const paused = Array.from({ length: 40 }, () => ({ mediaTime: 3, totalFrames: 75, valid: true }));
-    const fired = runFrames(paused);
+  test('a frame presented at the start never fires, however long the video goes without another (stills, slideshows, one frame every 10 s)', () => {
+    const fired = runFrames(timeline(FRAMES_STALL_MEDIA_SECONDS * 20, ALWAYS));
 
     expect(fired.some(Boolean)).toBe(false);
+  });
+
+  test('the same from a resume position in the middle, or after a seek', () => {
+    const resumed = runFrames(timeline(FRAMES_STALL_MEDIA_SECONDS * 5, ALWAYS, 25));
+    const seeked = runFrames([...timeline(5, ALWAYS, 0), ...timeline(FRAMES_STALL_MEDIA_SECONDS * 5, ALWAYS, 35)]);
+
+    expect([resumed.some(Boolean), seeked.some(Boolean)]).toEqual([false, false]);
+  });
+
+  test('a first frame presented a little after the start, before the threshold, does not fire', () => {
+    const fired = runFrames(timeline(FRAMES_STALL_MEDIA_SECONDS * 4, index => index / 2 >= FRAMES_STALL_MEDIA_SECONDS - 1));
+
+    expect(fired.some(Boolean)).toBe(false);
+  });
+
+  test('frames that stop once the video presented one do not fire: a decoder that dies on the way raises a media error', () => {
+    const fired = runFrames(timeline(FRAMES_STALL_MEDIA_SECONDS * 4, index => index >= 1));
+
+    expect(fired.some(Boolean)).toBe(false);
+  });
+
+  test('no frame while the media time does not advance (paused) does not fire', () => {
+    const paused = Array.from({ length: 40 }, () => ({ mediaTime: 3, presented: false, valid: true }));
+
+    expect(runFrames(paused).some(Boolean)).toBe(false);
   });
 
   test('a sample that cannot be trusted (tab hidden, seeking) starts the count again', () => {
     const half = FRAMES_STALL_MEDIA_SECONDS / 2;
     const samples = [
-      ...timeline(half + 0.5, () => 0),
-      { mediaTime: half + 1, totalFrames: 0, valid: false },
-      ...timeline(half + 0.5, () => 0, half + 1.5)
+      ...timeline(half + 0.5, NEVER),
+      { mediaTime: half + 1, presented: false, valid: false },
+      ...timeline(half + 0.5, NEVER, half + 1.5)
     ];
-    const fired = runFrames(samples);
 
-    expect(fired.some(Boolean)).toBe(false);
+    expect(runFrames(samples).some(Boolean)).toBe(false);
   });
 
   test('the media time going backwards (a seek) starts the count again', () => {
-    const samples = [...timeline(FRAMES_STALL_MEDIA_SECONDS - 0.5, () => 10, 20), ...timeline(FRAMES_STALL_MEDIA_SECONDS - 0.5, () => 10, 5)];
-    const fired = runFrames(samples);
+    const samples = [...timeline(FRAMES_STALL_MEDIA_SECONDS - 0.5, NEVER, 20), ...timeline(FRAMES_STALL_MEDIA_SECONDS - 0.5, NEVER, 5)];
 
-    expect(fired.some(Boolean)).toBe(false);
+    expect(runFrames(samples).some(Boolean)).toBe(false);
   });
 });
 
@@ -182,11 +192,18 @@ const LEVEL_BITRATE = 2_500_000;
  * One sample per second from `from` to `to` (inclusive), with the given estimate and buffer ahead. The next level up
  * needs {@link LEVEL_BITRATE} unless `upBitrate` says otherwise (`none`: there is no level above).
  */
-function samples(from: number, to: number, estimate: number | undefined, bufferAhead: number, upBitrate: number | 'none' = LEVEL_BITRATE): NetworkEvent[] {
+function samples(
+  from: number,
+  to: number,
+  estimate: number | undefined,
+  bufferAhead: number,
+  upBitrate: number | 'none' = LEVEL_BITRATE,
+  paused = false
+): NetworkEvent[] {
   const events: NetworkEvent[] = [];
 
   for (let at = from; at <= to; at += 1000) {
-    events.push({ type: 'sample', at, estimate, bufferAhead, upBitrate: upBitrate === 'none' ? undefined : upBitrate });
+    events.push({ type: 'sample', at, paused, estimate, bufferAhead, upBitrate: upBitrate === 'none' ? undefined : upBitrate });
   }
 
   return events;
@@ -293,6 +310,25 @@ describe('stepNetwork, up: the estimate and the buffer keep a margin over the ne
     const decisions = runNetwork(events);
 
     expect(decisions).toEqual([{ at: half + 1000 + NETWORK_UP_SUSTAIN_MS, decision: 'up' }]);
+  });
+
+  test('a paused playback never moves up, however long its buffer and estimate keep the margin', () => {
+    const decisions = runNetwork(samples(start, start + (NETWORK_UP_SUSTAIN_MS * 5), GOOD, FULL, LEVEL_BITRATE, true));
+
+    expect(decisions).toEqual([]);
+  });
+
+  test('a pause starts the sustain time again: the margin counts from the resume', () => {
+    const half = start + (NETWORK_UP_SUSTAIN_MS / 2);
+    const resumeAt = half + (NETWORK_UP_SUSTAIN_MS * 3);
+    const events = [
+      ...samples(start, half, GOOD, FULL),
+      ...samples(half + 1000, resumeAt - 1000, GOOD, FULL, LEVEL_BITRATE, true),
+      ...samples(resumeAt, resumeAt + NETWORK_UP_SUSTAIN_MS + 5000, GOOD, FULL)
+    ];
+    const decisions = runNetwork(events);
+
+    expect(decisions).toEqual([{ at: resumeAt + NETWORK_UP_SUSTAIN_MS, decision: 'up' }]);
   });
 
   test('it never moves up sooner than the hold time after the last change', () => {

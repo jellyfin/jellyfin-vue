@@ -1,13 +1,9 @@
 import { describe, expect, test } from 'vitest';
 import type { MediaSourceInfo, MediaStream, ProfileCondition } from '@jellyfin/sdk/lib/generated-client';
 import { audioStream, mediaSource, RENDERERS, subtitleStream, videoStream } from './fixtures.ts';
-import {
-  buildOptimisticRequest,
-  buildPlaybackRequest,
-  deriveActualMethod
-} from '#/utils/playback-capabilities/device-profile.ts';
-import type { PlaybackMethod, Verdict } from '#/utils/playback-capabilities/verdict.ts';
+import { buildPlaybackRequest, deriveActualMethod } from '#/utils/playback-capabilities/device-profile.ts';
 import { UNLIMITED_STREAMING_BITRATE } from '#/utils/playback-capabilities/constants.ts';
+import type { PlaybackMethod, Verdict } from '#/utils/playback-capabilities/verdict.ts';
 
 const h264 = { codec: 'h264', codecString: 'avc1.640028' };
 const vp9 = { codec: 'vp9', codecString: 'vp09.00.40.08' };
@@ -92,10 +88,22 @@ describe('direct play', () => {
 });
 
 describe('the streaming bitrate when the source has none', () => {
-  test('there is no limit in practice, since nothing is known to stay under', () => {
-    const { options } = buildPlaybackRequest(verdict('DirectPlay'), hevcMkv({ Bitrate: undefined }), RENDERERS);
+  /**
+   * Measured on Jellyfin 12.4: the server holds a copied stream to the limit (a 59 Mbit/s remote file remuxed under
+   * 40 Mbit/s was encoded), and its own fallback encode needs a value to size the video (with null an AVI it could not
+   * copy came out at 416x234 instead of 640x360)
+   */
+  test.each(['DirectPlay', 'Remux', 'TranscodeAudio'] as const)('%s: no limit in practice, in the options and the profile, since nothing is known to stay under', (method) => {
+    const plan = method === 'TranscodeAudio' ? transcodeAudio : verdict(method);
+    const { deviceProfile, options } = buildPlaybackRequest(plan, hevcMkv({ Bitrate: undefined }), RENDERERS);
 
-    expect(options.MaxStreamingBitrate).toBe(UNLIMITED_STREAMING_BITRATE);
+    expect([options.MaxStreamingBitrate, deviceProfile.MaxStreamingBitrate]).toEqual([UNLIMITED_STREAMING_BITRATE, UNLIMITED_STREAMING_BITRATE]);
+  });
+
+  test('a video transcode keeps the cap of its quality level', () => {
+    const { deviceProfile, options } = buildPlaybackRequest(transcodeVideo, hevcMkv({ Bitrate: undefined }), RENDERERS);
+
+    expect([options.MaxStreamingBitrate, deviceProfile.MaxStreamingBitrate]).toEqual([5_000_000, 5_000_000]);
   });
 });
 
@@ -386,20 +394,78 @@ describe('an unplayable verdict', () => {
   });
 });
 
-describe('buildOptimisticRequest: no stream metadata at all', () => {
-  test('direct play of whatever the source is, with the source\'s container token', () => {
-    const { deviceProfile, options } = buildOptimisticRequest(mediaSource([], { Container: 'ts', MediaStreams: [] }), 'Video', RENDERERS);
+describe('a source without stream metadata (live TV, .strm, remote): the server decides what nobody else knows', () => {
+  /**
+   * A .strm item as Jellyfin 12.4 reports it in /Items: no streams and the .strm file's own extension as the container
+   */
+  const strm = (): MediaSourceInfo => mediaSource([], { Container: 'strm', Protocol: 'Http', IsRemote: true, MediaStreams: [], Bitrate: undefined });
+  const blind = (method: PlaybackMethod, extra: Partial<Verdict> = {}): Verdict => verdict(method, {
+    reasons: ['Unverified'],
+    unverified: true,
+    signature: 'unverified:source-id',
+    quality: {},
+    video: { action: 'copy', fallback: [h264, vp9] },
+    audio: { action: 'copy', fallback: [aac, opus] },
+    ...extra
+  });
 
-    expect([deviceProfile.DirectPlayProfiles, options.EnableDirectPlay]).toEqual([
-      [{ Type: 'Video', Container: 'ts' }],
-      true
-    ]);
+  test('blind direct play: one direct play profile with nothing to restrict it to, not even the container (a .strm reports its own extension, which never matches the container the server finds when it opens the source)', () => {
+    const { deviceProfile, options } = buildPlaybackRequest(blind('DirectPlay'), strm(), RENDERERS);
+
+    expect([deviceProfile.DirectPlayProfiles, options.EnableDirectPlay]).toEqual([[{ Type: 'Video', Container: '' }], true]);
+  });
+
+  test('blind direct play keeps the server\'s fallback: the targets, which it copies if the source has them and encodes to otherwise', () => {
+    const { deviceProfile, options } = buildPlaybackRequest(blind('DirectPlay'), strm(), RENDERERS);
+
+    expect(deviceProfile.TranscodingProfiles).toEqual([expect.objectContaining({ Type: 'Video', Protocol: 'hls', VideoCodec: 'h264,vp9', AudioCodec: 'aac,opus' })]);
+    expect(options).toMatchObject({ EnableTranscoding: true, AllowVideoStreamCopy: true, AllowAudioStreamCopy: true });
+  });
+
+  test('no audio index is sent: no stream is known', () => {
+    const { options } = buildPlaybackRequest(blind('TranscodeAudio', { audio: { action: 'transcode', targets: [aac, opus] } }), strm(), RENDERERS);
+
+    expect('AudioStreamIndex' in options && options.AudioStreamIndex !== undefined).toBe(false);
+  });
+
+  test('without a target for a stream nobody knows, there is no fallback: an empty codec list would mean "anything"', () => {
+    const { deviceProfile, options } = buildPlaybackRequest(blind('DirectPlay', { video: { action: 'copy' }, audio: { action: 'copy' } }), strm(), RENDERERS);
+
+    expect([deviceProfile.TranscodingProfiles, options.EnableTranscoding, options.EnableDirectPlay]).toEqual([[], false, true]);
+  });
+
+  test('a remux lists the targets with copy allowed, so the server copies the streams it can carry and encodes the rest', () => {
+    const { deviceProfile, options } = buildPlaybackRequest(blind('Remux'), strm(), RENDERERS);
+
+    expect(deviceProfile.DirectPlayProfiles).toEqual([]);
+    expect(deviceProfile.TranscodingProfiles?.[0]).toMatchObject({ VideoCodec: 'h264,vp9', AudioCodec: 'aac,opus' });
+    expect(options).toMatchObject({ EnableDirectPlay: false, EnableTranscoding: true, AllowVideoStreamCopy: true, AllowAudioStreamCopy: true });
+  });
+
+  test('a video transcode encodes both streams at the quality cap', () => {
+    const { deviceProfile, options } = buildPlaybackRequest(blind('TranscodeVideo', {
+      video: { action: 'transcode', targets: [h264, vp9] },
+      audio: { action: 'transcode', targets: [aac, opus] },
+      maxAudioChannels: 6,
+      qualityCap: { maxBitrate: 40_000_000, maxWidth: 3840, maxHeight: 2160 }
+    }), strm(), RENDERERS);
+
+    expect(deviceProfile.TranscodingProfiles?.[0]).toMatchObject({ VideoCodec: 'h264,vp9', AudioCodec: 'aac,opus', MaxAudioChannels: '6' });
+    expect(deviceProfile.CodecProfiles?.map(profile => profile.Codec)).toEqual(['h264', 'vp9']);
+    expect(options).toMatchObject({ AllowVideoStreamCopy: false, AllowAudioStreamCopy: false, MaxStreamingBitrate: 40_000_000 });
+  });
+
+  test('nothing is known of its bitrate either: a direct play or a remux sets no limit, which the server would enforce on the streams it copies', () => {
+    const requests = [blind('DirectPlay'), blind('Remux')].map(plan => buildPlaybackRequest(plan, strm(), RENDERERS));
+
+    expect(requests.map(({ deviceProfile, options }) => [options.MaxStreamingBitrate, deviceProfile.MaxStreamingBitrate]))
+      .toEqual([[UNLIMITED_STREAMING_BITRATE, UNLIMITED_STREAMING_BITRATE], [UNLIMITED_STREAMING_BITRATE, UNLIMITED_STREAMING_BITRATE]]);
   });
 
   test('an audio item gets an audio profile: the server only matches direct play profiles of the item\'s type', () => {
-    const { deviceProfile } = buildOptimisticRequest(mediaSource([], { Container: 'mp3', MediaStreams: [] }), 'Audio', RENDERERS);
+    const { deviceProfile } = buildPlaybackRequest(blind('DirectPlay', { video: undefined, audio: { action: 'copy' } }), strm(), RENDERERS);
 
-    expect(deviceProfile.DirectPlayProfiles).toEqual([{ Type: 'Audio', Container: 'mp3' }]);
+    expect(deviceProfile.DirectPlayProfiles).toEqual([{ Type: 'Audio', Container: '' }]);
   });
 });
 

@@ -175,10 +175,26 @@ export function getTranscodeLevel(video: VideoInfo | undefined, cap?: QualityLev
 }
 
 /**
+ * The level an encoded video runs at: the size it is decoded at, when known, since the server can encode below the
+ * cap (Jellyfin caps the width by the bitrate and the frame rate: 8 Mbit/s at 60 fps comes out at 1280 wide), never
+ * above the level the cap allows
+ *
+ * @param video - The source video stream
+ * @param cap - The level the video is capped at, if any
+ * @param decoded - The size the element decodes, if known
+ */
+export function getEncodedLevel(video: VideoInfo, cap?: QualityLevel, decoded?: VideoInfo): QualityLevel {
+  const capped = getTranscodeLevel(video, cap);
+  const decodedLevel = getSourceLevel(decoded);
+
+  return decodedLevel === undefined ? capped : Math.min(decodedLevel, capped) as QualityLevel;
+}
+
+/**
  * The menu entry equivalent to what is playing: the entry that, chosen instead, would play the same thing. Automatic
  * shows it as its subtitle.
  * - the original file played directly or remuxed is `original` (what the Original entry allows)
- * - an encoded video is the level it is encoded at: the cap, never above the source's own level
+ * - an encoded video is the level it is encoded at: the size it is decoded at, never above the cap nor the source
  * - only the audio encoded is not Original (Original forbids it): it is the source's own level, whose entry keeps the
  * picture as it is and encodes the audio the same way
  * - undefined when no entry of the menu plays the same thing (music with its audio encoded, an encoded video of unknown
@@ -187,11 +203,13 @@ export function getTranscodeLevel(video: VideoInfo | undefined, cap?: QualityLev
  * @param video - The video stream being played (undefined for music)
  * @param method - The method the server is using
  * @param cap - The level the video is capped at, if any
+ * @param decoded - The size the element decodes, if known (see {@link getEncodedLevel})
  */
 export function getRunningEntry(
   video: VideoInfo | undefined,
   method: PlaybackMethod,
-  cap?: QualityLevel
+  cap?: QualityLevel,
+  decoded?: VideoInfo
 ): Exclude<QualityMenuEntry, 'auto'> | undefined {
   const levels = getAvailableLevels(video);
   let level: QualityLevel | undefined;
@@ -202,7 +220,7 @@ export function getRunningEntry(
       return 'original';
     }
     case 'TranscodeVideo': {
-      level = video ? getTranscodeLevel(video, cap) : undefined;
+      level = video ? getEncodedLevel(video, cap, decoded) : undefined;
       break;
     }
     case 'TranscodeAudio': {

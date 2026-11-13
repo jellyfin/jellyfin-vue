@@ -30,6 +30,7 @@ import { apiStore } from '#/store/dbs/api/index.ts';
 import { hasHDRDisplay } from '#/store/index.ts';
 import { playbackSettings } from '#/store/settings/playback.ts';
 import { getStaticStreamUrl } from '#/utils/items.ts';
+import type { QualityMode } from '#/utils/playback-capabilities/quality.ts';
 import { SUBTITLE_RENDERERS } from '#/utils/subtitle-renderers.ts';
 
 /**
@@ -51,6 +52,11 @@ export interface MediaSourceVerdictOptions {
    * server's data (generic candidates); the probe goes on and its result is stored for the next verdict.
    */
   readonly probeWaitMs?: number;
+  /**
+   * The quality mode to compute the verdict for, instead of the one the preferred quality means for the media
+   * source. The playback manager passes the level Automatic is running at during a playback.
+   */
+  readonly quality?: QualityMode;
 }
 
 const browserOracle = createBrowserOracle();
@@ -132,28 +138,43 @@ export function recordAudioTrackSwitchingFailure(): void {
  * both copied (a remux), which one failed is unknown, so it counts as a failure of the remux, whose next rung
  * encodes the audio. Encoded streams are not suspects: their targets were checked before being asked for.
  *
+ * When nothing new can be disproved (a stream nobody knows was never asked about, or its answers were disproved
+ * already), it counts as a failure of the verdict's method too: otherwise nothing would change and the playback
+ * would stay broken.
+ *
  * @param item - The item the media source belongs to
  * @param source - The media source the verdict was computed for
  * @param verdict - The verdict the playback was negotiated with
+ * @returns Whether an answer was disproved, which negotiates the playback again by itself (see
+ * {@link renegotiatingEnvironment})
  */
 export async function recordMediaSourceFailure(
   item: BaseItemDto,
   source: MediaSourceInfo,
   verdict: Pick<Verdict, 'method' | 'signature' | 'video' | 'audio'>
-): Promise<void> {
+): Promise<boolean> {
   const copied = [verdict.video, verdict.audio].filter(plan => plan?.action === 'copy');
+  const index = copied.length === 1 ? copied[0]?.index : undefined;
 
-  if (copied.length === 1 && copied[0]) {
+  if (index !== undefined) {
     // The questions the next verdict will ask: with the probe it will find stored
     const probe = item.Id && source.Id ? await getStoredProbe(item.Id, source) : undefined;
-    const questions = getMediaSourceQuestions(source, copied[0].index, probe);
+    const known = disprovenAnswers.size;
 
-    for (const config of questions) {
+    for (const config of getMediaSourceQuestions(source, index, probe)) {
       disprovenAnswers.add(getConfigurationKey(config));
     }
-  } else if (verdict.method !== 'Unplayable' && verdict.method !== 'DirectPlay') {
+
+    if (disprovenAnswers.size > known) {
+      return true;
+    }
+  }
+
+  if (verdict.method !== 'Unplayable' && verdict.method !== 'DirectPlay') {
     recordPlaybackOutcome(verdict, { failedAt: verdict.method });
   }
+
+  return false;
 }
 
 /**
@@ -224,7 +245,7 @@ async function forgetStoredProbes(): Promise<void> {
 /**
  * The user policy flags the verdict depends on
  */
-function getPlaybackPolicy(): PlaybackPolicy {
+export function getPlaybackPolicy(): PlaybackPolicy {
   const policy = remote.auth.currentUser.value?.Policy;
 
   return {
@@ -423,11 +444,14 @@ export async function getMediaSourceVerdict(
   const videoStreams = source.MediaStreams?.filter(stream => stream.Type === 'Video') ?? [];
   const video = videoStreams.find(stream => stream.Index === selection.videoStreamIndex) ?? videoStreams[0];
 
+  const environment = getVerdictEnvironment(video);
+
   return computeVerdict({
     source,
     ...selection,
     probe,
     oracle: capabilityOracle,
-    environment: getVerdictEnvironment(video)
+    environment: options.quality ? { ...environment, quality: options.quality } : environment,
+    mediaType: item.MediaType === 'Audio' || item.MediaType === 'Video' ? item.MediaType : undefined
   });
 }

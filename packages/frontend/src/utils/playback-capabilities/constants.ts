@@ -154,13 +154,17 @@ export const DROPPED_FRAMES_CONSECUTIVE_WINDOWS = 2;
 export const SUPERVISOR_SAMPLE_MS = 1000;
 
 /**
- * Media time that may pass without a new video frame (`totalVideoFrames`) before the video counts as producing no
- * frames, which is a hard failure.
+ * Media time that may pass after a load started without any video frame presented before the video counts as
+ * producing no frames, which is a hard failure. Once a frame was presented, no wait for the next one counts.
  *
- * Origin: measured in the same 46 normal playbacks: the first frame was counted by 0.24 s of media time at the latest
- * and the frame counter never stood still between two samples 250 ms apart while the time advanced. Chrome given an
- * HEVC file it cannot decode (it claimed it could) counted 0 frames over 11.7 s of media time. Three seconds is twelve
- * times the slowest first frame.
+ * Origin: measured in the same 46 normal playbacks: the first frame was counted by 0.24 s of media time at the latest.
+ * Chrome given an HEVC file it cannot decode (it claimed it could) counted 0 frames over 11.7 s of media time, and
+ * presented none (`requestVideoFrameCallback` never called, measured again in Chrome 157 and Chromium 158 from the
+ * start, a resume position and after a seek). Three seconds is twelve times the slowest first frame. A file with one
+ * frame every 10 s presents its first frame at once (`requestVideoFrameCallback`) from the start, a resume position or
+ * after a seek in Chrome 157, Chromium 158, Firefox 159 and WebKit 27.2 (as MP4; as Matroska WebKit shows no picture at
+ * all), then none for 10 s: no wait between frames tells it apart from a decoder that died. Firefox's `totalVideoFrames`
+ * stays at 0 until the second frame (10 s), so the counter alone does not say whether one was presented.
  */
 export const FRAMES_STALL_MEDIA_SECONDS = 3;
 
@@ -273,6 +277,17 @@ export const QUALITY_LADDER = [
   { height: 480, width: 854, bitrate: 2_500_000 },
   { height: 360, width: 640, bitrate: 1_000_000 }
 ] as const satisfies readonly QualityLadderEntry[];
+
+/**
+ * Time a cap Automatic moved down from because of buffering stalls is not tried again during the playback, in
+ * milliseconds; it doubles with each step down from that cap.
+ *
+ * Origin: four times {@link NETWORK_UP_HOLD_MS}, the soonest Automatic may move up again after a change. When the
+ * server encodes the upper level slower than real time and the lower one faster, the network estimate at the lower
+ * level keeps the margin, so without a wait the upper level was tried again (a new transcode and a stall each time)
+ * as soon as the margin held: 60 times an hour in hunter C's simulation of that case; with this wait, 5 times.
+ */
+export const NETWORK_RETRY_WAIT_MS = 4 * NETWORK_UP_HOLD_MS;
 
 /**
  * The block size a reported frame height may have been rounded up to: a video fits a level of {@link QUALITY_LADDER}

@@ -23,6 +23,36 @@ export interface ClientSubtitleRenderer extends SubtitleRenderer {
 }
 
 /**
+ * Runs `create` and returns what it returns, together with the event listeners it added to `element`, by type
+ */
+function captureListeners<T>(element: HTMLMediaElement, create: () => T): { result: T; listeners: Map<string, EventListenerOrEventListenerObject[]> } {
+  const listeners = new Map<string, EventListenerOrEventListenerObject[]>();
+  const add = element.addEventListener.bind(element);
+
+  /**
+   * Shadows the method on this element only, for the duration of the synchronous call
+   */
+  Object.defineProperty(element, 'addEventListener', {
+    configurable: true,
+    value: (type: string, listener: EventListenerOrEventListenerObject | null, options?: AddEventListenerOptions | boolean) => {
+      // A null listener adds nothing (DOM specification)
+      if (!listener) {
+        return;
+      }
+
+      listeners.set(type, [...(listeners.get(type) ?? []), listener]);
+      add(type, listener, options);
+    }
+  });
+
+  try {
+    return { result: create(), listeners };
+  } finally {
+    Reflect.deleteProperty(element, 'addEventListener');
+  }
+}
+
+/**
  * Draws SubStation Alpha subtitles with assjs, which parses the whole file
  */
 async function renderAss(video: HTMLVideoElement, src: string): Promise<() => void> {
@@ -30,16 +60,31 @@ async function renderAss(video: HTMLVideoElement, src: string): Promise<() => vo
   /**
    * video_width works better with ultrawide monitors
    */
-  const renderer = new ASSSUB(data, video, { resampling: 'video_width' });
+  const { result: renderer, listeners } = captureListeners(video, () => new ASSSUB(data, video, { resampling: 'video_width' }));
 
   /**
-   * assjs only starts rendering on the element's `play`/`playing` events, and has no method to start it
-   * otherwise. The renderer is usually created while the media is already playing (the subtitle file is fetched
-   * asynchronously, or the track is chosen during playback), so it would stay empty until the next pause and
-   * resume: replay the event for it.
+   * assjs draws only between the element's `play`/`playing` events and its `pause`/`waiting` events, and has no
+   * method to start drawing. Its own `playing` listener is called directly to start it: dispatching the event on the
+   * element would reach every other listener too (for example, the playback supervisors would end a stall that is
+   * still going on).
+   */
+  const playingListeners = listeners.get('playing') ?? [];
+  const startDrawing = (): void => {
+    for (const listener of playingListeners) {
+      if (typeof listener === 'function') {
+        listener.call(video, new Event('playing'));
+      } else {
+        listener.handleEvent(new Event('playing'));
+      }
+    }
+  };
+
+  /**
+   * The renderer is usually created while the media is already playing (the subtitle file is fetched
+   * asynchronously, or the track is chosen during playback), so it would stay empty until the next pause and resume
    */
   if (!video.paused) {
-    video.dispatchEvent(new Event('playing'));
+    startDrawing();
   }
 
   return () => {

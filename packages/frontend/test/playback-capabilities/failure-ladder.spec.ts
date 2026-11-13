@@ -62,6 +62,37 @@ describe('getFailureStep: a hard failure moves one rung down the ladder (direct 
   });
 });
 
+describe('getFailureStep: a failure is never learned below the method that was asked for', () => {
+  /**
+   * Plans of streams nobody knows (a source without stream metadata): no stream index
+   */
+  const unknownCopied: StreamPlan = { action: 'copy' };
+  const unknownEncoded: StreamPlan = { action: 'transcode', targets: [{ codec: 'aac', codecString: 'mp4a.40.2' }] };
+  const cases: [string, FailureStepInput, FailureStep][] = [
+    [
+      'the server\'s answer reads as a remux (it named no stream), but an audio transcode was asked for: the audio transcode failed',
+      video('Remux', { asked: 'TranscodeAudio', video: unknownCopied, audio: unknownEncoded }),
+      { learn: 'floor', failedAt: 'TranscodeAudio', next: 'TranscodeVideo' }
+    ],
+    [
+      'the server chose more than was asked for: what it chose failed',
+      video('TranscodeAudio', { asked: 'Remux', audio: encoded(1) }),
+      { learn: 'floor', failedAt: 'TranscodeAudio', next: 'TranscodeVideo' }
+    ],
+    [
+      'streams nobody knows still have a video to encode',
+      video('DirectPlay', { asked: 'DirectPlay', video: unknownCopied, audio: unknownCopied }),
+      { learn: 'floor', failedAt: 'DirectPlay', next: 'Remux' }
+    ]
+  ];
+
+  test.each(cases)('%s', (_, input, expected) => {
+    const result = getFailureStep(input);
+
+    expect(result).toEqual(expected);
+  });
+});
+
 describe('getFailureStep: music has no video to encode', () => {
   const cases: [string, FailureStepInput, FailureStep][] = [
     ['direct play fails: the next is a remux', music('DirectPlay'), { learn: 'floor', failedAt: 'DirectPlay', next: 'Remux' }],

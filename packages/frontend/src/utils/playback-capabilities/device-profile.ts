@@ -4,7 +4,8 @@
  *
  * Server semantics this relies on (Jellyfin's `StreamBuilder` and `MediaInfoHelper`):
  * - codec and container lists are literal, case-insensitive, comma-separated tokens without aliases, and an
- * empty list means "anything": every list sent here is explicit
+ * empty list means "anything": every list sent here is explicit, except for the blind direct play of a source
+ * without stream metadata, which is meant to accept anything
  * - a stream is copied when its codec is in the transcoding profile's list and copying is allowed; otherwise it
  * is encoded to the first codec of the list the server can encode
  * - `IsRequired: false` conditions pass when the value is unknown
@@ -194,36 +195,49 @@ export function buildPlaybackRequest(
   // The server matches an item only with profiles of its own type, whatever its streams (see Verdict.mediaType)
   const type: DlnaProfileType = verdict.mediaType ?? (verdict.video ? 'Video' : 'Audio');
   const method: PlaybackMethod = verdict.method;
-  const playable = method !== 'Unplayable';
   const encodesAudio = verdict.audio?.action === 'transcode';
   const maxAudioChannels = encodesAudio ? verdict.maxAudioChannels : undefined;
+  const videoCodecs = getCodecList(verdict.video, video);
+  /**
+   * Pure audio transcoding takes a single codec: the server checks it can encode to the profile's whole
+   * `AudioCodec` value and skips the profile otherwise (`StreamBuilder.GetOptimalAudioStream`). A video item, even
+   * without a video stream, is built as a video, which takes a list.
+   */
+  const audioCodecs = getCodecList(verdict.audio, audio, type === 'Audio');
+  /**
+   * A planned stream must be named: an empty list would let the server do anything with it. Only a stream nobody
+   * knows the codec of has no name without targets, and then the server cannot be offered a transcode.
+   */
+  const transcodable = method !== 'Unplayable' && (!verdict.video || videoCodecs !== '') && (!verdict.audio || audioCodecs !== '');
   const transcodingProfile: TranscodingProfile = {
     Type: type,
     Context: 'Streaming',
     Protocol: 'hls',
     Container: 'mp4',
-    ...(verdict.video && { VideoCodec: getCodecList(verdict.video, video) }),
-    /**
-     * Pure audio transcoding takes a single codec: the server checks it can encode to the profile's whole
-     * `AudioCodec` value and skips the profile otherwise (`StreamBuilder.GetOptimalAudioStream`). A video item, even
-     * without a video stream, is built as a video, which takes a list.
-     */
-    AudioCodec: getCodecList(verdict.audio, audio, type === 'Audio'),
+    ...(verdict.video && { VideoCodec: videoCodecs }),
+    AudioCodec: audioCodecs,
     ...(maxAudioChannels !== undefined && { MaxAudioChannels: String(maxAudioChannels) })
   };
-  const directPlayProfile = {
-    Type: type,
-    Container: source.Container ?? '',
-    ...(video?.Codec && { VideoCodec: video.Codec }),
-    ...(audio?.Codec && { AudioCodec: audio.Codec })
-  };
+  /**
+   * Without stream metadata, direct play is blind: nothing restricts it, not even the container. A .strm reports
+   * its own extension, which never matches the container the server finds when it probes the source (verified on
+   * Jellyfin 12.4: `strm` against `mov,mp4,m4a,3gp,3g2,mj2` refused direct play).
+   */
+  const directPlayProfile = video || audio
+    ? {
+        Type: type,
+        Container: source.Container ?? '',
+        ...(video?.Codec && { VideoCodec: video.Codec }),
+        ...(audio?.Codec && { AudioCodec: audio.Codec })
+      }
+    : { Type: type, Container: '' };
   const maxStreamingBitrate = getMaxStreamingBitrate(verdict);
 
   return {
     deviceProfile: {
       MaxStreamingBitrate: maxStreamingBitrate,
       DirectPlayProfiles: method === 'DirectPlay' ? [directPlayProfile] : [],
-      TranscodingProfiles: playable ? [transcodingProfile] : [],
+      TranscodingProfiles: transcodable ? [transcodingProfile] : [],
       ContainerProfiles: [],
       CodecProfiles: [...getCodecProfiles(verdict, video), ...getAudioCapProfiles(verdict, audio)],
       SubtitleProfiles: getSubtitleProfiles(renderers)
@@ -232,49 +246,13 @@ export function buildPlaybackRequest(
       EnableDirectPlay: method === 'DirectPlay',
       // A progressive remux seeks badly: remuxes go through HLS
       EnableDirectStream: false,
-      EnableTranscoding: playable,
+      EnableTranscoding: transcodable,
       AllowVideoStreamCopy: verdict.video?.action !== 'transcode',
       AllowAudioStreamCopy: !encodesAudio,
       MaxStreamingBitrate: maxStreamingBitrate,
       MaxAudioChannels: maxAudioChannels,
       AudioStreamIndex: verdict.audio?.index,
       SubtitleStreamIndex: verdict.subtitle?.index ?? -1,
-      MediaSourceId: source.Id
-    }
-  };
-}
-
-/**
- * The request for a source without any stream metadata (live TV, .strm, remote): direct play of whatever it is.
- * If that fails at runtime, the playback ladder moves on.
- *
- * @param source - The media source
- * @param type - The item's media type: the server only matches direct play profiles of the item's type
- * @param renderers - The subtitle renderer registry
- */
-export function buildOptimisticRequest(
-  source: MediaSourceInfo,
-  type: Extract<DlnaProfileType, 'Video' | 'Audio'>,
-  renderers: readonly SubtitleRenderer[]
-): PlaybackRequest {
-  const maxStreamingBitrate = UNLIMITED_STREAMING_BITRATE;
-
-  return {
-    deviceProfile: {
-      MaxStreamingBitrate: maxStreamingBitrate,
-      DirectPlayProfiles: [{ Type: type, Container: source.Container ?? '' }],
-      TranscodingProfiles: [],
-      ContainerProfiles: [],
-      CodecProfiles: [],
-      SubtitleProfiles: getSubtitleProfiles(renderers)
-    },
-    options: {
-      EnableDirectPlay: true,
-      EnableDirectStream: false,
-      EnableTranscoding: false,
-      AllowVideoStreamCopy: true,
-      AllowAudioStreamCopy: true,
-      MaxStreamingBitrate: maxStreamingBitrate,
       MediaSourceId: source.Id
     }
   };

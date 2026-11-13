@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { NETWORK_DOWN_FACTOR, QUALITY_LADDER } from '#/utils/playback-capabilities/constants.ts';
+import { NETWORK_DOWN_FACTOR, NETWORK_RETRY_WAIT_MS, QUALITY_LADDER } from '#/utils/playback-capabilities/constants.ts';
 import type { QualityLevel, VideoInfo } from '#/utils/playback-capabilities/quality.ts';
 import {
   AUTO_START,
@@ -8,8 +8,10 @@ import {
   getDownStep,
   getSmoothnessStep,
   getUpStep,
+  rememberStall,
   type AutoState
 } from '#/utils/playback-capabilities/quality-auto.ts';
+import { startNetworkMemory, stepNetwork, type NetworkEvent, type NetworkMemory } from '#/utils/playback-capabilities/runtime-signals.ts';
 
 /**
  * Shorthand for a video stream
@@ -92,7 +94,7 @@ describe('getSmoothnessStep: not smooth in Automatic: first the video encoded at
   ];
 
   test.each(cases)('%s', (_, state, video, encodedAt, expected) => {
-    expect(getSmoothnessStep(state, video, encodedAt)).toEqual(expected);
+    expect(getSmoothnessStep(state, video, encodedAt, true)).toEqual(expected);
   });
 });
 
@@ -112,7 +114,31 @@ describe('getDownStep: the network cannot keep up: below what is playing, to the
   ];
 
   test.each(cases)('%s', (_, state, video, encodedAt, estimate, expected) => {
-    expect(getDownStep(state, video, encodedAt, estimate)).toEqual(expected);
+    expect(getDownStep(state, video, encodedAt, estimate, true)).toEqual(expected);
+  });
+});
+
+describe('the steps down never propose what the user\'s policy forbids: without video transcoding there are none', () => {
+  const cases: [string, AutoState, VideoInfo, QualityLevel | undefined][] = [
+    ['from the original of a heavy source', AUTO_START, heavy1080, undefined],
+    ['from the original of a light source', AUTO_START, light1080, undefined],
+    ['from a network cap', { level: 720, encodeVideo: false }, heavy1080, 720]
+  ];
+
+  test.each(cases)('not smooth, %s: no step', (_, state, video, encodedAt) => {
+    expect(getSmoothnessStep(state, video, encodedAt, false)).toBeUndefined();
+  });
+
+  test.each(cases)('the network cannot keep up, %s: no step, with or without an estimate', (_, state, video, encodedAt) => {
+    const estimate = estimateFor(bitrateOf(480));
+
+    expect([getDownStep(state, video, encodedAt, undefined, false), getDownStep(state, video, encodedAt, estimate, false)])
+      .toEqual([undefined, undefined]);
+  });
+
+  test('with video transcoding allowed the same steps exist (the policy is the only difference)', () => {
+    expect([getSmoothnessStep(AUTO_START, heavy1080, undefined, true), getDownStep(AUTO_START, heavy1080, undefined, undefined, true)])
+      .toEqual([{ encodeVideo: true, ceiling: 'source' }, { level: 1080, encodeVideo: false }]);
   });
 });
 
@@ -147,7 +173,7 @@ describe('getUpStep: one step up, with the bitrate the network must carry for it
   ];
 
   test.each(cases)('%s', (_, state, video, encodedAt, expected) => {
-    expect(getUpStep(state, video, encodedAt)).toEqual(expected);
+    expect(getUpStep(state, video, encodedAt, 0)).toEqual(expected);
   });
 });
 
@@ -163,14 +189,164 @@ describe('Automatic weighs the network against the bitrate each level asks for a
   });
 
   test('moving down picks by the 60 fps bitrates', () => {
-    expect(getDownStep(AUTO_START, hfr1080, undefined, estimateFor(10_000_000))).toEqual({ level: 720, encodeVideo: false });
+    expect(getDownStep(AUTO_START, hfr1080, undefined, estimateFor(10_000_000), true)).toEqual({ level: 720, encodeVideo: false });
   });
 
   test('moving up needs the 60 fps bitrate of the next level', () => {
-    expect(getUpStep({ level: 480, encodeVideo: false }, hfr1080, 480)).toEqual({ state: { level: 720, encodeVideo: false }, bitrate: at60(720) });
+    expect(getUpStep({ level: 480, encodeVideo: false }, hfr1080, 480, 0)).toEqual({ state: { level: 720, encodeVideo: false }, bitrate: at60(720) });
   });
 
   test('from 720 the next step is the source\'s own level, still above its 60 fps bitrate', () => {
-    expect(getUpStep({ level: 720, encodeVideo: false }, hfr1080, 720)).toEqual({ state: { level: 1080, encodeVideo: false }, bitrate: at60(1080) });
+    expect(getUpStep({ level: 720, encodeVideo: false }, hfr1080, 720, 0)).toEqual({ state: { level: 1080, encodeVideo: false }, bitrate: at60(1080) });
+  });
+});
+
+describe('rememberStall: a stream Automatic moved down from because of stalls is not tried again for a while, longer each time', () => {
+  const at = 100_000;
+
+  test('a step down remembers the level the stream that stalled was encoded at, with the wait before it may be tried again', () => {
+    const next = rememberStall({ level: 1080, encodeVideo: false }, { level: 720, encodeVideo: false }, 1080, at);
+
+    expect(next).toEqual({ level: 720, encodeVideo: false, stalled: [{ level: 1080, retryAt: at + NETWORK_RETRY_WAIT_MS, failures: 1 }] });
+  });
+
+  test('the original (not encoded) is remembered as the top', () => {
+    const next = rememberStall(AUTO_START, { level: 1080, encodeVideo: false }, undefined, at);
+
+    expect(next.stalled).toEqual([{ level: 'top', retryAt: at + NETWORK_RETRY_WAIT_MS, failures: 1 }]);
+  });
+
+  test('an uncapped stream encoded at the source\'s own level (the codec forces it) is that level, the stream its cap asks for', () => {
+    const next = rememberStall(AUTO_START, { level: 720, encodeVideo: false }, 1080, at);
+
+    expect(next.stalled).toEqual([{ level: 1080, retryAt: at + NETWORK_RETRY_WAIT_MS, failures: 1 }]);
+  });
+
+  test('each new step down from the same stream doubles the wait', () => {
+    const first = rememberStall({ level: 1080, encodeVideo: false }, { level: 720, encodeVideo: false }, 1080, at);
+    const second = rememberStall({ ...first, level: 1080 }, { ...first, level: 720 }, 1080, at + 500_000);
+    const third = rememberStall({ ...second, level: 1080 }, { ...second, level: 720 }, 1080, at + 1_000_000);
+
+    expect(third.stalled).toEqual([{ level: 1080, retryAt: at + 1_000_000 + (4 * NETWORK_RETRY_WAIT_MS), failures: 3 }]);
+  });
+
+  test('other streams keep their own memory', () => {
+    const first = rememberStall({ level: 1080, encodeVideo: false }, { level: 720, encodeVideo: false }, 1080, at);
+    const second = rememberStall(first, { ...first, level: 480 }, 720, at + 1000);
+
+    expect(second.stalled).toEqual([
+      { level: 1080, retryAt: at + NETWORK_RETRY_WAIT_MS, failures: 1 },
+      { level: 720, retryAt: at + 1000 + NETWORK_RETRY_WAIT_MS, failures: 1 }
+    ]);
+  });
+});
+
+describe('getUpStep after a stall: the stream that stalled, and any above it, is not offered before its time', () => {
+  const at = 100_000;
+  const stalled1080 = rememberStall({ level: 1080, encodeVideo: false }, { level: 720, encodeVideo: false }, 1080, at);
+
+  test('before the wait is over there is no step up to it', () => {
+    expect(getUpStep(stalled1080, heavy1080, 720, at + NETWORK_RETRY_WAIT_MS - 1)).toBeUndefined();
+  });
+
+  test('once the wait is over it is offered again, with its bitrate', () => {
+    expect(getUpStep(stalled1080, heavy1080, 720, at + NETWORK_RETRY_WAIT_MS)).toEqual({
+      state: { ...stalled1080, level: 1080 },
+      bitrate: bitrateOf(1080)
+    });
+  });
+
+  test('levels below the one that stalled go up as before', () => {
+    expect(getUpStep({ ...stalled1080, level: 480 }, heavy1080, 480, at)?.state.level).toBe(720);
+  });
+
+  test('the uncapped stream encoded at the source\'s own level stalled: the cap at that level waits too (the same stream)', () => {
+    const stalledUncapped = rememberStall(AUTO_START, { level: 720, encodeVideo: false }, 1080, at);
+
+    expect(getUpStep(stalledUncapped, heavy1080, 720, at)).toBeUndefined();
+  });
+
+  test('nothing above the stream that stalled is offered either: going higher asks more of whatever stalled', () => {
+    const stalled720 = rememberStall({ level: 720, encodeVideo: false }, { level: 480, encodeVideo: false }, 720, at);
+
+    expect(getUpStep({ ...stalled720, level: 720 }, heavy1080, 720, at)).toBeUndefined();
+  });
+
+  test('when the original stalled, the levels below it go up as before and only the original waits', () => {
+    const stalledTop = rememberStall(AUTO_START, { level: 1080, encodeVideo: false }, undefined, at);
+
+    expect([
+      getUpStep({ ...stalledTop, level: 720 }, heavy1080, 720, at)?.state.level,
+      getUpStep(stalledTop, heavy1080, 1080, at),
+      getUpStep(stalledTop, heavy1080, 1080, at + NETWORK_RETRY_WAIT_MS)?.state
+    ]).toEqual([1080, undefined, { encodeVideo: false, stalled: stalledTop.stalled }]);
+  });
+
+  test('a smoothness step keeps the memory', () => {
+    expect(getSmoothnessStep(stalled1080, heavy1080, 720, true)?.stalled).toEqual(stalled1080.stalled);
+  });
+});
+
+describe('Automatic when the server, not the network, is the limit', () => {
+  /**
+   * The network supervisor and Automatic over `durationMs`, one event per second, in a world where the server encodes
+   * the 1080 level slower than real time (a 1.5 s stall every 15 s) and the 720 level ahead of time (the estimate there
+   * measures a fast network, 25 Mbit/s; the buffer refills within 15 s of a change). Hunter C's scenario.
+   *
+   * @returns When Automatic moved up to 1080 and back down
+   */
+  function simulate(durationMs: number): { ups: number[]; downs: number[] } {
+    let state: AutoState = { level: 720, encodeVideo: false };
+    let memory: NetworkMemory = startNetworkMemory(0);
+    let changedAt = 0;
+    const ups: number[] = [];
+    const downs: number[] = [];
+
+    for (let at = 1000; at <= durationMs; at += 1000) {
+      const encodedAt = state.level ?? 1080;
+      const sinceChange = at - changedAt;
+      const event: NetworkEvent = encodedAt === 1080 && sinceChange % 15_000 === 0
+        ? { type: 'stall', startedAt: at - 1500, at, ended: true }
+        : {
+            type: 'sample',
+            at,
+            paused: false,
+            estimate: encodedAt === 1080 ? 7_000_000 : 25_000_000,
+            bufferAhead: Math.min(30, sinceChange / 500),
+            upBitrate: getUpStep(state, heavy1080, encodedAt, at)?.bitrate
+          };
+      const result = stepNetwork(memory, event);
+
+      memory = result.memory;
+
+      if (result.decision === 'up') {
+        state = getUpStep(state, heavy1080, encodedAt, at)!.state;
+        ups.push(at);
+      } else if (result.decision === 'down') {
+        state = rememberStall(state, getDownStep(state, heavy1080, encodedAt, 7_000_000, true)!, encodedAt, at);
+        downs.push(at);
+      }
+
+      if (result.decision) {
+        memory = startNetworkMemory(at);
+        changedAt = at;
+      }
+    }
+
+    return { ups, downs };
+  }
+
+  test('after each step down the level that stalled waits twice as long as the time before to be tried again', () => {
+    const { ups, downs } = simulate(3_600_000);
+    const waits = ups.slice(1).map((up, index) => up - downs[index]!);
+
+    expect(waits.length).toBeGreaterThan(1);
+    expect(waits.every((wait, index) => wait >= NETWORK_RETRY_WAIT_MS * (2 ** index))).toBe(true);
+  });
+
+  test('so in an hour it is tried a handful of times instead of every time the margin holds', () => {
+    const { ups } = simulate(3_600_000);
+
+    expect(ups.length).toBeLessThanOrEqual(6);
   });
 });

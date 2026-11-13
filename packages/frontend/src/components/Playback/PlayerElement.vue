@@ -44,6 +44,7 @@ import { computed, onScopeDispose, watch } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import { isNil } from '@jellyfin-vue/shared/validation';
 import { PromiseQueue } from '@jellyfin-vue/shared/promises';
+import { usePlaybackSupervisors } from '#/composables/use-playback-supervisors.ts';
 import { useSnackbar } from '#/composables/use-snackbar.ts';
 import {
   mediaElementRef,
@@ -74,6 +75,8 @@ const hls = Hls.isSupported()
       workerPath: HlsWorkerUrl
     })
   : undefined;
+
+const supervisors = usePlaybackSupervisors(hls);
 
 const mediaElementType = computed<'audio' | 'video' | undefined>(() => {
   if (playbackManager.isAudio.value) {
@@ -148,9 +151,13 @@ function onHlsError(_event: typeof Hls.Events.ERROR, data: ErrorData): void {
           break;
         }
 
-        useSnackbar(t('mediaError'), 'error');
-        console.error('fatal media error encountered, try to recover');
-        hls.recoverMediaError();
+        // hls.js already reset the media source for this one: the supervisors count it, and resetting again would reload twice
+        if (data.details === ErrorDetails.MEDIA_SOURCE_REQUIRES_RESET) {
+          break;
+        }
+
+        // Recovered once; after that, the failure ladder plays it another way
+        supervisors.onHlsMediaError();
         break;
       }
       default: {
@@ -315,6 +322,7 @@ watch([mediaElementRef, playbackSource], ([el, source], [oldEl, oldSource]) => {
       ? el.currentTime
       : undefined;
 
+    supervisors.startSource(source?.url);
     loadSource(el, source);
 
     if (resumeAt) {

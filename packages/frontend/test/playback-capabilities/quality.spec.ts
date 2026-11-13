@@ -3,6 +3,8 @@ import {
   exceedsLevel,
   exceedsQuality,
   getAvailableLevels,
+  getEncodedLevel,
+  getLevelBitrate,
   getModeLevel,
   getNextHigherLevel,
   getNextLowerLevel,
@@ -196,6 +198,31 @@ describe('getRunningEntry: the menu entry equivalent to what is playing, which A
 
     expect(result).toBe(expected);
   });
+
+  test('an encoded video shows the level it is decoded at, when the server encoded it below the cap', () => {
+    expect(getRunningEntry(size(1920, 1080), 'TranscodeVideo', undefined, size(1280, 720))).toBe(720);
+  });
+
+  test('the decoded size only matters for an encoded video', () => {
+    expect(getRunningEntry(size(1920, 1080), 'DirectPlay', undefined, size(1280, 720))).toBe('original');
+  });
+});
+
+describe('getEncodedLevel: the level an encoded video runs at is the size it is decoded at, never above the cap', () => {
+  const cases: [string, VideoInfo, QualityLevel | undefined, VideoInfo | undefined, QualityLevel][] = [
+    ['without the decoded size, the cap (never above the source)', size(1920, 1080), 1080, undefined, 1080],
+    [
+      'the server lowered the resolution (it caps the width by the bitrate and frame rate): the decoded size wins',
+      size(1920, 1080), undefined, size(1280, 720), 720
+    ],
+    ['a scope output keeps its level (its width needs the 1080 box)', size(1920, 1080), 1080, size(1920, 800), 1080],
+    ['the decoded size never raises the level above the cap', size(1920, 1080), 480, size(1280, 720), 480],
+    ['a decoded size of zero (no picture yet) is unknown', size(1920, 1080), 720, size(0, 0), 720]
+  ];
+
+  test.each(cases)('%s', (_, video, cap, decoded, expected) => {
+    expect(getEncodedLevel(video, cap, decoded)).toBe(expected);
+  });
 });
 
 describe('getNextLowerLevel: one step down at a time for the runtime supervisors', () => {
@@ -280,5 +307,96 @@ describe('getRequestCaps: what is sent to the server for a level', () => {
     const result = getRequestCaps(level, video);
 
     expect(result).toEqual(expected);
+  });
+});
+
+/**
+ * Jellyfin 12.4's rule for the width of an encode (`ResolutionNormalizer.Normalize`, with the h264-equivalent bitrate
+ * of `EncodingHelper.ScaleBitrate` for an H.264 output), copied from the server's source as the specification: the
+ * bitrate is weighed against brackets made for 30 fps, scaled by 30 / fps up to 30 fps and by 1 / sqrt(fps / 30) above,
+ * and the width is capped at the bracket's
+ */
+const SERVER_WIDTH_BRACKETS: readonly (readonly [maxWidth: number, maxBitrate: number])[] = [
+  [416, 365_000], [640, 730_000], [768, 1_100_000], [960, 3_000_000], [1280, 6_000_000], [1920, 13_500_000],
+  [2560, 28_000_000], [3840, 50_000_000]
+];
+
+/**
+ * The h264-equivalent bitrate of an H.264 output (`EncodingHelper.ScaleBitrate`): low bitrates are weighed higher
+ */
+function serverH264Equivalent(bitrate: number): number {
+  if (bitrate <= 500_000) {
+    return bitrate * 4;
+  }
+
+  if (bitrate <= 1_000_000) {
+    return bitrate * 3;
+  }
+
+  if (bitrate <= 2_000_000) {
+    return bitrate * 2.5;
+  }
+
+  return bitrate <= 3_000_000 ? bitrate * 2 : bitrate;
+}
+
+/**
+ * The width the server encodes at for a video bitrate at a frame rate, capped by the requested width
+ */
+function serverOutputWidth(videoBitrate: number, frameRate: number, maxWidth: number): number {
+  const scale = frameRate <= 30 ? 30 / frameRate : 1 / Math.sqrt(frameRate / 30);
+  const reference = serverH264Equivalent(videoBitrate) * scale;
+  const bracket = SERVER_WIDTH_BRACKETS.find(([, maxBitrate]) => reference <= maxBitrate);
+
+  return bracket ? Math.min(bracket[0], maxWidth) : maxWidth;
+}
+
+/**
+ * The most the server takes off the requested bitrate for the audio before it encodes the video: its default for
+ * copied 5.1 AC-3 (`StreamBuilder.GetDefaultAudioBitrate`)
+ */
+const AUDIO_SHARE = 640_000;
+
+describe('getLevelBitrate: a level asks for the bitrate the server needs to deliver its height at the source\'s frame rate', () => {
+  const ladderBitrate = (level: QualityLevel) => getRequestCaps(level).maxBitrate;
+  const cases: [string, QualityLevel, number | undefined, number][] = [
+    ['without a frame rate, the level\'s internal bitrate', 1080, undefined, ladderBitrate(1080)],
+    ['at 30 fps, the level\'s internal bitrate (the ladder is for 30 fps)', 1080, 30, ladderBitrate(1080)],
+    ['below 30 fps, the level\'s internal bitrate (the server gives a lower frame rate more room)', 1080, 25, ladderBitrate(1080)],
+    ['at 60 fps, sqrt(60 / 30) times the internal bitrate', 1080, 60, Math.round(ladderBitrate(1080) * Math.SQRT2)],
+    ['at 50 fps, sqrt(50 / 30) times the internal bitrate', 1440, 50, Math.round(ladderBitrate(1440) * Math.sqrt(50 / 30))]
+  ];
+
+  test.each(cases)('%s', (_, level, frameRate, expected) => {
+    expect(getLevelBitrate(level, { Width: 3840, Height: 2160, ReferenceFrameRate: frameRate })).toBe(expected);
+  });
+
+  test('the caps sent to the server carry that bitrate', () => {
+    expect(getRequestCaps(1080, { Width: 1920, Height: 1080, ReferenceFrameRate: 60 }))
+      .toEqual({ maxBitrate: Math.round(ladderBitrate(1080) * Math.SQRT2), maxWidth: 1920, maxHeight: 1080 });
+  });
+
+  const levels: QualityLevel[] = [2160, 1440, 1080, 720, 480, 360];
+  const frameRates = [23.976, 25, 30, 48, 50, 60, 120];
+
+  test.each(levels.flatMap(level => frameRates.map(frameRate => [level, frameRate] as const)))(
+    'the server encodes level %ip of a %d fps source at the level\'s width',
+    (level, frameRate) => {
+      const video = { Width: 3840, Height: 2160, ReferenceFrameRate: frameRate };
+      const caps = getRequestCaps(level, video);
+      const width = serverOutputWidth(caps.maxBitrate - AUDIO_SHARE, frameRate, caps.maxWidth);
+
+      expect(width).toBe(caps.maxWidth);
+    }
+  );
+});
+
+describe('exceedsQuality: Automatic compares the source with its level\'s bitrate at the source\'s frame rate', () => {
+  test('a 1080p60 source at 10 Mbps fits its own level, which asks for 8 Mbps x sqrt(2) at 60 fps', () => {
+    expect(exceedsQuality({ Width: 1920, Height: 1080, BitRate: 10_000_000, ReferenceFrameRate: 60 }, { type: 'auto', level: 1080 })).toBe(false);
+  });
+
+  test('the same source at 30 fps is above its own level\'s bitrate', () => {
+    expect(exceedsQuality({ Width: 1920, Height: 1080, BitRate: 10_000_000, ReferenceFrameRate: 30 }, { type: 'auto', level: 1080 })).toBe(true);
   });
 });

@@ -38,24 +38,50 @@ interface SnackbarAction {
 }
 
 interface SnackbarState {
+  /**
+   * Identifies the message shown: each call of `useSnackbar` shows a new one
+   */
+  id: number;
   message: string;
   color: string;
   action?: SnackbarAction;
 }
 
 const state = reactive<SnackbarState>({
+  id: 0,
   message: '',
   color: ''
 });
 
 /**
+ * Hides the message shown
+ */
+function close(): void {
+  state.message = '';
+  state.color = '';
+  state.action = undefined;
+}
+
+/**
  * Display a notification to the user using a snackbar message located at
  * the bottom left of the frontend, optionally with an action button
+ *
+ * @returns A function that hides this message, if it's still the one shown (a later message stays), for messages that
+ * stop being true before they time out
  */
-export function useSnackbar(message: string, color: string, action?: SnackbarAction): void {
+export function useSnackbar(message: string, color: string, action?: SnackbarAction): () => void {
+  const id = state.id + 1;
+
+  state.id = id;
   state.color = color;
   state.message = message;
   state.action = action;
+
+  return () => {
+    if (state.id === id) {
+      close();
+    }
+  };
 }
 </script>
 
@@ -63,13 +89,9 @@ export function useSnackbar(message: string, color: string, action?: SnackbarAct
 const model = computed({
   get: () => state.message !== '',
   set(newValue) {
-    if (newValue) {
-      return;
+    if (!newValue) {
+      close();
     }
-
-    state.message = '';
-    state.color = '';
-    state.action = undefined;
   }
 });
 

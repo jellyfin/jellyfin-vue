@@ -10,6 +10,7 @@
 import type { QualityMode } from './quality.ts';
 import {
   getRungRejection,
+  isMoreExpensive,
   PLAYBACK_RUNGS,
   type PlaybackMethod,
   type PlaybackPolicy,
@@ -23,6 +24,12 @@ import {
  */
 export interface FailureStepInput {
   readonly method: PlaybackMethod;
+  /**
+   * The method the verdict asked for. What failed is never below it: the server cannot do less than the request
+   * forces, but its answer may not tell what it did (an answer that names no stream reads as a remux), and a failure
+   * learned below the request would negotiate the same request again.
+   */
+  readonly asked?: PlaybackMethod;
   readonly video?: StreamPlan;
   readonly audio?: StreamPlan;
   /**
@@ -83,7 +90,8 @@ function firstAllowed<T extends PlaybackRung>(
  * What a hard failure of a playback teaches and which rung should come next. See {@link FailureStep}.
  */
 export function getFailureStep(input: FailureStepInput): FailureStep {
-  const { method, video, audio } = input;
+  const { video, audio, asked } = input;
+  const method = asked !== undefined && isMoreExpensive(asked, input.method) ? asked : input.method;
 
   if (method === 'Unplayable') {
     return { learn: 'nothing' };

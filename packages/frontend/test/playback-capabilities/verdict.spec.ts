@@ -10,10 +10,12 @@ import {
   subtitleStream,
   videoStream
 } from './fixtures.ts';
-import { AUDIO_TRANSCODE_TARGETS } from '#/utils/playback-capabilities/constants.ts';
+import { AUDIO_TRANSCODE_TARGETS, FALLBACK_FRAME_RATE } from '#/utils/playback-capabilities/constants.ts';
+import { getFailureStep } from '#/utils/playback-capabilities/failure-ladder.ts';
 import { getAudioTargetCandidate } from '#/utils/playback-capabilities/media-config.ts';
 import type { CapabilityAnswer, CapabilityOracle } from '#/utils/playback-capabilities/oracle.ts';
 import { PROBE_FORMAT_VERSION, PROBE_READER_VERSION, type ProbeResult } from '#/utils/playback-capabilities/probe.ts';
+import { getVerdictLabel } from '#/utils/playback-capabilities/verdict-label.ts';
 import {
   computeVerdict,
   getMediaSourceQuestions,
@@ -356,6 +358,46 @@ describe('audio transcode: audio unsupported in both modes, video copyable', () 
     const verdict = await verdictFor(mkvItem('ac3'), browser);
 
     expect(verdict).toMatchObject({ method: 'TranscodeVideo', video: { action: 'transcode' }, audio: { action: 'transcode' } });
+  });
+});
+
+describe('a value of 0 (or below) is unknown, not a value', () => {
+  test('an encoded audio whose server reports 0 channels keeps the probed channel count, not 0', async () => {
+    const item = mkvItem('ac3');
+    const streams = (item.source.MediaStreams ?? []).map(stream => stream.Type === 'Audio' ? { ...stream, Channels: 0 } : stream);
+    const verdict = await verdictFor({ ...item, source: { ...item.source, MediaStreams: streams } }, fullBrowser);
+
+    expect(verdict).toMatchObject({ method: 'TranscodeAudio', maxAudioChannels: 6 });
+  });
+
+  test('when the probe did not read the audio either it is stereo, like any audio whose channels nobody knows', async () => {
+    const item = mkvItem('ac3');
+    const streams = (item.source.MediaStreams ?? []).map(stream => stream.Type === 'Audio' ? { ...stream, Channels: 0 } : stream);
+    const probe = item.probe.status === 'ok' ? { ...item.probe, audio: [] } : item.probe;
+    const verdict = await verdictFor({ source: { ...item.source, MediaStreams: streams }, probe }, fullBrowser, { environment: { minimumRung: () => 'TranscodeAudio' } });
+
+    expect(verdict).toMatchObject({ method: 'TranscodeAudio', maxAudioChannels: 2 });
+  });
+
+  test('a video target is asked at a real size and frame rate when the server reports 0 for them', async () => {
+    const oracle = fakeOracle(fullBrowser);
+    const source = mediaSource([
+      videoStream({ Codec: 'hevc', CodecTag: undefined, Width: 0, Height: 0, RealFrameRate: 0, AverageFrameRate: 0 }),
+      audioStream()
+    ], { Container: 'mkv' });
+
+    await computeVerdict({ source, oracle, environment: { ...defaultEnvironment, minimumRung: () => 'TranscodeVideo' } });
+
+    const targets = oracle.asked.filter(config => config.type === 'media-source' && config.video?.contentType === T.h264Target);
+
+    expect(targets.map(config => config.video)).toEqual([expect.objectContaining({ width: 3840, height: 2160, framerate: FALLBACK_FRAME_RATE })]);
+  });
+
+  test('a source whose sizes and bitrates are 0 ranks as one of unknown quality', async () => {
+    const source = mediaSource([videoStream({ Width: 0, Height: 0, BitRate: 0 }), audioStream({ BitRate: 0 })], { Bitrate: 0 });
+    const verdict = await verdictFor({ source }, fullBrowser);
+
+    expect(verdict.quality).toEqual({ width: undefined, height: undefined, bitrate: undefined });
   });
 });
 
@@ -852,6 +894,30 @@ describe('audio-only items (music) follow the same rules without video', () => {
 
     expect(verdict.method).toBe('Unplayable');
   });
+
+  test('once its audio transcode failed too, every method music has failed: that is the reason, not the targets', async () => {
+    const item = track('flac', 'flac', 'audio/flac', 'flac');
+    const floor = getNextFloor({ method: 'TranscodeAudio' }, { failedAt: 'TranscodeAudio' });
+    const verdict = await verdictFor(item, { file: [], ms: [T.aacTarget] }, { mediaType: 'Audio', environment: { minimumRung: () => floor } });
+
+    expect(verdict).toMatchObject({ method: 'Unplayable', reasons: ['AudioCodecUnsupported', 'FailedBefore'] });
+    expect(getVerdictLabel(verdict, item.source).reason).toBe('NothingWorked');
+  });
+
+  test('the same for music nobody knows the streams of', async () => {
+    const source = mediaSource([], { Container: 'strm', MediaStreams: [] });
+    const floor = getNextFloor({ method: 'TranscodeAudio' }, { failedAt: 'TranscodeAudio' });
+    const verdict = await verdictFor({ source }, fullBrowser, { mediaType: 'Audio', environment: { minimumRung: () => floor } });
+
+    expect(verdict).toMatchObject({ method: 'Unplayable', reasons: ['FailedBefore', 'Unverified'] });
+    expect(getVerdictLabel(verdict, source).reason).toBe('NothingWorked');
+  });
+
+  test('music whose audio no target can carry still says so', async () => {
+    const verdict = await verdictFor(track('flac', 'flac', 'audio/flac', 'flac'), { file: [], ms: [] }, { mediaType: 'Audio' });
+
+    expect(verdict).toMatchObject({ method: 'Unplayable', reasons: ['AudioCodecUnsupported', 'NoDecodableTarget'] });
+  });
 });
 
 describe('the media type of the item, which decides how the server treats it', () => {
@@ -900,6 +966,169 @@ describe('no stream metadata at all (live TV, .strm, remote)', () => {
     const verdict = await verdictFor({ source: mediaSource([], { MediaStreams: undefined }) }, { file: [], ms: [] });
 
     expect(verdict.unverified).toBe(true);
+  });
+});
+
+describe('no stream metadata: the failure ladder corrects it (nobody knows the streams, so the server decides above direct play)', () => {
+  /**
+   * A .strm item as Jellyfin 12.4 reports it in /Items before it was ever played: no streams, the .strm file's own
+   * extension as the container, a remote HTTP source
+   */
+  const strm = { source: mediaSource([], { Container: 'strm', Protocol: 'Http', IsRemote: true, MediaStreams: [], Bitrate: undefined }) };
+  const h264 = { codec: 'h264', codecString: 'avc1.640028' };
+  const av1 = { codec: 'av1', codecString: 'av01.0.08M.08' };
+  const vp9 = { codec: 'vp9', codecString: 'vp09.00.40.08' };
+  const aac = { codec: 'aac', codecString: 'mp4a.40.2', channels: 6 };
+  const opus = { codec: 'opus', codecString: 'opus', channels: 6 };
+
+  /**
+   * The verdict with a floor learned for the source's signature (the one a verdict without a floor carries)
+   */
+  async function atFloor(
+    floor: PlaybackMethod,
+    browser: FakeBrowser = fullBrowser,
+    overrides: Parameters<typeof verdictFor>[2] = {}
+  ): Promise<Verdict> {
+    const first = await verdictFor(strm, browser, { mediaType: 'Video', ...overrides });
+
+    return verdictFor(strm, browser, {
+      mediaType: 'Video',
+      ...overrides,
+      environment: { ...overrides.environment, minimumRung: signature => signature === first.signature ? floor : undefined }
+    });
+  }
+
+  test('blind direct play keeps the transcoding targets the browser decodes as the server\'s fallback, like any direct play', async () => {
+    const verdict = await verdictFor(strm, fullBrowser, { mediaType: 'Video' });
+
+    expect(verdict).toMatchObject({
+      method: 'DirectPlay',
+      reasons: ['Unverified'],
+      unverified: true,
+      video: { action: 'copy', fallback: [h264, av1, vp9] },
+      audio: { action: 'copy', fallback: [aac, opus] }
+    });
+    expect([verdict.video?.index, verdict.audio?.index]).toEqual([undefined, undefined]);
+  });
+
+  test('a learned remux floor is honoured: both streams may be copied, with the targets listed, so the server copies what it can carry and encodes the rest', async () => {
+    const verdict = await atFloor('Remux');
+
+    expect(verdict).toMatchObject({
+      method: 'Remux',
+      reasons: ['FailedBefore', 'Unverified'],
+      unverified: true,
+      video: { action: 'copy', fallback: [h264, av1, vp9] },
+      audio: { action: 'copy', fallback: [aac, opus] }
+    });
+  });
+
+  test('a learned audio transcode floor encodes the audio and still lets the server copy the video', async () => {
+    const verdict = await atFloor('TranscodeAudio');
+
+    expect(verdict).toMatchObject({
+      method: 'TranscodeAudio',
+      video: { action: 'copy', fallback: [h264, av1, vp9] },
+      audio: { action: 'transcode', targets: [aac, opus] },
+      maxAudioChannels: 6
+    });
+  });
+
+  test('a learned video transcode floor encodes both streams: no stream nobody checked is left, so it is the last rung', async () => {
+    const verdict = await atFloor('TranscodeVideo');
+
+    expect(verdict).toMatchObject({
+      method: 'TranscodeVideo',
+      video: { action: 'transcode', targets: [h264, av1, vp9] },
+      audio: { action: 'transcode', targets: [aac, opus] },
+      maxAudioChannels: 6,
+      qualityCap: { maxWidth: 3840, maxHeight: 2160, maxBitrate: 40_000_000 }
+    });
+  });
+
+  test('every rung failed: unplayable, so nothing is requested', async () => {
+    const verdict = await atFloor('Unplayable');
+
+    expect(verdict).toMatchObject({ method: 'Unplayable', reasons: ['FailedBefore', 'Unverified'], unverified: true });
+    expect([verdict.video, verdict.audio]).toEqual([undefined, undefined]);
+  });
+
+  test('the targets are asked to the browser (there is no stream to ask about): without H.264 and AAC only the free ones are listed', async () => {
+    const verdict = await atFloor('Remux', freeBrowser);
+
+    expect(verdict).toMatchObject({ method: 'Remux', video: { fallback: [av1, vp9] }, audio: { fallback: [opus] } });
+  });
+
+  test('the questions are only about the targets, as media source playback, at the box of the quality level', async () => {
+    const oracle = fakeOracle(fullBrowser);
+
+    await computeVerdict({ ...strm, mediaType: 'Video', oracle, environment: { ...defaultEnvironment, quality: { type: 'fixed', level: 720 }, minimumRung: () => 'TranscodeVideo' } });
+
+    expect(oracle.asked.every(config => config.type === 'media-source')).toBe(true);
+    expect(oracle.asked.filter(config => config.video).map(config => [config.video?.contentType, config.video?.width, config.video?.height]))
+      .toEqual([[T.h264Target, 1280, 720], [T.av1Target, 1280, 720], [T.vp9Target, 1280, 720]]);
+  });
+
+  test('surround is kept when the browser accepts it, since the source\'s channels are unknown; stereo otherwise', async () => {
+    const verdict = await atFloor('TranscodeAudio', { ...fullBrowser, maxChannels: { [T.aacTarget]: 2, [T.opusTarget]: 2 } });
+
+    expect(verdict).toMatchObject({ audio: { targets: [{ ...aac, channels: 2 }, { ...opus, channels: 2 }] }, maxAudioChannels: 2 });
+  });
+
+  test('no target the browser decodes: unplayable above direct play', async () => {
+    const verdict = await atFloor('Remux', { file: [], ms: [] });
+
+    expect(verdict).toMatchObject({ method: 'Unplayable', reasons: ['FailedBefore', 'NoDecodableTarget', 'Unverified'] });
+  });
+
+  test('blind direct play without any decodable target has no fallback to offer', async () => {
+    const verdict = await verdictFor(strm, { file: [], ms: [] }, { mediaType: 'Video' });
+
+    expect(verdict).toMatchObject({ method: 'DirectPlay', video: { action: 'copy' }, audio: { action: 'copy' } });
+    expect([verdict.video?.action === 'copy' && verdict.video.fallback, verdict.audio?.action === 'copy' && verdict.audio.fallback]).toEqual([undefined, undefined]);
+  });
+
+  test('quality mode "original" allows the remux (whatever the server then does is checked against the mode) but nothing above', async () => {
+    const original = { environment: { quality: { type: 'original' } as const } };
+
+    expect((await atFloor('Remux', fullBrowser, original)).method).toBe('Remux');
+    expect(await atFloor('TranscodeAudio', fullBrowser, original)).toMatchObject({ method: 'Unplayable', reasons: ['FailedBefore', 'NotAllowedByQuality', 'Unverified'] });
+  });
+
+  test('the user policy limits the rungs the same way: without video transcoding nothing is left above direct play', async () => {
+    const verdict = await atFloor('Remux', fullBrowser, { environment: { policy: { EnableVideoPlaybackTranscoding: false } } });
+
+    expect(verdict).toMatchObject({ method: 'Unplayable', reasons: ['FailedBefore', 'NotAllowedByPolicy', 'Unverified'] });
+  });
+
+  test('music has no video plan, and skips the remux: the server takes a single codec for music, and the source codec cannot be named', async () => {
+    const song = { source: mediaSource([], { Container: 'strm', Protocol: 'Http', IsRemote: true, MediaStreams: [] }) };
+    const direct = await verdictFor(song, fullBrowser, { mediaType: 'Audio' });
+    const above = await verdictFor(song, fullBrowser, { mediaType: 'Audio', environment: { minimumRung: () => 'Remux' } });
+
+    expect(direct).toMatchObject({ method: 'DirectPlay', video: undefined, audio: { action: 'copy' } });
+    expect(above).toMatchObject({ method: 'TranscodeAudio', video: undefined, audio: { action: 'transcode', targets: [aac, opus] } });
+  });
+
+  test('the ladder ends: each failure is learned on the verdict\'s signature and moves one rung up, until nothing is left', async () => {
+    const floors = new Map<string, PlaybackMethod>();
+    const methods: PlaybackMethod[] = [];
+
+    for (let attempt = 0; attempt < 6; attempt++) {
+      const verdict = await verdictFor(strm, fullBrowser, { mediaType: 'Video', environment: { minimumRung: signature => floors.get(signature) } });
+
+      methods.push(verdict.method);
+
+      const step = getFailureStep({ method: verdict.method, video: verdict.video, audio: verdict.audio, mode: { type: 'auto' }, policy: {} });
+
+      if (step.learn !== 'floor') {
+        break;
+      }
+
+      floors.set(verdict.signature, getNextFloor(verdict, { failedAt: step.failedAt }, floors.get(verdict.signature)) ?? 'Unplayable');
+    }
+
+    expect(methods).toEqual(['DirectPlay', 'Remux', 'TranscodeAudio', 'TranscodeVideo', 'Unplayable']);
   });
 });
 

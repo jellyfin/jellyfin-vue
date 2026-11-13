@@ -11,6 +11,7 @@ import {
   MediaStreamType,
   PlayMethod,
   type BaseItemDto,
+  type MediaSourceInfo,
   type PlaybackInfoResponse
 } from '@jellyfin/sdk/lib/generated-client';
 import { getInstantMixApi } from '@jellyfin/sdk/lib/utils/api/instant-mix-api';
@@ -28,22 +29,36 @@ import { remote } from '#/plugins/remote/index.ts';
 import { apiStore } from '#/store/dbs/api/index.ts';
 import {
   getMediaSourceVerdict,
+  getPlaybackPolicy,
   minimumRung,
   recordMediaSourceFailure,
   recordPlaybackOutcome,
   renegotiatingEnvironment
 } from '#/store/playback-capabilities.ts';
 import { prefetchMediaSourceVerdicts, resolveMediaSourceIndex } from '#/store/playback-versions.ts';
+import {
+  autoQualityRevision,
+  getCurrentAutoState,
+  getPlaybackQualityMode,
+  playbackObservations,
+  restoreAutoState,
+  type PlaybackChangeReason
+} from '#/store/playback-quality.ts';
 import { playbackSettings } from '#/store/settings/playback.ts';
 import { getImageInfo } from '#/utils/images.ts';
+import { getPlaybackMethodName } from '#/utils/playback-labels.ts';
 import { getItemRuntime, getStaticStreamUrl } from '#/utils/items.ts';
 import { findQueueItem, getQueueRemoval } from '#/utils/playback-queue.ts';
 import { PREFETCH_BUFFER_AHEAD_S } from '#/utils/playback-capabilities/constants.ts';
+import { buildPlaybackRequest, deriveActualMethod } from '#/utils/playback-capabilities/device-profile.ts';
+import { getFailureStep } from '#/utils/playback-capabilities/failure-ladder.ts';
+import { getModeLevel, getRunningEntry, type QualityMode } from '#/utils/playback-capabilities/quality.ts';
+import type { AutoState } from '#/utils/playback-capabilities/quality-auto.ts';
 import {
-  buildOptimisticRequest,
-  buildPlaybackRequest,
-  deriveActualMethod
-} from '#/utils/playback-capabilities/device-profile.ts';
+  keepsCurrentPlayback,
+  type RenegotiationIntent,
+  type RenegotiationOutcome
+} from '#/utils/playback-capabilities/renegotiation.ts';
 import {
   isMoreExpensive,
   type PlaybackMethod,
@@ -119,6 +134,19 @@ interface Negotiation {
   itemId: string;
   mediaSourceId: string;
   mediaType: 'Video' | 'Audio';
+  /**
+   * Identifies the playback (item, version and play), for the state of Automatic
+   */
+  key: string;
+  /**
+   * The quality mode the verdict was computed with (in Automatic, with the level it runs at)
+   */
+  quality: QualityMode;
+  /**
+   * In Automatic, its state when the verdict was computed: what it goes back to when a step of Automatic gives
+   * nothing playable and this playback goes on (see `RenegotiationIntent`)
+   */
+  autoState?: AutoState;
   verdict: Verdict;
   /**
    * The PlaybackInfo answer. Undefined when nothing was requested, because the verdict was unplayable.
@@ -133,6 +161,25 @@ interface Negotiation {
    * encodes something, which quality mode Original forbids (`quality`)
    */
   failure?: 'unplayable' | 'quality';
+}
+
+/**
+ * The media source of a PlaybackInfo answer, if it has one: an answer with an error code, or without media sources,
+ * plays nothing
+ */
+function getAnswerSource(data: PlaybackInfoResponse): MediaSourceInfo | undefined {
+  return data.ErrorCode ? undefined : data.MediaSources?.[0];
+}
+
+/**
+ * A hard failure of the current playback that is being handled: the playback is negotiated again one rung down the
+ * ladder, and the answer for the same item with another play session resolves it
+ */
+interface PendingFailure {
+  itemId: string;
+  playSessionId?: string | null;
+  from: PlaybackMethod;
+  reason: PlaybackChangeReason;
 }
 
 /**
@@ -188,6 +235,11 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    */
   private _negotiationId = 0;
   /**
+   * Whether a negotiation asked to replace the playback (see `RenegotiationIntent`) is in flight: one asked later
+   * only to improve the playback takes its place, so it replaces the playback too
+   */
+  private _replacing = false;
+  /**
    * The latest negotiation, for whatever item and version it was started
    */
   private readonly _negotiation = shallowRef<Negotiation>();
@@ -232,6 +284,14 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       && bufferedTo >= target;
   });
 
+  /**
+   * Incremented on every play, so a new play of the same item and version starts Automatic again
+   */
+  private _playGeneration = 0;
+  /**
+   * The hard failure being handled, if any (see `reportPlaybackFailure`)
+   */
+  private _pendingFailure: PendingFailure | undefined;
   /**
    * == GETTERS AND SETTERS ==
    */
@@ -343,6 +403,65 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    * have to be encoded, which quality mode Original forbids (`quality`)
    */
   public readonly currentPlaybackFailure = computed(() => this._currentNegotiation.value?.failure);
+  /**
+   * The quality mode the current playback was negotiated with: the preferred quality and, in Automatic, the level
+   * it runs at
+   */
+  public readonly currentQualityMode = computed(() => this._currentNegotiation.value?.quality);
+  /**
+   * Identifies the current playback (item, version and play)
+   */
+  public readonly currentPlaybackKey = computed(() => this._currentNegotiation.value?.key);
+  /**
+   * The video stream the current playback was negotiated for (undefined for music)
+   */
+  public readonly currentPlayingVideoStream = computed(() => {
+    const index = this._currentNegotiation.value?.verdict.video?.index;
+
+    return isNil(index)
+      ? undefined
+      : this.currentMediaSource.value?.MediaStreams?.find(stream => stream.Type === MediaStreamType.Video && stream.Index === index);
+  });
+
+  /**
+   * The quality menu entry equivalent to what is playing (see `getRunningEntry`), which Automatic shows as its
+   * subtitle. Undefined while nothing plays or no entry is equivalent.
+   */
+  public readonly currentRunningQuality = computed(() => {
+    const negotiation = this._currentNegotiation.value;
+
+    if (negotiation && !negotiation.failure) {
+      const size = playbackObservations.videoSize.value;
+
+      return getRunningEntry(
+        this.currentPlayingVideoStream.value,
+        negotiation.actualMethod,
+        getModeLevel(negotiation.quality),
+        size && { Width: size.width, Height: size.height }
+      );
+    }
+  });
+
+  /**
+   * What a hard failure of the current playback would teach and which method would come next (see
+   * `getFailureStep`), for the "try another method" action. Undefined while nothing plays.
+   */
+  public readonly currentFailureStep = computed(() => {
+    const negotiation = this._currentNegotiation.value;
+
+    if (negotiation && !negotiation.failure) {
+      return getFailureStep({
+        method: negotiation.actualMethod,
+        asked: negotiation.verdict.method,
+        video: negotiation.verdict.video,
+        audio: negotiation.verdict.audio,
+        mediaType: negotiation.mediaType,
+        mode: negotiation.quality,
+        policy: getPlaybackPolicy()
+      });
+    }
+  });
+
   /**
    * Current tracks. They're read and written as absolute `MediaStream.Index` values
    * (see `PlaybackManagerState.mediaSourceIndexes` for the meaning of `undefined` and `-1`).
@@ -592,52 +711,130 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   };
 
   /**
+   * Why the server's answer must not be played, if it mustn't: it plays nothing (`unplayable`), or it encodes
+   * something, which quality mode Original forbids (`quality`)
+   */
+  private readonly _getAnswerFailure = (actualMethod: PlaybackMethod): Negotiation['failure'] => {
+    if (actualMethod === 'Unplayable') {
+      return 'unplayable';
+    }
+
+    if ((actualMethod === 'TranscodeAudio' || actualMethod === 'TranscodeVideo') && playbackSettings.quality.value === 'original') {
+      return 'quality';
+    }
+  };
+
+  /**
+   * Whether the playback in progress goes on instead of taking the result of a negotiation (see
+   * `keepsCurrentPlayback`). When it does, Automatic goes back to the state that playback runs at, so later failures and
+   * the user's "try another method" act on that playback.
+   *
+   * @param intent - Why it was negotiated (a negotiation in flight that replaces the playback makes it `replace`)
+   * @param negotiation - What was negotiated
+   * @param outcome - What the negotiation gave
+   */
+  private readonly _keepsPlayback = (
+    intent: RenegotiationIntent,
+    negotiation: Pick<Negotiation, 'itemId' | 'mediaSourceId' | 'key'>,
+    outcome: RenegotiationOutcome
+  ): boolean => {
+    const playing = this._currentNegotiation.value;
+    const works = !isNil(playing) && !isNil(playing.data) && !playing.failure
+      && playing.itemId === negotiation.itemId && playing.mediaSourceId === negotiation.mediaSourceId;
+
+    if (!keepsCurrentPlayback(intent, { playing: works, outcome }) || isNil(playing)) {
+      return false;
+    }
+
+    if (playing.autoState && playing.key === negotiation.key) {
+      restoreAutoState(playing.key, playing.autoState);
+    }
+
+    console.warn(`The playback goes on as it was: trying to improve it gave ${outcome === 'failed' ? 'no answer' : 'nothing playable'}`);
+
+    return true;
+  };
+
+  /**
+   * Stops handling the change of method under way for a playback, if any (see `_startFailure`): later failures of
+   * that playback, and the user's "try another method", are handled again
+   */
+  private readonly _dropPendingFailure = (negotiation: Negotiation): void => {
+    if (this._pendingFailure?.itemId === negotiation.itemId && this._pendingFailure.playSessionId === negotiation.data?.PlaySessionId) {
+      this._pendingFailure = undefined;
+    }
+  };
+
+  /**
    * Negotiates the playback of the current item and media source with the selected tracks: computes the
    * verdict and, unless nothing can play, asks the server for exactly that. Only the latest negotiation is
    * kept: the answer of an older one that arrives later is dropped.
    *
+   * Whoever asks for it says why (see `RenegotiationIntent`): one that only tries to improve a playback that works,
+   * and gives nothing playable or no answer, leaves that playback as it is.
+   *
    * Reads the item objects without depending on them: they're replaced every time their data is refreshed
    * (for example, when the server notifies changes in the user data right after the playback start is
    * reported), and re-negotiating then would get a new play session and reload the stream.
+   *
+   * @param intent - Why it's negotiated
    */
-  private readonly _negotiate = async (): Promise<void> => {
+  private readonly _negotiate = async (intent: RenegotiationIntent): Promise<void> => {
     const id = ++this._negotiationId;
     const item = this.currentItem.value;
     const mediaSource = this.currentMediaSource.value;
     const userId = remote.auth.currentUserId.value;
     const mediaType = item?.MediaType;
 
+    this._replacing ||= intent === 'replace';
+
+    const effectiveIntent: RenegotiationIntent = this._replacing ? 'replace' : 'improve';
+
     if (!item?.Id || !mediaSource?.Id || !userId || (mediaType !== 'Video' && mediaType !== 'Audio')) {
+      this._replacing = false;
       this._negotiation.value = undefined;
 
       return;
     }
 
+    const key = `${item.Id}|${mediaSource.Id}|${this._playGeneration}`;
+    const target = { itemId: item.Id, mediaSourceId: mediaSource.Id, key };
+
     try {
       const selection = this._currentSelection.value;
+      const videoStreams = mediaSource.MediaStreams?.filter(stream => stream.Type === MediaStreamType.Video) ?? [];
+      const video = videoStreams.find(stream => stream.Index === selection?.video) ?? videoStreams[0];
+      const quality = getPlaybackQualityMode(key, video);
+      const autoState = quality.type === 'auto' ? getCurrentAutoState(key) : undefined;
       const verdict = await getMediaSourceVerdict(item, mediaSource, {
         videoStreamIndex: selection?.video,
         audioStreamIndex: selection?.audio,
         subtitleStreamIndex: selection?.subtitle
-      });
+      }, { quality });
 
       if (id !== this._negotiationId) {
         return;
       }
 
-      const negotiation = { itemId: item.Id, mediaSourceId: mediaSource.Id, mediaType, verdict };
+      const negotiation = { itemId: item.Id, mediaSourceId: mediaSource.Id, mediaType, key, quality, autoState, verdict };
 
-      // Nothing is requested that would make the server start a transcode no one can play
+      /**
+       * Nothing is requested that would make the server start a transcode no one can play. When only quality mode
+       * Original stands in the way (a method it forbids would play), that's what the user is told.
+       */
       if (verdict.method === 'Unplayable') {
-        this._negotiation.value = { ...negotiation, actualMethod: 'Unplayable', failure: 'unplayable' };
+        const failure = verdict.reasons.includes('NotAllowedByQuality') ? 'quality' : 'unplayable';
+
+        this._replacing = false;
+
+        if (!this._keepsPlayback(effectiveIntent, target, 'unplayable')) {
+          this._negotiation.value = { ...negotiation, actualMethod: 'Unplayable', failure };
+        }
 
         return;
       }
 
-      // A source without any stream metadata (live TV, .strm, remote) is played directly, blindly
-      const request = verdict.video || verdict.audio
-        ? buildPlaybackRequest(verdict, mediaSource, SUBTITLE_RENDERERS)
-        : buildOptimisticRequest(mediaSource, mediaType, SUBTITLE_RENDERERS);
+      const request = buildPlaybackRequest(verdict, mediaSource, SUBTITLE_RENDERERS);
       const { data } = await remote.sdk.newUserApi(getMediaInfoApi).getPostedPlaybackInfo({
         itemId: item.Id,
         playbackInfoDto: {
@@ -652,27 +849,43 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
         return;
       }
 
-      const negotiated = data.ErrorCode ? undefined : data.MediaSources?.[0];
+      const negotiated = getAnswerSource(data);
       const actualMethod = negotiated ? deriveActualMethod(negotiated) : 'Unplayable';
-      const encodes = actualMethod === 'TranscodeAudio' || actualMethod === 'TranscodeVideo';
-      let failure: Negotiation['failure'];
+      const failure = this._getAnswerFailure(actualMethod);
 
-      if (actualMethod === 'Unplayable') {
-        failure = 'unplayable';
-      } else if (encodes && playbackSettings.quality.value === 'original') {
-        failure = 'quality';
+      /**
+       * The next verdict for these streams starts at the method the server needed. An answer without a media source (an
+       * error code, which the server also sends for a media source id it does not know) teaches nothing.
+       */
+      if (negotiated && isMoreExpensive(actualMethod, verdict.method)) {
+        recordPlaybackOutcome(verdict, { actualMethod });
       }
 
-      // The next verdict for these streams starts at the method the server needed
-      if (isMoreExpensive(actualMethod, verdict.method)) {
-        recordPlaybackOutcome(verdict, { actualMethod });
+      this._replacing = false;
+
+      if (failure && this._keepsPlayback(effectiveIntent, target, 'unplayable')) {
+        return;
       }
 
       this._negotiation.value = { ...negotiation, data, actualMethod, failure };
     } catch {
       if (id === this._negotiationId) {
-        this._state.value.status = PlaybackStatus.Error;
-        useSnackbar(i18next.t('cantPlayItem'), 'error');
+        this._replacing = false;
+
+        if (!this._keepsPlayback(effectiveIntent, target, 'failed')) {
+          const playing = this._currentNegotiation.value;
+
+          this._state.value.status = PlaybackStatus.Error;
+          useSnackbar(i18next.t('cantPlayItem'), 'error');
+
+          /**
+           * No answer resolves the change of method under way (a rung of the ladder, "try another method"): it's
+           * dropped, so the user can try again on the playback that is still there
+           */
+          if (playing) {
+            this._dropPendingFailure(playing);
+          }
+        }
       }
     }
   };
@@ -683,12 +896,162 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    * (see `recordMediaSourceFailure`), which negotiates the playback again another way.
    */
   public readonly reportMediaSourceFailure = async (): Promise<void> => {
-    const negotiation = this._currentNegotiation.value;
+    const negotiation = this._startFailure('hlsCodecError');
     const item = this.currentItem.value;
     const mediaSource = this.currentMediaSource.value;
 
-    if (negotiation && !negotiation.failure && item && mediaSource) {
-      await recordMediaSourceFailure(item, mediaSource, negotiation.verdict);
+    if (negotiation && item && mediaSource) {
+      this._renegotiateAfterFailure(negotiation, await recordMediaSourceFailure(item, mediaSource, negotiation.verdict));
+    }
+  };
+
+  /**
+   * Negotiates again after a hard failure was learned, when that changes the verdict: the learned floor is above the
+   * method the failed verdict asked for, so the next one asks for more. A disproved answer negotiates again by itself
+   * (see `renegotiatingEnvironment`). Otherwise nothing changed, and negotiating again would only repeat the failure.
+   * The floor watcher may negotiate again too: both run as one negotiation.
+   *
+   * Every failure that negotiates again thus raises what is asked for (or disproves an answer, of which there are
+   * few), so the ladder always ends: at worst in an unplayable verdict, which requests nothing and is shown as such.
+   */
+  private readonly _renegotiateAfterFailure = (negotiation: Negotiation, disproved: boolean): void => {
+    const floor = minimumRung(negotiation.verdict.signature);
+
+    if (!disproved && floor !== undefined && isMoreExpensive(floor, negotiation.verdict.method)) {
+      this._renegotiations.value++;
+    }
+  };
+
+  /**
+   * Starts handling a hard failure of the current playback, once per play session: the answer to the negotiation it
+   * causes resolves it (see the negotiation watcher). Returns the negotiation that failed, or undefined when there's
+   * nothing to handle.
+   */
+  private readonly _startFailure = (reason: PlaybackChangeReason): Negotiation | undefined => {
+    const negotiation = this._currentNegotiation.value;
+    const playSessionId = negotiation?.data?.PlaySessionId;
+
+    if (
+      !negotiation
+      || negotiation.failure
+      || (this._pendingFailure?.itemId === negotiation.itemId && this._pendingFailure.playSessionId === playSessionId)
+    ) {
+      return;
+    }
+
+    this._pendingFailure = { itemId: negotiation.itemId, playSessionId, from: negotiation.actualMethod, reason };
+
+    return negotiation;
+  };
+
+  /**
+   * Reports a hard failure of the current playback (or the user's "try another method"): it moves one rung down
+   * the failure ladder (see `getFailureStep`) keeping the playback position, and the failure is learned for the
+   * session, so the next playback of the same streams starts at a method that works. Only the first failure of a play
+   * session counts.
+   *
+   * @param reason - What failed
+   */
+  public readonly reportPlaybackFailure = async (reason: PlaybackChangeReason): Promise<void> => {
+    const negotiation = this._startFailure(reason);
+    const item = this.currentItem.value;
+    const mediaSource = this.currentMediaSource.value;
+
+    if (!negotiation || !item || !mediaSource) {
+      return;
+    }
+
+    const step = getFailureStep({
+      method: negotiation.actualMethod,
+      asked: negotiation.verdict.method,
+      video: negotiation.verdict.video,
+      audio: negotiation.verdict.audio,
+      mediaType: negotiation.mediaType,
+      mode: negotiation.quality,
+      policy: getPlaybackPolicy()
+    });
+    let disproved = false;
+
+    if (step.learn === 'floor') {
+      recordPlaybackOutcome(negotiation.verdict, { failedAt: step.failedAt });
+    } else if (step.learn === 'copied-audio') {
+      disproved = await recordMediaSourceFailure(item, mediaSource, negotiation.verdict);
+    }
+
+    this._renegotiateAfterFailure(negotiation, disproved);
+  };
+
+  /**
+   * Tells the user why the current item can't be played
+   */
+  private readonly _showPlaybackFailure = (negotiation: Negotiation): void => {
+    const { t } = i18next;
+    let dismiss: () => void;
+
+    if (negotiation.failure === 'quality') {
+      dismiss = useSnackbar(t('originalQualityUnavailable'), 'error', {
+        text: t('switchToAutomatic'),
+        onClick: () => {
+          playbackSettings.quality.value = 'auto';
+        }
+      });
+    } else if (negotiation.verdict.reasons.includes('FailedBefore') && negotiation.verdict.method === 'Unplayable') {
+      dismiss = useSnackbar(t('everyPlaybackMethodFailed'), 'error');
+    } else if (negotiation.data && !getAnswerSource(negotiation.data)) {
+      // The server answered without a media source: nothing was learned from it, and asking again may work
+      dismiss = useSnackbar(t('cantPlayItem'), 'error', {
+        text: t('retry'),
+        onClick: () => {
+          if (this.currentItemId.value === negotiation.itemId) {
+            this._renegotiations.value++;
+          }
+        }
+      });
+    } else {
+      dismiss = useSnackbar(t('cantPlayItem'), 'error');
+    }
+
+    /**
+     * The notice is about this negotiation: it goes away when another one replaces it (the quality or the tracks
+     * changed, another item plays, or the playback stopped). The one with a button has no timeout of its own.
+     */
+    const stop = watch(this._currentNegotiation, (current) => {
+      if (current === negotiation) {
+        return;
+      }
+
+      stop();
+      dismiss();
+    });
+  };
+
+  /**
+   * Resolves the hard failure being handled with the answer to the negotiation it caused: the change is recorded and,
+   * if the method changed and the user wants it, a notice tells the user. A negotiation for another item drops it.
+   */
+  private readonly _resolveFailure = (negotiation: Negotiation): void => {
+    const pending = this._pendingFailure;
+
+    if (!pending || (pending.itemId === negotiation.itemId && pending.playSessionId === negotiation.data?.PlaySessionId)) {
+      return;
+    }
+
+    this._pendingFailure = undefined;
+
+    if (pending.itemId !== negotiation.itemId) {
+      return;
+    }
+
+    playbackObservations.lastChange.value = {
+      kind: 'method',
+      reason: pending.reason,
+      from: pending.from,
+      to: negotiation.actualMethod,
+      at: Date.now()
+    };
+
+    if (!negotiation.failure && negotiation.actualMethod !== pending.from && playbackSettings.methodChangeNotices.value) {
+      useSnackbar(i18next.t('playbackMethodChanged', { method: getPlaybackMethodName(i18next.t, negotiation.actualMethod) }), 'info');
     }
   };
 
@@ -859,6 +1222,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
         this.stop();
       }
 
+      this._playGeneration++;
       this._state.value.status = PlaybackStatus.Buffering;
       // A new playback decides its versions again, also for items played before
       this._resolvedSource.value = undefined;
@@ -1414,7 +1778,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
      * the method being played (see below). Only primitive values are watched, so refreshing the
      * item data doesn't re-negotiate. Every source is a getter or a computed: a shallow ref among
      * them would make Vue run the callback whenever any source is re-evaluated, even with the same
-     * values.
+     * values. The result replaces the playback, whatever it is (see `RenegotiationIntent`).
      */
     watch([
       this._currentItemDataId,
@@ -1426,7 +1790,13 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       () => this._currentSelection.value?.subtitle,
       ...renegotiatingEnvironment,
       () => this._renegotiations.value
-    ], this._negotiate, { immediate: true });
+    ], () => this._negotiate('replace'), { immediate: true });
+
+    /**
+     * A step of Automatic (a supervisor moved its state) tries to improve a playback that works: negotiated again, it
+     * replaces the playback only with something playable (see `RenegotiationIntent`)
+     */
+    watch(() => autoQualityRevision.value, () => this._negotiate('improve'));
 
     /**
      * When a playback teaches that the streams being played need more than the method the
@@ -1470,16 +1840,25 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
      * the tracks) carry a new play session, which is passed on with a progress report.
      *
      * The reported playback is cleared whenever the current item changes or the playback
-     * stops, so an answer for an item without it is always a new playback.
+     * stops, so an answer for an item without it is always a new playback. An answer that must not
+     * be played ends the reported playback of its item: it's reported as stopped (a playback reported
+     * as started is always reported as stopped, whatever ends it).
      */
     watch(this._currentNegotiation, async (negotiation) => {
       if (!negotiation) {
         return;
       }
 
+      this._resolveFailure(negotiation);
+
       if (negotiation.failure || !negotiation.data) {
+        // Nothing plays any more: the playback reported as started for this item ends here
+        if (this._reportedPlayback?.itemId === negotiation.itemId) {
+          void this._reportPlaybackStopped();
+        }
+
         this._state.value.status = PlaybackStatus.Error;
-        useSnackbar(i18next.t('cantPlayItem'), 'error');
+        this._showPlaybackFailure(negotiation);
 
         return;
       }
