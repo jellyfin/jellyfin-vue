@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { findQueueItem, getMovedQueue, getPlayedSelection, getPlayNextQueue, getQueuedSelection, getShuffledQueue, getShuffleRemoval, getUnshuffledIndex, getQueueRemoval, getUnplayableItemStep, goesToPreviousItem, isUnplayableItem } from '#/utils/playback-queue.ts';
+import { findQueueItem, getMovedQueue, getPlayedSelection, getPlayNextQueue, getQueuedSelection, getShuffledAddition, getShuffledQueue, getShuffleRemoval, getUnshuffledIndex, getUnshuffledQueue, getQueueRemoval, getUnplayableItemStep, goesToPreviousItem, isUnplayableItem } from '#/utils/playback-queue.ts';
 
 const items = (...ids: string[]) => ids.map(Id => ({ Id }));
 
@@ -266,5 +266,54 @@ describe('getShuffleRemoval', () => {
 
   test('an item that is not in the order before shuffling changes nothing there', () => {
     expect(getShuffleRemoval(['a', 'b'], [0, 1], 0, 'x')).toEqual({ originalQueue: ['a', 'b'], origins: [] });
+  });
+});
+
+describe('getShuffledAddition', () => {
+  test('"add to queue" while shuffled: at the end of the order before shuffling too', () => {
+    // Shuffled ['B', 'D', 'A', 'C'] came from positions [1, 3, 0, 2] of ['A', 'B', 'C', 'D']
+    expect(getShuffledAddition(['A', 'B', 'C', 'D'], [1, 3, 0, 2], 0, 'B', ['X'], 'end')).toEqual({ originalQueue: ['A', 'B', 'C', 'D', 'X'], shuffleOrigins: [1, 3, 0, 2, 4] });
+  });
+
+  test('"add to queue" with unknown positions: still at the end, the positions stay unknown', () => {
+    expect(getShuffledAddition(['A', 'B'], [], 0, 'B', ['X', 'Y'], 'end')).toEqual({ originalQueue: ['A', 'B', 'X', 'Y'], shuffleOrigins: [] });
+  });
+
+  test('"play next" while shuffled: right after the entry that plays, in the order before shuffling too', () => {
+    expect(getShuffledAddition(['A', 'B', 'C', 'D'], [1, 3, 0, 2], 0, 'B', ['X'], 'next')).toEqual({ originalQueue: ['A', 'B', 'X', 'C', 'D'], shuffleOrigins: [] });
+  });
+
+  test('"play next" follows the copy that plays when its item is queued twice', () => {
+    // Playing shuffled entry 1, which came from position 2 (the second 'A')
+    expect(getShuffledAddition(['A', 'B', 'A'], [1, 2, 0], 1, 'A', ['X'], 'next')).toEqual({ originalQueue: ['A', 'B', 'A', 'X'], shuffleOrigins: [] });
+  });
+
+  test('"play next" of items already queued only moves them in the shuffled order: the order before stays', () => {
+    expect(getShuffledAddition(['A', 'B', 'C'], [1, 2, 0], 0, 'B', ['C', 'X'], 'next')).toEqual({ originalQueue: ['A', 'B', 'X', 'C'], shuffleOrigins: [] });
+  });
+
+  test('"play next" when the entry that plays is not in the order before shuffling: at the end', () => {
+    expect(getShuffledAddition(['A', 'B'], [], 0, 'Z', ['X'], 'next')).toEqual({ originalQueue: ['A', 'B', 'X'], shuffleOrigins: [] });
+  });
+});
+
+describe('getUnshuffledQueue', () => {
+  test('the order before shuffling, at the position the current entry came from', () => {
+    expect(getUnshuffledQueue(['A', 'B', 'A', 'C'], [3, 1, 2, 0], 2, 'A')).toEqual({ queue: ['A', 'B', 'A', 'C'], index: 2 });
+  });
+
+  test('the current item is never lost: one missing from the order before shuffling stays, at its end', () => {
+    expect(getUnshuffledQueue(['A', 'B'], [], 1, 'X')).toEqual({ queue: ['A', 'B', 'X'], index: 2 });
+  });
+
+  test('the sequence of the review: "play next" X while shuffled, X plays, shuffle off', () => {
+    const original = ['A', 'B', 'C', 'D'];
+    const shuffled = getShuffledQueue(original, 1, [3, 0, 1, 2], true);
+    const next = getPlayNextQueue(shuffled.queue, shuffled.index, ['X']);
+    const addition = getShuffledAddition(original, shuffled.origins, shuffled.index, 'B', ['X'], 'next');
+
+    expect(next?.queue).toEqual(['B', 'X', 'D', 'A', 'C']);
+    // X plays (index 1 of the shuffled queue); turning shuffle off goes back to the order before, with X after B
+    expect(getUnshuffledQueue(addition.originalQueue, addition.shuffleOrigins, 1, 'X')).toEqual({ queue: ['A', 'B', 'X', 'C', 'D'], index: 2 });
   });
 });

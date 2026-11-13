@@ -59,10 +59,11 @@ import {
   getPlayNextQueue,
   getQueuedSelection,
   getQueueRemoval,
+  getShuffledAddition,
   getShuffledQueue,
   getShuffleRemoval,
   getUnplayableItemStep,
-  getUnshuffledIndex,
+  getUnshuffledQueue,
   goesToPreviousItem,
   isUnplayableItem,
   type ItemSelection
@@ -1517,8 +1518,15 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    */
   public readonly addToQueue = async (item: BaseItemDto, choice?: QueueChoice): Promise<void> => {
     const translatedItem = await this.translateItemsForPlayback(item);
+    const state = this._state.value;
 
-    this._state.value.queue = [...this._state.value.queue, ...translatedItem];
+    this._setQueueState({
+      queue: [...state.queue, ...translatedItem],
+      // While shuffling, the order before shuffling gets them too, so turning shuffle off keeps them
+      ...(state.isShuffling && getShuffledAddition(
+        state.originalQueue, state.shuffleOrigins, state.currentItemIndex, this.currentItemId.value, translatedItem, 'end'
+      ))
+    });
     this._keepQueuedSelection(item, choice);
   };
 
@@ -1655,11 +1663,17 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    */
   public readonly playNext = async (item: BaseItemDto, choice?: QueueChoice): Promise<void> => {
     const translatedItem = await this.translateItemsForPlayback(item);
-    const next = getPlayNextQueue(this._state.value.queue, this.currentItemIndex.value, translatedItem);
+    const state = this._state.value;
+    const next = getPlayNextQueue(state.queue, state.currentItemIndex, translatedItem);
 
     if (next) {
+      // While shuffling, the order before shuffling gets them too, so turning shuffle off keeps them
+      const addition = state.isShuffling
+        ? getShuffledAddition(state.originalQueue, state.shuffleOrigins, state.currentItemIndex, this.currentItemId.value, translatedItem, 'next')
+        : undefined;
+
       // By position: the current item may also be elsewhere in the queue. The positions before shuffling are lost.
-      this._setQueueState({ queue: next.queue, currentItemIndex: next.index, shuffleOrigins: [] });
+      this._setQueueState({ queue: next.queue, currentItemIndex: next.index, shuffleOrigins: [], ...(addition && { originalQueue: addition.originalQueue }) });
       this._keepQueuedSelection(item, choice);
     }
   };
@@ -1785,12 +1799,14 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   public readonly toggleShuffle = async (preserveCurrentItem = true): Promise<void> => {
     if (!isNil(this.currentItemId.value)) {
       if (this._state.value.isShuffling) {
-        const original = this._state.value.originalQueue;
+        // By position: the current item may be in the queue more than once; and it is never lost
+        const unshuffled = getUnshuffledQueue(
+          this._state.value.originalQueue, this._state.value.shuffleOrigins, this._state.value.currentItemIndex ?? -1, this.currentItemId.value
+        );
 
-        // By position: the current item may be in the queue more than once
         this._setQueueState({
-          queue: original,
-          currentItemIndex: getUnshuffledIndex(original, this._state.value.shuffleOrigins, this._state.value.currentItemIndex ?? -1, this.currentItemId.value),
+          queue: unshuffled.queue,
+          currentItemIndex: unshuffled.index,
           originalQueue: [],
           shuffleOrigins: [],
           isShuffling: false

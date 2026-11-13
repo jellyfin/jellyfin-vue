@@ -319,3 +319,57 @@ export function getShuffleRemoval(
     origins: isNil(known) ? [] : origins.toSpliced(removed, 1).map(position => position > origin ? position - 1 : position)
   };
 }
+
+/**
+ * The order before shuffling after items were added while shuffled: they belong to the queue, so they stay when shuffle
+ * is turned off.
+ * - `end` ("add to queue"): at the end, as in the shuffled queue; the known positions get theirs.
+ * - `next` ("play next"): right after the copy of the entry that plays (found by its position, else its first copy;
+ * at the end when it isn't there), since they were asked for after it; items that were queued already only moved in
+ * the shuffled order and stay where they are. "Play next" reorders the shuffled queue, so the positions are lost.
+ *
+ * @param originalQueue - The queue as it was before shuffling
+ * @param origins - The position before shuffling of each shuffled entry; empty when unknown
+ * @param index - The index of the current entry in the shuffled queue
+ * @param itemId - The current item
+ * @param items - The ids added, in order
+ * @param placement - Where they were added in the shuffled queue
+ */
+export function getShuffledAddition(
+  originalQueue: readonly string[],
+  origins: readonly number[],
+  index: number | undefined,
+  itemId: string | undefined,
+  items: readonly string[],
+  placement: 'next' | 'end'
+): { readonly originalQueue: string[]; readonly shuffleOrigins: number[] } {
+  if (placement === 'end') {
+    return {
+      originalQueue: [...originalQueue, ...items],
+      shuffleOrigins: origins.length > 0 ? [...origins, ...items.map((_, position) => originalQueue.length + position)] : []
+    };
+  }
+
+  const added = items.filter(id => id !== itemId && !originalQueue.includes(id));
+  const anchor = isNil(index) || isNil(itemId) ? -1 : getUnshuffledIndex(originalQueue, origins, index, itemId);
+  const at = anchor === -1 ? originalQueue.length : anchor + 1;
+
+  return { originalQueue: originalQueue.toSpliced(at, 0, ...added), shuffleOrigins: [] };
+}
+
+/**
+ * The queue and the current position when shuffle is turned off (see `getUnshuffledIndex`). The current item is never
+ * lost: one that isn't in the order before shuffling stays in the queue, at its end, and keeps playing.
+ *
+ * @param originalQueue - The queue as it was before shuffling
+ * @param origins - The position before shuffling of each shuffled entry; empty when unknown
+ * @param index - The index of the current entry in the shuffled queue
+ * @param itemId - The current item
+ */
+export function getUnshuffledQueue(originalQueue: readonly string[], origins: readonly number[], index: number, itemId: string): PositionedQueue {
+  const unshuffled = getUnshuffledIndex(originalQueue, origins, index, itemId);
+
+  return unshuffled === -1
+    ? { queue: [...originalQueue, itemId], index: originalQueue.length }
+    : { queue: [...originalQueue], index: unshuffled };
+}
