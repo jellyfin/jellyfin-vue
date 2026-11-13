@@ -44,6 +44,7 @@ import { playbackManager } from '#/store/playback-manager.ts';
 import { getItemizedSelect } from '#/utils/forms.ts';
 import type { Verdict } from '#/utils/playback-capabilities/verdict.ts';
 import { getVerdictLabel, type VerdictLabel } from '#/utils/playback-capabilities/verdict-label.ts';
+import { getPlaybackMethodName } from '#/utils/playback-labels.ts';
 
 const { sources, defaultSourceIndex, label, verdicts = [], bestIndex } = defineProps<{
   sources: MediaSourceInfo[];
@@ -89,32 +90,6 @@ const labels = computed(() => sources.map((source, index): VerdictLabel | undefi
 
   return verdict ? getVerdictLabel(verdict, source, actualMethod, failure) : undefined;
 }));
-
-/**
- * The method in words
- */
-function getMethodText(method: VerdictLabel['method']): string {
-  switch (method) {
-    case 'DirectPlay': {
-      return t('playbackMethodDirectPlay');
-    }
-    case 'Remux': {
-      return t('playbackMethodRemux');
-    }
-    case 'TranscodeAudio': {
-      return t('playbackMethodTranscodeAudio');
-    }
-    case 'TranscodeVideo': {
-      return t('playbackMethodTranscodeVideo');
-    }
-    case 'TranscodeVideoAndAudio': {
-      return t('playbackMethodTranscodeVideoAndAudio');
-    }
-    case 'Unplayable': {
-      return t('playbackMethodUnplayable');
-    }
-  }
-}
 
 /**
  * The reason in words
@@ -180,7 +155,7 @@ const descriptions = computed(() => labels.value.map((verdictLabel) => {
     return;
   }
 
-  const method = getMethodText(verdictLabel.method);
+  const method = getPlaybackMethodName(t, verdictLabel.method);
   const reason = getReasonText(verdictLabel);
 
   return reason ? t('playbackMethodWithReason', { method, reason }) : method;

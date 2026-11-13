@@ -1,6 +1,6 @@
 /**
- * Names of the playback methods and of the reasons of a change, for the notices, the quality menu and the playback
- * statistics. The translation function is passed in, so components keep their reactive one.
+ * Names of the playback methods and of the reasons of a change, for the version selector, the notices, the quality menu
+ * and the playback statistics. The translation function is passed in, so components keep their reactive one.
  */
 import type { MediaSourceInfo } from '@jellyfin/sdk/lib/generated-client';
 import type { PlaybackChangeReason } from '#/store/playback-quality.ts';
@@ -10,7 +10,8 @@ import type { PlaybackMethod, Verdict } from '#/utils/playback-capabilities/verd
 type Translate = (key: string, options?: Record<string, unknown>) => string;
 
 /**
- * The name of a playback method, in the words of the version selector
+ * The name of a playback method: the one place that names it, for the version selector, the method-change notice, the
+ * quality menu and the playback statistics
  */
 export function getPlaybackMethodName(t: Translate, method: MethodLabel): string {
   switch (method) {
