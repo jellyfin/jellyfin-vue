@@ -1,0 +1,221 @@
+<template>
+  <Teleport to="body">
+    <aside
+      class="uno-text-xs uno-p-3 uno-rounded uno-bg-background/85 uno-w-[min(26rem,calc(100vw-2rem))] uno-shadow-lg uno-left-4 uno-top-4 uno-fixed uno-z-[10000]"
+      :aria-label="$t('playbackStatistics')"
+      data-playback-statistics=""
+      v-bind="dataAttributes">
+      <div class="uno-mb-2 uno-flex uno-items-center uno-justify-between">
+        <h2 class="uno-text-sm uno-font-medium">
+          {{ $t('playbackStatistics') }}
+        </h2>
+        <button
+          type="button"
+          class="uno-p-1 uno-flex uno-cursor-pointer hover:uno-opacity-80"
+          :aria-label="$t('close')"
+          @click="emit('close')">
+          <JIcon class="i-mdi:close" />
+        </button>
+      </div>
+      <dl class="uno-font-mono uno-gap-x-3 uno-gap-y-1 uno-grid uno-grid-cols-[auto_1fr]">
+        <template
+          v-for="row in rows"
+          :key="row.label">
+          <dt class="uno-opacity-70">
+            {{ row.label }}
+          </dt>
+          <dd class="uno-break-all">
+            {{ row.value }}
+          </dd>
+        </template>
+      </dl>
+      <VSwitch
+        v-model="methodChangeNotices"
+        class="uno-mt-2"
+        color="primary"
+        density="compact"
+        hide-details
+        data-method-change-notices-switch=""
+        :label="$t('methodChangeNotices')" />
+    </aside>
+  </Teleport>
+</template>
+
+<script setup lang="ts">
+import { computed } from 'vue';
+import i18next from 'i18next';
+import { useTranslation } from 'i18next-vue';
+import { playbackManager } from '#/store/playback-manager.ts';
+import { playbackObservations, sessionNetworkEstimate } from '#/store/playback-quality.ts';
+import { playbackSettings } from '#/store/settings/playback.ts';
+import { getModeLevel } from '#/utils/playback-capabilities/quality.ts';
+import type { PlaybackMethod } from '#/utils/playback-capabilities/verdict.ts';
+import { getPlaybackChangeReasonName, getPlaybackMethodName } from '#/utils/playback-labels.ts';
+
+const emit = defineEmits<{ close: [] }>();
+const { t } = useTranslation();
+
+/**
+ * The notices setting, bound to the switch (whose events may carry null, which never replaces the value)
+ */
+const methodChangeNotices = computed<boolean, boolean | null>({
+  get: () => playbackSettings.methodChangeNotices.value,
+  set: (value) => {
+    if (value !== null) {
+      playbackSettings.methodChangeNotices.value = value;
+    }
+  }
+});
+
+/**
+ * The container and codec strings of what the element is fed: the stream hls.js buffers, or the file played
+ * directly (as the verdict asked the browser about it: one content type per stream)
+ */
+const stream = computed(() => {
+  const hlsStream = playbackObservations.hlsStream.value;
+
+  if (playbackManager.currentPlaybackMethod.value !== 'DirectPlay' && hlsStream) {
+    return hlsStream;
+  }
+
+  const types = playbackManager.currentVerdict.value?.signature.split('|') ?? [];
+  const codecOf = (type?: string) => /codecs="([^"]+)"/.exec(type ?? '')?.[1];
+  const video = types.find(type => type.startsWith('video/'));
+  const audio = types.find(type => type.startsWith('audio/'));
+
+  return {
+    container: playbackManager.currentNegotiatedMediaSource.value?.Container ?? undefined,
+    video: codecOf(video),
+    audio: codecOf(audio)
+  };
+});
+
+const mode = computed(() => playbackManager.currentQualityMode.value);
+const level = computed(() => mode.value ? getModeLevel(mode.value) : undefined);
+const modeName = computed(() => {
+  switch (mode.value?.type) {
+    case 'auto': {
+      return t('auto');
+    }
+    case 'original': {
+      return t('original');
+    }
+    case 'fixed': {
+      return t('qualityLevel', { height: mode.value.level });
+    }
+    default: {
+      return '—';
+    }
+  }
+});
+const lastChange = computed(() => playbackObservations.lastChange.value);
+const frames = computed(() => playbackObservations.frames.value);
+const size = computed(() => playbackObservations.videoSize.value);
+const bufferAhead = computed(() => playbackObservations.bufferAhead.value);
+const estimate = computed(() => sessionNetworkEstimate.value);
+
+/**
+ * The name of a method
+ */
+function methodName(method?: PlaybackMethod): string {
+  return method ? getPlaybackMethodName(t, method) : '—';
+}
+
+/**
+ * The last change of method or quality, with its reason
+ */
+const lastChangeText = computed(() => {
+  const change = lastChange.value;
+
+  if (!change) {
+    return '—';
+  }
+
+  const reason = getPlaybackChangeReasonName(t, change.reason);
+
+  return change.kind === 'method'
+    ? `${methodName(change.from)} → ${methodName(change.to)} (${reason})`
+    : `${entryName(change.from)} → ${entryName(change.to)} (${reason})`;
+});
+
+/**
+ * The name of a quality menu entry, as the change records it
+ */
+function entryName(entry: string): string {
+  return entry === 'original' ? t('original') : t('qualityLevel', { height: entry });
+}
+
+/**
+ * A number with its unit, in the language of the app
+ */
+function formatUnit(value: number, unit: string, fractionDigits: number): string {
+  return new Intl.NumberFormat(i18next.language, {
+    style: 'unit',
+    unit,
+    minimumFractionDigits: fractionDigits,
+    maximumFractionDigits: fractionDigits
+  }).format(value);
+}
+
+const rows = computed(() => [
+  {
+    label: t('playbackMethod'),
+    value: t('playbackMethodWithPrediction', {
+      method: methodName(playbackManager.currentPlaybackMethod.value),
+      predicted: methodName(playbackManager.currentVerdict.value?.method)
+    })
+  },
+  { label: t('mediaInfoFileContainer'), value: stream.value.container ?? '—' },
+  { label: t('video'), value: stream.value.video ?? '—' },
+  { label: t('audio'), value: stream.value.audio ?? '—' },
+  { label: t('mediaInfoVideoResolution'), value: size.value ? `${size.value.width}×${size.value.height}` : '—' },
+  {
+    label: t('quality'),
+    value: [
+      modeName.value,
+      playbackManager.currentRunningQuality.value === undefined ? undefined : entryName(String(playbackManager.currentRunningQuality.value))
+    ].filter(Boolean).join(' · ')
+  },
+  { label: t('droppedFrames'), value: frames.value ? `${frames.value.dropped} / ${frames.value.total}` : '—' },
+  { label: t('networkEstimate'), value: estimate.value === undefined ? '—' : formatUnit(estimate.value / 1_000_000, 'megabit-per-second', 2) },
+  { label: t('bufferHealth'), value: bufferAhead.value === undefined ? '—' : formatUnit(bufferAhead.value, 'second', 1) },
+  { label: t('bufferingStalls'), value: String(playbackObservations.stalls.value) },
+  {
+    label: t('lastPlaybackChange'),
+    value: lastChangeText.value
+  }
+]);
+
+/**
+ * The same values as plain `data-*` attributes, so end-to-end tests can read them
+ */
+const dataAttributes = computed<Record<`data-${string}`, string>>(() => {
+  const values: Record<string, string | number | undefined> = {
+    method: playbackManager.currentPlaybackMethod.value,
+    predictedMethod: playbackManager.currentVerdict.value?.method,
+    container: stream.value.container,
+    videoCodec: stream.value.video,
+    audioCodec: stream.value.audio,
+    width: size.value?.width,
+    height: size.value?.height,
+    qualityMode: mode.value?.type,
+    qualityLevel: level.value,
+    runningQuality: playbackManager.currentRunningQuality.value,
+    droppedFrames: frames.value?.dropped,
+    totalFrames: frames.value?.total,
+    bandwidth: estimate.value === undefined ? undefined : Math.round(estimate.value),
+    bufferAhead: bufferAhead.value?.toFixed(2),
+    stalls: playbackObservations.stalls.value,
+    lastChangeKind: lastChange.value?.kind,
+    lastChangeReason: lastChange.value?.reason,
+    lastChangeFrom: lastChange.value?.from,
+    lastChangeTo: lastChange.value?.to,
+    methodChangeNotices: String(playbackSettings.methodChangeNotices.value)
+  };
+
+  return Object.fromEntries(Object.entries(values).map(([name, value]) => [
+    'data-' + name.replaceAll(/[A-Z]/g, letter => '-' + letter.toLowerCase()),
+    value === undefined ? '' : String(value)
+  ]));
+});
+</script>

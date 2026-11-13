@@ -131,11 +131,22 @@
                 <JIcon class="i-mdi:auto-mode uno-mr-4" />
               </template>
             </VListItem>
+            <VListItem
+              :title="$t('playbackStatistics')"
+              data-open-playback-statistics=""
+              @click="openStatistics">
+              <template #prepend>
+                <JIcon class="i-mdi:chart-box-outline uno-mr-4" />
+              </template>
+            </VListItem>
           </VList>
         </VCard>
       </VMenu>
     </VBtn>
   </JTooltip>
+  <PlaybackStatistics
+    v-if="statisticsOpen"
+    @close="statisticsOpen = false" />
 </template>
 
 <script setup lang="ts">
@@ -150,6 +161,7 @@ import { getNoOtherMethodText, getPlaybackMethodName } from '#/utils/playback-la
 
 const menuModel = defineModel<boolean>();
 const { t } = useTranslation();
+const statisticsOpen = shallowRef(false);
 
 /**
  * The name of a quality menu entry
@@ -223,14 +235,6 @@ const blockedBy = computed(() => {
 });
 
 /**
- * The way out of quality mode Original when it forbids the other methods, as its error notice offers
- */
-function switchToAutomatic(): void {
-  menuModel.value = false;
-  playbackSettings.quality.value = 'auto';
-}
-
-/**
  * The method being used, or why no other one can be tried. The next method isn't named: the verdict skips the rungs
  * the browser can't decode, so the rung after the current one isn't necessarily the one that will be used.
  */
@@ -250,6 +254,22 @@ const nextMethodText = computed(() => {
 function tryAnotherMethod(): void {
   menuModel.value = false;
   void playbackManager.reportPlaybackFailure('manual');
+}
+
+/**
+ * The way out of quality mode Original when it forbids the other methods, as its error notice offers
+ */
+function switchToAutomatic(): void {
+  menuModel.value = false;
+  playbackSettings.quality.value = 'auto';
+}
+
+/**
+ * Opens the playback statistics
+ */
+function openStatistics(): void {
+  menuModel.value = false;
+  statisticsOpen.value = true;
 }
 
 const defaultPlaybackSpeeds = Object.freeze([0.5, 0.75, 1, 1.25, 1.5, 2]);
