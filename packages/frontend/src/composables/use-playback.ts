@@ -40,7 +40,9 @@ export function usePlayback() {
   whenever(keys.MediaStop, playbackManager.stop);
   whenever(keys.Exit, playbackManager.stop);
   whenever(keys.MediaTrackNext, playbackManager.setNextItem);
-  whenever(keys.MediaTrackPrevious, playbackManager.setPreviousItem);
+  whenever(keys.MediaTrackPrevious, () => {
+    playbackManager.setPreviousItem();
+  });
   whenever(keys.MediaFastForward, playbackManager.skipForward);
   whenever(keys.MediaRewind, playbackManager.skipBackward);
   whenever(keys.AudioVolumeMute, playbackManager.toggleMute);

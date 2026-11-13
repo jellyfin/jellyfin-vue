@@ -52,7 +52,14 @@ import { getImageInfo } from '#/utils/images.ts';
 import { getMethodChangeNotice, getNoOtherMethodText } from '#/utils/playback-labels.ts';
 import { getMethodChange, getVerdictLabel, type MethodLabel } from '#/utils/playback-capabilities/verdict-label.ts';
 import { getItemRuntime, getStaticStreamUrl } from '#/utils/items.ts';
-import { findQueueItem, getPlayNextQueue, getQueueRemoval, getUnplayableItemStep, isUnplayableItem } from '#/utils/playback-queue.ts';
+import {
+  findQueueItem,
+  getPlayNextQueue,
+  getQueueRemoval,
+  getUnplayableItemStep,
+  goesToPreviousItem,
+  isUnplayableItem
+} from '#/utils/playback-queue.ts';
 import { PREFETCH_BUFFER_AHEAD_S } from '#/utils/playback-capabilities/constants.ts';
 import { buildPlaybackRequest, deriveActualMethod } from '#/utils/playback-capabilities/device-profile.ts';
 import { getFailureStep, type FailureEvidence, type FailureStep, type LessonScope } from '#/utils/playback-capabilities/failure-ladder.ts';
@@ -1515,7 +1522,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    * regardless of runtime.
    */
   public readonly setPreviousItem = (force = false): void => {
-    if (!isNil(this.previousItem) && (force || this.currentTime.value < 5)) {
+    if (goesToPreviousItem(this._previousItemIndex.value, this.queueLength.value, force || this.currentTime.value < 5)) {
       this.currentItemIndex.value = this._previousItemIndex.value;
     }
 

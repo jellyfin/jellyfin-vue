@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { findQueueItem, getPlayNextQueue, getQueueRemoval, getUnplayableItemStep, isUnplayableItem } from '#/utils/playback-queue.ts';
+import { findQueueItem, getPlayNextQueue, getQueueRemoval, getUnplayableItemStep, goesToPreviousItem, isUnplayableItem } from '#/utils/playback-queue.ts';
 
 const items = (...ids: string[]) => ids.map(Id => ({ Id }));
 
@@ -137,5 +137,29 @@ describe('getUnplayableItemStep', () => {
     expect(getUnplayableItemStep({ hasNext: true, skippedInARow: 2, queueLength: 3 })).toBe('next');
     expect(getUnplayableItemStep({ hasNext: true, skippedInARow: 3, queueLength: 3 })).toBe('stop');
     expect(getUnplayableItemStep({ hasNext: true, skippedInARow: 1, queueLength: 1 })).toBe('stop');
+  });
+});
+
+describe('goesToPreviousItem', () => {
+  test('an item before the current one, when going back', () => {
+    expect(goesToPreviousItem(1, 3, true)).toBe(true);
+  });
+
+  test('the first item has none before it: it starts again', () => {
+    // The index before the first item, without repeating all
+    expect(goesToPreviousItem(-1, 3, true)).toBe(false);
+  });
+
+  test('repeating all, the first item goes to the last one', () => {
+    expect(goesToPreviousItem(2, 3, true)).toBe(true);
+  });
+
+  test('not when the current item played long enough to start again', () => {
+    expect(goesToPreviousItem(1, 3, false)).toBe(false);
+  });
+
+  test('nothing current, or an index out of the queue: it starts again', () => {
+    expect(goesToPreviousItem(undefined, 3, true)).toBe(false);
+    expect(goesToPreviousItem(3, 3, true)).toBe(false);
   });
 });

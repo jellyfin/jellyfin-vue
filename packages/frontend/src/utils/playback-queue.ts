@@ -1,6 +1,6 @@
 /**
  * Rules of the playback queue that don't depend on the store: which fetched item is the current one, where items
- * go when they are removed or played next, and what happens with an item that can't be played.
+ * go when they are removed or played next, what "previous" does, and what happens with an item that can't be played.
  *
  * The queue is a list of item ids. The items themselves are fetched asynchronously, so right after the ids change the
  * fetched items may still be those of the previous list: anything that reads them must find them by id.
@@ -137,4 +137,17 @@ export function getUnplayableItemStep(
   { hasNext, skippedInARow, queueLength }: { readonly hasNext: boolean; readonly skippedInARow: number; readonly queueLength: number }
 ): 'next' | 'stop' {
   return hasNext && skippedInARow < queueLength ? 'next' : 'stop';
+}
+
+/**
+ * Whether "previous" moves to another item: the user goes back (see `setPreviousItem`) and the queue has an item at
+ * the previous index (before the current one, or the last one when repeating all). Otherwise the current item starts
+ * again.
+ *
+ * @param previousIndex - The index before the current item's, as the queue counts it
+ * @param queueLength - How many items the queue has
+ * @param goBack - Whether the user goes back to the previous item rather than to the start of the current one
+ */
+export function goesToPreviousItem(previousIndex: number | undefined, queueLength: number, goBack: boolean): boolean {
+  return goBack && !isNil(previousIndex) && previousIndex >= 0 && previousIndex < queueLength;
 }

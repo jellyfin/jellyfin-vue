@@ -24,7 +24,7 @@
         <VBtn
           icon
           size="large"
-          @click.passive="playbackManager.setPreviousItem">
+          @click.passive="playbackManager.setPreviousItem()">
           <JIcon class="i-mdi:skip-previous uno-text-lg" />
         </VBtn>
         <VBtn
