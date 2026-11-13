@@ -1,4 +1,5 @@
 import { describe, expect, test } from 'vitest';
+import { audioStream, mediaSource, probedAudio, probeOk, RENDERERS } from './fixtures.ts';
 import {
   getFailureLesson,
   getFailureStep,
@@ -11,8 +12,10 @@ import {
   type FailureStep,
   type FailureStepInput
 } from '#/utils/playback-capabilities/failure-ladder.ts';
+import type { CapabilityAnswer, CapabilityOracle } from '#/utils/playback-capabilities/oracle.ts';
 import type { QualityMode } from '#/utils/playback-capabilities/quality.ts';
 import {
+  computeVerdict,
   getNextFloor,
   PLAYBACK_RUNGS,
   type PlaybackMethod,
@@ -403,5 +406,45 @@ describe('getFailureStep: the policy follows the type of item the server sees', 
 
   test.each(cases)('%s', (_, input, expected) => {
     expect(getFailureStep(input)).toEqual(expected);
+  });
+});
+
+describe('what the server answers for an audio-only file in a video library teaches that file only', () => {
+  const plays: CapabilityOracle = {
+    clear: () => {
+      // Nothing to forget
+    },
+    query: (): Promise<CapabilityAnswer> => Promise.resolve({ supported: true, smooth: true, powerEfficient: true })
+  };
+  const probe = probeOk('audio/mp4', [], [probedAudio()]);
+  const movie = { source: mediaSource([audioStream({ Index: 0 })], { Id: 'audio-only-movie', Container: 'mp4' }), probe, mediaType: 'Video' as const };
+  const song = { source: mediaSource([audioStream({ Index: 0 })], { Id: 'song', Container: 'm4a' }), probe, mediaType: 'Audio' as const };
+
+  test('the server plays the movie as a remux (it never plays directly a video item without a video stream): ordinary AAC music still plays directly', async () => {
+    let floors = NO_LEARNED_FLOORS;
+    const verdictFor = async (item: typeof movie | typeof song, key: string) => computeVerdict({
+      ...item,
+      oracle: plays,
+      environment: {
+        hdrDisplay: undefined,
+        hdrMode: 'browser',
+        canSelectAudioTrack: false,
+        quality: { type: 'auto' },
+        policy: {},
+        getLearnedFloor: signature => getScopedFloor(floors, signature, key),
+        subtitleRenderers: RENDERERS,
+        hlsDelivery: 'media-source'
+      }
+    });
+    const first = await verdictFor(movie, 'audio-only-movie|audio-only-movie');
+    // What the manager records for an answer with a media source whose method is more expensive (`recordServerChoice`)
+    const floor = getNextFloor(first, { actualMethod: 'Remux' });
+
+    floors = floor ? learnSourceFloor(floors, 'audio-only-movie|audio-only-movie', floor) : floors;
+
+    const music = await verdictFor(song, 'song|song');
+    const again = await verdictFor(movie, 'audio-only-movie|audio-only-movie');
+
+    expect([first.method, music.signature === first.signature, music.method, again.method]).toEqual(['DirectPlay', true, 'DirectPlay', 'Remux']);
   });
 });
