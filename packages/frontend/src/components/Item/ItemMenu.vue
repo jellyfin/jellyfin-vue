@@ -94,7 +94,17 @@ const openMenu = shallowRef<string>();
 </script>
 
 <script setup lang="ts">
-const { item, outlined, zIndex = 1000, queue, mediaSourceIndex, playbackMediaSourceIndex } = defineProps<{
+const {
+  item,
+  outlined,
+  zIndex = 1000,
+  queue,
+  mediaSourceIndex,
+  playbackMediaSourceIndex,
+  videoTrackIndex,
+  audioTrackIndex,
+  subtitleTrackIndex
+} = defineProps<{
   item: BaseItemDto;
   outlined?: boolean;
   zIndex?: number;
@@ -109,6 +119,14 @@ const { item, outlined, zIndex = 1000, queue, mediaSourceIndex, playbackMediaSou
    * most compatible one.
    */
   playbackMediaSourceIndex?: number;
+  /**
+   * Tracks to play with `playbackMediaSourceIndex` (they belong to that version, so they're ignored without it), as
+   * absolute `MediaStream.Index` values, like the play button's. Leave them undefined to let the server pick the
+   * defaults; `-1` disables the subtitles.
+   */
+  videoTrackIndex?: number;
+  audioTrackIndex?: number;
+  subtitleTrackIndex?: number;
 }>();
 
 const emit = defineEmits<{
@@ -215,13 +233,19 @@ const pushToBottomOfQueueAction = {
  * when the item is played (not when it's a folder whose children are played)
  */
 const playedMediaSourceIndex = computed(() => item.IsFolder ? undefined : playbackMediaSourceIndex);
+/**
+ * The version and tracks every entry that plays this item asks for, so it plays what the page shows
+ */
+const playedSelection = computed(() => isNil(playedMediaSourceIndex.value)
+  ? {}
+  : { mediaSourceIndex: playedMediaSourceIndex.value, videoTrackIndex, audioTrackIndex, subtitleTrackIndex });
 const playFromBeginningAction = {
   title: t('playFromBeginning'),
   icon: 'i-mdi:replay',
   action: async (): Promise<void> => {
     await playbackManager.play({
       item: item,
-      mediaSourceIndex: playedMediaSourceIndex.value
+      ...playedSelection.value
     });
   }
 };
@@ -231,7 +255,7 @@ const shuffleAction = {
   action: async (): Promise<void> => {
     await playbackManager.play({
       item: item,
-      mediaSourceIndex: playedMediaSourceIndex.value,
+      ...playedSelection.value,
       initiator: item,
       startShuffled: true
     });

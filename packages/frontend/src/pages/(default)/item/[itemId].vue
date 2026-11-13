@@ -67,7 +67,10 @@
             <ItemMenu
               :item="item"
               :media-source-index="currentSourceIndex"
-              :playback-media-source-index="isResolvingVersion ? undefined : currentSourceIndex" />
+              :playback-media-source-index="isResolvingVersion ? undefined : currentSourceIndex"
+              :video-track-index="currentVideoTrack"
+              :audio-track-index="displayedAudioTrack"
+              :subtitle-track-index="displayedSubtitleTrack" />
           </VRow>
           <VCol
             cols="12"
