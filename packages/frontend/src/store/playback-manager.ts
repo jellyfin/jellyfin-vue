@@ -148,6 +148,11 @@ interface Negotiation {
    */
   lateProbes: number;
   /**
+   * Whether the media source's streams were known when its verdict was computed: a .strm before its first play has
+   * none (the server probes it when it is negotiated)
+   */
+  streamsKnown: boolean;
+  /**
    * Identifies the playback (item, version and play), for the state of Automatic
    */
   key: string;
@@ -174,6 +179,13 @@ interface Negotiation {
    * encodes something, which quality mode Original forbids (`quality`)
    */
   failure?: 'unplayable' | 'quality';
+}
+
+/**
+ * Whether the server reports any video or audio stream of a media source
+ */
+function hasPlayableStreams(source: MediaSourceInfo | undefined): boolean {
+  return source?.MediaStreams?.some(stream => stream.Type === MediaStreamType.Video || stream.Type === MediaStreamType.Audio) ?? false;
 }
 
 /**
@@ -850,7 +862,18 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
         return;
       }
 
-      const negotiation = { id, itemId: item.Id, mediaSourceId: mediaSource.Id, mediaType, lateProbes, key, quality, autoState, verdict };
+      const negotiation = {
+        id,
+        itemId: item.Id,
+        mediaSourceId: mediaSource.Id,
+        mediaType,
+        lateProbes,
+        streamsKnown: hasPlayableStreams(mediaSource),
+        key,
+        quality,
+        autoState,
+        verdict
+      };
 
       /**
        * Nothing is requested that would make the server start a transcode no one can play. When only quality mode
@@ -1909,6 +1932,9 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
      * `_correctWithLateProbe`). Checked once per negotiation and probe: a negotiation in flight is checked when it is
      * answered, so the probe that arrived meanwhile is not lost. Not while paused: a new source starts playing by itself
      * (the media element autoplays), so a paused playback is corrected when it resumes.
+     *
+     * A source nobody knew the streams of (a .strm before its first play, played blindly) is probed by the server when
+     * it is negotiated: once the item's data shows its streams, it is checked too, which probes it.
      */
     watch(() => {
       const negotiation = this._currentNegotiation.value;
@@ -1918,8 +1944,9 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       }
 
       const count = getLateProbeCount(negotiation.itemId);
+      const streamsLearnt = !negotiation.streamsKnown && hasPlayableStreams(this.currentMediaSource.value);
 
-      return count > negotiation.lateProbes ? `${negotiation.id}|${count}` : undefined;
+      return count > negotiation.lateProbes || streamsLearnt ? `${negotiation.id}|${count}|${streamsLearnt}` : undefined;
     }, (check) => {
       const negotiation = this._currentNegotiation.value;
 
