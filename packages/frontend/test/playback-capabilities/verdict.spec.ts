@@ -122,7 +122,7 @@ function noFloor(_signature: string): PlaybackMethod | undefined {
 
 const defaultEnvironment: VerdictEnvironment = {
   hdrDisplay: undefined,
-  hdrMode: 'auto',
+  hdrMode: 'display',
   canSelectAudioTrack: false,
   quality: { type: 'auto' },
   policy: {},
@@ -558,10 +558,10 @@ describe('HDR video on an SDR display', () => {
   };
   const hdrBrowser: FakeBrowser = fullBrowser;
   const cases: [string, Partial<VerdictEnvironment>, PlaybackMethod][] = [
-    ['in automatic HDR mode the server tone-maps it: video transcode', { hdrDisplay: false, hdrMode: 'auto' }, 'TranscodeVideo'],
+    ['in the display\'s HDR mode the server tone-maps it: video transcode', { hdrDisplay: false, hdrMode: 'display' }, 'TranscodeVideo'],
     ['when the browser is left to adapt it, nothing changes', { hdrDisplay: false, hdrMode: 'browser' }, 'DirectPlay'],
-    ['when the engine cannot tell the display, nothing changes', { hdrDisplay: undefined, hdrMode: 'auto' }, 'DirectPlay'],
-    ['on an HDR display, nothing changes', { hdrDisplay: true, hdrMode: 'auto' }, 'DirectPlay']
+    ['when the engine cannot tell the display, nothing changes', { hdrDisplay: undefined, hdrMode: 'display' }, 'DirectPlay'],
+    ['on an HDR display, nothing changes', { hdrDisplay: true, hdrMode: 'display' }, 'DirectPlay']
   ];
 
   test.each(cases)('%s', async (_, environment, expected) => {

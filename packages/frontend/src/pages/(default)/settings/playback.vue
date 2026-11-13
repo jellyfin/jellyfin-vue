@@ -199,7 +199,7 @@ const qualityKinds = computed(() => [
 ]);
 const hdrModes = computed<{ value: HdrMode; label: string; description: string }[]>(() => [
   { value: 'browser', label: t('hdrModeBrowser'), description: t('hdrModeBrowserHelp') },
-  { value: 'auto', label: t('hdrModeDisplay'), description: t('hdrModeDisplayHelp') }
+  { value: 'display', label: t('hdrModeDisplay'), description: t('hdrModeDisplayHelp') }
 ]);
 
 /**

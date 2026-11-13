@@ -111,9 +111,9 @@ export interface VerdictEnvironment {
    */
   readonly hdrDisplay: boolean | undefined;
   /**
-   * `auto`: HDR video on an SDR display is tone-mapped by the server; `browser`: the browser adapts it
+   * `display`: HDR video on an SDR display is tone-mapped by the server; `browser`: the browser adapts it
    */
-  readonly hdrMode: 'auto' | 'browser';
+  readonly hdrMode: 'display' | 'browser';
   /**
    * Whether the media element exposes working `audioTracks`, so it can switch audio tracks of a file
    */
@@ -592,7 +592,7 @@ function getVideoRequirements(evaluation: Evaluation): [PlaybackRung, VerdictRea
     requirements.push(['TranscodeVideo', 'SubtitleBurnIn']);
   }
 
-  if (environment.hdrDisplay === false && environment.hdrMode === 'auto' && getHdrFields(video.stream, video.probed)) {
+  if (environment.hdrDisplay === false && environment.hdrMode === 'display' && getHdrFields(video.stream, video.probed)) {
     requirements.push(['TranscodeVideo', 'HdrOnSdrDisplay']);
   }
 

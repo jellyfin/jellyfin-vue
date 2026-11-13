@@ -16,7 +16,7 @@ import type { VerdictEnvironment } from '#/utils/playback-capabilities/verdict.t
 /**
  * What happens with HDR video on a display that is not HDR:
  * - `browser`: it is played as is and the browser adapts it
- * - `auto`: it depends on the display; on an SDR display the server converts it (tone mapping), which transcodes
+ * - `display`: it depends on the display; on an SDR display the server converts it (tone mapping), which transcodes
  * the video and needs tone mapping enabled on the server
  */
 export type HdrMode = VerdictEnvironment['hdrMode'];
@@ -58,7 +58,7 @@ const DEFAULT_STATE: Readonly<PlaybackSettingsState> = Object.freeze({
  * Whether a value is one of the HDR modes
  */
 function isHdrMode(value: unknown): value is HdrMode {
-  return value === 'browser' || value === 'auto';
+  return value === 'browser' || value === 'display';
 }
 
 /**
