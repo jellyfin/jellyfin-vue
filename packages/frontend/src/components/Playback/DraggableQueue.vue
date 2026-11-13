@@ -49,9 +49,9 @@ import { playbackManager } from '#/store/playback-manager.ts';
 /**
  * Reorder the queue
  */
-function onReorder(event: { item: BaseItemDto; newIndex: number }): void {
+function onReorder(event: { item: BaseItemDto; oldIndex: number; newIndex: number }): void {
   if (event.item.Id) {
-    playbackManager.changeItemPosition(event.item.Id, event.newIndex);
+    playbackManager.changeItemPosition(event.item.Id, event.newIndex, event.oldIndex);
   }
 }
 

@@ -54,11 +54,15 @@ import { getMethodChange, getVerdictLabel, type MethodLabel } from '#/utils/play
 import { getItemRuntime, getStaticStreamUrl } from '#/utils/items.ts';
 import {
   findQueueItem,
+  getMovedQueue,
   getPlayedSelection,
   getPlayNextQueue,
   getQueuedSelection,
   getQueueRemoval,
+  getShuffledQueue,
+  getShuffleRemoval,
   getUnplayableItemStep,
+  getUnshuffledIndex,
   goesToPreviousItem,
   isUnplayableItem,
   type ItemSelection
@@ -156,6 +160,12 @@ interface PlaybackManagerState {
   repeatMode: RepeatMode;
   queue: string[];
   originalQueue: string[];
+  /**
+   * While shuffling, the position in `originalQueue` of each entry of `queue` (see `getShuffledQueue`): turning shuffle
+   * off follows the current entry by position, since an item can be queued twice. Empty when unknown (the queue was
+   * reordered while shuffled).
+   */
+  shuffleOrigins: number[];
   /**
    * Version and tracks chosen for items of the queue (on their page, when they were played, played next or added to
    * the queue), by item id (see `getQueuedSelection`). Each applies when its item becomes the current one, as if it
@@ -509,7 +519,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    * would leave when the position was past the end of the shorter queue.
    */
   private readonly _setQueueState = (
-    changes: Partial<Pick<PlaybackManagerState, 'queue' | 'currentItemIndex' | 'originalQueue' | 'isShuffling' | 'queuedSelections'>>
+    changes: Partial<Pick<PlaybackManagerState, 'queue' | 'currentItemIndex' | 'originalQueue' | 'shuffleOrigins' | 'isShuffling' | 'queuedSelections'>>
   ): void => {
     this._state.value = { ...this._state.value, ...changes };
   };
@@ -1469,13 +1479,15 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       return;
     }
 
-    const original = this._state.value.originalQueue;
+    // While shuffling, turning shuffle off must not bring the item back: the copy the removed entry came from goes
+    const shuffleRemoval = this._state.value.isShuffling
+      ? getShuffleRemoval(this._state.value.originalQueue, this._state.value.shuffleOrigins, this._state.value.queue.indexOf(itemId), itemId)
+      : undefined;
 
     this._setQueueState({
       queue: removal.queue,
       currentItemIndex: removal.index,
-      // While shuffling, turning shuffle off must not bring the item back
-      originalQueue: original.includes(itemId) ? original.toSpliced(original.indexOf(itemId), 1) : original,
+      ...(shuffleRemoval && { originalQueue: shuffleRemoval.originalQueue, shuffleOrigins: shuffleRemoval.origins }),
       ...(!removal.queue.includes(itemId) && {
         queuedSelections: Object.fromEntries(Object.entries(this._state.value.queuedSelections).filter(([id]) => id !== itemId))
       })
@@ -1582,10 +1594,11 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    */
   public readonly playNext = async (item: BaseItemDto, choice?: QueueChoice): Promise<void> => {
     const translatedItem = await this.translateItemsForPlayback(item);
-    const newQueue = getPlayNextQueue(this._state.value.queue, this.currentItemIndex.value, translatedItem);
+    const next = getPlayNextQueue(this._state.value.queue, this.currentItemIndex.value, translatedItem);
 
-    if (newQueue) {
-      this.setNewQueue(newQueue);
+    if (next) {
+      // By position: the current item may also be elsewhere in the queue. The positions before shuffling are lost.
+      this._setQueueState({ queue: next.queue, currentItemIndex: next.index, shuffleOrigins: [] });
       this._keepQueuedSelection(item, choice);
     }
   };
@@ -1644,18 +1657,27 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     this._setQueueState({ queue, currentItemIndex: queue.indexOf(this.currentItemId.value) });
   };
 
+  /**
+   * Moves an item of the queue to another position (see `getMovedQueue`). An item can be queued more than once: the
+   * entry moved is the one at `oldIndex` when given (a drag), otherwise the first one; the current item is followed by
+   * its position.
+   */
   public readonly changeItemPosition = (
     itemId: string | undefined,
-    newIndex: number
+    newIndex: number,
+    oldIndex?: number
   ): void => {
-    if (!(itemId && this.queueHasItem(itemId))) {
+    if (!itemId) {
       return;
     }
 
-    const newQueue = this._state.value.queue.filter(id => id !== itemId);
+    const queue = this._state.value.queue;
+    const from = !isNil(oldIndex) && queue[oldIndex] === itemId ? oldIndex : queue.indexOf(itemId);
+    const moved = from === -1 ? undefined : getMovedQueue(queue, this._state.value.currentItemIndex, from, newIndex);
 
-    newQueue.splice(newIndex, 0, itemId);
-    this.setNewQueue(newQueue);
+    if (moved) {
+      this._setQueueState({ queue: moved.queue, currentItemIndex: moved.index, shuffleOrigins: [] });
+    }
   };
 
   public readonly stop = (): void => {
@@ -1702,26 +1724,28 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   public readonly toggleShuffle = async (preserveCurrentItem = true): Promise<void> => {
     if (!isNil(this.currentItemId.value)) {
       if (this._state.value.isShuffling) {
+        const original = this._state.value.originalQueue;
+
+        // By position: the current item may be in the queue more than once
         this._setQueueState({
-          queue: this._state.value.originalQueue,
-          currentItemIndex: this._state.value.originalQueue.indexOf(this.currentItemId.value),
+          queue: original,
+          currentItemIndex: getUnshuffledIndex(original, this._state.value.shuffleOrigins, this._state.value.currentItemIndex ?? -1, this.currentItemId.value),
           originalQueue: [],
+          shuffleOrigins: [],
           isShuffling: false
         });
       } else {
-        const shuffled_queue
-          = await runGenericWorkerFunc('shuffle')(this._state.value.queue) as string[];
+        const queue = this._state.value.queue;
+        const order = await runGenericWorkerFunc('shuffle')(queue.map((_, position) => position)) as number[];
+        const shuffled = getShuffledQueue(queue, this._state.value.currentItemIndex, order, preserveCurrentItem);
 
-        const originalQueue = this._state.value.queue;
-
-        if (preserveCurrentItem) {
-          const itemIndex = shuffled_queue.indexOf(this.currentItemId.value);
-
-          shuffled_queue.splice(itemIndex, 1);
-          shuffled_queue.unshift(this.currentItemId.value);
-        }
-
-        this._setQueueState({ originalQueue, queue: shuffled_queue, currentItemIndex: 0, isShuffling: true });
+        this._setQueueState({
+          originalQueue: queue,
+          queue: shuffled.queue,
+          currentItemIndex: shuffled.index,
+          shuffleOrigins: shuffled.origins,
+          isShuffling: true
+        });
       }
     }
   };
@@ -1887,6 +1911,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
         repeatMode: RepeatMode.RepeatNone,
         queue: [],
         originalQueue: [],
+        shuffleOrigins: [],
         queuedSelections: {},
         playbackInitiatorId: undefined,
         playbackInitMode: InitMode.Unknown,

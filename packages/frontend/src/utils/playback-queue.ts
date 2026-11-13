@@ -85,6 +85,15 @@ export function getQueueRemoval(
 }
 
 /**
+ * A queue of item ids and the index of the current item in it. An item can be in the queue more than once (a
+ * playlist may hold it twice), so the current item is followed by its position, never looked up by id.
+ */
+export interface PositionedQueue {
+  readonly queue: string[];
+  readonly index: number | undefined;
+}
+
+/**
  * The queue after "play next": the items go right after the current item, which stays where it is. Items that were
  * queued already are moved there, not repeated.
  *
@@ -93,7 +102,7 @@ export function getQueueRemoval(
  * @param items - The ids to play next, in order
  * @returns Undefined without a current item
  */
-export function getPlayNextQueue(queue: readonly string[], index: number | undefined, items: readonly string[]): string[] | undefined {
+export function getPlayNextQueue(queue: readonly string[], index: number | undefined, items: readonly string[]): PositionedQueue | undefined {
   const current = isNil(index) ? undefined : queue[index];
 
   if (isNil(current) || isNil(index)) {
@@ -105,7 +114,40 @@ export function getPlayNextQueue(queue: readonly string[], index: number | undef
   const before = queue.slice(0, index).filter(id => !isMoved(id));
   const after = queue.slice(index + 1).filter(id => !isMoved(id));
 
-  return [...before, current, ...moved, ...after];
+  return { queue: [...before, current, ...moved, ...after], index: before.length };
+}
+
+/**
+ * The queue after moving the entry at one position to another; the current item goes on at its new position
+ *
+ * @param queue - The queue of item ids (not mutated)
+ * @param index - The index of the current item, if any
+ * @param from - The position of the entry moved
+ * @param to - Where it goes, in the queue without it
+ * @returns Undefined when `from` is not a position of the queue
+ */
+export function getMovedQueue(queue: readonly string[], index: number | undefined, from: number, to: number): PositionedQueue | undefined {
+  const entry = queue[from];
+
+  if (isNil(entry)) {
+    return;
+  }
+
+  const rest = queue.toSpliced(from, 1);
+  const target = Math.min(Math.max(to, 0), rest.length);
+  let current = index;
+
+  if (!isNil(current)) {
+    if (current === from) {
+      current = target;
+    } else {
+      const withoutEntry = current > from ? current - 1 : current;
+
+      current = withoutEntry >= target ? withoutEntry + 1 : withoutEntry;
+    }
+  }
+
+  return { queue: rest.toSpliced(target, 0, entry), index: current };
 }
 
 /**
@@ -211,4 +253,69 @@ export function getPlayedSelection(
   }
 
   return { source: version.index, sourceId: version.id, video: selection.video, audio: selection.audio, subtitle: selection.subtitle };
+}
+
+/**
+ * The queue shuffled in a given order, with the position each entry had before (`origins`), so turning shuffle off can
+ * follow the current entry by position: an item can be in the queue more than once.
+ *
+ * @param queue - The queue of item ids (not mutated)
+ * @param index - The index of the current entry, if any
+ * @param order - A shuffled list of the queue's positions
+ * @param keepCurrentFirst - Whether the current entry goes first (it keeps playing); otherwise the first entry plays
+ */
+export function getShuffledQueue(
+  queue: readonly string[],
+  index: number | undefined,
+  order: readonly number[],
+  keepCurrentFirst: boolean
+): PositionedQueue & { readonly origins: number[] } {
+  const origins = keepCurrentFirst && !isNil(index) && !isNil(queue[index])
+    ? [index, ...order.filter(position => position !== index)]
+    : [...order];
+
+  return { queue: origins.map(position => queue[position] ?? ''), index: 0, origins };
+}
+
+/**
+ * Where the current entry goes when shuffle is turned off: the position it had before shuffling, when that is known and
+ * still holds its item; otherwise the first copy of the item
+ *
+ * @param originalQueue - The queue as it was before shuffling
+ * @param origins - The position before shuffling of each shuffled entry (see `getShuffledQueue`); empty when unknown
+ * @param index - The index of the current entry in the shuffled queue
+ * @param itemId - The current item
+ */
+export function getUnshuffledIndex(originalQueue: readonly string[], origins: readonly number[], index: number, itemId: string): number {
+  const origin = origins[index];
+
+  return !isNil(origin) && originalQueue[origin] === itemId ? origin : originalQueue.indexOf(itemId);
+}
+
+/**
+ * The order before shuffling after removing a shuffled entry: the copy that entry came from goes (the first copy when the
+ * positions are not known), and the positions of the remaining entries follow
+ *
+ * @param originalQueue - The queue as it was before shuffling
+ * @param origins - The position before shuffling of each shuffled entry; empty when unknown
+ * @param removed - The position of the entry removed in the shuffled queue
+ * @param itemId - Its item
+ */
+export function getShuffleRemoval(
+  originalQueue: readonly string[],
+  origins: readonly number[],
+  removed: number,
+  itemId: string
+): { readonly originalQueue: string[]; readonly origins: number[] } {
+  const known = origins[removed];
+  const origin = !isNil(known) && originalQueue[known] === itemId ? known : originalQueue.indexOf(itemId);
+
+  if (origin === -1) {
+    return { originalQueue: [...originalQueue], origins: [] };
+  }
+
+  return {
+    originalQueue: originalQueue.toSpliced(origin, 1),
+    origins: isNil(known) ? [] : origins.toSpliced(removed, 1).map(position => position > origin ? position - 1 : position)
+  };
 }
