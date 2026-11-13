@@ -3,6 +3,9 @@ import {
   DROPPED_FRAMES_CONSECUTIVE_WINDOWS,
   DROPPED_FRAMES_RATIO,
   FRAMES_STALL_MEDIA_SECONDS,
+  HLS_MANIFEST_RELOADS,
+  HLS_NETWORK_RECOVERY_DELAY_MS,
+  HLS_STREAM_RESUMES,
   NETWORK_LONG_STALL_MS,
   NETWORK_STALL_COUNT,
   NETWORK_STALL_MIN_MS,
@@ -13,6 +16,7 @@ import {
   NETWORK_UP_SUSTAIN_MS
 } from '#/utils/playback-capabilities/constants.ts';
 import {
+  getNetworkRecovery,
   isNotSmooth,
   startNetworkMemory,
   stepFrameProgress,
@@ -347,5 +351,27 @@ describe('stepNetwork, up: the estimate and the buffer keep a margin over the ne
     const up = decisions.find(entry => entry.decision === 'up');
 
     expect(up && up.at - downAt).toBeGreaterThanOrEqual(Math.max(NETWORK_UP_HOLD_MS, NETWORK_UP_SUSTAIN_MS));
+  });
+});
+
+describe('getNetworkRecovery: a stream that stops loading is tried again a bounded number of times, then the playback ends', () => {
+  test('a manifest that failed is loaded again: resuming the load cannot recover it (there is nothing to resume)', () => {
+    expect(getNetworkRecovery('manifest', 0)).toEqual({ action: 'reload', delayMs: HLS_NETWORK_RECOVERY_DELAY_MS });
+  });
+
+  test('a manifest is loaded again up to its bound, each time after twice the wait of the time before', () => {
+    const steps = Array.from({ length: HLS_MANIFEST_RELOADS }, (_, attempt) => getNetworkRecovery('manifest', attempt));
+
+    expect(steps).toEqual(Array.from({ length: HLS_MANIFEST_RELOADS }, (_, attempt) =>
+      ({ action: 'reload', delayMs: HLS_NETWORK_RECOVERY_DELAY_MS * 2 ** attempt })));
+  });
+
+  test('a playlist or fragment that failed (after hls.js\'s own retries) resumes the load where it stopped, keeping what is buffered', () => {
+    expect(getNetworkRecovery('stream', 0)).toEqual({ action: 'resume', delayMs: HLS_NETWORK_RECOVERY_DELAY_MS });
+  });
+
+  test('after the last attempt the playback stops, so the player never stays frozen', () => {
+    expect(getNetworkRecovery('manifest', HLS_MANIFEST_RELOADS)).toEqual({ action: 'stop' });
+    expect(getNetworkRecovery('stream', HLS_STREAM_RESUMES)).toEqual({ action: 'stop' });
   });
 });

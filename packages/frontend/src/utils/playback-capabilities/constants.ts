@@ -256,6 +256,49 @@ export const NETWORK_UP_SUSTAIN_MS = 20_000;
 export const NETWORK_UP_HOLD_MS = 30_000;
 
 /**
+ * Time a cap Automatic moved down from because of buffering stalls is not tried again during the playback, in
+ * milliseconds; it doubles with each step down from that cap.
+ *
+ * Origin: four times {@link NETWORK_UP_HOLD_MS}, the soonest Automatic may move up again after a change. When the
+ * server encodes the upper level slower than real time and the lower one faster, the network estimate at the lower
+ * level keeps the margin, so without a wait the upper level was tried again (a new transcode and a stall each time)
+ * as soon as the margin held: 60 times an hour in hunter C's simulation of that case; with this wait, 5 times.
+ */
+export const NETWORK_RETRY_WAIT_MS = 4 * NETWORK_UP_HOLD_MS;
+
+/**
+ * Times a manifest (master playlist) that hls.js could not load is loaded again before the playback stops with an
+ * error. Counted since the playback last got past the point that failed.
+ *
+ * Origin: hls.js 1.7.3 gives up on a manifest at once when the request fails without an HTTP status (a dropped
+ * connection) and after one retry on a 5xx (`manifestLoadPolicy`), and its `startLoad()` cannot recover a manifest it
+ * never loaded. Measured with failures injected in Chrome: one dropped manifest request froze the playback at 0 s for
+ * good; with these reloads it played on after the first one. Three reloads at {@link HLS_NETWORK_RECOVERY_DELAY_MS},
+ * doubling, wait 7 s in total, in the range of hls.js's own backoff, before the user is told (measured: 11 s from
+ * pressing Play to the error when the manifest always fails).
+ */
+export const HLS_MANIFEST_RELOADS = 3;
+
+/**
+ * Times the load of a media playlist or a fragment that hls.js gave up on is resumed before the playback stops with an
+ * error. Counted since the playback last got past the fragment that failed.
+ *
+ * Origin: hls.js 1.7.3 retries these by itself before the error becomes fatal (measured with failures injected in
+ * Chrome: a fragment that kept failing was asked for six times over 33 s, a single failure of a playlist or a fragment
+ * never reached the app), and each new attempt runs its whole schedule again: one resume covers a stream the server
+ * stopped and restarts on demand, and keeps the time to the error near a minute.
+ */
+export const HLS_STREAM_RESUMES = 1;
+
+/**
+ * Wait before the first new attempt after a fatal network error of hls.js, in milliseconds; it doubles with each
+ * attempt (see {@link HLS_MANIFEST_RELOADS} and {@link HLS_STREAM_RESUMES}).
+ *
+ * Origin: the first step of hls.js 1.7.3's own backoff (`retryDelayMs: 1000` in its load policies).
+ */
+export const HLS_NETWORK_RECOVERY_DELAY_MS = 1000;
+
+/**
  * == QUALITY LADDER ==
  */
 
@@ -268,17 +311,6 @@ export interface QualityLadderEntry {
   readonly width: number;
   readonly bitrate: number;
 }
-
-/**
- * Time a cap Automatic moved down from because of buffering stalls is not tried again during the playback, in
- * milliseconds; it doubles with each step down from that cap.
- *
- * Origin: four times {@link NETWORK_UP_HOLD_MS}, the soonest Automatic may move up again after a change. When the
- * server encodes the upper level slower than real time and the lower one faster, the network estimate at the lower
- * level keeps the margin, so without a wait the upper level was tried again (a new transcode and a stall each time)
- * as soon as the margin held: 60 times an hour in hunter C's simulation of that case; with this wait, 5 times.
- */
-export const NETWORK_RETRY_WAIT_MS = 4 * NETWORK_UP_HOLD_MS;
 
 /**
  * Quality ladder, from highest to lowest. The menu only shows resolutions: the bitrate is internal.

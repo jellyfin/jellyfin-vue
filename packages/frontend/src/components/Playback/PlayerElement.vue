@@ -37,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-import Hls, { ErrorDetails, ErrorTypes, Events, type ErrorData } from 'hls.js';
+import Hls, { ErrorDetails, ErrorTypes, Events, PlaylistLevelType, type ErrorData } from 'hls.js';
 import HlsWorkerUrl from 'hls.js/dist/hls.worker.js?url';
 import { MediaStreamProtocol } from '@jellyfin/sdk/lib/generated-client';
 import { computed, onScopeDispose, watch } from 'vue';
@@ -53,6 +53,7 @@ import {
 import { playbackManager } from '#/store/playback-manager.ts';
 import { playerElement, videoContainerRef } from '#/store/player-element.ts';
 import { getImageInfo } from '#/utils/images.ts';
+import { NO_NETWORK_ATTEMPTS, stepNetworkRecovery, type NetworkAttempts } from '#/utils/playback-capabilities/runtime-signals.ts';
 import { subtitleSettings } from '#/store/settings/subtitle.ts';
 
 interface PlaybackSource {
@@ -132,16 +133,112 @@ const CODEC_ERRORS = new Set<ErrorData['details']>([
 ]);
 
 /**
+ * Network errors that mean the manifest (the master playlist) could not be loaded: resuming the load can't recover
+ * them, since nothing was loaded from it yet
+ */
+const MANIFEST_ERRORS = new Set<ErrorData['details']>([
+  ErrorDetails.MANIFEST_LOAD_ERROR,
+  ErrorDetails.MANIFEST_LOAD_TIMEOUT,
+  ErrorDetails.MANIFEST_PARSING_ERROR
+]);
+
+/**
+ * The attempts to load the current source again after fatal network errors, per kind of failure, counted since the
+ * playback last got past the fragment that failed (any fragment, when no fragment failed)
+ */
+const networkRecovery: { url?: string; attempts: NetworkAttempts; failedFragment?: number; timer?: ReturnType<typeof setTimeout> } = {
+  attempts: NO_NETWORK_ATTEMPTS
+};
+
+/**
+ * Whether an attempt was made since the playback last got past the point that failed
+ */
+const isRecovering = (): boolean => networkRecovery.attempts.manifest + networkRecovery.attempts.stream > 0;
+
+/**
+ * Forgets the attempts, for a new source or once the playback recovered
+ */
+function resetNetworkRecovery(url?: string): void {
+  clearTimeout(networkRecovery.timer);
+  Object.assign(networkRecovery, { url, attempts: NO_NETWORK_ATTEMPTS, failedFragment: undefined, timer: undefined });
+}
+
+/**
+ * A fatal network error of hls.js: the stream stopped loading after hls.js's own retries. It's tried again a bounded
+ * number of times for each kind of failure (`stepNetworkRecovery`), then the playback stops with an error, so the player
+ * never stays frozen.
+ * It never moves down the failure ladder: the network is not a capability of the browser.
+ */
+function onFatalNetworkError(data: ErrorData): void {
+  const source = playbackSource.value;
+  const el = mediaElementRef.value;
+
+  if (!hls || !source?.useHls || !el) {
+    return;
+  }
+
+  if (networkRecovery.url !== source.url) {
+    resetNetworkRecovery(source.url);
+  }
+
+  const failure = MANIFEST_ERRORS.has(data.details) ? 'manifest' : 'stream';
+  const { recovery, attempts } = stepNetworkRecovery(networkRecovery.attempts, failure);
+
+  if (recovery.action === 'stop') {
+    console.error(`hls.js could not load the stream (${data.details}) after ${networkRecovery.attempts[failure]} attempts`);
+    resetNetworkRecovery();
+    useSnackbar(t('playbackNetworkFailed'), 'error');
+    playbackManager.stop();
+
+    return;
+  }
+
+  if (!isRecovering()) {
+    useSnackbar(t('networkError'), 'error');
+  }
+
+  console.error(`fatal network error (${data.details}), trying again in ${recovery.delayMs} ms`);
+  networkRecovery.attempts = attempts;
+  networkRecovery.failedFragment = typeof data.frag?.sn === 'number' ? data.frag.sn : undefined;
+  clearTimeout(networkRecovery.timer);
+  networkRecovery.timer = setTimeout(() => {
+    // The playback moved on meanwhile (another source, or the player closed)
+    if (playbackSource.value?.url !== source.url || hls.media !== el) {
+      return;
+    }
+
+    const position = el.currentTime;
+
+    if (recovery.action === 'reload') {
+      hls.loadSource(source.url);
+      // Loading the source again may reset the element: the playback goes on where it was
+      el.currentTime = position;
+    } else {
+      hls.startLoad(position);
+    }
+  }, recovery.delayMs);
+}
+
+/**
+ * The playback got past the fragment that failed: later network errors start counting again
+ */
+hls?.on(Events.FRAG_BUFFERED, (_event, data) => {
+  const { failedFragment } = networkRecovery;
+
+  if (isRecovering() && data.frag.type === PlaylistLevelType.MAIN
+    && (failedFragment === undefined || (typeof data.frag.sn === 'number' && data.frag.sn > failedFragment))) {
+    resetNetworkRecovery(networkRecovery.url);
+  }
+});
+
+/**
  * Callback for when HLS.js gets an error
  */
 function onHlsError(_event: typeof Hls.Events.ERROR, data: ErrorData): void {
   if (data.fatal && hls) {
     switch (data.type) {
       case ErrorTypes.NETWORK_ERROR: {
-        // Try to recover network error
-        useSnackbar(t('networkError'), 'error');
-        console.error('fatal network error encountered, try to recover');
-        hls.startLoad();
+        onFatalNetworkError(data);
         break;
       }
       case ErrorTypes.MEDIA_ERROR: {
@@ -323,6 +420,7 @@ watch([mediaElementRef, playbackSource], ([el, source], [oldEl, oldSource]) => {
       : undefined;
 
     supervisors.startSource(source?.url);
+    resetNetworkRecovery(source?.url);
     loadSource(el, source);
 
     if (resumeAt) {
@@ -334,6 +432,7 @@ watch([mediaElementRef, playbackSource], ([el, source], [oldEl, oldSource]) => {
 });
 
 onScopeDispose(() => {
+  resetNetworkRecovery();
   detachHls();
   hls?.destroy();
   void detachWebAudio();

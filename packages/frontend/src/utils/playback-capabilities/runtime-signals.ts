@@ -7,6 +7,9 @@ import {
   DROPPED_FRAMES_CONSECUTIVE_WINDOWS,
   DROPPED_FRAMES_RATIO,
   FRAMES_STALL_MEDIA_SECONDS,
+  HLS_MANIFEST_RELOADS,
+  HLS_NETWORK_RECOVERY_DELAY_MS,
+  HLS_STREAM_RESUMES,
   NETWORK_LONG_STALL_MS,
   NETWORK_STALL_COUNT,
   NETWORK_STALL_MIN_MS,
@@ -215,4 +218,67 @@ export function stepNetwork(memory: NetworkMemory, event: NetworkEvent): { memor
   }
 
   return { memory: { ...memory, marginSince }, decision: undefined };
+}
+
+/**
+ * == STREAM LOADING ==
+ */
+
+/**
+ * What stopped loading: the manifest (the master playlist; nothing was loaded from it yet) or the stream it lists
+ * (a media playlist or a fragment)
+ */
+export type LoadFailure = 'manifest' | 'stream';
+
+/**
+ * What to do when a stream stopped loading:
+ * - `reload`: load the source again (a failed manifest leaves nothing to resume)
+ * - `resume`: resume loading where it stopped, keeping what is buffered
+ * - `stop`: stop the playback and tell the user
+ * Network failures never move down the failure ladder: the network is not a capability of the browser.
+ */
+export type NetworkRecovery
+  = | { readonly action: 'reload' | 'resume'; readonly delayMs: number }
+    | { readonly action: 'stop' };
+
+/**
+ * The next step after a stream stopped loading: a manifest is loaded again up to {@link HLS_MANIFEST_RELOADS} times, a
+ * playlist or fragment resumed up to {@link HLS_STREAM_RESUMES} times (hls.js already retried it), each attempt after
+ * twice the wait of the one before (from {@link HLS_NETWORK_RECOVERY_DELAY_MS}); then the playback stops
+ *
+ * @param failure - What stopped loading
+ * @param attempt - Attempts already made since the playback last got past the point that failed
+ */
+export function getNetworkRecovery(failure: LoadFailure, attempt: number): NetworkRecovery {
+  if (attempt >= (failure === 'manifest' ? HLS_MANIFEST_RELOADS : HLS_STREAM_RESUMES)) {
+    return { action: 'stop' };
+  }
+
+  return { action: failure === 'manifest' ? 'reload' : 'resume', delayMs: HLS_NETWORK_RECOVERY_DELAY_MS * 2 ** attempt };
+}
+
+/**
+ * The attempts made for each kind of failure since the playback last got past the point that failed. Each kind has its
+ * own allowance: a manifest reload that succeeded does not spend the resume a stream that fails after it is entitled to.
+ */
+export type NetworkAttempts = Readonly<Record<LoadFailure, number>>;
+
+/**
+ * No attempt made yet: a new source, or a playback that got past the point that failed
+ */
+export const NO_NETWORK_ATTEMPTS: NetworkAttempts = Object.freeze({ manifest: 0, stream: 0 });
+
+/**
+ * One stream loading failure: the next step ({@link getNetworkRecovery} with the attempts of that kind) and the attempts
+ * once it is taken. Bounded: until the playback gets past the point that failed (which starts again from
+ * {@link NO_NETWORK_ATTEMPTS}), at most {@link HLS_MANIFEST_RELOADS} reloads and {@link HLS_STREAM_RESUMES} resumes, then
+ * it stops.
+ *
+ * @param attempts - The attempts made so far
+ * @param failure - What stopped loading
+ */
+export function stepNetworkRecovery(attempts: NetworkAttempts, failure: LoadFailure): { recovery: NetworkRecovery; attempts: NetworkAttempts } {
+  const recovery = getNetworkRecovery(failure, attempts[failure]);
+
+  return { recovery, attempts: recovery.action === 'stop' ? attempts : { ...attempts, [failure]: attempts[failure] + 1 } };
 }
