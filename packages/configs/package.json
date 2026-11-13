@@ -9,7 +9,8 @@
     "./uno": "./src/uno/index.ts",
     "./uno/colors": "./src/uno/colors.ts",
     "./storybook": "./src/storybook.ts",
-    "./x18n": "./src/x18n.ts"
+    "./x18n": "./src/x18n.ts",
+    "./vitest": "./src/vitest.ts"
   },
   "scripts": {
     "check:types": "vue-tsc",
