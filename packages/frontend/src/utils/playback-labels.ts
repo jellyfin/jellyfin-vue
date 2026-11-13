@@ -190,6 +190,9 @@ export function getPlaybackChangeReasonName(t: Translate, reason: PlaybackChange
     case 'manual': {
       return t('playbackChangeManual');
     }
+    case 'lateProbe': {
+      return t('playbackChangeLateProbe');
+    }
     case 'notSmooth': {
       return t('playbackChangeNotSmooth');
     }
@@ -198,6 +201,27 @@ export function getPlaybackChangeReasonName(t: Translate, reason: PlaybackChange
     }
     case 'networkUp': {
       return t('playbackChangeNetworkUp');
+    }
+  }
+}
+
+/**
+ * The notice of a change of method, which follows its cause: a failure is told as a problem, other causes (the user
+ * asked for another method, reading the file showed it needs another one) in the words the playback statistics use
+ *
+ * @param reason - Why the method changed
+ * @param method - The method played now
+ */
+export function getMethodChangeNotice(t: Translate, reason: PlaybackChangeReason, method: MethodLabel): string {
+  const methodName = getPlaybackMethodName(t, method);
+
+  switch (reason) {
+    case 'manual':
+    case 'lateProbe': {
+      return t('playbackMethodChangedBecause', { reason: getPlaybackChangeReasonName(t, reason), method: methodName });
+    }
+    default: {
+      return t('playbackMethodChanged', { method: methodName });
     }
   }
 }

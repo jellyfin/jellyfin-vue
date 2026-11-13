@@ -138,10 +138,12 @@ watch(() => playbackSettings.quality.value, (quality) => {
  * size once the metadata loaded), `noFrames` (no video frame presented since the load while the time advances),
  * `manual` (the user's "try another method")
  * - quality changes of Automatic: `notSmooth`, `networkDown`, `networkUp`
+ * - `lateProbe`: a probe of the file stored after the playback started showed that the method being played relied on a
+ * stream the browser does not play (see `playbackManager`)
  */
 export type PlaybackChangeReason
   = | 'mediaError' | 'hlsMediaError' | 'hlsCodecError' | 'noPicture' | 'noFrames' | 'manual'
-    | 'notSmooth' | 'networkDown' | 'networkUp';
+    | 'notSmooth' | 'networkDown' | 'networkUp' | 'lateProbe';
 
 /**
  * A change of method (after a failure: the methods as the version selector names them) or of quality (a decision of

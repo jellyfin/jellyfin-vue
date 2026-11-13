@@ -28,6 +28,7 @@ import { useSnackbar } from '#/composables/use-snackbar.ts';
 import { remote } from '#/plugins/remote/index.ts';
 import { apiStore } from '#/store/dbs/api/index.ts';
 import {
+  getLateProbeCount,
   getMediaSourceVerdict,
   getPlaybackPolicy,
   getLearnedFloor,
@@ -46,7 +47,7 @@ import {
 } from '#/store/playback-quality.ts';
 import { playbackSettings } from '#/store/settings/playback.ts';
 import { getImageInfo } from '#/utils/images.ts';
-import { getNoOtherMethodText, getPlaybackMethodName } from '#/utils/playback-labels.ts';
+import { getMethodChangeNotice, getNoOtherMethodText } from '#/utils/playback-labels.ts';
 import { getMethodChange, getVerdictLabel, type MethodLabel } from '#/utils/playback-capabilities/verdict-label.ts';
 import { getItemRuntime, getStaticStreamUrl } from '#/utils/items.ts';
 import { findQueueItem, getQueueRemoval } from '#/utils/playback-queue.ts';
@@ -57,6 +58,7 @@ import { getDecodedVideo, getModeLevel, getRunningEntry, getVideoStream, type Qu
 import type { AutoState } from '#/utils/playback-capabilities/quality-auto.ts';
 import {
   keepsCurrentPlayback,
+  shouldCorrectWithLateProbe,
   type RenegotiationIntent,
   type RenegotiationOutcome
 } from '#/utils/playback-capabilities/renegotiation.ts';
@@ -133,9 +135,18 @@ interface PlaybackManagerState {
  * The negotiation of a playback with the server: the verdict it was based on and the server's answer
  */
 interface Negotiation {
+  /**
+   * Which negotiation it is (see `_negotiationId`): while a later one is in flight, this one is being replaced
+   */
+  id: number;
   itemId: string;
   mediaSourceId: string;
   mediaType: 'Video' | 'Audio';
+  /**
+   * How many probes of the item had been stored late when its verdict was computed (see `getLateProbeCount`): a
+   * higher count later means the verdict may not have had the probe it could have now
+   */
+  lateProbes: number;
   /**
    * Identifies the playback (item, version and play), for the state of Automatic
    */
@@ -745,8 +756,8 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
 
   /**
    * Whether the playback in progress goes on instead of taking the result of a negotiation (see
-   * `keepsCurrentPlayback`). When it does, Automatic goes back to the state that playback runs at, so later failures and
-   * the user's "try another method" act on that playback.
+   * `keepsCurrentPlayback`). When it does, Automatic goes back to the state that playback runs at, and a late probe
+   * correction stops being handled, so later failures and the user's "try another method" act on that playback.
    *
    * @param intent - Why it was negotiated (a negotiation in flight that replaces the playback makes it `replace`)
    * @param negotiation - What was negotiated
@@ -767,6 +778,10 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
 
     if (playing.autoState && playing.key === negotiation.key) {
       restoreAutoState(playing.key, playing.autoState);
+    }
+
+    if (this._pendingFailure?.reason === 'lateProbe') {
+      this._dropPendingFailure(playing);
     }
 
     console.warn(`The playback goes on as it was: trying to improve it gave ${outcome === 'failed' ? 'no answer' : 'nothing playable'}`);
@@ -824,6 +839,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       const video = getVideoStream(mediaSource, selection?.video);
       const quality = getPlaybackQualityMode(key, video);
       const autoState = quality.type === 'auto' ? getCurrentAutoState(key) : undefined;
+      const lateProbes = getLateProbeCount(item.Id);
       const verdict = await getMediaSourceVerdict(item, mediaSource, {
         videoStreamIndex: selection?.video,
         audioStreamIndex: selection?.audio,
@@ -834,7 +850,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
         return;
       }
 
-      const negotiation = { itemId: item.Id, mediaSourceId: mediaSource.Id, mediaType, key, quality, autoState, verdict };
+      const negotiation = { id, itemId: item.Id, mediaSourceId: mediaSource.Id, mediaType, lateProbes, key, quality, autoState, verdict };
 
       /**
        * Nothing is requested that would make the server start a transcode no one can play. When only quality mode
@@ -924,6 +940,47 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   };
 
   /**
+   * Corrects the current playback with a probe of its file that was stored after its verdict was computed (owner's
+   * decision, 2026-11-13). The verdict is computed again with the same version, tracks and quality mode; when the
+   * correction applies (see `shouldCorrectWithLateProbe`), the playback is negotiated again (with that verdict: the
+   * probe is stored) and goes on from where it was, like a ladder step, with its own reason for the change. Nothing is
+   * learned: the next verdict for the file is exact anyway. It tries to improve a playback that plays, so if the
+   * correction gives nothing playable, that playback goes on (see `RenegotiationIntent`).
+   *
+   * @param negotiation - The negotiation being played, whose verdict relied on streams nobody could check
+   */
+  private readonly _correctWithLateProbe = async (negotiation: Negotiation): Promise<void> => {
+    const item = this.currentItem.value;
+    const mediaSource = this.currentMediaSource.value;
+
+    if (!item?.Id || item.Id !== negotiation.itemId || mediaSource?.Id !== negotiation.mediaSourceId) {
+      return;
+    }
+
+    const selection = this._currentSelection.value;
+    const verdict = await getMediaSourceVerdict(item, mediaSource, {
+      videoStreamIndex: selection?.video,
+      audioStreamIndex: selection?.audio,
+      subtitleStreamIndex: selection?.subtitle
+    }, { quality: negotiation.quality });
+
+    const pending = this._pendingFailure;
+    const correct = shouldCorrectWithLateProbe({
+      playing: { unverified: negotiation.verdict.unverified, method: negotiation.actualMethod },
+      corrected: { unverified: verdict.unverified, method: verdict.method },
+      // Meanwhile another negotiation may have replaced it (the new one is checked on its own), or it failed
+      changePending: this._currentNegotiation.value !== negotiation
+        || negotiation.id !== this._negotiationId
+        || (pending?.itemId === negotiation.itemId && pending.playSessionId === negotiation.data?.PlaySessionId),
+      paused: this.isPaused.value
+    });
+
+    if (correct && this._startFailure('lateProbe')) {
+      void this._negotiate('improve');
+    }
+  };
+
+  /**
    * Negotiates again after a hard failure was learned, when that changes the verdict: the learned floor is above the
    * method the failed verdict asked for, so the next one asks for more. A disproved answer negotiates again by itself
    * (see `renegotiatingEnvironment`). Otherwise nothing changed, and negotiating again would only repeat the failure.
@@ -948,11 +1005,19 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   private readonly _startFailure = (reason: PlaybackChangeReason): Negotiation | undefined => {
     const negotiation = this._currentNegotiation.value;
     const playSessionId = negotiation?.data?.PlaySessionId;
+    const pending = this._pendingFailure;
+
+    /**
+     * A hard failure outranks a late probe correction under way for the same play session: that correction only tries
+     * to improve the playback and keeps it when it gives nothing playable, so the failure must not wait for it (it
+     * takes its place, and the negotiation it causes replaces the correction's)
+     */
+    const outranksPending = pending?.reason === 'lateProbe' && reason !== 'lateProbe';
 
     if (
       !negotiation
       || negotiation.failure
-      || (this._pendingFailure?.itemId === negotiation.itemId && this._pendingFailure.playSessionId === playSessionId)
+      || (pending?.itemId === negotiation.itemId && pending.playSessionId === playSessionId && !outranksPending)
     ) {
       return;
     }
@@ -1070,7 +1135,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     playbackObservations.lastChange.value = { kind: 'method', reason: pending.reason, ...change, at: Date.now() };
 
     if (!negotiation.failure && playbackSettings.methodChangeNotices.value) {
-      useSnackbar(i18next.t('playbackMethodChanged', { method: getPlaybackMethodName(i18next.t, change.to) }), 'info');
+      useSnackbar(getMethodChangeNotice(i18next.t, pending.reason, change.to), 'info');
     }
   };
 
@@ -1835,6 +1900,31 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     }, (raised) => {
       if (raised) {
         this._renegotiations.value++;
+      }
+    });
+
+    /**
+     * When a probe of the file being played is stored after the verdict of the playback was computed (it missed its
+     * wait) and that verdict relied on streams nobody could check, see whether the probe corrects the playback (see
+     * `_correctWithLateProbe`). Checked once per negotiation and probe: a negotiation in flight is checked when it is
+     * answered, so the probe that arrived meanwhile is not lost. Not while paused: a new source starts playing by itself
+     * (the media element autoplays), so a paused playback is corrected when it resumes.
+     */
+    watch(() => {
+      const negotiation = this._currentNegotiation.value;
+
+      if (!negotiation || negotiation.failure || !negotiation.verdict.unverified || this.isPaused.value) {
+        return;
+      }
+
+      const count = getLateProbeCount(negotiation.itemId);
+
+      return count > negotiation.lateProbes ? `${negotiation.id}|${count}` : undefined;
+    }, (check) => {
+      const negotiation = this._currentNegotiation.value;
+
+      if (check && negotiation) {
+        void this._correctWithLateProbe(negotiation);
       }
     });
 

@@ -1,5 +1,10 @@
 import { describe, expect, test } from 'vitest';
-import { keepsCurrentPlayback, type RenegotiationOutcome } from '#/utils/playback-capabilities/renegotiation.ts';
+import {
+  keepsCurrentPlayback,
+  shouldCorrectWithLateProbe,
+  type LateProbeCheck,
+  type RenegotiationOutcome
+} from '#/utils/playback-capabilities/renegotiation.ts';
 
 describe('keepsCurrentPlayback', () => {
   const outcomes: RenegotiationOutcome[] = ['playable', 'unplayable', 'failed'];
@@ -24,5 +29,52 @@ describe('keepsCurrentPlayback', () => {
       expect(keepsCurrentPlayback('replace', { playing: true, outcome })).toBe(false);
       expect(keepsCurrentPlayback('replace', { playing: false, outcome })).toBe(false);
     }
+  });
+});
+
+describe('shouldCorrectWithLateProbe', () => {
+  /**
+   * An unverified direct play, corrected by the probe to an audio transcode, with nothing else going on
+   */
+  function check(overrides: Partial<LateProbeCheck> = {}): LateProbeCheck {
+    return {
+      playing: { unverified: true, method: 'DirectPlay' },
+      corrected: { unverified: false, method: 'TranscodeAudio' },
+      changePending: false,
+      paused: false,
+      ...overrides
+    };
+  }
+
+  test('an unverified playback whose verified verdict asks for more is corrected', () => {
+    expect(shouldCorrectWithLateProbe(check())).toBe(true);
+    expect(shouldCorrectWithLateProbe(check({ playing: { unverified: true, method: 'Remux' }, corrected: { unverified: false, method: 'TranscodeVideo' } }))).toBe(true);
+  });
+
+  test('a playback whose verdict was verified already is left alone', () => {
+    expect(shouldCorrectWithLateProbe(check({ playing: { unverified: false, method: 'DirectPlay' } }))).toBe(false);
+  });
+
+  test('a recomputed verdict that still relies on streams nobody could check corrects nothing', () => {
+    expect(shouldCorrectWithLateProbe(check({ corrected: { unverified: true, method: 'TranscodeAudio' } }))).toBe(false);
+  });
+
+  test('never towards the same or a cheaper method than the one the server uses', () => {
+    expect(shouldCorrectWithLateProbe(check({ corrected: { unverified: false, method: 'DirectPlay' } }))).toBe(false);
+    // The server already encodes the audio (it chose more than the verdict asked for)
+    expect(shouldCorrectWithLateProbe(check({ playing: { unverified: true, method: 'TranscodeAudio' } }))).toBe(false);
+    expect(shouldCorrectWithLateProbe(check({ playing: { unverified: true, method: 'TranscodeVideo' } }))).toBe(false);
+  });
+
+  test('a corrected verdict that is unplayable keeps the current playback (for example, the policy forbids the transcode)', () => {
+    expect(shouldCorrectWithLateProbe(check({ corrected: { unverified: false, method: 'Unplayable' } }))).toBe(false);
+  });
+
+  test('not while another change is pending', () => {
+    expect(shouldCorrectWithLateProbe(check({ changePending: true }))).toBe(false);
+  });
+
+  test('not while paused: it is corrected when the playback resumes', () => {
+    expect(shouldCorrectWithLateProbe(check({ paused: true }))).toBe(false);
   });
 });
