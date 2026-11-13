@@ -202,6 +202,46 @@ describe('createOracle: the file a stream question is about reaches the fallback
   });
 });
 
+describe('createOracle: an engine may answer according to the display, so the display is part of the question', () => {
+  const hdr10: MediaDecodingConfiguration = {
+    type: 'file',
+    video: { contentType: 'video/mp4; codecs="hvc1.2.4.L153.B0"', width: 3840, height: 2160, bitrate: 20_000_000, framerate: 24, transferFunction: 'pq', colorGamut: 'rec2020', hdrMetadataType: 'smpteSt2086' }
+  };
+
+  test('the same question asked after the display changed is asked again', async () => {
+    const { calls, query } = countingQuery();
+    const oracle = createOracle(query);
+
+    await oracle.query(hdr10, { hdrDisplay: false });
+    await oracle.query(hdr10, { hdrDisplay: true });
+
+    expect(calls).toHaveLength(2);
+  });
+
+  test('on the same display it is remembered, also when the display comes back', async () => {
+    const { calls, query } = countingQuery();
+    const oracle = createOracle(query);
+
+    await oracle.query(hdr10, { hdrDisplay: false });
+    await oracle.query(hdr10, { hdrDisplay: true });
+    await oracle.query(hdr10, { hdrDisplay: false });
+    await oracle.query(hdr10, { hdrDisplay: true });
+
+    expect(calls).toHaveLength(2);
+  });
+
+  test('a display the engine cannot tell is a display of its own', async () => {
+    const { calls, query } = countingQuery();
+    const oracle = createOracle(query);
+
+    await oracle.query(hdr10, { hdrDisplay: undefined });
+    await oracle.query(hdr10, { hdrDisplay: false });
+    await oracle.query(hdr10);
+
+    expect(calls).toHaveLength(2);
+  });
+});
+
 describe('createOracle: browsers that never answer', () => {
   beforeEach(() => {
     vi.useFakeTimers();

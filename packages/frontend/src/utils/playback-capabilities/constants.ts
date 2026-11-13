@@ -88,6 +88,25 @@ export const PROBE_RETRY_DELAY_SECONDS = 0.5;
 export const PROBE_PLAYBACK_WAIT_MS = 3000;
 
 /**
+ * == VERSIONS ==
+ */
+
+/**
+ * Longest wait for the ranking of an item's versions before a playback that did not choose one starts with the
+ * server's first version. The ranking probes every version at once, each waiting at most
+ * {@link PROBE_PLAYBACK_WAIT_MS}, then asks the browser about each.
+ *
+ * Origin: measured in the app (Chrome with network throttling, the three-version test item, nothing stored), from the
+ * first probe request to the PlaybackInfo request: 0.10 s locally, 0.24 s at 20 Mbit/s and 20 ms of latency, 0.61 s
+ * at 5 Mbit/s and 50 ms, 1.87 s at 1.5 Mbit/s and 150 ms, and 2.99 s at 0.4 Mbit/s and 300 ms, where the probe wait
+ * ended the probes. With the probes stored, nothing is read before the browser is asked. The probe wait bounds every
+ * ranking that progresses, and the browser answered every question in at most 15 ms (see
+ * {@link ORACLE_QUERY_TIMEOUT_MS}), so one more second only expires when something stalled, like a browser whose
+ * answers never settle.
+ */
+export const VERSION_RESOLUTION_WAIT_MS = PROBE_PLAYBACK_WAIT_MS + 1000;
+
+/**
  * == RUNTIME SUPERVISION ==
  */
 

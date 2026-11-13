@@ -62,12 +62,15 @@ const browserOracle = createBrowserOracle();
 const disprovenAnswers = shallowReactive(new Set<string>());
 
 /**
- * The app's only capability oracle, so every verdict shares its memoised answers: the browser's, except for the
- * answers playback disproved this session
+ * The app's only capability oracle, so every verdict shares its memoised answers: the browser's, asked on the display
+ * the window is on (an answer does not outlive a change of the dynamic range media query), except for the answers
+ * playback disproved this session
  */
 export const capabilityOracle: CapabilityOracle = {
   query: async (config, context) =>
-    disprovenAnswers.has(getConfigurationKey(config)) ? UNSUPPORTED : browserOracle.query(config, context),
+    disprovenAnswers.has(getConfigurationKey(config))
+      ? UNSUPPORTED
+      : browserOracle.query(config, { ...context, hdrDisplay: hasHDRDisplay.value }),
   clear: () => {
     browserOracle.clear();
     disprovenAnswers.clear();
@@ -245,6 +248,17 @@ export const renegotiatingEnvironment = [
   () => getPlaybackPolicy().EnablePlaybackRemuxing,
   () => canSelectAudioTrack.value,
   () => disprovenAnswers.size
+] as const;
+
+/**
+ * Everything about this client a verdict depends on that may change, for what shows or decides with verdicts outside
+ * a playback (like the ranking of an item's versions): the {@link renegotiatingEnvironment}, the HDR display and the
+ * learned floors
+ */
+export const verdictEnvironmentSources = [
+  ...renegotiatingEnvironment,
+  () => hasHDRDisplay.value,
+  () => JSON.stringify([...learnedFloors])
 ] as const;
 
 /**

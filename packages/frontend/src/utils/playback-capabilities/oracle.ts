@@ -28,6 +28,11 @@ export interface QueryContext {
    * but `canPlayType` asks about a file: the fallback also asks it with the file's own MIME type.
    */
   readonly fileType?: string;
+  /**
+   * Whether the display is HDR when the question is asked (undefined when the engine cannot tell). An engine may answer
+   * HDR questions according to the display, so the same question on another display is another question.
+   */
+  readonly hdrDisplay?: boolean;
 }
 
 /**
@@ -91,6 +96,24 @@ export function getConfigurationKey(config: MediaDecodingConfiguration): string 
 }
 
 /**
+ * The memo key of a question: its configuration, the file it is about (the fallback's answer may depend on it) and the
+ * display it is asked on
+ */
+function getQuestionKey(config: MediaDecodingConfiguration, context: QueryContext | undefined): string {
+  const parts = [getConfigurationKey(config)];
+
+  if (context?.fileType) {
+    parts.push(`of ${context.fileType}`);
+  }
+
+  if (context?.hdrDisplay !== undefined) {
+    parts.push(context.hdrDisplay ? 'on HDR' : 'on SDR');
+  }
+
+  return parts.join(' ');
+}
+
+/**
  * Keeps only the three booleans of an answer
  */
 function normaliseAnswer({ supported, smooth, powerEfficient }: CapabilityAnswer): CapabilityAnswer {
@@ -130,8 +153,8 @@ async function askOnce(
 
 /**
  * Wraps a query function into an oracle:
- * - answers are memoised by {@link getConfigurationKey} and the file the question is about, and concurrent
- * identical questions share one query
+ * - answers are memoised by {@link getConfigurationKey}, the file the question is about and the display it is asked on,
+ * and concurrent identical questions share one query
  * - a rejection means the engine refused the question: the fallback is asked, if any, otherwise it counts as
  * unsupported. A resolved "unsupported" is final.
  * - a question without answer within the timeout counts as unsupported; it is not asked again while pending,
@@ -190,8 +213,7 @@ export function createOracle(query: CapabilityQuery, options: OracleOptions = {}
 
   return {
     query: async (config, context) => {
-      // The fallback's answer may depend on the file, so the same question about another file is another question
-      const key = context?.fileType ? `${getConfigurationKey(config)} of ${context.fileType}` : getConfigurationKey(config);
+      const key = getQuestionKey(config, context);
       let answer = answers.get(key);
 
       if (!answer) {
