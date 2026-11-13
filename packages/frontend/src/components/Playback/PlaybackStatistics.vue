@@ -48,6 +48,7 @@ import { useTranslation } from 'i18next-vue';
 import { playbackManager } from '#/store/playback-manager.ts';
 import { playbackObservations, sessionNetworkEstimate } from '#/store/playback-quality.ts';
 import { playbackSettings } from '#/store/settings/playback.ts';
+import { selectionModel } from '#/utils/forms.ts';
 import { getModeLevel } from '#/utils/playback-capabilities/quality.ts';
 import type { PlaybackMethod } from '#/utils/playback-capabilities/verdict.ts';
 import { getPlaybackChangeReasonName, getPlaybackMethodName, getPlayingMethodName } from '#/utils/playback-labels.ts';
@@ -56,16 +57,9 @@ const emit = defineEmits<{ close: [] }>();
 const { t } = useTranslation();
 
 /**
- * The notices setting, bound to the switch (whose events may carry null, which never replaces the value)
+ * The notices setting, bound to the switch
  */
-const methodChangeNotices = computed<boolean, boolean | null>({
-  get: () => playbackSettings.methodChangeNotices.value,
-  set: (value) => {
-    if (value !== null) {
-      playbackSettings.methodChangeNotices.value = value;
-    }
-  }
-});
+const methodChangeNotices = selectionModel(playbackSettings.methodChangeNotices);
 
 /**
  * The container and codec strings of what the element is fed: the stream hls.js buffers, or the file played

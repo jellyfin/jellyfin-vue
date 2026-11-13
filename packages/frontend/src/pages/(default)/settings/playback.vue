@@ -167,32 +167,18 @@ import {
 } from '@jellyfin/sdk/lib/generated-client';
 import { getLocalizationApi } from '@jellyfin/sdk/lib/utils/api/localization-api';
 import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
-import { computed, ref, shallowRef, toRef, watch, type WritableComputedRef } from 'vue';
+import { computed, ref, shallowRef, toRef, watch } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import { remote } from '#/plugins/remote/index.ts';
 import { useSnackbar } from '#/composables/use-snackbar.ts';
 import { playbackSettings, type HdrMode } from '#/store/settings/playback.ts';
 import { forgetLearnedCompatibility } from '#/store/playback-capabilities.ts';
 import { pick } from '#/utils/data-manipulation.ts';
+import { selectionModel } from '#/utils/forms.ts';
 import { QUALITY_LADDER } from '#/utils/playback-capabilities/constants.ts';
 import type { QualityMenuEntry } from '#/utils/playback-capabilities/quality.ts';
 
 const { t } = useTranslation();
-
-/**
- * Binds a value to a Vuetify selection control (switch, radio group), whose events may carry null when the
- * control has no value. A null never replaces the value.
- */
-function selectionModel<T>(model: { value: T }): WritableComputedRef<T, T | null> {
-  return computed<T, T | null>({
-    get: () => model.value,
-    set: (value) => {
-      if (value !== null) {
-        model.value = value;
-      }
-    }
-  });
-}
 
 /**
  * == QUALITY, VERSIONS AND HDR (playback settings store) ==
