@@ -204,7 +204,7 @@
                       getMediaStreams(currentSource.MediaStreams, 'Video')
                     "
                     type="Video"
-                    :default-stream-index="currentVideoTrack"
+                    :default-stream-index="displayedVideoTrack"
                     :loading="isResolvingVersion"
                     :disabled="isResolvingVersion"
                     @input="(trackIndex) => pickTrack('video', trackIndex)" />
@@ -326,6 +326,7 @@ import { useMediaSourceVerdicts } from '#/store/playback-versions.ts';
 import { playbackManager } from '#/store/playback-manager.ts';
 import { getItemDetailsLink, getMediaStreams, getMergedCrew } from '#/utils/items.ts';
 import { getItemizedSelect } from '#/utils/forms.ts';
+import { getVideoStream } from '#/utils/playback-capabilities/quality.ts';
 import { useBaseItem } from '#/composables/apis.ts';
 import { useItemBackdrop } from '#/composables/backdrop.ts';
 import { useItemPageTitle } from '#/composables/page-title.ts';
@@ -361,6 +362,13 @@ const selectedSource = ref<MediaSourceInfo>();
 const currentVideoTrack = ref<number>();
 const currentAudioTrack = ref<number>();
 const currentSubtitleTrack = ref<number>();
+/**
+ * The video stream shown: the one chosen or, if none, the one the verdict and the server take (the first one, see
+ * `getVideoStream`), which isn't necessarily the one flagged as default
+ */
+const displayedVideoTrack = computed(() =>
+  currentVideoTrack.value ?? getVideoStream(currentSource.value)?.Index
+);
 /**
  * Tracks the selectors display, which are also the ones requested when playing from this page:
  * the user's choice or, if none, the defaults of the media source (computed by the server from
