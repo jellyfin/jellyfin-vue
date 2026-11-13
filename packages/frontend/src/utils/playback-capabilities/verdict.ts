@@ -860,15 +860,13 @@ async function getPlan(evaluation: Evaluation, rung: PlaybackRung): Promise<Rung
 }
 
 /**
- * Adds the fallback targets to the copied streams of a video's plan (see {@link StreamPlan})
+ * Adds the fallback targets to the copied streams of a video's plan (see {@link StreamPlan}). Music has none, except
+ * for a track nobody could check: a direct play of it falls back to the preferred target (see `device-profile.ts`).
  */
 async function withFallbacks(evaluation: Evaluation, plan: RungPlan): Promise<Pick<RungPlan, 'video' | 'audio'>> {
-  if (!plan.video) {
-    return plan;
-  }
-
   const withFallback = async (stream: StreamPlan | undefined, findTargets: () => Promise<TargetSet | undefined>) => {
-    const targets = stream?.action === 'copy' ? (await findTargets())?.targets : undefined;
+    const wanted = stream?.action === 'copy' && (plan.video !== undefined || stream.unverified === true);
+    const targets = wanted ? (await findTargets())?.targets : undefined;
 
     return targets?.length ? { ...stream, fallback: targets } as StreamPlan : stream;
   };

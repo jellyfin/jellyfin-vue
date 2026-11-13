@@ -503,6 +503,13 @@ describe('fallback of a copied stream: what the server encodes it to if it refus
 
     expect([verdict.method, verdict.audio]).toEqual(['Remux', { index: 0, action: 'copy' }]);
   });
+
+  test('except for a music track nobody could check: its targets are the server\'s fallback if it refuses to play it directly', async () => {
+    const track = { source: mediaSource([audioStream({ Index: 0, Codec: 'alac', CodecTag: 'alac' })], { Container: 'm4a', DefaultAudioStreamIndex: 0 }) };
+    const verdict = await verdictFor(track, fullBrowser);
+
+    expect(verdict).toMatchObject({ method: 'DirectPlay', unverified: true, audio: { index: 0, action: 'copy', unverified: true, fallback: [{ codec: 'aac' }, { codec: 'opus' }] } });
+  });
 });
 
 describe('subtitles', () => {

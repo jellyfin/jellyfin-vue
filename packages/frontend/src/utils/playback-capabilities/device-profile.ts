@@ -92,15 +92,23 @@ function findStream(source: MediaSourceInfo, type: MediaStream['Type'], index: n
  * The codec list for a stream: the targets (in order) when it is encoded; when it is copied, the source codec
  * after its fallback targets, so that if the server refuses the copy it encodes to a codec the browser decodes
  * instead of the source's. With `single`, one codec: the preferred target, or the source codec.
+ *
+ * In a direct play, the transcoding profile is only the server's fallback if it refuses direct play: a stream nobody
+ * could check (`unverified`) then gets its targets alone (with `single`, the preferred one), so the server encodes it
+ * unless its codec is one of them instead of copying a codec nobody knows the browser plays, like the blind request.
  */
-function getCodecList(plan: StreamPlan | undefined, stream: MediaStream | undefined, single = false): string {
+function getCodecList(plan: StreamPlan | undefined, stream: MediaStream | undefined, method: PlaybackMethod, single = false): string {
   if (plan?.action === 'transcode') {
     return (single ? plan.targets.slice(0, 1) : plan.targets).map(target => target.codec).join(',');
   }
 
-  const fallback = single ? [] : plan?.fallback?.map(target => target.codec) ?? [];
+  const targets = plan?.fallback?.map(target => target.codec) ?? [];
 
-  return [...new Set([...fallback, stream?.Codec ?? ''])].filter(Boolean).join(',');
+  if (method === 'DirectPlay' && plan?.unverified) {
+    return (single ? targets.slice(0, 1) : targets).join(',');
+  }
+
+  return [...new Set([...(single ? [] : targets), stream?.Codec ?? ''])].filter(Boolean).join(',');
 }
 
 /**
@@ -197,13 +205,13 @@ export function buildPlaybackRequest(
   const method: PlaybackMethod = verdict.method;
   const encodesAudio = verdict.audio?.action === 'transcode';
   const maxAudioChannels = encodesAudio ? verdict.maxAudioChannels : undefined;
-  const videoCodecs = getCodecList(verdict.video, video);
+  const videoCodecs = getCodecList(verdict.video, video, method);
   /**
    * Pure audio transcoding takes a single codec: the server checks it can encode to the profile's whole
    * `AudioCodec` value and skips the profile otherwise (`StreamBuilder.GetOptimalAudioStream`). A video item, even
    * without a video stream, is built as a video, which takes a list.
    */
-  const audioCodecs = getCodecList(verdict.audio, audio, type === 'Audio');
+  const audioCodecs = getCodecList(verdict.audio, audio, method, type === 'Audio');
   /**
    * A planned stream must be named: an empty list would let the server do anything with it. Only a stream nobody
    * knows the codec of has no name without targets, and then the server cannot be offered a transcode.

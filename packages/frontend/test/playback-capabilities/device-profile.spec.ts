@@ -87,6 +87,74 @@ describe('direct play', () => {
   });
 });
 
+describe('a direct play that relies on streams nobody could check (unverified): the server falls back to the targets', () => {
+  /**
+   * The verdict for the HEVC source played directly while the browser could not be asked about the video exactly
+   */
+  const attempt = (extra: Partial<Verdict> = {}) => verdict('DirectPlay', {
+    reasons: ['Unverified'],
+    unverified: true,
+    video: { index: 0, action: 'copy', fallback: [h264, vp9], unverified: true },
+    ...extra
+  });
+
+  test('direct play is asked exactly as for any direct play: the container and codecs the server reported', () => {
+    const { deviceProfile, options } = buildPlaybackRequest(attempt(), hevcMkv(), RENDERERS);
+
+    expect([deviceProfile.DirectPlayProfiles, options.EnableDirectPlay]).toEqual([[{ Type: 'Video', Container: 'mkv', VideoCodec: 'hevc', AudioCodec: 'ac3' }], true]);
+  });
+
+  test('if the server refuses direct play, a stream nobody checked is never copied into its HLS output: only the targets are listed (it copies the stream only if its codec is one of them)', () => {
+    const { deviceProfile, options } = buildPlaybackRequest(attempt(), hevcMkv(), RENDERERS);
+
+    expect(deviceProfile.TranscodingProfiles?.[0]).toMatchObject({ VideoCodec: 'h264,vp9', AudioCodec: 'aac,opus,ac3' });
+    expect(options).toMatchObject({ EnableTranscoding: true, AllowVideoStreamCopy: true, AllowAudioStreamCopy: true });
+  });
+
+  test('both streams unchecked: both lists hold only the targets', () => {
+    const { deviceProfile } = buildPlaybackRequest(attempt({ audio: { index: 1, action: 'copy', fallback: [aac, opus], unverified: true } }), hevcMkv(), RENDERERS);
+
+    expect(deviceProfile.TranscodingProfiles?.[0]).toMatchObject({ VideoCodec: 'h264,vp9', AudioCodec: 'aac,opus' });
+  });
+
+  test('an unchecked stream without a decodable target leaves the server no fallback: an empty list would mean "anything"', () => {
+    const { deviceProfile, options } = buildPlaybackRequest(attempt({ video: { index: 0, action: 'copy', unverified: true } }), hevcMkv(), RENDERERS);
+
+    expect([deviceProfile.TranscodingProfiles, options.EnableTranscoding, options.EnableDirectPlay]).toEqual([[], false, true]);
+  });
+
+  test('a remux copies its unchecked streams, as planned: their source codec is listed', () => {
+    const remux = verdict('Remux', { unverified: true, reasons: ['SecondaryAudioTrack', 'Unverified'], video: { index: 0, action: 'copy', fallback: [h264, vp9], unverified: true } });
+    const { deviceProfile } = buildPlaybackRequest(remux, hevcMkv(), RENDERERS);
+
+    expect(deviceProfile.TranscodingProfiles?.[0]).toMatchObject({ VideoCodec: 'h264,vp9,hevc' });
+  });
+
+  test('music: the server takes a single codec, so its fallback for an unchecked track is the preferred target', () => {
+    const track = mediaSource([audioStream({ Index: 0, Codec: 'alac', CodecTag: 'alac' })], { Container: 'm4a', Bitrate: 900_000 });
+    const song = { ...verdict('DirectPlay'), unverified: true, video: undefined, audio: { index: 0, action: 'copy' as const, fallback: [aac, opus], unverified: true as const } };
+    const { deviceProfile } = buildPlaybackRequest(song, track, RENDERERS);
+
+    expect(deviceProfile.DirectPlayProfiles).toEqual([{ Type: 'Audio', Container: 'm4a', AudioCodec: 'alac' }]);
+    expect(deviceProfile.TranscodingProfiles?.[0]).toMatchObject({ Type: 'Audio', AudioCodec: 'aac' });
+  });
+});
+
+describe('the streaming bitrate when the video is copied', () => {
+  /**
+   * Measured on Jellyfin 12.4: the server gives a copied video the streaming bitrate minus the audio's, and encodes the
+   * video when that is below the video stream's bitrate, without a reason. With the source's bitrate as the limit, an
+   * audio transcode of HEVC (3147323 b/s) + AC-3 5.1 (384 kbit/s) in a 3531323 b/s source got VideoBitrate=2891323
+   * (the AAC 5.1 encode takes 640 kbit/s) and the video was encoded to H.264.
+   */
+  test.each(['DirectPlay', 'Remux', 'TranscodeAudio'] as const)('%s: no limit, even with the source\'s bitrate known (the audio the server encodes may take more than the source\'s)', (method) => {
+    const plan = method === 'TranscodeAudio' ? transcodeAudio : verdict(method);
+    const { deviceProfile, options } = buildPlaybackRequest(plan, hevcMkv(), RENDERERS);
+
+    expect([options.MaxStreamingBitrate, deviceProfile.MaxStreamingBitrate]).toEqual([UNLIMITED_STREAMING_BITRATE, UNLIMITED_STREAMING_BITRATE]);
+  });
+});
+
 describe('the streaming bitrate when the source has none', () => {
   /**
    * Measured on Jellyfin 12.4: the server holds a copied stream to the limit (a 59 Mbit/s remote file remuxed under
