@@ -45,6 +45,7 @@ import {
   type VideoInfo
 } from '#/utils/playback-capabilities/quality.ts';
 import {
+  getBufferedAhead,
   isNotSmooth,
   startNetworkMemory,
   stepFrameProgress,
@@ -281,21 +282,6 @@ export function usePlaybackSupervisors(hls: Hls | undefined) {
   };
 
   /**
-   * The seconds buffered ahead of the playback position
-   */
-  const getBufferAhead = (el: HTMLMediaElement): number => {
-    let bufferAhead = 0;
-
-    for (let index = 0; index < el.buffered.length; index++) {
-      if (el.buffered.start(index) <= el.currentTime + 0.1 && el.buffered.end(index) > el.currentTime) {
-        bufferAhead = el.buffered.end(index) - el.currentTime;
-      }
-    }
-
-    return bufferAhead;
-  };
-
-  /**
    * Feeds the frame counters to the "no frames" detector and to the smoothness windows
    *
    * @param quality - The element's `getVideoPlaybackQuality()`
@@ -406,7 +392,7 @@ export function usePlaybackSupervisors(hls: Hls | undefined) {
     const now = performance.now();
     // Feature detection: without the API there are no frame counters, and the frame supervisors do nothing
     const quality = el instanceof HTMLVideoElement && 'getVideoPlaybackQuality' in el ? el.getVideoPlaybackQuality() : undefined;
-    const bufferAhead = getBufferAhead(el);
+    const bufferAhead = getBufferedAhead(el.buffered, el.currentTime);
 
     playbackObservations.bufferAhead.value = bufferAhead;
     playbackObservations.frames.value = quality ? { total: quality.totalVideoFrames, dropped: quality.droppedVideoFrames } : undefined;

@@ -59,6 +59,7 @@ import {
   type RenegotiationIntent,
   type RenegotiationOutcome
 } from '#/utils/playback-capabilities/renegotiation.ts';
+import { getBufferedAhead } from '#/utils/playback-capabilities/runtime-signals.ts';
 import {
   isMoreExpensive,
   type PlaybackMethod,
@@ -271,13 +272,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     const target = Number.isFinite(duration) && duration > 0
       ? Math.min(time + PREFETCH_BUFFER_AHEAD_S, duration)
       : time + PREFETCH_BUFFER_AHEAD_S;
-    let bufferedTo = time;
-
-    for (let index = 0; index < (ranges?.length ?? 0); index++) {
-      if (ranges && ranges.start(index) <= time && time <= ranges.end(index)) {
-        bufferedTo = ranges.end(index);
-      }
-    }
+    const bufferedTo = time + (ranges ? getBufferedAhead(ranges, time) : 0);
 
     return !this.isRemotePlayer.value
       && !isNil(this.currentNegotiatedMediaSource.value)

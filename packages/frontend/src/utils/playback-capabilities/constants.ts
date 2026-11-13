@@ -163,6 +163,15 @@ export const SUPERVISOR_SAMPLE_MS = 1000;
 export const HLS_MEDIA_ERROR_RECOVERIES = 1;
 
 /**
+ * How far after the playback position a buffered range may start and still count as holding it, in seconds, when
+ * measuring how much is buffered ahead.
+ *
+ * Origin: the playhead can sit just before the first buffered sample after a seek or a new source; hls.js 1.7.3 treats
+ * holes up to its `maxBufferHole` default, 0.1 s, as no hole.
+ */
+export const BUFFER_POSITION_TOLERANCE_S = 0.1;
+
+/**
  * Media time that may pass after a load started without any video frame presented before the video counts as
  * producing no frames, which is a hard failure. Once a frame was presented, no wait for the next one counts.
  *

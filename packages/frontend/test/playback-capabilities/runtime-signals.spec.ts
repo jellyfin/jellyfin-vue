@@ -1,5 +1,6 @@
 import { describe, expect, test } from 'vitest';
 import {
+  BUFFER_POSITION_TOLERANCE_S,
   DROPPED_FRAMES_CONSECUTIVE_WINDOWS,
   DROPPED_FRAMES_RATIO,
   FRAMES_STALL_MEDIA_SECONDS,
@@ -16,17 +17,23 @@ import {
   NETWORK_UP_SUSTAIN_MS
 } from '#/utils/playback-capabilities/constants.ts';
 import {
+  getBufferedAhead,
   getNetworkRecovery,
   isNotSmooth,
+  NO_NETWORK_ATTEMPTS,
   startNetworkMemory,
   stepFrameProgress,
   stepNetwork,
+  stepNetworkRecovery,
   type FrameProgress,
   type FrameProgressSample,
   type FrameWindow,
+  type LoadFailure,
+  type NetworkAttempts,
   type NetworkDecision,
   type NetworkEvent,
-  type NetworkMemory
+  type NetworkMemory,
+  type NetworkRecovery
 } from '#/utils/playback-capabilities/runtime-signals.ts';
 
 /**
@@ -373,5 +380,88 @@ describe('getNetworkRecovery: a stream that stops loading is tried again a bound
   test('after the last attempt the playback stops, so the player never stays frozen', () => {
     expect(getNetworkRecovery('manifest', HLS_MANIFEST_RELOADS)).toEqual({ action: 'stop' });
     expect(getNetworkRecovery('stream', HLS_STREAM_RESUMES)).toEqual({ action: 'stop' });
+  });
+});
+
+describe('stepNetworkRecovery: each kind of failure has its own bounded allowance', () => {
+  /**
+   * The actions taken for a sequence of failures, from no attempt, until the first stop
+   */
+  function actions(failures: LoadFailure[]): NetworkRecovery['action'][] {
+    let attempts: NetworkAttempts = NO_NETWORK_ATTEMPTS;
+    const taken: NetworkRecovery['action'][] = [];
+
+    for (const failure of failures) {
+      const step = stepNetworkRecovery(attempts, failure);
+
+      attempts = step.attempts;
+      taken.push(step.recovery.action);
+
+      if (step.recovery.action === 'stop') {
+        break;
+      }
+    }
+
+    return taken;
+  }
+
+  test('a manifest that failed once and was loaded again does not spend the resume of a stream that fails after it', () => {
+    expect(actions(['manifest', 'stream'])).toEqual(['reload', 'resume']);
+  });
+
+  test('the resume of a stream after a manifest reload waits the first delay, not the doubled one', () => {
+    const afterReload = stepNetworkRecovery(NO_NETWORK_ATTEMPTS, 'manifest').attempts;
+
+    expect(stepNetworkRecovery(afterReload, 'stream').recovery).toEqual({ action: 'resume', delayMs: HLS_NETWORK_RECOVERY_DELAY_MS });
+  });
+
+  test('a manifest that always fails is loaded again up to its bound, then the playback stops', () => {
+    expect(actions(Array.from({ length: HLS_MANIFEST_RELOADS + 3 }, () => 'manifest')))
+      .toEqual([...Array.from({ length: HLS_MANIFEST_RELOADS }, () => 'reload'), 'stop']);
+  });
+
+  test('a stream that always fails is resumed up to its bound, then the playback stops', () => {
+    expect(actions(Array.from({ length: HLS_STREAM_RESUMES + 3 }, () => 'stream')))
+      .toEqual([...Array.from({ length: HLS_STREAM_RESUMES }, () => 'resume'), 'stop']);
+  });
+
+  test('whatever the order of the failures, it stops after at most the reloads plus the resumes', () => {
+    const mixed: LoadFailure[] = Array.from({ length: 20 }, (_, index) => (index % 2 === 0 ? 'manifest' : 'stream'));
+    const taken = actions(mixed);
+
+    expect(taken.at(-1)).toBe('stop');
+    expect(taken.length - 1).toBeLessThanOrEqual(HLS_MANIFEST_RELOADS + HLS_STREAM_RESUMES);
+  });
+
+  test('a stop leaves the attempts as they were', () => {
+    const spent: NetworkAttempts = { manifest: HLS_MANIFEST_RELOADS, stream: 0 };
+
+    expect(stepNetworkRecovery(spent, 'manifest')).toEqual({ recovery: { action: 'stop' }, attempts: spent });
+  });
+});
+
+describe('getBufferedAhead: how far the media is buffered ahead of a position', () => {
+  /**
+   * Buffered ranges as the media element reports them
+   */
+  function ranges(...list: [number, number][]): Pick<TimeRanges, 'length' | 'start' | 'end'> {
+    return { length: list.length, start: index => list[index]![0], end: index => list[index]![1] };
+  }
+
+  const cases: [string, ReturnType<typeof ranges>, number, number][] = [
+    ['nothing buffered', ranges(), 10, 0],
+    ['to the end of the range that holds the position', ranges([0, 30]), 10, 20],
+    ['other ranges do not count', ranges([0, 5], [8, 30], [40, 60]), 10, 20],
+    ['a position in a hole has nothing ahead', ranges([0, 5], [20, 30]), 10, 0],
+    [
+      `a range that starts up to ${BUFFER_POSITION_TOLERANCE_S} s after the position counts (the playhead can sit just before it)`,
+      ranges([10 + BUFFER_POSITION_TOLERANCE_S, 30]), 10, 20
+    ],
+    ['a range that starts later does not', ranges([10 + (2 * BUFFER_POSITION_TOLERANCE_S), 30]), 10, 0],
+    ['at the very end of a range nothing is ahead', ranges([0, 10]), 10, 0]
+  ];
+
+  test.each(cases)('%s', (_, buffered, position, expected) => {
+    expect(getBufferedAhead(buffered, position)).toBeCloseTo(expected, 6);
   });
 });

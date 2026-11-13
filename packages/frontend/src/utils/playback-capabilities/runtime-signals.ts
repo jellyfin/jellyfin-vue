@@ -4,6 +4,7 @@
  * sample, these functions judge.
  */
 import {
+  BUFFER_POSITION_TOLERANCE_S,
   DROPPED_FRAMES_CONSECUTIVE_WINDOWS,
   DROPPED_FRAMES_RATIO,
   FRAMES_STALL_MEDIA_SECONDS,
@@ -103,6 +104,29 @@ export function stepFrameProgress(
   }
 
   return { progress: previous, stalled: sample.mediaTime - previous.since >= FRAMES_STALL_MEDIA_SECONDS };
+}
+
+/**
+ * == BUFFER ==
+ */
+
+/**
+ * Seconds buffered ahead of a position: to the end of the buffered range that holds it, where a range that starts up to
+ * {@link BUFFER_POSITION_TOLERANCE_S} after the position holds it too
+ *
+ * @param ranges - The buffered ranges, as the media element reports them
+ * @param position - The playback position, in seconds
+ */
+export function getBufferedAhead(ranges: Pick<TimeRanges, 'length' | 'start' | 'end'>, position: number): number {
+  let ahead = 0;
+
+  for (let index = 0; index < ranges.length; index++) {
+    if (ranges.start(index) <= position + BUFFER_POSITION_TOLERANCE_S && ranges.end(index) > position) {
+      ahead = Math.max(ahead, ranges.end(index) - position);
+    }
+  }
+
+  return ahead;
 }
 
 /**
