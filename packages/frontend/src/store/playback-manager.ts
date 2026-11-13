@@ -387,246 +387,6 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   };
 
   /**
-   * == GETTERS AND SETTERS ==
-   */
-  public readonly status = computed(() => this._state.value.status);
-  public readonly queueLength = computed(() => this._state.value.queue.length);
-  public readonly repeatMode = computed(() => this._state.value.repeatMode);
-  public readonly isBuffering = computed(() => this.status.value === PlaybackStatus.Buffering);
-  public readonly isPlaying = computed(() => this.status.value !== PlaybackStatus.Stopped);
-  public readonly isPaused = computed(() => this.status.value === PlaybackStatus.Paused);
-  public readonly isRepeating = computed(() => this._state.value.repeatMode !== RepeatMode.RepeatNone);
-  public readonly isShuffling = computed(() => this._state.value.isShuffling);
-  public readonly isRepeatingAll = computed(() => this._state.value.repeatMode === RepeatMode.RepeatAll);
-  public readonly isRepeatingOnce = computed(() => this._state.value.repeatMode === RepeatMode.RepeatOne);
-  public readonly isRemotePlayer = computed(() => this._state.value.isRemotePlayer);
-  public readonly playbackInitMode = computed(() => this._state.value.playbackInitMode);
-  public readonly isMuted = computed({
-    get: () => this.isRemotePlayer.value
-      ? this._state.value.isRemoteMuted
-      : mediaControls.muted.value,
-    set: (newValue: boolean) => {
-      if (this.isRemotePlayer.value) {
-        this._state.value.isRemoteMuted = newValue;
-      } else {
-        mediaControls.muted.value = newValue;
-      }
-    }
-  });
-
-  /**
-   * Map ids into BaseItemDto's objects of the queue
-   */
-  public readonly queue = computedAsync(async () => await apiStore.getItemsById(this._state.value.queue) as BaseItemDto[], []);
-  public readonly initiator = computedAsync(async () => await apiStore.getItemById(this._state.value.playbackInitiatorId));
-  public readonly currentItemIndex = computed({
-    get: () => this._state.value.currentItemIndex,
-    set: (newIndex: number | undefined) => {
-      if (newIndex === this._state.value.currentItemIndex) {
-        return;
-      }
-
-      this._state.value.currentItemIndex = newIndex;
-      this.currentTime.value = 0;
-    }
-  });
-
-  public readonly currentItemId = computed(() => this._state.value.queue[this.currentItemIndex.value ?? -1]);
-  /**
-   * The items of the queue are fetched asynchronously, so for a moment they might be those of the queue before its
-   * last change: the current item is found by its id (see `findQueueItem`). A change that keeps it in the queue
-   * (shuffle, moving items, "play next", removing another item) thus never makes it undefined, which would stop its
-   * playback and start it again from the beginning.
-   */
-  public readonly currentItem = computed<BaseItemDto | undefined>(() =>
-    findQueueItem(this.queue.value, this.currentItemId.value, this.currentItemIndex.value)
-  );
-
-  /**
-   * Version of the current item being played, as an index in its `MediaSources`: the one the user chose for it or,
-   * if none, the one resolved for it (see `_resolveMediaSource`). Undefined while it is being resolved.
-   *
-   * The version is kept by its id and its index is found in the item's data as it is now: a refresh of the item that
-   * lists its versions in another order goes on playing the same one. -1 when the item doesn't have it (any more).
-   */
-  public readonly currentMediaSourceIndex = computed(() => {
-    const selection = this._currentSelection.value;
-    const resolved = this._resolvedSource.value;
-    const item = this.currentItem.value;
-    let id: string | undefined;
-
-    if (selection && !isNil(selection.source)) {
-      id = selection.sourceId;
-    } else if (resolved && resolved.itemId === this.currentItemId.value) {
-      id = resolved.mediaSourceId;
-    } else {
-      return;
-    }
-
-    if (item) {
-      return isNil(id) ? -1 : (item.MediaSources ?? []).findIndex(source => source.Id === id);
-    }
-  });
-
-  /**
-   * Media source of the current item, as found in the /Items DTO. The server computes that DTO
-   * without any device profile, so its device specific fields (`SupportsDirectPlay`, `TranscodingUrl`,
-   * subtitle `DeliveryMethod`...) say nothing about this client: use it only for static metadata
-   * (like the list of streams). Use `currentNegotiatedMediaSource` to decide how to play.
-   *
-   * Undefined while the version is being resolved, so nothing is negotiated for another one meanwhile.
-   */
-  public readonly currentMediaSource = computed(() => {
-    const index = this.currentMediaSourceIndex.value;
-
-    return isNil(index) ? undefined : this.currentItem.value?.MediaSources?.[index];
-  });
-
-  /**
-   * Media source negotiated with the server for this device: `MediaSources[0]` of the PlaybackInfo
-   * response. It's the only one that carries the device specific decisions of the server
-   * (`SupportsDirectPlay`, `SupportsDirectStream`, `SupportsTranscoding`, `TranscodingUrl`,
-   * `TranscodingSubProtocol`, `TranscodingContainer`, `DefaultAudioStreamIndex`,
-   * `DefaultSubtitleStreamIndex` and the `DeliveryMethod`/`DeliveryUrl` of the subtitle streams),
-   * so everything that decides how to play the current item must read them from here.
-   *
-   * Undefined until the server answers for the current item and version, and when the answer must not
-   * be played (see `currentPlaybackFailure`).
-   */
-  public readonly currentNegotiatedMediaSource = computed(() => {
-    const negotiation = this._currentNegotiation.value;
-
-    return negotiation?.failure ? undefined : negotiation?.data?.MediaSources?.[0];
-  });
-
-  /**
-   * The verdict the current playback was negotiated with: how this client expected to play it, and why
-   */
-  public readonly currentVerdict = computed(() => this._currentNegotiation.value?.verdict);
-  /**
-   * How the server decided to play the current item (see `deriveActualMethod`)
-   */
-  public readonly currentPlaybackMethod = computed(() => this._currentNegotiation.value?.actualMethod);
-  /**
-   * Why the current item can't be played, if it can't: nothing can play it (`unplayable`), or it would
-   * have to be encoded, which quality mode Original forbids (`quality`)
-   */
-  public readonly currentPlaybackFailure = computed(() => this._currentNegotiation.value?.failure);
-  /**
-   * The quality mode the current playback was negotiated with: the preferred quality and, in Automatic, the level
-   * it runs at
-   */
-  public readonly currentQualityMode = computed(() => this._currentNegotiation.value?.quality);
-  /**
-   * Identifies the current playback (item, version and play)
-   */
-  public readonly currentPlaybackKey = computed(() => this._currentNegotiation.value?.key);
-  /**
-   * The video stream the current playback was negotiated for (undefined for music)
-   */
-  public readonly currentPlayingVideoStream = computed(() => {
-    const index = this._currentNegotiation.value?.verdict.video?.index;
-
-    return isNil(index)
-      ? undefined
-      : this.currentMediaSource.value?.MediaStreams?.find(stream => stream.Type === MediaStreamType.Video && stream.Index === index);
-  });
-
-  /**
-   * The quality menu entry equivalent to what is playing (see `getRunningEntry`), which Automatic shows as its
-   * subtitle. Undefined while nothing plays or no entry is equivalent.
-   */
-  public readonly currentRunningQuality = computed(() => {
-    const negotiation = this._currentNegotiation.value;
-
-    if (negotiation && !negotiation.failure) {
-      return getRunningEntry(
-        this.currentPlayingVideoStream.value,
-        negotiation.actualMethod,
-        getModeLevel(negotiation.quality),
-        getDecodedVideo(playbackObservations.videoSize.value)
-      );
-    }
-  });
-
-  /**
-   * What a hard failure of the current playback would teach and which method would come next (see
-   * `getFailureStep`), for the "try another method" action. Undefined while nothing plays.
-   */
-  public readonly currentFailureStep = computed(() => {
-    const negotiation = this._currentNegotiation.value;
-
-    if (negotiation && !negotiation.failure) {
-      return getNegotiationFailureStep(negotiation);
-    }
-  });
-
-  /**
-   * Current tracks. They're read and written as absolute `MediaStream.Index` values
-   * (see `PlaybackManagerState.mediaSourceIndexes` for the meaning of `undefined` and `-1`).
-   *
-   * When the user didn't choose a track, the current one is the one the server picked for
-   * this device (`DefaultAudioStreamIndex`/`DefaultSubtitleStreamIndex` of the negotiated
-   * media source), so the UI shows what is actually being played.
-   */
-  public readonly currentVideoTrack = computed({
-    get: () => this._findStream(MediaStreamType.Video, this._currentSelection.value?.video),
-    set: (newIndex: number | undefined) => {
-      this._select('video', newIndex);
-    }
-  });
-
-  public readonly currentAudioTrack = computed({
-    get: () => this._findStream(MediaStreamType.Audio, this._currentAudioStreamIndex.value),
-    set: (newIndex: number | undefined) => {
-      this._select('audio', newIndex);
-    }
-  });
-
-  public readonly currentSubtitleTrack = computed({
-    get: () => this._findStream(MediaStreamType.Subtitle, this._currentSubtitleStreamIndex.value),
-    set: (newIndex: number | undefined) => {
-      this._select('subtitle', newIndex);
-    }
-  });
-
-  /**
-   * In milliseconds
-   */
-  public readonly currentItemRuntime = computed(() => this.currentItem.value ? getItemRuntime(this.currentItem.value) : 0);
-  /**
-   * In seconds
-   */
-  public readonly currentTime = computed({
-    get: () => this.isRemotePlayer.value
-      ? this._state.value.remotePlaybackTime
-      : mediaControls.currentTime.value,
-    set: (newValue: number) => {
-      if (this.isRemotePlayer.value) {
-        this._state.value.remotePlaybackTime = newValue;
-      } else {
-        mediaControls.currentTime.value = newValue;
-      }
-    }
-  });
-
-  public readonly currentVolume = computed({
-    get: () => this.isRemotePlayer.value
-      ? this._state.value.remoteCurrentVolume
-      : mediaControls.volume.value * 100,
-    set: (newVolume: number) => {
-      newVolume = Math.min(newVolume, 100);
-      this.isMuted.value = newVolume === 0;
-
-      if (this.isRemotePlayer.value) {
-        this._state.value.remoteCurrentVolume = newVolume;
-      } else {
-        mediaControls.volume.value = newVolume / 100;
-      }
-    }
-  });
-
-  /**
    * Primitive keys of the current item and media source. Computed refs only trigger their
    * dependents when their value changes, unlike the item objects, which are replaced on every refresh.
    */
@@ -724,8 +484,6 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
           stream => stream.Type === type && stream.Index === index
         );
 
-  public readonly currentSourceUrl = computed(() => this.getItemPlaybackUrl());
-
   /**
    * The fetched item at an index of the queue, found by its id (see `currentItem`)
    */
@@ -742,8 +500,6 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     }
   });
 
-  public readonly previousItem = computed(() => this._getQueueItem(this._previousItemIndex.value));
-
   private readonly _nextItemIndex = computed(() => {
     if (this.isRepeatingAll.value && this._state.value.currentItemIndex === this.queueLength.value - 1) {
       return 0;
@@ -751,41 +507,6 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
 
     if (!isNil(this._state.value.currentItemIndex)) {
       return this._state.value.currentItemIndex + 1;
-    }
-  });
-
-  public readonly nextItem = computed(() => this._getQueueItem(this._nextItemIndex.value));
-
-  /**
-   * Get the types of the currently playing item
-   */
-  public readonly currentlyPlayingMediaType = computed(() => this.currentItem.value?.MediaType);
-  public readonly currentlyPlayingType = computed(() => this.currentItem.value?.Type);
-  public readonly isVideo = computed(() => this.currentlyPlayingMediaType.value === 'Video');
-  public readonly isAudio = computed(() => this.currentlyPlayingMediaType.value === 'Audio');
-
-  /**
-   * Get current's item audio tracks
-   */
-  public readonly currentItemAudioTracks = computed(() =>
-    this.currentMediaSource.value?.MediaStreams?.filter(
-      stream => stream.Type === MediaStreamType.Audio
-    )
-  );
-
-  /**
-   * Get current's item subtitle tracks
-   */
-  public readonly currentItemSubtitleTracks = computed(() =>
-    this.currentMediaSource.value?.MediaStreams?.filter(
-      stream => stream.Type === MediaStreamType.Subtitle
-    )
-  );
-
-  public readonly playbackSpeed = computed({
-    get: () => this._state.value.playbackSpeed,
-    set: (newSpeed: number) => {
-      this._state.value.playbackSpeed = newSpeed;
     }
   });
 
@@ -1028,49 +749,6 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   };
 
   /**
-   * Reports that the player could not play the negotiated stream through media source playback because of a
-   * codec error: it could not even create the buffer for it, so retrying is pointless. What failed is learned
-   * (see `recordMediaSourceFailure`; when no answer can be disproved, as a failure of the method), which negotiates the
-   * playback again another way.
-   */
-  public readonly reportMediaSourceFailure = async (): Promise<void> => {
-    const negotiation = this._startFailure('hlsCodecError');
-    const item = this.currentItem.value;
-    const mediaSource = this.currentMediaSource.value;
-
-    if (negotiation && item && mediaSource) {
-      const disproved = await recordMediaSourceFailure(item, mediaSource, negotiation.verdict);
-
-      if (!disproved) {
-        this._learnFailure(negotiation, getNegotiationFailureStep(negotiation), 'hlsCodecError');
-      }
-
-      this._renegotiateAfterFailure(negotiation, disproved);
-    }
-  };
-
-  /**
-   * Reports that the current playback works: a frame was presented while the time advanced (for music, the time
-   * advanced). A hard failure of the same streams later in the same play is about the file or the moment, not the
-   * browser (see `getFailureLesson`).
-   *
-   * @param url - The source the player saw working: a report for one that is no longer the current source is dropped
-   */
-  public readonly reportPlaybackWorked = (url: string): void => {
-    const negotiation = this._currentNegotiation.value;
-
-    if (!negotiation || negotiation.failure || url !== this.currentSourceUrl.value) {
-      return;
-    }
-
-    if (this._worked?.key !== negotiation.key) {
-      this._worked = { key: negotiation.key, signatures: new Set() };
-    }
-
-    this._worked.signatures.add(negotiation.verdict.signature);
-  };
-
-  /**
    * Learns a hard failure of a negotiated playback, in the scopes it is evidence for (see `recordPlaybackFailure`): it
    * is evidence about the browser unless the same streams had worked in this play, or the user said it does not play
    * (the manual action exists for what no signal detects).
@@ -1182,33 +860,6 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     };
 
     return negotiation;
-  };
-
-  /**
-   * Reports a hard failure of the current playback (or the user's "try another method"): it moves one rung down
-   * the failure ladder (see `getFailureStep`) keeping the playback position, and the failure is learned for the
-   * session (see `_learnFailure`), so the next playback of the same file, and of the same streams when the failure
-   * is about the browser, starts at a method that works. Only the first failure of a play session counts.
-   *
-   * @param reason - What failed
-   */
-  public readonly reportPlaybackFailure = async (reason: PlaybackChangeReason): Promise<void> => {
-    const negotiation = this._startFailure(reason);
-    const item = this.currentItem.value;
-    const mediaSource = this.currentMediaSource.value;
-
-    if (!negotiation || !item || !mediaSource) {
-      return;
-    }
-
-    const step = getNegotiationFailureStep(negotiation);
-    const disproved = step.learn === 'copied-audio' && await recordMediaSourceFailure(item, mediaSource, negotiation.verdict);
-
-    if (!disproved) {
-      this._learnFailure(negotiation, step, reason);
-    }
-
-    this._renegotiateAfterFailure(negotiation, disproved);
   };
 
   /**
@@ -1384,6 +1035,355 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     await remote.sdk.newUserApi(getSessionApi).reportPlaybackStart({
       playbackStartInfo: this._getPlaybackReportInfo(playback)
     });
+  };
+
+  /**
+   * == GETTERS AND SETTERS ==
+   */
+  public readonly status = computed(() => this._state.value.status);
+  public readonly queueLength = computed(() => this._state.value.queue.length);
+  public readonly repeatMode = computed(() => this._state.value.repeatMode);
+  public readonly isBuffering = computed(() => this.status.value === PlaybackStatus.Buffering);
+  public readonly isPlaying = computed(() => this.status.value !== PlaybackStatus.Stopped);
+  public readonly isPaused = computed(() => this.status.value === PlaybackStatus.Paused);
+  public readonly isRepeating = computed(() => this._state.value.repeatMode !== RepeatMode.RepeatNone);
+  public readonly isShuffling = computed(() => this._state.value.isShuffling);
+  public readonly isRepeatingAll = computed(() => this._state.value.repeatMode === RepeatMode.RepeatAll);
+  public readonly isRepeatingOnce = computed(() => this._state.value.repeatMode === RepeatMode.RepeatOne);
+  public readonly isRemotePlayer = computed(() => this._state.value.isRemotePlayer);
+  public readonly playbackInitMode = computed(() => this._state.value.playbackInitMode);
+  public readonly isMuted = computed({
+    get: () => this.isRemotePlayer.value
+      ? this._state.value.isRemoteMuted
+      : mediaControls.muted.value,
+    set: (newValue: boolean) => {
+      if (this.isRemotePlayer.value) {
+        this._state.value.isRemoteMuted = newValue;
+      } else {
+        mediaControls.muted.value = newValue;
+      }
+    }
+  });
+
+  /**
+   * Map ids into BaseItemDto's objects of the queue
+   */
+  public readonly queue = computedAsync(async () => await apiStore.getItemsById(this._state.value.queue) as BaseItemDto[], []);
+  public readonly initiator = computedAsync(async () => await apiStore.getItemById(this._state.value.playbackInitiatorId));
+  public readonly currentItemIndex = computed({
+    get: () => this._state.value.currentItemIndex,
+    set: (newIndex: number | undefined) => {
+      if (newIndex === this._state.value.currentItemIndex) {
+        return;
+      }
+
+      this._state.value.currentItemIndex = newIndex;
+      this.currentTime.value = 0;
+    }
+  });
+
+  public readonly currentItemId = computed(() => this._state.value.queue[this.currentItemIndex.value ?? -1]);
+  /**
+   * The items of the queue are fetched asynchronously, so for a moment they might be those of the queue before its
+   * last change: the current item is found by its id (see `findQueueItem`). A change that keeps it in the queue
+   * (shuffle, moving items, "play next", removing another item) thus never makes it undefined, which would stop its
+   * playback and start it again from the beginning.
+   */
+  public readonly currentItem = computed<BaseItemDto | undefined>(() =>
+    findQueueItem(this.queue.value, this.currentItemId.value, this.currentItemIndex.value)
+  );
+
+  /**
+   * Version of the current item being played, as an index in its `MediaSources`: the one the user chose for it or,
+   * if none, the one resolved for it (see `_resolveMediaSource`). Undefined while it is being resolved.
+   *
+   * The version is kept by its id and its index is found in the item's data as it is now: a refresh of the item that
+   * lists its versions in another order goes on playing the same one. -1 when the item doesn't have it (any more).
+   */
+  public readonly currentMediaSourceIndex = computed(() => {
+    const selection = this._currentSelection.value;
+    const resolved = this._resolvedSource.value;
+    const item = this.currentItem.value;
+    let id: string | undefined;
+
+    if (selection && !isNil(selection.source)) {
+      id = selection.sourceId;
+    } else if (resolved && resolved.itemId === this.currentItemId.value) {
+      id = resolved.mediaSourceId;
+    } else {
+      return;
+    }
+
+    if (item) {
+      return isNil(id) ? -1 : (item.MediaSources ?? []).findIndex(source => source.Id === id);
+    }
+  });
+
+  /**
+   * Media source of the current item, as found in the /Items DTO. The server computes that DTO
+   * without any device profile, so its device specific fields (`SupportsDirectPlay`, `TranscodingUrl`,
+   * subtitle `DeliveryMethod`...) say nothing about this client: use it only for static metadata
+   * (like the list of streams). Use `currentNegotiatedMediaSource` to decide how to play.
+   *
+   * Undefined while the version is being resolved, so nothing is negotiated for another one meanwhile.
+   */
+  public readonly currentMediaSource = computed(() => {
+    const index = this.currentMediaSourceIndex.value;
+
+    return isNil(index) ? undefined : this.currentItem.value?.MediaSources?.[index];
+  });
+
+  /**
+   * Media source negotiated with the server for this device: `MediaSources[0]` of the PlaybackInfo
+   * response. It's the only one that carries the device specific decisions of the server
+   * (`SupportsDirectPlay`, `SupportsDirectStream`, `SupportsTranscoding`, `TranscodingUrl`,
+   * `TranscodingSubProtocol`, `TranscodingContainer`, `DefaultAudioStreamIndex`,
+   * `DefaultSubtitleStreamIndex` and the `DeliveryMethod`/`DeliveryUrl` of the subtitle streams),
+   * so everything that decides how to play the current item must read them from here.
+   *
+   * Undefined until the server answers for the current item and version, and when the answer must not
+   * be played (see `currentPlaybackFailure`).
+   */
+  public readonly currentNegotiatedMediaSource = computed(() => {
+    const negotiation = this._currentNegotiation.value;
+
+    return negotiation?.failure ? undefined : negotiation?.data?.MediaSources?.[0];
+  });
+
+  /**
+   * The verdict the current playback was negotiated with: how this client expected to play it, and why
+   */
+  public readonly currentVerdict = computed(() => this._currentNegotiation.value?.verdict);
+  /**
+   * How the server decided to play the current item (see `deriveActualMethod`)
+   */
+  public readonly currentPlaybackMethod = computed(() => this._currentNegotiation.value?.actualMethod);
+  /**
+   * Why the current item can't be played, if it can't: nothing can play it (`unplayable`), or it would
+   * have to be encoded, which quality mode Original forbids (`quality`)
+   */
+  public readonly currentPlaybackFailure = computed(() => this._currentNegotiation.value?.failure);
+  /**
+   * The quality mode the current playback was negotiated with: the preferred quality and, in Automatic, the level
+   * it runs at
+   */
+  public readonly currentQualityMode = computed(() => this._currentNegotiation.value?.quality);
+  /**
+   * Identifies the current playback (item, version and play)
+   */
+  public readonly currentPlaybackKey = computed(() => this._currentNegotiation.value?.key);
+  /**
+   * The video stream the current playback was negotiated for (undefined for music)
+   */
+  public readonly currentPlayingVideoStream = computed(() => {
+    const index = this._currentNegotiation.value?.verdict.video?.index;
+
+    return isNil(index)
+      ? undefined
+      : this.currentMediaSource.value?.MediaStreams?.find(stream => stream.Type === MediaStreamType.Video && stream.Index === index);
+  });
+
+  /**
+   * The quality menu entry equivalent to what is playing (see `getRunningEntry`), which Automatic shows as its
+   * subtitle. Undefined while nothing plays or no entry is equivalent.
+   */
+  public readonly currentRunningQuality = computed(() => {
+    const negotiation = this._currentNegotiation.value;
+
+    if (negotiation && !negotiation.failure) {
+      return getRunningEntry(
+        this.currentPlayingVideoStream.value,
+        negotiation.actualMethod,
+        getModeLevel(negotiation.quality),
+        getDecodedVideo(playbackObservations.videoSize.value)
+      );
+    }
+  });
+
+  /**
+   * What a hard failure of the current playback would teach and which method would come next (see
+   * `getFailureStep`), for the "try another method" action. Undefined while nothing plays.
+   */
+  public readonly currentFailureStep = computed(() => {
+    const negotiation = this._currentNegotiation.value;
+
+    if (negotiation && !negotiation.failure) {
+      return getNegotiationFailureStep(negotiation);
+    }
+  });
+
+  /**
+   * Current tracks. They're read and written as absolute `MediaStream.Index` values
+   * (see `PlaybackManagerState.mediaSourceIndexes` for the meaning of `undefined` and `-1`).
+   *
+   * When the user didn't choose a track, the current one is the one the server picked for
+   * this device (`DefaultAudioStreamIndex`/`DefaultSubtitleStreamIndex` of the negotiated
+   * media source), so the UI shows what is actually being played.
+   */
+  public readonly currentVideoTrack = computed({
+    get: () => this._findStream(MediaStreamType.Video, this._currentSelection.value?.video),
+    set: (newIndex: number | undefined) => {
+      this._select('video', newIndex);
+    }
+  });
+
+  public readonly currentAudioTrack = computed({
+    get: () => this._findStream(MediaStreamType.Audio, this._currentAudioStreamIndex.value),
+    set: (newIndex: number | undefined) => {
+      this._select('audio', newIndex);
+    }
+  });
+
+  public readonly currentSubtitleTrack = computed({
+    get: () => this._findStream(MediaStreamType.Subtitle, this._currentSubtitleStreamIndex.value),
+    set: (newIndex: number | undefined) => {
+      this._select('subtitle', newIndex);
+    }
+  });
+
+  /**
+   * In milliseconds
+   */
+  public readonly currentItemRuntime = computed(() => this.currentItem.value ? getItemRuntime(this.currentItem.value) : 0);
+  /**
+   * In seconds
+   */
+  public readonly currentTime = computed({
+    get: () => this.isRemotePlayer.value
+      ? this._state.value.remotePlaybackTime
+      : mediaControls.currentTime.value,
+    set: (newValue: number) => {
+      if (this.isRemotePlayer.value) {
+        this._state.value.remotePlaybackTime = newValue;
+      } else {
+        mediaControls.currentTime.value = newValue;
+      }
+    }
+  });
+
+  public readonly currentVolume = computed({
+    get: () => this.isRemotePlayer.value
+      ? this._state.value.remoteCurrentVolume
+      : mediaControls.volume.value * 100,
+    set: (newVolume: number) => {
+      newVolume = Math.min(newVolume, 100);
+      this.isMuted.value = newVolume === 0;
+
+      if (this.isRemotePlayer.value) {
+        this._state.value.remoteCurrentVolume = newVolume;
+      } else {
+        mediaControls.volume.value = newVolume / 100;
+      }
+    }
+  });
+
+  public readonly currentSourceUrl = computed(() => this.getItemPlaybackUrl());
+
+  public readonly previousItem = computed(() => this._getQueueItem(this._previousItemIndex.value));
+
+  public readonly nextItem = computed(() => this._getQueueItem(this._nextItemIndex.value));
+
+  /**
+   * Get the types of the currently playing item
+   */
+  public readonly currentlyPlayingMediaType = computed(() => this.currentItem.value?.MediaType);
+  public readonly currentlyPlayingType = computed(() => this.currentItem.value?.Type);
+  public readonly isVideo = computed(() => this.currentlyPlayingMediaType.value === 'Video');
+  public readonly isAudio = computed(() => this.currentlyPlayingMediaType.value === 'Audio');
+
+  /**
+   * Get current's item audio tracks
+   */
+  public readonly currentItemAudioTracks = computed(() =>
+    this.currentMediaSource.value?.MediaStreams?.filter(
+      stream => stream.Type === MediaStreamType.Audio
+    )
+  );
+
+  /**
+   * Get current's item subtitle tracks
+   */
+  public readonly currentItemSubtitleTracks = computed(() =>
+    this.currentMediaSource.value?.MediaStreams?.filter(
+      stream => stream.Type === MediaStreamType.Subtitle
+    )
+  );
+
+  public readonly playbackSpeed = computed({
+    get: () => this._state.value.playbackSpeed,
+    set: (newSpeed: number) => {
+      this._state.value.playbackSpeed = newSpeed;
+    }
+  });
+
+  /**
+   * Reports that the player could not play the negotiated stream through media source playback because of a
+   * codec error: it could not even create the buffer for it, so retrying is pointless. What failed is learned
+   * (see `recordMediaSourceFailure`; when no answer can be disproved, as a failure of the method), which negotiates the
+   * playback again another way.
+   */
+  public readonly reportMediaSourceFailure = async (): Promise<void> => {
+    const negotiation = this._startFailure('hlsCodecError');
+    const item = this.currentItem.value;
+    const mediaSource = this.currentMediaSource.value;
+
+    if (negotiation && item && mediaSource) {
+      const disproved = await recordMediaSourceFailure(item, mediaSource, negotiation.verdict);
+
+      if (!disproved) {
+        this._learnFailure(negotiation, getNegotiationFailureStep(negotiation), 'hlsCodecError');
+      }
+
+      this._renegotiateAfterFailure(negotiation, disproved);
+    }
+  };
+
+  /**
+   * Reports that the current playback works: a frame was presented while the time advanced (for music, the time
+   * advanced). A hard failure of the same streams later in the same play is about the file or the moment, not the
+   * browser (see `getFailureLesson`).
+   *
+   * @param url - The source the player saw working: a report for one that is no longer the current source is dropped
+   */
+  public readonly reportPlaybackWorked = (url: string): void => {
+    const negotiation = this._currentNegotiation.value;
+
+    if (!negotiation || negotiation.failure || url !== this.currentSourceUrl.value) {
+      return;
+    }
+
+    if (this._worked?.key !== negotiation.key) {
+      this._worked = { key: negotiation.key, signatures: new Set() };
+    }
+
+    this._worked.signatures.add(negotiation.verdict.signature);
+  };
+
+  /**
+   * Reports a hard failure of the current playback (or the user's "try another method"): it moves one rung down
+   * the failure ladder (see `getFailureStep`) keeping the playback position, and the failure is learned for the
+   * session (see `_learnFailure`), so the next playback of the same file, and of the same streams when the failure
+   * is about the browser, starts at a method that works. Only the first failure of a play session counts.
+   *
+   * @param reason - What failed
+   */
+  public readonly reportPlaybackFailure = async (reason: PlaybackChangeReason): Promise<void> => {
+    const negotiation = this._startFailure(reason);
+    const item = this.currentItem.value;
+    const mediaSource = this.currentMediaSource.value;
+
+    if (!negotiation || !item || !mediaSource) {
+      return;
+    }
+
+    const step = getNegotiationFailureStep(negotiation);
+    const disproved = step.learn === 'copied-audio' && await recordMediaSourceFailure(item, mediaSource, negotiation.verdict);
+
+    if (!disproved) {
+      this._learnFailure(negotiation, step, reason);
+    }
+
+    this._renegotiateAfterFailure(negotiation, disproved);
   };
 
   public readonly queueHasItem = (itemId: string): boolean => this._state.value.queue.includes(itemId);

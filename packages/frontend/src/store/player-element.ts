@@ -149,62 +149,11 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched'> 
   );
 
   /**
-   * Subtitle tracks that can be displayed, with their delivery data taken from the
-   * media source negotiated with the server.
-   */
-  public readonly currentItemParsedSubtitleTracks = computed(() =>
-  /**
-   * TODO: There is currently a bug in Jellyfin server when adding external subtitles
-   * may play the incorrect subtitle
-   * https://github.com/jellyfin/jellyfin/issues/13198
-   */
-    playbackManager.currentNegotiatedMediaSource.value?.MediaStreams?.filter(
-      sub =>
-        sub.Type === MediaStreamType.Subtitle
-        && (sub.DeliveryMethod === SubtitleDeliveryMethod.Encode
-          || sub.DeliveryMethod === SubtitleDeliveryMethod.External)
-    )
-      .map((sub) => {
-        const codec = sub.Codec?.toLowerCase();
-        const deliveryUrl = sub.DeliveryMethod === SubtitleDeliveryMethod.External
-          ? sub.DeliveryUrl ?? undefined
-          : undefined;
-
-        return {
-          label: sub.DisplayTitle ?? 'Undefined',
-          src: remote.sdk.api?.basePath && deliveryUrl
-            ? `${remote.sdk.api.basePath}${deliveryUrl}`
-            : undefined,
-          srcLang: sub.Language ?? undefined,
-          type: sub.DeliveryMethod ?? SubtitleDeliveryMethod.Drop,
-          index: sub.Index ?? -1,
-          codec,
-          format: deliveryUrl ? getSubtitleDeliveryFormat(deliveryUrl, codec) : undefined
-        };
-      })
-  );
-
-  /**
-   * Filters the external subtitle tracks
-   */
-  public readonly currentItemExternalParsedSubtitleTracks = computed(() =>
-    this.currentItemParsedSubtitleTracks.value?.filter(
-      (sub): sub is typeof sub & PlaybackExternalTrack => !isNil(sub.codec) && !isNil(sub.src)
-    )
-  );
-
-  /**
-   * The selected subtitle track, if it's delivered externally (so it's rendered by the client)
-   */
-  public readonly currentExternalSubtitleTrack = computed(() =>
-    this.currentItemExternalParsedSubtitleTracks.value?.find(
-      sub => sub.index === playbackManager.currentSubtitleTrack.value?.Index
-    )
-  );
-
-  /**
    * Parsed cues of the selected subtitle track, for the custom overlay. Only WebVTT is parsed:
    * ASS and PGS tracks have their own renderers.
+   *
+   * Evaluated on first read (`currentParsedSubtitleTrack`), not when the store is built: private fields come before
+   * the public ones it reads, which don't exist yet at that point.
    */
   private readonly _parsedSubtitleTrack = computedAsync(async () => {
     const track = this.currentExternalSubtitleTrack.value;
@@ -215,67 +164,7 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched'> 
         parsed: await runGenericWorkerFunc('parseVttFile')(track.src)
       };
     }
-  });
-
-  /**
-   * Cues to display in the custom subtitle overlay, only while they belong
-   * to the selected track (they're parsed asynchronously)
-   */
-  public readonly currentParsedSubtitleTrack = computed<ParsedSubtitleTrack | undefined>(() =>
-    this._useCustomSubtitleTrack.value
-    && this._parsedSubtitleTrack.value?.src === this.currentExternalSubtitleTrack.value?.src
-      ? this._parsedSubtitleTrack.value?.parsed
-      : undefined
-  );
-
-  public readonly currentItemVttParsedSubtitleTracks = computed(() =>
-    this.currentItemExternalParsedSubtitleTracks.value?.filter(sub => isVtt(sub))
-  );
-
-  /**
-   * == ACTIONS ==
-   */
-  public readonly toggleFullscreenVideoPlayer = async (): Promise<void> => {
-    if (router.currentRoute.value.fullPath === this._fullscreenVideoRoute) {
-      router.back();
-    } else {
-      await router.push(this._fullscreenVideoRoute);
-    }
-  };
-
-  /**
-   * Makes the media element play the selected audio track of a file it plays directly. Only possible when the
-   * element exposes `audioTracks` and the list matches the file's audio streams one to one, in order: if it
-   * doesn't, the element can't be trusted to switch tracks, which is recorded so a secondary track is remuxed
-   * from now on (re-negotiating the current playback if it needs it).
-   *
-   * Remuxes and transcodes carry only the selected audio track, so there's nothing to switch there.
-   *
-   * @param el - The media element, once it has loaded the file's metadata
-   */
-  public readonly applyAudioTrack = (el: HTMLMediaElement): void => {
-    // `audioTracks` isn't in TypeScript's DOM library
-    const { audioTracks } = el as HTMLMediaElement & { audioTracks?: Iterable<{ enabled: boolean }> & { length: number } };
-    const negotiated = playbackManager.currentNegotiatedMediaSource.value;
-    const selected = playbackManager.currentAudioTrack.value?.Index;
-
-    if (!audioTracks || !negotiated || isNil(selected) || playbackManager.currentPlaybackMethod.value !== 'DirectPlay') {
-      return;
-    }
-
-    const fileAudio = negotiated.MediaStreams?.filter(
-      stream => stream.Type === MediaStreamType.Audio && !stream.IsExternal
-    ) ?? [];
-    const position = fileAudio.findIndex(stream => stream.Index === selected);
-
-    if (position !== -1 && audioTracks.length === fileAudio.length) {
-      for (const [index, track] of [...audioTracks].entries()) {
-        track.enabled = index === position;
-      }
-    } else if (position > 0) {
-      recordAudioTrackSwitchingFailure();
-    }
-  };
+  }, undefined, { lazy: true });
 
   /**
    * Draws the subtitle with the renderer of the registry that declares its delivered format
@@ -375,6 +264,134 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched'> 
   };
 
   /**
+   * Disposes all the subtitle resources
+   */
+  private readonly _clear = () => {
+    this._subtitleGeneration++;
+    this._appliedSubtitle = undefined;
+
+    for (const func of this._cleanups) {
+      func();
+    }
+
+    this._cleanups.clear();
+  };
+
+  /**
+   * Subtitle tracks that can be displayed, with their delivery data taken from the
+   * media source negotiated with the server.
+   */
+  public readonly currentItemParsedSubtitleTracks = computed(() =>
+  /**
+   * TODO: There is currently a bug in Jellyfin server when adding external subtitles
+   * may play the incorrect subtitle
+   * https://github.com/jellyfin/jellyfin/issues/13198
+   */
+    playbackManager.currentNegotiatedMediaSource.value?.MediaStreams?.filter(
+      sub =>
+        sub.Type === MediaStreamType.Subtitle
+        && (sub.DeliveryMethod === SubtitleDeliveryMethod.Encode
+          || sub.DeliveryMethod === SubtitleDeliveryMethod.External)
+    )
+      .map((sub) => {
+        const codec = sub.Codec?.toLowerCase();
+        const deliveryUrl = sub.DeliveryMethod === SubtitleDeliveryMethod.External
+          ? sub.DeliveryUrl ?? undefined
+          : undefined;
+
+        return {
+          label: sub.DisplayTitle ?? 'Undefined',
+          src: remote.sdk.api?.basePath && deliveryUrl
+            ? `${remote.sdk.api.basePath}${deliveryUrl}`
+            : undefined,
+          srcLang: sub.Language ?? undefined,
+          type: sub.DeliveryMethod ?? SubtitleDeliveryMethod.Drop,
+          index: sub.Index ?? -1,
+          codec,
+          format: deliveryUrl ? getSubtitleDeliveryFormat(deliveryUrl, codec) : undefined
+        };
+      })
+  );
+
+  /**
+   * Filters the external subtitle tracks
+   */
+  public readonly currentItemExternalParsedSubtitleTracks = computed(() =>
+    this.currentItemParsedSubtitleTracks.value?.filter(
+      (sub): sub is typeof sub & PlaybackExternalTrack => !isNil(sub.codec) && !isNil(sub.src)
+    )
+  );
+
+  /**
+   * The selected subtitle track, if it's delivered externally (so it's rendered by the client)
+   */
+  public readonly currentExternalSubtitleTrack = computed(() =>
+    this.currentItemExternalParsedSubtitleTracks.value?.find(
+      sub => sub.index === playbackManager.currentSubtitleTrack.value?.Index
+    )
+  );
+
+  /**
+   * Cues to display in the custom subtitle overlay, only while they belong
+   * to the selected track (they're parsed asynchronously)
+   */
+  public readonly currentParsedSubtitleTrack = computed<ParsedSubtitleTrack | undefined>(() =>
+    this._useCustomSubtitleTrack.value
+    && this._parsedSubtitleTrack.value?.src === this.currentExternalSubtitleTrack.value?.src
+      ? this._parsedSubtitleTrack.value?.parsed
+      : undefined
+  );
+
+  public readonly currentItemVttParsedSubtitleTracks = computed(() =>
+    this.currentItemExternalParsedSubtitleTracks.value?.filter(sub => isVtt(sub))
+  );
+
+  /**
+   * == ACTIONS ==
+   */
+  public readonly toggleFullscreenVideoPlayer = async (): Promise<void> => {
+    if (router.currentRoute.value.fullPath === this._fullscreenVideoRoute) {
+      router.back();
+    } else {
+      await router.push(this._fullscreenVideoRoute);
+    }
+  };
+
+  /**
+   * Makes the media element play the selected audio track of a file it plays directly. Only possible when the
+   * element exposes `audioTracks` and the list matches the file's audio streams one to one, in order: if it
+   * doesn't, the element can't be trusted to switch tracks, which is recorded so a secondary track is remuxed
+   * from now on (re-negotiating the current playback if it needs it).
+   *
+   * Remuxes and transcodes carry only the selected audio track, so there's nothing to switch there.
+   *
+   * @param el - The media element, once it has loaded the file's metadata
+   */
+  public readonly applyAudioTrack = (el: HTMLMediaElement): void => {
+    // `audioTracks` isn't in TypeScript's DOM library
+    const { audioTracks } = el as HTMLMediaElement & { audioTracks?: Iterable<{ enabled: boolean }> & { length: number } };
+    const negotiated = playbackManager.currentNegotiatedMediaSource.value;
+    const selected = playbackManager.currentAudioTrack.value?.Index;
+
+    if (!audioTracks || !negotiated || isNil(selected) || playbackManager.currentPlaybackMethod.value !== 'DirectPlay') {
+      return;
+    }
+
+    const fileAudio = negotiated.MediaStreams?.filter(
+      stream => stream.Type === MediaStreamType.Audio && !stream.IsExternal
+    ) ?? [];
+    const position = fileAudio.findIndex(stream => stream.Index === selected);
+
+    if (position !== -1 && audioTracks.length === fileAudio.length) {
+      for (const [index, track] of [...audioTracks].entries()) {
+        track.enabled = index === position;
+      }
+    } else if (position > 0) {
+      recordAudioTrackSwitchingFailure();
+    }
+  };
+
+  /**
    * Applies the current subtitle from the playbackManager store
    *
    * It first disables every text track and stops the subtitle renderers, then shows the selected
@@ -431,20 +448,6 @@ class PlayerElementStore extends CommonStore<PlayerElementState, 'isStretched'> 
     } else if (track) {
       await this._applyRendererSubtitles(track);
     }
-  };
-
-  /**
-   * Disposes all the subtitle resources
-   */
-  private readonly _clear = () => {
-    this._subtitleGeneration++;
-    this._appliedSubtitle = undefined;
-
-    for (const func of this._cleanups) {
-      func();
-    }
-
-    this._cleanups.clear();
   };
 
   public constructor() {
