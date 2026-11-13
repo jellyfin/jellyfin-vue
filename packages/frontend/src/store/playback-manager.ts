@@ -2140,6 +2140,19 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
         : PlaybackStatus.Playing;
     });
 
+    /**
+     * The media time advancing on its own ends a wait, whatever events came: WebKit fires `waiting` right after
+     * `playing` when a file starts and never `playing` again (measured: WebKit 27.2 on Linux, direct play of an MKV),
+     * which left the playback buffering for good, so it could not be paused. Not while seeking: the time jumps then.
+     */
+    watch(mediaControls.currentTime, (time, previous) => {
+      const el = mediaElementRef.value;
+
+      if (mediaControls.waiting.value && el && !el.paused && !el.seeking && time > previous) {
+        mediaControls.waiting.value = false;
+      }
+    });
+
     watch(mediaControls.ended, () => {
       if (mediaControls.ended.value && !this.isRemotePlayer.value) {
         this.setNextItem();
