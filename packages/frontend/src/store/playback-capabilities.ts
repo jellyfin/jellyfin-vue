@@ -221,6 +221,11 @@ watch([() => remote.auth.currentServer.value?.Id, () => remote.auth.currentUserI
 const pendingProbes = new Map<string, Promise<ProbeResult | undefined>>();
 
 /**
+ * The probes in flight (by the key of {@link pendingProbes}) that a verdict stopped waiting for
+ */
+const missedProbes = new Set<string>();
+
+/**
  * Counts the times the stored probe results were forgotten: a probe that started before the last time does not store
  * its result (see {@link readProbe})
  */
@@ -244,9 +249,32 @@ const sessionProbes = new Map<string, ProbeResult>();
 async function forgetStoredProbes(): Promise<void> {
   probeGeneration.current++;
   pendingProbes.clear();
+  missedProbes.clear();
   sessionProbes.clear();
   await Promise.allSettled(pendingProbeStores);
   await apiStore.mediaProbesClear();
+}
+
+/**
+ * How many probes were stored after a verdict stopped waiting for them, by item id (see {@link getLateProbeCount})
+ */
+const lateProbes = shallowReactive(new Map<string, number>());
+
+/**
+ * How many probes of an item's files were stored after a verdict had stopped waiting for them (reactive). What shows
+ * verdicts outside a playback watches it to compute them again with the probe, without a new visit.
+ *
+ * @param itemId - Id of the item whose files were probed
+ */
+export function getLateProbeCount(itemId: string): number {
+  return lateProbes.get(itemId) ?? 0;
+}
+
+/**
+ * Counts a probe of an item stored after a verdict stopped waiting for it
+ */
+function countLateProbe(itemId: string): void {
+  lateProbes.set(itemId, getLateProbeCount(itemId) + 1);
 }
 
 /**
@@ -334,30 +362,31 @@ async function getStoredProbe(itemId: string, source: MediaSourceInfo): Promise<
  * (see {@link sessionProbes}), unless something was forgotten since the probe started (see {@link forgetStoredProbes})
  *
  * @param key - The key of the file in {@link pendingProbes}
+ * @returns The result, and whether it is a new one that was stored
  */
 async function readProbe(
   itemId: string,
   mediaType: 'Video' | 'Audio',
   source: MediaSourceInfo & { Id: string },
   key: string
-): Promise<ProbeResult | undefined> {
+): Promise<{ result?: ProbeResult; stored: boolean }> {
   const generation = probeGeneration.current;
   const stored = await getStoredProbe(itemId, source);
 
   if (stored) {
-    return stored;
+    return { result: stored, stored: false };
   }
 
   const url = getStaticStreamUrl(source, mediaType);
 
   if (!url) {
-    return;
+    return { stored: false };
   }
 
   const result = await probeMediaSource(url, { size: source.Size && source.Size > 0 ? source.Size : undefined });
 
   if (generation !== probeGeneration.current) {
-    return result;
+    return { result, stored: false };
   }
 
   if (isRememberedForSession(result)) {
@@ -369,19 +398,19 @@ async function readProbe(
   pendingProbeStores.add(storing);
 
   try {
-    await storing;
+    return { result, stored: await storing };
   } catch {
     // Not storing it only means the next verdict probes again
+    return { result, stored: false };
   } finally {
     pendingProbeStores.delete(storing);
   }
-
-  return result;
 }
 
 /**
  * The probe result of a media source of an item, waiting at most `waitMs` for it. Undefined when the source has
- * no file to probe, or when the probe did not finish in time (it goes on, and is stored for later verdicts).
+ * no file to probe, or when the probe did not finish in time: it goes on, is stored for later verdicts and, once
+ * stored, counted as late for the item (see {@link getLateProbeCount}).
  */
 async function getProbe(item: BaseItemDto, source: MediaSourceInfo, waitMs: number): Promise<ProbeResult | undefined> {
   const { Id: itemId, MediaType: mediaType } = item;
@@ -402,12 +431,23 @@ async function getProbe(item: BaseItemDto, source: MediaSourceInfo, waitMs: numb
 
   if (!pending) {
     const probe = async () => {
+      let stored = false;
+
       try {
-        return await readProbe(itemId, mediaType, { ...source, Id: sourceId }, key);
+        const read = await readProbe(itemId, mediaType, { ...source, Id: sourceId }, key);
+
+        stored = read.stored;
+
+        return read.result;
       } finally {
         // Unless forgetting dropped it meanwhile (another probe of the file may be the pending one now)
         if (pendingProbes.get(key) === pending) {
           pendingProbes.delete(key);
+
+          // Only a stored result is late news: computing the verdicts again finds it instead of probing again
+          if (missedProbes.delete(key) && stored) {
+            countLateProbe(itemId);
+          }
         }
       }
     };
@@ -416,7 +456,19 @@ async function getProbe(item: BaseItemDto, source: MediaSourceInfo, waitMs: numb
     pendingProbes.set(key, pending);
   }
 
-  return withTimeout(pending, waitMs, undefined);
+  const missed = Symbol('missed');
+  const result = await withTimeout(pending, waitMs, missed);
+
+  if (result !== missed) {
+    return result;
+  }
+
+  // It may have been stored meanwhile, after the wait but before this ran
+  if (pendingProbes.get(key) === pending) {
+    missedProbes.add(key);
+  } else if (await getStoredProbe(itemId, source)) {
+    countLateProbe(itemId);
+  }
 }
 
 /**

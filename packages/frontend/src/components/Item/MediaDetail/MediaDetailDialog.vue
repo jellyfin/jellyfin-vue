@@ -152,6 +152,7 @@ import { computed, ref } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import { isArray, isNil, isNumber } from '@jellyfin-vue/shared/validation';
 import { useMediaSourceVerdicts } from '#/store/playback-versions.ts';
+import { playbackManager } from '#/store/playback-manager.ts';
 import { getLocaleName } from '#/utils/i18n.ts';
 import { formatBitRate, formatFileSize } from '#/utils/items.ts';
 
@@ -180,14 +181,16 @@ const mediaSources = computed<MediaSourceInfo[]>(() => {
 
 /**
  * How each version would be played, the most compatible one and the one played when none is chosen, when a version
- * can be picked here
+ * can be picked here. A probe stored late updates them, except while the item is being played, like the item page.
  */
 const {
   verdicts: sourceVerdicts,
   best: bestSourceIndex,
   automatic: automaticSourceIndex
-} = useMediaSourceVerdicts(() =>
-  mediaSources.value.length > 1 && isNil(mediaSourceIndex) ? item : undefined
+} = useMediaSourceVerdicts(
+  () => mediaSources.value.length > 1 && isNil(mediaSourceIndex) ? item : undefined,
+  undefined,
+  () => playbackManager.currentItemId.value === item.Id
 );
 /**
  * Version picked by the user in this dialog. Until one is picked, the selector shows a loading state while the

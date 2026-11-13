@@ -13,6 +13,7 @@ import { PROBE_TIMEOUT_MS, VERSION_RESOLUTION_WAIT_MS } from '#/utils/playback-c
 import { pickBest } from '#/utils/playback-capabilities/ranking.ts';
 import type { Verdict } from '#/utils/playback-capabilities/verdict.ts';
 import {
+  getLateProbeCount,
   getMediaSourceVerdict,
   verdictEnvironmentSources,
   type MediaSourceVerdictOptions,
@@ -165,18 +166,25 @@ export interface MediaSourceVerdicts {
 
 /**
  * The verdicts of the versions of an item, recomputed whenever the item, its versions, the picked tracks or the
- * client's environment (settings, policy, HDR display, what was learned) change. Results of an older computation that
- * arrive late are dropped.
+ * client's environment (settings, policy, HDR display, what was learned) change, and when a probe of its files that a
+ * verdict could not wait for is stored, unless `held`. Results of an older computation that arrive late are dropped.
  *
  * @param item - The item, with its `MediaSources`
  * @param picked - The tracks picked for one of its versions, if any
+ * @param held - While true, probes stored late wait to be taken into account: what plays must match what is shown,
+ * so the item page holds them while the item is being played (its playback was negotiated without them)
  */
 export function useMediaSourceVerdicts(
   item: MaybeRefOrGetter<BaseItemDto | undefined>,
-  picked?: MaybeRefOrGetter<VersionTracks | undefined>
+  picked?: MaybeRefOrGetter<VersionTracks | undefined>,
+  held?: MaybeRefOrGetter<boolean>
 ): MediaSourceVerdicts {
   const verdicts = shallowRef<readonly Verdict[]>([]);
   const best = shallowRef<number>();
+  /**
+   * The late probes of the item taken into account (see `getLateProbeCount`)
+   */
+  const lateProbes = shallowRef(0);
   /**
    * Whether the wait for the first ranking of the item is over (see {@link RankingState})
    */
@@ -218,7 +226,17 @@ export function useMediaSourceVerdicts(
     settled.value = true;
   };
 
-  watch([itemKey, pickedKey, ...verdictEnvironmentSources], async ([key], previous) => {
+  watch([() => {
+    const id = toValue(item)?.Id;
+
+    return id ? getLateProbeCount(id) : 0;
+  }, () => toValue(held) ?? false], ([count, isHeld]) => {
+    if (!isHeld) {
+      lateProbes.value = count;
+    }
+  }, { immediate: true });
+
+  watch([itemKey, pickedKey, () => lateProbes.value, ...verdictEnvironmentSources], async ([key], previous) => {
     const id = ++computation;
     const value = toValue(item);
     const tracks = toValue(picked);

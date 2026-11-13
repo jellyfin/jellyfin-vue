@@ -320,6 +320,7 @@ import { computed, ref, shallowRef, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { isNil } from '@jellyfin-vue/shared/validation';
 import { useMediaSourceVerdicts } from '#/store/playback-versions.ts';
+import { playbackManager } from '#/store/playback-manager.ts';
 import { getItemDetailsLink, getMediaStreams, getMergedCrew } from '#/utils/items.ts';
 import { getItemizedSelect } from '#/utils/forms.ts';
 import { useBaseItem } from '#/composables/apis.ts';
@@ -445,7 +446,8 @@ function pickTrack(type: keyof typeof trackSelections, index: number): void {
 }
 
 /**
- * How each version would be played: the displayed one with the tracks shown for it, the others with their defaults
+ * How each version would be played: the displayed one with the tracks shown for it, the others with their defaults.
+ * A probe stored late updates them, except while this item is being played, whose playback was negotiated without it.
  */
 const { verdicts: sourceVerdicts, best, automatic } = useMediaSourceVerdicts(item, () => ({
   index: currentSourceIndex.value,
@@ -454,7 +456,7 @@ const { verdicts: sourceVerdicts, best, automatic } = useMediaSourceVerdicts(ite
     audioStreamIndex: displayedAudioTrack.value,
     subtitleStreamIndex: displayedSubtitleTrack.value
   }
-}));
+}), () => playbackManager.currentItemId.value === item.value.Id);
 
 watch([() => best.value, () => automatic.value], ([bestIndex, automaticIndex]) => {
   bestSourceIndex.value = bestIndex;
