@@ -168,6 +168,48 @@ describe('the reason is the one that requires the method', () => {
   });
 });
 
+/**
+ * The reasons are the ones computeVerdict gives when a preference gives way (see verdict.spec.ts, "a requirement of
+ * the user's own preference gives way when the user policy forbids the rung it needs")
+ */
+describe('a preference that gave way to the user policy says so, before anything else', () => {
+  test('a fixed level the policy can\'t encode to: the file plays directly', () => {
+    const label = getVerdictLabel(verdict('DirectPlay', ['ExceedsQuality', 'PreferenceNotAllowedByPolicy']), hevcAc3Mkv);
+
+    expect(label).toEqual({ method: 'DirectPlay', reason: 'QualityNotAllowedByPolicy' });
+  });
+
+  test('the HDR display mode the policy can\'t convert for: the browser adapts the HDR file', () => {
+    const label = getVerdictLabel(verdict('DirectPlay', ['HdrOnSdrDisplay', 'PreferenceNotAllowedByPolicy']), hevcAc3Mkv);
+
+    expect(label).toEqual({ method: 'DirectPlay', reason: 'HdrNotAllowedByPolicy' });
+  });
+
+  test('both at once: the quality is told', () => {
+    const label = getVerdictLabel(verdict('DirectPlay', ['HdrOnSdrDisplay', 'ExceedsQuality', 'PreferenceNotAllowedByPolicy']), hevcAc3Mkv);
+
+    expect(label).toEqual({ method: 'DirectPlay', reason: 'QualityNotAllowedByPolicy' });
+  });
+
+  test('also when a requirement of the file explains the method it fell back to', () => {
+    const label = getVerdictLabel(verdict('Remux', ['ContainerUnsupported', 'ExceedsQuality', 'PreferenceNotAllowedByPolicy']), hevcAc3Mkv);
+
+    expect(label).toEqual({ method: 'Remux', reason: 'QualityNotAllowedByPolicy' });
+  });
+
+  test('a preference honoured is told as before', () => {
+    const label = getVerdictLabel(verdict('TranscodeVideo', ['ExceedsQuality'], { video: encode(0) }), hevcAc3Mkv);
+
+    expect(label).toEqual({ method: 'TranscodeVideo', reason: 'ExceedsQuality' });
+  });
+
+  test('an attempt is still told as one', () => {
+    const label = getVerdictLabel(verdict('DirectPlay', ['ExceedsQuality', 'PreferenceNotAllowedByPolicy', 'Unverified']), hevcAc3Mkv);
+
+    expect(label).toEqual({ method: 'DirectPlay', reason: 'QualityNotAllowedByPolicy', attempt: true });
+  });
+});
+
 describe('when no requirement explains the method', () => {
   test('a method above what the streams need because a cheaper one failed', () => {
     const label = getVerdictLabel(verdict('Remux', ['FailedBefore']), hevcAc3Mkv);

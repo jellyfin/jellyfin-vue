@@ -101,6 +101,12 @@ export function getLabelReasonName(t: Translate, { reason, values = {} }: Verdic
     case 'NoHlsPlayback': {
       return t('playbackReasonNoHlsPlayback');
     }
+    case 'QualityNotAllowedByPolicy': {
+      return t('playbackReasonQualityNotAllowedByPolicy');
+    }
+    case 'HdrNotAllowedByPolicy': {
+      return t('playbackReasonHdrNotAllowedByPolicy');
+    }
     case undefined: {
       return undefined;
     }

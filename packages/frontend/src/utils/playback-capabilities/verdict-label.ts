@@ -3,8 +3,10 @@
  *
  * A verdict can carry several reasons; the label shows the one that requires the chosen method (the codec before the
  * user's own choices), then what pushed it above its requirements (a learned failure, the user policy), and only when
- * nothing else applies, that the browser says it will not play smoothly. Codec and container names are the server's.
- * A prediction that relies on streams nobody could check (an unverified verdict) is told as an attempt.
+ * nothing else applies, that the browser says it will not play smoothly. A preference of the user that gave way to the
+ * user policy comes before all of them: it is why the method is not the one the user's choice asks for. Codec and
+ * container names are the server's. A prediction that relies on streams nobody could check (an unverified verdict) is
+ * told as an attempt.
  */
 import type { MediaSourceInfo, MediaStream } from '@jellyfin/sdk/lib/generated-client';
 import type { PlaybackMethod, PlaybackRung, Verdict, VerdictReason } from './verdict.ts';
@@ -23,6 +25,8 @@ export type MethodLabel = PlaybackMethod | 'TranscodeVideoAndAudio';
  * `NotAllowedByQuality`, `NoDecodableTarget`, `NoHlsPlayback`: as the verdict's reason of the same name
  * - `FailedBefore`: a cheaper method did not work; `NothingWorked`: no method did
  * - `PolicySimplerMethod`: the user policy forbids a cheaper method; `PolicyNeededMethod`: the one it needs
+ * - `QualityNotAllowedByPolicy`: the user policy forbids the video transcode the chosen quality needs, so it plays the
+ * best way allowed without it; `HdrNotAllowedByPolicy`: the same for converting HDR video for an SDR display
  */
 export type ReasonLabel
   = | 'ContainerUnsupported'
@@ -40,7 +44,9 @@ export type ReasonLabel
     | 'PolicySimplerMethod'
     | 'PolicyNeededMethod'
     | 'NoDecodableTarget'
-    | 'NoHlsPlayback';
+    | 'NoHlsPlayback'
+    | 'QualityNotAllowedByPolicy'
+    | 'HdrNotAllowedByPolicy';
 
 export interface VerdictLabel {
   readonly method: MethodLabel;
@@ -88,6 +94,15 @@ const UNPLAYABLE_REASONS: readonly (readonly [VerdictReason, ReasonLabel])[] = [
 const ESCALATIONS: readonly (readonly [VerdictReason, ReasonLabel])[] = [
   ['FailedBefore', 'FailedBefore'],
   ['NotAllowedByPolicy', 'PolicySimplerMethod']
+];
+
+/**
+ * The preferences that give way when the user policy forbids what they need (`PreferenceNotAllowedByPolicy`), each
+ * known by the reason it adds: a fixed quality level and the HDR display mode
+ */
+const YIELDED_PREFERENCES: readonly (readonly [VerdictReason, ReasonLabel])[] = [
+  ['ExceedsQuality', 'QualityNotAllowedByPolicy'],
+  ['HdrOnSdrDisplay', 'HdrNotAllowedByPolicy']
 ];
 
 /**
@@ -173,6 +188,12 @@ function getReason(verdict: Verdict, source: MediaSourceInfo): Omit<VerdictLabel
     const reason = findReason(verdict, UNPLAYABLE_REASONS);
 
     return reason ? { reason } : findRequirement(verdict, source);
+  }
+
+  const yielded = verdict.reasons.includes('PreferenceNotAllowedByPolicy') ? findReason(verdict, YIELDED_PREFERENCES) : undefined;
+
+  if (yielded) {
+    return { reason: yielded };
   }
 
   const requirement = findRequirement(verdict, source);
