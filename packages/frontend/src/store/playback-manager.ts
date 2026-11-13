@@ -675,9 +675,10 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   };
 
   /**
-   * A negotiation got no answer (the request failed): unless the playback in progress goes on (see `_keepsPlayback`),
-   * the user is told, and the change of method under way (a rung of the ladder, "try another method") is dropped, so
-   * the user can try again on the playback that is still there
+   * A negotiation got no answer (the request failed). An improvement leaves the playback as it is (see `_keepsPlayback`);
+   * any other change leaves a playback that is still loaded playing, with its status and controls, tells the user and
+   * offers to ask again, and drops the change of method under way (a rung of the ladder, "try another method") so it
+   * can be tried again. Without a playback to keep, nothing plays: that's an error
    *
    * @param intent - Why it was negotiated
    * @param target - What was negotiated
@@ -691,12 +692,35 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
 
     const playing = this._currentNegotiation.value;
 
-    this._state.value.status = PlaybackStatus.Error;
-    useSnackbar(i18next.t('cantPlayItem'), 'error');
+    if (!playing?.data || playing.failure) {
+      this._state.value.status = PlaybackStatus.Error;
+      useSnackbar(i18next.t('cantPlayItem'), 'error');
 
-    if (playing) {
-      this._dropPendingFailure(playing);
+      return;
     }
+
+    /**
+     * The playback that is still loaded goes on, with its status and controls: the change that got no answer is told,
+     * and can be asked for again
+     */
+    this._dropPendingFailure(playing);
+
+    const dismiss = useSnackbar(i18next.t('playbackNoAnswer'), 'error', {
+      text: i18next.t('retry'),
+      onClick: () => {
+        if (this._currentNegotiation.value === playing) {
+          this._renegotiations.value++;
+        }
+      }
+    });
+    const stop = watch(this._currentNegotiation, (current) => {
+      if (current === playing) {
+        return;
+      }
+
+      stop();
+      dismiss();
+    });
   };
 
   /**

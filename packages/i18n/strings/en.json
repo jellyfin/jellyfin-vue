@@ -358,6 +358,7 @@
   "playbackMethodWithPrediction": "{{method}} (predicted: {{predicted}})",
   "playbackMethodWithReason": "{{method}}: {{reason}}",
   "playbackNetworkFailed": "Playback stopped: the media couldn't be loaded from the server",
+  "playbackNoAnswer": "The server didn't answer the change: the playback goes on as it was",
   "playbackNotSmooth": "Playback isn't smooth on this device. A lower quality may help.",
   "playbackReasonCodecUnsupported": "the browser can't play {{codec}}",
   "playbackReasonCodecsUnsupported": "the browser can't play {{video}} or {{audio}}",
