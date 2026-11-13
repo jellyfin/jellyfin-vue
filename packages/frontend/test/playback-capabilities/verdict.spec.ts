@@ -1502,43 +1502,85 @@ describe('signature: what the failure memory remembers', () => {
 
 describe('getMediaSourceQuestions: what the verdict asks about one stream through media source playback', () => {
   /**
-   * The questions about the audio transcoding targets, which the verdict also asks for the fallback of copied streams
+   * Every question the verdict asks about an item, in a browser that decodes everything through media source playback
    */
-  const audioTargetQuestions = new Set(AUDIO_TRANSCODE_TARGETS.flatMap(target =>
-    [1, 2, 3, 4, 5, 6].map(channels => JSON.stringify(getAudioTargetCandidate(target, { channels })))));
-
-  /**
-   * The media source questions the verdict asked about the stream with a content type matching `pattern`
-   */
-  async function askedThroughMediaSource(item: { source: MediaSourceInfo; probe?: ProbeResult }, pattern: RegExp) {
+  async function askedByVerdict(item: { source: MediaSourceInfo; probe?: ProbeResult }) {
     const oracle = fakeOracle(fullBrowser);
 
     await computeVerdict({ source: item.source, probe: item.probe, oracle, environment: defaultEnvironment });
 
-    return oracle.asked.filter(config => config.type === 'media-source'
-      && pattern.test(config.video?.contentType ?? config.audio?.contentType ?? '')
-      && !audioTargetQuestions.has(JSON.stringify(config)));
+    return oracle.asked;
   }
 
-  test('for a probed audio stream, exactly the questions the verdict asks', async () => {
+  /**
+   * The stream copied into the server's HLS output: fragmented MP4 with the stream's codec string and its own members
+   */
+  const opusInMp4 = { contentType: 'audio/mp4; codecs="opus"', channels: '2', samplerate: 48_000, bitrate: 128_053 };
+
+  test('for a probed audio stream: the codec string read from the file, in MP4, with the stream\'s members, as the verdict asks it', async () => {
     const item = mkvItem('opus');
-    const expected = await askedThroughMediaSource(item, /^audio\/mp4; codecs="opus"$/);
+    const questions = getMediaSourceQuestions(item.source, 1, item.probe);
 
-    expect(getMediaSourceQuestions(item.source, 1, item.probe)).toEqual(expected);
+    expect(questions).toEqual([{ type: 'media-source', audio: opusInMp4 }]);
+    expect(await askedByVerdict(item)).toEqual(expect.arrayContaining(questions));
   });
 
-  test('for a probed video stream with two HEVC prefixes, both questions', async () => {
+  test('for a probed video stream with two HEVC prefixes, both questions, as the verdict asks them', async () => {
     const item = hevcMkvItem();
-    const expected = await askedThroughMediaSource(item, /^video\/mp4; codecs="(?:hvc1|hev1)/);
+    const members = { width: 640, height: 360, bitrate: 793_179, framerate: 25 };
+    const questions = getMediaSourceQuestions(item.source, 0, item.probe);
 
-    expect([getMediaSourceQuestions(item.source, 0, item.probe), expected.length]).toEqual([expected, 2]);
+    expect(questions).toEqual([
+      { type: 'media-source', video: { contentType: 'video/mp4; codecs="hvc1.2.4.L93.B0"', ...members } },
+      { type: 'media-source', video: { contentType: 'video/mp4; codecs="hev1.2.4.L93.B0"', ...members } }
+    ]);
+    expect(await askedByVerdict(item)).toEqual(expect.arrayContaining(questions));
   });
 
-  test('without a probe, the generic questions from the server\'s names', async () => {
+  test('without a probe, the generic question from the server\'s name, as the verdict asks it', async () => {
     const { source } = mkvItem('ac3');
-    const expected = await askedThroughMediaSource({ source }, /^audio\/mp4; codecs="ac3"$/);
+    const questions = getMediaSourceQuestions(source, 1);
 
-    expect(getMediaSourceQuestions(source, 1)).toEqual(expected);
+    expect(questions).toEqual([
+      { type: 'media-source', audio: { contentType: 'audio/mp4; codecs="ac3"', channels: '6', samplerate: 48_000, bitrate: 128_053 } }
+    ]);
+    expect(await askedByVerdict({ source })).toEqual(expect.arrayContaining(questions));
+  });
+
+  test('a stream whose question is the same as a transcoding target\'s still has it (stereo Opus, nothing else known)', async () => {
+    const stream = audioStream({ Codec: 'opus', CodecTag: undefined, SampleRate: undefined, BitRate: undefined });
+    const source = mediaSource([videoStream({ CodecTag: undefined }), stream], { Container: 'mkv' });
+    const probe = probeOk('video/x-matroska', [probedVideo({ internalCodecId: 'V_MPEG4/ISO/AVC' })], [
+      probedAudio({ codec: 'opus', codecString: 'opus', internalCodecId: 'A_OPUS', sampleRate: undefined })
+    ]);
+    const opusTarget = AUDIO_TRANSCODE_TARGETS.find(target => target.codecString === 'opus');
+    const questions = getMediaSourceQuestions(source, 1, probe);
+
+    expect(questions).toEqual([{ type: 'media-source', audio: { contentType: 'audio/mp4; codecs="opus"', channels: '2' } }]);
+    expect(opusTarget && questions[0]).toEqual(opusTarget && getAudioTargetCandidate(opusTarget, { channels: 2 }));
+    expect(await askedByVerdict({ source, probe })).toEqual(expect.arrayContaining(questions));
+  });
+
+  test('disproving the questions of a copied stream makes the next verdict encode it; an identical target is disproved with it', async () => {
+    const stream = audioStream({ Codec: 'opus', CodecTag: undefined, SampleRate: undefined, BitRate: undefined });
+    const source = mediaSource([videoStream({ CodecTag: undefined }), stream], { Container: 'mkv' });
+    const probe = probeOk('video/x-matroska', [probedVideo({ internalCodecId: 'V_MPEG4/ISO/AVC' })], [
+      probedAudio({ codec: 'opus', codecString: 'opus', internalCodecId: 'A_OPUS', sampleRate: undefined })
+    ]);
+    const disproved = new Set<string>();
+    const browser = fakeOracle(noMatroskaBrowser);
+    const oracle: CapabilityOracle = { ...browser, query: async (config, context) => disproved.has(getConfigurationKey(config)) ? DISPROVED : browser.query(config, context) };
+    const compute = async () => computeVerdict({ source, probe, oracle, environment: defaultEnvironment });
+    const before = await compute();
+
+    for (const config of getMediaSourceQuestions(source, 1, probe)) {
+      disproved.add(getConfigurationKey(config));
+    }
+
+    const after = await compute();
+
+    expect([before.method, before.audio?.action, before.unverified]).toEqual(['Remux', 'copy', false]);
+    expect(after).toMatchObject({ method: 'TranscodeAudio', audio: { action: 'transcode', targets: [{ codecString: 'mp4a.40.2' }] } });
   });
 
   test('a stream that is not in the source has no questions', () => {
