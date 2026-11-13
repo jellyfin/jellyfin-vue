@@ -126,7 +126,7 @@ const defaultEnvironment: VerdictEnvironment = {
   canSelectAudioTrack: false,
   quality: { type: 'auto' },
   policy: {},
-  minimumRung: noFloor,
+  getLearnedFloor: noFloor,
   subtitleRenderers: RENDERERS
 };
 
@@ -374,7 +374,7 @@ describe('a value of 0 (or below) is unknown, not a value', () => {
     const item = mkvItem('ac3');
     const streams = (item.source.MediaStreams ?? []).map(stream => stream.Type === 'Audio' ? { ...stream, Channels: 0 } : stream);
     const probe = item.probe.status === 'ok' ? { ...item.probe, audio: [] } : item.probe;
-    const verdict = await verdictFor({ source: { ...item.source, MediaStreams: streams }, probe }, fullBrowser, { environment: { minimumRung: () => 'TranscodeAudio' } });
+    const verdict = await verdictFor({ source: { ...item.source, MediaStreams: streams }, probe }, fullBrowser, { environment: { getLearnedFloor: () => 'TranscodeAudio' } });
 
     expect(verdict).toMatchObject({ method: 'TranscodeAudio', maxAudioChannels: 2 });
   });
@@ -386,7 +386,7 @@ describe('a value of 0 (or below) is unknown, not a value', () => {
       audioStream()
     ], { Container: 'mkv' });
 
-    await computeVerdict({ source, oracle, environment: { ...defaultEnvironment, minimumRung: () => 'TranscodeVideo' } });
+    await computeVerdict({ source, oracle, environment: { ...defaultEnvironment, getLearnedFloor: () => 'TranscodeVideo' } });
 
     const targets = oracle.asked.filter(config => config.type === 'media-source' && config.video?.contentType === T.h264Target);
 
@@ -731,7 +731,7 @@ describe('learned floor: the minimum rung known to be needed for these streams',
   ];
 
   test.each(rungs)('%s', async (_, floor, expected) => {
-    const verdict = await verdictFor(mp4Item(), fullBrowser, { environment: { minimumRung: () => floor } });
+    const verdict = await verdictFor(mp4Item(), fullBrowser, { environment: { getLearnedFloor: () => floor } });
 
     expect([verdict.method, verdict.reasons.includes('FailedBefore')]).toEqual([expected, true]);
   });
@@ -739,20 +739,20 @@ describe('learned floor: the minimum rung known to be needed for these streams',
   test('a Remux verdict that the server turned into a video encode goes straight to video transcode next time', async () => {
     const first = await verdictFor(mkvItem(), noMatroskaBrowser);
     const floor = getNextFloor(first, { actualMethod: 'TranscodeVideo' });
-    const next = await verdictFor(mkvItem(), noMatroskaBrowser, { environment: { minimumRung: () => floor } });
+    const next = await verdictFor(mkvItem(), noMatroskaBrowser, { environment: { getLearnedFloor: () => floor } });
 
     expect([first.method, floor, next.method]).toEqual(['Remux', 'TranscodeVideo', 'TranscodeVideo']);
   });
 
   test('a floor never lowers a verdict below what the browser answers require', async () => {
-    const verdict = await verdictFor(mkvItem('ac3'), fullBrowser, { environment: { minimumRung: () => 'Remux' } });
+    const verdict = await verdictFor(mkvItem('ac3'), fullBrowser, { environment: { getLearnedFloor: () => 'Remux' } });
 
     expect(verdict.method).toBe('TranscodeAudio');
   });
 
   test('a floor above what the quality mode allows is unplayable, because of the quality', async () => {
     const verdict = await verdictFor(mp4Item(), fullBrowser, {
-      environment: { minimumRung: () => 'TranscodeVideo', quality: { type: 'original' } }
+      environment: { getLearnedFloor: () => 'TranscodeVideo', quality: { type: 'original' } }
     });
 
     expect(verdict).toMatchObject({ method: 'Unplayable', reasons: ['FailedBefore', 'NotAllowedByQuality'] });
@@ -760,7 +760,7 @@ describe('learned floor: the minimum rung known to be needed for these streams',
 
   test('a floor above what the user policy allows is unplayable, because of the policy', async () => {
     const verdict = await verdictFor(mp4Item(), fullBrowser, {
-      environment: { minimumRung: () => 'TranscodeVideo', policy: { EnableVideoPlaybackTranscoding: false } }
+      environment: { getLearnedFloor: () => 'TranscodeVideo', policy: { EnableVideoPlaybackTranscoding: false } }
     });
 
     expect(verdict).toMatchObject({ method: 'Unplayable', reasons: ['FailedBefore', 'NotAllowedByPolicy'] });
@@ -770,7 +770,7 @@ describe('learned floor: the minimum rung known to be needed for these streams',
     const asked = new Set<string>();
     const verdict = await verdictFor(mp4Item(), fullBrowser, {
       environment: {
-        minimumRung: (signature) => {
+        getLearnedFloor: (signature) => {
           asked.add(signature);
 
           return noFloor(signature);
@@ -898,7 +898,7 @@ describe('audio-only items (music) follow the same rules without video', () => {
   test('once its audio transcode failed too, every method music has failed: that is the reason, not the targets', async () => {
     const item = track('flac', 'flac', 'audio/flac', 'flac');
     const floor = getNextFloor({ method: 'TranscodeAudio' }, { failedAt: 'TranscodeAudio' });
-    const verdict = await verdictFor(item, { file: [], ms: [T.aacTarget] }, { mediaType: 'Audio', environment: { minimumRung: () => floor } });
+    const verdict = await verdictFor(item, { file: [], ms: [T.aacTarget] }, { mediaType: 'Audio', environment: { getLearnedFloor: () => floor } });
 
     expect(verdict).toMatchObject({ method: 'Unplayable', reasons: ['AudioCodecUnsupported', 'FailedBefore'] });
     expect(getVerdictLabel(verdict, item.source).reason).toBe('NothingWorked');
@@ -907,7 +907,7 @@ describe('audio-only items (music) follow the same rules without video', () => {
   test('the same for music nobody knows the streams of', async () => {
     const source = mediaSource([], { Container: 'strm', MediaStreams: [] });
     const floor = getNextFloor({ method: 'TranscodeAudio' }, { failedAt: 'TranscodeAudio' });
-    const verdict = await verdictFor({ source }, fullBrowser, { mediaType: 'Audio', environment: { minimumRung: () => floor } });
+    const verdict = await verdictFor({ source }, fullBrowser, { mediaType: 'Audio', environment: { getLearnedFloor: () => floor } });
 
     expect(verdict).toMatchObject({ method: 'Unplayable', reasons: ['FailedBefore', 'Unverified'] });
     expect(getVerdictLabel(verdict, source).reason).toBe('NothingWorked');
@@ -994,7 +994,7 @@ describe('no stream metadata: the failure ladder corrects it (nobody knows the s
     return verdictFor(strm, browser, {
       mediaType: 'Video',
       ...overrides,
-      environment: { ...overrides.environment, minimumRung: signature => signature === first.signature ? floor : undefined }
+      environment: { ...overrides.environment, getLearnedFloor: signature => signature === first.signature ? floor : undefined }
     });
   }
 
@@ -1062,7 +1062,7 @@ describe('no stream metadata: the failure ladder corrects it (nobody knows the s
   test('the questions are only about the targets, as media source playback, at the box of the quality level', async () => {
     const oracle = fakeOracle(fullBrowser);
 
-    await computeVerdict({ ...strm, mediaType: 'Video', oracle, environment: { ...defaultEnvironment, quality: { type: 'fixed', level: 720 }, minimumRung: () => 'TranscodeVideo' } });
+    await computeVerdict({ ...strm, mediaType: 'Video', oracle, environment: { ...defaultEnvironment, quality: { type: 'fixed', level: 720 }, getLearnedFloor: () => 'TranscodeVideo' } });
 
     expect(oracle.asked.every(config => config.type === 'media-source')).toBe(true);
     expect(oracle.asked.filter(config => config.video).map(config => [config.video?.contentType, config.video?.width, config.video?.height]))
@@ -1104,7 +1104,7 @@ describe('no stream metadata: the failure ladder corrects it (nobody knows the s
   test('music has no video plan, and skips the remux: the server takes a single codec for music, and the source codec cannot be named', async () => {
     const song = { source: mediaSource([], { Container: 'strm', Protocol: 'Http', IsRemote: true, MediaStreams: [] }) };
     const direct = await verdictFor(song, fullBrowser, { mediaType: 'Audio' });
-    const above = await verdictFor(song, fullBrowser, { mediaType: 'Audio', environment: { minimumRung: () => 'Remux' } });
+    const above = await verdictFor(song, fullBrowser, { mediaType: 'Audio', environment: { getLearnedFloor: () => 'Remux' } });
 
     expect(direct).toMatchObject({ method: 'DirectPlay', video: undefined, audio: { action: 'copy' } });
     expect(above).toMatchObject({ method: 'TranscodeAudio', video: undefined, audio: { action: 'transcode', targets: [aac, opus] } });
@@ -1115,7 +1115,7 @@ describe('no stream metadata: the failure ladder corrects it (nobody knows the s
     const methods: PlaybackMethod[] = [];
 
     for (let attempt = 0; attempt < 6; attempt++) {
-      const verdict = await verdictFor(strm, fullBrowser, { mediaType: 'Video', environment: { minimumRung: signature => floors.get(signature) } });
+      const verdict = await verdictFor(strm, fullBrowser, { mediaType: 'Video', environment: { getLearnedFloor: signature => floors.get(signature) } });
 
       methods.push(verdict.method);
 

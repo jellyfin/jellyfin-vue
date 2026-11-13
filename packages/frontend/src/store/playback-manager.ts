@@ -30,7 +30,7 @@ import { apiStore } from '#/store/dbs/api/index.ts';
 import {
   getMediaSourceVerdict,
   getPlaybackPolicy,
-  minimumRung,
+  getLearnedFloor,
   recordMediaSourceFailure,
   recordPlaybackOutcome,
   renegotiatingEnvironment
@@ -914,7 +914,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    * few), so the ladder always ends: at worst in an unplayable verdict, which requests nothing and is shown as such.
    */
   private readonly _renegotiateAfterFailure = (negotiation: Negotiation, disproved: boolean): void => {
-    const floor = minimumRung(negotiation.verdict.signature);
+    const floor = getLearnedFloor(negotiation.verdict.signature);
 
     if (!disproved && floor !== undefined && isMoreExpensive(floor, negotiation.verdict.method)) {
       this._renegotiations.value++;
@@ -1806,7 +1806,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
      */
     watch(() => {
       const negotiation = this._currentNegotiation.value;
-      const floor = negotiation ? minimumRung(negotiation.verdict.signature) : undefined;
+      const floor = negotiation ? getLearnedFloor(negotiation.verdict.signature) : undefined;
 
       return negotiation !== undefined && floor !== undefined && isMoreExpensive(floor, negotiation.actualMethod);
     }, (raised) => {

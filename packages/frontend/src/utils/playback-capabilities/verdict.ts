@@ -123,7 +123,7 @@ export interface VerdictEnvironment {
   /**
    * The learned minimum method for a signature; the verdict never starts below it
    */
-  readonly minimumRung: LearnedFloor;
+  readonly getLearnedFloor: LearnedFloor;
   /**
    * The subtitle renderers the player ships (see `subtitles.ts`)
    */
@@ -697,7 +697,7 @@ export function getNextFloor(
  */
 function getRequirements(evaluation: Evaluation): { minRung: number; reasons: VerdictReason[] } {
   const requirements = [...getVideoRequirements(evaluation), ...getAudioRequirements(evaluation)];
-  const floor = evaluation.input.environment.minimumRung(evaluation.signature);
+  const floor = evaluation.input.environment.getLearnedFloor(evaluation.signature);
   const floorRung = floor === undefined ? 0 : getMethodOrder(floor);
   const rungs = [0, ...requirements.map(([rung]) => getMethodOrder(rung)), floorRung];
 
@@ -956,7 +956,7 @@ function getRungs(from: number, to: number, hasVideo: boolean): PlaybackRung[] {
 async function getBlindVerdict(input: VerdictInput): Promise<Verdict> {
   const { source, oracle, environment } = input;
   const signature = `unverified:${source.Id ?? source.Path ?? ''}`;
-  const floor = environment.minimumRung(signature);
+  const floor = environment.getLearnedFloor(signature);
   const floorRung = floor === undefined ? 0 : getMethodOrder(floor);
   const qualityCap = input.mediaType === 'Audio'
     ? undefined

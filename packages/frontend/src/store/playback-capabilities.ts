@@ -106,7 +106,7 @@ export const canSelectAudioTrack = computed(() =>
 /**
  * The learned floors of this session, as the verdict's environment expects them
  */
-export const minimumRung: LearnedFloor = signature => learnedFloors.get(signature);
+export const getLearnedFloor: LearnedFloor = signature => learnedFloors.get(signature);
 
 /**
  * Records what a playback taught about a verdict's streams, so later verdicts for the same signature never start
@@ -258,7 +258,7 @@ export function getPlaybackPolicy(): PlaybackPolicy {
 /**
  * What the verdict depends on that may change during a playback and has to re-negotiate it: the playback
  * settings, the user's policy and what was learned about the media element and the browser's answers. Learned floors are not here: they
- * belong to one verdict's signature (see {@link minimumRung}). The HDR display is not here either: moving the
+ * belong to one verdict's signature (see {@link getLearnedFloor}). The HDR display is not here either: moving the
  * window to another display must not interrupt a playback.
  */
 export const renegotiatingEnvironment = [
@@ -294,7 +294,7 @@ export function getVerdictEnvironment(video?: MediaStream): VerdictEnvironment {
     canSelectAudioTrack: canSelectAudioTrack.value,
     quality: playbackSettings.getQualityMode(video),
     policy: getPlaybackPolicy(),
-    minimumRung,
+    getLearnedFloor,
     subtitleRenderers: SUBTITLE_RENDERERS
   };
 }
