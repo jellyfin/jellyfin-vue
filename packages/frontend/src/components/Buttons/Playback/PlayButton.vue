@@ -5,7 +5,7 @@
       :variant="iconOnly ? undefined : 'elevated'"
       :color="iconOnly ? undefined : 'primary'"
       icon
-      :loading="loading"
+      :loading="loading || starting"
       :disabled="disabled"
       @click.prevent="playOrResume">
       <JIcon
@@ -18,7 +18,7 @@
     <VBtn
       v-else-if="!fab"
       :disabled="disabled || !canPlay(item)"
-      :loading="loading"
+      :loading="loading || starting"
       class="uno-mr-2"
       color="primary"
       min-width="8em"
@@ -51,7 +51,8 @@ const {
   audioTrackIndex,
   subtitleTrackIndex,
   mediaSourceIndex,
-  disabled
+  disabled,
+  loading
 } = defineProps<{
   item: BaseItemDto;
   iconOnly?: boolean;
@@ -64,15 +65,26 @@ const {
   videoTrackIndex?: number;
   audioTrackIndex?: number;
   subtitleTrackIndex?: number;
+  /**
+   * Version explicitly chosen for this item, as an index in `MediaSources`. Leave it undefined to let the playback
+   * manager play the most compatible one.
+   */
   mediaSourceIndex?: number;
   disabled?: boolean;
+  /**
+   * Shows the button as busy, for example while what it would play is still being decided
+   */
+  loading?: boolean;
 }>();
 
-const loading = ref(false);
+/**
+ * Whether the playback it asked for is starting
+ */
+const starting = ref(false);
 
 /** Begins or resumes playing of the item */
 async function playOrResume(): Promise<void> {
-  loading.value = true;
+  starting.value = true;
 
   if (canResume(item)) {
     await playbackManager.play({
@@ -104,6 +116,6 @@ async function playOrResume(): Promise<void> {
     });
   }
 
-  loading.value = false;
+  starting.value = false;
 }
 </script>

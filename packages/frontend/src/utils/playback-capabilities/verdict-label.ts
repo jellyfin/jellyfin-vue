@@ -179,14 +179,26 @@ function getReason(verdict: Verdict, source: MediaSourceInfo): Omit<VerdictLabel
 }
 
 /**
+ * Why the server's answer for a playback is not played: it plays nothing (`unplayable`), or it encodes something,
+ * which quality mode Original forbids (`quality`)
+ */
+export type PlaybackFailure = 'unplayable' | 'quality';
+
+/**
  * The label of a verdict: the method in words and the reason that explains it
  *
  * @param verdict - How this client would play the source
  * @param source - The media source the verdict was computed for, which names the codecs and the container
  * @param actualMethod - The method the server chose for it, when it is being played. When it differs from the
  * verdict's, the verdict's reasons do not explain it, so none is given.
+ * @param failure - Why the server's answer is not played, when it is not: then nothing plays, whatever the server
+ * chose, and the label says so with the failure's reason
  */
-export function getVerdictLabel(verdict: Verdict, source: MediaSourceInfo, actualMethod?: PlaybackMethod): VerdictLabel {
+export function getVerdictLabel(verdict: Verdict, source: MediaSourceInfo, actualMethod?: PlaybackMethod, failure?: PlaybackFailure): VerdictLabel {
+  if (failure && actualMethod !== undefined && actualMethod !== 'Unplayable') {
+    return { method: 'Unplayable', ...(failure === 'quality' && { reason: 'NotAllowedByQuality' as const }) };
+  }
+
   if (actualMethod !== undefined && actualMethod !== verdict.method) {
     return { method: actualMethod };
   }

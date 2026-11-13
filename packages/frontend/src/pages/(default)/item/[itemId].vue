@@ -52,6 +52,8 @@
             <PlayButton
               class="uno-mr-2"
               :item="item"
+              :loading="isResolvingVersion"
+              :disabled="isResolvingVersion"
               :media-source-index="currentSourceIndex"
               :video-track-index="currentVideoTrack"
               :audio-track-index="displayedAudioTrack"
@@ -64,7 +66,8 @@
               class="uno-mr-2" />
             <ItemMenu
               :item="item"
-              :media-source-index="currentSourceIndex" />
+              :media-source-index="currentSourceIndex"
+              :playback-media-source-index="isResolvingVersion ? undefined : currentSourceIndex" />
           </VRow>
           <VCol
             cols="12"
@@ -170,6 +173,10 @@
                   <MediaSourceSelector
                     :sources="item.MediaSources"
                     :default-source-index="currentSourceIndex"
+                    :verdicts="sourceVerdicts"
+                    :best-index="bestSourceIndex"
+                    :loading="isResolvingVersion"
+                    :disabled="isResolvingVersion"
                     @input="
                       (index) =>
                         (currentSource = item.MediaSources?.[index] ?? {})
@@ -195,7 +202,9 @@
                     "
                     type="Video"
                     :default-stream-index="currentVideoTrack"
-                    @input="(trackIndex) => (currentVideoTrack = trackIndex)" />
+                    :loading="isResolvingVersion"
+                    :disabled="isResolvingVersion"
+                    @input="(trackIndex) => pickTrack('video', trackIndex)" />
                 </VCol>
               </VRow>
               <VRow align="center">
@@ -217,7 +226,9 @@
                     "
                     type="Audio"
                     :default-stream-index="displayedAudioTrack"
-                    @input="(trackIndex) => (currentAudioTrack = trackIndex)" />
+                    :loading="isResolvingVersion"
+                    :disabled="isResolvingVersion"
+                    @input="(trackIndex) => pickTrack('audio', trackIndex)" />
                 </VCol>
               </VRow>
               <VRow align="center">
@@ -239,9 +250,9 @@
                     "
                     type="Subtitle"
                     :default-stream-index="displayedSubtitleTrack"
-                    @input="
-                      (trackIndex) => (currentSubtitleTrack = trackIndex)
-                    " />
+                    :loading="isResolvingVersion"
+                    :disabled="isResolvingVersion"
+                    @input="(trackIndex) => pickTrack('subtitle', trackIndex)" />
                 </VCol>
               </VRow>
             </div>
@@ -305,8 +316,10 @@ import type {
   MediaSourceInfo
 } from '@jellyfin/sdk/lib/generated-client';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
-import { computed, ref, watch } from 'vue';
+import { computed, ref, shallowRef, watch } from 'vue';
 import { useRoute } from 'vue-router';
+import { isNil } from '@jellyfin-vue/shared/validation';
+import { useMediaSourceVerdicts } from '#/store/playback-versions.ts';
 import { getItemDetailsLink, getMediaStreams, getMergedCrew } from '#/utils/items.ts';
 import { getItemizedSelect } from '#/utils/forms.ts';
 import { useBaseItem } from '#/composables/apis.ts';
@@ -382,12 +395,71 @@ const currentSourceIndex = computed(() =>
   selectSources.value.findIndex(el => el.value.Id === currentSource.value.Id)
 );
 
+/**
+ * Index of the version most compatible with this client, once known (see `useMediaSourceVerdicts` below)
+ */
+const bestSourceIndex = shallowRef<number>();
+
+/**
+ * The version shown while none is picked by hand: the one played when none is chosen (see `useMediaSourceVerdicts`
+ * below). Undefined while it's being resolved.
+ */
+const automaticSourceIndex = shallowRef<number>();
+
+/**
+ * Whether the version to show is still being decided: none was picked by hand and the automatic one isn't known yet
+ * (there are several versions, automatic version selection is on, and the ranking hasn't arrived nor its wait limit
+ * passed). Meanwhile the play button and the selectors show a loading state and can't be used, so nothing is played or
+ * picked for a version that is about to change; the rest of the page doesn't wait. Once they can be used, what the page
+ * shows is what plays: the version and tracks shown are played as an explicit choice.
+ */
+const isResolvingVersion = computed(() => isNil(selectedSource.value) && isNil(automaticSourceIndex.value));
+
+/**
+ * The version picked by the user or, if none, the automatic one (the server's first one is shown, unusable, while it's
+ * being resolved). A version picked by hand is kept during the visit.
+ */
 const currentSource = computed({
-  get: () => selectedSource.value ?? item.value.MediaSources?.[0] ?? {},
+  get: () => selectedSource.value
+    ?? item.value.MediaSources?.[automaticSourceIndex.value ?? 0]
+    ?? {},
   set(newValue) {
     selectedSource.value = newValue;
   }
 });
+
+const trackSelections = {
+  video: currentVideoTrack,
+  audio: currentAudioTrack,
+  subtitle: currentSubtitleTrack
+};
+
+/**
+ * Keeps a track picked by hand. Tracks belong to the version shown, so picking one also keeps that version for the
+ * rest of the visit: it no longer follows the automatic one, whose later changes (a ranking that arrives after its
+ * wait limit, a change of what the ranking depends on) would otherwise discard the track.
+ */
+function pickTrack(type: keyof typeof trackSelections, index: number): void {
+  selectedSource.value ??= currentSource.value;
+  trackSelections[type].value = index;
+}
+
+/**
+ * How each version would be played: the displayed one with the tracks shown for it, the others with their defaults
+ */
+const { verdicts: sourceVerdicts, best, automatic } = useMediaSourceVerdicts(item, () => ({
+  index: currentSourceIndex.value,
+  tracks: {
+    videoStreamIndex: currentVideoTrack.value,
+    audioStreamIndex: displayedAudioTrack.value,
+    subtitleStreamIndex: displayedSubtitleTrack.value
+  }
+}));
+
+watch([() => best.value, () => automatic.value], ([bestIndex, automaticIndex]) => {
+  bestSourceIndex.value = bestIndex;
+  automaticSourceIndex.value = automaticIndex;
+}, { immediate: true });
 
 /**
  * This page is reused when navigating between items (the route is the same), so the version

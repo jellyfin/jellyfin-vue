@@ -94,12 +94,21 @@ const openMenu = shallowRef<string>();
 </script>
 
 <script setup lang="ts">
-const { item, outlined, zIndex = 1000, queue, mediaSourceIndex } = defineProps<{
+const { item, outlined, zIndex = 1000, queue, mediaSourceIndex, playbackMediaSourceIndex } = defineProps<{
   item: BaseItemDto;
   outlined?: boolean;
   zIndex?: number;
   queue?: boolean;
+  /**
+   * Version the menu refers to, as an index in `MediaSources`: the one media info, metadata editing, copy and delete
+   * act on
+   */
   mediaSourceIndex?: number;
+  /**
+   * Version to play, as an index in `MediaSources`, when one was chosen. Without it, the playback manager plays the
+   * most compatible one.
+   */
+  playbackMediaSourceIndex?: number;
 }>();
 
 const emit = defineEmits<{
@@ -202,17 +211,17 @@ const pushToBottomOfQueueAction = {
   }
 };
 /**
- * The version of the menu refers to the item itself, so it only makes sense
+ * The version to play refers to the item itself, so it only makes sense
  * when the item is played (not when it's a folder whose children are played)
  */
-const playbackMediaSourceIndex = computed(() => item.IsFolder ? undefined : mediaSourceIndex);
+const playedMediaSourceIndex = computed(() => item.IsFolder ? undefined : playbackMediaSourceIndex);
 const playFromBeginningAction = {
   title: t('playFromBeginning'),
   icon: 'i-mdi:replay',
   action: async (): Promise<void> => {
     await playbackManager.play({
       item: item,
-      mediaSourceIndex: playbackMediaSourceIndex.value
+      mediaSourceIndex: playedMediaSourceIndex.value
     });
   }
 };
@@ -222,7 +231,7 @@ const shuffleAction = {
   action: async (): Promise<void> => {
     await playbackManager.play({
       item: item,
-      mediaSourceIndex: playbackMediaSourceIndex.value,
+      mediaSourceIndex: playedMediaSourceIndex.value,
       initiator: item,
       startShuffled: true
     });

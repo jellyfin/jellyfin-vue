@@ -80,6 +80,7 @@
             <ItemMenu
               :item="playbackManager.currentItem.value"
               :media-source-index="playbackManager.currentMediaSourceIndex.value"
+              :playback-media-source-index="playbackManager.currentMediaSourceIndex.value"
               :z-index="99999" />
             <VBtn
               icon

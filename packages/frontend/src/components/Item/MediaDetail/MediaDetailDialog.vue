@@ -9,8 +9,11 @@
           class="pt-2"
           :default-source-index="selectedMediaSourceIndex"
           :sources="mediaSources"
+          :verdicts="sourceVerdicts"
+          :best-index="bestSourceIndex"
+          :loading="isNil(pickedMediaSourceIndex) && isNil(automaticSourceIndex)"
           :label="t('selectVersion')"
-          @input="selectedMediaSourceIndex = $event" />
+          @input="pickedMediaSourceIndex = $event" />
       </VCardText>
       <VDivider />
     </template>
@@ -148,6 +151,7 @@ import type {
 import { computed, ref } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import { isArray, isNil, isNumber } from '@jellyfin-vue/shared/validation';
+import { useMediaSourceVerdicts } from '#/store/playback-versions.ts';
 import { getLocaleName } from '#/utils/i18n.ts';
 import { formatBitRate, formatFileSize } from '#/utils/items.ts';
 
@@ -174,7 +178,33 @@ const mediaSources = computed<MediaSourceInfo[]>(() => {
   return item.MediaSources ?? [];
 });
 
-const selectedMediaSourceIndex = ref<number>(mediaSourceIndex ?? 0);
+/**
+ * How each version would be played, the most compatible one and the one played when none is chosen, when a version
+ * can be picked here
+ */
+const {
+  verdicts: sourceVerdicts,
+  best: bestSourceIndex,
+  automatic: automaticSourceIndex
+} = useMediaSourceVerdicts(() =>
+  mediaSources.value.length > 1 && isNil(mediaSourceIndex) ? item : undefined
+);
+/**
+ * Version picked by the user in this dialog. Until one is picked, the selector shows a loading state while the
+ * preselected version is being resolved, but it stays usable: nothing is played from here, so a pick made meanwhile
+ * can't play a version other than the one shown, and blocking the selector would only delay browsing the versions.
+ */
+const pickedMediaSourceIndex = ref<number>();
+/**
+ * The version shown: the one given, the one picked or, if none, the one played when none is chosen (the server's first
+ * one while it's being resolved, and the only one when there's nothing to pick)
+ */
+const selectedMediaSourceIndex = computed(() =>
+  mediaSourceIndex
+  ?? pickedMediaSourceIndex.value
+  ?? automaticSourceIndex.value
+  ?? 0
+);
 const selectedMediaSource = computed<MediaSourceInfo | undefined>(
   () => mediaSources.value[selectedMediaSourceIndex.value] ?? undefined
 );

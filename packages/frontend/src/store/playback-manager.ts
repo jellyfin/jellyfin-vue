@@ -566,11 +566,11 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    * == ACTIONS ==
    */
   /**
-   * Decides the version of the current item when none was chosen for it: the one this client plays best (see
-   * `resolveMediaSourceIndex`, which waits for it a bounded time), or the server's first one when automatic version
-   * selection is off. A choice only applies to the item it was made for, so every other item of the queue gets its
-   * own. It's decided once per item while it's current: a later change of what the ranking depends on doesn't switch
-   * the version of a playback in progress.
+   * Decides the version of the current item when none was chosen for it: the one this client plays best, or the
+   * server's first one when automatic version selection is off (see `resolveMediaSourceIndex`, which waits for the
+   * ranking a bounded time). A choice only applies to the item it was made for, so every other item of the queue gets
+   * its own. It's decided once per item while it's current: a later change of what the ranking depends on doesn't
+   * switch the version of a playback in progress.
    */
   private readonly _resolveMediaSource = async (): Promise<void> => {
     const id = ++this._resolutionId;
@@ -584,7 +584,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       return;
     }
 
-    const index = playbackSettings.autoSelectVersion.value ? await resolveMediaSourceIndex(item) : 0;
+    const index = await resolveMediaSourceIndex(item);
 
     if (id === this._resolutionId && this.currentItemId.value === item.Id) {
       this._resolvedSource.value = { itemId: item.Id, index };
