@@ -230,6 +230,12 @@ describe('why nothing can play it', () => {
 
     expect(label).toEqual({ method: 'Unplayable', reason: 'NothingWorked' });
   });
+
+  test('the browser only plays files directly: that comes first, no quality or policy would change it', () => {
+    const label = getVerdictLabel(verdict('Unplayable', ['VideoCodecUnsupported', 'FailedBefore', 'NotAllowedByQuality', 'NotAllowedByPolicy', 'NoHlsPlayback']), hevcAc3Mkv);
+
+    expect(label).toEqual({ method: 'Unplayable', reason: 'NoHlsPlayback' });
+  });
 });
 
 describe('during playback, the method the server actually chose', () => {

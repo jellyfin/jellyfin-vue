@@ -20,7 +20,7 @@ export type MethodLabel = PlaybackMethod | 'TranscodeVideoAndAudio';
  * - `CodecUnsupported`: the browser cannot play a codec (`values.codec`)
  * - `CodecsUnsupported`: the browser plays neither the video nor the audio codec (`values.video`, `values.audio`)
  * - `HdrOnSdrDisplay`, `SubtitleBurnIn`, `ExceedsQuality`, `SecondaryAudioTrack`, `ExternalAudioTrack`, `NotSmooth`,
- * `NotAllowedByQuality`, `NoDecodableTarget`: as the verdict's reason of the same name
+ * `NotAllowedByQuality`, `NoDecodableTarget`, `NoHlsPlayback`: as the verdict's reason of the same name
  * - `FailedBefore`: a cheaper method did not work; `NothingWorked`: no method did
  * - `PolicySimplerMethod`: the user policy forbids a cheaper method; `PolicyNeededMethod`: the one it needs
  */
@@ -39,7 +39,8 @@ export type ReasonLabel
     | 'NotAllowedByQuality'
     | 'PolicySimplerMethod'
     | 'PolicyNeededMethod'
-    | 'NoDecodableTarget';
+    | 'NoDecodableTarget'
+    | 'NoHlsPlayback';
 
 export interface VerdictLabel {
   readonly method: MethodLabel;
@@ -70,9 +71,11 @@ const REQUIREMENTS: readonly (readonly [VerdictReason, PlaybackRung])[] = [
 ];
 
 /**
- * Why nothing can play it, from the most to the least actionable
+ * Why nothing can play it, from the most to the least actionable. A browser that only plays files directly comes
+ * first: no other choice of quality or policy would change it.
  */
 const UNPLAYABLE_REASONS: readonly (readonly [VerdictReason, ReasonLabel])[] = [
+  ['NoHlsPlayback', 'NoHlsPlayback'],
   ['NotAllowedByQuality', 'NotAllowedByQuality'],
   ['NotAllowedByPolicy', 'PolicyNeededMethod'],
   ['NoDecodableTarget', 'NoDecodableTarget'],

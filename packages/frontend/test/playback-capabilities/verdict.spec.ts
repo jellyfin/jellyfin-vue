@@ -127,7 +127,8 @@ const defaultEnvironment: VerdictEnvironment = {
   quality: { type: 'auto' },
   policy: {},
   getLearnedFloor: noFloor,
-  subtitleRenderers: RENDERERS
+  subtitleRenderers: RENDERERS,
+  hlsDelivery: 'media-source'
 };
 
 /**
@@ -1337,7 +1338,7 @@ describe('after a failure nothing is assumed: every stream whose support is stil
     const compute = async () => computeVerdict({ source, oracle, subtitleStreamIndex: 2, environment: defaultEnvironment });
     const before = await compute();
 
-    for (const config of getMediaSourceQuestions(source, 1)) {
+    for (const config of getMediaSourceQuestions(source, 1, undefined, 'media-source')) {
       disproved.add(getConfigurationKey(config));
     }
 
@@ -1519,7 +1520,7 @@ describe('getMediaSourceQuestions: what the verdict asks about one stream throug
 
   test('for a probed audio stream: the codec string read from the file, in MP4, with the stream\'s members, as the verdict asks it', async () => {
     const item = mkvItem('opus');
-    const questions = getMediaSourceQuestions(item.source, 1, item.probe);
+    const questions = getMediaSourceQuestions(item.source, 1, item.probe, 'media-source');
 
     expect(questions).toEqual([{ type: 'media-source', audio: opusInMp4 }]);
     expect(await askedByVerdict(item)).toEqual(expect.arrayContaining(questions));
@@ -1528,7 +1529,7 @@ describe('getMediaSourceQuestions: what the verdict asks about one stream throug
   test('for a probed video stream with two HEVC prefixes, both questions, as the verdict asks them', async () => {
     const item = hevcMkvItem();
     const members = { width: 640, height: 360, bitrate: 793_179, framerate: 25 };
-    const questions = getMediaSourceQuestions(item.source, 0, item.probe);
+    const questions = getMediaSourceQuestions(item.source, 0, item.probe, 'media-source');
 
     expect(questions).toEqual([
       { type: 'media-source', video: { contentType: 'video/mp4; codecs="hvc1.2.4.L93.B0"', ...members } },
@@ -1539,7 +1540,7 @@ describe('getMediaSourceQuestions: what the verdict asks about one stream throug
 
   test('without a probe, the generic question from the server\'s name, as the verdict asks it', async () => {
     const { source } = mkvItem('ac3');
-    const questions = getMediaSourceQuestions(source, 1);
+    const questions = getMediaSourceQuestions(source, 1, undefined, 'media-source');
 
     expect(questions).toEqual([
       { type: 'media-source', audio: { contentType: 'audio/mp4; codecs="ac3"', channels: '6', samplerate: 48_000, bitrate: 128_053 } }
@@ -1554,10 +1555,10 @@ describe('getMediaSourceQuestions: what the verdict asks about one stream throug
       probedAudio({ codec: 'opus', codecString: 'opus', internalCodecId: 'A_OPUS', sampleRate: undefined })
     ]);
     const opusTarget = AUDIO_TRANSCODE_TARGETS.find(target => target.codecString === 'opus');
-    const questions = getMediaSourceQuestions(source, 1, probe);
+    const questions = getMediaSourceQuestions(source, 1, probe, 'media-source');
 
     expect(questions).toEqual([{ type: 'media-source', audio: { contentType: 'audio/mp4; codecs="opus"', channels: '2' } }]);
-    expect(opusTarget && questions[0]).toEqual(opusTarget && getAudioTargetCandidate(opusTarget, { channels: 2 }));
+    expect(opusTarget && questions[0]).toEqual(opusTarget && getAudioTargetCandidate(opusTarget, { channels: 2 }, 'media-source'));
     expect(await askedByVerdict({ source, probe })).toEqual(expect.arrayContaining(questions));
   });
 
@@ -1573,7 +1574,7 @@ describe('getMediaSourceQuestions: what the verdict asks about one stream throug
     const compute = async () => computeVerdict({ source, probe, oracle, environment: defaultEnvironment });
     const before = await compute();
 
-    for (const config of getMediaSourceQuestions(source, 1, probe)) {
+    for (const config of getMediaSourceQuestions(source, 1, probe, 'media-source')) {
       disproved.add(getConfigurationKey(config));
     }
 
@@ -1586,7 +1587,103 @@ describe('getMediaSourceQuestions: what the verdict asks about one stream throug
   test('a stream that is not in the source has no questions', () => {
     const { source, probe } = mkvItem('aac');
 
-    expect(getMediaSourceQuestions(source, 7, probe)).toEqual([]);
+    expect(getMediaSourceQuestions(source, 7, probe, 'media-source')).toEqual([]);
+  });
+
+  test('when the element plays the HLS output itself, the same streams asked as fragmented MP4 files', () => {
+    const item = mkvItem('opus');
+
+    expect(getMediaSourceQuestions(item.source, 1, item.probe, 'native')).toEqual([{ type: 'file', audio: opusInMp4 }]);
+  });
+
+  test('when the HLS output cannot be played at all, there is nothing to ask', () => {
+    const item = mkvItem('opus');
+
+    expect(getMediaSourceQuestions(item.source, 1, item.probe, undefined)).toEqual([]);
+  });
+});
+
+describe('how the server\'s HLS output (remux and transcodes) reaches the element', () => {
+  /**
+   * A browser without media source playback whose element plays HLS: it answers questions about files only, among
+   * them the fragmented MP4 the HLS output is made of
+   */
+  const nativeHlsBrowser: FakeBrowser = {
+    file: [T.h264Mp4, T.aacMp4, T.opusMp4, T.h264Target, T.aacTarget, T.opusTarget],
+    ms: []
+  };
+
+  test('played natively: a file that needs a remux is remuxed, asked as the fragmented MP4 files of the HLS output', async () => {
+    const oracle = fakeOracle(nativeHlsBrowser);
+    const item = mkvItem('aac');
+    const verdict = await computeVerdict({ ...item, oracle, environment: { ...defaultEnvironment, hlsDelivery: 'native' } });
+
+    expect(verdict).toMatchObject({ method: 'Remux', reasons: ['ContainerUnsupported'], video: { action: 'copy' }, audio: { action: 'copy' } });
+    expect(oracle.asked.filter(config => config.type === 'media-source')).toEqual([]);
+    expect(oracle.asked).toContainEqual({ type: 'file', video: { contentType: T.h264Mp4, width: 640, height: 360, bitrate: 793_179, framerate: 25 } });
+  });
+
+  test('played natively: the transcoding targets are asked as files too', async () => {
+    const oracle = fakeOracle(nativeHlsBrowser);
+    const verdict = await computeVerdict({ ...hevcMkvItem({}, 'ac3'), oracle, environment: { ...defaultEnvironment, hlsDelivery: 'native' } });
+
+    expect(verdict).toMatchObject({
+      method: 'TranscodeVideo',
+      video: { action: 'transcode', targets: [{ codecString: 'avc1.640028' }] },
+      audio: { action: 'transcode', targets: [{ codecString: 'mp4a.40.2' }, { codecString: 'opus' }] }
+    });
+    expect(oracle.asked.filter(config => config.type === 'media-source')).toEqual([]);
+  });
+
+  test('played through media source playback: as before, media source questions', async () => {
+    const oracle = fakeOracle(noMatroskaBrowser);
+    const verdict = await computeVerdict({ ...mkvItem('aac'), oracle, environment: defaultEnvironment });
+
+    expect(verdict.method).toBe('Remux');
+    expect(oracle.asked).toContainEqual({ type: 'media-source', video: { contentType: T.h264Mp4, width: 640, height: 360, bitrate: 793_179, framerate: 25 } });
+  });
+
+  describe('no way to play it (no media source playback, no native HLS): only direct play', () => {
+    const noHls: Partial<VerdictEnvironment> = { hlsDelivery: undefined };
+
+    test('a file that plays directly still does, and the server is not offered its HLS output as a fallback', async () => {
+      const oracle = fakeOracle(fullBrowser);
+      const verdict = await verdictFor(mp4Item(), fullBrowser, { environment: noHls });
+
+      expect(verdict).toMatchObject({ method: 'DirectPlay', onlyDirectPlay: true });
+      expect(verdict.video).toEqual({ index: 0, action: 'copy' });
+      expect(verdict.audio).toEqual({ index: 1, action: 'copy' });
+      await computeVerdict({ ...mp4Item(), oracle, environment: { ...defaultEnvironment, ...noHls } });
+      expect(oracle.asked.filter(config => config.type === 'media-source')).toEqual([]);
+    });
+
+    test('a file that needs anything more is unplayable, and says why; nothing about the HLS output is asked', async () => {
+      const oracle = fakeOracle(noMatroskaBrowser);
+      const verdict = await computeVerdict({ ...mkvItem('aac'), oracle, environment: { ...defaultEnvironment, ...noHls } });
+
+      expect(verdict.method).toBe('Unplayable');
+      expect(verdict.reasons).toContain('NoHlsPlayback');
+      expect(verdict.reasons).not.toContain('NoDecodableTarget');
+      expect(oracle.asked.filter(config => config.type === 'media-source')).toEqual([]);
+      // The file is Matroska: anything about fragmented MP4 would be about the HLS output (its streams or the targets)
+      expect(oracle.asked.filter(config => /^(?:video|audio)\/mp4;/.test(config.video?.contentType ?? config.audio?.contentType ?? ''))).toEqual([]);
+    });
+
+    test('a failure of the direct play leaves nothing to try: unplayable, for the same reason', async () => {
+      const verdict = await verdictFor(mp4Item(), fullBrowser, { environment: { ...noHls, getLearnedFloor: () => 'Remux' } });
+
+      expect(verdict).toMatchObject({ method: 'Unplayable', reasons: expect.arrayContaining(['FailedBefore', 'NoHlsPlayback']) });
+    });
+
+    test('a source without stream metadata is played directly, blindly, and nothing else is offered', async () => {
+      const source = mediaSource([], { Container: 'strm' });
+      const first = await verdictFor({ source }, fullBrowser, { environment: noHls });
+      const afterFailure = await verdictFor({ source }, fullBrowser, { environment: { ...noHls, getLearnedFloor: () => 'Remux' } });
+
+      expect(first).toMatchObject({ method: 'DirectPlay', onlyDirectPlay: true, video: { action: 'copy' }, audio: { action: 'copy' } });
+      expect([first.video, first.audio].some(plan => plan?.action === 'copy' && plan.fallback)).toBe(false);
+      expect(afterFailure).toMatchObject({ method: 'Unplayable', reasons: expect.arrayContaining(['NoHlsPlayback']) });
+    });
   });
 });
 

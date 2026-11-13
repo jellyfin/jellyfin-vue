@@ -50,6 +50,7 @@ import {
   mediaElementRef,
   mediaWebAudio
 } from '#/store/index.ts';
+import { hlsDelivery } from '#/store/playback-capabilities.ts';
 import { playbackManager } from '#/store/playback-manager.ts';
 import { playerElement, videoContainerRef } from '#/store/player-element.ts';
 import { getImageInfo } from '#/utils/images.ts';
@@ -70,7 +71,11 @@ interface PlaybackSource {
 
 const { t } = useTranslation();
 const webAudioQueue = new PromiseQueue();
-const hls = Hls.isSupported()
+/**
+ * hls.js plays the server's HLS output only when that is how it reaches the element here (`hlsDelivery`, which the
+ * verdicts are computed with); otherwise the element plays it natively, or it's never asked for
+ */
+const hls = hlsDelivery === 'media-source'
   ? new Hls({
       testBandwidth: false,
       workerPath: HlsWorkerUrl
@@ -102,9 +107,9 @@ const posterUrl = computed(() =>
  * How the current source must be loaded. It's decided only from the media source negotiated
  * with the server, for audio and video alike:
  * - Direct play: the original file, through the element's `src`.
- * - Transcode or remux delivered as HLS (`TranscodingSubProtocol` is `hls`): through hls.js when
- *   it's available. Otherwise (no MediaSource nor ManagedMediaSource), through `src`, relying on
- *   the browser's native HLS support.
+ * - Transcode or remux delivered as HLS (`TranscodingSubProtocol` is `hls`): through hls.js when it
+ *   runs here (`hlsDelivery`). Otherwise through `src`: the element plays HLS natively (an engine that plays
+ *   neither is never offered HLS, see `hls-delivery.ts`).
  * - Any other transcode (a progressive HTTP stream): through `src`.
  */
 const playbackSource = computed<PlaybackSource | undefined>(() => {

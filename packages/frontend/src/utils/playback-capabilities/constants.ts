@@ -22,6 +22,16 @@
 export const ORACLE_QUERY_TIMEOUT_MS = 1000;
 
 /**
+ * The MIME types of an HLS playlist, asked to the media element (`canPlayType`) to know whether it plays the server's
+ * HLS output by itself when hls.js cannot run (see `hls-delivery.ts`).
+ *
+ * Origin: RFC 8216 (HTTP Live Streaming), section 4: a playlist is identified by `application/vnd.apple.mpegurl` or
+ * `audio/mpegurl`. Measured (`canPlayType`): Chrome 157 and Chromium 158 answer "maybe" for both, Firefox 159 and
+ * WebKit 27.2 on Linux answer "" for both.
+ */
+export const HLS_PLAYLIST_TYPES = ['application/vnd.apple.mpegurl', 'audio/mpegurl'] as const;
+
+/**
  * == FILE PROBING (mediabunny) ==
  */
 

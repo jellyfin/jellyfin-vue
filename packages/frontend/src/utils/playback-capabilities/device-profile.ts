@@ -214,9 +214,11 @@ export function buildPlaybackRequest(
   const audioCodecs = getCodecList(verdict.audio, audio, method, type === 'Audio');
   /**
    * A planned stream must be named: an empty list would let the server do anything with it. Only a stream nobody
-   * knows the codec of has no name without targets, and then the server cannot be offered a transcode.
+   * knows the codec of has no name without targets, and then the server cannot be offered a transcode. Nor can it when
+   * the browser cannot play the server's HLS output at all.
    */
-  const transcodable = method !== 'Unplayable' && (!verdict.video || videoCodecs !== '') && (!verdict.audio || audioCodecs !== '');
+  const transcodable = method !== 'Unplayable' && !verdict.onlyDirectPlay
+    && (!verdict.video || videoCodecs !== '') && (!verdict.audio || audioCodecs !== '');
   const transcodingProfile: TranscodingProfile = {
     Type: type,
     Context: 'Streaming',

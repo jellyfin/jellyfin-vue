@@ -10,9 +10,11 @@
  * it belongs to the user and the server it was learned with: it is forgotten when either changes.
  */
 import type { BaseItemDto, MediaSourceInfo, MediaStream } from '@jellyfin/sdk/lib/generated-client';
+import Hls from 'hls.js';
 import { computed, shallowReactive, shallowRef, watch } from 'vue';
 import { withTimeout } from '@jellyfin-vue/shared/promises';
 import { PROBE_PLAYBACK_WAIT_MS } from '#/utils/playback-capabilities/constants.ts';
+import { getHlsDelivery, type HlsDelivery } from '#/utils/playback-capabilities/hls-delivery.ts';
 import {
   createBrowserOracle,
   DISPROVED,
@@ -67,6 +69,15 @@ export interface MediaSourceVerdictOptions {
 }
 
 const browserOracle = createBrowserOracle();
+
+/**
+ * How the server's HLS output reaches the media element in this engine (see `hls-delivery.ts`), detected once. The
+ * verdicts ask their questions that way and the player plays it that way: both read it from here.
+ */
+export const hlsDelivery: HlsDelivery | undefined = getHlsDelivery({
+  mediaSourcePlayback: Hls.isSupported(),
+  canPlayType: type => document.createElement('video').canPlayType(type)
+});
 
 /**
  * Questions playback proved wrong this session (see {@link recordMediaSourceFailure}), by configuration key: answered
@@ -168,7 +179,7 @@ export async function recordMediaSourceFailure(
     const probe = item.Id && source.Id ? await getStoredProbe(item.Id, source) : undefined;
     const known = disprovenAnswers.size;
 
-    for (const config of getMediaSourceQuestions(source, index, probe)) {
+    for (const config of getMediaSourceQuestions(source, index, probe, hlsDelivery)) {
       disprovenAnswers.add(getConfigurationKey(config));
     }
 
@@ -330,7 +341,8 @@ export function getVerdictEnvironment(video?: MediaStream): VerdictEnvironment {
     quality: playbackSettings.getQualityMode(video),
     policy: getPlaybackPolicy(),
     getLearnedFloor,
-    subtitleRenderers: SUBTITLE_RENDERERS
+    subtitleRenderers: SUBTITLE_RENDERERS,
+    hlsDelivery
   };
 }
 

@@ -366,6 +366,7 @@
   "playbackReasonFailedBefore": "a simpler method didn't work",
   "playbackReasonHdrOnSdrDisplay": "HDR video on a display that isn't HDR",
   "playbackReasonNoDecodableTarget": "the browser can't play anything the server converts to",
+  "playbackReasonNoHlsPlayback": "the browser can only play files directly",
   "playbackReasonNotAllowedByQuality": "the chosen quality only allows the original file",
   "playbackReasonNotSmooth": "the browser says it may not play smoothly",
   "playbackReasonNothingWorked": "no method worked",

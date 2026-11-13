@@ -283,6 +283,23 @@ describe.each(['exact', 'HEVC', 'PCM', 'QuickTime', 'generic', 'media-source', '
   });
 });
 
+describe('the server\'s HLS output, played natively: the same questions about its streams, asked as fragmented MP4 files', () => {
+  test.each(contentTypeCases.filter(testCase => testCase[0] !== 'Dolby Vision' && testCase[3].mode === 'media-source'))(
+    '%s: %s',
+    (_, __, stream, options, expected) => {
+      const native = candidates(stream, { ...options, mode: 'native' });
+
+      expect(native.map(config => config.video?.contentType ?? config.audio?.contentType)).toEqual(expected);
+      expect(native.map(config => config.type)).toEqual(expected.map(() => 'file'));
+    }
+  );
+
+  test('only hls.js plays through media source playback', () => {
+    expect(candidates(videoStream(), { probed: probedVideo(), containerMime: 'video/mp4', mode: 'media-source' }).map(config => config.type))
+      .toEqual(['media-source']);
+  });
+});
+
 describe('generic candidates are marked: an "unsupported" answer to them is not evidence', () => {
   /**
    * Whether the candidates of a case are generic (built from the server's names), one mark per candidate
@@ -512,11 +529,12 @@ describe('getHdrFields: HDR members only for HDR video', () => {
   });
 });
 
-describe('transcoding targets are asked through media-source as MP4', () => {
+describe('transcoding targets are asked as MP4, the way the HLS output reaches the element', () => {
   test('a video target with the output size, bitrate and frame rate', () => {
     const result = getVideoTargetCandidate(
       { codec: 'h264', codecString: 'avc1.640028' },
-      { width: 1280, height: 720, bitrate: 5_000_000, framerate: 25 }
+      { width: 1280, height: 720, bitrate: 5_000_000, framerate: 25 },
+      'media-source'
     );
 
     expect(result).toEqual({
@@ -526,11 +544,25 @@ describe('transcoding targets are asked through media-source as MP4', () => {
   });
 
   test('an audio target with the channel count as a string', () => {
-    const result = getAudioTargetCandidate({ codec: 'aac', codecString: 'mp4a.40.2' }, { channels: 6, samplerate: 48_000 });
+    const result = getAudioTargetCandidate({ codec: 'aac', codecString: 'mp4a.40.2' }, { channels: 6, samplerate: 48_000 }, 'media-source');
 
     expect(result).toEqual({
       type: 'media-source',
       audio: { contentType: 'audio/mp4; codecs="mp4a.40.2"', channels: '6', samplerate: 48_000 }
     });
+  });
+
+  test('when the element plays the HLS natively, the same targets are asked as fragmented MP4 files', () => {
+    const video = getVideoTargetCandidate(
+      { codec: 'h264', codecString: 'avc1.640028' },
+      { width: 1280, height: 720, bitrate: 5_000_000, framerate: 25 },
+      'native'
+    );
+    const audio = getAudioTargetCandidate({ codec: 'aac', codecString: 'mp4a.40.2' }, { channels: 2 }, 'native');
+
+    expect([video, audio]).toEqual([
+      { type: 'file', video: { contentType: 'video/mp4; codecs="avc1.640028"', width: 1280, height: 720, bitrate: 5_000_000, framerate: 25 } },
+      { type: 'file', audio: { contentType: 'audio/mp4; codecs="mp4a.40.2"', channels: '2' } }
+    ]);
   });
 });

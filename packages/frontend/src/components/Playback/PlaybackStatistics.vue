@@ -46,7 +46,7 @@ import { computed } from 'vue';
 import i18next from 'i18next';
 import { useTranslation } from 'i18next-vue';
 import { playbackManager } from '#/store/playback-manager.ts';
-import { playbackObservations, sessionNetworkEstimate } from '#/store/playback-quality.ts';
+import { playbackObservations, sessionNetworkEstimate, type PlayingStreamInfo } from '#/store/playback-quality.ts';
 import { playbackSettings } from '#/store/settings/playback.ts';
 import { selectionModel } from '#/utils/forms.ts';
 import { getModeLevel } from '#/utils/playback-capabilities/quality.ts';
@@ -62,13 +62,16 @@ const methodChangeNotices = selectionModel(playbackSettings.methodChangeNotices)
 
 /**
  * The container and codec strings of what the element is fed: the stream hls.js buffers, or the file played
- * directly (as the verdict asked the browser about it: one content type per stream)
+ * directly (as the verdict asked the browser about it: one content type per stream). When the element plays the
+ * server's HLS output natively (or before hls.js read it), only its container is known: the server chooses its codecs
+ * among the requested ones.
  */
-const stream = computed(() => {
+const stream = computed<PlayingStreamInfo>(() => {
   const hlsStream = playbackObservations.hlsStream.value;
+  const method = playbackManager.currentPlaybackMethod.value;
 
-  if (playbackManager.currentPlaybackMethod.value !== 'DirectPlay' && hlsStream) {
-    return hlsStream;
+  if (method !== undefined && method !== 'DirectPlay') {
+    return hlsStream ?? { container: playbackManager.currentNegotiatedMediaSource.value?.TranscodingContainer ?? undefined };
   }
 
   const codecs = playbackManager.currentVerdict.value?.codecs;

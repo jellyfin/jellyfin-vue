@@ -98,6 +98,9 @@ export function getLabelReasonName(t: Translate, { reason, values = {} }: Verdic
     case 'NoDecodableTarget': {
       return t('playbackReasonNoDecodableTarget');
     }
+    case 'NoHlsPlayback': {
+      return t('playbackReasonNoHlsPlayback');
+    }
     case undefined: {
       return undefined;
     }

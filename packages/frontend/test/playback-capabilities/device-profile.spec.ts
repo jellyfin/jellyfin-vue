@@ -59,6 +59,19 @@ const transcodeBoth = verdict('TranscodeVideo', {
   qualityCap: { maxBitrate: 8_000_000, maxWidth: 1920, maxHeight: 1080 }
 });
 
+describe('a browser that cannot play the server\'s HLS output: only direct play', () => {
+  test('the server is not offered its HLS output, not even as the fallback of the direct play', () => {
+    const { deviceProfile, options } = buildPlaybackRequest(
+      verdict('DirectPlay', { onlyDirectPlay: true, video: { index: 0, action: 'copy' }, audio: { index: 1, action: 'copy' } }),
+      hevcMkv(),
+      RENDERERS
+    );
+
+    expect([deviceProfile.TranscodingProfiles, options.EnableTranscoding, options.EnableDirectPlay]).toEqual([[], false, true]);
+    expect(deviceProfile.DirectPlayProfiles).toEqual([{ Type: 'Video', Container: 'mkv', VideoCodec: 'hevc', AudioCodec: 'ac3' }]);
+  });
+});
+
 describe('direct play', () => {
   const { deviceProfile, options } = buildPlaybackRequest(verdict('DirectPlay'), hevcMkv(), RENDERERS);
 

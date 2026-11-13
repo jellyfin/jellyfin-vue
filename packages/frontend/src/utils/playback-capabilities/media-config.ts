@@ -12,14 +12,24 @@
  */
 import type { MediaSourceInfo, MediaStream, VideoRangeType } from '@jellyfin/sdk/lib/generated-client';
 import { FALLBACK_BITRATE, FALLBACK_FRAME_RATE, type TranscodeTarget } from './constants.ts';
+import type { HlsDelivery } from './hls-delivery.ts';
 import type { ProbedTrack } from './probe.ts';
 
 /**
  * How the stream would reach the media element:
  * - `file`: the original file, played directly
- * - `media-source`: through hls.js, as fragmented MP4 produced by the server
+ * - `media-source` or `native`: inside the server's HLS output (fragmented MP4 produced by the server), played through
+ * hls.js or by the element itself (see `hls-delivery.ts`). Asked about as media source playback or as files of
+ * fragmented MP4, respectively.
  */
-export type DecodingMode = 'file' | 'media-source';
+export type DecodingMode = 'file' | HlsDelivery;
+
+/**
+ * The `type` of a question about what reaches the element in a mode: only hls.js plays through media source playback
+ */
+function getDecodingType(mode: DecodingMode): MediaDecodingType {
+  return mode === 'media-source' ? 'media-source' : 'file';
+}
 
 /**
  * Input of {@link getStreamCandidates}
@@ -193,7 +203,7 @@ function getSubtype(mime: string): string | undefined {
  * type and a video stream the video one, whatever the file's own MIME type says.
  */
 function getContainers(kind: StreamKind, input: StreamCandidatesInput): string[] {
-  if (input.mode === 'media-source') {
+  if (input.mode !== 'file') {
     return [`${kind}/mp4`];
   }
 
@@ -223,7 +233,7 @@ const HEVC_PREFIXES = ['hvc1', 'hev1'];
 /**
  * Normalisation of HEVC strings: mediabunny always writes `hev1`, but the browser may answer differently
  * for `hvc1`. The prefix is taken from the file's sample entry when it has one; otherwise (Matroska, or the
- * container the server writes for media-source playback) both are asked, the file's first if known.
+ * container the server writes for its HLS output) both are asked, the file's first if known.
  */
 function getHevcVariants(codecString: string, internalCodecId: ProbedTrack['internalCodecId'], mode: DecodingMode): string[] {
   const rest = codecString.slice(4);
@@ -454,12 +464,12 @@ export function getStreamQuestions(input: StreamCandidatesInput): StreamQuestion
     const variants = baseLayer ? [members, { ...members, hdrMetadataType: baseLayer }] : [members];
 
     return contentTypes.flatMap(contentType =>
-      variants.map(variant => ({ config: { type: input.mode, video: { contentType, ...variant } }, generic })));
+      variants.map(variant => ({ config: { type: getDecodingType(input.mode), video: { contentType, ...variant } }, generic })));
   }
 
   const members = getAudioMembers({ ...input, probed });
 
-  return contentTypes.map(contentType => ({ config: { type: input.mode, audio: { contentType, ...members } }, generic }));
+  return contentTypes.map(contentType => ({ config: { type: getDecodingType(input.mode), audio: { contentType, ...members } }, generic }));
 }
 
 /**
@@ -470,23 +480,23 @@ export function getStreamCandidates(input: StreamCandidatesInput): MediaDecoding
 }
 
 /**
- * The configuration that asks whether the browser can decode a video transcoding target, as it would arrive
- * through hls.js
+ * The configuration that asks whether the browser can decode a video transcoding target, as it would arrive in the
+ * server's HLS output, delivered as `delivery` says
  */
-export function getVideoTargetCandidate(target: TranscodeTarget, params: VideoTargetParams): MediaDecodingConfiguration {
+export function getVideoTargetCandidate(target: TranscodeTarget, params: VideoTargetParams, delivery: HlsDelivery): MediaDecodingConfiguration {
   return {
-    type: 'media-source',
+    type: getDecodingType(delivery),
     video: { contentType: `video/mp4; codecs="${target.codecString}"`, ...params }
   };
 }
 
 /**
- * The configuration that asks whether the browser can decode an audio transcoding target, as it would arrive
- * through hls.js
+ * The configuration that asks whether the browser can decode an audio transcoding target, as it would arrive in the
+ * server's HLS output, delivered as `delivery` says
  */
-export function getAudioTargetCandidate(target: TranscodeTarget, params: AudioTargetParams): MediaDecodingConfiguration {
+export function getAudioTargetCandidate(target: TranscodeTarget, params: AudioTargetParams, delivery: HlsDelivery): MediaDecodingConfiguration {
   return {
-    type: 'media-source',
+    type: getDecodingType(delivery),
     audio: {
       contentType: `audio/mp4; codecs="${target.codecString}"`,
       channels: String(params.channels),

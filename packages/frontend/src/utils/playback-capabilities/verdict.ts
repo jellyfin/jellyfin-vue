@@ -36,6 +36,7 @@ import {
   type StreamQuestion,
   type VideoTargetParams
 } from './media-config.ts';
+import type { HlsDelivery } from './hls-delivery.ts';
 import type { CapabilityOracle, QueryContext } from './oracle.ts';
 import type { ProbedTrack, ProbeResult } from './probe.ts';
 import {
@@ -76,6 +77,8 @@ export type PlaybackMethod = PlaybackRung | 'Unplayable';
  * - `NotSmooth`: the browser says the chosen path will not play smoothly
  * - `NotAllowedByQuality` / `NotAllowedByPolicy`: a cheaper method was possible but not allowed
  * - `NoDecodableTarget`: the browser decodes none of the transcoding targets
+ * - `NoHlsPlayback`: the browser cannot play the server's HLS output at all (no media source playback, no native HLS),
+ * so nothing above direct play exists
  * - `Unverified`: the method relies on a stream nobody could check (no stream metadata, or no exact question about
  * it): it is an attempt (see the module documentation)
  */
@@ -93,6 +96,7 @@ export type VerdictReason
     | 'NotAllowedByQuality'
     | 'NotAllowedByPolicy'
     | 'NoDecodableTarget'
+    | 'NoHlsPlayback'
     | 'Unverified';
 
 /**
@@ -140,6 +144,11 @@ export interface VerdictEnvironment {
    * The subtitle renderers the player ships (see `subtitles.ts`)
    */
   readonly subtitleRenderers: readonly SubtitleRenderer[];
+  /**
+   * How the server's HLS output reaches the element (see `hls-delivery.ts`): the questions about every rung above
+   * direct play are asked that way. Undefined when it cannot be played at all: only direct play exists.
+   */
+  readonly hlsDelivery: HlsDelivery | undefined;
 }
 
 /**
@@ -253,6 +262,11 @@ export interface Verdict {
    */
   readonly quality: { readonly width?: number; readonly height?: number; readonly bitrate?: number };
   /**
+   * Set when the browser cannot play the server's HLS output (see {@link VerdictEnvironment.hlsDelivery}): the server must
+   * not be offered it, not even as the fallback of a direct play
+   */
+  readonly onlyDirectPlay?: true;
+  /**
    * The type of item the server sees (see {@link getItemType}), which decides the type of the profiles it takes
    */
   readonly mediaType?: 'Video' | 'Audio';
@@ -289,9 +303,10 @@ interface RungPlan {
 }
 
 /**
- * Why a rung was not chosen
+ * Why a rung was not chosen; `hls`: the browser cannot play the server's HLS output, which every rung above direct play
+ * is delivered as
  */
-type RungRejection = 'browser' | 'quality' | 'policy';
+type RungRejection = 'browser' | 'quality' | 'policy' | 'hls';
 
 /**
  * Transcoding targets the browser decodes, with the smoothness of the first one
@@ -462,19 +477,26 @@ function questionsFor(source: MediaSourceInfo, context: StreamContext, mode: Dec
 }
 
 /**
- * The configurations the verdict asks about one stream of a source for media source playback (the stream copied
- * into the server's HLS output), so a caller that sees that path fail for the stream can learn it
+ * The configurations the verdict asks about one stream of a source copied into the server's HLS output (through media
+ * source playback, or as fragmented MP4 files when the element plays the HLS itself), so a caller that sees that path
+ * fail for the stream can learn it
  *
  * @param source - The media source the verdict was computed for
  * @param streamIndex - Absolute `MediaStream.Index` of a video or audio stream of the source
  * @param probe - The probe result the verdict was computed with
+ * @param delivery - How the HLS output reaches the element, as in the verdict's environment (none: nothing is asked)
  */
-export function getMediaSourceQuestions(source: MediaSourceInfo, streamIndex: number, probe?: ProbeResult): MediaDecodingConfiguration[] {
+export function getMediaSourceQuestions(
+  source: MediaSourceInfo,
+  streamIndex: number,
+  probe: ProbeResult | undefined,
+  delivery: HlsDelivery | undefined
+): MediaDecodingConfiguration[] {
   const streams = source.MediaStreams ?? [];
   const stream = streams.find(candidate =>
     candidate.Index === streamIndex && (candidate.Type === 'Video' || candidate.Type === 'Audio'));
 
-  return stream ? candidatesFor(source, getContext(streams, stream, probe), 'media-source') : [];
+  return stream && delivery ? candidatesFor(source, getContext(streams, stream, probe), delivery) : [];
 }
 
 /**
@@ -496,11 +518,20 @@ function getVideoTargetParams(context: StreamContext | undefined, caps: RequestC
 }
 
 /**
+ * No target: the server's HLS output, which they would be delivered in, cannot be played
+ */
+const NO_TARGETS: TargetSet = { targets: [], smooth: false };
+
+/**
  * The video targets the browser decodes, in order of preference
  */
-async function findVideoTargets(oracle: CapabilityOracle, params: VideoTargetParams): Promise<TargetSet> {
+async function findVideoTargets(oracle: CapabilityOracle, params: VideoTargetParams, delivery: HlsDelivery | undefined): Promise<TargetSet> {
+  if (!delivery) {
+    return NO_TARGETS;
+  }
+
   const answers = await Promise.all(VIDEO_TRANSCODE_TARGETS.map(async target =>
-    oracle.query(getVideoTargetCandidate(target, params))));
+    oracle.query(getVideoTargetCandidate(target, params, delivery))));
 
   return {
     targets: VIDEO_TRANSCODE_TARGETS.filter((_, index) => answers[index]?.supported),
@@ -521,16 +552,20 @@ function getChannels(context: StreamContext): number {
  * The audio targets the browser decodes, in order of preference. Each keeps the source's channels up to 5.1 if
  * the browser accepts it with that many, otherwise stereo.
  */
-async function findAudioTargets(oracle: CapabilityOracle, sourceChannels: number): Promise<TargetSet> {
+async function findAudioTargets(oracle: CapabilityOracle, sourceChannels: number, delivery: HlsDelivery | undefined): Promise<TargetSet> {
+  if (!delivery) {
+    return NO_TARGETS;
+  }
+
   const wanted = Math.min(sourceChannels, MAX_TRANSCODE_AUDIO_CHANNELS);
   const results = await Promise.all(AUDIO_TRANSCODE_TARGETS.map(async (target) => {
-    const kept = await oracle.query(getAudioTargetCandidate(target, { channels: wanted }));
+    const kept = await oracle.query(getAudioTargetCandidate(target, { channels: wanted }, delivery));
 
     if (kept.supported || wanted <= STEREO_CHANNELS) {
       return { target: { ...target, channels: wanted }, answer: kept };
     }
 
-    const stereo = await oracle.query(getAudioTargetCandidate(target, { channels: STEREO_CHANNELS }));
+    const stereo = await oracle.query(getAudioTargetCandidate(target, { channels: STEREO_CHANNELS }, delivery));
 
     return { target: { ...target, channels: STEREO_CHANNELS }, answer: stereo };
   }));
@@ -573,6 +608,7 @@ function getFirstCodecString(source: MediaSourceInfo, context: StreamContext | u
  */
 async function evaluateSource(input: VerdictInput, videoStream?: MediaStream, audioStream?: MediaStream): Promise<Evaluation> {
   const { source, oracle } = input;
+  const delivery = input.environment.hlsDelivery;
   const streams = source.MediaStreams ?? [];
   const video = videoStream ? getContext(streams, videoStream, input.probe) : undefined;
   const audio = audioStream ? getContext(streams, audioStream, input.probe) : undefined;
@@ -582,15 +618,16 @@ async function evaluateSource(input: VerdictInput, videoStream?: MediaStream, au
   // Direct play questions are about the probed file, whose MIME type the oracle's fallback may need
   const askFile = (context: StreamContext) =>
     evaluate(oracle, questionsFor(source, context, 'file'), { fileType: context.containerMime }, assume);
-  const askMediaSource = (context: StreamContext) =>
-    evaluate(oracle, questionsFor(source, context, 'media-source'), undefined, assume);
+  // Inside the server's HLS output, asked the way it reaches the element; without a way, nothing plays there
+  const askHls = async (context: StreamContext) =>
+    delivery ? evaluate(oracle, questionsFor(source, context, delivery), undefined, assume) : NOT_SUPPORTED;
   // An external audio file is not part of the file, so it never plays as part of it
   const audioFileQuestion = audio?.stream.IsExternal ? NOT_SUPPORTED : audio && askFile(audio);
   const [videoFile, videoMs, audioFile, audioMs] = await Promise.all([
     video && askFile(video),
-    video && askMediaSource(video),
+    video && askHls(video),
     audioFileQuestion,
-    audio && askMediaSource(audio)
+    audio && askHls(audio)
   ]);
   const qualityCap = video
     ? getRequestCaps(getTranscodeLevel(video.stream, getModeLevel(input.environment.quality)), video.stream)
@@ -609,8 +646,8 @@ async function evaluateSource(input: VerdictInput, videoStream?: MediaStream, au
     signature,
     codecs: { video: getFirstCodecString(source, video), audio: getFirstCodecString(source, audio) },
     qualityCap,
-    videoTargets: lazy(async () => video && qualityCap ? findVideoTargets(oracle, getVideoTargetParams(video, qualityCap)) : undefined),
-    audioTargets: lazy(async () => audio ? findAudioTargets(oracle, getChannels(audio)) : undefined)
+    videoTargets: lazy(async () => video && qualityCap ? findVideoTargets(oracle, getVideoTargetParams(video, qualityCap), delivery) : undefined),
+    audioTargets: lazy(async () => audio ? findAudioTargets(oracle, getChannels(audio), delivery) : undefined)
   };
 }
 
@@ -890,7 +927,7 @@ export function getRungRejection(
   environment: Pick<VerdictEnvironment, 'quality' | 'policy'>,
   rung: PlaybackRung,
   streams: { readonly video: boolean; readonly encodesAudio: boolean }
-): Exclude<RungRejection, 'browser'> | undefined {
+): 'quality' | 'policy' | undefined {
   const { policy } = environment;
 
   if (environment.quality.type === 'original' && rung !== 'DirectPlay' && rung !== 'Remux') {
@@ -915,6 +952,50 @@ export function getRungRejection(
 }
 
 /**
+ * Whether a rung is out of reach whatever it plays: every rung above direct play is delivered as the server's HLS
+ * output, which the browser may not be able to play at all
+ */
+function getHlsRejection(environment: VerdictEnvironment, rung: PlaybackRung): 'hls' | undefined {
+  return rung !== 'DirectPlay' && !environment.hlsDelivery ? 'hls' : undefined;
+}
+
+/**
+ * A rung's plan, or why it is not chosen: out of reach without the server's HLS output (its plan is not even made, so
+ * nothing about the output is asked), nothing the browser decodes, or forbidden by the quality mode or the user policy
+ *
+ * @param makePlan - Makes the rung's plan, undefined when the browser cannot decode what it needs
+ */
+async function considerRung(
+  environment: VerdictEnvironment,
+  rung: PlaybackRung,
+  itemType: 'Video' | 'Audio',
+  makePlan: () => Promise<RungPlan | undefined> | RungPlan | undefined
+): Promise<{ readonly plan: RungPlan } | { readonly rejection: RungRejection }> {
+  const unreachable = getHlsRejection(environment, rung);
+
+  if (unreachable) {
+    return { rejection: unreachable };
+  }
+
+  const plan = await makePlan();
+
+  if (!plan) {
+    return { rejection: 'browser' };
+  }
+
+  const rejection = getRejection(environment, rung, itemType, plan);
+
+  return rejection ? { rejection } : { plan };
+}
+
+/**
+ * What every verdict computed in an environment carries about it: whether only direct play exists
+ */
+function getDeliveryMarks(environment: VerdictEnvironment): Pick<Verdict, 'onlyDirectPlay'> {
+  return environment.hlsDelivery ? {} : { onlyDirectPlay: true };
+}
+
+/**
  * Whether the quality mode or the user policy forbid a playable rung of an item of the given type
  */
 function getRejection(environment: VerdictEnvironment, rung: PlaybackRung, itemType: 'Video' | 'Audio', plan: RungPlan): RungRejection | undefined {
@@ -933,6 +1014,10 @@ function getRejectionReasons(rejections: Set<RungRejection>, unplayable: boolean
 
   if (rejections.has('policy')) {
     reasons.push('NotAllowedByPolicy');
+  }
+
+  if (rejections.has('hls')) {
+    reasons.push('NoHlsPlayback');
   }
 
   if (unplayable && rejections.size === 1 && rejections.has('browser')) {
@@ -1019,15 +1104,16 @@ async function getBlindVerdict(input: VerdictInput): Promise<Verdict> {
     ? undefined
     : getRequestCaps(getTranscodeLevel(undefined, getModeLevel(environment.quality)));
   const [videoTargets, audioTargets] = await Promise.all([
-    qualityCap && findVideoTargets(oracle, getVideoTargetParams(undefined, qualityCap)),
+    qualityCap && findVideoTargets(oracle, getVideoTargetParams(undefined, qualityCap), environment.hlsDelivery),
     // The source's channels are unknown: surround is kept if the browser accepts it, the server never upmixes
-    findAudioTargets(oracle, MAX_TRANSCODE_AUDIO_CHANNELS)
+    findAudioTargets(oracle, MAX_TRANSCODE_AUDIO_CHANNELS, environment.hlsDelivery)
   ]);
   const common = {
     signature,
     unverified: true,
     quality: { bitrate: getKnownValue(source.Bitrate) },
-    mediaType: getItemType(input, input.mediaType !== 'Audio')
+    mediaType: getItemType(input, input.mediaType !== 'Audio'),
+    ...getDeliveryMarks(environment)
   };
   const failedBefore: VerdictReason[] = floorRung > 0 ? ['FailedBefore'] : [];
   const rejections = new Set<RungRejection>();
@@ -1035,13 +1121,14 @@ async function getBlindVerdict(input: VerdictInput): Promise<Verdict> {
   const rungs = getRungs(floorRung, PLAYBACK_RUNGS.length, qualityCap !== undefined);
 
   for (const rung of rungs) {
-    const plan = getBlindPlan(rung, videoTargets, audioTargets);
-    const rejection = plan ? getRejection(environment, rung, common.mediaType, plan) : 'browser';
+    const considered = await considerRung(environment, rung, common.mediaType, () => getBlindPlan(rung, videoTargets, audioTargets));
 
-    if (!plan || rejection) {
-      rejections.add(rejection ?? 'browser');
+    if ('rejection' in considered) {
+      rejections.add(considered.rejection);
       continue;
     }
+
+    const { plan } = considered;
 
     return {
       ...common,
@@ -1088,20 +1175,22 @@ export async function computeVerdict(input: VerdictInput): Promise<Verdict> {
     signature: evaluation.signature,
     codecs: evaluation.codecs,
     quality: getQuality(evaluation),
-    mediaType: getItemType(input, videoStream !== undefined)
+    mediaType: getItemType(input, videoStream !== undefined),
+    ...getDeliveryMarks(environment)
   };
   const rejections = new Set<RungRejection>();
 
   const rungs = getRungs(minRung, PLAYBACK_RUNGS.length, evaluation.video !== undefined);
 
   for (const rung of rungs) {
-    const plan = await getPlan(evaluation, rung);
-    const rejection = plan ? getRejection(environment, rung, common.mediaType, plan) : 'browser';
+    const considered = await considerRung(environment, rung, common.mediaType, async () => getPlan(evaluation, rung));
 
-    if (!plan || rejection) {
-      rejections.add(rejection ?? 'browser');
+    if ('rejection' in considered) {
+      rejections.add(considered.rejection);
       continue;
     }
+
+    const { plan } = considered;
 
     const unverified = !plan.verified;
     const { video, audio } = await withFallbacks(evaluation, plan);

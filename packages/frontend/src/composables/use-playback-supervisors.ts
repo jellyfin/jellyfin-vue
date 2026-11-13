@@ -6,6 +6,8 @@
  * - smoothness: too many dropped frames move Automatic down; other modes get one warning per playback
  * - network (Automatic only): buffering stalls move it down, a margin of the network estimate sustained while playing
  * moves it up
+ * Without hls.js (the element plays the server's HLS output natively, see `hls-delivery.ts`), its media errors reach the
+ * failure ladder as the element's own, and there is no network estimate: Automatic only moves down on stalls.
  */
 import type Hls from 'hls.js';
 import { ErrorDetails, Events, PlaylistLevelType, type BufferCodecsData, type FragBufferedData } from 'hls.js';
@@ -140,7 +142,7 @@ function getTargetEntry(state: AutoState, video: VideoInfo): RunningQuality {
 /**
  * Starts the runtime supervisors for the player's lifetime
  *
- * @param hls - The player's hls.js instance, if the engine supports it
+ * @param hls - The player's hls.js instance, when hls.js plays the server's HLS output here
  * @returns `startSource`, to call whenever the player loads a new URL (or none), and `onHlsMediaError`, to call for
  * a fatal media error of hls.js that is not a codec error
  */
