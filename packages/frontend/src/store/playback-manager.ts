@@ -33,10 +33,12 @@ import {
   recordPlaybackOutcome,
   renegotiatingEnvironment
 } from '#/store/playback-capabilities.ts';
-import { resolveMediaSourceIndex } from '#/store/playback-versions.ts';
+import { prefetchMediaSourceVerdicts, resolveMediaSourceIndex } from '#/store/playback-versions.ts';
 import { playbackSettings } from '#/store/settings/playback.ts';
 import { getImageInfo } from '#/utils/images.ts';
 import { getItemRuntime, getStaticStreamUrl } from '#/utils/items.ts';
+import { findQueueItem, getQueueRemoval } from '#/utils/playback-queue.ts';
+import { PREFETCH_BUFFER_AHEAD_S } from '#/utils/playback-capabilities/constants.ts';
 import {
   buildOptimisticRequest,
   buildPlaybackRequest,
@@ -52,7 +54,6 @@ import { msToTicks } from '#/utils/time.ts';
 import { mediaControls, mediaElementRef } from '#/store/index.ts';
 import { CommonStore } from '#/store/super/common-store.ts';
 import { runGenericWorkerFunc } from '#/plugins/workers/index.ts';
-import { findQueueItem, getQueueRemoval } from '#/utils/playback-queue.ts';
 
 /**
  * == INTERFACES AND TYPES ==
@@ -204,6 +205,33 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    * Identifies the latest version resolution started: the result of an older one is dropped
    */
   private _resolutionId = 0;
+  /**
+   * Whether the current playback has enough buffered ahead that reading other files can't make it wait:
+   * `PREFETCH_BUFFER_AHEAD_S` beyond the current time, or up to the end of the item.
+   *
+   * The element's ranges are read live on every time update: `progress` events (what `mediaControls.buffered`
+   * follows) can stop before the last bytes are buffered.
+   */
+  private readonly _bufferedAhead = computed(() => {
+    const time = mediaControls.currentTime.value;
+    const duration = mediaControls.duration.value;
+    const ranges = mediaElementRef.value?.buffered;
+    const target = Number.isFinite(duration) && duration > 0
+      ? Math.min(time + PREFETCH_BUFFER_AHEAD_S, duration)
+      : time + PREFETCH_BUFFER_AHEAD_S;
+    let bufferedTo = time;
+
+    for (let index = 0; index < (ranges?.length ?? 0); index++) {
+      if (ranges && ranges.start(index) <= time && time <= ranges.end(index)) {
+        bufferedTo = ranges.end(index);
+      }
+    }
+
+    return !this.isRemotePlayer.value
+      && !isNil(this.currentNegotiatedMediaSource.value)
+      && bufferedTo >= target;
+  });
+
   /**
    * == GETTERS AND SETTERS ==
    */
@@ -1360,6 +1388,25 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       () => this._currentSelection.value?.source,
       () => this._resolvedSource.value?.itemId
     ], this._resolveMediaSource, { immediate: true });
+
+    /**
+     * Once the current playback has buffered ahead, compute the verdicts of the next item in the background: its files
+     * are probed and the browser's answers memoised while this one plays, so its version and its negotiation are ready
+     * when it starts. Waiting for the buffer keeps the probes from competing with this playback for the network.
+     */
+    watch(() => {
+      const next = this.nextItem.value;
+
+      return this._bufferedAhead.value && next?.Id !== this.currentItemId.value
+        ? next?.Id
+        : undefined;
+    }, (nextId) => {
+      const next = this.nextItem.value;
+
+      if (nextId && next?.Id === nextId) {
+        void prefetchMediaSourceVerdicts(next);
+      }
+    });
 
     /**
      * Negotiate the playback whenever what it depends on changes: the item and version, the

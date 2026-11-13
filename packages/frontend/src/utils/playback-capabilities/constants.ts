@@ -107,6 +107,18 @@ export const PROBE_PLAYBACK_WAIT_MS = 3000;
 export const VERSION_RESOLUTION_WAIT_MS = PROBE_PLAYBACK_WAIT_MS + 1000;
 
 /**
+ * Seconds the current playback must have buffered ahead (or up to its end) before the next item of the queue is
+ * probed, so the probes never compete with it for the network.
+ *
+ * Origin: measured in the app (Chrome, 1.5 Mbit/s and 150 ms of latency, a 10 s item playing while the three-version
+ * item is queued next). Probing as soon as the current item advanced made it stall 1.1 s longer (it ended at 16.8 s
+ * against 15.7 s without probing, with the same three waiting events), and the probes took 3.3 s (278 KB). Twenty
+ * seconds is six times those probes, and below hls.js's default buffer target (`maxBufferLength`, 30 s), so a playback
+ * through hls.js reaches it.
+ */
+export const PREFETCH_BUFFER_AHEAD_S = 20;
+
+/**
  * == RUNTIME SUPERVISION ==
  */
 
