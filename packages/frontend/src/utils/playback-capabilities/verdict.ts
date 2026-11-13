@@ -4,6 +4,15 @@
  * Rungs, from cheapest to most expensive: direct play < remux < audio transcode < video transcode. The rules
  * decide the lowest rung the streams require; the result is the lowest rung at or above it that the browser can
  * decode, that the quality mode and the user policy allow.
+ *
+ * A stream nobody could ask the browser about exactly is assumed to play (owner's decision, 2026-11-13): an
+ * "unsupported" answer to a question that could not be asked with an exact codec string is no evidence. That is a
+ * stream asked about only with generic candidates (the server's names, see `media-config.ts`) that the browser did not
+ * confirm, or a stream that cannot be asked about at all. The verdict is then the cheapest method assuming such streams
+ * play, marked `unverified`, and everything that does not depend on them still applies. It is a single attempt: once
+ * the ladder learned anything for the same streams (a floor for the verdict's signature: the attempt failed, or the
+ * server needed more), nothing is assumed any more, and every stream whose support is still unknown is encoded. A
+ * question playback disproved (`DISPROVED`) is evidence, generic or not.
  */
 import type { MediaSourceInfo, MediaStream, SubtitleDeliveryMethod, UserPolicy } from '@jellyfin/sdk/lib/generated-client';
 import {
@@ -21,8 +30,10 @@ import {
   getKnownValue,
   getStreamCandidates,
   getStreamCodecStrings,
+  getStreamQuestions,
   getVideoTargetCandidate,
   type DecodingMode,
+  type StreamQuestion,
   type VideoTargetParams
 } from './media-config.ts';
 import type { CapabilityOracle, QueryContext } from './oracle.ts';
@@ -65,7 +76,8 @@ export type PlaybackMethod = PlaybackRung | 'Unplayable';
  * - `NotSmooth`: the browser says the chosen path will not play smoothly
  * - `NotAllowedByQuality` / `NotAllowedByPolicy`: a cheaper method was possible but not allowed
  * - `NoDecodableTarget`: the browser decodes none of the transcoding targets
- * - `Unverified`: some stream could not be checked (missing metadata); the verdict is optimistic
+ * - `Unverified`: the method relies on a stream nobody could check (no stream metadata, or no exact question about
+ * it): it is an attempt (see the module documentation)
  */
 export type VerdictReason
   = | 'ContainerUnsupported'
@@ -186,10 +198,11 @@ export interface SupportedTarget extends TranscodeTarget {
  * single codec for them.
  *
  * `index` is the stream's absolute `MediaStream.Index`; undefined when nobody knows the source's streams (see
- * {@link getBlindVerdict}).
+ * {@link getBlindVerdict}). A copied stream nobody could check is marked `unverified`: it is copied on the assumption
+ * that it plays.
  */
 export type StreamPlan
-  = | { readonly index?: number; readonly action: 'copy'; readonly fallback?: readonly SupportedTarget[] }
+  = | { readonly index?: number; readonly action: 'copy'; readonly fallback?: readonly SupportedTarget[]; readonly unverified?: true }
     | { readonly index?: number; readonly action: 'transcode'; readonly targets: readonly SupportedTarget[] };
 
 /**
@@ -212,7 +225,7 @@ export interface Verdict {
    */
   readonly smooth: boolean;
   /**
-   * True when some stream could not be checked and the verdict is optimistic
+   * True when the method relies on a stream nobody could check, assumed to play: it is an attempt
    */
   readonly unverified: boolean;
   readonly video?: StreamPlan;
@@ -246,7 +259,8 @@ export interface Verdict {
 }
 
 /**
- * How one stream fares in one mode
+ * How one stream fares in one mode. `verified` is false when the browser could not tell: the stream is then assumed to
+ * play (`supported`) on the first attempt, and assumed not to once that attempt is spent.
  */
 interface Support {
   readonly supported: boolean;
@@ -310,18 +324,34 @@ interface Evaluation {
 const NOT_SUPPORTED: Support = { supported: false, smooth: false, verified: true };
 
 /**
- * Asks the oracle about candidate configurations: supported if any is. An empty list cannot be checked and is
- * optimistically supported.
+ * The support of a stream the browser could not tell about: assumed to play on the first attempt, not after
  */
-async function evaluate(oracle: CapabilityOracle, configs: MediaDecodingConfiguration[], context?: QueryContext): Promise<Support> {
-  if (configs.length === 0) {
-    return { supported: true, smooth: true, verified: false };
-  }
+function getUnknownSupport(assume: boolean): Support {
+  return assume ? { supported: true, smooth: true, verified: false } : { supported: false, smooth: false, verified: false };
+}
 
-  const answers = await Promise.all(configs.map(async config => oracle.query(config, context)));
+/**
+ * Asks the oracle about the candidates of a stream: supported if any is. "Unsupported" is evidence only from an exact
+ * candidate or from playback (a disproved answer); exact answers win, so generic candidates only count when there is
+ * no exact one. Without evidence (no candidate at all, or generic ones the browser did not confirm) the browser could
+ * not tell (see {@link getUnknownSupport}).
+ */
+async function evaluate(
+  oracle: CapabilityOracle,
+  questions: readonly StreamQuestion[],
+  context: QueryContext | undefined,
+  assume: boolean
+): Promise<Support> {
+  const exact = questions.filter(question => !question.generic);
+  const asked = exact.length > 0 ? exact : questions;
+  const answers = await Promise.all(asked.map(async question => oracle.query(question.config, context)));
   const first = answers.find(answer => answer.supported);
 
-  return first ? { supported: true, smooth: first.smooth, verified: true } : NOT_SUPPORTED;
+  if (first) {
+    return { supported: true, smooth: first.smooth, verified: true };
+  }
+
+  return exact.length > 0 || answers.some(answer => answer.disproved) ? NOT_SUPPORTED : getUnknownSupport(assume);
 }
 
 /**
@@ -422,6 +452,13 @@ function getContext(streams: MediaStream[], stream: MediaStream, probe: ProbeRes
  */
 function candidatesFor(source: MediaSourceInfo, context: StreamContext, mode: DecodingMode): MediaDecodingConfiguration[] {
   return getStreamCandidates({ source, ...context, mode });
+}
+
+/**
+ * Candidates of a stream in a mode, marked generic or exact
+ */
+function questionsFor(source: MediaSourceInfo, context: StreamContext, mode: DecodingMode): StreamQuestion[] {
+  return getStreamQuestions({ source, ...context, mode });
 }
 
 /**
@@ -539,16 +576,21 @@ async function evaluateSource(input: VerdictInput, videoStream?: MediaStream, au
   const streams = source.MediaStreams ?? [];
   const video = videoStream ? getContext(streams, videoStream, input.probe) : undefined;
   const audio = audioStream ? getContext(streams, audioStream, input.probe) : undefined;
+  const signature = [getStreamSignature(source, video), getStreamSignature(source, audio)].filter(Boolean).join('|');
+  // A single attempt: once anything was learned for these streams, nothing is assumed
+  const assume = input.environment.getLearnedFloor(signature) === undefined;
   // Direct play questions are about the probed file, whose MIME type the oracle's fallback may need
   const askFile = (context: StreamContext) =>
-    evaluate(oracle, candidatesFor(source, context, 'file'), { fileType: context.containerMime });
+    evaluate(oracle, questionsFor(source, context, 'file'), { fileType: context.containerMime }, assume);
+  const askMediaSource = (context: StreamContext) =>
+    evaluate(oracle, questionsFor(source, context, 'media-source'), undefined, assume);
   // An external audio file is not part of the file, so it never plays as part of it
   const audioFileQuestion = audio?.stream.IsExternal ? NOT_SUPPORTED : audio && askFile(audio);
   const [videoFile, videoMs, audioFile, audioMs] = await Promise.all([
     video && askFile(video),
-    video && evaluate(oracle, candidatesFor(source, video, 'media-source')),
+    video && askMediaSource(video),
     audioFileQuestion,
-    audio && evaluate(oracle, candidatesFor(source, audio, 'media-source'))
+    audio && askMediaSource(audio)
   ]);
   const qualityCap = video
     ? getRequestCaps(getTranscodeLevel(video.stream, getModeLevel(input.environment.quality)), video.stream)
@@ -564,12 +606,20 @@ async function evaluateSource(input: VerdictInput, videoStream?: MediaStream, au
     videoMs,
     audioFile,
     audioMs,
-    signature: [getStreamSignature(source, video), getStreamSignature(source, audio)].filter(Boolean).join('|'),
+    signature,
     codecs: { video: getFirstCodecString(source, video), audio: getFirstCodecString(source, audio) },
     qualityCap,
     videoTargets: lazy(async () => video && qualityCap ? findVideoTargets(oracle, getVideoTargetParams(video, qualityCap)) : undefined),
     audioTargets: lazy(async () => audio ? findAudioTargets(oracle, getChannels(audio)) : undefined)
   };
+}
+
+/**
+ * Why a stream needs more than it was asked: what the browser answered, or, when the browser could not tell and the
+ * attempt that assumed it plays is spent, that a cheaper method failed
+ */
+function getUnsupportedReason(reason: VerdictReason, ...supports: (Support | undefined)[]): VerdictReason {
+  return supports.every(support => support?.verified !== false) ? reason : 'FailedBefore';
 }
 
 /**
@@ -585,7 +635,9 @@ function getVideoRequirements(evaluation: Evaluation): [PlaybackRung, VerdictRea
   }
 
   if (videoFile?.supported === false) {
-    requirements.push(videoMs?.supported ? ['Remux', 'ContainerUnsupported'] : ['TranscodeVideo', 'VideoCodecUnsupported']);
+    requirements.push(videoMs?.supported
+      ? ['Remux', getUnsupportedReason('ContainerUnsupported', videoFile)]
+      : ['TranscodeVideo', getUnsupportedReason('VideoCodecUnsupported', videoFile, videoMs)]);
   }
 
   if (subtitle?.class === 'burn-in') {
@@ -620,13 +672,13 @@ function getAudioRequirements(evaluation: Evaluation): [PlaybackRung, VerdictRea
   if (audio.stream.IsExternal) {
     requirements.push(['Remux', 'ExternalAudioTrack']);
   } else if (!audioFile.supported && audioMs.supported) {
-    requirements.push(['Remux', 'ContainerUnsupported']);
+    requirements.push(['Remux', getUnsupportedReason('ContainerUnsupported', audioFile)]);
   } else if (audio.stream !== firstEmbeddedAudio && !input.environment.canSelectAudioTrack) {
     requirements.push(['Remux', 'SecondaryAudioTrack']);
   }
 
   if (!audioFile.supported && !audioMs.supported) {
-    requirements.push(['TranscodeAudio', 'AudioCodecUnsupported']);
+    requirements.push(['TranscodeAudio', getUnsupportedReason('AudioCodecUnsupported', audioFile, audioMs)]);
   }
 
   return requirements;
@@ -708,6 +760,13 @@ function getRequirements(evaluation: Evaluation): { minRung: number; reasons: Ve
 }
 
 /**
+ * The plan of a copied stream, marked when its support is assumed
+ */
+function copyPlan(context: StreamContext, support: Support | undefined): StreamPlan {
+  return { index: context.stream.Index ?? -1, action: 'copy', ...(support?.verified === false && { unverified: true }) };
+}
+
+/**
  * A plan that copies both streams, when both are supported in the given mode
  */
 function planCopy(evaluation: Evaluation, videoSupport?: Support, audioSupport?: Support): RungPlan | undefined {
@@ -718,8 +777,8 @@ function planCopy(evaluation: Evaluation, videoSupport?: Support, audioSupport?:
   const { video, audio } = evaluation;
 
   return {
-    video: video && { index: video.stream.Index ?? -1, action: 'copy' },
-    audio: audio && { index: audio.stream.Index ?? -1, action: 'copy' },
+    video: video && copyPlan(video, videoSupport),
+    audio: audio && copyPlan(audio, audioSupport),
     smooth: (videoSupport?.smooth ?? true) && (audioSupport?.smooth ?? true),
     verified: (videoSupport?.verified ?? true) && (audioSupport?.verified ?? true)
   };
@@ -737,7 +796,7 @@ async function planTranscodeAudio(evaluation: Evaluation): Promise<RungPlan | un
   }
 
   return {
-    video: video && { index: video.stream.Index ?? -1, action: 'copy' },
+    video: video && copyPlan(video, videoMs),
     audio: { index: audio.stream.Index ?? -1, action: 'transcode', targets: found.targets },
     smooth: (videoMs?.smooth ?? true) && found.smooth,
     verified: videoMs?.verified ?? true
@@ -760,7 +819,7 @@ async function planTranscodeVideo(evaluation: Evaluation): Promise<RungPlan | un
   if (!audio || audioMs?.supported) {
     return {
       video: videoPlan,
-      audio: audio && { index: audio.stream.Index ?? -1, action: 'copy' },
+      audio: audio && copyPlan(audio, audioMs),
       smooth: found.smooth && (audioMs?.smooth ?? true),
       verified: audioMs?.verified ?? true
     };
@@ -905,7 +964,7 @@ function getQuality(evaluation: Evaluation): Verdict['quality'] {
  */
 function getBlindPlan(rung: PlaybackRung, video: TargetSet | undefined, audio: TargetSet): RungPlan | undefined {
   const copy = (set: TargetSet | undefined): StreamPlan =>
-    set?.targets.length ? { action: 'copy', fallback: set.targets } : { action: 'copy' };
+    set?.targets.length ? { action: 'copy', fallback: set.targets, unverified: true } : { action: 'copy', unverified: true };
   const encode = (set: TargetSet): StreamPlan => ({ action: 'transcode', targets: set.targets });
   const videoListed = video === undefined || video.targets.length > 0;
   const audioListed = audio.targets.length > 0;
@@ -913,7 +972,7 @@ function getBlindPlan(rung: PlaybackRung, video: TargetSet | undefined, audio: T
   switch (rung) {
     case 'DirectPlay': {
       // Music has no fallback: the server takes a single codec for it (see StreamPlan)
-      return { video: video && copy(video), audio: video ? copy(audio) : { action: 'copy' }, smooth: true, verified: false };
+      return { video: video && copy(video), audio: video ? copy(audio) : { action: 'copy', unverified: true }, smooth: true, verified: false };
     }
     case 'Remux': {
       // Music skips it: its single codec would have to be the source's, which nobody can name
@@ -1026,8 +1085,6 @@ export async function computeVerdict(input: VerdictInput): Promise<Verdict> {
 
   const evaluation = await evaluateSource(input, videoStream, audioStream);
   const { minRung, reasons } = getRequirements(evaluation);
-  const evaluatedVerified = [evaluation.videoFile, evaluation.videoMs, evaluation.audioFile, evaluation.audioMs]
-    .every(support => support?.verified !== false);
   const common = {
     subtitle: evaluation.subtitle,
     signature: evaluation.signature,
@@ -1048,7 +1105,7 @@ export async function computeVerdict(input: VerdictInput): Promise<Verdict> {
       continue;
     }
 
-    const unverified = !evaluatedVerified || !plan.verified;
+    const unverified = !plan.verified;
     const { video, audio } = await withFallbacks(evaluation, plan);
     const finalReasons: VerdictReason[] = [
       ...reasons,
@@ -1075,6 +1132,8 @@ export async function computeVerdict(input: VerdictInput): Promise<Verdict> {
     method: 'Unplayable',
     reasons: [...new Set([...reasons, ...getRejectionReasons(rejections, true)])],
     smooth: false,
-    unverified: !evaluatedVerified
+    // Nothing that plays was found even assuming the unchecked streams play
+    unverified: [evaluation.videoFile, evaluation.videoMs, evaluation.audioFile, evaluation.audioMs]
+      .some(support => support?.verified === false && support.supported)
   };
 }

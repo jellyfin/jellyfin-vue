@@ -5,6 +5,7 @@ import {
   getAudioTargetCandidate,
   getHdrFields,
   getStreamCandidates,
+  getStreamQuestions,
   getVideoTargetCandidate,
   type DecodingMode,
   type HdrFields
@@ -280,6 +281,85 @@ describe.each(['exact', 'HEVC', 'PCM', 'QuickTime', 'generic', 'media-source', '
 
     expect(result).toEqual(expected);
   });
+});
+
+describe('generic candidates are marked: an "unsupported" answer to them is not evidence', () => {
+  /**
+   * Whether the candidates of a case are generic (built from the server's names), one mark per candidate
+   */
+  function genericMarks(stream: MediaStream, options: CandidateOptions = {}): boolean[] {
+    return getStreamQuestions({
+      source: mediaSource([stream], options.source),
+      stream,
+      probed: options.probed,
+      containerMime: options.containerMime,
+      containerImpliesCodec: options.containerImpliesCodec,
+      mode: options.mode ?? 'file'
+    }).map(question => question.generic);
+  }
+
+  /**
+   * The case of the content type table with this description
+   */
+  function tableCase(description: string): [MediaStream, CandidateOptions] {
+    const found = contentTypeCases.find(([, caseDescription]) => caseDescription === description);
+
+    if (!found) {
+      throw new Error(`no case "${description}"`);
+    }
+
+    return [found[2], found[3]];
+  }
+
+  test('the questions are the candidates, in the same order', () => {
+    const [stream, options] = tableCase('every comma-separated container token is a candidate');
+    const questions = getStreamQuestions({ source: mediaSource([stream], options.source), stream, mode: 'file' });
+
+    expect(questions.map(question => question.config)).toEqual(candidates(stream, options));
+  });
+
+  test.each([
+    'H.264 in MP4: probed container MIME and probed codec string',
+    'a container without fourcc (Matroska) gets both prefixes as two candidates',
+    'PCM in WAVE is asked with the format tag, the codecs value RFC 2361 defines for WAVE',
+    'a .mov file gets a video/quicktime and a video/mp4 candidate',
+    'audio keeps the exact string inside audio/mp4',
+    'an MP3 file is asked with its exact string and then with the bare container MIME'
+  ])('read from the file (and its normalisations, and the bare MIME of a container that implies its codec): exact. %s', (description) => {
+    const marks = genericMarks(...tableCase(description));
+
+    expect([marks.length > 0, marks.every(generic => !generic)]).toEqual([true, true]);
+  });
+
+  test.each([
+    'HEVC with a dvh1 sample entry is asked as dvh1.<profile>.<level> and never as plain HEVC',
+    'without a fourcc (Matroska) both Dolby Vision prefixes are asked'
+  ])('the Dolby Vision formula builds a complete codec string from the server\'s data: exact. %s', (description) => {
+    const marks = genericMarks(...tableCase(description));
+
+    expect([marks.length > 0, marks.every(generic => !generic)]).toEqual([true, true]);
+  });
+
+  test.each([
+    'without probe: the server\'s container token, with the codec tag and then the codec name (AVI)',
+    'when mediabunny does not know the codec, the probed container is used with the server\'s names',
+    'a stream missing from the probe is still asked about, with the probed container',
+    'through media-source the generic container is MP4',
+    'PCM in Matroska has no MIME codecs value, so it falls to the generic candidate'
+  ])('built from the server\'s names: generic. %s', (description) => {
+    const marks = genericMarks(...tableCase(description));
+
+    expect([marks.length > 0, marks.every(Boolean)]).toEqual([true, true]);
+  });
+
+  test.each(contentTypeCases.map(([, description, stream, options]) => [description, stream, options] as const))(
+    'the candidates of a stream are all exact or all generic, so an exact answer is never weighed against a generic one: %s',
+    (_, stream, options) => {
+      const marks = genericMarks(stream, options);
+
+      expect(new Set(marks).size).toBeLessThanOrEqual(1);
+    }
+  );
 });
 
 describe('Dolby Vision HDR fields', () => {

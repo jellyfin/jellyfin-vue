@@ -83,7 +83,7 @@ export const PROBE_RETRY_DELAY_SECONDS = 0.5;
  * the playback then took 0.7 to 17 s to start (median 3.3 s), so waiting the whole {@link PROBE_TIMEOUT_MS} could
  * hold playback for longer than starting it takes. Three seconds covers every measured probe and adds at most about
  * one median start on the slowest link measured; a file whose probe needs more is decided from the server's data the
- * first time only.
+ * first time only (a stream the browser does not confirm by its server name is then tried directly, see `verdict.ts`).
  */
 export const PROBE_PLAYBACK_WAIT_MS = 3000;
 

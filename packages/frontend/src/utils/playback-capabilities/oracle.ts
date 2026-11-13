@@ -17,6 +17,11 @@ export interface CapabilityAnswer {
   readonly supported: boolean;
   readonly smooth: boolean;
   readonly powerEfficient: boolean;
+  /**
+   * True when it is not the browser's answer but what playback proved this session: the configuration does not play,
+   * whatever the browser said or could not say about it (see {@link DISPROVED})
+   */
+  readonly disproved?: boolean;
 }
 
 /**
@@ -67,6 +72,12 @@ export interface OracleOptions {
  * The answer for anything the browser rejects or does not answer
  */
 export const UNSUPPORTED: CapabilityAnswer = Object.freeze({ supported: false, smooth: false, powerEfficient: false });
+
+/**
+ * The answer for a configuration playback proved not to play this session. Unlike the browser's "unsupported", it is
+ * evidence even for a question that could not be asked with an exact codec string.
+ */
+export const DISPROVED: CapabilityAnswer = Object.freeze({ ...UNSUPPORTED, disproved: true });
 
 /**
  * Serialises a value with its object keys sorted, skipping undefined members

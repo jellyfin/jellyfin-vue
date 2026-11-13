@@ -13,7 +13,7 @@ import {
 import { AUDIO_TRANSCODE_TARGETS, FALLBACK_FRAME_RATE } from '#/utils/playback-capabilities/constants.ts';
 import { getFailureStep } from '#/utils/playback-capabilities/failure-ladder.ts';
 import { getAudioTargetCandidate } from '#/utils/playback-capabilities/media-config.ts';
-import type { CapabilityAnswer, CapabilityOracle } from '#/utils/playback-capabilities/oracle.ts';
+import { createFallbackQuery, createOracle, DISPROVED, getConfigurationKey, type CapabilityAnswer, type CapabilityOracle } from '#/utils/playback-capabilities/oracle.ts';
 import { PROBE_FORMAT_VERSION, PROBE_READER_VERSION, type ProbeResult } from '#/utils/playback-capabilities/probe.ts';
 import { getVerdictLabel } from '#/utils/playback-capabilities/verdict-label.ts';
 import {
@@ -582,6 +582,20 @@ describe('HDR video on an SDR display', () => {
     expect(verdict.method).toBe('DirectPlay');
   });
 
+  test('HDR10+ on a browser that does not take its dynamic metadata but plays HDR10 is played as HDR10, not encoded to SDR', async () => {
+    const item = mp4Item({ video: { Codec: 'hevc', CodecTag: 'hvc1', VideoRange: 'HDR', VideoRangeType: 'HDR10Plus', ColorTransfer: 'smpte2084', ColorPrimaries: 'bt2020' } });
+    const probe = probeOk('video/mp4', [probedVideo({ codec: 'hevc', codecString: 'hev1.2.4.L153.B0', internalCodecId: 'hvc1', colorSpace: { primaries: 'bt2020', transfer: 'pq' }, hdr: true })], [probedAudio()]);
+    // Chromium answers "unsupported" for smpteSt2094-10 and smpteSt2094-40, and decides the rest by the codec
+    const oracle = createOracle(config => Promise.resolve({
+      supported: config.video ? !config.video.hdrMetadataType?.startsWith('smpteSt2094') : true,
+      smooth: true,
+      powerEfficient: true
+    }));
+    const verdict = await computeVerdict({ ...item, probe, oracle, environment: { ...defaultEnvironment, hdrMode: 'browser' } });
+
+    expect(verdict).toMatchObject({ method: 'DirectPlay', unverified: false });
+  });
+
   test('Dolby Vision with an SDR base layer is SDR video for this rule', async () => {
     const item = mp4Item({ video: { VideoRange: 'SDR', VideoRangeType: 'DOVIWithSDR', DvProfile: 8, DvLevel: 6 } });
     const verdict = await verdictFor(item, fullBrowser, { environment: { hdrDisplay: false } });
@@ -1132,6 +1146,230 @@ describe('no stream metadata: the failure ladder corrects it (nobody knows the s
   });
 });
 
+/**
+ * H.264 + AAC in MP4 as the server reports it, not probed: the questions are generic (`avc1`/`h264`, `mp4a`/`aac`),
+ * which Chrome and Firefox reject
+ */
+const unprobedMp4 = () => ({ source: mp4Item().source });
+
+/**
+ * A verdict computed with a floor learned for the signature the same item's verdict has without one, as the failure
+ * ladder records it
+ */
+async function afterFailure(
+  item: { source: MediaSourceInfo; probe?: ProbeResult },
+  browser: FakeBrowser,
+  floor: PlaybackMethod = 'Remux',
+  overrides: Parameters<typeof verdictFor>[2] = {}
+): Promise<{ before: Verdict; after: Verdict }> {
+  const before = await verdictFor(item, browser, overrides);
+  const after = await verdictFor(item, browser, {
+    ...overrides,
+    environment: { ...overrides.environment, getLearnedFloor: signature => signature === before.signature ? floor : undefined }
+  });
+
+  return { before, after };
+}
+
+/**
+ * Whether a stream plan is a copy marked as assumed (its support could not be checked)
+ */
+const isAssumedCopy = (plan: Verdict['video']) => plan?.action === 'copy' && plan.unverified === true;
+
+describe('an "unsupported" answer to a question that could not be asked exactly is not evidence', () => {
+  test('H.264 + AAC in MP4 that was not probed: the browser rejects the server\'s names, so the file is tried directly', async () => {
+    const verdict = await verdictFor(unprobedMp4(), fullBrowser);
+
+    expect(verdict).toMatchObject({ method: 'DirectPlay', reasons: ['Unverified'], unverified: true, video: { index: 0, action: 'copy' }, audio: { index: 1, action: 'copy' } });
+    expect([isAssumedCopy(verdict.video), isAssumedCopy(verdict.audio)]).toEqual([true, true]);
+  });
+
+  test('a generic question the browser answers "supported" counts: nothing is assumed (several server names are complete codec strings)', async () => {
+    const source = mediaSource([videoStream({ Codec: 'vp9', CodecTag: undefined }), audioStream({ Codec: 'opus', CodecTag: undefined })], { Container: 'webm' });
+    const verdict = await verdictFor({ source }, { file: ['video/webm; codecs="vp9"', 'audio/webm; codecs="opus"'], ms: [] });
+
+    expect(verdict).toMatchObject({ method: 'DirectPlay', reasons: [], unverified: false });
+    expect([isAssumedCopy(verdict.video), isAssumedCopy(verdict.audio)]).toEqual([false, false]);
+  });
+
+  test('an exact question answered "unsupported" stays unsupported', async () => {
+    const verdict = await verdictFor(hevcMkvItem(), fullBrowser);
+
+    expect(verdict).toMatchObject({ method: 'TranscodeVideo', unverified: false });
+    expect(verdict.reasons).toContain('VideoCodecUnsupported');
+  });
+
+  test('the Dolby Vision string is a complete codec string built by the plan\'s formula: its "unsupported" is evidence too', async () => {
+    const dolbyVision = videoStream({ Codec: 'hevc', CodecTag: 'dvh1', VideoRange: 'HDR', VideoRangeType: 'DOVI', DvProfile: 5, DvLevel: 6, BitDepth: 10 });
+    const aacByTag = 'audio/mp4; codecs="mp4a"';
+    const verdict = await verdictFor({ source: mediaSource([dolbyVision, audioStream()]) }, { file: [...(fullBrowser.file ?? []), aacByTag], ms: [...(fullBrowser.ms ?? []), aacByTag] });
+
+    expect(verdict).toMatchObject({ method: 'TranscodeVideo', unverified: false });
+  });
+
+  test('a question the browser refuses (it rejects instead of answering) is no evidence either', async () => {
+    const refusing = createOracle(() => {
+      throw new TypeError('unsupported MIME type');
+    });
+    const unprobed = await computeVerdict({ source: unprobedMp4().source, oracle: refusing, environment: defaultEnvironment });
+    const probed = await computeVerdict({ ...mp4Item(), oracle: refusing, environment: defaultEnvironment });
+
+    expect([unprobed.method, unprobed.unverified, probed.method]).toEqual(['DirectPlay', true, 'Unplayable']);
+  });
+
+  test('a browser whose decodingInfo never settles is judged by its other native APIs: H.264 + AAC in MP4 still plays directly', async () => {
+    const native = createFallbackQuery({ canPlayType: type => (type.startsWith('video/mp4') || type.startsWith('audio/mp4') ? 'probably' : ''), isTypeSupported: () => true });
+    const oracle = createOracle(async () => new Promise<CapabilityAnswer>(() => {
+      // Never settles
+    }), { timeoutMs: 5, fallback: native });
+    const verdict = await computeVerdict({ ...mp4Item(), oracle, environment: defaultEnvironment });
+
+    expect(verdict).toMatchObject({ method: 'DirectPlay', unverified: false });
+  });
+
+  test('only the streams that could not be asked about exactly are assumed: a probed file whose audio the probe did not see', async () => {
+    const item = { source: mp4Item().source, probe: probeOk('video/mp4', [probedVideo()], []) };
+    const verdict = await verdictFor(item, fullBrowser);
+
+    expect(verdict).toMatchObject({ method: 'DirectPlay', unverified: true, reasons: ['Unverified'] });
+    expect([isAssumedCopy(verdict.video), isAssumedCopy(verdict.audio)]).toEqual([false, true]);
+  });
+
+  test('an answer playback disproved is evidence, even for a generic question', async () => {
+    const { source } = unprobedMp4();
+    const disproved = new Set(['audio/mp4; codecs="mp4a"', 'audio/mp4; codecs="aac"']);
+    const browser = fakeOracle(fullBrowser);
+    const oracle: CapabilityOracle = {
+      ...browser,
+      query: async (config, context) => disproved.has(config.audio?.contentType ?? '') ? DISPROVED : browser.query(config, context)
+    };
+    const verdict = await computeVerdict({ source, oracle, environment: defaultEnvironment });
+
+    expect(verdict).toMatchObject({ method: 'TranscodeAudio', unverified: true, audio: { action: 'transcode' } });
+    expect(isAssumedCopy(verdict.video)).toBe(true);
+  });
+});
+
+describe('a verdict with streams nobody could check: the cheapest method assuming they play', () => {
+  test('a subtitle that has to be burnt in still encodes the video; the assumed audio is copied', async () => {
+    const source = mediaSource([videoStream(), audioStream(), subtitleStream('DVDSUB', false, { Index: 2 })]);
+    const verdict = await verdictFor({ source }, fullBrowser, { subtitleStreamIndex: 2 });
+
+    expect(verdict).toMatchObject({ method: 'TranscodeVideo', unverified: true, video: { action: 'transcode' } });
+    expect(verdict.reasons).toEqual(['SubtitleBurnIn', 'Unverified']);
+    expect(isAssumedCopy(verdict.audio)).toBe(true);
+  });
+
+  test('a video above the chosen quality is still encoded', async () => {
+    const source = mediaSource([videoStream({ Width: 1920, Height: 1080, BitRate: 8_000_000 }), audioStream()], { Bitrate: 8_200_000 });
+    const verdict = await verdictFor({ source }, fullBrowser, { environment: { quality: { type: 'fixed', level: 720 } } });
+
+    expect(verdict).toMatchObject({ method: 'TranscodeVideo', unverified: true, reasons: ['ExceedsQuality', 'Unverified'] });
+  });
+
+  test('HDR video on an SDR display is still tone-mapped by the server when the display decides', async () => {
+    const source = mediaSource([videoStream({ Codec: 'hevc', CodecTag: 'hvc1', VideoRange: 'HDR', VideoRangeType: 'HDR10', BitDepth: 10 }), audioStream()]);
+    const verdict = await verdictFor({ source }, fullBrowser, { environment: { hdrDisplay: false, hdrMode: 'display' } });
+
+    expect(verdict).toMatchObject({ method: 'TranscodeVideo', reasons: ['HdrOnSdrDisplay', 'Unverified'] });
+  });
+
+  test('a secondary audio track the element cannot switch to is remuxed, copying the assumed streams', async () => {
+    const source = mediaSource([videoStream({ CodecTag: undefined }), audioStream({ CodecTag: undefined }), audioStream({ Index: 2, Codec: 'ac3', CodecTag: undefined, IsDefault: false })], { Container: 'mkv' });
+    const verdict = await verdictFor({ source }, fullBrowser, { audioStreamIndex: 2 });
+
+    expect(verdict).toMatchObject({ method: 'Remux', unverified: true, reasons: ['SecondaryAudioTrack', 'Unverified'], audio: { index: 2 } });
+    expect([isAssumedCopy(verdict.video), isAssumedCopy(verdict.audio)]).toEqual([true, true]);
+  });
+
+  test('the user policy and the quality mode limit it as usual: the attempt is a direct play, which both allow', async () => {
+    const noTranscoding = await verdictFor(unprobedMp4(), fullBrowser, { environment: { policy: { EnableVideoPlaybackTranscoding: false, EnableAudioPlaybackTranscoding: false, EnablePlaybackRemuxing: false } } });
+    const original = await verdictFor(unprobedMp4(), fullBrowser, { environment: { quality: { type: 'original' } } });
+
+    expect([noTranscoding.method, original.method]).toEqual(['DirectPlay', 'DirectPlay']);
+  });
+});
+
+describe('after a failure nothing is assumed: every stream whose support is still unknown is encoded', () => {
+  test('a direct play that assumed both streams failed (the ladder learned a floor for its streams): both are encoded', async () => {
+    const { before, after } = await afterFailure(unprobedMp4(), fullBrowser);
+
+    expect(before).toMatchObject({ method: 'DirectPlay', unverified: true });
+    expect(after).toMatchObject({ method: 'TranscodeVideo', unverified: false, video: { action: 'transcode' }, audio: { action: 'transcode' } });
+  });
+
+  test('the reason is that a cheaper method failed, not that the browser cannot play the codecs', async () => {
+    const { after } = await afterFailure(unprobedMp4(), fullBrowser);
+
+    expect(after.reasons).toEqual(['FailedBefore']);
+  });
+
+  test('a stream the browser confirmed is still copied where the rung allows (here the Opus audio of an MKV: "opus" is a complete codec string, which the browser confirms through media source playback)', async () => {
+    const source = mediaSource([videoStream({ CodecTag: undefined }), audioStream({ Codec: 'opus', CodecTag: undefined })], { Container: 'mkv' });
+    const { before, after } = await afterFailure({ source }, fullBrowser);
+
+    // Not probed, the file is asked about with the server's container token (`audio/mkv`), which no browser confirms
+    expect([isAssumedCopy(before.video), isAssumedCopy(before.audio)]).toEqual([true, true]);
+    expect(after).toMatchObject({ method: 'TranscodeVideo', video: { action: 'transcode' }, audio: { action: 'copy' }, unverified: false });
+    expect(isAssumedCopy(after.audio)).toBe(false);
+  });
+
+  test('a confirmed video is copied while the unknown audio is encoded', async () => {
+    const source = mediaSource([videoStream({ Codec: 'vp9', CodecTag: undefined }), audioStream({ Codec: 'eac3', CodecTag: undefined })], { Container: 'mkv' });
+    const browser = { file: ['video/x-matroska; codecs="vp9"'], ms: ['video/mp4; codecs="vp9"', T.aacTarget, T.opusTarget, T.h264Target] };
+    const { after } = await afterFailure({ source }, browser);
+
+    expect(after).toMatchObject({ method: 'TranscodeAudio', video: { action: 'copy' }, audio: { action: 'transcode' }, unverified: false });
+  });
+
+  test('a video transcode that copied an assumed audio: once the copy fails and its media source questions are disproved, the audio is encoded', async () => {
+    const source = mediaSource([videoStream(), audioStream(), subtitleStream('DVDSUB', false, { Index: 2 })]);
+    const disproved = new Set<string>();
+    const browser = fakeOracle(fullBrowser);
+    const oracle: CapabilityOracle = { ...browser, query: async (config, context) => disproved.has(getConfigurationKey(config)) ? DISPROVED : browser.query(config, context) };
+    const compute = async () => computeVerdict({ source, oracle, subtitleStreamIndex: 2, environment: defaultEnvironment });
+    const before = await compute();
+
+    for (const config of getMediaSourceQuestions(source, 1)) {
+      disproved.add(getConfigurationKey(config));
+    }
+
+    const after = await compute();
+
+    expect([before.audio?.action, after.audio?.action, after.unverified]).toEqual(['copy', 'transcode', false]);
+  });
+
+  test('a stream that cannot be asked about at all (a video whose size nobody knows) is assumed the same way, and encoded after a failure', async () => {
+    const source = mediaSource([videoStream({ Width: undefined, Height: undefined }), audioStream()]);
+    const probe = probeOk('video/mp4', [], [probedAudio()]);
+    const { before, after } = await afterFailure({ source, probe }, fullBrowser);
+
+    expect([before.method, before.unverified, isAssumedCopy(before.video)]).toEqual(['DirectPlay', true, true]);
+    expect(after).toMatchObject({ method: 'TranscodeVideo', video: { action: 'transcode' }, audio: { action: 'copy' } });
+  });
+
+  test('the ladder makes a single attempt: one assumed verdict, then verified ones, until nothing is left', async () => {
+    const floors = new Map<string, PlaybackMethod>();
+    const verdicts: Verdict[] = [];
+
+    for (let attempt = 0; attempt < 6; attempt++) {
+      const verdict = await verdictFor(unprobedMp4(), fullBrowser, { environment: { getLearnedFloor: signature => floors.get(signature) } });
+
+      verdicts.push(verdict);
+
+      const step = getFailureStep({ method: verdict.method, video: verdict.video, audio: verdict.audio, mode: { type: 'auto' }, policy: {} });
+
+      if (step.learn !== 'floor') {
+        break;
+      }
+
+      floors.set(verdict.signature, getNextFloor(verdict, { failedAt: step.failedAt }, floors.get(verdict.signature)) ?? 'Unplayable');
+    }
+
+    expect(verdicts.map(verdict => [verdict.method, verdict.unverified])).toEqual([['DirectPlay', true], ['TranscodeVideo', false], ['Unplayable', false]]);
+  });
+});
+
 describe('probe matching and fallbacks', () => {
   test('probed tracks are matched by order within each type, ignoring external streams', async () => {
     const source = mediaSource([
@@ -1144,10 +1382,10 @@ describe('probe matching and fallbacks', () => {
     expect(verdict).toMatchObject({ method: 'DirectPlay', video: { index: 2 }, audio: { index: 3 } });
   });
 
-  test('without a probe, the generic candidates decide (here: unknown to the browser, so transcode)', async () => {
+  test('without a probe, the generic candidates are asked (here the browser rejects them, so both streams are assumed to play)', async () => {
     const verdict = await verdictFor({ source: mkvItem('ac3').source }, fullBrowser);
 
-    expect(verdict.method).toBe('TranscodeVideo');
+    expect(verdict).toMatchObject({ method: 'DirectPlay', unverified: true });
   });
 
   test('a failed probe is the same as no probe', async () => {
@@ -1160,9 +1398,10 @@ describe('probe matching and fallbacks', () => {
       cacheable: false,
       stats: { requests: 1, bytes: 0, durationMs: 1 }
     };
-    const verdict = await verdictFor({ source: mkvItem('ac3').source, probe: failed }, fullBrowser);
+    const withFailed = await verdictFor({ source: mkvItem('ac3').source, probe: failed }, fullBrowser);
+    const withNone = await verdictFor({ source: mkvItem('ac3').source }, fullBrowser);
 
-    expect(verdict.method).toBe('TranscodeVideo');
+    expect(withFailed).toEqual(withNone);
   });
 
   test('the selected video stream is honoured by its absolute index', async () => {

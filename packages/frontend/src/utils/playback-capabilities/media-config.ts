@@ -5,8 +5,10 @@
  *
  * The codec strings come from the file itself (mediabunny) whenever possible. The only transformations applied to
  * them are the normalisations listed in the plan (HEVC prefix, PCM, QuickTime as MP4) and the Dolby Vision string
- * built from the server's data. Without a usable string, a generic candidate is built from the server's
- * names, and the browser decides.
+ * built from the server's data. Without a usable string, a generic candidate is built from the server's names
+ * (`avc1`, `h264`, `mp4a`, `aac`...), and marked as such: several of those names are complete codec strings (`flac`,
+ * `opus`, `mp3`, `vp8`...), so a "supported" answer counts, but the browser cannot answer the others, so an
+ * "unsupported" answer to a generic candidate is no evidence (see `verdict.ts`).
  */
 import type { MediaSourceInfo, MediaStream, VideoRangeType } from '@jellyfin/sdk/lib/generated-client';
 import { FALLBACK_BITRATE, FALLBACK_FRAME_RATE, type TranscodeTarget } from './constants.ts';
@@ -369,9 +371,17 @@ function getAudioMembers(input: StreamCandidatesInput): Omit<AudioConfiguration,
 }
 
 /**
- * The codec strings of a stream, best first, and whether they are the file's own (read by the probe)
+ * Where the codec strings of a stream come from:
+ * - `file`: read from the file by the probe (after the normalisations)
+ * - `formula`: the Dolby Vision string, complete, built from the server's profile and level
+ * - `server`: the server's names, generic
  */
-function getCodecChoice(input: StreamCandidatesInput): { codecs: string[]; exact: boolean } {
+type CodecOrigin = 'file' | 'formula' | 'server';
+
+/**
+ * The codec strings of a stream, best first, and where they come from
+ */
+function getCodecChoice(input: StreamCandidatesInput): { codecs: string[]; origin: CodecOrigin } {
   const kind: StreamKind = input.stream.Type === 'Video' ? 'video' : 'audio';
   const probed = input.probed?.type === kind ? input.probed : undefined;
 
@@ -380,12 +390,12 @@ function getCodecChoice(input: StreamCandidatesInput): { codecs: string[]; exact
    * it would be reported as supported and play with wrong colours
    */
   if (kind === 'video' && isDolbyVisionOnly(input.stream)) {
-    return { codecs: getDolbyVisionCodecs(input.stream, probed), exact: false };
+    return { codecs: getDolbyVisionCodecs(input.stream, probed), origin: 'formula' };
   }
 
   const exactCodecs = getExactCodecs(probed, input.mode);
 
-  return exactCodecs ? { codecs: exactCodecs, exact: true } : { codecs: getGenericCodecs(input.stream), exact: false };
+  return exactCodecs ? { codecs: exactCodecs, origin: 'file' } : { codecs: getGenericCodecs(input.stream), origin: 'server' };
 }
 
 /**
@@ -396,24 +406,39 @@ export function getStreamCodecStrings(input: StreamCandidatesInput): string[] {
 }
 
 /**
- * Ordered candidate configurations for one video or audio stream. Each one asks about exactly one codec of one
- * stream (several codecs in `codecs` is a `TypeError` by specification).
+ * One candidate configuration of a stream, and whether it is generic: built from the server's names instead of an
+ * exact codec string (read from the file, or the Dolby Vision formula). The browser's "unsupported" answer to a generic
+ * candidate is no evidence: it may only mean that the server's name is not a codec string.
+ *
+ * The candidates of one stream are all exact or all generic: generic candidates are only built when there is no exact
+ * string, so an exact answer is never weighed against a generic one (exact answers always win).
+ */
+export interface StreamQuestion {
+  readonly config: MediaDecodingConfiguration;
+  readonly generic: boolean;
+}
+
+/**
+ * Ordered candidate configurations for one video or audio stream, each marked generic or exact (see
+ * {@link StreamQuestion}). Each one asks about exactly one codec of one stream (several codecs in `codecs` is a
+ * `TypeError` by specification).
  *
  * An empty list means the stream cannot be asked about (not enough data): callers treat it as unverified.
  */
-export function getStreamCandidates(input: StreamCandidatesInput): MediaDecodingConfiguration[] {
+export function getStreamQuestions(input: StreamCandidatesInput): StreamQuestion[] {
   const kind: StreamKind = input.stream.Type === 'Video' ? 'video' : 'audio';
   const probed = input.probed?.type === kind ? input.probed : undefined;
-  const { codecs, exact } = getCodecChoice(input);
+  const { codecs, origin } = getCodecChoice(input);
+  const generic = origin === 'server';
   const containers = getContainers(kind, input);
   const contentTypes = containers.flatMap(container => codecs.map(codec => `${container}; codecs="${codec}"`));
 
   /**
    * A container whose MIME type implies its codec must be asked without parameters (Media Capabilities, and
-   * Chromium enforces it): the bare container MIME goes after the exact candidate. Only with an exact candidate,
-   * only for the file itself.
+   * Chromium enforces it): the bare container MIME goes after the exact candidate. Only with an exact candidate read
+   * from the file, only for the file itself.
    */
-  if (input.mode === 'file' && input.containerImpliesCodec && exact) {
+  if (input.mode === 'file' && input.containerImpliesCodec && origin === 'file') {
     contentTypes.push(...containers);
   }
 
@@ -429,12 +454,19 @@ export function getStreamCandidates(input: StreamCandidatesInput): MediaDecoding
     const variants = baseLayer ? [members, { ...members, hdrMetadataType: baseLayer }] : [members];
 
     return contentTypes.flatMap(contentType =>
-      variants.map(variant => ({ type: input.mode, video: { contentType, ...variant } })));
+      variants.map(variant => ({ config: { type: input.mode, video: { contentType, ...variant } }, generic })));
   }
 
   const members = getAudioMembers({ ...input, probed });
 
-  return contentTypes.map(contentType => ({ type: input.mode, audio: { contentType, ...members } }));
+  return contentTypes.map(contentType => ({ config: { type: input.mode, audio: { contentType, ...members } }, generic }));
+}
+
+/**
+ * The candidate configurations of one video or audio stream, best first (see {@link getStreamQuestions})
+ */
+export function getStreamCandidates(input: StreamCandidatesInput): MediaDecodingConfiguration[] {
+  return getStreamQuestions(input).map(question => question.config);
 }
 
 /**

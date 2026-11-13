@@ -1,8 +1,13 @@
 /**
  * Runtime state of the playback capability engine shared by the whole app: the capability oracle, what was
  * learned during this session, and the verdict for a media source with everything the client knows about itself.
- * Nothing here is persisted except the probe results, which live in the api database next to their items. What the
- * session learned belongs to the user and the server it was learned with: it is forgotten when either changes.
+ * Nothing here is persisted except the probe results, which live in the api database next to their items.
+ *
+ * What a failure teaches (see `verdict.ts` for the rules): the failed rung, as the learned floor of the verdict's
+ * signature, which also ends the single attempt a verdict makes with streams nobody could check (from then on they are
+ * encoded); and, for a stream copied into the server's HLS output, that its media source answers are wrong
+ * ({@link recordMediaSourceFailure}), which counts as evidence even where the browser could not answer exactly. All of
+ * it belongs to the user and the server it was learned with: it is forgotten when either changes.
  */
 import type { BaseItemDto, MediaSourceInfo, MediaStream } from '@jellyfin/sdk/lib/generated-client';
 import { computed, shallowReactive, shallowRef, watch } from 'vue';
@@ -10,8 +15,8 @@ import { withTimeout } from '@jellyfin-vue/shared/promises';
 import { PROBE_PLAYBACK_WAIT_MS } from '#/utils/playback-capabilities/constants.ts';
 import {
   createBrowserOracle,
+  DISPROVED,
   getConfigurationKey,
-  UNSUPPORTED,
   type CapabilityOracle
 } from '#/utils/playback-capabilities/oracle.ts';
 import { isCurrentProbe, isRememberedForSession, probeMediaSource, type ProbeResult } from '#/utils/playback-capabilities/probe.ts';
@@ -50,7 +55,8 @@ export interface StreamSelection {
 export interface MediaSourceVerdictOptions {
   /**
    * The longest wait for the file to be probed. Without the probe in time the verdict is computed from the
-   * server's data (generic candidates); the probe goes on and its result is stored for the next verdict.
+   * server's data (generic candidates, so the streams the browser does not confirm are assumed to play, once); the
+   * probe goes on and its result is stored for the next verdict.
    */
   readonly probeWaitMs?: number;
   /**
@@ -63,20 +69,20 @@ export interface MediaSourceVerdictOptions {
 const browserOracle = createBrowserOracle();
 
 /**
- * Questions answered "supported" by the browser that playback proved wrong this session (see
- * {@link recordMediaSourceFailure}), by configuration key
+ * Questions playback proved wrong this session (see {@link recordMediaSourceFailure}), by configuration key: answered
+ * "supported" by the browser, or assumed to play because the browser could not answer them exactly
  */
 const disprovenAnswers = shallowReactive(new Set<string>());
 
 /**
  * The app's only capability oracle, so every verdict shares its memoised answers: the browser's, asked on the display
- * the window is on (an answer does not outlive a change of the dynamic range media query), except for the answers
- * playback disproved this session
+ * the window is on (an answer does not outlive a change of the dynamic range media query), except for the questions
+ * playback disproved this session, which are answered {@link DISPROVED}
  */
 export const capabilityOracle: CapabilityOracle = {
   query: async (config, context) =>
     disprovenAnswers.has(getConfigurationKey(config))
-      ? UNSUPPORTED
+      ? DISPROVED
       : browserOracle.query(config, { ...context, hdrDisplay: hasHDRDisplay.value }),
   clear: () => {
     browserOracle.clear();
