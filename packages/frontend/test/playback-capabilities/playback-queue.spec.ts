@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { findQueueItem, getPlayNextQueue, getQueueRemoval } from '#/utils/playback-queue.ts';
+import { findQueueItem, getPlayNextQueue, getQueueRemoval, getUnplayableItemStep, isUnplayableItem } from '#/utils/playback-queue.ts';
 
 const items = (...ids: string[]) => ids.map(Id => ({ Id }));
 
@@ -94,5 +94,48 @@ describe('getPlayNextQueue', () => {
 
   test('without a current item, nothing changes', () => {
     expect(getPlayNextQueue(['a', 'b'], undefined, ['x'])).toBeUndefined();
+  });
+});
+
+describe('isUnplayableItem', () => {
+  const source = { Id: 's1' };
+
+  test('video and audio with a version at the index are playable', () => {
+    expect(isUnplayableItem({ MediaType: 'Video', MediaSources: [source] }, 0)).toBe(false);
+    expect(isUnplayableItem({ MediaType: 'Audio', MediaSources: [source] }, 0)).toBe(false);
+  });
+
+  test('while the version is not decided yet, nothing is known', () => {
+    expect(isUnplayableItem({ MediaType: 'Video', MediaSources: [] }, undefined)).toBe(false);
+  });
+
+  test('media the player does not play (photos, books, unknown) never plays', () => {
+    expect(isUnplayableItem({ MediaType: 'Photo', MediaSources: [source] }, 0)).toBe(true);
+    expect(isUnplayableItem({ MediaType: 'Book' }, undefined)).toBe(true);
+    expect(isUnplayableItem({ MediaType: 'Unknown' }, undefined)).toBe(true);
+  });
+
+  test('no version at the index: no versions, a chosen version that does not exist, or one without an id', () => {
+    expect(isUnplayableItem({ MediaType: 'Video', MediaSources: [] }, 0)).toBe(true);
+    expect(isUnplayableItem({ MediaType: 'Video' }, 0)).toBe(true);
+    expect(isUnplayableItem({ MediaType: 'Video', MediaSources: [source] }, 3)).toBe(true);
+    expect(isUnplayableItem({ MediaType: 'Video', MediaSources: [source] }, -1)).toBe(true);
+    expect(isUnplayableItem({ MediaType: 'Video', MediaSources: [{}] }, 0)).toBe(true);
+  });
+});
+
+describe('getUnplayableItemStep', () => {
+  test('the queue moves on to the next item', () => {
+    expect(getUnplayableItemStep({ hasNext: true, skippedInARow: 1, queueLength: 3 })).toBe('next');
+  });
+
+  test('without a next item, the playback stops', () => {
+    expect(getUnplayableItemStep({ hasNext: false, skippedInARow: 1, queueLength: 3 })).toBe('stop');
+  });
+
+  test('a queue that repeats where nothing plays stops once every item was skipped in a row', () => {
+    expect(getUnplayableItemStep({ hasNext: true, skippedInARow: 2, queueLength: 3 })).toBe('next');
+    expect(getUnplayableItemStep({ hasNext: true, skippedInARow: 3, queueLength: 3 })).toBe('stop');
+    expect(getUnplayableItemStep({ hasNext: true, skippedInARow: 1, queueLength: 1 })).toBe('stop');
   });
 });

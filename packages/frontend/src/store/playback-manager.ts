@@ -52,7 +52,7 @@ import { getImageInfo } from '#/utils/images.ts';
 import { getMethodChangeNotice, getNoOtherMethodText } from '#/utils/playback-labels.ts';
 import { getMethodChange, getVerdictLabel, type MethodLabel } from '#/utils/playback-capabilities/verdict-label.ts';
 import { getItemRuntime, getStaticStreamUrl } from '#/utils/items.ts';
-import { findQueueItem, getPlayNextQueue, getQueueRemoval } from '#/utils/playback-queue.ts';
+import { findQueueItem, getPlayNextQueue, getQueueRemoval, getUnplayableItemStep, isUnplayableItem } from '#/utils/playback-queue.ts';
 import { PREFETCH_BUFFER_AHEAD_S } from '#/utils/playback-capabilities/constants.ts';
 import { buildPlaybackRequest, deriveActualMethod } from '#/utils/playback-capabilities/device-profile.ts';
 import { getFailureStep, type FailureEvidence, type FailureStep, type LessonScope } from '#/utils/playback-capabilities/failure-ladder.ts';
@@ -352,6 +352,11 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    */
   private _pausedReload: number | undefined;
   /**
+   * How many items that can't be played at all were skipped in a row (see `isUnplayableItem`), counting since an item
+   * last got something to play
+   */
+  private _skippedInARow = 0;
+  /**
    * The method the server uses for a negotiated playback, as the version selector names it (a video transcode that
    * also encodes the audio is told apart)
    */
@@ -613,6 +618,15 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     ) {
       return negotiation;
     }
+  });
+
+  /**
+   * The current item, once it's known that it can't be negotiated at all (see `isUnplayableItem`)
+   */
+  private readonly _unplayableItemId = computed(() => {
+    const item = this.currentItem.value;
+
+    return item?.Id && isUnplayableItem(item, this.currentMediaSourceIndex.value) ? item.Id : undefined;
   });
 
   /**
@@ -1405,6 +1419,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       }
 
       this._playGeneration++;
+      this._skippedInARow = 0;
       this._state.value.status = PlaybackStatus.Buffering;
       // A new playback decides its versions again, also for items played before
       this._resolvedSource.value = undefined;
@@ -1482,7 +1497,8 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   };
 
   public readonly setNextItem = (): void => {
-    if (this.nextItem.value) {
+    // By id: the items of a queue that just changed may still be being fetched (see `currentItem`)
+    if (!isNil(this._state.value.queue[this._nextItemIndex.value ?? -1])) {
       this.currentItemIndex.value = this._nextItemIndex.value;
     } else {
       this.stop();
@@ -2068,6 +2084,8 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
         return;
       }
 
+      this._skippedInARow = 0;
+
       const playback: ReportedPlayback = {
         itemId: negotiation.itemId,
         mediaSourceId: negotiation.data.MediaSources?.[0]?.Id ?? negotiation.mediaSourceId,
@@ -2080,6 +2098,31 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
         await this._reportPlaybackProgress();
       } else {
         await this._reportPlaybackStart(playback);
+      }
+    });
+
+    /**
+     * An item that can't be negotiated at all (see `isUnplayableItem`) is an error the user sees, and the queue moves on
+     * to the next item, if there's one (see `getUnplayableItemStep`)
+     */
+    watch(this._unplayableItemId, (itemId) => {
+      if (!itemId) {
+        return;
+      }
+
+      this._skippedInARow++;
+      useSnackbar(i18next.t('cantPlayItem'), 'error');
+
+      const step = getUnplayableItemStep({
+        hasNext: !isNil(this._state.value.queue[this._nextItemIndex.value ?? -1]),
+        skippedInARow: this._skippedInARow,
+        queueLength: this.queueLength.value
+      });
+
+      if (step === 'next') {
+        this.setNextItem();
+      } else {
+        this.stop();
       }
     });
 

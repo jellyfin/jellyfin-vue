@@ -1,6 +1,6 @@
 /**
- * Rules of the playback queue that don't depend on the store: which fetched item is the current one, and where items
- * go when they are removed or played next.
+ * Rules of the playback queue that don't depend on the store: which fetched item is the current one, where items
+ * go when they are removed or played next, and what happens with an item that can't be played.
  *
  * The queue is a list of item ids. The items themselves are fetched asynchronously, so right after the ids change the
  * fetched items may still be those of the previous list: anything that reads them must find them by id.
@@ -105,4 +105,36 @@ export function getPlayNextQueue(queue: readonly string[], index: number | undef
   const after = queue.slice(index + 1).filter(id => !isMoved(id));
 
   return [...before, current, ...moved, ...after];
+}
+
+/**
+ * Whether an item can't be negotiated at all, once that's known: it isn't media the player plays (photos and books
+ * end up in a queue made from a folder), or it has no version at the index it's played with (no `MediaSources`, or a
+ * chosen version that doesn't exist). While its version is not decided yet, nothing is known.
+ *
+ * @param item - The current item
+ * @param index - The index in `MediaSources` of the version it's played with, if decided (-1: none)
+ */
+export function isUnplayableItem(
+  item: { readonly MediaType?: string | null; readonly MediaSources?: readonly { readonly Id?: string | null }[] | null },
+  index: number | undefined
+): boolean {
+  if (item.MediaType !== 'Video' && item.MediaType !== 'Audio') {
+    return true;
+  }
+
+  return !isNil(index) && isNil(item.MediaSources?.[index]?.Id);
+}
+
+/**
+ * What the queue does when its current item can't be played at all: it moves on to the next item, or stops when there
+ * is none or when every item of the queue was skipped in a row (a queue that repeats where nothing plays)
+ *
+ * @param state - Whether the queue has an item after the current one, how many items were skipped in a row counting
+ * the current one, and how many items the queue has
+ */
+export function getUnplayableItemStep(
+  { hasNext, skippedInARow, queueLength }: { readonly hasNext: boolean; readonly skippedInARow: number; readonly queueLength: number }
+): 'next' | 'stop' {
+  return hasNext && skippedInARow < queueLength ? 'next' : 'stop';
 }
