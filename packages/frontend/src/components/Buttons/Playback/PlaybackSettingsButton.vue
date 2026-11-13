@@ -157,22 +157,11 @@ import { playbackManager } from '#/store/playback-manager.ts';
 import { playerElement } from '#/store/player-element.ts';
 import { playbackSettings } from '#/store/settings/playback.ts';
 import { getQualityMenu, type QualityMenuEntry } from '#/utils/playback-capabilities/quality.ts';
-import { getNoOtherMethodText, getPlayingMethodName } from '#/utils/playback-labels.ts';
+import { getNoOtherMethodText, getPlayingMethodName, getQualityName } from '#/utils/playback-labels.ts';
 
 const menuModel = defineModel<boolean>();
 const { t } = useTranslation();
 const statisticsOpen = shallowRef(false);
-
-/**
- * The name of a quality menu entry
- */
-function getEntryTitle(entry: QualityMenuEntry): string {
-  if (entry === 'auto') {
-    return t('auto');
-  }
-
-  return entry === 'original' ? t('original') : t('qualityLevel', { height: entry });
-}
 
 /**
  * The video stream of the version being played that the quality applies to: the one picked or, if none, the first one
@@ -194,8 +183,8 @@ const qualityItems = computed(() => getQualityMenu(videoStream.value).map((entry
   const running = playbackManager.currentRunningQuality.value;
 
   return {
-    title: getEntryTitle(entry),
-    subtitle: entry === 'auto' && running !== undefined && quality.value === 'auto' ? getEntryTitle(running) : undefined,
+    title: getQualityName(t, entry),
+    subtitle: entry === 'auto' && running !== undefined && quality.value === 'auto' ? getQualityName(t, running) : undefined,
     value: entry
   };
 }));

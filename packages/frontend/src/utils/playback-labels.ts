@@ -1,9 +1,11 @@
 /**
- * Names of the playback methods and of the reasons of a change, for the version selector, the notices, the quality menu
- * and the playback statistics. The translation function is passed in, so components keep their reactive one.
+ * Names of the playback methods, of the qualities and of the reasons of a change, for the version selector, the notices,
+ * the quality menu, the settings page and the playback statistics. The translation function is passed in, so
+ * components keep their reactive one.
  */
 import type { MediaSourceInfo } from '@jellyfin/sdk/lib/generated-client';
 import type { PlaybackChangeReason } from '#/store/playback-quality.ts';
+import type { QualityMenuEntry } from '#/utils/playback-capabilities/quality.ts';
 import { getVerdictLabel, type MethodLabel } from '#/utils/playback-capabilities/verdict-label.ts';
 import type { PlaybackMethod, Verdict } from '#/utils/playback-capabilities/verdict.ts';
 
@@ -46,6 +48,18 @@ export function getPlaybackMethodName(t: Translate, method: MethodLabel): string
  */
 export function getPlayingMethodName(t: Translate, verdict: Verdict, source: MediaSourceInfo | undefined, actualMethod: PlaybackMethod): string {
   return getPlaybackMethodName(t, source ? getVerdictLabel(verdict, source, actualMethod).method : actualMethod);
+}
+
+/**
+ * The name of a quality (Automatic, Original or a resolution): the one place that names it, for the quality menu, the
+ * settings page and the playback statistics
+ */
+export function getQualityName(t: Translate, quality: QualityMenuEntry): string {
+  if (quality === 'auto') {
+    return t('auto');
+  }
+
+  return quality === 'original' ? t('original') : t('qualityLevel', { height: quality });
 }
 
 /**

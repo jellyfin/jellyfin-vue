@@ -49,9 +49,9 @@ import { playbackManager } from '#/store/playback-manager.ts';
 import { playbackObservations, sessionNetworkEstimate } from '#/store/playback-quality.ts';
 import { playbackSettings } from '#/store/settings/playback.ts';
 import { selectionModel } from '#/utils/forms.ts';
-import { getModeLevel } from '#/utils/playback-capabilities/quality.ts';
+import { getModeLevel, type QualityLevel } from '#/utils/playback-capabilities/quality.ts';
 import type { PlaybackMethod } from '#/utils/playback-capabilities/verdict.ts';
-import { getPlaybackChangeReasonName, getPlaybackMethodName, getPlayingMethodName } from '#/utils/playback-labels.ts';
+import { getPlaybackChangeReasonName, getPlaybackMethodName, getPlayingMethodName, getQualityName } from '#/utils/playback-labels.ts';
 
 const emit = defineEmits<{ close: [] }>();
 const { t } = useTranslation();
@@ -87,20 +87,11 @@ const stream = computed(() => {
 const mode = computed(() => playbackManager.currentQualityMode.value);
 const level = computed(() => mode.value ? getModeLevel(mode.value) : undefined);
 const modeName = computed(() => {
-  switch (mode.value?.type) {
-    case 'auto': {
-      return t('auto');
-    }
-    case 'original': {
-      return t('original');
-    }
-    case 'fixed': {
-      return t('qualityLevel', { height: mode.value.level });
-    }
-    default: {
-      return '—';
-    }
+  if (!mode.value) {
+    return '—';
   }
+
+  return getQualityName(t, mode.value.type === 'fixed' ? mode.value.level : mode.value.type);
 });
 const lastChange = computed(() => playbackObservations.lastChange.value);
 const frames = computed(() => playbackObservations.frames.value);
@@ -151,7 +142,7 @@ const predictedMethodName = computed(() => {
  * The name of a quality menu entry, as the change records it
  */
 function entryName(entry: string): string {
-  return entry === 'original' ? t('original') : t('qualityLevel', { height: entry });
+  return getQualityName(t, entry === 'original' ? entry : Number(entry) as QualityLevel);
 }
 
 /**
@@ -179,7 +170,7 @@ const rows = computed(() => [
     label: t('quality'),
     value: [
       modeName.value,
-      playbackManager.currentRunningQuality.value === undefined ? undefined : entryName(String(playbackManager.currentRunningQuality.value))
+      playbackManager.currentRunningQuality.value === undefined ? undefined : getQualityName(t, playbackManager.currentRunningQuality.value)
     ].filter(Boolean).join(' · ')
   },
   { label: t('droppedFrames'), value: frames.value ? `${frames.value.dropped} / ${frames.value.total}` : '—' },

@@ -175,6 +175,7 @@ import { playbackSettings, type HdrMode } from '#/store/settings/playback.ts';
 import { forgetLearnedCompatibility } from '#/store/playback-capabilities.ts';
 import { pick } from '#/utils/data-manipulation.ts';
 import { selectionModel } from '#/utils/forms.ts';
+import { getQualityName } from '#/utils/playback-labels.ts';
 import { QUALITY_LADDER } from '#/utils/playback-capabilities/constants.ts';
 import type { QualityMenuEntry } from '#/utils/playback-capabilities/quality.ts';
 
@@ -185,11 +186,12 @@ const { t } = useTranslation();
  */
 const autoSelectVersion = selectionModel(playbackSettings.autoSelectVersion);
 const hdrMode = selectionModel(playbackSettings.hdrMode);
-const qualityItems = computed<{ title: string; value: QualityMenuEntry }[]>(() => [
-  { title: t('auto'), value: 'auto' },
-  { title: t('original'), value: 'original' },
-  ...QUALITY_LADDER.map(({ height }) => ({ title: t('qualityLevel', { height }), value: height }))
-]);
+const qualityItems = computed<{ title: string; value: QualityMenuEntry }[]>(() =>
+  (['auto', 'original', ...QUALITY_LADDER.map(({ height }) => height)] as const).map(value => ({
+    title: getQualityName(t, value),
+    value
+  }))
+);
 const qualityKinds = computed(() => [
   { name: t('auto'), description: t('qualityAutoHelp') },
   { name: t('original'), description: t('qualityOriginalHelp') },
