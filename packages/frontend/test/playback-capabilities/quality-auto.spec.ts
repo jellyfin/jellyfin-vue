@@ -8,6 +8,9 @@ import {
   getDownStep,
   getSmoothnessStep,
   getUpStep,
+  isRefused,
+  keepAutoMemory,
+  rememberRefusal,
   rememberStall,
   type AutoState
 } from '#/utils/playback-capabilities/quality-auto.ts';
@@ -348,5 +351,75 @@ describe('Automatic when the server, not the network, is the limit', () => {
     const { ups } = simulate(3_600_000);
 
     expect(ups.length).toBeLessThanOrEqual(6);
+  });
+});
+
+describe('keepAutoMemory and rememberRefusal: a step the playback manager did not take goes back to the playing state, and one that gave nothing playable is not asked for again for a while', () => {
+  const at = 100_000;
+  const playing: AutoState = { level: 720, encodeVideo: false };
+  const step = getDownStep(playing, heavy1080, 720, undefined, true)!;
+
+  test('the playback goes on at the state it runs at', () => {
+    const back = keepAutoMemory(playing, step);
+
+    expect([back.level, back.encodeVideo]).toEqual([720, false]);
+  });
+
+  test('what Automatic remembered while the step was under way is kept: the streams the network supervisor moved down from', () => {
+    const stalledStep = rememberStall(playing, step, 720, at);
+
+    expect(keepAutoMemory(playing, stalledStep).stalled).toEqual(stalledStep.stalled);
+  });
+
+  test('a step refused as unplayable is not proposed again before the wait, and is after it', () => {
+    const back = rememberRefusal(keepAutoMemory(playing, step), step, at);
+
+    expect([isRefused(back, step, at + NETWORK_RETRY_WAIT_MS - 1), isRefused(back, step, at + NETWORK_RETRY_WAIT_MS)]).toEqual([true, false]);
+  });
+
+  test('each new refusal of the same step doubles the wait, so asking again is bounded however often it is refused', () => {
+    let state = playing;
+    let now = at;
+    const waits: number[] = [];
+
+    for (let refusal = 0; refusal < 4; refusal++) {
+      state = rememberRefusal(state, step, now);
+
+      const retryAt = state.refused!.find(entry => entry.refusals === refusal + 1)!.retryAt;
+
+      waits.push(retryAt - now);
+      now = retryAt;
+    }
+
+    expect(waits).toEqual([1, 2, 4, 8].map(factor => factor * NETWORK_RETRY_WAIT_MS));
+  });
+
+  test('other steps are not held back by it', () => {
+    const back = rememberRefusal(playing, step, at);
+    const smoothness = getSmoothnessStep(back, heavy1080, 720, true)!;
+
+    expect(isRefused(back, smoothness, at)).toBe(false);
+  });
+
+  test('earlier refusals are kept when the playing state does not know them yet', () => {
+    const first = rememberRefusal(playing, step, at);
+    const up = { ...first, level: 1080 as const };
+    const second = rememberRefusal(keepAutoMemory(playing, up), up, at + 1000);
+
+    expect(second.refused?.map(entry => entry.refusals)).toEqual([1, 1]);
+  });
+
+  test('a state that asks for nothing new records no refusal', () => {
+    expect(rememberRefusal(playing, playing, at)).toBe(playing);
+  });
+
+  test('the steps carry the memory on: smoothness, down and up', () => {
+    const back = rememberRefusal(playing, step, at);
+
+    expect([
+      getSmoothnessStep(back, heavy1080, 720, true)?.refused,
+      getDownStep(back, heavy1080, 720, undefined, true)?.refused,
+      getUpStep({ ...back, level: 1080 }, heavy1080, 1080, at)?.state.refused
+    ]).toEqual([back.refused, back.refused, back.refused]);
   });
 });

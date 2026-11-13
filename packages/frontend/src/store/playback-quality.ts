@@ -10,6 +10,8 @@ import {
   AUTO_START,
   getAutoMode,
   getAutoStartState,
+  keepAutoMemory,
+  rememberRefusal,
   type AutoState
 } from '#/utils/playback-capabilities/quality-auto.ts';
 import type { QualityMenuEntry, QualityMode, VideoInfo } from '#/utils/playback-capabilities/quality.ts';
@@ -106,14 +108,32 @@ export function setAutoState(key: string, state: AutoState): void {
 
 /**
  * Puts Automatic back to the state a playback runs at, without negotiating it again: the playback manager kept the
- * playback because the state a supervisor moved it to gave nothing playable. Ignored when the playback changed.
+ * playback because the state a supervisor moved it to gave nothing playable, or no answer. What Automatic remembered
+ * meanwhile is kept (see `keepAutoMemory`). Ignored when the playback changed.
  *
  * @param key - Identifies the playback
  * @param state - The state the playback runs at
  */
 export function restoreAutoState(key: string, state: AutoState): void {
-  if (autoPlayback.value?.key === key) {
-    autoPlayback.value = { key, state };
+  const current = autoPlayback.value;
+
+  if (current?.key === key) {
+    autoPlayback.value = { key, state: keepAutoMemory(state, current.state) };
+  }
+}
+
+/**
+ * Remembers, without negotiating again, that the playback manager refused a step of Automatic because it gives
+ * nothing playable (see `rememberRefusal`). Ignored when the playback changed.
+ *
+ * @param key - Identifies the playback
+ * @param step - The state of the refused step
+ */
+export function rememberRefusedAutoStep(key: string, step: AutoState): void {
+  const current = autoPlayback.value;
+
+  if (current?.key === key) {
+    autoPlayback.value = { key, state: rememberRefusal(current.state, step, performance.now()) };
   }
 }
 

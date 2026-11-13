@@ -116,6 +116,16 @@ export enum InitMode {
 }
 
 /**
+ * What one renegotiation gave (see `lastImprovement`). `id` tells two equal outcomes apart.
+ */
+interface RenegotiationRecord {
+  readonly id: number;
+  readonly key: string;
+  readonly intent: RenegotiationIntent;
+  readonly outcome: 'applied' | 'refused' | 'failed';
+}
+
+/**
  * Version (as an index in the item's `MediaSources`) and tracks chosen for an item that is played or queued
  */
 interface QueueChoice {
@@ -396,6 +406,10 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    */
   private _pausedReload: number | undefined;
   /**
+   * What the latest renegotiation gave (see `lastImprovement`)
+   */
+  private readonly _lastRenegotiation = shallowRef<RenegotiationRecord>();
+  /**
    * How many items that can't be played at all were skipped in a row (see `isUnplayableItem`), counting since an item
    * last got something to play
    */
@@ -634,6 +648,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     }
 
     console.warn(`The playback goes on as it was: trying to improve it gave ${outcome === 'failed' ? 'no answer' : 'nothing playable'}`);
+    this._recordRenegotiation(negotiation.key, intent, outcome === 'failed' ? 'failed' : 'refused');
 
     return true;
   };
@@ -671,7 +686,17 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
 
     if (!negotiation.failure || !this._keepsPlayback(intent, negotiation, 'unplayable')) {
       this._negotiation.value = negotiation;
+      this._recordRenegotiation(negotiation.key, intent, 'applied');
     }
+  };
+
+  /**
+   * Records what a renegotiation gave, for `lastImprovement`
+   *
+   * @param key - The playback it was about: the new one when it applied, the one that goes on when it didn't
+   */
+  private readonly _recordRenegotiation = (key: string, intent: RenegotiationIntent, outcome: RenegotiationRecord['outcome']): void => {
+    this._lastRenegotiation.value = { id: (this._lastRenegotiation.value?.id ?? 0) + 1, key, intent, outcome };
   };
 
   /**
@@ -704,6 +729,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
      * and can be asked for again
      */
     this._dropPendingFailure(playing);
+    this._recordRenegotiation(playing.key, intent, 'failed');
 
     const dismiss = useSnackbar(i18next.t('playbackNoAnswer'), 'error', {
       text: i18next.t('retry'),
@@ -1285,6 +1311,17 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       );
     }
   });
+
+  /**
+   * What the latest renegotiation of a playback gave, for the playback `key` it was about (see `currentPlaybackKey`):
+   * `applied` (the playback now runs on it, `key` being the new playback's), `refused` (nothing playable: the playback
+   * `key` went on as it was; only an improvement is refused) or `failed` (no answer: the playback `key` went on as it
+   * was). `intent` says why it was asked for (see `RenegotiationIntent`). Recorded whenever a playback is replaced or
+   * kept, whatever the intent, so a step of Automatic that a user's change replaced still gets an outcome; a renegotiation
+   * replaced by a newer one gives nothing. Read only: what acted on the playback (the runtime supervisors) can tell
+   * whether what it asked for happened. (Named after its first use, the improvements.)
+   */
+  public readonly lastImprovement = computed(() => this._lastRenegotiation.value);
 
   /**
    * What a hard failure of the current playback would teach and which method would come next (see

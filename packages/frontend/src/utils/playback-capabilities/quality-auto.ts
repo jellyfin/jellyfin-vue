@@ -45,12 +45,39 @@ export interface StalledLevel {
  * - `ceiling`: the highest the network may raise it to after the smoothness supervisor lowered it; `source` is the
  * source's own level, encoded
  * - `stalled`: the streams the network supervisor moved down from (see `rememberStall`)
+ * - `refused`: the steps the playback manager refused (see `rememberRefusal`)
  */
 export interface AutoState {
   readonly level?: QualityLevel;
   readonly encodeVideo: boolean;
   readonly ceiling?: QualityLevel | 'source';
   readonly stalled?: readonly StalledLevel[];
+  readonly refused?: readonly RefusedStep[];
+}
+
+/**
+ * A step of Automatic the playback manager refused during the playback: it gave nothing playable, or no answer
+ */
+export interface RefusedStep {
+  /**
+   * The quality mode the step asked for (`getAutoMode`), as a string
+   */
+  readonly mode: string;
+  /**
+   * Before this time (on the clock of the supervisor's samples, in milliseconds) the step is not proposed again
+   */
+  readonly retryAt: number;
+  /**
+   * How many times it was refused
+   */
+  readonly refusals: number;
+}
+
+/**
+ * What a state of Automatic remembers about the playback, which every step carries on
+ */
+function getMemory(state: AutoState): Pick<AutoState, 'stalled' | 'refused'> {
+  return { ...(state.stalled && { stalled: state.stalled }), ...(state.refused && { refused: state.refused }) };
 }
 
 /**
@@ -151,15 +178,15 @@ export function getSmoothnessStep(
     return;
   }
 
-  const stalled = state.stalled && { stalled: state.stalled };
+  const memory = getMemory(state);
 
   if (encodedAt === undefined) {
-    return { ...(state.level !== undefined && { level: state.level }), encodeVideo: true, ceiling: state.level ?? 'source', ...stalled };
+    return { ...(state.level !== undefined && { level: state.level }), encodeVideo: true, ceiling: state.level ?? 'source', ...memory };
   }
 
   const next = getNextLowerLevel(encodedAt, video);
 
-  return next === undefined ? undefined : { level: next, encodeVideo: true, ceiling: next, ...stalled };
+  return next === undefined ? undefined : { level: next, encodeVideo: true, ceiling: next, ...memory };
 }
 
 /**
@@ -308,5 +335,73 @@ export function getUpStep(
 
   const top: AutoState = state.encodeVideo ? { encodeVideo: true, ...(state.ceiling !== undefined && { ceiling: state.ceiling }) } : AUTO_START;
 
-  return { state: { ...top, ...(state.stalled && { stalled: state.stalled }) }, bitrate: getTopBitrate(state, video, encodedAt) };
+  return { state: { ...top, ...getMemory(state) }, bitrate: getTopBitrate(state, video, encodedAt) };
+}
+
+/**
+ * The quality mode a state asks for, as a string to compare steps by
+ */
+function getModeKey(state: AutoState): string {
+  const mode = getAutoMode(state);
+
+  return JSON.stringify([mode.level, mode.encodeVideo]);
+}
+
+/**
+ * The state Automatic goes back to when the playback manager kept the playback in progress instead of one of its steps
+ * (the step gave nothing playable, or no answer): the state that playback runs at, with what was remembered while the
+ * step was under way (the streams the network supervisor moved down from, see `rememberStall`, and the steps refused
+ * before, see `rememberRefusal`)
+ *
+ * @param playing - The state the playback in progress runs at
+ * @param current - The state of the step that was not taken
+ */
+export function keepAutoMemory(playing: AutoState, current: AutoState): AutoState {
+  const stalled = current.stalled ?? playing.stalled;
+  const refused = current.refused ?? playing.refused;
+
+  return { ...playing, ...(stalled && { stalled }), ...(refused && { refused }) };
+}
+
+/**
+ * Remembers that the playback manager refused a step of Automatic because it gives nothing playable (what the browser
+ * decodes, what a failure taught, the user's policy for the audio: reasons the supervisors cannot see): it is not
+ * proposed again for {@link NETWORK_RETRY_WAIT_MS}, twice as long after each refusal during the playback, so asking for
+ * it again is bounded. A step whose request got no answer is not remembered: during a network dip, which is when
+ * Automatic steps down, it may be asked for again as soon as its reason comes back.
+ *
+ * @param state - The state the playback goes on with
+ * @param step - The state of the refused step
+ * @param at - When, on the clock of the supervisor's samples (milliseconds)
+ */
+export function rememberRefusal(state: AutoState, step: AutoState, at: number): AutoState {
+  const mode = getModeKey(step);
+
+  if (mode === getModeKey(state)) {
+    return state;
+  }
+
+  const before = state.refused ?? [];
+  const refusals = (before.find(entry => entry.mode === mode)?.refusals ?? 0) + 1;
+
+  return {
+    ...state,
+    refused: [
+      ...before.filter(entry => entry.mode !== mode),
+      { mode, retryAt: at + (NETWORK_RETRY_WAIT_MS * 2 ** (refusals - 1)), refusals }
+    ]
+  };
+}
+
+/**
+ * Whether a step of Automatic was refused by the playback manager and its time to be proposed again has not come
+ *
+ * @param state - The current state
+ * @param next - The state the step moves to
+ * @param at - Now, on the clock of the supervisor's samples (milliseconds)
+ */
+export function isRefused(state: AutoState, next: AutoState, at: number): boolean {
+  const mode = getModeKey(next);
+
+  return state.refused?.some(entry => entry.mode === mode && at < entry.retryAt) ?? false;
 }

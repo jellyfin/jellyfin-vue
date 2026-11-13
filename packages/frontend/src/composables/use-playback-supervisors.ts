@@ -16,6 +16,7 @@
  */
 import type Hls from 'hls.js';
 import { ErrorDetails, Events, PlaylistLevelType, type BufferCodecsData, type FragBufferedData } from 'hls.js';
+import { watch } from 'vue';
 import { useEventListener, useIntervalFn } from '@vueuse/core';
 import i18next from 'i18next';
 import { useSnackbar } from '#/composables/use-snackbar.ts';
@@ -25,8 +26,10 @@ import { playbackManager } from '#/store/playback-manager.ts';
 import {
   getCurrentAutoState,
   playbackObservations,
+  rememberRefusedAutoStep,
   sessionNetworkEstimate,
   setAutoState,
+  type PlaybackChange,
   type PlaybackChangeReason,
   type RunningQuality
 } from '#/store/playback-quality.ts';
@@ -43,6 +46,7 @@ import {
   getDownStep,
   getSmoothnessStep,
   getUpStep,
+  isRefused,
   rememberStall,
   type AutoState
 } from '#/utils/playback-capabilities/quality-auto.ts';
@@ -80,9 +84,15 @@ interface SourceRun {
    */
   recoveries: number;
   /**
-   * Whether a supervisor already acted on this source: the next source starts again
+   * Whether a supervisor already acted on this source: the next source starts again, and so does this one when the
+   * playback manager keeps the playback instead of the step of Automatic it asked for (see `pendingStep`)
    */
   acted: boolean;
+  /**
+   * The step of Automatic asked for on this source (for which playback, the state it moves to and the change the
+   * statistics record once the new source starts), until then or until the playback manager keeps the playback instead
+   */
+  pendingStep?: { key: string; state: AutoState; change: PlaybackChange };
   /**
    * Whether hls.js buffered a fragment of this source, so its network estimate is current
    */
@@ -302,19 +312,54 @@ export function usePlaybackSupervisors(hls: Hls | undefined) {
   };
 
   /**
-   * Moves Automatic to another state, once per source
+   * Moves Automatic to another state, once per source, unless the playback manager refused that step recently (see
+   * `rememberRefusal`). The statistics record the change once the new source starts.
    */
   const moveAuto = (context: NonNullable<ReturnType<typeof getAutoContext>>, state: AutoState, reason: PlaybackChangeReason): void => {
+    if (isRefused(context.state, state, performance.now())) {
+      return;
+    }
+
     run.acted = true;
-    playbackObservations.lastChange.value = {
-      kind: 'quality',
-      reason,
-      from: playbackManager.currentRunningQuality.value ?? 'original',
-      to: getTargetEntry(state, context.video),
-      at: Date.now()
+    run.pendingStep = {
+      key: context.key,
+      state,
+      change: {
+        kind: 'quality',
+        reason,
+        from: playbackManager.currentRunningQuality.value ?? 'original',
+        to: getTargetEntry(state, context.video),
+        at: Date.now()
+      }
     };
     setAutoState(context.key, state);
   };
+
+  /**
+   * The playback manager kept the playback instead of the step of Automatic asked for on this source (it gave nothing
+   * playable, or no answer; see `playbackManager.lastImprovement`), or took it with the URL already playing: the
+   * supervisors act on the playback again, the network supervisor starting its memory again (as after a change), and
+   * nothing changed for the statistics. A step that gave nothing playable is remembered, so it is not asked for again
+   * and again (see `rememberRefusal`).
+   */
+  watch(() => playbackManager.lastImprovement.value, (improvement) => {
+    const step = run.pendingStep;
+
+    if (!improvement || step?.key !== improvement.key) {
+      return;
+    }
+
+    if (improvement.outcome === 'applied') {
+      // The new source starts a new run, unless the answer has the URL already playing (nothing is reloaded)
+      if (playbackManager.currentSourceUrl.value !== run.url) {
+        return;
+      }
+    } else if (improvement.outcome === 'refused') {
+      rememberRefusedAutoStep(step.key, step.state);
+    }
+
+    Object.assign(run, { acted: false, pendingStep: undefined, network: startNetworkMemory(performance.now()), window: undefined, windows: [] });
+  });
 
   /**
    * The playback is not smooth: Automatic moves down, other modes are warned once per playback
@@ -938,9 +983,15 @@ export function usePlaybackSupervisors(hls: Hls | undefined) {
      * Starts supervising a new source (or none)
      */
     startSource: (url?: string): void => {
-      if (url !== run.url) {
-        run = newRun(url);
+      if (url === run.url) {
+        return;
       }
+
+      if (run.pendingStep) {
+        playbackObservations.lastChange.value = run.pendingStep.change;
+      }
+
+      run = newRun(url);
     },
     onHlsMediaError: onMediaError
   };
