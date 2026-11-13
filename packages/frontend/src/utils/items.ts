@@ -501,6 +501,15 @@ export function getItemIdFromSourceIndex(
 }
 
 /**
+ * The query parameter that authorizes a URL the browser loads by itself (media, downloads). `ApiKey` is the one every
+ * supported server accepts: `api_key` only works when legacy authorization is enabled on the server, which is off by
+ * default since 12.0.
+ */
+function getAuthorizationQuery(token: string): Record<string, string> {
+  return { [AUTHORIZATION_PARAMETER]: token };
+}
+
+/**
  * The URL of the original file of a media source, as the server stores it (`Static=true`), authenticated in the
  * query so it can be used where no header can be set (media elements, range requests without preflight).
  *
@@ -523,11 +532,7 @@ export function getStaticStreamUrl(
   const query = new URLSearchParams({
     Static: String(true),
     mediaSourceId: mediaSource.Id,
-    /**
-     * `ApiKey` is the query parameter every supported server accepts: `api_key` only works
-     * when legacy authorization is enabled on the server, which is off by default since 12.0
-     */
-    [AUTHORIZATION_PARAMETER]: userToken,
+    ...getAuthorizationQuery(userToken),
     Tag: mediaSource.ETag ?? '',
     ...parameters
   }).toString();
@@ -548,13 +553,7 @@ export function getItemDownloadUrl(itemId: string): string | undefined {
     return undefined;
   }
 
-  /**
-   * `ApiKey` is the query parameter every supported server accepts: `api_key` only works
-   * when legacy authorization is enabled on the server, which is off by default since 12.0
-   */
-  const parameters = new URLSearchParams({
-    [AUTHORIZATION_PARAMETER]: userToken
-  }).toString();
+  const parameters = new URLSearchParams(getAuthorizationQuery(userToken)).toString();
 
   return `${serverAddress}/Items/${itemId}/Download?${parameters}`;
 }
