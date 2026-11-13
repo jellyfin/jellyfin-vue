@@ -1,11 +1,14 @@
 <template>
   <!-- One snackbar per message: Vuetify only restarts the timeout when the snackbar opens or its timeout changes, so a
   message replacing another would only get the time left of the first one -->
+  <!-- A notice never holds the user's navigation: Vuetify's overlays cancel a back or history navigation while they are
+  open (closeOnBack), and a snackbar is persistent, so it didn't even close -->
   <VSnackbar
     :key="state.id"
     v-model="model"
     :color="state.color"
     :timeout="state.action ? -1 : undefined"
+    :close-on-back="false"
     location="bottom left"
     eager>
     {{ state.message }}
