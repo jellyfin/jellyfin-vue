@@ -7,6 +7,7 @@
  * for direct play, `MediaSource.isTypeSupported` for media source playback. Engines without `mediaCapabilities` at all
  * only have those. An answer of "unsupported" is final, and a question neither API answers is unsupported.
  */
+import { withTimeout } from '@jellyfin-vue/shared/promises';
 import { ORACLE_QUERY_TIMEOUT_MS } from './constants.ts';
 
 /**
@@ -157,8 +158,9 @@ async function askOnce(
  * and concurrent identical questions share one query
  * - a rejection means the engine refused the question: the fallback is asked, if any, otherwise it counts as
  * unsupported. A resolved "unsupported" is final.
- * - a question without answer within the timeout counts as unsupported; it is not asked again while pending,
- * and its late answer, if it ever comes, replaces the timeout for later questions
+ * - a question without answer within the timeout is asked to the fallback the same way (within the same timeout),
+ * since the engine did not answer it; without a fallback it counts as unsupported. It is not asked again while
+ * pending, and its late answer, if it ever comes, replaces the fallback's for later questions.
  */
 export function createOracle(query: CapabilityQuery, options: OracleOptions = {}): CapabilityOracle {
   const timeoutMs = options.timeoutMs ?? ORACLE_QUERY_TIMEOUT_MS;
@@ -166,19 +168,11 @@ export function createOracle(query: CapabilityQuery, options: OracleOptions = {}
 
   const ask = async (key: string, config: MediaDecodingConfiguration, context?: QueryContext): Promise<CapabilityAnswer> => {
     const store = answers;
-    let timer: ReturnType<typeof setTimeout> | undefined;
     const answered = askOnce(query, config, context, options.fallback);
     const timedOut = Symbol('timed out');
-    const timeout = new Promise<typeof timedOut>((resolve) => {
-      timer = setTimeout(() => {
-        resolve(timedOut);
-      }, timeoutMs);
-    });
 
     void (async () => {
       const answer = await answered;
-
-      clearTimeout(timer);
 
       // A late answer replaces the timeout, unless the oracle was cleared meanwhile
       if (store.has(key)) {
@@ -186,29 +180,13 @@ export function createOracle(query: CapabilityQuery, options: OracleOptions = {}
       }
     })();
 
-    const answer = await Promise.race([answered, timeout]);
+    const answer = await withTimeout(answered, timeoutMs, timedOut);
 
     if (answer !== timedOut) {
       return answer;
     }
 
-    if (!options.fallback) {
-      return UNSUPPORTED;
-    }
-
-    let fallbackTimer: ReturnType<typeof setTimeout> | undefined;
-    const fallbackAnswer = await Promise.race([
-      askFallback(options.fallback, config, context),
-      new Promise<CapabilityAnswer>((resolve) => {
-        fallbackTimer = setTimeout(() => {
-          resolve(UNSUPPORTED);
-        }, timeoutMs);
-      })
-    ]);
-
-    clearTimeout(fallbackTimer);
-
-    return fallbackAnswer;
+    return options.fallback ? withTimeout(askFallback(options.fallback, config, context), timeoutMs, UNSUPPORTED) : UNSUPPORTED;
   };
 
   return {

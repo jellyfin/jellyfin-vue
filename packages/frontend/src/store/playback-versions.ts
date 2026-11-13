@@ -8,6 +8,7 @@
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { computed, readonly, shallowRef, toValue, watch, type MaybeRefOrGetter, type Ref } from 'vue';
 import { isNil } from '@jellyfin-vue/shared/validation';
+import { withTimeout } from '@jellyfin-vue/shared/promises';
 import { PROBE_TIMEOUT_MS, VERSION_RESOLUTION_WAIT_MS } from '#/utils/playback-capabilities/constants.ts';
 import { pickBest } from '#/utils/playback-capabilities/ranking.ts';
 import type { Verdict } from '#/utils/playback-capabilities/verdict.ts';
@@ -91,19 +92,10 @@ export function getAutomaticMediaSourceIndex(item: BaseItemDto, { best, settled 
  * @returns The ranking, or undefined when it fails or doesn't arrive in time
  */
 async function waitForRanking(ranking: Promise<MediaSourceRanking>): Promise<MediaSourceRanking | undefined> {
-  let timer: ReturnType<typeof setTimeout> | undefined;
-  const expired = new Promise<undefined>((resolve) => {
-    timer = setTimeout(() => {
-      resolve(undefined);
-    }, VERSION_RESOLUTION_WAIT_MS);
-  });
-
   try {
-    return await Promise.race([ranking, expired]);
+    return await withTimeout(ranking, VERSION_RESOLUTION_WAIT_MS, undefined);
   } catch {
     return undefined;
-  } finally {
-    clearTimeout(timer);
   }
 }
 

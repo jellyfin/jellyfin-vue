@@ -6,6 +6,7 @@
  */
 import type { BaseItemDto, MediaSourceInfo, MediaStream } from '@jellyfin/sdk/lib/generated-client';
 import { computed, shallowReactive, shallowRef, watch } from 'vue';
+import { withTimeout } from '@jellyfin-vue/shared/promises';
 import { PROBE_PLAYBACK_WAIT_MS } from '#/utils/playback-capabilities/constants.ts';
 import {
   createBrowserOracle,
@@ -409,18 +410,7 @@ async function getProbe(item: BaseItemDto, source: MediaSourceInfo, waitMs: numb
     pendingProbes.set(key, pending);
   }
 
-  let timer: ReturnType<typeof setTimeout> | undefined;
-  const timedOut = new Promise<undefined>((resolve) => {
-    timer = setTimeout(() => {
-      resolve(undefined);
-    }, waitMs);
-  });
-
-  try {
-    return await Promise.race([pending, timedOut]);
-  } finally {
-    clearTimeout(timer);
-  }
+  return withTimeout(pending, waitMs, undefined);
 }
 
 /**
