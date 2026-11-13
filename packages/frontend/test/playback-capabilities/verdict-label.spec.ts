@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest';
 import { audioStream, mediaSource, subtitleStream, videoStream } from './fixtures.ts';
 import type { PlaybackMethod, StreamPlan, Verdict, VerdictReason } from '#/utils/playback-capabilities/verdict.ts';
-import { getVerdictLabel } from '#/utils/playback-capabilities/verdict-label.ts';
+import { getMethodChange, getVerdictLabel } from '#/utils/playback-capabilities/verdict-label.ts';
 
 /**
  * Case d of the test library: HEVC + AC-3 in MKV
@@ -233,6 +233,72 @@ describe('during playback, the method the server actually chose', () => {
     const label = getVerdictLabel(verdict('DirectPlay', []), hevcAc3Mkv, 'Unplayable');
 
     expect(label).toEqual({ method: 'Unplayable' });
+  });
+});
+
+describe('a playback whose answer is not played is told as not playable, with the failure\'s reason', () => {
+  test.each<[PlaybackMethod, PlaybackMethod]>([
+    ['DirectPlay', 'TranscodeAudio'],
+    ['DirectPlay', 'TranscodeVideo'],
+    ['Remux', 'TranscodeAudio'],
+    ['Remux', 'TranscodeVideo']
+  ])('quality mode Original refuses a %s answered with %s: not the server\'s method', (predicted, actualMethod) => {
+    const label = getVerdictLabel(verdict(predicted, []), hevcAc3Mkv, actualMethod, 'quality');
+
+    expect(label).toEqual({ method: 'Unplayable', reason: 'NotAllowedByQuality' });
+  });
+
+  test('a verdict quality mode Original made unplayable keeps its reason', () => {
+    const label = getVerdictLabel(verdict('Unplayable', ['VideoCodecUnsupported', 'NotAllowedByQuality']), hevcAc3Mkv, 'Unplayable', 'quality');
+
+    expect(label).toEqual({ method: 'Unplayable', reason: 'NotAllowedByQuality' });
+  });
+
+  test('an answer that plays nothing', () => {
+    const label = getVerdictLabel(verdict('Remux', []), hevcAc3Mkv, 'Unplayable', 'unplayable');
+
+    expect(label).toEqual({ method: 'Unplayable' });
+  });
+
+  test('a verdict nothing can play keeps its reason', () => {
+    const label = getVerdictLabel(verdict('Unplayable', ['VideoCodecUnsupported', 'NoDecodableTarget']), hevcAc3Mkv, 'Unplayable', 'unplayable');
+
+    expect(label).toEqual({ method: 'Unplayable', reason: 'NoDecodableTarget' });
+  });
+});
+
+describe('a change of method after a failure, as the user sees it', () => {
+  /**
+   * The label of what a negotiation plays: its verdict and the method the server chose
+   */
+  const playing = (played: Verdict, actualMethod: PlaybackMethod) => getVerdictLabel(played, hevcAc3Mkv, actualMethod).method;
+
+  test('a video transcode that starts encoding the audio too is a change, although the server\'s method is the same', () => {
+    const before = playing(verdict('TranscodeVideo', ['VideoCodecUnsupported'], { video: encode(0), audio: copy(1) }), 'TranscodeVideo');
+    const after = playing(verdict('TranscodeVideo', ['VideoCodecUnsupported', 'FailedBefore'], { video: encode(0), audio: encode(1) }), 'TranscodeVideo');
+
+    expect(getMethodChange(before, after)).toEqual({ from: 'TranscodeVideo', to: 'TranscodeVideoAndAudio' });
+  });
+
+  test('another method is a change', () => {
+    const before = playing(verdict('DirectPlay', []), 'DirectPlay');
+    const after = playing(verdict('Remux', ['FailedBefore']), 'Remux');
+
+    expect(getMethodChange(before, after)).toEqual({ from: 'DirectPlay', to: 'Remux' });
+  });
+
+  test('the same method, told the same way, is no change', () => {
+    const before = playing(verdict('Remux', ['ContainerUnsupported']), 'Remux');
+    const after = playing(verdict('Remux', ['ContainerUnsupported', 'FailedBefore']), 'Remux');
+
+    expect(getMethodChange(before, after)).toBeUndefined();
+  });
+
+  test('a playback that can no longer start is a change', () => {
+    const before = playing(verdict('Remux', []), 'Remux');
+    const after = playing(verdict('Unplayable', ['FailedBefore']), 'Unplayable');
+
+    expect(getMethodChange(before, after)).toEqual({ from: 'Remux', to: 'Unplayable' });
   });
 });
 

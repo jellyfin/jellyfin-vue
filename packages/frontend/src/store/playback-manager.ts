@@ -46,7 +46,8 @@ import {
 } from '#/store/playback-quality.ts';
 import { playbackSettings } from '#/store/settings/playback.ts';
 import { getImageInfo } from '#/utils/images.ts';
-import { getNoOtherMethodText, getPlayingMethodName } from '#/utils/playback-labels.ts';
+import { getNoOtherMethodText, getPlaybackMethodName } from '#/utils/playback-labels.ts';
+import { getMethodChange, getVerdictLabel, type MethodLabel } from '#/utils/playback-capabilities/verdict-label.ts';
 import { getItemRuntime, getStaticStreamUrl } from '#/utils/items.ts';
 import { findQueueItem, getQueueRemoval } from '#/utils/playback-queue.ts';
 import { PREFETCH_BUFFER_AHEAD_S } from '#/utils/playback-capabilities/constants.ts';
@@ -194,7 +195,10 @@ function getAnswerSource(data: PlaybackInfoResponse): MediaSourceInfo | undefine
 interface PendingFailure {
   itemId: string;
   playSessionId?: string | null;
-  from: PlaybackMethod;
+  /**
+   * The method that failed, as the version selector names it
+   */
+  fromLabel: MethodLabel;
   reason: PlaybackChangeReason;
 }
 
@@ -302,6 +306,21 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    * The hard failure being handled, if any (see `reportPlaybackFailure`)
    */
   private _pendingFailure: PendingFailure | undefined;
+  /**
+   * The method the server uses for a negotiated playback, as the version selector names it (a video transcode that
+   * also encodes the audio is told apart)
+   */
+  private readonly _getMethodLabel = (negotiation: Negotiation): MethodLabel => {
+    const source = this.currentMediaSource.value;
+
+    // An answer that must not be played (Original refused an encode) plays nothing, whatever the server chose
+    if (!source) {
+      return negotiation.failure ? 'Unplayable' : negotiation.actualMethod;
+    }
+
+    return getVerdictLabel(negotiation.verdict, source, negotiation.actualMethod, negotiation.failure).method;
+  };
+
   /**
    * == GETTERS AND SETTERS ==
    */
@@ -938,7 +957,12 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       return;
     }
 
-    this._pendingFailure = { itemId: negotiation.itemId, playSessionId, from: negotiation.actualMethod, reason };
+    this._pendingFailure = {
+      itemId: negotiation.itemId,
+      playSessionId,
+      fromLabel: this._getMethodLabel(negotiation),
+      reason
+    };
 
     return negotiation;
   };
@@ -1020,8 +1044,9 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   };
 
   /**
-   * Resolves the hard failure being handled with the answer to the negotiation it caused: the change is recorded and,
-   * if the method changed and the user wants it, a notice tells the user. A negotiation for another item drops it.
+   * Resolves the hard failure being handled with the answer to the negotiation it caused: if the method changed as the
+   * user sees it (`getMethodChange`), the change is recorded for the playback statistics and, unless the item can't be
+   * played any more or the user turned notices off, a notice tells the user. A negotiation for another item drops it.
    */
   private readonly _resolveFailure = (negotiation: Negotiation): void => {
     const pending = this._pendingFailure;
@@ -1036,18 +1061,16 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       return;
     }
 
-    playbackObservations.lastChange.value = {
-      kind: 'method',
-      reason: pending.reason,
-      from: pending.from,
-      to: negotiation.actualMethod,
-      at: Date.now()
-    };
+    const change = getMethodChange(pending.fromLabel, this._getMethodLabel(negotiation));
 
-    if (!negotiation.failure && negotiation.actualMethod !== pending.from && playbackSettings.methodChangeNotices.value) {
-      const method = getPlayingMethodName(i18next.t, negotiation.verdict, this.currentMediaSource.value, negotiation.actualMethod);
+    if (!change) {
+      return;
+    }
 
-      useSnackbar(i18next.t('playbackMethodChanged', { method }), 'info');
+    playbackObservations.lastChange.value = { kind: 'method', reason: pending.reason, ...change, at: Date.now() };
+
+    if (!negotiation.failure && playbackSettings.methodChangeNotices.value) {
+      useSnackbar(i18next.t('playbackMethodChanged', { method: getPlaybackMethodName(i18next.t, change.to) }), 'info');
     }
   };
 

@@ -20,7 +20,8 @@ import {
   playbackObservations,
   sessionNetworkEstimate,
   setAutoState,
-  type PlaybackChangeReason
+  type PlaybackChangeReason,
+  type RunningQuality
 } from '#/store/playback-quality.ts';
 import {
   DROPPED_FRAMES_CONSECUTIVE_WINDOWS,
@@ -42,7 +43,6 @@ import {
   getModeLevel,
   getTranscodeLevel,
   type QualityLevel,
-  type QualityMenuEntry,
   type VideoInfo
 } from '#/utils/playback-capabilities/quality.ts';
 import {
@@ -131,7 +131,7 @@ function newRun(url?: string): SourceRun {
 /**
  * The menu entry a state of Automatic aims at, to describe a change of quality
  */
-function getTargetEntry(state: AutoState, video: VideoInfo): QualityMenuEntry {
+function getTargetEntry(state: AutoState, video: VideoInfo): RunningQuality {
   return state.encodeVideo || exceedsQuality(video, { type: 'auto', level: state.level })
     ? getTranscodeLevel(video, state.level)
     : 'original';
@@ -202,8 +202,8 @@ export function usePlaybackSupervisors(hls: Hls | undefined) {
     playbackObservations.lastChange.value = {
       kind: 'quality',
       reason,
-      from: String(playbackManager.currentRunningQuality.value ?? 'original'),
-      to: String(getTargetEntry(state, context.video)),
+      from: playbackManager.currentRunningQuality.value ?? 'original',
+      to: getTargetEntry(state, context.video),
       at: Date.now()
     };
     setAutoState(context.key, state);

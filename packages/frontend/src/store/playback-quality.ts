@@ -12,8 +12,8 @@ import {
   getAutoStartState,
   type AutoState
 } from '#/utils/playback-capabilities/quality-auto.ts';
-import type { QualityMode, VideoInfo } from '#/utils/playback-capabilities/quality.ts';
-import type { PlaybackMethod } from '#/utils/playback-capabilities/verdict.ts';
+import type { QualityMenuEntry, QualityMode, VideoInfo } from '#/utils/playback-capabilities/quality.ts';
+import type { MethodLabel } from '#/utils/playback-capabilities/verdict-label.ts';
 
 /**
  * == AUTOMATIC ==
@@ -144,11 +144,18 @@ export type PlaybackChangeReason
     | 'notSmooth' | 'networkDown' | 'networkUp';
 
 /**
- * A change of method (after a failure) or of quality (a decision of Automatic)
+ * A change of method (after a failure: the methods as the version selector names them) or of quality (a decision of
+ * Automatic: the menu entries equivalent to what played and to what it aims at). Values, not text: they are named
+ * when shown.
  */
 export type PlaybackChange
-  = | { readonly kind: 'method'; readonly reason: PlaybackChangeReason; readonly from: PlaybackMethod; readonly to: PlaybackMethod; readonly at: number }
-    | { readonly kind: 'quality'; readonly reason: PlaybackChangeReason; readonly from: string; readonly to: string; readonly at: number };
+  = | { readonly kind: 'method'; readonly reason: PlaybackChangeReason; readonly from: MethodLabel; readonly to: MethodLabel; readonly at: number }
+    | { readonly kind: 'quality'; readonly reason: PlaybackChangeReason; readonly from: RunningQuality; readonly to: RunningQuality; readonly at: number };
+
+/**
+ * A quality menu entry other than Automatic: what a playback runs at
+ */
+export type RunningQuality = Exclude<QualityMenuEntry, 'auto'>;
 
 /**
  * Container and codecs of what the media element is fed: the file's (direct play) or the stream hls.js buffers

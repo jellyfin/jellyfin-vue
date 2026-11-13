@@ -49,8 +49,7 @@ import { playbackManager } from '#/store/playback-manager.ts';
 import { playbackObservations, sessionNetworkEstimate } from '#/store/playback-quality.ts';
 import { playbackSettings } from '#/store/settings/playback.ts';
 import { selectionModel } from '#/utils/forms.ts';
-import { getModeLevel, type QualityLevel } from '#/utils/playback-capabilities/quality.ts';
-import type { PlaybackMethod } from '#/utils/playback-capabilities/verdict.ts';
+import { getModeLevel } from '#/utils/playback-capabilities/quality.ts';
 import { getPlaybackChangeReasonName, getPlaybackMethodName, getPlayingMethodName, getQualityName } from '#/utils/playback-labels.ts';
 
 const emit = defineEmits<{ close: [] }>();
@@ -97,13 +96,6 @@ const bufferAhead = computed(() => playbackObservations.bufferAhead.value);
 const estimate = computed(() => sessionNetworkEstimate.value);
 
 /**
- * The name of a method
- */
-function methodName(method?: PlaybackMethod): string {
-  return method ? getPlaybackMethodName(t, method) : '—';
-}
-
-/**
  * The last change of method or quality, with its reason
  */
 const lastChangeText = computed(() => {
@@ -116,8 +108,8 @@ const lastChangeText = computed(() => {
   const reason = getPlaybackChangeReasonName(t, change.reason);
 
   return change.kind === 'method'
-    ? `${methodName(change.from)} → ${methodName(change.to)} (${reason})`
-    : `${entryName(change.from)} → ${entryName(change.to)} (${reason})`;
+    ? `${getPlaybackMethodName(t, change.from)} → ${getPlaybackMethodName(t, change.to)} (${reason})`
+    : `${getQualityName(t, change.from)} → ${getQualityName(t, change.to)} (${reason})`;
 });
 
 /**
@@ -134,13 +126,6 @@ const predictedMethodName = computed(() => {
 
   return verdict ? getPlayingMethodName(t, verdict, playbackManager.currentMediaSource.value, verdict.method) : '—';
 });
-
-/**
- * The name of a quality menu entry, as the change records it
- */
-function entryName(entry: string): string {
-  return getQualityName(t, entry === 'original' ? entry : Number(entry) as QualityLevel);
-}
 
 /**
  * A number with its unit, in the language of the app

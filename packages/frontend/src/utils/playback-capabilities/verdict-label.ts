@@ -179,6 +179,27 @@ function getReason(verdict: Verdict, source: MediaSourceInfo): Omit<VerdictLabel
 }
 
 /**
+ * A change of method, as the user sees it: the label of the method that played and of the one that plays now
+ */
+export interface MethodChange {
+  readonly from: MethodLabel;
+  readonly to: MethodLabel;
+}
+
+/**
+ * Whether a failure changed the method the user sees, compared by label, not by the server's method: a video transcode
+ * that starts encoding the audio too is a change. The method-change notice and the playback statistics' last change
+ * both take it from here, so one is never shown without the other.
+ *
+ * @param from - The label of the method that failed
+ * @param to - The label of the method negotiated after the failure
+ * @returns The change, or undefined when the label is the same
+ */
+export function getMethodChange(from: MethodLabel, to: MethodLabel): MethodChange | undefined {
+  return from === to ? undefined : { from, to };
+}
+
+/**
  * Why the server's answer for a playback is not played: it plays nothing (`unplayable`), or it encodes something,
  * which quality mode Original forbids (`quality`)
  */
