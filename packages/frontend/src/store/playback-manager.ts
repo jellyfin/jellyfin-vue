@@ -122,7 +122,15 @@ interface PlaybackManagerState {
    */
   mediaSourceIndexes: {
     itemId?: string;
+    /**
+     * The index the version was chosen with, in the item's `MediaSources` when the playback started. The version is
+     * found by `sourceId` after that: a refresh of the item may list its versions in another order.
+     */
     source?: number;
+    /**
+     * Id of the chosen version; undefined when the item had no version at `source`
+     */
+    sourceId?: string;
     video?: number;
     audio?: number;
     subtitle?: number;
@@ -313,10 +321,10 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    */
   private readonly _renegotiations = shallowRef(0);
   /**
-   * The version resolved for an item no version was chosen for (see `_resolveMediaSource`), as an index in its
-   * `MediaSources`. It only applies while that item is the current one.
+   * The version resolved for an item no version was chosen for (see `_resolveMediaSource`), by its id (undefined when
+   * the item has no version). It only applies while that item is the current one.
    */
-  private readonly _resolvedSource = shallowRef<{ itemId: string; index: number }>();
+  private readonly _resolvedSource = shallowRef<{ itemId: string; mediaSourceId?: string }>();
   /**
    * Identifies the latest version resolution started: the result of an older one is dropped
    */
@@ -437,12 +445,27 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   /**
    * Version of the current item being played, as an index in its `MediaSources`: the one the user chose for it or,
    * if none, the one resolved for it (see `_resolveMediaSource`). Undefined while it is being resolved.
+   *
+   * The version is kept by its id and its index is found in the item's data as it is now: a refresh of the item that
+   * lists its versions in another order goes on playing the same one. -1 when the item doesn't have it (any more).
    */
   public readonly currentMediaSourceIndex = computed(() => {
+    const selection = this._currentSelection.value;
     const resolved = this._resolvedSource.value;
+    const item = this.currentItem.value;
+    let id: string | undefined;
 
-    return this._currentSelection.value?.source
-      ?? (resolved && resolved.itemId === this.currentItemId.value ? resolved.index : undefined);
+    if (selection && !isNil(selection.source)) {
+      id = selection.sourceId;
+    } else if (resolved && resolved.itemId === this.currentItemId.value) {
+      id = resolved.mediaSourceId;
+    } else {
+      return;
+    }
+
+    if (item) {
+      return isNil(id) ? -1 : (item.MediaSources ?? []).findIndex(source => source.Id === id);
+    }
   });
 
   /**
@@ -791,7 +814,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     const index = await resolveMediaSourceIndex(item);
 
     if (id === this._resolutionId && this.currentItemId.value === item.Id) {
-      this._resolvedSource.value = { itemId: item.Id, index };
+      this._resolvedSource.value = { itemId: item.Id, mediaSourceId: item.MediaSources?.[index]?.Id ?? undefined };
     }
   };
 
@@ -1451,6 +1474,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       this._state.value.mediaSourceIndexes = {
         itemId: item.Id,
         source: mediaSourceIndex,
+        sourceId: isNil(mediaSourceIndex) ? undefined : item.MediaSources?.[mediaSourceIndex]?.Id ?? undefined,
         video: videoTrackIndex,
         audio: audioTrackIndex,
         subtitle: subtitleTrackIndex
@@ -1783,6 +1807,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
         mediaSourceIndexes: {
           itemId: undefined,
           source: undefined,
+          sourceId: undefined,
           video: undefined,
           audio: undefined,
           subtitle: undefined
