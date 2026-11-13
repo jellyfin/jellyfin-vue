@@ -50,7 +50,7 @@ import { playbackObservations, sessionNetworkEstimate } from '#/store/playback-q
 import { playbackSettings } from '#/store/settings/playback.ts';
 import { selectionModel } from '#/utils/forms.ts';
 import { getModeLevel } from '#/utils/playback-capabilities/quality.ts';
-import { getPlaybackChangeReasonName, getPlaybackMethodName, getPlayingMethodName, getQualityName } from '#/utils/playback-labels.ts';
+import { getPlaybackChangeReasonName, getPlaybackMethodName, getPlayingMethodName, getPredictedMethodName, getQualityName } from '#/utils/playback-labels.ts';
 
 const emit = defineEmits<{ close: [] }>();
 const { t } = useTranslation();
@@ -113,18 +113,21 @@ const lastChangeText = computed(() => {
 });
 
 /**
- * The method the server uses and the one the verdict predicted, in the version selector's words
+ * The method the server uses (not playable, with the reason, when its answer is refused) and the one the verdict
+ * predicted (said to be an attempt when it was one), in the version selector's words
  */
 const playingMethodName = computed(() => {
   const verdict = playbackManager.currentVerdict.value;
   const method = playbackManager.currentPlaybackMethod.value;
 
-  return verdict && method ? getPlayingMethodName(t, verdict, playbackManager.currentMediaSource.value, method) : '—';
+  return verdict && method
+    ? getPlayingMethodName(t, verdict, playbackManager.currentMediaSource.value, method, playbackManager.currentPlaybackFailure.value)
+    : '—';
 });
 const predictedMethodName = computed(() => {
   const verdict = playbackManager.currentVerdict.value;
 
-  return verdict ? getPlayingMethodName(t, verdict, playbackManager.currentMediaSource.value, verdict.method) : '—';
+  return verdict ? getPredictedMethodName(t, verdict, playbackManager.currentMediaSource.value) : '—';
 });
 
 /**
@@ -171,7 +174,9 @@ const rows = computed(() => [
 const dataAttributes = computed<Record<`data-${string}`, string>>(() => {
   const values: Record<string, string | number | undefined> = {
     method: playbackManager.currentPlaybackMethod.value,
+    failure: playbackManager.currentPlaybackFailure.value,
     predictedMethod: playbackManager.currentVerdict.value?.method,
+    predictedUnverified: playbackManager.currentVerdict.value && String(playbackManager.currentVerdict.value.unverified),
     container: stream.value.container,
     videoCodec: stream.value.video,
     audioCodec: stream.value.audio,

@@ -344,6 +344,7 @@
   "playbackChangeNoPicture": "No picture",
   "playbackChangeNotSmooth": "Playback wasn't smooth",
   "playbackMethod": "Method",
+  "playbackMethodAttempt": "{{method}}, to be tried",
   "playbackMethodChanged": "Playback had a problem and switched to another method: {{method}}",
   "playbackMethodDirectPlay": "Direct play",
   "playbackMethodRemux": "Container change",

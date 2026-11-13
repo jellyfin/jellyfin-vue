@@ -44,7 +44,7 @@ import { playbackManager } from '#/store/playback-manager.ts';
 import { getItemizedSelect } from '#/utils/forms.ts';
 import type { Verdict } from '#/utils/playback-capabilities/verdict.ts';
 import { getVerdictLabel, type VerdictLabel } from '#/utils/playback-capabilities/verdict-label.ts';
-import { getPlaybackMethodName } from '#/utils/playback-labels.ts';
+import { getLabelDescription } from '#/utils/playback-labels.ts';
 
 const { sources, defaultSourceIndex, label, verdicts = [], bestIndex } = defineProps<{
   sources: MediaSourceInfo[];
@@ -92,74 +92,9 @@ const labels = computed(() => sources.map((source, index): VerdictLabel | undefi
 }));
 
 /**
- * The reason in words
+ * The label of each version in words
  */
-function getReasonText({ reason, values = {} }: VerdictLabel): string | undefined {
-  switch (reason) {
-    case 'ContainerUnsupported': {
-      return t('playbackReasonContainerUnsupported', { container: values.container });
-    }
-    case 'CodecUnsupported': {
-      return t('playbackReasonCodecUnsupported', { codec: values.codec });
-    }
-    case 'CodecsUnsupported': {
-      return t('playbackReasonCodecsUnsupported', { video: values.video, audio: values.audio });
-    }
-    case 'HdrOnSdrDisplay': {
-      return t('playbackReasonHdrOnSdrDisplay');
-    }
-    case 'SubtitleBurnIn': {
-      return t('playbackReasonSubtitleBurnIn');
-    }
-    case 'ExceedsQuality': {
-      return t('playbackReasonExceedsQuality');
-    }
-    case 'SecondaryAudioTrack': {
-      return t('playbackReasonSecondaryAudioTrack');
-    }
-    case 'ExternalAudioTrack': {
-      return t('playbackReasonExternalAudioTrack');
-    }
-    case 'FailedBefore': {
-      return t('playbackReasonFailedBefore');
-    }
-    case 'NothingWorked': {
-      return t('playbackReasonNothingWorked');
-    }
-    case 'NotSmooth': {
-      return t('playbackReasonNotSmooth');
-    }
-    case 'NotAllowedByQuality': {
-      return t('playbackReasonNotAllowedByQuality');
-    }
-    case 'PolicySimplerMethod': {
-      return t('playbackReasonPolicySimplerMethod');
-    }
-    case 'PolicyNeededMethod': {
-      return t('playbackReasonPolicyNeededMethod');
-    }
-    case 'NoDecodableTarget': {
-      return t('playbackReasonNoDecodableTarget');
-    }
-    case undefined: {
-      return undefined;
-    }
-  }
-}
-
-/**
- * The label of each version in words: the method, with its reason when one explains it
- */
-const descriptions = computed(() => labels.value.map((verdictLabel) => {
-  if (!verdictLabel) {
-    return;
-  }
-
-  const method = getPlaybackMethodName(t, verdictLabel.method);
-  const reason = getReasonText(verdictLabel);
-
-  return reason ? t('playbackMethodWithReason', { method, reason }) : method;
-}));
+const descriptions = computed(() => labels.value.map(verdictLabel => verdictLabel ? getLabelDescription(t, verdictLabel) : undefined));
 
 /**
  * Shown under the selected version

@@ -4,6 +4,7 @@
  * A verdict can carry several reasons; the label shows the one that requires the chosen method (the codec before the
  * user's own choices), then what pushed it above its requirements (a learned failure, the user policy), and only when
  * nothing else applies, that the browser says it will not play smoothly. Codec and container names are the server's.
+ * A prediction that relies on streams nobody could check (an unverified verdict) is told as an attempt.
  */
 import type { MediaSourceInfo, MediaStream } from '@jellyfin/sdk/lib/generated-client';
 import type { PlaybackMethod, PlaybackRung, Verdict, VerdictReason } from './verdict.ts';
@@ -47,6 +48,10 @@ export interface VerdictLabel {
    * The names the reason mentions
    */
   readonly values?: Readonly<Record<string, string>>;
+  /**
+   * The method is an attempt, not a certainty: the prediction relies on streams nobody could check
+   */
+  readonly attempt?: true;
 }
 
 /**
@@ -211,7 +216,7 @@ export type PlaybackFailure = 'unplayable' | 'quality';
  * @param verdict - How this client would play the source
  * @param source - The media source the verdict was computed for, which names the codecs and the container
  * @param actualMethod - The method the server chose for it, when it is being played. When it differs from the
- * verdict's, the verdict's reasons do not explain it, so none is given.
+ * verdict's, the verdict's reasons do not explain it, so none is given. Either way it is what plays, no attempt.
  * @param failure - Why the server's answer is not played, when it is not: then nothing plays, whatever the server
  * chose, and the label says so with the failure's reason
  */
@@ -228,6 +233,7 @@ export function getVerdictLabel(verdict: Verdict, source: MediaSourceInfo, actua
     ? 'TranscodeVideoAndAudio'
     : verdict.method;
   const reason = getReason(verdict, source);
+  const attempt = verdict.unverified && actualMethod === undefined;
 
-  return reason ? { method, ...reason } : { method };
+  return { method, ...reason, ...(attempt && { attempt }) };
 }

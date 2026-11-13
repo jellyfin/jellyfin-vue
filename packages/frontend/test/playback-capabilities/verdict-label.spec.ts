@@ -65,8 +65,34 @@ describe('each method in words, without a reason when nothing explains it', () =
     expect(label.method).toBe('TranscodeVideoAndAudio');
   });
 
-  test('an optimistic direct play of a source without metadata has no reason', () => {
+  test('an optimistic direct play of a source without metadata has no reason, and is an attempt', () => {
     const label = getVerdictLabel(verdict('DirectPlay', ['Unverified']), hevcAc3Mkv);
+
+    expect(label).toEqual({ method: 'DirectPlay', attempt: true });
+  });
+});
+
+describe('a verdict that relies on streams nobody could check is told as an attempt, not a certainty', () => {
+  test('a direct play', () => {
+    const label = getVerdictLabel(verdict('DirectPlay', ['Unverified']), hevcAc3Mkv);
+
+    expect(label.attempt).toBe(true);
+  });
+
+  test('a method with its own reason keeps the reason and is an attempt too (a video transcode copying an unchecked audio)', () => {
+    const label = getVerdictLabel(verdict('TranscodeVideo', ['SubtitleBurnIn', 'Unverified'], { video: encode(0), audio: copy(1) }), hevcAc3Mkv);
+
+    expect(label).toEqual({ method: 'TranscodeVideo', reason: 'SubtitleBurnIn', attempt: true });
+  });
+
+  test('a verified verdict is no attempt', () => {
+    const label = getVerdictLabel(verdict('DirectPlay', []), hevcAc3Mkv);
+
+    expect('attempt' in label).toBe(false);
+  });
+
+  test('once played, the label tells the method the server uses, which is no longer an attempt', () => {
+    const label = getVerdictLabel(verdict('DirectPlay', ['Unverified']), hevcAc3Mkv, 'DirectPlay');
 
     expect(label).toEqual({ method: 'DirectPlay' });
   });

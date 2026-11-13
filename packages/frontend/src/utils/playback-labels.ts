@@ -6,7 +6,7 @@
 import type { MediaSourceInfo } from '@jellyfin/sdk/lib/generated-client';
 import type { PlaybackChangeReason } from '#/store/playback-quality.ts';
 import type { QualityMenuEntry } from '#/utils/playback-capabilities/quality.ts';
-import { getVerdictLabel, type MethodLabel } from '#/utils/playback-capabilities/verdict-label.ts';
+import { getVerdictLabel, type MethodLabel, type PlaybackFailure, type VerdictLabel } from '#/utils/playback-capabilities/verdict-label.ts';
 import type { PlaybackMethod, Verdict } from '#/utils/playback-capabilities/verdict.ts';
 
 type Translate = (key: string, options?: Record<string, unknown>) => string;
@@ -39,15 +39,120 @@ export function getPlaybackMethodName(t: Translate, method: MethodLabel): string
 }
 
 /**
+ * The name of a label's method, told as an attempt when the label is one (a prediction that relies on streams nobody
+ * could check, see `getVerdictLabel`): the one place that says so, for the version selector and the playback statistics
+ */
+export function getLabelMethodName(t: Translate, label: VerdictLabel): string {
+  const method = getPlaybackMethodName(t, label.method);
+
+  return label.attempt ? t('playbackMethodAttempt', { method }) : method;
+}
+
+/**
+ * The reason of a label in words, if it has one
+ */
+export function getLabelReasonName(t: Translate, { reason, values = {} }: VerdictLabel): string | undefined {
+  switch (reason) {
+    case 'ContainerUnsupported': {
+      return t('playbackReasonContainerUnsupported', { container: values.container });
+    }
+    case 'CodecUnsupported': {
+      return t('playbackReasonCodecUnsupported', { codec: values.codec });
+    }
+    case 'CodecsUnsupported': {
+      return t('playbackReasonCodecsUnsupported', { video: values.video, audio: values.audio });
+    }
+    case 'HdrOnSdrDisplay': {
+      return t('playbackReasonHdrOnSdrDisplay');
+    }
+    case 'SubtitleBurnIn': {
+      return t('playbackReasonSubtitleBurnIn');
+    }
+    case 'ExceedsQuality': {
+      return t('playbackReasonExceedsQuality');
+    }
+    case 'SecondaryAudioTrack': {
+      return t('playbackReasonSecondaryAudioTrack');
+    }
+    case 'ExternalAudioTrack': {
+      return t('playbackReasonExternalAudioTrack');
+    }
+    case 'FailedBefore': {
+      return t('playbackReasonFailedBefore');
+    }
+    case 'NothingWorked': {
+      return t('playbackReasonNothingWorked');
+    }
+    case 'NotSmooth': {
+      return t('playbackReasonNotSmooth');
+    }
+    case 'NotAllowedByQuality': {
+      return t('playbackReasonNotAllowedByQuality');
+    }
+    case 'PolicySimplerMethod': {
+      return t('playbackReasonPolicySimplerMethod');
+    }
+    case 'PolicyNeededMethod': {
+      return t('playbackReasonPolicyNeededMethod');
+    }
+    case 'NoDecodableTarget': {
+      return t('playbackReasonNoDecodableTarget');
+    }
+    case undefined: {
+      return undefined;
+    }
+  }
+}
+
+/**
+ * A label in words: the method (told as an attempt when it is one), with its reason when one explains it. The version
+ * selector describes each version this way.
+ */
+export function getLabelDescription(t: Translate, label: VerdictLabel): string {
+  const method = getLabelMethodName(t, label);
+  const reason = getLabelReasonName(t, label);
+
+  return reason ? t('playbackMethodWithReason', { method, reason }) : method;
+}
+
+/**
+ * The name of the method a verdict predicts for a source, told as an attempt when it is one
+ *
+ * @param verdict - How the source was expected to play
+ * @param source - The media source it is about, when known (it tells apart a video transcode that also encodes the
+ * audio)
+ */
+export function getPredictedMethodName(t: Translate, verdict: Verdict, source: MediaSourceInfo | undefined): string {
+  const label: VerdictLabel = source
+    ? getVerdictLabel(verdict, source)
+    : { method: verdict.method, ...(verdict.unverified && { attempt: true as const }) };
+
+  return getLabelMethodName(t, label);
+}
+
+/**
  * The name of the method a playback uses: the server's, told apart when a video transcode also encodes the audio
- * (see `getVerdictLabel`)
+ * (see `getVerdictLabel`). A playback whose answer is not played is told as not playable, with the failure's reason.
  *
  * @param verdict - The verdict the playback was negotiated with
  * @param source - The media source it plays, when known
  * @param actualMethod - The method the server chose
+ * @param failure - Why the server's answer is not played, when it is not
  */
-export function getPlayingMethodName(t: Translate, verdict: Verdict, source: MediaSourceInfo | undefined, actualMethod: PlaybackMethod): string {
-  return getPlaybackMethodName(t, source ? getVerdictLabel(verdict, source, actualMethod).method : actualMethod);
+export function getPlayingMethodName(
+  t: Translate,
+  verdict: Verdict,
+  source: MediaSourceInfo | undefined,
+  actualMethod: PlaybackMethod,
+  failure?: PlaybackFailure
+): string {
+  if (!source) {
+    return getPlaybackMethodName(t, failure ? 'Unplayable' : actualMethod);
+  }
+
+  const label = getVerdictLabel(verdict, source, actualMethod, failure);
+
+  return failure ? getLabelDescription(t, label) : getPlaybackMethodName(t, label.method);
 }
 
 /**
