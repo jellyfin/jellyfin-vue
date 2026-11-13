@@ -3,17 +3,29 @@
  * learned during this session, and the verdict for a media source with everything the client knows about itself.
  * Nothing here is persisted except the probe results, which live in the api database next to their items.
  *
- * What a failure teaches (see `verdict.ts` for the rules): the failed rung, as the learned floor of the verdict's
- * signature, which also ends the single attempt a verdict makes with streams nobody could check (from then on they are
- * encoded); and, for a stream copied into the server's HLS output, that its media source answers are wrong
- * ({@link recordMediaSourceFailure}), which counts as evidence even where the browser could not answer exactly. All of
- * it belongs to the user and the server it was learned with: it is forgotten when either changes.
+ * What a failure teaches (see `failure-ladder.ts` for the rules): the failed rung, as the learned floor of the media
+ * source and, when it looks like a wrong answer of the browser, of the verdict's signature, which also ends the single
+ * attempt a verdict makes with streams nobody could check (from then on they are encoded); and, for a stream copied
+ * into the server's HLS output, that its media source answers are wrong ({@link recordMediaSourceFailure}), which counts
+ * as evidence even where the browser could not answer exactly. All of it belongs to the user and the server it was
+ * learned with: it is forgotten when either changes.
  */
 import type { BaseItemDto, MediaSourceInfo, MediaStream } from '@jellyfin/sdk/lib/generated-client';
 import Hls from 'hls.js';
 import { computed, shallowReactive, shallowRef, watch } from 'vue';
 import { withTimeout } from '@jellyfin-vue/shared/promises';
 import { PROBE_PLAYBACK_WAIT_MS } from '#/utils/playback-capabilities/constants.ts';
+import {
+  getFailureLesson,
+  getScopedFloor,
+  learnFailure,
+  learnSourceFloor,
+  NO_LEARNED_FLOORS,
+  type FailureEvidence,
+  type FailureStep,
+  type LearnedFloors,
+  type LessonScope
+} from '#/utils/playback-capabilities/failure-ladder.ts';
 import { getHlsDelivery, type HlsDelivery } from '#/utils/playback-capabilities/hls-delivery.ts';
 import {
   createBrowserOracle,
@@ -26,9 +38,7 @@ import {
   computeVerdict,
   getMediaSourceQuestions,
   getNextFloor,
-  type LearnedFloor,
   type PlaybackMethod,
-  type PlaybackOutcome,
   type PlaybackPolicy,
   type Verdict,
   type VerdictEnvironment
@@ -102,10 +112,10 @@ export const capabilityOracle: CapabilityOracle = {
 };
 
 /**
- * The learned floor of each stream signature (see {@link LearnedFloor}). Memory only: it is lost on reload.
- * Reactive, so what depends on a floor is updated when a playback teaches a new one.
+ * The learned floors of the media sources and of the stream signatures (see `failure-ladder.ts`). Memory only: it is
+ * lost on reload. Reactive, so what depends on a floor is updated when a playback teaches a new one.
  */
-const learnedFloors = shallowReactive(new Map<string, PlaybackMethod>());
+const learnedFloors = shallowRef<LearnedFloors>(NO_LEARNED_FLOORS);
 
 /**
  * Whether the media element was seen exposing an audio track list that does not match the file's audio streams
@@ -122,22 +132,55 @@ export const canSelectAudioTrack = computed(() =>
 );
 
 /**
- * The learned floors of this session, as the verdict's environment expects them
+ * The key of a media source in the learned floors: its item and its id (a media source id alone may be the item's)
+ *
+ * @param itemId - The item the media source belongs to
+ * @param mediaSourceId - The media source, as the item's `MediaSources` list it
  */
-export const getLearnedFloor: LearnedFloor = signature => learnedFloors.get(signature);
+export function getMediaSourceKey(itemId: string, mediaSourceId: string): string {
+  return `${itemId}|${mediaSourceId}`;
+}
 
 /**
- * Records what a playback taught about a verdict's streams, so later verdicts for the same signature never start
- * below it. Floors only rise.
+ * The floor a verdict starts at: the higher of its media source's and its signature's learned floors
  *
- * @param verdict - The verdict the playback was negotiated with
- * @param outcome - What happened: the playback failed at a rung, or the server chose another method
+ * @param signature - The verdict's signature
+ * @param source - The media source's key (see {@link getMediaSourceKey}); without it, only the signature's floor
  */
-export function recordPlaybackOutcome(verdict: Pick<Verdict, 'method' | 'signature'>, outcome: PlaybackOutcome): void {
-  const floor = getNextFloor(verdict, outcome, learnedFloors.get(verdict.signature));
+export function getLearnedFloor(signature: string, source?: string): PlaybackMethod | undefined {
+  return getScopedFloor(learnedFloors.value, signature, source);
+}
+
+/**
+ * Records what a hard failure of a playback taught, in each scope (see `getFailureLesson`)
+ *
+ * @param scope - The playback that failed: its media source, the verdict's signature and the play it belongs to
+ * @param step - The failure step that learns a floor
+ * @param evidence - Whether the playback had worked before it failed (`file`), or not, or the user said it does not
+ * play (`browser`)
+ */
+export function recordPlaybackFailure(
+  scope: LessonScope,
+  step: Extract<FailureStep, { learn: 'floor' }>,
+  evidence: FailureEvidence
+): void {
+  learnedFloors.value = learnFailure(learnedFloors.value, scope, getFailureLesson(step, evidence));
+}
+
+/**
+ * Records that the server chose a more expensive method than the verdict's for a media source, so its next verdict
+ * starts there. Only that media source learns it: the server's reasons (its bitrate limits, its own state) say nothing
+ * about the browser.
+ *
+ * @param source - The media source's key (see {@link getMediaSourceKey})
+ * @param verdict - The verdict the playback was negotiated with
+ * @param actualMethod - The method the server chose, read from an answer that has a media source
+ */
+export function recordServerChoice(source: string, verdict: Pick<Verdict, 'method'>, actualMethod: PlaybackMethod): void {
+  const floor = getNextFloor(verdict, { actualMethod });
 
   if (floor !== undefined) {
-    learnedFloors.set(verdict.signature, floor);
+    learnedFloors.value = learnSourceFloor(learnedFloors.value, source, floor);
   }
 }
 
@@ -152,13 +195,13 @@ export function recordAudioTrackSwitchingFailure(): void {
 /**
  * Records that the media source playback of a negotiated stream failed with a codec error (the player could not
  * even create the buffer for it), although the browser said it plays. With one stream copied into the server's
- * output, that stream's media source answers are disproved for the session, so its next verdict encodes it; with
- * both copied (a remux), which one failed is unknown, so it counts as a failure of the remux, whose next rung
- * encodes the audio. Encoded streams are not suspects: their targets were checked before being asked for.
+ * output, that stream's media source answers are disproved for the session, so its next verdict encodes it. Encoded
+ * streams are not suspects: their targets were checked before being asked for.
  *
- * When nothing new can be disproved (a stream nobody knows was never asked about, or its answers were disproved
- * already), it counts as a failure of the verdict's method too: otherwise nothing would change and the playback
- * would stay broken.
+ * When nothing can be disproved (both streams copied, a remux, so which one failed is unknown; a stream nobody knows
+ * was never asked about; or its answers were disproved already), the caller learns it as a failure of the method (see
+ * {@link recordPlaybackFailure}; a remux's next rung encodes the audio): otherwise nothing would change and the
+ * playback would stay broken.
  *
  * @param item - The item the media source belongs to
  * @param source - The media source the verdict was computed for
@@ -169,7 +212,7 @@ export function recordAudioTrackSwitchingFailure(): void {
 export async function recordMediaSourceFailure(
   item: BaseItemDto,
   source: MediaSourceInfo,
-  verdict: Pick<Verdict, 'method' | 'signature' | 'video' | 'audio'>
+  verdict: Pick<Verdict, 'video' | 'audio'>
 ): Promise<boolean> {
   const copied = [verdict.video, verdict.audio].filter(plan => plan?.action === 'copy');
   const index = copied.length === 1 ? copied[0]?.index : undefined;
@@ -188,10 +231,6 @@ export async function recordMediaSourceFailure(
     }
   }
 
-  if (verdict.method !== 'Unplayable' && verdict.method !== 'DirectPlay') {
-    recordPlaybackOutcome(verdict, { failedAt: verdict.method });
-  }
-
   return false;
 }
 
@@ -202,7 +241,7 @@ export async function recordMediaSourceFailure(
  */
 function forgetSessionMemory(): void {
   capabilityOracle.clear();
-  learnedFloors.clear();
+  learnedFloors.value = NO_LEARNED_FLOORS;
   audioTrackSwitchingFailed.value = false;
 }
 
@@ -304,7 +343,7 @@ export function getPlaybackPolicy(): PlaybackPolicy {
 /**
  * What the verdict depends on that may change during a playback and has to re-negotiate it: the playback
  * settings, the user's policy and what was learned about the media element and the browser's answers. Learned floors are not here: they
- * belong to one verdict's signature (see {@link getLearnedFloor}). The HDR display is not here either: moving the
+ * belong to one media source or one verdict's signature (see {@link getLearnedFloor}). The HDR display is not here either: moving the
  * window to another display must not interrupt a playback.
  */
 export const renegotiatingEnvironment = [
@@ -325,22 +364,23 @@ export const renegotiatingEnvironment = [
 export const verdictEnvironmentSources = [
   ...renegotiatingEnvironment,
   () => hasHDRDisplay.value,
-  () => JSON.stringify([...learnedFloors])
+  () => learnedFloors.value
 ] as const;
 
 /**
  * Everything about this client a verdict for a media source depends on, as it is now
  *
  * @param video - The selected video stream of the media source (undefined for music)
+ * @param source - The media source's key (see {@link getMediaSourceKey}): its learned floor counts too
  */
-export function getVerdictEnvironment(video?: MediaStream): VerdictEnvironment {
+export function getVerdictEnvironment(video?: MediaStream, source?: string): VerdictEnvironment {
   return {
     hdrDisplay: hasHDRDisplay.value,
     hdrMode: playbackSettings.hdrMode.value,
     canSelectAudioTrack: canSelectAudioTrack.value,
     quality: playbackSettings.getQualityMode(video),
     policy: getPlaybackPolicy(),
-    getLearnedFloor,
+    getLearnedFloor: signature => getLearnedFloor(signature, source),
     subtitleRenderers: SUBTITLE_RENDERERS,
     hlsDelivery
   };
@@ -514,7 +554,7 @@ export async function getMediaSourceVerdict(
   const probe = await getProbe(item, source, options.probeWaitMs ?? PROBE_PLAYBACK_WAIT_MS);
   const video = getVideoStream(source, selection.videoStreamIndex);
 
-  const environment = getVerdictEnvironment(video);
+  const environment = getVerdictEnvironment(video, item.Id && source.Id ? getMediaSourceKey(item.Id, source.Id) : undefined);
 
   return computeVerdict({
     source,

@@ -8,6 +8,9 @@
  * moves it up
  * Without hls.js (the element plays the server's HLS output natively, see `hls-delivery.ts`), its media errors reach the
  * failure ladder as the element's own, and there is no network estimate: Automatic only moves down on stalls.
+ *
+ * They also tell the playback manager once the playback works (`playbackManager.reportPlaybackWorked`): a hard failure
+ * afterwards is about the file or the moment, not the browser.
  */
 import type Hls from 'hls.js';
 import { ErrorDetails, Events, PlaylistLevelType, type BufferCodecsData, type FragBufferedData } from 'hls.js';
@@ -116,6 +119,26 @@ interface SourceRun {
 }
 
 /**
+ * What the supervisors remember about the loads of the source being played (one URL) for what a failure teaches
+ */
+interface LoadRun {
+  url?: string;
+  /**
+   * Whether the playback was reported working (see the `timeupdate` listener), and for which streams: the signature of
+   * the verdict it was negotiated with. A renegotiation can keep the URL and change the streams (another audio track of
+   * a direct play), and what a failure teaches is decided by signature.
+   */
+  worked: boolean;
+  workedAs?: string;
+  /**
+   * The media time the time advancing is measured from in this load, and the signature it was taken for: unset until the
+   * element plays, after a seek, and when the streams change
+   */
+  advanceFrom?: number;
+  advanceAs?: string;
+}
+
+/**
  * Playbacks (by key) that were already warned about not being smooth
  */
 const warnedNotSmooth = new Set<string>();
@@ -148,6 +171,7 @@ function getTargetEntry(state: AutoState, video: VideoInfo): RunningQuality {
  */
 export function usePlaybackSupervisors(hls: Hls | undefined) {
   let run = newRun();
+  let loadRun: LoadRun = { worked: false };
 
   // The network estimate is remembered for the session: a new player starts from it
   if (hls && sessionNetworkEstimate.value) {
@@ -472,11 +496,60 @@ export function usePlaybackSupervisors(hls: Hls | undefined) {
       fail('noPicture');
     }
   });
+
+  /**
+   * The {@link LoadRun} of the source being supervised, started again when the source changes
+   */
+  const currentLoadRun = (): LoadRun => {
+    if (loadRun.url !== run.url) {
+      loadRun = { url: run.url, worked: false };
+    }
+
+    return loadRun;
+  };
+
+  /**
+   * Whether the element presented a video frame in this load: the frame callback or the frame counter tell it (see
+   * `watchPresentedFrame`). An engine with neither API can only tell that it decoded a picture.
+   */
+  const hasPresentedFrame = (el: HTMLVideoElement): boolean => {
+    const quality = 'getVideoPlaybackQuality' in el ? el.getVideoPlaybackQuality() : undefined;
+
+    return run.presented
+      || (quality ? quality.totalVideoFrames > run.framesAtLoad : el.videoWidth > 0 && !('requestVideoFrameCallback' in el));
+  };
+
   useEventListener(mediaElementRef, 'error', (event: Event) => {
     const code = event.target instanceof HTMLMediaElement ? event.target.error?.code : undefined;
 
     if (code === MediaError.MEDIA_ERR_DECODE || code === MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED) {
       onMediaError();
+    }
+  });
+  useEventListener(mediaElementRef, ['loadstart', 'seeking'], () => {
+    currentLoadRun().advanceFrom = undefined;
+  });
+  /**
+   * Tells the playback manager once the playback works with the streams it was negotiated with: the time advanced
+   * while playing (not by a seek) and, for video, a frame was presented; again when a renegotiation changes the streams
+   * and keeps the URL
+   */
+  useEventListener(mediaElementRef, 'timeupdate', (event: Event) => {
+    const el = event.target;
+    const state = currentLoadRun();
+    const signature = playbackManager.currentVerdict.value?.signature;
+
+    if (!(el instanceof HTMLMediaElement) || !state.url || el.seeking || (state.worked && state.workedAs === signature) || el.paused) {
+      return;
+    }
+
+    if (state.advanceFrom === undefined || state.advanceAs !== signature || el.currentTime < state.advanceFrom) {
+      state.advanceFrom = el.currentTime;
+      state.advanceAs = signature;
+    } else if (el.currentTime > state.advanceFrom && (!expectsVideo(el) || hasPresentedFrame(el))) {
+      state.worked = true;
+      state.workedAs = signature;
+      playbackManager.reportPlaybackWorked(state.url);
     }
   });
   useEventListener(mediaElementRef, 'seeking', () => {

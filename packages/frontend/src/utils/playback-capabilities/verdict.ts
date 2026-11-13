@@ -12,8 +12,9 @@
  * stream asked about only with generic candidates (the server's names, see `media-config.ts`) that the browser did not
  * confirm, or a stream that cannot be asked about at all. The verdict is then the cheapest method assuming such streams
  * play, marked `unverified`, and everything that does not depend on them still applies. It is a single attempt: once
- * the ladder learned anything for the same streams (a floor for the verdict's signature: the attempt failed, or the
- * server needed more), nothing is assumed any more, and every stream whose support is still unknown is encoded. A
+ * the ladder learned anything for the same streams (a floor the environment's lookup returns for the verdict's
+ * signature: the attempt failed, or the server needed more for that media source), nothing is assumed any more, and
+ * every stream whose support is still unknown is encoded. A
  * question playback disproved (`DISPROVED`) is evidence, generic or not.
  */
 import type { MediaSourceInfo, MediaStream, SubtitleDeliveryMethod, UserPolicy } from '@jellyfin/sdk/lib/generated-client';
@@ -756,11 +757,12 @@ function getNextMethod(rung: PlaybackRung): PlaybackMethod {
  * - the server chose a more expensive method than the verdict's: the floor becomes that method
  * - the server could not play it at all: like a failure at the verdict's method
  * - the server chose the same or a cheaper method, or the verdict was unplayable: nothing is learned
+ * Which scope stores it (the media source, the verdict's signature) is decided by the caller (see `failure-ladder.ts`).
  *
  * @param verdict - The verdict the playback was negotiated with
  * @param outcome - What happened
- * @param current - The floor stored so far for the verdict's signature
- * @returns The floor to store for the verdict's signature
+ * @param current - The floor stored so far in that scope
+ * @returns The floor to store in that scope
  */
 export function getNextFloor(
   verdict: Pick<Verdict, 'method'>,

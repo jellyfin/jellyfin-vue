@@ -32,8 +32,10 @@ import {
   getMediaSourceVerdict,
   getPlaybackPolicy,
   getLearnedFloor,
+  getMediaSourceKey,
   recordMediaSourceFailure,
-  recordPlaybackOutcome,
+  recordPlaybackFailure,
+  recordServerChoice,
   renegotiatingEnvironment
 } from '#/store/playback-capabilities.ts';
 import { prefetchMediaSourceVerdicts, resolveMediaSourceIndex } from '#/store/playback-versions.ts';
@@ -53,7 +55,7 @@ import { getItemRuntime, getStaticStreamUrl } from '#/utils/items.ts';
 import { findQueueItem, getQueueRemoval } from '#/utils/playback-queue.ts';
 import { PREFETCH_BUFFER_AHEAD_S } from '#/utils/playback-capabilities/constants.ts';
 import { buildPlaybackRequest, deriveActualMethod } from '#/utils/playback-capabilities/device-profile.ts';
-import { getFailureStep, type FailureStep } from '#/utils/playback-capabilities/failure-ladder.ts';
+import { getFailureStep, type FailureEvidence, type FailureStep, type LessonScope } from '#/utils/playback-capabilities/failure-ladder.ts';
 import { getDecodedVideo, getModeLevel, getRunningEntry, getVideoStream, type QualityMode } from '#/utils/playback-capabilities/quality.ts';
 import type { AutoState } from '#/utils/playback-capabilities/quality-auto.ts';
 import {
@@ -204,6 +206,18 @@ function getNegotiationFailureStep(negotiation: Negotiation): FailureStep {
 }
 
 /**
+ * What a hard failure of a negotiated playback teaches is about: its media source, its verdict's signature and the
+ * play it belongs to (see `LessonScope`)
+ */
+function getLessonScope(negotiation: Negotiation): LessonScope {
+  return {
+    source: getMediaSourceKey(negotiation.itemId, negotiation.mediaSourceId),
+    signature: negotiation.verdict.signature,
+    chain: negotiation.key
+  };
+}
+
+/**
  * The media source of a PlaybackInfo answer, if it has one: an answer with an error code, or without media sources,
  * plays nothing
  */
@@ -329,6 +343,10 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    * The hard failure being handled, if any (see `reportPlaybackFailure`)
    */
   private _pendingFailure: PendingFailure | undefined;
+  /**
+   * The signatures the current play (by its key) was seen working with (see `reportPlaybackWorked`)
+   */
+  private _worked: { key: string; signatures: Set<string> } | undefined;
   /**
    * The method the server uses for a negotiated playback, as the version selector names it (a video transcode that
    * also encodes the audio is told apart)
@@ -911,11 +929,12 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       const failure = this._getAnswerFailure(actualMethod);
 
       /**
-       * The next verdict for these streams starts at the method the server needed. An answer without a media source (an
-       * error code, which the server also sends for a media source id it does not know) teaches nothing.
+       * The next verdict for this media source starts at the method the server needed. Only for this media source: the
+       * server's reasons (its bitrate limits, its own state) say nothing about the browser. An answer without a media
+       * source (an error code, which the server also sends for a media source id it does not know) teaches nothing.
        */
       if (negotiated && isMoreExpensive(actualMethod, verdict.method)) {
-        recordPlaybackOutcome(verdict, { actualMethod });
+        recordServerChoice(getMediaSourceKey(item.Id, mediaSource.Id), verdict, actualMethod);
       }
 
       this._replacing = false;
@@ -950,7 +969,8 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   /**
    * Reports that the player could not play the negotiated stream through media source playback because of a
    * codec error: it could not even create the buffer for it, so retrying is pointless. What failed is learned
-   * (see `recordMediaSourceFailure`), which negotiates the playback again another way.
+   * (see `recordMediaSourceFailure`; when no answer can be disproved, as a failure of the method), which negotiates the
+   * playback again another way.
    */
   public readonly reportMediaSourceFailure = async (): Promise<void> => {
     const negotiation = this._startFailure('hlsCodecError');
@@ -958,7 +978,55 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     const mediaSource = this.currentMediaSource.value;
 
     if (negotiation && item && mediaSource) {
-      this._renegotiateAfterFailure(negotiation, await recordMediaSourceFailure(item, mediaSource, negotiation.verdict));
+      const disproved = await recordMediaSourceFailure(item, mediaSource, negotiation.verdict);
+
+      if (!disproved) {
+        this._learnFailure(negotiation, getNegotiationFailureStep(negotiation), 'hlsCodecError');
+      }
+
+      this._renegotiateAfterFailure(negotiation, disproved);
+    }
+  };
+
+  /**
+   * Reports that the current playback works: a frame was presented while the time advanced (for music, the time
+   * advanced). A hard failure of the same streams later in the same play is about the file or the moment, not the
+   * browser (see `getFailureLesson`).
+   *
+   * @param url - The source the player saw working: a report for one that is no longer the current source is dropped
+   */
+  public readonly reportPlaybackWorked = (url: string): void => {
+    const negotiation = this._currentNegotiation.value;
+
+    if (!negotiation || negotiation.failure || url !== this.currentSourceUrl.value) {
+      return;
+    }
+
+    if (this._worked?.key !== negotiation.key) {
+      this._worked = { key: negotiation.key, signatures: new Set() };
+    }
+
+    this._worked.signatures.add(negotiation.verdict.signature);
+  };
+
+  /**
+   * Learns a hard failure of a negotiated playback, in the scopes it is evidence for (see `recordPlaybackFailure`): it
+   * is evidence about the browser unless the same streams had worked in this play, or the user said it does not play
+   * (the manual action exists for what no signal detects).
+   *
+   * @param negotiation - The negotiation that failed
+   * @param step - What the failure teaches (see `getFailureStep`)
+   * @param reason - What failed
+   */
+  private readonly _learnFailure = (negotiation: Negotiation, step: FailureStep, reason: PlaybackChangeReason): void => {
+    const worked = this._worked?.key === negotiation.key && this._worked.signatures.has(negotiation.verdict.signature);
+    const evidence: FailureEvidence = worked && reason !== 'manual' ? 'file' : 'browser';
+
+    if (step.learn === 'floor') {
+      recordPlaybackFailure(getLessonScope(negotiation), step, evidence);
+    } else if (step.learn === 'copied-audio') {
+      // Its answers could not be disproved (see `recordMediaSourceFailure`): what is left would ask for the same again
+      recordPlaybackFailure(getLessonScope(negotiation), { learn: 'floor', failedAt: step.failedAt, blockedBy: step.blockedBy }, evidence);
     }
   };
 
@@ -1013,7 +1081,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    * few), so the ladder always ends: at worst in an unplayable verdict, which requests nothing and is shown as such.
    */
   private readonly _renegotiateAfterFailure = (negotiation: Negotiation, disproved: boolean): void => {
-    const floor = getLearnedFloor(negotiation.verdict.signature);
+    const floor = getLearnedFloor(negotiation.verdict.signature, getMediaSourceKey(negotiation.itemId, negotiation.mediaSourceId));
 
     if (!disproved && floor !== undefined && isMoreExpensive(floor, negotiation.verdict.method)) {
       this._renegotiations.value++;
@@ -1058,8 +1126,8 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   /**
    * Reports a hard failure of the current playback (or the user's "try another method"): it moves one rung down
    * the failure ladder (see `getFailureStep`) keeping the playback position, and the failure is learned for the
-   * session, so the next playback of the same streams starts at a method that works. Only the first failure of a play
-   * session counts.
+   * session (see `_learnFailure`), so the next playback of the same file, and of the same streams when the failure
+   * is about the browser, starts at a method that works. Only the first failure of a play session counts.
    *
    * @param reason - What failed
    */
@@ -1073,12 +1141,10 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     }
 
     const step = getNegotiationFailureStep(negotiation);
-    let disproved = false;
+    const disproved = step.learn === 'copied-audio' && await recordMediaSourceFailure(item, mediaSource, negotiation.verdict);
 
-    if (step.learn === 'floor') {
-      recordPlaybackOutcome(negotiation.verdict, { failedAt: step.failedAt });
-    } else if (step.learn === 'copied-audio') {
-      disproved = await recordMediaSourceFailure(item, mediaSource, negotiation.verdict);
+    if (!disproved) {
+      this._learnFailure(negotiation, step, reason);
     }
 
     this._renegotiateAfterFailure(negotiation, disproved);
