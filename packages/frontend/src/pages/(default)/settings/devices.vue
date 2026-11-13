@@ -10,7 +10,7 @@
         variant="elevated"
         class="ml-a"
         :loading="loading"
-        @click="confirmDelete = 'all'">
+        v-on="{ click: () => { confirmDelete = 'all'; } }">
         {{ t('deleteAll') }}
       </VBtn>
       <VBtn
@@ -58,7 +58,7 @@
                 <VBtn
                   color="error"
                   :disabled="loading || device.Id === remote.sdk.deviceInfo.id"
-                  @click="confirmDelete = device.Id ?? undefined">
+                  v-on="{ click: () => { confirmDelete = device.Id ?? undefined; } }">
                   {{ t('delete') }}
                 </VBtn>
               </td>
@@ -78,12 +78,12 @@
             <VBtn
               color="primary"
               :loading="loading"
-              @click="confirmDeletion">
+              v-on="{ click: confirmDeletion }">
               {{ t('confirm') }}
             </VBtn>
             <VBtn
               :loading="loading"
-              @click="confirmDelete = undefined">
+              v-on="{ click: () => { confirmDelete = undefined; } }">
               {{ t('cancel') }}
             </VBtn>
           </VCardActions>
