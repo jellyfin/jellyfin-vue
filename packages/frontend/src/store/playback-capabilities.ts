@@ -30,7 +30,7 @@ import { apiStore } from '#/store/dbs/api/index.ts';
 import { hasHDRDisplay } from '#/store/index.ts';
 import { playbackSettings } from '#/store/settings/playback.ts';
 import { getStaticStreamUrl } from '#/utils/items.ts';
-import type { QualityMode } from '#/utils/playback-capabilities/quality.ts';
+import { getVideoStream, type QualityMode } from '#/utils/playback-capabilities/quality.ts';
 import { SUBTITLE_RENDERERS } from '#/utils/subtitle-renderers.ts';
 
 /**
@@ -441,8 +441,7 @@ export async function getMediaSourceVerdict(
   options: MediaSourceVerdictOptions = {}
 ): Promise<Verdict> {
   const probe = await getProbe(item, source, options.probeWaitMs ?? PROBE_PLAYBACK_WAIT_MS);
-  const videoStreams = source.MediaStreams?.filter(stream => stream.Type === 'Video') ?? [];
-  const video = videoStreams.find(stream => stream.Index === selection.videoStreamIndex) ?? videoStreams[0];
+  const video = getVideoStream(source, selection.videoStreamIndex);
 
   const environment = getVerdictEnvironment(video);
 

@@ -3,7 +3,7 @@
  * ladder at or below the source. The bitrate of each level is internal; the server receives it together with the
  * box (maximum width and height) of the level.
  */
-import type { MediaStream } from '@jellyfin/sdk/lib/generated-client';
+import type { MediaSourceInfo, MediaStream } from '@jellyfin/sdk/lib/generated-client';
 import { CODED_SIZE_ALIGNMENT, HIGH_FRAME_RATE_BITRATE_EXPONENT, QUALITY_LADDER, QUALITY_LADDER_FRAME_RATE } from './constants.ts';
 import type { PlaybackMethod } from './verdict.ts';
 
@@ -46,6 +46,25 @@ export interface RequestCaps {
 export type VideoInfo = Pick<MediaStream, 'Width' | 'Height' | 'BitRate' | 'ReferenceFrameRate'>;
 
 /**
+ * A size the media element decodes, as the video info the quality functions take
+ */
+export function getDecodedVideo(size?: { readonly width: number; readonly height: number }): VideoInfo | undefined {
+  return size && { Width: size.width, Height: size.height };
+}
+
+/**
+ * The video stream of a source a playback uses: the one with the given absolute index, or else its first one
+ *
+ * @param source - The media source, with its streams
+ * @param index - Absolute `MediaStream.Index` of the selected video stream, if any
+ */
+export function getVideoStream(source: Pick<MediaSourceInfo, 'MediaStreams'>, index?: number | null): MediaStream | undefined {
+  const videoStreams = source.MediaStreams?.filter(stream => stream.Type === 'Video') ?? [];
+
+  return videoStreams.find(stream => stream.Index === index) ?? videoStreams[0];
+}
+
+/**
  * Returns the size as positive numbers, or undefined when unknown
  */
 function getKnownSize(video?: VideoInfo): { width: number; height: number } | undefined {
@@ -66,7 +85,7 @@ function getEntry(level: QualityLevel) {
  * source of a higher frame rate so that the server still encodes at the level's size (see
  * {@link QUALITY_LADDER_FRAME_RATE}). Whatever compares a bitrate with a level uses this one.
  *
- * @param level - The level
+ * @param level - The ladder level asked for
  * @param video - The source video stream, whose frame rate counts
  */
 export function getLevelBitrate(level: QualityLevel, video?: VideoInfo): number {

@@ -156,7 +156,7 @@ import { isObj, isStr, isUndef } from '@jellyfin-vue/shared/validation';
 import { playbackManager } from '#/store/playback-manager.ts';
 import { playerElement } from '#/store/player-element.ts';
 import { playbackSettings } from '#/store/settings/playback.ts';
-import { getQualityMenu, type QualityMenuEntry } from '#/utils/playback-capabilities/quality.ts';
+import { getQualityMenu, getVideoStream, type QualityMenuEntry } from '#/utils/playback-capabilities/quality.ts';
 import { getNoOtherMethodText, getPlayingMethodName, getQualityName } from '#/utils/playback-labels.ts';
 
 const menuModel = defineModel<boolean>();
@@ -165,14 +165,13 @@ const statisticsOpen = shallowRef(false);
 
 /**
  * The video stream of the version being played that the quality applies to: the one picked or, if none, the first one
- * (as the negotiation takes it), also while nothing plays because of a failure (an unplayable verdict has no video
- * plan). Undefined for music.
+ * (as the negotiation takes it, see `getVideoStream`), also while nothing plays because of a failure (an unplayable
+ * verdict has no video plan). Undefined for music.
  */
 const videoStream = computed(() => {
-  const streams = playbackManager.currentMediaSource.value?.MediaStreams?.filter(stream => stream.Type === 'Video') ?? [];
-  const picked = playbackManager.currentVideoTrack.value?.Index;
+  const source = playbackManager.currentMediaSource.value;
 
-  return streams.find(stream => stream.Index === picked) ?? streams[0];
+  return source ? getVideoStream(source, playbackManager.currentVideoTrack.value?.Index) : undefined;
 });
 
 /**

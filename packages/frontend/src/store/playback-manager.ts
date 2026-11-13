@@ -51,8 +51,8 @@ import { getItemRuntime, getStaticStreamUrl } from '#/utils/items.ts';
 import { findQueueItem, getQueueRemoval } from '#/utils/playback-queue.ts';
 import { PREFETCH_BUFFER_AHEAD_S } from '#/utils/playback-capabilities/constants.ts';
 import { buildPlaybackRequest, deriveActualMethod } from '#/utils/playback-capabilities/device-profile.ts';
-import { getFailureStep } from '#/utils/playback-capabilities/failure-ladder.ts';
-import { getModeLevel, getRunningEntry, type QualityMode } from '#/utils/playback-capabilities/quality.ts';
+import { getFailureStep, type FailureStep } from '#/utils/playback-capabilities/failure-ladder.ts';
+import { getDecodedVideo, getModeLevel, getRunningEntry, getVideoStream, type QualityMode } from '#/utils/playback-capabilities/quality.ts';
 import type { AutoState } from '#/utils/playback-capabilities/quality-auto.ts';
 import {
   keepsCurrentPlayback,
@@ -162,6 +162,21 @@ interface Negotiation {
    * encodes something, which quality mode Original forbids (`quality`)
    */
   failure?: 'unplayable' | 'quality';
+}
+
+/**
+ * What a hard failure of a negotiated playback would teach and which method would come next (see `getFailureStep`)
+ */
+function getNegotiationFailureStep(negotiation: Negotiation): FailureStep {
+  return getFailureStep({
+    method: negotiation.actualMethod,
+    asked: negotiation.verdict.method,
+    video: negotiation.verdict.video,
+    audio: negotiation.verdict.audio,
+    mediaType: negotiation.mediaType,
+    mode: negotiation.quality,
+    policy: getPlaybackPolicy()
+  });
 }
 
 /**
@@ -426,13 +441,11 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     const negotiation = this._currentNegotiation.value;
 
     if (negotiation && !negotiation.failure) {
-      const size = playbackObservations.videoSize.value;
-
       return getRunningEntry(
         this.currentPlayingVideoStream.value,
         negotiation.actualMethod,
         getModeLevel(negotiation.quality),
-        size && { Width: size.width, Height: size.height }
+        getDecodedVideo(playbackObservations.videoSize.value)
       );
     }
   });
@@ -445,15 +458,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     const negotiation = this._currentNegotiation.value;
 
     if (negotiation && !negotiation.failure) {
-      return getFailureStep({
-        method: negotiation.actualMethod,
-        asked: negotiation.verdict.method,
-        video: negotiation.verdict.video,
-        audio: negotiation.verdict.audio,
-        mediaType: negotiation.mediaType,
-        mode: negotiation.quality,
-        policy: getPlaybackPolicy()
-      });
+      return getNegotiationFailureStep(negotiation);
     }
   });
 
@@ -797,8 +802,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
 
     try {
       const selection = this._currentSelection.value;
-      const videoStreams = mediaSource.MediaStreams?.filter(stream => stream.Type === MediaStreamType.Video) ?? [];
-      const video = videoStreams.find(stream => stream.Index === selection?.video) ?? videoStreams[0];
+      const video = getVideoStream(mediaSource, selection?.video);
       const quality = getPlaybackQualityMode(key, video);
       const autoState = quality.type === 'auto' ? getCurrentAutoState(key) : undefined;
       const verdict = await getMediaSourceVerdict(item, mediaSource, {
@@ -956,15 +960,7 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       return;
     }
 
-    const step = getFailureStep({
-      method: negotiation.actualMethod,
-      asked: negotiation.verdict.method,
-      video: negotiation.verdict.video,
-      audio: negotiation.verdict.audio,
-      mediaType: negotiation.mediaType,
-      mode: negotiation.quality,
-      policy: getPlaybackPolicy()
-    });
+    const step = getNegotiationFailureStep(negotiation);
     let disproved = false;
 
     if (step.learn === 'floor') {

@@ -37,6 +37,7 @@ import {
 } from '#/utils/playback-capabilities/quality-auto.ts';
 import {
   exceedsQuality,
+  getDecodedVideo,
   getEncodedLevel,
   getModeLevel,
   getTranscodeLevel,
@@ -182,7 +183,7 @@ export function usePlaybackSupervisors(hls: Hls | undefined) {
     const encoded = playbackManager.currentPlaybackMethod.value === 'TranscodeVideo';
     const askedAt: QualityLevel | undefined = encoded ? getTranscodeLevel(video, getModeLevel(mode)) : undefined;
     const encodedAt: QualityLevel | undefined = encoded
-      ? getEncodedLevel(video, getModeLevel(mode), size && { Width: size.width, Height: size.height })
+      ? getEncodedLevel(video, getModeLevel(mode), getDecodedVideo(size))
       : undefined;
 
     /**
