@@ -10,7 +10,7 @@
           v-show="playbackManager.isVideo.value && videoContainerRef"
           ref="mediaElementRef"
           :poster="String(posterUrl)"
-          autoplay
+          :autoplay="!playbackManager.isPaused.value"
           crossorigin
           playsinline
           :loop="playbackManager.isRepeatingOnce.value"

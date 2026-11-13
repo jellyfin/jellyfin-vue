@@ -348,6 +348,10 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    */
   private _worked: { key: string; signatures: Set<string> } | undefined;
   /**
+   * The negotiation that replaced the one of a paused playback, while its source loads (see the `waiting` watcher)
+   */
+  private _pausedReload: number | undefined;
+  /**
    * The method the server uses for a negotiated playback, as the version selector names it (a video transcode that
    * also encodes the audio is told apart)
    */
@@ -2108,12 +2112,32 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       }
     });
 
-    watch(mediaControls.waiting, () => {
-      if (!this.isRemotePlayer.value) {
-        this._state.value.status = mediaControls.waiting.value
-          ? PlaybackStatus.Buffering
-          : PlaybackStatus.Playing;
+    /**
+     * A renegotiation of a paused playback loads its new source paused (the element doesn't autoplay while paused):
+     * loading it doesn't make it buffer or play
+     */
+    watch(this._currentNegotiation, (negotiation, previous) => {
+      if (negotiation && previous?.itemId === negotiation.itemId && this.isPaused.value) {
+        this._pausedReload = negotiation.id;
       }
+    });
+
+    watch(mediaControls.waiting, () => {
+      if (this.isRemotePlayer.value) {
+        return;
+      }
+
+      if (this.isPaused.value && this._pausedReload === this._currentNegotiation.value?.id) {
+        if (!mediaControls.waiting.value) {
+          this._pausedReload = undefined;
+        }
+
+        return;
+      }
+
+      this._state.value.status = mediaControls.waiting.value
+        ? PlaybackStatus.Buffering
+        : PlaybackStatus.Playing;
     });
 
     watch(mediaControls.ended, () => {
@@ -2122,11 +2146,17 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       }
     });
 
-    watch(this.playbackSpeed, () => {
-      mediaControls.rate.value = this.playbackSpeed.value;
+    /**
+     * The speed is also the element's default rate: loading a new source (a renegotiation, the next item) resets the
+     * element's rate to its default rate, so the speed is kept. A new element (audio and video items have their own)
+     * gets it too.
+     */
+    watch([this.playbackSpeed, () => mediaElementRef.value], ([speed, el]) => {
+      mediaControls.rate.value = speed;
 
-      if (mediaElementRef.value) {
-        mediaElementRef.value.preservesPitch = true;
+      if (el) {
+        el.defaultPlaybackRate = speed;
+        el.preservesPitch = true;
       }
     });
 
