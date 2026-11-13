@@ -33,6 +33,7 @@ import {
   recordPlaybackOutcome,
   renegotiatingEnvironment
 } from '#/store/playback-capabilities.ts';
+import { resolveMediaSourceIndex } from '#/store/playback-versions.ts';
 import { playbackSettings } from '#/store/settings/playback.ts';
 import { getImageInfo } from '#/utils/images.ts';
 import { getItemRuntime, getStaticStreamUrl } from '#/utils/items.ts';
@@ -195,6 +196,15 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
    */
   private readonly _renegotiations = shallowRef(0);
   /**
+   * The version resolved for an item no version was chosen for (see `_resolveMediaSource`), as an index in its
+   * `MediaSources`. It only applies while that item is the current one.
+   */
+  private readonly _resolvedSource = shallowRef<{ itemId: string; index: number }>();
+  /**
+   * Identifies the latest version resolution started: the result of an older one is dropped
+   */
+  private _resolutionId = 0;
+  /**
    * == GETTERS AND SETTERS ==
    */
   public readonly status = computed(() => this._state.value.status);
@@ -250,14 +260,31 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
     findQueueItem(this.queue.value, this.currentItemId.value, this.currentItemIndex.value)
   );
 
-  public readonly currentMediaSourceIndex = computed(() => this._currentSelection.value?.source);
+  /**
+   * Version of the current item being played, as an index in its `MediaSources`: the one the user chose for it or,
+   * if none, the one resolved for it (see `_resolveMediaSource`). Undefined while it is being resolved.
+   */
+  public readonly currentMediaSourceIndex = computed(() => {
+    const resolved = this._resolvedSource.value;
+
+    return this._currentSelection.value?.source
+      ?? (resolved && resolved.itemId === this.currentItemId.value ? resolved.index : undefined);
+  });
+
   /**
    * Media source of the current item, as found in the /Items DTO. The server computes that DTO
    * without any device profile, so its device specific fields (`SupportsDirectPlay`, `TranscodingUrl`,
    * subtitle `DeliveryMethod`...) say nothing about this client: use it only for static metadata
    * (like the list of streams). Use `currentNegotiatedMediaSource` to decide how to play.
+   *
+   * Undefined while the version is being resolved, so nothing is negotiated for another one meanwhile.
    */
-  public readonly currentMediaSource = computed(() => this.currentItem.value?.MediaSources?.[this.currentMediaSourceIndex.value ?? 0]);
+  public readonly currentMediaSource = computed(() => {
+    const index = this.currentMediaSourceIndex.value;
+
+    return isNil(index) ? undefined : this.currentItem.value?.MediaSources?.[index];
+  });
+
   /**
    * Media source negotiated with the server for this device: `MediaSources[0]` of the PlaybackInfo
    * response. It's the only one that carries the device specific decisions of the server
@@ -510,6 +537,32 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
   /**
    * == ACTIONS ==
    */
+  /**
+   * Decides the version of the current item when none was chosen for it: the one this client plays best (see
+   * `resolveMediaSourceIndex`, which waits for it a bounded time), or the server's first one when automatic version
+   * selection is off. A choice only applies to the item it was made for, so every other item of the queue gets its
+   * own. It's decided once per item while it's current: a later change of what the ranking depends on doesn't switch
+   * the version of a playback in progress.
+   */
+  private readonly _resolveMediaSource = async (): Promise<void> => {
+    const id = ++this._resolutionId;
+    const item = this.currentItem.value;
+
+    if (
+      !item?.Id
+      || !isNil(this._currentSelection.value?.source)
+      || this._resolvedSource.value?.itemId === item.Id
+    ) {
+      return;
+    }
+
+    const index = playbackSettings.autoSelectVersion.value ? await resolveMediaSourceIndex(item) : 0;
+
+    if (id === this._resolutionId && this.currentItemId.value === item.Id) {
+      this._resolvedSource.value = { itemId: item.Id, index };
+    }
+  };
+
   /**
    * Negotiates the playback of the current item and media source with the selected tracks: computes the
    * verdict and, unless nothing can play, asks the server for exactly that. Only the latest negotiation is
@@ -779,6 +832,8 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
       }
 
       this._state.value.status = PlaybackStatus.Buffering;
+      // A new playback decides its versions again, also for items played before
+      this._resolvedSource.value = undefined;
       this._state.value.queue = await this.translateItemsForPlayback(item);
       /**
        * The version and tracks refer to the streams of `item` itself, so they only apply to it
@@ -1295,6 +1350,16 @@ class PlaybackManagerStore extends CommonStore<PlaybackManagerState> {
         playback.position = time;
       }
     }, { flush: 'sync' });
+
+    /**
+     * Resolve the version of the current item when none was chosen for it. Until it's resolved there's no current
+     * media source, so the negotiation below waits for it and runs once, for the resolved version.
+     */
+    watch([
+      this._currentItemDataId,
+      () => this._currentSelection.value?.source,
+      () => this._resolvedSource.value?.itemId
+    ], this._resolveMediaSource, { immediate: true });
 
     /**
      * Negotiate the playback whenever what it depends on changes: the item and version, the
